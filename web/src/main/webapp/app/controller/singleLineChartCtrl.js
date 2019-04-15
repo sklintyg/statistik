@@ -28,7 +28,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
         var chart;
 
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
-        var isLandsting = ControllerCommons.isShowingLandsting($location);
+        var isRegion = ControllerCommons.isShowingRegion($location);
 
         var defaultChartType = 'line';
         var chartTypeInfo = ControllerCommons.getChartTypeInfo($routeParams, config, defaultChartType, isVerksamhet);
@@ -102,7 +102,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
             //Period should be on a separate row (INTYG-3288)
             $scope.subTitlePeriod = result.period;
             if (angular.isFunction(config.chartFootnotesExtra)) {
-                var footnotesExtra = config.chartFootnotesExtra(result, isVerksamhet, isLandsting, $filter);
+                var footnotesExtra = config.chartFootnotesExtra(result, isVerksamhet, isRegion, $filter);
                 if (footnotesExtra) {
                     $scope.chartFootnotes.push(footnotesExtra);
                 }
@@ -119,7 +119,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
         };
 
         var populatePageWithData = function (result) {
-            ControllerCommons.checkNationalResultAndEnableExport($scope, result, isVerksamhet, isLandsting, populatePageWithDataSuccess);
+            ControllerCommons.checkNationalResultAndEnableExport($scope, result, isVerksamhet, isRegion, populatePageWithDataSuccess);
         };
 
         $scope.toggleSeriesVisibility = function (index) {
@@ -160,8 +160,8 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
             });
         }
 
-        function refreshLandsting() {
-            statisticsData[config.dataFetcherLandsting](populatePageWithData, function () {
+        function refreshRegion() {
+            statisticsData[config.dataFetcherRegion](populatePageWithData, function () {
                 $scope.dataLoadingError = true;
             });
         }
@@ -169,9 +169,9 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
         if (isVerksamhet) {
             $scope.exportTableUrl = config.exportTableUrlVerksamhet();
             refreshVerksamhet();
-        } else if (isLandsting) {
-            $scope.exportTableUrl = config.exportTableUrlLandsting();
-            refreshLandsting();
+        } else if (isRegion) {
+            $scope.exportTableUrl = config.exportTableUrlRegion();
+            refreshRegion();
         } else {
             $scope.exportTableUrl = config.exportTableUrl;
             statisticsData[config.dataFetcher](populatePageWithData, function () {
@@ -214,18 +214,18 @@ angular.module('StatisticsApp').casesPerMonthConfig =
     var conf = {};
     conf.dataFetcher = 'getNumberOfCasesPerMonth';
     conf.dataFetcherVerksamhet = 'getNumberOfCasesPerMonthVerksamhet';
-    conf.dataFetcherLandsting = 'getNumberOfCasesPerMonthLandsting';
+    conf.dataFetcherRegion = 'getNumberOfCasesPerMonthLandsting';
     conf.exportTableUrl = 'api/getNumberOfCasesPerMonth?format=xlsx';
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getNumberOfCasesPerMonth?format=xlsx';
     };
-    conf.exportTableUrlLandsting = function () {
+    conf.exportTableUrlRegion = function () {
         return 'api/landsting/getNumberOfCasesPerMonthLandsting?format=xlsx';
     };
     conf.title = messageService.getProperty('title.sickleave');
-    conf.chartFootnotesExtra = function(result, isVerksamhet, isLandsting, $filter) {
-        if (isLandsting) {
-            return $filter('messageFilter')('help.landsting.sjukfall-totalt', '', '', [result.fileUploadDate], '');
+    conf.chartFootnotesExtra = function(result, isVerksamhet, isRegion, $filter) {
+        if (isRegion) {
+            return $filter('messageFilter')('help.region.sjukfall-totalt', '', '', [result.fileUploadDate], '');
         }
     };
 

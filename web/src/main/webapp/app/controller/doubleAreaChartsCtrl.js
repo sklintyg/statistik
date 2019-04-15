@@ -33,7 +33,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
         };
 
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
-        var isLandsting = ControllerCommons.isShowingLandsting($location);
+        var isRegion = ControllerCommons.isShowingRegion($location);
 
         var defaultChartType = 'area';
         var chartTypeInfo = ControllerCommons.getChartTypeInfo($routeParams, config, defaultChartType, isVerksamhet);
@@ -149,7 +149,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
 
             var messages = ControllerCommons.getResultMessageList(result, messageService);
             if (angular.isFunction(config.chartFootnotesExtra)) {
-                var footnotesExtra = config.chartFootnotesExtra(result, isVerksamhet, isLandsting, $filter);
+                var footnotesExtra = config.chartFootnotesExtra(result, isVerksamhet, isRegion, $filter);
                 if (footnotesExtra) {
                     $scope.chartFootnotes.push(footnotesExtra);
                 }
@@ -366,9 +366,9 @@ angular.module('StatisticsApp').casesPerBusinessTimeSeriesConfig =
         return this.title + ' ' + (suffix || '');
     };
     conf.title = messageService.getProperty('title.vardenhet');
-    conf.chartFootnotes = function(isVerksamhet, isLandsting) {
-        if (isLandsting) {
-            return ['help.landsting.vardenhet'];
+    conf.chartFootnotes = function(isVerksamhet, isRegion) {
+        if (isRegion) {
+            return ['help.region.vardenhet'];
         }
 
         return ['help.verksamhet.vardenhet'];
@@ -550,7 +550,7 @@ angular.module('StatisticsApp').intygPerTypePerMonthConfig =
     return conf;
 };
 
-angular.module('StatisticsApp').intygPerTypePerMonthLandstingConfig =
+angular.module('StatisticsApp').intygPerTypePerMonthRegionConfig =
     /** @ngInject */
     function (messageService) {
     'use strict';
@@ -570,8 +570,8 @@ angular.module('StatisticsApp').intygPerTypePerMonthLandstingConfig =
     };
     conf.title = messageService.getProperty('title.intygstyp');
 
-    conf.chartFootnotesExtra = function(result, isVerksamhet, isLandsting, $filter) {
-        return $filter('messageFilter')('help.landsting.intygpertyp', '', '', [result.fileUploadDate], '');
+    conf.chartFootnotesExtra = function(result, isVerksamhet, isRegion, $filter) {
+        return $filter('messageFilter')('help.region.intygpertyp', '', '', [result.fileUploadDate], '');
     };
     conf.chartFootnotes = function() {
         return [];
@@ -603,13 +603,13 @@ angular.module('StatisticsApp').meddelandenPerAmneConfig =
         return this.title + ' ' + (suffix || '');
     };
     conf.title = messageService.getProperty('title.meddelandenperamne');
-    conf.chartFootnotesExtra = function(result, isVerksamhet, isLandsting, $filter) {
-        if (isLandsting) {
-            return $filter('messageFilter')('help.landsting.meddelandenperamne', '', '', [result.fileUploadDate], '');
+    conf.chartFootnotesExtra = function(result, isVerksamhet, isRegion, $filter) {
+        if (isRegion) {
+            return $filter('messageFilter')('help.region.meddelandenperamne', '', '', [result.fileUploadDate], '');
         }
     };
-    conf.chartFootnotes = function(isVerksamhet, isLandsting) {
-        if (isLandsting) {
+    conf.chartFootnotes = function(isVerksamhet, isRegion) {
+        if (isRegion) {
             return [];
         }
         return ['help.nationell.meddelandenperamne'];
@@ -622,7 +622,7 @@ angular.module('StatisticsApp').meddelandenPerAmneConfig =
     return conf;
 };
 
-angular.module('StatisticsApp').meddelandenPerAmneLandstingConfig =
+angular.module('StatisticsApp').meddelandenPerAmneRegionConfig =
     /** @ngInject */
     function (messageService) {
     'use strict';
@@ -641,8 +641,8 @@ angular.module('StatisticsApp').meddelandenPerAmneLandstingConfig =
         return this.title + ' ' + (suffix || '');
     };
     conf.title = messageService.getProperty('title.meddelandenperamne');
-    conf.chartFootnotesExtra = function(result, isVerksamhet, isLandsting, $filter) {
-        return $filter('messageFilter')('help.landsting.meddelandenperamne', '', '', [result.fileUploadDate], '');
+    conf.chartFootnotesExtra = function(result, isVerksamhet, isRegion, $filter) {
+        return $filter('messageFilter')('help.region.meddelandenperamne', '', '', [result.fileUploadDate], '');
     };
     conf.chartFootnotes = function() {
         return [];
@@ -693,7 +693,7 @@ angular.module('StatisticsApp').andelKompletteringarConfig =
     return conf;
 };
 
-angular.module('StatisticsApp').andelKompletteringarLandstingConfig =
+angular.module('StatisticsApp').andelKompletteringarRegionConfig =
     /** @ngInject */
     function (messageService) {
     'use strict';
@@ -716,8 +716,8 @@ angular.module('StatisticsApp').andelKompletteringarLandstingConfig =
     conf.chartYAxisTitleUnit = 'intyg';
     conf.usingAndel = true;
 
-    conf.chartFootnotesExtra = function(result, isVerksamhet, isLandsting, $filter) {
-        return $filter('messageFilter')('help.landsting.komplettering', '', '', [result.fileUploadDate], '');
+    conf.chartFootnotesExtra = function(result, isVerksamhet, isRegion, $filter) {
+        return $filter('messageFilter')('help.region.komplettering', '', '', [result.fileUploadDate], '');
     };
     conf.chartFootnotes = function() {
         return [];

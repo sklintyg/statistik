@@ -18,11 +18,16 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
-import static org.junit.Assert.assertEquals;
+import java.time.Clock;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.junit.Test;
+
 import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhet;
+import se.inera.statistics.service.region.persistance.regionenhet.RegionEnhet;
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -38,21 +43,17 @@ import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.service.Filter;
 import se.inera.statistics.web.service.FilterSettings;
 
-import java.time.Clock;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import static org.junit.Assert.assertEquals;
 
 public class SjukfallPerPatientsPerEnhetConverterTest {
 
     private final Clock clock = Clock.systemDefaultZone();
 
     @Test
-    public void testConvertNullLandstingsEnhetsInputGivesEmptyOutput() {
+    public void testConvertNullRegionsEnhetsInputGivesEmptyOutput() {
         //Given
-        final List<LandstingEnhet> landstingEnhets = null;
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, Collections.<HsaIdEnhet>emptyList());
+        final List<RegionEnhet> regionEnhets = null;
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(regionEnhets, Collections.<HsaIdEnhet>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
@@ -66,10 +67,10 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     }
 
     @Test
-    public void testConvertEmptyLandstingsEnhetsInputGivesEmptyOutput() {
+    public void testConvertEmptyRegionsEnhetsInputGivesEmptyOutput() {
         //Given
-        final List<LandstingEnhet> landstingEnhets = Collections.emptyList();
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, Collections.<HsaIdEnhet>emptyList());
+        final List<RegionEnhet> regionEnhets = Collections.emptyList();
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(regionEnhets, Collections.<HsaIdEnhet>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
@@ -83,10 +84,10 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     }
 
     @Test
-    public void testConvertNonLandstingsEnhetsInputGivesNonEmptyOutputWhereEnhetsNotInListAreRemoved() {
+    public void testConvertNonRegionsEnhetsInputGivesNonEmptyOutputWhereEnhetsNotInListAreRemoved() {
         //Given
-        final List<LandstingEnhet> landstingEnhets = Arrays.asList(new LandstingEnhet(2L, new HsaIdEnhet("HSA2"), 2));
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, Collections.<HsaIdEnhet>emptyList());
+        final List<RegionEnhet> regionEnhets = Arrays.asList(new RegionEnhet(2L, new HsaIdEnhet("HSA2"), 2));
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(regionEnhets, Collections.<HsaIdEnhet>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
@@ -103,8 +104,8 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     @Test
     public void testConvertEnhetsWithZeroPatientsAreNotPartOfResult() {
         //Given
-        final List<LandstingEnhet> landstingEnhets = Arrays.asList(new LandstingEnhet(1L, new HsaIdEnhet("HSA1"), 1), new LandstingEnhet(2L, new HsaIdEnhet("HSA2"), 0));
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, Collections.<HsaIdEnhet>emptyList());
+        final List<RegionEnhet> regionEnhets = Arrays.asList(new RegionEnhet(1L, new HsaIdEnhet("HSA1"), 1), new RegionEnhet(2L, new HsaIdEnhet("HSA2"), 0));
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(regionEnhets, Collections.<HsaIdEnhet>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
@@ -121,8 +122,8 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     @Test
     public void testConvertEnhetsWithLessThanZeroPatientsAreNotPartOfResult() {
         //Given
-        final List<LandstingEnhet> landstingEnhets = Arrays.asList(new LandstingEnhet(1L, new HsaIdEnhet("HSA1"), -1), new LandstingEnhet(2L, new HsaIdEnhet("HSA2"), 3));
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, Collections.<HsaIdEnhet>emptyList());
+        final List<RegionEnhet> regionEnhets = Arrays.asList(new RegionEnhet(1L, new HsaIdEnhet("HSA1"), -1), new RegionEnhet(2L, new HsaIdEnhet("HSA2"), 3));
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(regionEnhets, Collections.<HsaIdEnhet>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
@@ -139,8 +140,8 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     @Test
     public void testConvertEnhetsWithUnsetNumberOfPatientsAreNotPartOfResult() {
         //Given
-        final List<LandstingEnhet> landstingEnhets = Arrays.asList(new LandstingEnhet(1L, new HsaIdEnhet("HSA1"), null), new LandstingEnhet(2L, new HsaIdEnhet("HSA2"), 3));
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, Collections.<HsaIdEnhet>emptyList());
+        final List<RegionEnhet> regionEnhets = Arrays.asList(new RegionEnhet(1L, new HsaIdEnhet("HSA1"), null), new RegionEnhet(2L, new HsaIdEnhet("HSA2"), 3));
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(regionEnhets, Collections.<HsaIdEnhet>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
@@ -157,8 +158,8 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     @Test
     public void testConvertResultIsUsingTwoDecimalsForBothTableAndChart() {
         //Given
-        final List<LandstingEnhet> landstingEnhets = Arrays.asList(new LandstingEnhet(1L, new HsaIdEnhet("HSA1"), 3000));
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, Collections.<HsaIdEnhet>emptyList());
+        final List<RegionEnhet> regionEnhets = Arrays.asList(new RegionEnhet(1L, new HsaIdEnhet("HSA1"), 3000));
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(regionEnhets, Collections.<HsaIdEnhet>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
@@ -178,8 +179,8 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     @Test
     public void testConvertEnhetsHasCorrectSortingSTATISTIK1034() {
         //Given
-        final List<LandstingEnhet> landstingEnhets = Arrays.asList(new LandstingEnhet(1L, new HsaIdEnhet("HSA1"), 1000), new LandstingEnhet(2L, new HsaIdEnhet("HSA2"), 1000), new LandstingEnhet(3L, new HsaIdEnhet("HSA3"), 1000));
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, Collections.<HsaIdEnhet>emptyList());
+        final List<RegionEnhet> regionEnhets = Arrays.asList(new RegionEnhet(1L, new HsaIdEnhet("HSA1"), 1000), new RegionEnhet(2L, new HsaIdEnhet("HSA2"), 1000), new RegionEnhet(3L, new HsaIdEnhet("HSA3"), 1000));
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(regionEnhets, Collections.<HsaIdEnhet>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();

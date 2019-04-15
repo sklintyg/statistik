@@ -18,7 +18,15 @@
  */
 package se.inera.statistics.web.service;
 
-import com.google.common.collect.Lists;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.servlet.http.HttpServletRequest;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -26,11 +34,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+
+import com.google.common.collect.Lists;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.landsting.LandstingEnhetHandler;
 import se.inera.statistics.service.processlog.EnhetManager;
+import se.inera.statistics.service.region.RegionEnhetHandler;
 import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
 import se.inera.statistics.service.warehouse.Fact;
@@ -42,16 +52,6 @@ import se.inera.statistics.web.model.LoginInfoVg;
 import se.inera.statistics.web.model.UserSettingsDTO;
 import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.util.SpyableClock;
-
-import javax.servlet.http.HttpServletRequest;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -71,7 +71,7 @@ public class FilterHandlerTest {
     private SjukfallUtil sjukfallUtil;
 
     @Mock
-    private LandstingEnhetHandler landstingEnhetHandler;
+    private RegionEnhetHandler regionEnhetHandler;
 
     @Mock
     private EnhetManager enhetManager;

@@ -85,10 +85,10 @@ var Filter = function() {
         expect(this.showAllActiveBtn.isPresent()).toBeFalsy();
     };
 
-    // Landsting
-    this.landstingContainer = element(by.id('landstingFilterContainer'));
+    // Region
+    this.regionContainer = element(by.id('regionFilterContainer'));
 
-    this.landstingMessages = this.landstingContainer.all(by.css('#filter-warnings show-message'));
+    this.regionMessages = this.regionContainer.all(by.css('#filter-warnings show-message'));
 
 };
 

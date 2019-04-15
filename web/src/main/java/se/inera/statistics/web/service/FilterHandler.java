@@ -46,7 +46,7 @@ import com.sun.istack.NotNull;
 import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.landsting.LandstingEnhetHandler;
+import se.inera.statistics.service.region.RegionEnhetHandler;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.EnhetManager;
 import se.inera.statistics.service.report.model.Range;
@@ -82,7 +82,7 @@ public class FilterHandler {
     private SjukfallUtil sjukfallUtil;
 
     @Autowired
-    private LandstingEnhetHandler landstingEnhetHandler;
+    private RegionEnhetHandler regionEnhetHandler;
 
     @Autowired
     private EnhetManager enhetManager;
@@ -99,19 +99,19 @@ public class FilterHandler {
         return new ArrayList<>(filteredEnhets);
     }
 
-    public FilterSettings getFilterForLandsting(HttpServletRequest request, String filterHash, int defaultRangeValue) {
+    public FilterSettings getFilterForRegion(HttpServletRequest request, String filterHash, int defaultRangeValue) {
         if (filterHash == null || filterHash.isEmpty()) {
-            return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request),
+            return new FilterSettings(getFilterForAllAvailableEnhetsRegion(request),
                     Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock));
         }
         final FilterData inFilter = filterHashHandler.getFilterFromHash(filterHash);
-        final ArrayList<HsaIdEnhet> enhetsIDs = getEnhetsFilteredLandsting(request, inFilter);
+        final ArrayList<HsaIdEnhet> enhetsIDs = getEnhetsFilteredRegion(request, inFilter);
         try {
-            return getFilterSettingsLandsting(request, filterHash, defaultRangeValue, inFilter, enhetsIDs);
+            return getFilterSettingsRegion(request, filterHash, defaultRangeValue, inFilter, enhetsIDs);
         } catch (FilterException e) {
-            LOG.warn("Could not use selected landsting filter. Falling back to default filter. Msg: " + e.getMessage());
-            LOG.debug("Could not use selected landsting filter. Falling back to default filter.", e);
-            return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request),
+            LOG.warn("Could not use selected region filter. Falling back to default filter. Msg: " + e.getMessage());
+            LOG.debug("Could not use selected region filter. Falling back to default filter.", e);
+            return new FilterSettings(getFilterForAllAvailableEnhetsRegion(request),
                     Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock),
                     Message.create(ErrorType.FILTER, ErrorSeverity.WARN, MessagesText.FILTER_COULD_NOT_APPLY));
         } catch (TooEarlyEndDateException e) {
@@ -124,9 +124,9 @@ public class FilterHandler {
         }
     }
 
-    public List<Verksamhet> getAllVerksamhetsForLoggedInLandstingsUser(HttpServletRequest request) {
+    public List<Verksamhet> getAllVerksamhetsForLoggedInRegionsUser(HttpServletRequest request) {
         final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        final List<HsaIdEnhet> allEnhets = landstingEnhetHandler.getAllEnhetsForVardgivare(vgIdForLoggedInUser);
+        final List<HsaIdEnhet> allEnhets = regionEnhetHandler.getAllEnhetsForVardgivare(vgIdForLoggedInUser);
         final List<Enhet> enhets = enhetManager.getEnhets(allEnhets);
         return enhets.stream().map(enhet -> loginServiceUtil.enhetToVerksamhet(enhet)).collect(Collectors.toList());
     }
@@ -163,9 +163,9 @@ public class FilterHandler {
         return getFilterSettings(filterHash, defaultRangeValue, inFilter, enheter, enhetFilter);
     }
 
-    private FilterSettings getFilterSettingsLandsting(HttpServletRequest request, String filterHash, int defaultRangeValue,
+    private FilterSettings getFilterSettingsRegion(HttpServletRequest request, String filterHash, int defaultRangeValue,
             FilterData inFilter, ArrayList<HsaIdEnhet> enhetsInFilter) throws FilterException, TooEarlyEndDateException {
-        Set<HsaIdEnhet> enheter = getEnhetNameMapLandsting(request, enhetsInFilter).keySet();
+        Set<HsaIdEnhet> enheter = getEnhetNameMapRegion(request, enhetsInFilter).keySet();
         final Predicate<Fact> enhetFilter = sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaIdEnhet[enheter.size()]))
                 .getIntygFilter();
         return getFilterSettings(filterHash, defaultRangeValue, inFilter, enheter, enhetFilter);
@@ -305,9 +305,9 @@ public class FilterHandler {
         return new RangeMessageDTO(range, Message.create(ErrorType.FILTER, ErrorSeverity.INFO, message));
     }
 
-    private Filter getFilterForAllAvailableEnhetsLandsting(HttpServletRequest request) {
+    private Filter getFilterForAllAvailableEnhetsRegion(HttpServletRequest request) {
         final HsaIdVardgivare vardgivarId = getSelectedVgIdForLoggedInUser(request);
-        final List<HsaIdEnhet> enhets = landstingEnhetHandler.getAllEnhetsForVardgivare(vardgivarId);
+        final List<HsaIdEnhet> enhets = regionEnhetHandler.getAllEnhetsForVardgivare(vardgivarId);
         return getFilterForEnhets(enhets);
     }
 
@@ -332,14 +332,14 @@ public class FilterHandler {
         return getFilterForEnhets(hsaIds);
     }
 
-    private ArrayList<HsaIdEnhet> getEnhetsFilteredLandsting(HttpServletRequest request, FilterData inFilter) {
-        Set<HsaIdEnhet> enhetsForLandsting = getEnhetsForLandsting(request);
+    private ArrayList<HsaIdEnhet> getEnhetsFilteredRegion(HttpServletRequest request, FilterData inFilter) {
+        Set<HsaIdEnhet> enhetsForRegion = getEnhetsForRegion(request);
         final List<String> enheter = inFilter.getEnheter();
         final HashSet<HsaIdEnhet> enhets = new HashSet<>(toHsaIds(enheter));
         if (enheter.isEmpty()) {
-            return new ArrayList<>(enhetsForLandsting);
+            return new ArrayList<>(enhetsForRegion);
         } else {
-            return new ArrayList<>(Sets.intersection(enhetsForLandsting, enhets));
+            return new ArrayList<>(Sets.intersection(enhetsForRegion, enhets));
         }
     }
 
@@ -358,8 +358,8 @@ public class FilterHandler {
         }
     }
 
-    private Set<HsaIdEnhet> getEnhetsForLandsting(HttpServletRequest request) {
-        final List<Verksamhet> verksamhets = getAllVerksamhetsForLoggedInLandstingsUser(request);
+    private Set<HsaIdEnhet> getEnhetsForRegion(HttpServletRequest request) {
+        final List<Verksamhet> verksamhets = getAllVerksamhetsForLoggedInRegionsUser(request);
         Set<HsaIdEnhet> enhetsIds = new HashSet<>();
         for (Verksamhet verksamhet : verksamhets) {
             enhetsIds.add(verksamhet.getIdUnencoded());
@@ -436,10 +436,10 @@ public class FilterHandler {
         return enheter;
     }
 
-    private Map<HsaIdEnhet, String> getEnhetNameMapLandsting(HttpServletRequest request, List<HsaIdEnhet> filteredEnhetsIds) {
+    private Map<HsaIdEnhet, String> getEnhetNameMapRegion(HttpServletRequest request, List<HsaIdEnhet> filteredEnhetsIds) {
         final HsaIdVardgivare vgid = getSelectedVgIdForLoggedInUser(request);
         Map<HsaIdEnhet, String> enheter = new HashMap<>();
-        final List<HsaIdEnhet> availableEnhetIds = landstingEnhetHandler.getAllEnhetsForVardgivare(vgid);
+        final List<HsaIdEnhet> availableEnhetIds = regionEnhetHandler.getAllEnhetsForVardgivare(vgid);
         final List<Enhet> enhets = enhetManager.getEnhets(availableEnhetIds);
         for (Enhet enhet : enhets) {
             if (filteredEnhetsIds != null && filteredEnhetsIds.contains(enhet.getEnhetId())) {

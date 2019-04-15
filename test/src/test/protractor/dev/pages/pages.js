@@ -10,7 +10,7 @@ module.exports = {
     'headerPo': require('./header.po.js'),
     'navmenu': require('./navmenu.po.js'),
     'filter': require('./filter.po.js'),
-    'landstingAbout': require('./landstingAbout.po.js'),
-    'landstingUpload': require('./landstingUpload.po.js'),
-    'landstingUploadAgreement': require('./landstingUploadAgreement.po.js')
+    'regionAbout': require('./regionAbout.po.js'),
+    'regionUpload': require('./regionUpload.po.js'),
+    'regionUploadAgreement': require('./regionUploadAgreement.po.js')
 };

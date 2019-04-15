@@ -410,51 +410,51 @@ var app = angular.module('StatisticsApp')
                 resolve: { config: app.andelKompletteringarTvarsnittConfig },
                 title: 'nav.andelkompletteringar'
             }).when('/landsting/filuppladdning', {
-                templateUrl: '/app/views/landsting/fileupload.html',
-                controller: 'landstingFileUploadCtrl',
-                controllerAs: 'LandstingFileUploadCtrl',
+                templateUrl: '/app/views/region/fileupload.html',
+                controller: 'regionFileUploadCtrl',
+                controllerAs: 'RegionFileUploadCtrl',
                 title: 'Filuppladdning'
             }).when('/landsting/sjukfallPerManad', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'singleLineChartCtrl',
-                controllerAs: 'LandstingCasesPerMonthCtrl',
+                controllerAs: 'RegionCasesPerMonthCtrl',
                 resolve: { config: app.casesPerMonthConfig },
                 title: 'nav.sjukfall-totalt'
             }).when('/landsting/sjukfallPerEnhet', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'columnChartDetailsViewCtrl',
-                controllerAs: 'LandstingCasesPerBusinessCtrl',
+                controllerAs: 'RegionCasesPerBusinessCtrl',
                 resolve: { config: app.casesPerBusinessConfig },
                 title: 'nav.vardenhet'
             }).when('/landsting/sjukfallPerListningarPerEnhet', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'columnChartDetailsViewCtrl',
-                controllerAs: 'LandstingCasesPerPatientsPerBusinessCtrl',
+                controllerAs: 'RegionCasesPerPatientsPerBusinessCtrl',
                 resolve: { config: app.casesPerPatientsPerBusinessConfig },
-                title: 'nav.landsting.listningsjamforelse'
+                title: 'nav.region.listningsjamforelse'
             }).when('/landsting/meddelandenPerAmne', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'doubleAreaChartsCtrl',
-                controllerAs: 'LandstingMeddelandenPerAmneCtrl',
-                resolve: { config: app.meddelandenPerAmneLandstingConfig },
+                controllerAs: 'RegionMeddelandenPerAmneCtrl',
+                resolve: { config: app.meddelandenPerAmneRegionConfig },
                 title: 'nav.meddelandenperamne'
             }).when('/landsting/meddelandenPerAmneOchEnhet', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'columnChartDetailsViewCtrl',
-                controllerAs: 'LandstingMeddelandenPerAmneOchEnhetCtrl',
-                resolve: { config: app.meddelandenPerAmneOchEnhetLandstingConfig },
+                controllerAs: 'RegionMeddelandenPerAmneOchEnhetCtrl',
+                resolve: { config: app.meddelandenPerAmneOchEnhetRegionConfig },
                 title: 'nav.meddelandenperamneochenhet'
             }).when('/landsting/intygPerTyp', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'doubleAreaChartsCtrl',
-                controllerAs: 'LandstingIntygPerTypCtrl',
-                resolve: { config: app.intygPerTypePerMonthLandstingConfig },
+                controllerAs: 'RegionIntygPerTypCtrl',
+                resolve: { config: app.intygPerTypePerMonthRegionConfig },
                 title: 'nav.intygpertyp'
             }).when('/landsting/andelkompletteringar', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'doubleAreaChartsCtrl',
-                controllerAs: 'LandstingAndelKompletteringarCtrl',
-                resolve: { config: app.andelKompletteringarLandstingConfig },
+                controllerAs: 'RegionAndelKompletteringarCtrl',
+                resolve: { config: app.andelKompletteringarRegionConfig },
                 title: 'nav.andelkompletteringar'
             }).when('/landsting/kompletteringarperfraga', {
                 templateUrl: '/app/views/detailsView.html',
@@ -463,8 +463,8 @@ var app = angular.module('StatisticsApp')
                 resolve: { config: app.kompletteringarPerFragaLandstingConfig },
                 title: 'nav.kompletteringarperfraga'
             }).when('/landsting/om', {
-                templateUrl: '/app/views/landsting/aboutlandsting.html',
-                controllerAs: 'LandstingAboutCtrl',
+                templateUrl: '/app/views/region/aboutregion.html',
+                controllerAs: 'RegionAboutCtrl',
                 title: 'Om Regionsstatistik'
             }).when('/om/kontakt', {
                 templateUrl: '/app/views/about/contact.html',

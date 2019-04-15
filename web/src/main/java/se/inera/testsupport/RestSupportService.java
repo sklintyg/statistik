@@ -64,11 +64,11 @@ import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAStore;
 import se.inera.statistics.service.hsa.HsaDataInjectable;
 import se.inera.statistics.service.hsa.HsaWsResponderMock;
-import se.inera.statistics.service.landsting.persistance.landsting.LandstingManager;
-import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhet;
-import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhetManager;
-import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateManager;
-import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateOperation;
+import se.inera.statistics.service.region.persistance.region.RegionManager;
+import se.inera.statistics.service.region.persistance.regionenhet.RegionEnhet;
+import se.inera.statistics.service.region.persistance.regionenhet.RegionEnhetManager;
+import se.inera.statistics.service.region.persistance.regionenhetupdate.RegionEnhetUpdateManager;
+import se.inera.statistics.service.region.persistance.regionenhetupdate.RegionEnhetUpdateOperation;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.IntygEvent;
 import se.inera.statistics.service.processlog.Lakare;
@@ -157,13 +157,13 @@ public class RestSupportService {
     private SjukfallUtil sjukfallUtil;
 
     @Autowired
-    private LandstingManager landstingManager;
+    private RegionManager regionManager;
 
     @Autowired
-    private LandstingEnhetManager landstingEnhetManager;
+    private RegionEnhetManager regionEnhetManager;
 
     @Autowired
-    private LandstingEnhetUpdateManager landstingEnhetUpdateManager;
+    private RegionEnhetUpdateManager regionEnhetUpdateManager;
 
     @Autowired
     private SjukfallQuery sjukfallQuery;
@@ -397,10 +397,10 @@ public class RestSupportService {
     @Path("landsting/vgid/{vgid}")
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response insertLandsting(@PathParam("vgid") String vgId) {
-        LOG.info("Insert landsting with vgid {}", vgId);
-        if (!landstingManager.getForVg(new HsaIdVardgivare(vgId)).isPresent()) {
-            landstingManager.add(vgId, new HsaIdVardgivare(vgId));
+    public Response insertRegion(@PathParam("vgid") String vgId) {
+        LOG.info("Insert region with vgid {}", vgId);
+        if (!regionManager.getForVg(new HsaIdVardgivare(vgId)).isPresent()) {
+            regionManager.add(vgId, new HsaIdVardgivare(vgId));
         }
         return Response.ok().build();
     }
@@ -410,13 +410,13 @@ public class RestSupportService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
     public Response clearLandstingFileUploads() {
-        LOG.info("Clearing all uploaded landsting files");
-        final List<LandstingEnhet> allLandstingEnhets = landstingEnhetManager.getAll();
-        allLandstingEnhets.forEach(landstingEnhet -> {
-            final long landstingId = landstingEnhet.getLandstingId();
-            landstingEnhetManager.removeByLandstingId(landstingId);
-            landstingEnhetUpdateManager.update(landstingId, this.getClass().getSimpleName(), new HsaIdUser(""), "-",
-                    LandstingEnhetUpdateOperation.REMOVE);
+        LOG.info("Clearing all uploaded region files");
+        final List<RegionEnhet> allRegionEnhets = regionEnhetManager.getAll();
+        allRegionEnhets.forEach(regionEnhet -> {
+            final long regionId = regionEnhet.getLandstingId();
+            regionEnhetManager.removeByRegionId(regionId);
+            regionEnhetUpdateManager.update(regionId, this.getClass().getSimpleName(), new HsaIdUser(""), "-",
+                    RegionEnhetUpdateOperation.REMOVE);
         });
         return Response.ok().build();
     }

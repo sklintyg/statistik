@@ -20,25 +20,25 @@ package se.inera.statistics.web.model;
 
 import se.inera.auth.model.UserAccessLevel;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.landsting.LandstingsVardgivareStatus;
+import se.inera.statistics.service.region.RegionsVardgivareStatus;
 
 public class LoginInfoVg {
 
     private final HsaIdVardgivare hsaId;
     private final String name;
-    private final LandstingsVardgivareStatus landstingsVardgivareStatus;
+    private final RegionsVardgivareStatus regionsVardgivareStatus;
     private final UserAccessLevel userAccessLevel;
 
-    public LoginInfoVg(HsaIdVardgivare hsaId, String name, LandstingsVardgivareStatus landstingsVardgivareStatus,
+    public LoginInfoVg(HsaIdVardgivare hsaId, String name, RegionsVardgivareStatus regionsVardgivareStatus,
             UserAccessLevel userAccessLevel) {
         this.hsaId = hsaId;
         this.name = name;
-        this.landstingsVardgivareStatus = landstingsVardgivareStatus;
+        this.regionsVardgivareStatus = regionsVardgivareStatus;
         this.userAccessLevel = userAccessLevel;
     }
 
     public static LoginInfoVg empty() {
-        return new LoginInfoVg(HsaIdVardgivare.empty(), "", LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE,
+        return new LoginInfoVg(HsaIdVardgivare.empty(), "", RegionsVardgivareStatus.NO_REGIONSVARDGIVARE,
                 new UserAccessLevel(false, 0));
     }
 
@@ -50,8 +50,8 @@ public class LoginInfoVg {
         return name;
     }
 
-    public LandstingsVardgivareStatus getLandstingsVardgivareStatus() {
-        return landstingsVardgivareStatus;
+    public RegionsVardgivareStatus getRegionsVardgivareStatus() {
+        return regionsVardgivareStatus;
     }
 
     public boolean isProcessledare() {
@@ -66,16 +66,16 @@ public class LoginInfoVg {
         return userAccessLevel.isDelprocessledare();
     }
 
-    public boolean isLandstingsvardgivare() {
-        return !LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE.equals(landstingsVardgivareStatus);
+    public boolean isRegionsvardgivare() {
+        return !RegionsVardgivareStatus.NO_REGIONSVARDGIVARE.equals(regionsVardgivareStatus);
     }
 
-    public boolean isLandstingsvardgivareWithUpload() {
-        return LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITH_UPLOAD.equals(landstingsVardgivareStatus);
+    public boolean isRegionsvardgivareWithUpload() {
+        return RegionsVardgivareStatus.REGIONSVARDGIVARE_WITH_UPLOAD.equals(regionsVardgivareStatus);
     }
 
-    public boolean isLandstingAdmin() {
-        return isLandstingsvardgivare() && isProcessledare();
+    public boolean isRegionAdmin() {
+        return isRegionsvardgivare() && isProcessledare();
     }
 
     @Override

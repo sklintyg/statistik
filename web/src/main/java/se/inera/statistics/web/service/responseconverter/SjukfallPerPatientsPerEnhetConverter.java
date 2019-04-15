@@ -30,7 +30,7 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhet;
+import se.inera.statistics.service.region.persistance.regionenhet.RegionEnhet;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -54,18 +54,18 @@ public class SjukfallPerPatientsPerEnhetConverter {
     public static final DecimalFormat TWO_DECIMALS_FORMAT_FOR_STRING = getDecimalFormatForString();
     public static final DecimalFormat TWO_DECIMALS_FORMAT_FOR_DOUBLE = getDecimalFormatForDouble();
 
-    public SjukfallPerPatientsPerEnhetConverter(List<LandstingEnhet> landstingEnhets, List<HsaIdEnhet> connectedEnhetIds) {
+    public SjukfallPerPatientsPerEnhetConverter(List<RegionEnhet> regionEnhets, List<HsaIdEnhet> connectedEnhetIds) {
         this.connectedEnhetIds = connectedEnhetIds;
-        if (landstingEnhets == null) {
+        if (regionEnhets == null) {
             listningarPerEnhet = Collections.emptyMap();
             return;
         }
-        listningarPerEnhet = Maps.newHashMapWithExpectedSize(landstingEnhets.size());
-        for (LandstingEnhet landstingEnhet : landstingEnhets) {
-            final Integer listadePatienterObj = landstingEnhet.getListadePatienter();
+        listningarPerEnhet = Maps.newHashMapWithExpectedSize(regionEnhets.size());
+        for (RegionEnhet regionEnhet : regionEnhets) {
+            final Integer listadePatienterObj = regionEnhet.getListadePatienter();
             final int listadePatienter = listadePatienterObj == null ? 0 : listadePatienterObj;
             if (listadePatienter > 0) {
-                listningarPerEnhet.put(landstingEnhet.getEnhetensHsaId(), listadePatienter);
+                listningarPerEnhet.put(regionEnhet.getEnhetensHsaId(), listadePatienter);
             }
         }
     }

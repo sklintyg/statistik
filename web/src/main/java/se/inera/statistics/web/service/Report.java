@@ -58,14 +58,14 @@ public enum Report {
     V_SJUKSKRIVNINGSLANGD(StatisticsLevel.VERKSAMHET, "Sjukskrivningslangd", "Antal sjukfall fördelat på sjukskrivningslängd"),
     V_SJUKSKRIVNINGSLANGDMERAN90DAGAR(StatisticsLevel.VERKSAMHET,
             "SjukskrivningslangdMerAn90Dagar", "Antal sjukfall som är längre än 90 dagar"),
-    L_SJUKFALLTOTALT(StatisticsLevel.LANDSTING, "SjukfallTotalt", "Antal sjukfall"),
-    L_VARDENHET(StatisticsLevel.LANDSTING, "Vardenhet", "Antal sjukfall fördelat på vårdenhet"),
-    L_VARDENHETLISTNINGAR(StatisticsLevel.LANDSTING, "VardenhetListningar", "Antal sjukfall per 1000 listningar fördelat på vårdenhet"),
-    L_ANDELKOMPLETTERINGAR(StatisticsLevel.LANDSTING, "Kompletteringandelintyg", "Andel utfärdade intyg som fått en kompletteringsbegäran"),
-    L_KOMPLETTERINGARPERFRAGA(StatisticsLevel.LANDSTING, "Kompletteringarperfraga", "Antal kompletteringar per fråga"),
-    L_MEDDELANDENPERAMNE(StatisticsLevel.LANDSTING, "MeddelandenPerAmne", "Antal inkomna meddelanden fördelat på ämne"),
-    L_INTYGPERTYP(StatisticsLevel.LANDSTING, "IntygPerTyp", "Antal utfärdade intyg fördelat på intygstyp"),
-    L_MEDDELANDENPERAMNEPERENHET(StatisticsLevel.LANDSTING, "MeddelandenPerAmnePerEnhet",
+    L_SJUKFALLTOTALT(StatisticsLevel.REGION, "SjukfallTotalt", "Antal sjukfall"),
+    L_VARDENHET(StatisticsLevel.REGION, "Vardenhet", "Antal sjukfall fördelat på vårdenhet"),
+    L_VARDENHETLISTNINGAR(StatisticsLevel.REGION, "VardenhetListningar", "Antal sjukfall per 1000 listningar fördelat på vårdenhet"),
+    L_ANDELKOMPLETTERINGAR(StatisticsLevel.REGION, "Kompletteringandelintyg", "Andel utfärdade intyg som fått en kompletteringsbegäran"),
+    L_KOMPLETTERINGARPERFRAGA(StatisticsLevel.REGION, "Kompletteringarperfraga", "Antal kompletteringar per fråga"),
+    L_MEDDELANDENPERAMNE(StatisticsLevel.REGION, "MeddelandenPerAmne", "Antal inkomna meddelanden fördelat på ämne"),
+    L_INTYGPERTYP(StatisticsLevel.REGION, "IntygPerTyp", "Antal utfärdade intyg fördelat på intygstyp"),
+    L_MEDDELANDENPERAMNEPERENHET(StatisticsLevel.REGION, "MeddelandenPerAmnePerEnhet",
             "Antal inkomna meddelanden fördelat på vårdenhet");
 
     private final StatisticsLevel statisticsLevel;

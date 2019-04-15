@@ -64,7 +64,7 @@ angular.module('StatisticsApp').factory('statisticsData',
         makeRequest(url, successCallback, failureCallback, httpMethod, notAbortable);
     };
 
-    var makeRequestLandsting = function (restFunctionName, successCallback, failureCallback, httpMethod, notAbortable) {
+    var makeRequestRegion = function (restFunctionName, successCallback, failureCallback, httpMethod, notAbortable) {
         if (!checkQueryStringForVgId()) {
             return;
         }
@@ -143,7 +143,7 @@ angular.module('StatisticsApp').factory('statisticsData',
     };
 
     factory.getIntygPerTypePerMonthLandsting = function (successCallback, failureCallback) {
-        makeRequestLandsting('getIntygPerTypePerMonthLandsting', successCallback, failureCallback);
+        makeRequestRegion('getIntygPerTypePerMonthLandsting', successCallback, failureCallback);
     };
 
     factory.getIntygPerTypePerMonthVerksamhet = function (successCallback, failureCallback) {
@@ -159,7 +159,7 @@ angular.module('StatisticsApp').factory('statisticsData',
     };
 
     factory.getNumberOfCasesPerMonthLandsting = function (successCallback, failureCallback) {
-        makeRequestLandsting('getNumberOfCasesPerMonthLandsting', successCallback, failureCallback);
+        makeRequestRegion('getNumberOfCasesPerMonthLandsting', successCallback, failureCallback);
     };
 
     factory.getNumberOfCasesPerMonthTvarsnittVerksamhet = function (successCallback, failureCallback) {
@@ -295,7 +295,7 @@ angular.module('StatisticsApp').factory('statisticsData',
     };
 
     factory.getSjukfallPerBusinessLandsting = function (successCallback, failureCallback) {
-        makeRequestLandsting('getNumberOfCasesPerEnhetLandsting', successCallback, failureCallback);
+        makeRequestRegion('getNumberOfCasesPerEnhetLandsting', successCallback, failureCallback);
     };
 
     factory.getSjukfallPerBusinessTimeSeriesVerksamhet = function (successCallback, failureCallback) {
@@ -335,15 +335,15 @@ angular.module('StatisticsApp').factory('statisticsData',
     };
 
     factory.getMeddelandenPerAmneLandsting = function (successCallback, failureCallback) {
-        makeRequestLandsting('getMeddelandenPerAmneLandsting', successCallback, failureCallback);
+        makeRequestRegion('getMeddelandenPerAmneLandsting', successCallback, failureCallback);
     };
 
     factory.getMeddelandenPerAmneOchEnhetLandsting = function (successCallback, failureCallback) {
-        makeRequestLandsting('getMeddelandenPerAmnePerEnhetLandsting', successCallback, failureCallback);
+        makeRequestRegion('getMeddelandenPerAmnePerEnhetLandsting', successCallback, failureCallback);
     };
 
     factory.getSjukfallPerPatientsPerBusinessLandsting = function (successCallback, failureCallback) {
-        makeRequestLandsting('getNumberOfCasesPerPatientsPerEnhetLandsting', successCallback, failureCallback);
+        makeRequestRegion('getNumberOfCasesPerPatientsPerEnhetLandsting', successCallback, failureCallback);
     };
 
     factory.getSjukfallPerLakareVerksamhet = function (successCallback, failureCallback) {
@@ -411,7 +411,7 @@ angular.module('StatisticsApp').factory('statisticsData',
     };
 
     factory.getAndelKompletteringarLandsting = function (successCallback, failureCallback) {
-        makeRequestLandsting('getAndelKompletteringarLandsting', successCallback, failureCallback);
+        makeRequestRegion('getAndelKompletteringarLandsting', successCallback, failureCallback);
     };
 
     factory.getAndelKompletteringarNational = function (successCallback, failureCallback) {
@@ -434,20 +434,20 @@ angular.module('StatisticsApp').factory('statisticsData',
         makeRequestVerksamhet('getJamforDiagnoserStatistikTidsserie/' + diagnosisToCompare, successCallback, failureCallback);
     };
 
-    factory.getLastLandstingUpdateInfo = function (successCallback, failureCallback) {
-        makeRequestLandsting('lastUpdateInfo', successCallback, failureCallback, 'get', true);
+    factory.getLastRegionUpdateInfo = function (successCallback, failureCallback) {
+        makeRequestRegion('lastUpdateInfo', successCallback, failureCallback, 'get', true);
     };
 
     factory.getLandstingFilterInfo = function (successCallback, failureCallback) {
-        makeRequestLandsting('landstingFilterInfo', successCallback, failureCallback, 'get', true);
+        makeRequestRegion('landstingFilterInfo', successCallback, failureCallback, 'get', true);
     };
 
     factory.clearLandstingEnhets = function (successCallback, failureCallback) {
-        makeRequestLandsting('landstingEnhets', successCallback, failureCallback, 'delete', true);
+        makeRequestRegion('landstingEnhets', successCallback, failureCallback, 'delete', true);
     };
 
     factory.acceptFileUploadAgreement = function (successCallback, failureCallback) {
-        makeRequestLandsting('acceptFileUploadAgreement', successCallback, failureCallback, 'put', true);
+        makeRequestRegion('acceptFileUploadAgreement', successCallback, failureCallback, 'put', true);
     };
 
     factory.logOnServer = function (message) {

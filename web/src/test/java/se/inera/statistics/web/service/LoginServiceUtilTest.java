@@ -34,7 +34,7 @@ import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
-import se.inera.statistics.service.landsting.LandstingEnhetHandler;
+import se.inera.statistics.service.region.RegionEnhetHandler;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.user.UserSettingsManager;
@@ -61,7 +61,7 @@ public class LoginServiceUtilTest {
     private Warehouse warehouse;
 
     @Mock
-    private LandstingEnhetHandler landstingEnhetHandler;
+    private RegionEnhetHandler regionEnhetHandler;
 
     @Mock
     private LoginVisibility loginVisibility;

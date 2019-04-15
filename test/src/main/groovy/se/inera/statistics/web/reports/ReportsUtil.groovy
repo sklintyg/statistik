@@ -542,7 +542,7 @@ class ReportsUtil {
 
     def insertLandsting(vgId) {
         def url = "/api/testsupport/landsting/vgid/" + vgId
-        println("insertLandsting: " + url)
+        println("insertRegion: " + url)
         restClient.put(path: url)
     }
 

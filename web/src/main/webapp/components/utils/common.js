@@ -126,7 +126,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             return this.isShowing($location, 'verksamhet');
         };
 
-        this.isShowingLandsting = function($location) {
+        this.isShowingRegion = function($location) {
             return this.isShowing($location, 'landsting');
         };
 
@@ -139,7 +139,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
         };
 
         this.isShowingProtectedPage = function(location) {
-            return this.isShowingVerksamhet(location) || this.isShowingLandsting(location);
+            return this.isShowingVerksamhet(location) || this.isShowingRegion(location);
         };
 
         this.createQueryStringOfQueryParams = function (queryParams) {
@@ -300,9 +300,9 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             return tableData;
         };
 
-        this.checkNationalResultAndEnableExport = function($scope, result, verksamhet, landsting, success) {
+        this.checkNationalResultAndEnableExport = function($scope, result, verksamhet, region, success) {
             $scope.errorPageUrl = null;
-            if (result === '' && !verksamhet && !landsting) {
+            if (result === '' && !verksamhet && !region) {
                 $scope.dataLoadingError = true;
                 $scope.errorPageUrl = '/app/views/error/statisticNotDone.html';
 

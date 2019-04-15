@@ -24,7 +24,7 @@ public enum StatisticsLevel {
 
     NATIONELL(MessagesText.STATISTICS_LEVEL_NATIONELL),
     VERKSAMHET(MessagesText.STATISTICS_LEVEL_VERKSAMHET),
-    LANDSTING(MessagesText.STATISTICS_LEVEL_LANDSTING);
+    REGION(MessagesText.STATISTICS_LEVEL_REGION);
 
     private final String text;
 

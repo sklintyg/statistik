@@ -36,7 +36,7 @@ public class LogInInterceptorTest {
     @Test
     public void testLoggingOfFileUploading() throws Exception {
         String payload = "------WebKitFormBoundary6UVVf08Ori6LNKyB\n" +
-                "Content-Disposition: form-data; name=\"file\"; filename=\"VG3_landsting (5).xlsx\"\n" +
+                "Content-Disposition: form-data; name=\"file\"; filename=\"VG3_region (5).xlsx\"\n" +
                 "Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\n" +
                 "\n" +
                 "QqK\n" +
