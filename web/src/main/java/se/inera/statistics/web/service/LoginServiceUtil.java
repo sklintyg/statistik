@@ -20,7 +20,13 @@ package se.inera.statistics.web.service;
 
 import static java.util.stream.Collectors.toMap;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -59,7 +65,13 @@ import se.inera.statistics.service.user.UserSettings;
 import se.inera.statistics.service.user.UserSettingsManager;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.Warehouse;
-import se.inera.statistics.web.model.*;
+import se.inera.statistics.web.model.AppSettings;
+import se.inera.statistics.web.model.LoginInfo;
+import se.inera.statistics.web.model.LoginInfoVg;
+import se.inera.statistics.web.model.StaticData;
+import se.inera.statistics.web.model.UserAccessInfo;
+import se.inera.statistics.web.model.UserSettingsDTO;
+import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.util.VersionUtil;
 
 @Component

@@ -18,7 +18,10 @@
  */
 package se.inera.statistics.web.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyVararg;
 
 import java.time.LocalDate;
@@ -33,7 +36,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 
 import com.google.common.collect.Lists;
 
@@ -255,7 +262,8 @@ public class FilterHandlerTest {
     }
 
     private void setupSjukfallUtilMock(String filterHash) {
-        Mockito.when(sjukfallUtil.createEnhetFilter(anyVararg())).thenReturn(new FilterPredicates(f -> true, s -> true, filterHash, false));
+        Mockito.when(sjukfallUtil.createEnhetFilter(anyVararg()))
+                .thenReturn(new FilterPredicates(f -> true, s -> true, filterHash, false));
     }
 
     private void setupFilterHashHandlerMock(String fromDate, String toDate, String filterHash, List<String> diagnoser, List<String> enheter,
