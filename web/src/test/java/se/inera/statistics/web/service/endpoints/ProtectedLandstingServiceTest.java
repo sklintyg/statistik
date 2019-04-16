@@ -18,30 +18,7 @@
  */
 package se.inera.statistics.web.service.endpoints;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.io.ByteArrayOutputStream;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
+import com.google.common.collect.Lists;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.junit.Before;
@@ -53,9 +30,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-
-import com.google.common.collect.Lists;
-
 import se.inera.auth.model.User;
 import se.inera.auth.model.UserAccessLevel;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
@@ -81,6 +55,30 @@ import se.inera.statistics.web.service.landsting.LandstingFileGenerationExceptio
 import se.inera.statistics.web.service.landsting.LandstingFileReader;
 import se.inera.statistics.web.service.landsting.LandstingFileWriter;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
+
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import java.io.ByteArrayOutputStream;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProtectedLandstingServiceTest {

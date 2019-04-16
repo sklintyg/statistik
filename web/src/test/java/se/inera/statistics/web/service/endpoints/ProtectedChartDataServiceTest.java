@@ -18,15 +18,7 @@
  */
 package se.inera.statistics.web.service.endpoints;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,9 +27,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-
-import com.google.common.collect.Lists;
-
 import se.inera.auth.model.User;
 import se.inera.auth.model.UserAccessLevel;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
@@ -53,6 +42,15 @@ import se.inera.statistics.web.service.FilterHashHandler;
 import se.inera.statistics.web.service.LoginServiceUtil;
 import se.inera.statistics.web.service.WarehouseService;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
+
+import javax.servlet.http.HttpServletRequest;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProtectedChartDataServiceTest {
