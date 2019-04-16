@@ -18,14 +18,25 @@
  */
 package se.inera.statistics.web.service;
 
-import com.google.common.base.Splitter;
+import static java.util.stream.Collectors.toMap;
+
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.saml.SAMLCredential;
 import org.springframework.stereotype.Component;
+
+import com.google.common.base.Splitter;
+
 import se.inera.auth.LoginVisibility;
 import se.inera.auth.idpdiscovery.IdpNameDiscoveryService;
 import se.inera.auth.model.User;
@@ -48,27 +59,8 @@ import se.inera.statistics.service.user.UserSettings;
 import se.inera.statistics.service.user.UserSettingsManager;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.Warehouse;
-import se.inera.statistics.web.model.AppSettings;
-import se.inera.statistics.web.model.LoginInfo;
-import se.inera.statistics.web.model.LoginInfoVg;
-import se.inera.statistics.web.model.StaticData;
-import se.inera.statistics.web.model.UserAccessInfo;
-import se.inera.statistics.web.model.UserSettingsDTO;
-import se.inera.statistics.web.model.Verksamhet;
+import se.inera.statistics.web.model.*;
 import se.inera.statistics.web.util.VersionUtil;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toMap;
 
 @Component
 public class LoginServiceUtil {
@@ -104,8 +96,6 @@ public class LoginServiceUtil {
 
     @Value("${sakerhetstjanst.saml.idp.metadata.url}")
     private String defaultIDP;
-
-
 
     private Kommun kommun = new Kommun();
 
@@ -157,7 +147,8 @@ public class LoginServiceUtil {
 
         UserSettingsDTO userSettingsDTO = getUserSettings(hsaId);
 
-        return new LoginInfo(realUser.getHsaId(), realUser.getName(), verksamhets, loginInfoVgs, userSettingsDTO);
+        return new LoginInfo(realUser.getHsaId(), realUser.getName(), verksamhets, loginInfoVgs, userSettingsDTO,
+                getAuthenticationMethod());
     }
 
     private UserSettingsDTO getUserSettings(String hsaId) {
@@ -196,9 +187,24 @@ public class LoginServiceUtil {
         return (User) details;
     }
 
+    private String getAuthenticationMethod() {
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            throw new IllegalStateException("Authentication object is null");
+        }
+        Object credentials = authentication.getCredentials();
+        if ((credentials instanceof SAMLCredential)) {
+            if (!"fake-idp".equals(((SAMLCredential) credentials).getRemoteEntityID())) {
+                return "SITHS";
+            }
+        }
+        return "FAKE";
+    }
+
     private List<Verksamhet> getVerksamhetsList(User realUser) {
         return Stream.concat(realUser.getVardenhetList().stream()
-                .map(Vardenhet::getVardgivarId), realUser.getVgsWithProcessledarStatus().stream()
+                .map(Vardenhet::getVardgivarId),
+                realUser.getVgsWithProcessledarStatus().stream()
                         .map(vg -> new HsaIdVardgivare(vg.getId())))
                 .distinct()
                 .map(hsaIdVardgivare -> {

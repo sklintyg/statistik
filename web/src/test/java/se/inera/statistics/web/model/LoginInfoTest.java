@@ -18,7 +18,14 @@
  */
 package se.inera.statistics.web.model;
 
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Test;
+
 import se.inera.auth.model.User;
 import se.inera.auth.model.UserAccessLevel;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
@@ -26,34 +33,29 @@ import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.landsting.LandstingsVardgivareStatus;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 public class LoginInfoTest {
 
     @Test
     public void testGetLoginInfoForVg() {
-        //Given
-        final LoginInfoVg vg1 = new LoginInfoVg(new HsaIdVardgivare("vgid1"), "vg1", LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITHOUT_UPLOAD, new UserAccessLevel(true, 2));
-        final LoginInfoVg vg2 = new LoginInfoVg(new HsaIdVardgivare("vgid2"), "vg2", LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITHOUT_UPLOAD, new UserAccessLevel(true, 2));
-        final LoginInfo loginInfo = new LoginInfo(new HsaIdUser("testid"), "testname", null, new ArrayList<>(Arrays.asList(vg1, vg2)), new UserSettingsDTO());
+        // Given
+        final LoginInfoVg vg1 = new LoginInfoVg(new HsaIdVardgivare("vgid1"), "vg1",
+                LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITHOUT_UPLOAD, new UserAccessLevel(true, 2));
+        final LoginInfoVg vg2 = new LoginInfoVg(new HsaIdVardgivare("vgid2"), "vg2",
+                LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITHOUT_UPLOAD, new UserAccessLevel(true, 2));
+        final LoginInfo loginInfo = new LoginInfo(new HsaIdUser("testid"), "testname", null, new ArrayList<>(Arrays.asList(vg1, vg2)),
+                new UserSettingsDTO(), "FAKE");
 
-        //Then
+        // Then
         assertEquals(vg1, loginInfo.getLoginInfoForVg(vg1.getHsaId()).get());
         assertEquals(vg2, loginInfo.getLoginInfoForVg(vg2.getHsaId()).get());
     }
 
     @Test
     public void testGetLoginInfoForVgNullSafe() {
-        //Given
-        final LoginInfo loginInfo = new LoginInfo(null, null, null, null, null);
+        // Given
+        final LoginInfo loginInfo = new LoginInfo(null, null, null, null, null, null);
 
-        //When
+        // When
         assertEquals("", loginInfo.getName());
         assertEquals(HsaIdUser.empty().getId(), loginInfo.getHsaId().getId());
         assertTrue(loginInfo.getVgs().isEmpty());
@@ -63,21 +65,22 @@ public class LoginInfoTest {
         assertFalse(loginInfo.getLoginInfoForVg(null).isPresent());
         assertFalse(loginInfo.isLoggedIn());
 
-        //Then no exception has been thrown
+        // Then no exception has been thrown
     }
 
     @Test
     public void testLoginInfoIsImmutable() {
-        //Given
-        final LoginInfo loginInfo = new LoginInfo(new HsaIdUser("testid"), "testname", new ArrayList<>(), new ArrayList<>(), new UserSettingsDTO());
+        // Given
+        final LoginInfo loginInfo = new LoginInfo(new HsaIdUser("testid"), "testname", new ArrayList<>(), new ArrayList<>(),
+                new UserSettingsDTO(), "FAKE");
 
-        //When
+        // When
         try {
             loginInfo.getVgs().add(LoginInfoVg.empty());
         } catch (UnsupportedOperationException ignored) {
         }
 
-        //Then
+        // Then
         assertEquals(0, loginInfo.getVgs().size());
     }
 
@@ -87,17 +90,18 @@ public class LoginInfoTest {
 
     @Test
     public void testGetBusinessesForVg() {
-        //Given
+        // Given
         final Verksamhet e1 = createVerksamhet("e1", "vg1");
         final Verksamhet e2 = createVerksamhet("e2", "vg1");
         final Verksamhet e3 = createVerksamhet("e3", "vg2");
-        final LoginInfo loginInfo = new LoginInfo(new HsaIdUser("testid"), "testname", new ArrayList<>(Arrays.asList(e1, e2, e3)), null, null);
+        final LoginInfo loginInfo = new LoginInfo(new HsaIdUser("testid"), "testname", new ArrayList<>(Arrays.asList(e1, e2, e3)), null,
+                null, "FAKE");
 
-        //When
+        // When
         final List<Verksamhet> businessesForVg1 = loginInfo.getBusinessesForVg(e1.getVardgivarId());
         final List<Verksamhet> businessesForVg2 = loginInfo.getBusinessesForVg(e3.getVardgivarId());
 
-        //Then
+        // Then
         assertEquals(2, businessesForVg1.size());
         assertTrue(businessesForVg1.contains(e1));
         assertTrue(businessesForVg1.contains(e2));

@@ -24,6 +24,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Strings;
+
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
@@ -34,6 +35,7 @@ public class LoginInfo {
     private final List<Verksamhet> businesses;
     private final List<LoginInfoVg> loginInfoVgs;
     private final UserSettingsDTO userSettings;
+    private final String authenticationMethod;
 
     public LoginInfo() {
         hsaId = new HsaIdUser("");
@@ -41,14 +43,17 @@ public class LoginInfo {
         businesses = Collections.emptyList();
         loginInfoVgs = Collections.emptyList();
         userSettings = new UserSettingsDTO();
+        authenticationMethod = "";
     }
+
     public LoginInfo(HsaIdUser userId, String userName, List<Verksamhet> businesses, List<LoginInfoVg> loginInfoVgs,
-                     UserSettingsDTO userSettings) {
+            UserSettingsDTO userSettings, String authenticationMethod) {
         this.hsaId = userId != null ? userId : new HsaIdUser("");
         this.name = Strings.nullToEmpty(userName);
         this.businesses = businesses != null ? Collections.unmodifiableList(businesses) : Collections.emptyList();
         this.loginInfoVgs = loginInfoVgs != null ? Collections.unmodifiableList(loginInfoVgs) : Collections.emptyList();
         this.userSettings = userSettings;
+        this.authenticationMethod = authenticationMethod;
     }
 
     public HsaIdUser getHsaId() {
@@ -79,5 +84,9 @@ public class LoginInfo {
 
     public UserSettingsDTO getUserSettings() {
         return userSettings;
+    }
+
+    public String getAuthenticationMethod() {
+        return authenticationMethod;
     }
 }
