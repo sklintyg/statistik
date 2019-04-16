@@ -30,6 +30,7 @@ angular.module('StatisticsApp').factory('UserModel', ['_',
             data.userNameWithAccess = '';
             data.vgs = [];
             data.settings = {};
+            data.authenticationMethod = '';
             _resetUserAccessInfo();
             return data;
         }
@@ -55,6 +56,7 @@ angular.module('StatisticsApp').factory('UserModel', ['_',
                 data.userNameWithAccess = loginInfo.name;
                 data.vgs = _.map(loginInfo.vgs, function(vg) {return {id: vg.hsaId, name: vg.name};});
                 data.settings = loginInfo.userSettings;
+                data.authenticationMethod = loginInfo.authenticationMethod;
             },
             setUserAccessInfo: function(userAccessInfo) {
                 data.businesses = userAccessInfo.businesses;

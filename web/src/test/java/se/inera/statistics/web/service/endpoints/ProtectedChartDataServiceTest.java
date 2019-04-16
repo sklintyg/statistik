@@ -44,6 +44,7 @@ import se.inera.statistics.web.service.WarehouseService;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -95,22 +96,25 @@ public class ProtectedChartDataServiceTest {
 
     @Test
     public void checkAllowedAccessToVerksamhetTest() {
-        //Given
+        // Given
         final HsaIdVardgivare testvg = new HsaIdVardgivare("testvg");
-        final List<LoginInfoVg> loginInfoVgs = Collections.singletonList(new LoginInfoVg(testvg, "", LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITHOUT_UPLOAD, new UserAccessLevel(false, 2)));
-        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(new LoginInfo(new HsaIdUser("testid"), "", Lists.newArrayList(), loginInfoVgs, new UserSettingsDTO()));
+        final List<LoginInfoVg> loginInfoVgs = Collections.singletonList(
+                new LoginInfoVg(testvg, "", LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITHOUT_UPLOAD, new UserAccessLevel(false, 2)));
+        Mockito.when(loginServiceUtil.getLoginInfo())
+                .thenReturn(new LoginInfo(new HsaIdUser("testid"), "", Lists.newArrayList(), loginInfoVgs, new UserSettingsDTO(), "FAKE"));
         Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(request)).thenReturn(testvg);
 
-        //When
+        // When
         boolean result = chartDataService.hasAccessTo(request);
 
-        //Then
+        // Then
         assertEquals(true, result);
     }
 
     @Test
     public void userAccessShouldLog() {
-        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(new LoginInfo(new HsaIdUser(""), "", Lists.newArrayList(), Lists.newArrayList(), new UserSettingsDTO()));
+        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(
+                new LoginInfo(new HsaIdUser(""), "", Lists.newArrayList(), Lists.newArrayList(), new UserSettingsDTO(), "FAKE"));
         chartDataService.userAccess(request);
     }
 
@@ -124,16 +128,16 @@ public class ProtectedChartDataServiceTest {
         final HsaIdVardgivare testvg2 = new HsaIdVardgivare("testvg-2");
         final List<LoginInfoVg> loginInfoVgs = Arrays.asList(
                 new LoginInfoVg(testvg, "", LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITHOUT_UPLOAD, new UserAccessLevel(false, 2)),
-                new LoginInfoVg(testvg2, "", LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITH_UPLOAD, new UserAccessLevel(true, 0))
-        );
+                new LoginInfoVg(testvg2, "", LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITH_UPLOAD, new UserAccessLevel(true, 0)));
 
-        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(new LoginInfo(new HsaIdUser("testid"), "", Lists.newArrayList(), loginInfoVgs, new UserSettingsDTO()));
+        Mockito.when(loginServiceUtil.getLoginInfo())
+                .thenReturn(new LoginInfo(new HsaIdUser("testid"), "", Lists.newArrayList(), loginInfoVgs, new UserSettingsDTO(), "FAKE"));
         Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(request)).thenReturn(testvg2);
 
-        //When
+        // When
         boolean result = chartDataService.hasAccessTo(request);
 
-        //Then
+        // Then
         assertEquals(true, result);
     }
 

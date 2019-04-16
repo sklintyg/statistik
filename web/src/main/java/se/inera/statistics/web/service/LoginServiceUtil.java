@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.saml.SAMLCredential;
 import org.springframework.stereotype.Component;
 import se.inera.auth.LoginVisibility;
 import se.inera.auth.idpdiscovery.IdpNameDiscoveryService;
@@ -58,6 +59,7 @@ import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.util.VersionUtil;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -104,8 +106,6 @@ public class LoginServiceUtil {
 
     @Value("${sakerhetstjanst.saml.idp.metadata.url}")
     private String defaultIDP;
-
-
 
     private Kommun kommun = new Kommun();
 
@@ -157,7 +157,8 @@ public class LoginServiceUtil {
 
         UserSettingsDTO userSettingsDTO = getUserSettings(hsaId);
 
-        return new LoginInfo(realUser.getHsaId(), realUser.getName(), verksamhets, loginInfoVgs, userSettingsDTO);
+        return new LoginInfo(realUser.getHsaId(), realUser.getName(), verksamhets, loginInfoVgs, userSettingsDTO,
+                getAuthenticationMethod());
     }
 
     private UserSettingsDTO getUserSettings(String hsaId) {
@@ -196,9 +197,24 @@ public class LoginServiceUtil {
         return (User) details;
     }
 
+    private String getAuthenticationMethod() {
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            throw new IllegalStateException("Authentication object is null");
+        }
+        Object credentials = authentication.getCredentials();
+        if ((credentials instanceof SAMLCredential)) {
+            if (!"fake-idp".equals(((SAMLCredential) credentials).getRemoteEntityID())) {
+                return "SITHS";
+            }
+        }
+        return "FAKE";
+    }
+
     private List<Verksamhet> getVerksamhetsList(User realUser) {
         return Stream.concat(realUser.getVardenhetList().stream()
-                .map(Vardenhet::getVardgivarId), realUser.getVgsWithProcessledarStatus().stream()
+                .map(Vardenhet::getVardgivarId),
+                realUser.getVgsWithProcessledarStatus().stream()
                         .map(vg -> new HsaIdVardgivare(vg.getId())))
                 .distinct()
                 .map(hsaIdVardgivare -> {

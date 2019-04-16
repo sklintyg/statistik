@@ -81,7 +81,7 @@
         </security:http>
         <security:http create-session="always" entry-point-ref="http403ForbiddenEntryPoint">
             <security:csrf disabled="true"/>
-            <security:logout logout-url="/saml/logout" logout-success-url="/" invalidate-session="true"/>
+            <security:logout logout-url="/logout" logout-success-url="/" invalidate-session="true"/>
             <security:intercept-url pattern="/**" access="permitAll"/>
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
         </security:http>
@@ -95,8 +95,9 @@
     <!-- =============================================================== -->
     <beans profile="security-both">
         <security:http create-session="always" use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint"
-                       pattern="(\/api\/verksamhet\/.*)|(\/api\/landsting\/.*)" request-matcher="regex">
+                       pattern="(\/api\/verksamhet\/.*)|(\/api\/landsting\/.*)|(\/logout)" request-matcher="regex">
             <security:csrf disabled="true"/>
+            <security:logout logout-url="/logout" logout-success-url="/" invalidate-session="true"/>
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
             <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>

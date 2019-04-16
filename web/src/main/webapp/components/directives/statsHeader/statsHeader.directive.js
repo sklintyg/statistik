@@ -31,7 +31,7 @@ angular.module('StatisticsApp')
             },
             restrict: 'E',
             templateUrl: '/components/directives/statsHeader/statsHeader.html',
-            controller: function($scope, AppModel, UserModel, $uibModal) {
+            controller: function($window, $scope, AppModel, UserModel, $uibModal) {
                 $scope.AppModel = AppModel;
                 $scope.UserModel = UserModel;
 
@@ -51,6 +51,14 @@ angular.module('StatisticsApp')
                         size: 'lg',
                         backdrop: 'true'
                     });
+                };
+
+                $scope.onLogoutClick = function() {
+                    if (UserModel.get().authenticationMethod === 'FAKE') {
+                        $window.location = '/logout';
+                    } else {
+                        $window.location = '/saml/logout/';
+                    }
                 };
 
             }

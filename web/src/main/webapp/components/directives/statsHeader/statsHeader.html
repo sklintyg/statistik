@@ -36,7 +36,7 @@
   <intygsskolan-modal id="intygsskolanLink" class="link-pad-right"></intygsskolan-modal>
   <span class="vl"></span>
   <a id="settingsLink" data-ng-if="showSettings()" href ng-click="openSettings()"><span message key="lbl.settings"></span></a>
-  <a id="logoutLink" href="saml/logout"><span message key="lbl.log-out"></span></a>
+  <a id="logoutLink" href ng-click="onLogoutClick()"><span message key="lbl.log-out"></span></a>
 </div>
 
 <div data-ng-if="!UserModel.get().enableVerksamhetMenu" class="header-links">
