@@ -43,7 +43,7 @@ public class LogInInterceptorTest {
                 "^Ô¥_rels/.relsMK1ïýaîÝl+HÓ^ÐHýc2ûÁn2";
 
         LoggingMessage loggingMessage = new LoggingMessage("", "83");
-        loggingMessage.getAddress().append("http://localhost:8080/api/landsting/fileupload?vgid=VG3");
+        loggingMessage.getAddress().append("http://localhost:8080/api/region/fileupload?vgid=VG3");
         loggingMessage.getEncoding().append("ISO-8859-1");
         loggingMessage.getHttpMethod().append("POST");
         loggingMessage.getContentType().append("multipart/form-data; boundary=----WebKitFormBoundary6UVVf08Ori6LNKyB");

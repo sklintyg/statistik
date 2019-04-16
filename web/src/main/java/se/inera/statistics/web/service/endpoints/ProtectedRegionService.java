@@ -102,7 +102,7 @@ import static se.inera.statistics.web.service.ReportType.TVARSNITT;
  * They all return 403 if called outside of a session or if authorization fails.
  */
 @Service("protectedRegionService")
-@Path("/landsting")
+@Path("/region")
 public class ProtectedRegionService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ProtectedRegionService.class);
@@ -179,7 +179,7 @@ public class ProtectedRegionService {
     }
 
     @DELETE
-    @Path("landstingEnhets")
+    @Path("regionEnhets")
     @Consumes({ MediaType.WILDCARD })
     @PreAuthorize(value = "@protectedRegionService.hasAccessToRegionAdmin(#request)")
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
@@ -199,7 +199,7 @@ public class ProtectedRegionService {
     }
 
     @GET
-    @Path("prepopulatedLandstingFile")
+    @Path("prepopulatedRegionFile")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     @PreAuthorize(value = "@protectedRegionService.hasAccessToRegionAdmin(#request)")
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
@@ -219,7 +219,7 @@ public class ProtectedRegionService {
     }
 
     @GET
-    @Path("emptyLandstingFile")
+    @Path("emptyRegionFile")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     @PreAuthorize(value = "@protectedRegionService.hasAccessToRegionAdmin(#request)")
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
@@ -301,13 +301,13 @@ public class ProtectedRegionService {
     }
 
     @GET
-    @Path("getNumberOfCasesPerMonthLandsting")
+    @Path("getNumberOfCasesPerMonthRegion")
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till antal sjukfall per månad och region.")
-    public Response getNumberOfCasesPerMonthLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash,
+    public Response getNumberOfCasesPerMonthRegion(@Context HttpServletRequest request, @QueryParam("regionfilter") String filterHash,
             @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 18);
         SimpleKonResponse casesPerMonth = warehouse.getCasesPerMonthRegion(filterSettings);
@@ -317,13 +317,13 @@ public class ProtectedRegionService {
     }
 
     @GET
-    @Path("getNumberOfCasesPerEnhetLandsting")
+    @Path("getNumberOfCasesPerEnhetRegion")
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till antal sjukfall per enhet och region.")
-    public Response getNumberOfCasesPerEnhetLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash,
+    public Response getNumberOfCasesPerEnhetRegion(@Context HttpServletRequest request, @QueryParam("regionfilter") String filterHash,
             @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 12);
         final List<HsaIdEnhet> connectedEnhetIds = getEnhetIdsToMark(request);
@@ -345,14 +345,14 @@ public class ProtectedRegionService {
     }
 
     @GET
-    @Path("getNumberOfCasesPerPatientsPerEnhetLandsting")
+    @Path("getNumberOfCasesPerPatientsPerEnhetRegion")
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till antal sjukfall per patienter, enhet och region.")
-    public Response getNumberOfCasesPerPatientsPerEnhetLandsting(@Context HttpServletRequest request,
-            @QueryParam("landstingfilter") String filterHash, @QueryParam("format") String format) {
+    public Response getNumberOfCasesPerPatientsPerEnhetRegion(@Context HttpServletRequest request,
+            @QueryParam("regionfilter") String filterHash, @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 12);
         SimpleKonResponse casesPerEnhet = warehouse.getCasesPerPatientsPerEnhetRegion(filterSettings);
         final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
@@ -364,15 +364,15 @@ public class ProtectedRegionService {
     }
 
     @GET
-    @Path("getMeddelandenPerAmneLandsting")
+    @Path("getMeddelandenPerAmneRegion")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till antal meddelanden per ämne och region.")
-    public Response getMeddelandenPerAmneLandsting(@Context HttpServletRequest request,
-                                                   @QueryParam("landstingfilter") String filterHash,
+    public Response getMeddelandenPerAmneRegion(@Context HttpServletRequest request,
+                                                   @QueryParam("regionfilter") String filterHash,
                                                    @QueryParam("format") String format) {
         final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 18);
@@ -383,7 +383,7 @@ public class ProtectedRegionService {
     }
 
     @GET
-    @Path("getMeddelandenPerAmnePerEnhetLandsting")
+    @Path("getMeddelandenPerAmnePerEnhetRegion")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
@@ -391,7 +391,7 @@ public class ProtectedRegionService {
     @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till ett tvärsnitt av antal meddelanden per ämne och region.")
     public Response getMeddelandenPerAmnePerEnhetTvarsnitt(@Context HttpServletRequest request,
-                                                           @QueryParam("landstingfilter") String filterHash,
+                                                           @QueryParam("regionfilter") String filterHash,
                                                            @QueryParam("format") String format) {
         final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 12);
@@ -402,15 +402,15 @@ public class ProtectedRegionService {
     }
 
     @GET
-    @Path("getIntygPerTypePerMonthLandsting")
+    @Path("getIntygPerTypePerMonthRegion")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till antal intyg per type, månad och region.")
-    public Response getNumberOfIntygPerTypePerMonthLandsting(@Context HttpServletRequest request,
-                                                             @QueryParam("landstingfilter") String filterHash,
+    public Response getNumberOfIntygPerTypePerMonthRegion(@Context HttpServletRequest request,
+                                                             @QueryParam("regionfilter") String filterHash,
                                                              @QueryParam("format") String format) {
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 18);
@@ -421,15 +421,15 @@ public class ProtectedRegionService {
     }
 
     @GET
-    @Path("getAndelKompletteringarLandsting")
+    @Path("getAndelKompletteringarRegion")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till andel kompletteringar per region.")
-    public Response getAndelKompletteringarLandsting(@Context HttpServletRequest request,
-                                                     @QueryParam("landstingfilter") String filterHash,
+    public Response getAndelKompletteringarRegion(@Context HttpServletRequest request,
+                                                     @QueryParam("regionfilter") String filterHash,
                                                      @QueryParam("format") String format) {
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 18);
@@ -457,13 +457,13 @@ public class ProtectedRegionService {
     }
 
     @GET
-    @Path("landstingFilterInfo")
+    @Path("regionFilterInfo")
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till filter-info för region.")
-    public Response getLandstingFilterInfo(@Context HttpServletRequest request) {
+    public Response getRegionfilterInfo(@Context HttpServletRequest request) {
         List<Verksamhet> businesses = filterHandler.getAllVerksamhetsForLoggedInRegionsUser(request);
         final Map<String, Object> result = new HashMap<>();
         result.put("businesses", businesses);

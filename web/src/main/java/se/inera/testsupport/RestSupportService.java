@@ -394,7 +394,7 @@ public class RestSupportService {
     }
 
     @PUT
-    @Path("landsting/vgid/{vgid}")
+    @Path("region/vgid/{vgid}")
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
     public Response insertRegion(@PathParam("vgid") String vgId) {
@@ -406,10 +406,10 @@ public class RestSupportService {
     }
 
     @DELETE
-    @Path("clearLandstingFileUploads")
+    @Path("clearRegionFileUploads")
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response clearLandstingFileUploads() {
+    public Response clearRegionFileUploads() {
         LOG.info("Clearing all uploaded region files");
         final List<RegionEnhet> allRegionEnhets = regionEnhetManager.getAll();
         allRegionEnhets.forEach(regionEnhet -> {

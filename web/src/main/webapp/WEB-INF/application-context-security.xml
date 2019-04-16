@@ -74,7 +74,7 @@
     <!-- =============================================================== -->
     <beans profile="security-fake">
         <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint"
-                       pattern="(\/api\/verksamhet\/.*)|(\/api\/landsting\/.*)" request-matcher="regex">
+                       pattern="(\/api\/verksamhet\/.*)|(\/api\/region\/.*)" request-matcher="regex">
             <security:csrf disabled="true"/>
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
@@ -95,7 +95,7 @@
     <!-- =============================================================== -->
     <beans profile="security-both">
         <security:http create-session="always" use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint"
-                       pattern="(\/api\/verksamhet\/.*)|(\/api\/landsting\/.*)|(\/logout)" request-matcher="regex">
+                       pattern="(\/api\/verksamhet\/.*)|(\/api\/region\/.*)|(\/logout)" request-matcher="regex">
             <security:csrf disabled="true"/>
             <security:logout logout-url="/logout" logout-success-url="/" invalidate-session="true"/>
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
@@ -120,7 +120,7 @@
     <beans profile="security-saml">
 
         <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint"
-                       pattern="(\/api\/verksamhet\/.*)|(\/api\/landsting\/.*)" request-matcher="regex">
+                       pattern="(\/api\/verksamhet\/.*)|(\/api\/region\/.*)" request-matcher="regex">
             <security:csrf disabled="true"/>
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>

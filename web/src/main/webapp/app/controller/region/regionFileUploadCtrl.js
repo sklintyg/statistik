@@ -22,8 +22,8 @@ angular.module('StatisticsApp').controller('regionFileUploadCtrl',
     function ($scope, $rootScope, $timeout, $window, statisticsData, messageService, $location) {
         'use strict';
 
-        $scope.prepopulatedRegionFileUrl = '/api/landsting/prepopulatedLandstingFile?vgid=' + $location.search().vgid;
-        $scope.emptyRegionFileUrl = '/api/landsting/emptyLandstingFile?vgid=' + $location.search().vgid;
+        $scope.prepopulatedRegionFileUrl = '/api/region/prepopulatedRegionFile?vgid=' + $location.search().vgid;
+        $scope.emptyRegionFileUrl = '/api/region/emptyRegionFile?vgid=' + $location.search().vgid;
 
         var updateLastUpdateMessage = function() {
             $scope.lastRegionUpdateMessage = '';
@@ -40,7 +40,7 @@ angular.module('StatisticsApp').controller('regionFileUploadCtrl',
             $scope.uploadResultMessage = response.message ? response.message : response;
         };
 
-        $scope.uploadUrl = 'api/landsting/fileupload?vgid=' + $location.search().vgid;
+        $scope.uploadUrl = 'api/region/fileupload?vgid=' + $location.search().vgid;
 
         $scope.dropzoneConfig = {
             'options': {
@@ -125,7 +125,7 @@ angular.module('StatisticsApp').controller('regionFileUploadCtrl',
 
         $scope.clearRegionEnhets = function() {
             $timeout(function () {
-                statisticsData.clearLandstingEnhets(function () {
+                statisticsData.clearRegionEnhets(function () {
                     $scope.lastRegionUpdateMessage = '';
                     $scope.parsedRows = [];
                     $rootScope.regionAvailable = false;

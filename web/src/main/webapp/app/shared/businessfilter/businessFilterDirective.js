@@ -47,7 +47,7 @@ angular.module('StatisticsApp.filter.directive')
             scope: true,
             restrict: 'E',
             controller: function($scope) {
-                $scope.filterHashParamName = 'landstingfilter';
+                $scope.filterHashParamName = 'regionfilter';
                 linkFunction(_, $scope, regionFilterFactory, $location, messageService, statisticsData,
                     moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter, filterViewState, $timeout);
             },

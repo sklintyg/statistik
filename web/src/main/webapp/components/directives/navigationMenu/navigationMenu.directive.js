@@ -299,7 +299,7 @@
                         return UserModel.get().regionAvailable;
                     },
                     id: 'navRegionCasesPerMonthLink',
-                    link: '#/landsting/sjukfallPerManad',
+                    link: '#/region/sjukfallPerManad',
                     name: 'nav.sjukfall-totalt',
                     ctrl: 'RegionCasesPerMonthCtrl'
                 },{
@@ -307,7 +307,7 @@
                         return UserModel.get().regionAvailable;
                     },
                     id: 'navRegionCasesPerEnhetLink',
-                    link: '#/landsting/sjukfallPerEnhet',
+                    link: '#/region/sjukfallPerEnhet',
                     name: 'nav.vardenhet',
                     ctrl: 'RegionCasesPerBusinessCtrl'
                 },{
@@ -315,7 +315,7 @@
                         return UserModel.get().regionAvailable;
                     },
                     id: 'navRegionCasesPerPatientsPerEnhetLink',
-                    link: '#/landsting/sjukfallPerListningarPerEnhet',
+                    link: '#/region/sjukfallPerListningarPerEnhet',
                     name: 'nav.region.listningsjamforelse',
                     ctrl: 'RegionCasesPerPatientsPerBusinessCtrl'
                 }
@@ -332,7 +332,7 @@
                     return UserModel.get().regionAvailable;
                 },
                 id: 'navRegionIntygPerTypeLink',
-                link: '#/landsting/intygPerTyp',
+                link: '#/region/intygPerTyp',
                 name: 'nav.intygpertyp',
                 ctrl: 'RegionIntygPerTypCtrl'
             }]
@@ -348,7 +348,7 @@
                     return UserModel.get().regionAvailable;
                 },
                 id: 'navRegionMessagesLink',
-                link: '#/landsting/meddelandenPerAmne',
+                link: '#/region/meddelandenPerAmne',
                 name: 'nav.meddelanden',
                 ctrl: 'RegionMeddelandenPerAmneCtrl'
             },{
@@ -356,7 +356,7 @@
                     return UserModel.get().regionAvailable;
                 },
                 id: 'navRegionMessagesEnhetLink',
-                link: '#/landsting/meddelandenPerAmneOchEnhet',
+                link: '#/region/meddelandenPerAmneOchEnhet',
                 name: 'nav.meddelandenperamneochenhet',
                 ctrl: 'RegionMeddelandenPerAmneOchEnhetCtrl'
             }, {
@@ -364,7 +364,7 @@
                     return UserModel.get().regionAvailable;
                 },
                 id: 'navRegionAndelKompletteringarLink',
-                link: '#/landsting/andelkompletteringar',
+                link: '#/region/andelkompletteringar',
                 name: 'nav.andelkompletteringar',
                 ctrl: 'RegionAndelKompletteringarCtrl'
             }, {
@@ -388,7 +388,7 @@
                     return UserModel.get().isRegionAdmin;
                 },
                 id: 'navRegionUploadLink',
-                link: '#/landsting/filuppladdning',
+                link: '#/region/filuppladdning',
                 name: 'nav.region.filuppladdning',
                 ctrl: 'RegionFileUploadCtrl'
             },{
@@ -396,7 +396,7 @@
                     return UserModel.get().hasRegionAccess;
                 },
                 id: 'navRegionAboutLink',
-                link: '#/landsting/om',
+                link: '#/region/om',
                 name: 'nav.region.om',
                 ctrl: 'RegionAboutCtrl'
             }]

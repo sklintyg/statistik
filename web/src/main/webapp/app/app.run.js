@@ -63,7 +63,7 @@ angular.module('StatisticsApp').run(
             $rootScope.queryString = '';
             addToQueryString('vgid', current.params.vgid);
             addToQueryString('filter', current.params.filter);
-            addToQueryString('landstingfilter', current.params.landstingfilter);
+            addToQueryString('regionfilter', current.params.regionfilter);
             addToQueryString('codelevel', current.params.codelevel);
 
             $rootScope.verksamhetViewShowing = current.$$route.originalPath.indexOf('/verksamhet') === 0;

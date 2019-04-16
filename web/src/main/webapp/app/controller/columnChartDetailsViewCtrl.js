@@ -332,12 +332,12 @@ angular.module('StatisticsApp').casesPerBusinessConfig =
     conf.highchartType = 'column';
     conf.defaultChartType = 'stackedcolumn';
     conf.dataFetcherVerksamhet = 'getSjukfallPerBusinessVerksamhet';
-    conf.dataFetcherRegion = 'getSjukfallPerBusinessLandsting';
+    conf.dataFetcherRegion = 'getSjukfallPerBusinessRegion';
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getNumberOfCasesPerEnhet?format=xlsx';
     };
     conf.exportTableUrlRegion = function () {
-        return 'api/landsting/getNumberOfCasesPerEnhetLandsting?format=xlsx';
+        return 'api/region/getNumberOfCasesPerEnhetRegion?format=xlsx';
     };
     conf.title = messageService.getProperty('title.vardenhet');
     conf.chartVerticalLabel = true;
@@ -363,9 +363,9 @@ angular.module('StatisticsApp').casesPerPatientsPerBusinessConfig =
     'use strict';
 
     var conf = {};
-    conf.dataFetcherRegion = 'getSjukfallPerPatientsPerBusinessLandsting';
+    conf.dataFetcherRegion = 'getSjukfallPerPatientsPerBusinessRegion';
     conf.exportTableUrlRegion = function () {
-        return 'api/landsting/getNumberOfCasesPerPatientsPerEnhetLandsting?format=xlsx';
+        return 'api/region/getNumberOfCasesPerPatientsPerEnhetRegion?format=xlsx';
     };
     conf.title = messageService.getProperty('title.vardenhet-listning');
     conf.chartFootnotes = ['help.region.vardenhet-listning1'];
@@ -751,10 +751,10 @@ angular.module('StatisticsApp').meddelandenPerAmneOchEnhetRegionConfig =
         };
         conf.highchartType = 'column';
         conf.defaultChartType = 'stackedcolumn';
-        conf.dataFetcherRegion = 'getMeddelandenPerAmneOchEnhetLandsting';
+        conf.dataFetcherRegion = 'getMeddelandenPerAmneOchEnhetRegion';
         conf.chartYAxisTitleUnit = 'meddelanden';
         conf.exportTableUrlRegion = function () {
-            return 'api/landsting/getMeddelandenPerAmnePerEnhetLandsting?format=xlsx';
+            return 'api/region/getMeddelandenPerAmnePerEnhetRegion?format=xlsx';
         };
         conf.title = messageService.getProperty('title.meddelandenperamneochenhet');
         conf.chartFootnotes = [];

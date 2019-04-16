@@ -127,7 +127,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
         };
 
         this.isShowingRegion = function($location) {
-            return this.isShowing($location, 'landsting');
+            return this.isShowing($location, 'region');
         };
 
         this.isShowingNationell = function($location) {

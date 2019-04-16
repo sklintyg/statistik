@@ -560,10 +560,10 @@ angular.module('StatisticsApp').intygPerTypePerMonthRegionConfig =
         intygstyper: false,
         sjukskrivningslangd: false
     };
-    conf.dataFetcher = 'getIntygPerTypePerMonthLandsting';
+    conf.dataFetcher = 'getIntygPerTypePerMonthRegion';
     conf.chartYAxisTitleUnit = 'intyg';
     conf.exportTableUrl = function () {
-        return 'api/landsting/getIntygPerTypePerMonthLandsting?format=xlsx';
+        return 'api/region/getIntygPerTypePerMonthRegion?format=xlsx';
     };
     conf.suffixTitle = function (suffix) {
         return this.title + ' ' + (suffix || '');
@@ -632,10 +632,10 @@ angular.module('StatisticsApp').meddelandenPerAmneRegionConfig =
         intygstyper: true,
         sjukskrivningslangd: false
     };
-    conf.dataFetcher = 'getMeddelandenPerAmneLandsting';
+    conf.dataFetcher = 'getMeddelandenPerAmneRegion';
     conf.chartYAxisTitleUnit = 'meddelanden';
     conf.exportTableUrl = function () {
-        return 'api/landsting/getMeddelandenPerAmneLandsting?format=xlsx';
+        return 'api/region/getMeddelandenPerAmneRegion?format=xlsx';
     };
     conf.suffixTitle = function (suffix) {
         return this.title + ' ' + (suffix || '');
@@ -649,8 +649,8 @@ angular.module('StatisticsApp').meddelandenPerAmneRegionConfig =
     };
 
     conf.exchangeableViews = [
-        {description: 'Tidsserie', state: '/landsting/meddelandenPerAmne', active: true},
-        {description: 'Tvärsnitt', state: '/landsting/meddelandenPerAmneTvarsnitt', active: false}];
+        {description: 'Tidsserie', state: '/region/meddelandenPerAmne', active: true},
+        {description: 'Tvärsnitt', state: '/region/meddelandenPerAmneTvarsnitt', active: false}];
 
     return conf;
 };
@@ -704,9 +704,9 @@ angular.module('StatisticsApp').andelKompletteringarRegionConfig =
         sjukskrivningslangd: false
     };
     conf.defaultChartType = 'line';
-    conf.dataFetcher = 'getAndelKompletteringarLandsting';
+    conf.dataFetcher = 'getAndelKompletteringarRegion';
     conf.exportTableUrl = function () {
-        return 'api/landsting/getAndelKompletteringarLandsting?format=xlsx';
+        return 'api/region/getAndelKompletteringarRegion?format=xlsx';
     };
     conf.showDetailsOptions = false;
     conf.suffixTitle = function (suffix) {

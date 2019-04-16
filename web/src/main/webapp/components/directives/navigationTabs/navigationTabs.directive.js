@@ -68,9 +68,9 @@
             id: navigationViewState.ids.region,
             title: 'nav.region-header',
             url: function() {
-                return UserModel.get().regionAvailable ? 'landsting/sjukfallPerManad' : 'landsting/om';
+                return UserModel.get().regionAvailable ? 'region/sjukfallPerManad' : 'region/om';
             },
-            urlPrefix: 'landsting',
+            urlPrefix: 'region',
             content: baseTemplateUrl + 'navigationTabs.region.html'
         };
 

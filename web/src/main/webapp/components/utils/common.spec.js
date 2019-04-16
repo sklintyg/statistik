@@ -404,7 +404,7 @@ describe('Test of common functions for controllers', function() {
         });
 
         it('region', function() {
-            path = '/landsting/';
+            path = '/region/';
 
             expect(ControllerCommons.isShowingRegion(location)).toBeTruthy();
         });

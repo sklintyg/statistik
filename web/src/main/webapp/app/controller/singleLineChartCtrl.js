@@ -214,13 +214,13 @@ angular.module('StatisticsApp').casesPerMonthConfig =
     var conf = {};
     conf.dataFetcher = 'getNumberOfCasesPerMonth';
     conf.dataFetcherVerksamhet = 'getNumberOfCasesPerMonthVerksamhet';
-    conf.dataFetcherRegion = 'getNumberOfCasesPerMonthLandsting';
+    conf.dataFetcherRegion = 'getNumberOfCasesPerMonthRegion';
     conf.exportTableUrl = 'api/getNumberOfCasesPerMonth?format=xlsx';
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getNumberOfCasesPerMonth?format=xlsx';
     };
     conf.exportTableUrlRegion = function () {
-        return 'api/landsting/getNumberOfCasesPerMonthLandsting?format=xlsx';
+        return 'api/region/getNumberOfCasesPerMonthRegion?format=xlsx';
     };
     conf.title = messageService.getProperty('title.sickleave');
     conf.chartFootnotesExtra = function(result, isVerksamhet, isRegion, $filter) {

@@ -67,9 +67,9 @@ angular.module('StatisticsApp').controller('pageCtrl',
                 $scope.showBusinessesDetails = userAccessInfo.businesses && userAccessInfo.businesses.length > 1;
                 $rootScope.regionAvailable = userAccessInfo.vgInfo.regionsvardgivareWithUpload;
                 if ($rootScope.regionAvailable) {
-                    statisticsData.getLandstingFilterInfo(function(regionFilterInfo) {
+                    statisticsData.getRegionFilterInfo(function(regionFilterInfo) {
                         regionFilterFactory.setup(regionFilterInfo.businesses,
-                            $location.search().landstingfilter);
+                            $location.search().regionfilter);
                         $scope.isRegionInfoFetched = true;
                     });
                 }
@@ -102,7 +102,7 @@ angular.module('StatisticsApp').controller('pageCtrl',
             if (AppModel.get().isLoggedIn) {
                 businessFilterFactory.selectPreselectedFilter($location.search().filter);
                 if ($scope.isRegionInfoFetched) {
-                    regionFilterFactory.selectPreselectedFilter($location.search().landstingfilter);
+                    regionFilterFactory.selectPreselectedFilter($location.search().regionfilter);
                 }
             }
         });
@@ -142,7 +142,7 @@ angular.module('StatisticsApp').controller('pageCtrl',
                 } else {
                     businessFilterFactory.selectPreselectedFilter($location.search().filter);
                     if ($scope.isRegionInfoFetched) {
-                        regionFilterFactory.selectPreselectedFilter($location.search().landstingfilter);
+                        regionFilterFactory.selectPreselectedFilter($location.search().regionfilter);
                     }
                 }
             }
