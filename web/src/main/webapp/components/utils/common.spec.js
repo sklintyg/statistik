@@ -25,12 +25,14 @@ describe('Test of common functions for controllers', function() {
     var ControllerCommons;
     var moment;
     var $route;
+    var $location;
 
     // Inject dependencies and mocks
-    beforeEach(inject(function(_ControllerCommons_, _moment_, _$route_) {
+    beforeEach(inject(function(_ControllerCommons_, _moment_, _$route_, _$location_) {
         ControllerCommons = _ControllerCommons_;
         moment = _moment_;
         $route = _$route_;
+        $location = _$location_;
     }));
 
     describe('updateDataTable', function() {
@@ -131,6 +133,9 @@ describe('Test of common functions for controllers', function() {
 
     it('INTYG-3021: populateActiveEnhetsFilter shows all verksamhet names when not processledare', inject(function(UserModel) {
         //Given
+        $location.path = function() {
+            return '/verksamhet/';
+        };
         var scope = {vgName: 'VardgivareTestName'};
         var enhetnames = ['OneEnhet'];
         UserModel.setUserAccessInfo({vgInfo: {processledare: false}});
@@ -142,8 +147,27 @@ describe('Test of common functions for controllers', function() {
         expect(scope.activeEnhetsFilters).toEqual(['OneEnhet']);
     }));
 
+    it('INTYG-8483: populateActiveEnhetsFilter shows all verksamhet names when on regionsstatistik', inject(function(UserModel) {
+        //Given
+        $location.path = function() {
+            return '/region/';
+        };
+        var scope = {vgName: 'VardgivareTestName'};
+        var enhetnames = ['OneEnhet'];
+        UserModel.setUserAccessInfo({vgInfo: {processledare: true}});
+
+        //When
+        ControllerCommons.populateActiveEnhetsFilter(scope, enhetnames, true);
+
+        //Then
+        expect(scope.activeEnhetsFilters).toEqual(['OneEnhet']);
+    }));
+
     it('INTYG-3021: populateActiveEnhetsFilter shows vgname when processledare with enhet-filter', inject(function(UserModel) {
         //Given
+        $location.path = function() {
+            return '/verksamhet/';
+        };
         var scope = {vgName: 'VardgivareTestName'};
         var enhetnames = ['OneEnhet'];
         UserModel.setUserAccessInfo({vgInfo: {processledare: true}});
@@ -157,6 +181,9 @@ describe('Test of common functions for controllers', function() {
 
     it('INTYG-3021: populateActiveEnhetsFilter shows vgname when processledare without enhet-filter', inject(function(UserModel) {
         //Given
+        $location.path = function() {
+            return '/verksamhet/';
+        };
         var scope = {vgName: 'VardgivareTestName'};
         var enhetnames = ['OneEnhet'];
         UserModel.setUserAccessInfo({vgInfo: {processledare: true}});

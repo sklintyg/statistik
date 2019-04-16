@@ -20,7 +20,7 @@
 
 angular.module('StatisticsApp').factory('ControllerCommons',
     /** @ngInject */
-    function(_, $cacheFactory, UserModel, UserService, $filter, $route, StaticData, StaticDataService) {
+    function(_, $cacheFactory, UserModel, UserService, $filter, $location, $route, StaticData, StaticDataService) {
         'use strict';
 
         var that = this;
@@ -83,7 +83,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
         };
 
         this.populateActiveEnhetsFilter = function(scope, enhetNames, isAllAvailableEnhetsSelectedInFilter) {
-            if (UserModel.get().isProcessledare && isAllAvailableEnhetsSelectedInFilter) {
+            if (UserModel.get().isProcessledare && isAllAvailableEnhetsSelectedInFilter && that.isShowingVerksamhet($location)) {
                 scope.activeEnhetsFilters = ['Samtliga enheter inom vårdgivaren ' + scope.vgName];
             } else {
                 scope.activeEnhetsFilters = enhetNames;
