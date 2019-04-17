@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 !contents -R2 -g -p -f -h
@@ -15,27 +14,10 @@ Test
 | 1003 | 19790717-9131 | 2014-06-03T10:00:00 | G01 | LISJP | enhet3 |
 
 | Foljande meddelanden finns |
-| meddelandeid | personnr | skickat | intygsid | ämne |
-| 2001 | 19790717-9191 | 2014-04-05T10:00:00 | 1001 | KOMPLT |
-| 2002 | 19790717-9161 | 2014-06-03T10:00:00 | 1002 | KOMPLT |
-| 2003 | 19790717-9131 | 2014-06-03T10:00:00 | 1003 | KOMPLT |
-
-| Foljande kompletteringsbegaran finns |
-| personnr | meddelandeid | frageid |
-| 19790717-9191 | 2001 | 1 |
-| 19790717-9191 | 2001 | 1 |
-| 19790717-9191 | 2001 | 1 |
-| 19790717-9191 | 2001 | 1 |
-| 19790717-9191 | 2001 | 1 |
-| 19790717-9191 | 2001 | 35 |
-| 19790717-9191 | 2001 | 35 |
-| 19790717-9191 | 2001 | 35 |
-| 19790717-9191 | 2001 | 35 |
-| 19790717-9161 | 2002 | 1 |
-| 19790717-9161 | 2002 | 1 |
-| 19790717-9161 | 2002 | 1 |
-| 19790717-9161 | 2002 | 1 |
-| 19790717-9131 | 2003 | 1 |
+| personnr | skickat | intygsid | ämne | frågeid |
+| 19790717-9191 | 2014-04-05T10:00:00 | 1001 | KOMPLT | 1,1,1,1,1,35,35,35,35 |
+| 19790717-9161 | 2014-06-03T10:00:00 | 1002 | KOMPLT | 1,1,1,1 |
+| 19790717-9131 | 2014-06-03T10:00:00 | 1003 | KOMPLT | 1 |
 
 Det finns 5 kompletteringsbegäran för fråga 1 och 4 kompletteringsbegäran för fråga 35 hos vg1; Alla kompletteringsbegäranden är för män.
 
@@ -53,6 +35,14 @@ Tröskelvärdet appliceras per vårdgivare, kön och grupp (fråga).
 Nationell nivå:
 
 | Kompletteringar i rapporten kompletteringar per fraga som tvarsnitt |
+| grupp | totalt? | män? | kvinnor? |
+| Intyget baseras på | 5 | 5 | 0 |
+| Funktionsnedsättning | 0 | 0 | 0 |
+
+
+Verksamhetsnivå:
+
+| Kompletteringar i rapporten kompletteringar per fraga som tvarsnitt |
 | inloggad som | grupp | totalt? | män? | kvinnor? |
 | user1 | Intyget baseras på | 5 | 5 | 0 |
-| user1 | Funktionsnedsättning | 0 | 0 | 0 |
+| user1 | Funktionsnedsättning | 4 | 4 | 0 |

@@ -103,49 +103,45 @@ public class MessageWidelineLoader {
 
     public List<CountDTOAmne> getAntalMeddelandenPerAmne(MessagesFilter filter) {
         try (
-                Connection connection = dataSource.getConnection();
-                PreparedStatement stmt = prepareStatementAmne(connection, filter)) {
-
-            ResultSet resultSet = stmt.executeQuery();
-
-            List<CountDTOAmne> dtos = new ArrayList<>();
-
-            while (resultSet.next()) {
-                dtos.add(toCountAmne(resultSet));
-            }
-
-            dtos = applyAgeGroupFilter(filter, dtos);
-            dtos = applyDxFilter(filter, dtos);
-
-            return dtos;
+            Connection connection = dataSource.getConnection();
+            PreparedStatement stmt = prepareStatementAmne(connection, filter)) {
+            return getCountDTOAmnes(filter, stmt);
         } catch (SQLException e) {
             LOG.error("Could not populate warehouse", e);
         }
-
         return null;
+    }
+
+    private List<CountDTOAmne> getCountDTOAmnes(MessagesFilter filter, PreparedStatement stmt) throws SQLException {
+        ResultSet resultSet = stmt.executeQuery();
+        List<CountDTOAmne> dtos = new ArrayList<>();
+        while (resultSet.next()) {
+            dtos.add(toCountAmne(resultSet));
+        }
+        dtos = applyAgeGroupFilter(filter, dtos);
+        dtos = applyDxFilter(filter, dtos);
+        return dtos;
     }
 
     public List<CountDTOAmne> getKompletteringarPerIntyg(MessagesFilter filter) {
         try (
-                Connection connection = dataSource.getConnection();
-                PreparedStatement stmt = prepareStatementKompletteringarPerIntyg(connection, filter)) {
-
-            ResultSet resultSet = stmt.executeQuery();
-
-            List<CountDTOAmne> dtos = new ArrayList<>();
-
-            while (resultSet.next()) {
-                dtos.add(toCountAmne(resultSet));
-            }
-
-            dtos = applyAgeGroupFilter(filter, dtos);
-            dtos = applyDxFilter(filter, dtos);
-
-            return dtos;
+            Connection connection = dataSource.getConnection();
+            PreparedStatement stmt = prepareStatementKompletteringarPerIntyg(connection, filter)) {
+            return getCountDTOAmnes(filter, stmt);
         } catch (SQLException e) {
             LOG.error("Could not populate warehouse", e);
         }
+        return null;
+    }
 
+    public List<CountDTOAmne> getKompletteringar(MessagesFilter filter) {
+        try (
+            Connection connection = dataSource.getConnection();
+            PreparedStatement stmt = prepareStatementKompletteringar(connection, filter)) {
+            return getCountDTOAmnes(filter, stmt);
+        } catch (SQLException e) {
+            LOG.error("Could not populate warehouse", e);
+        }
         return null;
     }
 
@@ -182,7 +178,7 @@ public class MessageWidelineLoader {
         return dtos;
     }
 
-    private boolean isDxMatchInCollection(Icd10.Id dx, Collection<String> diagnoser) {
+    public static boolean isDxMatchInCollection(Icd10.Id dx, Collection<String> diagnoser) {
         Optional<Icd10.Id> dxlevel = Optional.ofNullable(dx);
         while (dxlevel.isPresent()) {
             final Icd10.Id currentDx = dxlevel.get();
@@ -212,6 +208,7 @@ public class MessageWidelineLoader {
         dto.setIntygTyp(resultSet.getString("intygstyp"));
         dto.setDx(resultSet.getString("dx"));
         dto.setIntygid(resultSet.getString("intygid"));
+        dto.setSvarIds(resultSet.getString("svarIds"));
         dto.setLakareId(new HsaIdLakare(resultSet.getString("lakareId")));
         return dto;
     }
@@ -265,7 +262,7 @@ public class MessageWidelineLoader {
         StringBuilder sql = new StringBuilder("SELECT "
                 + "mwl.intygid, mwl.amnecode, mwl.kon, mwl.amneCode, mwl.enhet AS enhet, mwl.alder, "
                 + "mwl.intygstyp, mwl.patientid, mwl.intygSigneringsdatum as signeringsdatum, mwl.intygDx as dx, "
-                + "mwl.intygLakareId as lakareId "
+                + "mwl.intygLakareId as lakareId, mwl.svarIds "
                 + "FROM "
                     + "messagewideline AS mwl "
                 + "WHERE "
@@ -314,7 +311,7 @@ public class MessageWidelineLoader {
 
         final StringBuilder sql = new StringBuilder("SELECT "
                 + "ic.intygid, ic.kon, ic.intygtyp as intygstyp, ic.patientid, ic.dx, ic.enhet, ic.signeringsdatum, ic.lakareId, "
-                + "mwl.amneCode "
+                + "mwl.amneCode, mwl.svarIds "
                 + "FROM intygcommon ic "
                     + "LEFT JOIN messagewideline mwl ON ic.intygid = mwl.intygid "
                 + "WHERE (ic.signeringsdatum between ? AND ?) AND ic.sentToFk "
@@ -348,7 +345,61 @@ public class MessageWidelineLoader {
         }
 
         sql.append(" GROUP BY ic.intygid, mwl.amneCode, ic.kon, ic.intygtyp, ")
-                .append("ic.patientid, ic.dx, ic.enhet, ic.signeringsdatum, ic.lakareId");
+                .append("ic.patientid, ic.dx, ic.enhet, ic.signeringsdatum, ic.lakareId, mwl.svarIds");
+
+        LOG.debug("sql: {}", sql);
+
+        PreparedStatement stmt = connection.prepareStatement(sql.toString(), ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        stmt.setFetchSize(FETCH_SIZE);
+
+        stmt.setDate(COLUMN_FROM, java.sql.Date.valueOf(filter.getFrom()));
+        stmt.setDate(COLUMN_TO, java.sql.Date.valueOf(filter.getTo()));
+
+        if (hasVardgivare) {
+            stmt.setString(COLUMN_VARDGIVARE, filter.getVardgivarId().getId());
+        }
+
+        return stmt;
+    }
+
+    @SuppressFBWarnings(value = "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
+            justification = "We know what we're doing. No user supplied data.")
+    private PreparedStatement prepareStatementKompletteringar(Connection connection, MessagesFilter filter)
+            throws SQLException {
+
+        final StringBuilder sql = new StringBuilder("SELECT "
+                + "mwl.intygid, mwl.kon, mwl.intygstyp, mwl.patientid, mwl.intygdx as dx, mwl.enhet, "
+                + "mwl.intygsigneringsdatum as signeringsdatum, mwl.intyglakareId as lakareid, "
+                + "mwl.amneCode, mwl.svarIds "
+                + "FROM messagewideline mwl "
+                + "WHERE (mwl.intygsigneringsdatum between ? AND ?) ");
+
+        final boolean hasVardgivare = filter.getVardgivarId() != null;
+        if (hasVardgivare) {
+            sql.append(" AND mwl.vardgivareid = ? ");
+        }
+
+        final Collection<HsaIdEnhet> enheter = filter.getEnheter();
+        if (enheter != null && !enheter.isEmpty()) {
+            String enhetSql = enheter.stream().map(HsaIdEnhet::getId).collect(Collectors.joining("' , '"));
+            sql.append(" AND mwl.enhet IN ('").append(enhetSql).append("')");
+        }
+
+        final Collection<String> intygstyper = filter.getIntygstyper();
+        if (intygstyper != null && !intygstyper.isEmpty()) {
+            List<IntygType> intygTypeFilter = filter.getIntygstyper().stream()
+                    .map(IntygType::getByName).filter(Optional::isPresent).map(Optional::get)
+                    .flatMap(intygType -> intygType.getUnmappedTypes().stream())
+                    .collect(Collectors.toList());
+            String intygstyperSql = intygTypeFilter.stream().map(Enum::name).collect(Collectors.joining("' , '"));
+            sql.append(" AND mwl.intygstyp IN ('").append(intygstyperSql).append("')");
+        }
+
+        final Collection<String> amne = filter.getAmne();
+        if (amne != null && !amne.isEmpty()) {
+            String amneSql = amne.stream().collect(Collectors.joining("' , '"));
+            sql.append(" AND (amneCode IN ('").append(amneSql).append("') OR amneCode IS NULL) ");
+        }
 
         LOG.debug("sql: {}", sql);
 

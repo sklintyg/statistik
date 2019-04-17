@@ -36,7 +36,6 @@ import com.google.common.collect.HashMultiset;
 import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
@@ -48,6 +47,7 @@ import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.IntygCommonFilter;
 import se.inera.statistics.service.warehouse.IntygCommonGroup;
+import se.inera.statistics.service.warehouse.IntygCommonManager;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.ResponseUtil;
 import se.inera.statistics.service.warehouse.WidelineConverter;
@@ -197,7 +197,7 @@ public class IntygCommonSosManager {
 
         final Collection<String> aldersgrupp = intygFilter.getAldersgrupp();
         final boolean isAgeFilterActive = aldersgrupp != null && !aldersgrupp.isEmpty() && aldersgrupp.size() != AgeGroup.values().length;
-        resultList = isAgeFilterActive ? applyAgeFilter(resultList, aldersgrupp) : resultList;
+        resultList = isAgeFilterActive ? IntygCommonManager.applyAgeFilter(resultList, aldersgrupp) : resultList;
 
         resultList = applyDxFilter(intygFilter.getDiagnoser(), resultList);
 
@@ -205,42 +205,7 @@ public class IntygCommonSosManager {
     }
 
     private List<IntygCommon> applyDxFilter(Collection<String> dxFilter, List<IntygCommon> dtos) {
-        final boolean applyDiagnosFilter = dxFilter != null && !dxFilter.isEmpty();
-        if (applyDiagnosFilter) {
-            return dtos.stream().filter(countDTOAmne -> {
-                final String dxString = countDTOAmne.getDx();
-                try {
-                    final Icd10.Id dx = icd10.findFromIcd10Code(dxString);
-                    return isDxMatchInCollection(dx, dxFilter);
-                } catch (Icd10.Icd10NotFoundException e) {
-                    return false;
-                }
-            }).collect(Collectors.toList());
-        }
-        return dtos;
+        return IntygCommonManager.applyDxFilter(dxFilter, dtos, icd10);
     }
 
-    private boolean isDxMatchInCollection(Icd10.Id dx, Collection<String> diagnoser) {
-        Optional<Icd10.Id> dxlevel = Optional.ofNullable(dx);
-        while (dxlevel.isPresent()) {
-            final Icd10.Id currentDx = dxlevel.get();
-            final boolean contains = diagnoser.contains(String.valueOf(currentDx.toInt()));
-            if (contains) {
-                return true;
-            }
-            dxlevel = currentDx.getParent();
-        }
-        return false;
-    }
-
-    private List<IntygCommon> applyAgeFilter(List<IntygCommon> resultList, Collection<String> aldersgrupp) {
-        final List<AgeGroup> ageGroupFilters = aldersgrupp.stream()
-                .map(AgeGroup::getByName).filter(Optional::isPresent).map(Optional::get)
-                .collect(Collectors.toList());
-        return resultList.stream().filter(intygCommon -> {
-            final String patientid = intygCommon.getPatientid();
-            final int age = ConversionHelper.extractAlder(patientid, intygCommon.getSigneringsdatum());
-            return ageGroupFilters.contains(AgeGroup.getGroupForAge(age).orElse(null));
-        }).collect(Collectors.toList());
-    }
 }

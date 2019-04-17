@@ -21,6 +21,7 @@ package se.inera.statistics.service.warehouse.message;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -73,6 +74,7 @@ public class MessageWidelineConverter extends AbstractWidlineConverter {
         line.setLogId(logId);
         line.setKon(patientdata.getKon().getNumberRepresentation());
         line.setAlder(patientdata.getAlder());
+        line.setSvarIds(getSvarIds(meddelande));
 
         IntygCommon intygCommon = intygCommonManager.getOne(line.getIntygId());
 
@@ -86,5 +88,16 @@ public class MessageWidelineConverter extends AbstractWidlineConverter {
         }
 
         return line;
+    }
+
+    private String getSvarIds(SendMessageToCareType meddelande) {
+        if (meddelande == null) {
+            return null;
+        }
+        final List<SendMessageToCareType.Komplettering> komplettering = meddelande.getKomplettering();
+        if (komplettering == null) {
+            return null;
+        }
+        return komplettering.stream().map(SendMessageToCareType.Komplettering::getFrageId).collect(Collectors.joining(","));
     }
 }

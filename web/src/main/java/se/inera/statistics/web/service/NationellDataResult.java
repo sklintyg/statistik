@@ -47,6 +47,7 @@ public class NationellDataResult implements Serializable {
     private DualSexStatisticsData meddelandenPerAmne;
     private TableDataReport intygPerTyp;
     private TableDataReport andelKompletteringar;
+    private TableDataReport kompletteringarPerFraga;
 
     public SimpleDetailsData getNumberOfCasesPerMonth() {
         return numberOfCasesPerMonth;
@@ -144,4 +145,11 @@ public class NationellDataResult implements Serializable {
         this.andelKompletteringar = andelKompletteringar;
     }
 
+    public TableDataReport getKompletteringarPerFraga() {
+        return kompletteringarPerFraga;
+    }
+
+    public void setKompletteringarPerFraga(TableDataReport kompletteringarPerFraga) {
+        this.kompletteringarPerFraga = kompletteringarPerFraga;
+    }
 }

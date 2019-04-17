@@ -87,6 +87,7 @@ import se.inera.statistics.web.service.responseconverter.GroupedSjukfallWithLand
 import se.inera.statistics.web.service.responseconverter.MessageAmneConverter;
 import se.inera.statistics.web.service.responseconverter.MessageAmnePerEnhetTvarsnittConverter;
 import se.inera.statistics.web.service.responseconverter.PeriodConverter;
+import se.inera.statistics.web.service.responseconverter.SimpleDualSexConverter;
 import se.inera.statistics.web.service.responseconverter.SimpleMultiDualSexConverter;
 import se.inera.statistics.web.service.responseconverter.SjukfallPerPatientsPerEnhetConverter;
 
@@ -437,6 +438,23 @@ public class ProtectedLandstingService {
         return getResponse(result, format, request, Report.L_ANDELKOMPLETTERINGAR, TIDSSERIE, getLastLandstingUpdateDate(vg));
     }
 
+    @GET
+    @Path("getKompletteringarPerFragaLandsting")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    @PrometheusTimeMethod(
+            help = "API-tjänst för skyddad åtkomst till andel kompletteringar per fråga för landsting.")
+    public Response getKompletteringarPerFragaLandsting(@Context HttpServletRequest request,
+                                                     @QueryParam("landstingfilter") String filterHash,
+                                                     @QueryParam("format") String format) {
+        final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 18);
+        SimpleKonResponse casesPerMonth = warehouse.getKompletteringarPerFragaLandsting(filterSettings);
+        SimpleDetailsData result = SimpleDualSexConverter.newGenericTvarsnitt().convert(casesPerMonth, filterSettings);
+        return getResponse(result, format, request, Report.L_KOMPLETTERINGARPERFRAGA, ReportType.TVARSNITT, getLastLandstingUpdateDate(vg));
+    }
 
     @GET
     @Path("landstingFilterInfo")

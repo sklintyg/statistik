@@ -60,6 +60,7 @@ public class MessageWideLine {
     private LocalDate intygSigneringsdatum;
     private String intygLakareId;
     private String intygDx;
+    private String svarIds; //Msg with amne=komplettering will have a reference to svar-tags with these ids in the intyg
 
     public MessageWideLine() {
         // Used by WidelineConverter
@@ -70,7 +71,7 @@ public class MessageWideLine {
     public MessageWideLine(long id, long logId, String meddelandeId, String intygId, MessageEventType meddelandeTyp,
                            String patientid, LocalDateTime skickatTidpunkt, String amneCode, int kon, int alder,
                            String enhet, String vardgivareid, IntygType intygstyp, LocalDate intygSigneringsdatum,
-                           String intygLakareId, String intygDx) {
+                           String intygLakareId, String intygDx, String svarIds) {
         this.id = id;
         this.logId = logId;
         this.meddelandeId = meddelandeId;
@@ -88,6 +89,7 @@ public class MessageWideLine {
         this.intygSigneringsdatum = intygSigneringsdatum;
         this.intygLakareId = intygLakareId;
         this.intygDx = intygDx;
+        this.svarIds = svarIds;
     }
     // CHECKSTYLE:ON ParameterNumber
 
@@ -226,4 +228,13 @@ public class MessageWideLine {
     public void setIntygDx(String intygDx) {
         this.intygDx = intygDx;
     }
+
+    public String getSvarIds() {
+        return svarIds;
+    }
+
+    public void setSvarIds(String svarIds) {
+        this.svarIds = svarIds;
+    }
+
 }

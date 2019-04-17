@@ -795,3 +795,48 @@ angular.module('StatisticsApp').andelKompletteringarTvarsnittConfig =
 
         return conf;
     };
+
+angular.module('StatisticsApp').kompletteringarPerFragaTvarsnittConfig =
+    /** @ngInject */
+    function (messageService) {
+        'use strict';
+
+        var conf = {};
+        conf.dataFetcher = 'getNationalKompletteringarPerFragaData';
+        conf.dataFetcherVerksamhet = 'getKompletteringarPerFragaDataVerksamhet';
+        conf.exportTableUrl = 'api/getKompletteringarPerFragaTvarsnitt?format=xlsx';
+        conf.exportTableUrlVerksamhet = function () {
+            return 'api/verksamhet/getKompletteringarPerFragaTvarsnitt?format=xlsx';
+        };
+        conf.title = messageService.getProperty('title.kompletteringarperfraga');
+        conf.chartFootnotes = function(isVerksamhet) {
+            if (isVerksamhet) {
+                return ['help.verksamhet.kompletteringarperfraga'];
+            }
+            return ['help.nationell.kompletteringarperfraga'];
+        };
+
+        conf.exchangeableViews = [
+            {description: 'Tidsserie', state: '/verksamhet/kompletteringarperfragaTidsserie', active: false},
+            {description: 'Tvärsnitt', state: '/verksamhet/kompletteringarperfraga', active: true}];
+        return conf;
+    };
+
+angular.module('StatisticsApp').kompletteringarPerFragaLandstingConfig =
+    /** @ngInject */
+    function (messageService) {
+        'use strict';
+
+        var conf = {};
+        conf.dataFetcherLandsting = 'getKompletteringarPerFragaDataLandsting';
+        conf.exportTableUrlLandsting = function () {
+            return 'api/verksamhet/getKompletteringarPerFragaTvarsnitt?format=xlsx';
+        };
+        conf.title = messageService.getProperty('title.kompletteringarperfraga');
+        conf.chartFootnotes = [];
+        conf.chartFootnotesExtra = function(result, isVerksamhet, isLandsting, $filter) {
+            return $filter('messageFilter')('help.landsting.kompletteringarperfraga', '', '', [result.fileUploadDate], '');
+        };
+
+        return conf;
+    };
