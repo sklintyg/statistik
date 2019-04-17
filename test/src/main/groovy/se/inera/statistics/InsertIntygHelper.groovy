@@ -30,10 +30,19 @@ class InsertIntygHelper {
         new DagensDatum("2016-11-01"); //Will set the date "fitnesse-style"
         new TroskelVarde(5); //Will set the troskelvarde "fitnesse-style"
 
+        def filnamn =  "vg3lista1.xlsx";
+
         ReportsUtil util = new ReportsUtil();
 
         util.clearRegionFileUploads();
-        util.insertRegion(ReportsUtil.VARDGIVARE3)
+        util.insertRegion(ReportsUtil.VARDGIVARE3);
+        util.login("user3", true);
+
+        def file = getClass().getResourceAsStream('/' + filnamn)
+        if (file == null) {
+            throw new RuntimeException("File not found: " + filnamn)
+        }
+        util.uploadFile(ReportsUtil.VARDGIVARE3, file, filnamn)
 
         ArrayList<IntygData> intygs = getIntygs()
 
@@ -106,6 +115,8 @@ class InsertIntygHelper {
         intygs.add(new IntygData("19790407-5294", "2016-09-01", "2016-11-30", "enhet3", "vg3", "A01", 0));
         intygs.add(new IntygData("19790407-5295", "2016-09-01", "2016-11-30", "enhet3", "vg3", "A01", 0));
         intygs.add(new IntygData("19790407-5296", "2016-09-01", "2016-11-30", "enhet3", "vg3", "A01", 0));
+        intygs.add(new IntygData("19790407-5297", "2016-09-01", "2016-11-30", "enhet3", "vg3", "A01", 0));
+        intygs.add(new IntygData("19790407-5298", "2016-09-01", "2016-11-30", "enhet3", "vg3", "A01", 0));
         intygs.add(new IntygData("19790407-5297", "2016-09-01", "2016-11-30", "enhet4", "vg3", "A01", 0));
         intygs.add(new IntygData("19790407-5298", "2016-09-01", "2016-11-30", "enhet4", "vg3", "A01", 0));
         intygs.add(new IntygData("19790407-5299", "2016-09-01", "2016-11-30", "enhet4", "vg3", "A01", 0));

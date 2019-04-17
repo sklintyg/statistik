@@ -32,13 +32,15 @@ describe('Navigering region: ', function() {
         browser.get('/');
     });
 
+    afterAll(function() {
+        features.user.makeSureNotLoggedIn();
+    });
 
     describe('Processledare', function() {
 
-        it('Processledare', function() {
+        it('login', function() {
             features.user.loginUser3(true);
-
-            regionsNiva();
+            navmenu.regionTab.click();
 
             navmenu.navRegionUpload.click();
             pages.regionUploadAgreement.isAtPage();
@@ -48,19 +50,20 @@ describe('Navigering region: ', function() {
             pages.regionUpload.isAtPage();
         });
 
-        it('Verksamhetschef', function() {
+        regionsNiva();
+    });
+
+    describe('Verksamhetschef', function() {
+
+        it('login', function() {
             features.user.makeSureNotLoggedIn();
             features.user.loginUser3(false);
-
-            regionsNiva();
+            navmenu.regionTab.click();
 
             expect(navmenu.navRegionUpload.isPresent()).toBeFalsy();
         });
 
-
-        function regionsNiva() {
-            navmenu.regionTab.click();
-        }
+        regionsNiva();
     });
 
     describe('filter', function() {
@@ -91,8 +94,33 @@ describe('Navigering region: ', function() {
         });
     });
 
-
-    afterAll(function() {
+    it('test landsting till region', function() {
         features.user.makeSureNotLoggedIn();
+        features.user.loginUser3(true);
+
+        browser.get('/#/landsting/sjukfallPerManad?vgid=VG3&landstingfilter=c08cf950a2adf1700785e5fd89efc7ab');
+
+        expect(browser.getCurrentUrl()).toContain('/#/region/sjukfallPerManad?vgid=VG3&regionfilter=c08cf950a2adf1700785e5fd89efc7ab');
     });
+
+    function regionsNiva() {
+        validateDetailReport('navRegionCasesPerMonthLink', 1);
+        validateDetailReport('navRegionCasesPerEnhetLink', 1);
+        validateDetailReport('navRegionCasesPerPatientsPerEnhetLink', 1);
+
+        validateDetailReport('navRegionIntygPerTypeLink', 2);
+
+        validateDetailReport('navRegionMessagesLink', 2);
+        validateDetailReport('navRegionMessagesEnhetLink', 1);
+        validateDetailReport('navRegionAndelKompletteringarLink', 2);
+    }
+
+    function validateDetailReport(menuId, expectedNumberOfCharts) {
+        it('Sida: ' + menuId, function() {
+            navmenu.clickOnMenu(menuId);
+            pages.report.isAtPage();
+
+            expect(pages.report.getNumberOfCharts()).toBe(expectedNumberOfCharts, 'Number of charts failed: ' + menuId);
+        });
+    }
 });
