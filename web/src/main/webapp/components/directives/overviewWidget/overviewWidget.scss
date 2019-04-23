@@ -175,8 +175,10 @@ overview-widget {
 #perCountyHeaderLink, #kompletteringarHeaderLink {
   .table {
     &.overview-graph-table {
-      top: 65px;
-      position: relative;
+      @media (min-width: $screen-lg-min) {
+        top: 65px;
+        position: relative;
+      }
     }
   }
 
