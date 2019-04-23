@@ -29,7 +29,6 @@ angular.module('StatisticsApp.filter.directive')
             scope: true,
             restrict: 'E',
             controller: function($scope) {
-                $scope.filterButtonIdText = 'Verksamhet';
                 $scope.filterHashParamName = 'filter';
                 linkFunction(_, $scope, businessFilterFactory, $location, messageService, statisticsData,
                     moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter, filterViewState, $timeout);
@@ -39,18 +38,17 @@ angular.module('StatisticsApp.filter.directive')
     });
 
 angular.module('StatisticsApp.filter.directive')
-    .directive('landstingFilter',
+    .directive('regionFilter',
         /** @ngInject */
-        function(landstingFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, _, $rootScope, $filter, filterViewState, $timeout) {
+        function(regionFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, _, $rootScope, $filter, filterViewState, $timeout) {
         'use strict';
 
         return {
             scope: true,
             restrict: 'E',
             controller: function($scope) {
-                $scope.filterButtonIdText = 'Landsting';
-                $scope.filterHashParamName = 'landstingfilter';
-                linkFunction(_, $scope, landstingFilterFactory, $location, messageService, statisticsData,
+                $scope.filterHashParamName = 'regionfilter';
+                linkFunction(_, $scope, regionFilterFactory, $location, messageService, statisticsData,
                     moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter, filterViewState, $timeout);
             },
             templateUrl: '/app/shared/businessfilter/businessFilterView.html'

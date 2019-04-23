@@ -162,7 +162,7 @@ describe('Test of common print services', function() {
             expect(chartFactory.getChartExportFileName('Nationell nivå')).toMatch(/^Nationellniva_MyReporttitle_\d{6}_\d{6}$/);
 
             route.current = {title: 'My Other Report title'};
-            expect(chartFactory.getChartExportFileName('Landstingz   Nivå')).toMatch(/^LandstingzNiva_MyOtherReporttitle_\d{6}_\d{6}$/);
+            expect(chartFactory.getChartExportFileName('Region   Nivå')).toMatch(/^RegionNiva_MyOtherReporttitle_\d{6}_\d{6}$/);
 
             route.current = {title: 'Title with numbers like 123'};
             expect(chartFactory.getChartExportFileName('Nationell', 'Män')).toMatch(/^Nationell_Titlewithnumberslike123_Man_\d{6}_\d{6}$/);

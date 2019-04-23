@@ -73,7 +73,7 @@ public class SjukfallQuery {
     public void initProperty(@Value("${reports.landsting.cutoff}") int cutoff) {
         final int minimumCutoffValue = 3;
         if (cutoff < minimumCutoffValue) {
-            LOG.warn("Landsting cutoff value is too low. Using minimum value: " + minimumCutoffValue);
+            LOG.warn("Region cutoff value is too low. Using minimum value: " + minimumCutoffValue);
             this.cutoff = minimumCutoffValue;
             return;
         }

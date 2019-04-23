@@ -14,9 +14,9 @@
 **intyghandelse**: Samtliga intyg som har mottagits (från processloggen)  
 **intygsenthandelse**: Information om vilka intyg som har skickats vidare till mottagare  
 **lakare**: Information om läkare som utfärdat intyg  
-**Landsting**: Innehåller alla landsting, dvs vilka vårdgivare som har tillgång till landstingsstatistik  
-**LandstingEnhet**: Vilka enheter som är tillgängliga i landstingsstatistiken samt antal listningar (dvs innehållet i den fil som laddas upp för landstingsstatistik)  
-**LandstingEnhetUpdate**: Information (vem, vad, när) om senaste uppladdning av landstingsstatistik  
+**Landsting**: Innehåller alla regioner, dvs vilka vårdgivare som har tillgång till regionsstatistik  
+**LandstingEnhet**: Vilka enheter som är tillgängliga i regionsstatistiken samt antal listningar (dvs innehållet i den fil som laddas upp för regionsstatistik)  
+**LandstingEnhetUpdate**: Information (vem, vad, när) om senaste uppladdning av regionsstatistik  
 **meddelandehandelse**: Samtliga ärendekommunikationsmeddelanden som har mottagits  
 **messagewideline**: Innehåller processade ärendekommunikationsmeddelanden. Informationen i den här tabellen används till meddelande-rapporterna.  
 **user_settings**: Innehåller information om inställningar per användare  
@@ -37,8 +37,8 @@
 
 **lakare**: Håller lista över läkarnamn.  
 
-**Landsting**: Lista över de vårdgivare som anses vara landsting. vardgivareid visar vgid.  
-**LandstingEnhet**: Lista över de enheter som visas på landstingsnivå per vårdgivare. landstingid-fältet visar vgid.  
+**Landsting**: Lista över de vårdgivare som anses vara region. vardgivareid visar vgid.  
+**LandstingEnhet**: Lista över de enheter som visas på regionsnivå per vårdgivare. landstingid-fältet visar vgid.  
 **LandstingEnhetUpdate**: landstingid-fältet refererar till landsting.id
 
 **user_settings**: hsaid-fältet visar userid.  

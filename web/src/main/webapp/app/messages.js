@@ -7,7 +7,7 @@ var stMessages = {
 
         //navigation
         'nav.national-header': 'Nationell statistik',
-        'nav.landsting-header': 'Landstingsstatistik',
+        'nav.region-header': 'Regionsstatistik',
         'nav.business-header': 'Verksamhetsstatistik',
 
         'nav.sjukfall-header': 'Sjukfall',
@@ -31,9 +31,9 @@ var stMessages = {
         'nav.lakaralder-kon':'Läkarålder och -kön',
         'nav.sjukskrivningslangd-mer-an-90-dagar':'Mer än 90 dagar',
         'nav.allmant-om-tjansten': 'Allmänt om tjänsten',
-        'nav.landsting.filuppladdning': 'Filuppladdning',
-        'nav.landsting.listningsjamforelse': 'Vårdenhet, listningar',
-        'nav.landsting.om': 'Om landstingsstatistik',
+        'nav.region.filuppladdning': 'Filuppladdning',
+        'nav.region.listningsjamforelse': 'Vårdenhet, listningar',
+        'nav.region.om': 'Om regionsstatistik',
         'nav.meddelanden': 'Meddelanden, totalt',
         'nav.meddelandenperamne': 'Meddelanden, totalt',
         'nav.meddelandenperamneochenhet': 'Vårdenhet',
@@ -210,15 +210,15 @@ var stMessages = {
         'help.verksamhet.meddelandenperamneochlakare': 'Denna rapport visar statistik för enskilda intygsskrivande läkare. Namn hämtas från HSA-katalogen. Om läkaren inte går att slå upp i HSA-katalogen eller om läkaren inte har något namn angivet så visas istället läkarens HSA-id. Observera att statistiken i denna rapport endast innefattar de meddelanden som tillhör Försäkringskassans intyg (med undantag för FK 7263).',
         'help.verksamhet.kompletteringarperfraga': 'Denna rapport visar statistik över antal kompletteringsbegäranden fördelat på fråga i FK 7804 Läkarintyg för sjukpenning. Observera att denna statistik inte räknar antal meddelanden med ämnet komplettering. Här räknas varje kompletteringsbegäran och ett meddelande kan innehålla en eller flera kompletteringsbegäranden som rör olika frågor.',
 
-        'help.landsting.sjukfall-totalt': 'Denna rapport visar sammanlagd statistik för de vårdenheter som tillhör landstinget och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i landstinget har rapporteras in av landstinget självt %0.',
-        'help.landsting.vardenhet': 'Denna rapport visar statistik för de vårdenheter som tillhör landstinget och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i landstinget har rapporterats in av landstinget självt %0. Vårdenheternas namn hämtas från HSA-katalogen.',
-        'help.landsting.vardenhet-listning1': 'Denna rapport visar statistik för de vårdenheter som tillhör landstinget och för vilka antal listade patienter i arbetsför ålder rapporterats in. Antal sjukfall per 1000 listningar är ett mått som gör att det går att jämföra antalet sjukfall på olika vårdenheter trots att vårdenheterna inte är lika stora. Detta eftersom antalet sjukfall sätts i relation till antalet listade patienter i arbetsför ålder.',
-        'help.landsting.vardenhet-listning2': 'Information om vilka vårdenheter som ingår i landstinget och uppgift om antal listade patienter i arbetsför ålder på respektive vårdenhet har rapporteras in av landstinget självt %0. Vårdenheternas namn hämtas från HSA-katalogen.',
-        'help.landsting.meddelandenperamne': 'Denna rapport visar sammanlagd statistik för de vårdenheter som tillhör landstinget och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i landstinget har rapporteras in av landstinget självt %0. Ämnet på meddelanden sätts av Försäkringskassan. Observera att statistiken i denna rapport endast innefattar de meddelanden som tillhör Försäkringskassans intyg (med undantag för FK 7263).',
-        'help.landsting.meddelandenperamneochenhet': 'Denna rapport visar statistik för de vårdenheter som tillhör landstinget och som utfärdar läkarintyg och läkarutlåtanden. Information om vilka vårdenheter som ingår i landstinget har rapporterats in av landstinget självt %0. Vårdenheternas namn hämtas från HSA-katalogen. Observera att statistiken i denna rapport endast innefattar de meddelanden som tillhör Försäkringskassans intyg (med undantag för FK 7263).',
-        'help.landsting.intygpertyp': 'Denna rapport visar sammanlagd statistik för de vårdenheter som tillhör landstinget och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i landstinget har rapporteras in av landstinget självt %0.',
-        'help.landsting.komplettering': 'Denna rapport visar statistik över andelen intyg av de som skickas till Försäkringskassan som får ett meddelande med ämnet Komplettering. Rapporten visar sammanlagd statistik för de vårdenheter som tillhör landstinget och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i landstinget har rapporteras in av landstinget självt %0.',
-        'help.landsting.kompletteringarperfraga': 'Denna rapport visar statistik över antal kompletteringsbegäranden fördelat på fråga i FK 7804 Läkarintyg för sjukpenning. Observera att denna statistik inte räknar antal meddelanden med ämnet komplettering. Här räknas varje kompletteringsbegäran och ett meddelande kan innehålla en eller flera kompletteringsbegäranden som rör olika frågor. Rapporten visar sammanlagd statistik för de vårdenheter som tillhör regionen och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i regionen har rapporteras in av regionen självt %0.',
+        'help.region.sjukfall-totalt': 'Denna rapport visar sammanlagd statistik för de vårdenheter som tillhör regionen och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i regionen har rapporteras in av regionen självt %0.',
+        'help.region.vardenhet': 'Denna rapport visar statistik för de vårdenheter som tillhör regionen och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i regionen har rapporterats in av regionen självt %0. Vårdenheternas namn hämtas från HSA-katalogen.',
+        'help.region.vardenhet-listning1': 'Denna rapport visar statistik för de vårdenheter som tillhör regionen och för vilka antal listade patienter i arbetsför ålder rapporterats in. Antal sjukfall per 1000 listningar är ett mått som gör att det går att jämföra antalet sjukfall på olika vårdenheter trots att vårdenheterna inte är lika stora. Detta eftersom antalet sjukfall sätts i relation till antalet listade patienter i arbetsför ålder.',
+        'help.region.vardenhet-listning2': 'Information om vilka vårdenheter som ingår i regionen och uppgift om antal listade patienter i arbetsför ålder på respektive vårdenhet har rapporteras in av regionen självt %0. Vårdenheternas namn hämtas från HSA-katalogen.',
+        'help.region.meddelandenperamne': 'Denna rapport visar sammanlagd statistik för de vårdenheter som tillhör regionen och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i regionen har rapporteras in av regionen självt %0. Ämnet på meddelanden sätts av Försäkringskassan. Observera att statistiken i denna rapport endast innefattar de meddelanden som tillhör Försäkringskassans intyg (med undantag för FK 7263).',
+        'help.region.meddelandenperamneochenhet': 'Denna rapport visar statistik för de vårdenheter som tillhör regionen och som utfärdar läkarintyg och läkarutlåtanden. Information om vilka vårdenheter som ingår i regionen har rapporterats in av regionen självt %0. Vårdenheternas namn hämtas från HSA-katalogen. Observera att statistiken i denna rapport endast innefattar de meddelanden som tillhör Försäkringskassans intyg (med undantag för FK 7263).',
+        'help.region.intygpertyp': 'Denna rapport visar sammanlagd statistik för de vårdenheter som tillhör regionen och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i regionen har rapporteras in av regionen självt %0.',
+        'help.region.komplettering': 'Denna rapport visar statistik över andelen intyg av de som skickas till Försäkringskassan som får ett meddelande med ämnet Komplettering. Rapporten visar sammanlagd statistik för de vårdenheter som tillhör regionen och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i regionen har rapporteras in av regionen självt %0.',
+        'help.region.kompletteringarperfraga': 'Denna rapport visar statistik över antal kompletteringsbegäranden fördelat på fråga i FK 7804 Läkarintyg för sjukpenning. Observera att denna statistik inte räknar antal meddelanden med ämnet komplettering. Här räknas varje kompletteringsbegäran och ett meddelande kan innehålla en eller flera kompletteringsbegäranden som rör olika frågor. Rapporten visar sammanlagd statistik för de vårdenheter som tillhör regionen och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i regionen har rapporteras in av regionen självt %0.',
 
         'help.diagnosissubgroup.showdetailoptions' : 'Observera att om du väljer diagnoskategori visas endast de sjukfall som har en diagnos på fyr- eller femställig nivå i ICD-10-SE, t.ex. F430 eller F438A. Sjukfall med en diagnos på treställig nivå, t.ex. F43, visas inte.',
 
@@ -270,8 +270,7 @@ var stMessages = {
         'upload.filetype.error': 'Felaktig filtyp. Formaten som stöds är .xls och .xlsx',
         'alert.upload.failed': 'Uppladdningen misslyckades!',
         'alert.upload.success': 'Uppladdningen lyckades!',
-        'info.upload.dropfile.here': 'Släpp fil här för att ladda upp eller ',
-        'info.upload.dropfile.here.add': 'lägg till',
+        'info.upload.dropfile.here': 'Släpp fil eller klicka här för att ladda upp filen.',
         'info.upload.fallbacktext': 'Din webbläsare stödjer inte filuppladdning via "dra och släpp". Vänligen använd knappen nedan för att ladda upp filen.'
     },
     'en': {

@@ -26,9 +26,9 @@
   <persistence-unit name="IneraStatisticsLog" transaction-type="RESOURCE_LOCAL">
     <class>se.inera.statistics.service.countypopulation.CountyPopulationRow</class>
     <class>se.inera.statistics.service.hsa.HSAStore</class>
-    <class>se.inera.statistics.service.landsting.persistance.landsting.Landsting</class>
-    <class>se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhet</class>
-    <class>se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdate</class>
+    <class>se.inera.statistics.service.region.persistance.region.Region</class>
+    <class>se.inera.statistics.service.region.persistance.regionenhet.RegionEnhet</class>
+    <class>se.inera.statistics.service.region.persistance.regionenhetupdate.RegionEnhetUpdate</class>
     <class>se.inera.statistics.service.processlog.Enhet</class>
     <class>se.inera.statistics.service.processlog.EventPointer</class>
     <class>se.inera.statistics.service.processlog.IntygEvent</class>

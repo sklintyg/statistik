@@ -50,6 +50,7 @@ describe('Navigering i intygsstatistik: ', function() {
 
         validateDetailReport('navMessagesLink', 2);
         validateDetailReport('navNationalAndelKompletteringarLink', 2);
+        validateDetailReport('navNationalKompletteringarPerFragaLink', 1);
     });
 
     describe('Verksamhetsnivå', function() {
@@ -122,6 +123,7 @@ describe('Navigering i intygsstatistik: ', function() {
 
             validateDetailReport('navBusinessMessagesLink', 2);
             validateDetailReport('navBusinessAndelKompletteringarLink', 2);
+            validateDetailReport('navBusinessKompletteringarPerFragaLink', 1);
         }
     });
 

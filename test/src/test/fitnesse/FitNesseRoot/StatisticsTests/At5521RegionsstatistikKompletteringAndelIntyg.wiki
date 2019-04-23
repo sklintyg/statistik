@@ -1,0 +1,65 @@
+---
+Test
+---
+Givet att:
+
+|script|dagens datum|2015-11-06|
+
+|script|troskel varde|0|
+
+Endast 5 intyg har signerats och skickats till Försäkringskassan under de senaste 18 månaderna.
+
+|Enbart foljande intyg finns                                                     |
+|intygid|personnr     |signeringstid      |signeringstid      |enhet |intygformat|
+|1001   |19790219-9285|2015-02-10T12:24:15|2015-02-10T12:24:30|enhet1|LISJP      |
+|1002   |19790429-9272|2015-03-10T12:25:15|2015-03-10T12:25:30|enhet2|LISJP      |
+|1003   |19790429-9282|2015-04-10T12:25:15|2015-04-10T12:25:30|enhet1|LISJP      |
+|1004   |19791212-1212|2015-04-10T12:25:15|2015-04-10T12:25:30|enhet1|LUSE       |
+|1005   |19791212-1212|2015-04-20T12:25:15|2015-04-20T12:25:30|enhet1|LISJP      |
+
+|Intyg skickat till mottagare|
+|intygid      |mottagare     |
+|1001         |FKASSA        |
+|1002         |FKASSA        |
+|1003         |FKASSA        |
+|1004         |FKASSA        |
+|1005         |FKASSA        |
+
+Av dessa 5 har 3st fått kompletteringar och 1 har fått ett avstämningsmöte.
+
+|Foljande meddelanden finns                       |
+|personnr     |skickat            |intygsid|ämne  |
+|19790219-9285|2015-03-12T10:00:00|1001    |KOMPLT|
+|19790429-9272|2015-04-03T10:00:00|1002    |AVSTMN|
+|19790429-9272|2015-05-03T10:00:00|1003    |KOMPLT|
+|19791212-1212|2015-05-10T10:00:00|1004    |KOMPLT|
+
+|script|Rensa uppladdade regionsfiler|
+
+|Uppladdade regionsfiler                |
+|användare|filnamn       |statusmeddelande?|
+|user3    |vg3lista1.xlsx|Data updated ok  |
+
+!3 Då gäller:
+Denna rapport kollar endast efter vilka intyg som har fått kompletteringar, och struntar alltså i och ett intyg har fått en avstämning.
+
+Var ett intyg och tillhörande komplettering hamnar i tidsserien är beroende av intygets signeringstidpunkt.
+
+För att se hur statistiken beräknas se: [[At2301KompletteringAndelIntyg][http://localhost:9125/StatisticsTests.At2301KompletteringAndelIntyg]]
+
+Inloggad:
+
+|Andel i rapporten komplettering andel intyg region                                                                        |
+|inloggad som|år  |månad|grupp                                                                    |grupp totalt?|män?|kvinnor?|
+|user3       |2015|feb  |FK 7800 Läkarutlåtande för sjukersättning                                |0%           |0%  |0%      |
+|user3       |2015|feb  |FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga|0%           |0%  |0%      |
+|user3       |2015|feb  |FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång    |0%           |0%  |0%      |
+|user3       |2015|feb  |FK 7804 Läkarintyg för sjukpenning                                       |100%         |0%  |100%    |
+|user3       |2015|mar  |FK 7800 Läkarutlåtande för sjukersättning                                |0%           |0%  |0%      |
+|user3       |2015|mar  |FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga|0%           |0%  |0%      |
+|user3       |2015|mar  |FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång    |0%           |0%  |0%      |
+|user3       |2015|mar  |FK 7804 Läkarintyg för sjukpenning                                       |0%           |0%  |0%      |
+|user3       |2015|apr  |FK 7800 Läkarutlåtande för sjukersättning                                |100%         |100%|0%      |
+|user3       |2015|apr  |FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga|0%           |0%  |0%      |
+|user3       |2015|apr  |FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång    |0%           |0%  |0%      |
+|user3       |2015|apr  |FK 7804 Läkarintyg för sjukpenning                                       |50%          |0%  |100%    |

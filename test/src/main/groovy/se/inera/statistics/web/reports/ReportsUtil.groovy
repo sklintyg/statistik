@@ -50,6 +50,14 @@ class ReportsUtil {
         String filename
     }
 
+    private String getVerksamhetUrlPrefix() {
+        return "/api/verksamhet"
+    }
+
+    private String getRegionUrlPrefix() {
+        return "/api/region"
+    }
+
     private RESTClient createClient() {
         def baseUrl = System.getProperty("baseUrl") ?: "http://localhost:8080/"
         def client = new RESTClient(baseUrl, JSON)
@@ -188,20 +196,20 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getKompletteringarPerFragaTvarsnitt", filter, "vgid=" + vgid)
     }
 
-    def getReportKompletteringarPerFragaTvarsnittInloggadLandsting(String vgid, filter) {
-        return get("/api/landsting/getKompletteringarPerFragaLandsting", filter, "vgid=" + vgid)
+    def getReportKompletteringarPerFragaTvarsnittInloggadRegion(String vgid, filter) {
+        return get(getRegionUrlPrefix() + "/getKompletteringarPerFragaRegion", filter, "vgid=" + vgid)
     }
 
     def getReportAndelKompletteringarTvarsnittInloggad(String vgid, filter) {
         return get(getVerksamhetUrlPrefix() + "/getAndelKompletteringarTvarsnitt", filter, "vgid=" + vgid)
     }
 
-    def getReportAndelKompletteringarLandsting(String vgid, filter) {
-        return get("/api/landsting/getAndelKompletteringarLandsting", filter, "vgid=" + vgid, "landstingfilter")
+    def getReportAndelKompletteringarRegion(String vgid, filter) {
+        return get(getRegionUrlPrefix() + "/getAndelKompletteringarRegion", filter, "vgid=" + vgid, "regionfilter")
     }
 
-    def getReportAntalIntygLandsting(String vgid, filter) {
-        return get("/api/landsting/getIntygPerTypePerMonthLandsting", filter, "vgid=" + vgid)
+    def getReportAntalIntygRegion(String vgid, filter) {
+        return get(getRegionUrlPrefix() + "/getIntygPerTypePerMonthRegion", filter, "vgid=" + vgid)
     }
 
     def getReportAntalIntygTvarsnittInloggad(String vgid, filter) {
@@ -224,8 +232,8 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getMeddelandenPerAmnePerLakareTvarsnitt", filter, "vgid=" + vgid)
     }
 
-    def getReportAntalMeddelandenVardenhetLandsting(String vgid, filter) {
-        return get("/api/landsting/getMeddelandenPerAmnePerEnhetLandsting", filter, "vgid=" + vgid, "landstingfilter")
+    def getReportAntalMeddelandenVardenhetRegion(String vgid, filter) {
+        return get(getRegionUrlPrefix() + "/getMeddelandenPerAmnePerEnhetRegion", filter, "vgid=" + vgid, "regionfilter")
     }
 
     def getReportAntalMeddelandenInloggad(String vgid, filter) {
@@ -236,8 +244,8 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getMeddelandenPerAmneTvarsnitt", filter, "vgid=" + vgid)
     }
 
-    def getReportAntalMeddelandenLandsting(String vgid, filter) {
-        return get("/api/landsting/getMeddelandenPerAmneLandsting", filter, "vgid=" + vgid, "landstingfilter")
+    def getReportAntalMeddelandenRegion(String vgid, filter) {
+        return get(getRegionUrlPrefix() + "/getMeddelandenPerAmneRegion", filter, "vgid=" + vgid, "regionfilter")
     }
 
     def getReportAntalMeddelanden() {
@@ -489,10 +497,6 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getOverview", filter, "vgid=" + vgid)
     }
 
-    private String getVerksamhetUrlPrefix() {
-        return "/api/verksamhet"
-    }
-
     def getNationalOverview() {
         return get("/api/getOverview")
     }
@@ -529,20 +533,20 @@ class ReportsUtil {
     def uploadFile(String vgid, InputStream file, filename) {
         def body = new MultipartBody(file: file, filename: filename);
         try {
-            def response = restClient.post(requestContentType: "multipart/form-data", path: '/api/landsting/fileupload', body: body, queryString : "vgid=" + vgid)
+            def response = restClient.post(requestContentType: "multipart/form-data", path: '/api/region/fileupload', body: body, queryString : "vgid=" + vgid)
             return response.data
         } catch (HttpResponseException e) {
             return e.getResponse().getData()
         }
     }
 
-    def clearLandstingFileUploads() {
-        restClient.delete(path: '/api/testsupport/clearLandstingFileUploads')
+    def clearRegionFileUploads() {
+        restClient.delete(path: '/api/testsupport/clearRegionFileUploads')
     }
 
-    def insertLandsting(vgId) {
-        def url = "/api/testsupport/landsting/vgid/" + vgId
-        println("insertLandsting: " + url)
+    def insertRegion(vgId) {
+        def url = "/api/testsupport/region/vgid/" + vgId
+        println("insertRegion: " + url)
         restClient.put(path: url)
     }
 
@@ -598,16 +602,16 @@ class ReportsUtil {
         return get("/api/testsupport/getFkYearReport")
     }
 
-    def getReportAntalSjukfallLandstingInloggad(vgid, filter) {
-        return get("/api/landsting/getNumberOfCasesPerMonthLandsting", filter, "vgid=" + vgid, "landstingfilter")
+    def getReportAntalSjukfallRegionInloggad(vgid, filter) {
+        return get(getRegionUrlPrefix() + "/getNumberOfCasesPerMonthRegion", filter, "vgid=" + vgid, "regionfilter")
     }
 
-    def getReportSjukfallPerEnhetLandsting(vgid, filter) {
-        return get("/api/landsting/getNumberOfCasesPerEnhetLandsting", filter, "vgid=" + vgid, "landstingfilter")
+    def getReportSjukfallPerEnhetRegion(vgid, filter) {
+        return get(getRegionUrlPrefix() + "/getNumberOfCasesPerEnhetRegion", filter, "vgid=" + vgid, "regionfilter")
     }
 
-    def getReportSjukfallPerListningarPerEnhetLandsting(vgid, filter) {
-        return get("/api/landsting/getNumberOfCasesPerPatientsPerEnhetLandsting", filter, "vgid=" + vgid, "landstingfilter")
+    def getReportSjukfallPerListningarPerEnhetRegion(vgid, filter) {
+        return get(getRegionUrlPrefix() + "/getNumberOfCasesPerPatientsPerEnhetRegion", filter, "vgid=" + vgid, "regionfilter")
     }
 
     def getSpecialReportSjukfallLength() {

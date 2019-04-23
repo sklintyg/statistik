@@ -287,7 +287,7 @@ describe('Test of common functions for controllers', function() {
             expect(scope.errorPageUrl).toBeNull();
         });
 
-        it('Landsting and empty result', function() {
+        it('Region and empty result', function() {
             ControllerCommons.checkNationalResultAndEnableExport(scope, result, false, true, successFunction);
 
             expect(called).toBeTruthy();
@@ -403,16 +403,16 @@ describe('Test of common functions for controllers', function() {
             expect(ControllerCommons.isShowing(location, 'om')).toBeFalsy();
         });
 
-        it('landsting', function() {
-            path = '/landsting/';
+        it('region', function() {
+            path = '/region/';
 
-            expect(ControllerCommons.isShowingLandsting(location)).toBeTruthy();
+            expect(ControllerCommons.isShowingRegion(location)).toBeTruthy();
         });
 
-        it('landsting false', function() {
+        it('region false', function() {
             path = '/nationell/';
 
-            expect(ControllerCommons.isShowingLandsting(location)).toBeFalsy();
+            expect(ControllerCommons.isShowingRegion(location)).toBeFalsy();
         });
 
         it('verksamhet', function() {

@@ -22,7 +22,7 @@
                 <ref bean="pdfService"/>
                 <ref bean="chartDataService"/>
                 <ref bean="protectedChartDataService"/>
-                <ref bean="protectedLandstingService"/>
+                <ref bean="protectedRegionService"/>
                 <ref bean="loginInfoService"/>
                 <ref bean="loggingService"/>
                 <ref bean="linkService"/>

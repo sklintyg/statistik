@@ -71,7 +71,7 @@
         <bean id="pdfService" class="se.inera.statistics.web.service.endpoints.PdfService"/>
 
         <bean id="protectedChartDataService" class="se.inera.statistics.web.service.endpoints.ProtectedChartDataService"/>
-        <bean id="protectedLandstingService" class="se.inera.statistics.web.service.endpoints.ProtectedLandstingService"/>
+        <bean id="protectedRegionService" class="se.inera.statistics.web.service.endpoints.ProtectedRegionService"/>
         <bean class="se.inera.statistics.web.service.ResponseHandler"/>
 
         <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>

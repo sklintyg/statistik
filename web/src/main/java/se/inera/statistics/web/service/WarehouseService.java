@@ -143,7 +143,7 @@ public class WarehouseService {
         return messagesQuery.getMessagesTvarsnitt(vardgivarId, filter.getEnheter(), range.getFrom(), range.getNumberOfMonths());
     }
 
-    public KonDataResponse getMessagesPerAmneLandsting(final FilterSettings filterSettings) {
+    public KonDataResponse getMessagesPerAmneRegion(final FilterSettings filterSettings) {
         Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
         final Range range = filterSettings.getRange();
         return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {
@@ -164,7 +164,7 @@ public class WarehouseService {
         return messagesQuery.getAndelKompletteringar(getMeddelandeFilter(vardgivarId, filter, range), 0);
     }
 
-    public KonDataResponse getAndelKompletteringarLandsting(FilterSettings filterSettings) {
+    public KonDataResponse getAndelKompletteringarRegion(FilterSettings filterSettings) {
         Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
         final Range range = filterSettings.getRange();
         return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {
@@ -181,7 +181,7 @@ public class WarehouseService {
         return messagesQuery.getKompletteringarPerFraga(getMeddelandeFilter(vardgivarId, filter, range), 0);
     }
 
-    public SimpleKonResponse getKompletteringarPerFragaLandsting(FilterSettings filterSettings) {
+    public SimpleKonResponse getKompletteringarPerFragaRegion(FilterSettings filterSettings) {
         Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
         final Range range = filterSettings.getRange();
         return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {
@@ -218,7 +218,7 @@ public class WarehouseService {
         return messagesQuery.getMessagesTvarsnittPerAmnePerEnhet(getMeddelandeFilter(vardgivarId, filter, range), idToNameMap);
     }
 
-    public KonDataResponse getMessagesPerAmnePerEnhetLandsting(FilterSettings filterSettings) {
+    public KonDataResponse getMessagesPerAmnePerEnhetRegion(FilterSettings filterSettings) {
         Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
         final Range range = filterSettings.getRange();
         return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {
@@ -349,7 +349,7 @@ public class WarehouseService {
                 1, sjukfallUtil);
     }
 
-    public SimpleKonResponse getCasesPerMonthLandsting(final FilterSettings filterSettings) {
+    public SimpleKonResponse getCasesPerMonthRegion(final FilterSettings filterSettings) {
         Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
         final Range range = filterSettings.getRange();
         Collection<SimpleKonResponse> results = Collections2.transform(enhetsPerVgid.keySet(),
@@ -361,16 +361,16 @@ public class WarehouseService {
         return SimpleKonResponse.merge(results, true, AvailableFilters.getForSjukfall());
     }
 
-    public SimpleKonResponse getCasesPerEnhetLandsting(final FilterSettings filterSettings) {
-        return getCasesPerEnhetLandsting(filterSettings, CutoffUsage.APPLY_CUTOFF_PER_SEX);
+    public SimpleKonResponse getCasesPerEnhetRegion(final FilterSettings filterSettings) {
+        return getCasesPerEnhetRegion(filterSettings, CutoffUsage.APPLY_CUTOFF_PER_SEX);
     }
 
-    public SimpleKonResponse getCasesPerPatientsPerEnhetLandsting(final FilterSettings filterSettings) {
-        return getCasesPerEnhetLandsting(filterSettings, CutoffUsage.APPLY_CUTOFF_ON_TOTAL);
+    public SimpleKonResponse getCasesPerPatientsPerEnhetRegion(final FilterSettings filterSettings) {
+        return getCasesPerEnhetRegion(filterSettings, CutoffUsage.APPLY_CUTOFF_ON_TOTAL);
     }
 
-    private SimpleKonResponse getCasesPerEnhetLandsting(final FilterSettings filterSettings,
-            final CutoffUsage cutoffUsage) {
+    private SimpleKonResponse getCasesPerEnhetRegion(final FilterSettings filterSettings,
+                                                     final CutoffUsage cutoffUsage) {
         Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
         final Range range = filterSettings.getRange();
         Collection<SimpleKonResponse> results = Collections2.transform(enhetsPerVgid.entrySet(),
@@ -387,7 +387,7 @@ public class WarehouseService {
         return SimpleKonResponses.addExtrasToNameDuplicates(merged);
     }
 
-    public KonDataResponse getIntygPerTypeLandsting(final FilterSettings filterSettings) {
+    public KonDataResponse getIntygPerTypeRegion(final FilterSettings filterSettings) {
         Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
         final IntygCommonFilter intygCommonFilter = getIntygCommonFilter(filterSettings);
         return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {
