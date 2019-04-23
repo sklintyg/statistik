@@ -1,4 +1,4 @@
-# Om körning av statistiken
+# Omkörning av statistiken
 
 I fall något har ändrats i hur vi räknar ut statistiken så behöver tjänsten gå igenom alla intyg och meddelanden igen.
 
