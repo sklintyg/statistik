@@ -439,21 +439,21 @@ public class ProtectedRegionService {
     }
 
     @GET
-    @Path("getKompletteringarPerFragaLandsting")
+    @Path("getKompletteringarPerFragaRegion")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
+    @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
-            help = "API-tjänst för skyddad åtkomst till andel kompletteringar per fråga för landsting.")
-    public Response getKompletteringarPerFragaLandsting(@Context HttpServletRequest request,
-                                                     @QueryParam("landstingfilter") String filterHash,
+            help = "API-tjänst för skyddad åtkomst till andel kompletteringar per fråga för region.")
+    public Response getKompletteringarPerFragaRegion(@Context HttpServletRequest request,
+                                                     @QueryParam("regionfilter") String filterHash,
                                                      @QueryParam("format") String format) {
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 18);
-        SimpleKonResponse casesPerMonth = warehouse.getKompletteringarPerFragaLandsting(filterSettings);
+        final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 18);
+        SimpleKonResponse casesPerMonth = warehouse.getKompletteringarPerFragaRegion(filterSettings);
         SimpleDetailsData result = SimpleDualSexConverter.newGenericTvarsnitt().convert(casesPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.L_KOMPLETTERINGARPERFRAGA, ReportType.TVARSNITT, getLastLandstingUpdateDate(vg));
+        return getResponse(result, format, request, Report.L_KOMPLETTERINGARPERFRAGA, ReportType.TVARSNITT, getLastRegionUpdateDate(vg));
     }
 
     @GET

@@ -460,8 +460,8 @@ var app = angular.module('StatisticsApp')
             }).when('/region/kompletteringarperfraga', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'columnChartDetailsViewCtrl',
-                controllerAs: 'LandstingKompletteringarPerFragaCtrl',
-                resolve: { config: app.kompletteringarPerFragaLandstingConfig },
+                controllerAs: 'RegionKompletteringarPerFragaCtrl',
+                resolve: { config: app.kompletteringarPerFragaRegionConfig },
                 title: 'nav.kompletteringarperfraga'
             }).when('/region/om', {
                 templateUrl: '/app/views/region/aboutregion.html',

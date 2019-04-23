@@ -181,7 +181,7 @@ public class WarehouseService {
         return messagesQuery.getKompletteringarPerFraga(getMeddelandeFilter(vardgivarId, filter, range), 0);
     }
 
-    public SimpleKonResponse getKompletteringarPerFragaLandsting(FilterSettings filterSettings) {
+    public SimpleKonResponse getKompletteringarPerFragaRegion(FilterSettings filterSettings) {
         Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
         final Range range = filterSettings.getRange();
         return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {

@@ -822,20 +822,20 @@ angular.module('StatisticsApp').kompletteringarPerFragaTvarsnittConfig =
         return conf;
     };
 
-angular.module('StatisticsApp').kompletteringarPerFragaLandstingConfig =
+angular.module('StatisticsApp').kompletteringarPerFragaRegionConfig =
     /** @ngInject */
     function (messageService) {
         'use strict';
 
         var conf = {};
-        conf.dataFetcherLandsting = 'getKompletteringarPerFragaDataLandsting';
-        conf.exportTableUrlLandsting = function () {
-            return 'api/verksamhet/getKompletteringarPerFragaTvarsnitt?format=xlsx';
+        conf.dataFetcherRegion = 'getKompletteringarPerFragaDataRegion';
+        conf.exportTableUrlRegion = function () {
+            return 'api/region/getKompletteringarPerFragaTvarsnitt?format=xlsx';
         };
         conf.title = messageService.getProperty('title.kompletteringarperfraga');
         conf.chartFootnotes = [];
-        conf.chartFootnotesExtra = function(result, isVerksamhet, isLandsting, $filter) {
-            return $filter('messageFilter')('help.landsting.kompletteringarperfraga', '', '', [result.fileUploadDate], '');
+        conf.chartFootnotesExtra = function(result, isVerksamhet, isRegion, $filter) {
+            return $filter('messageFilter')('help.region.kompletteringarperfraga', '', '', [result.fileUploadDate], '');
         };
 
         return conf;

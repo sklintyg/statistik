@@ -242,8 +242,8 @@ angular.module('StatisticsApp').factory('statisticsData',
         makeRequestVerksamhet('getKompletteringarPerFragaTvarsnitt', successCallback, failureCallback);
     };
 
-    factory.getKompletteringarPerFragaDataLandsting = function (successCallback, failureCallback) {
-        makeRequestLandsting('getKompletteringarPerFragaLandsting', successCallback, failureCallback);
+    factory.getKompletteringarPerFragaDataRegion = function (successCallback, failureCallback) {
+        makeRequestRegion('getKompletteringarPerFragaRegion', successCallback, failureCallback);
     };
 
     factory.getKompletteringarPerFragaTimeSeriesDataVerksamhet = function (successCallback, failureCallback) {

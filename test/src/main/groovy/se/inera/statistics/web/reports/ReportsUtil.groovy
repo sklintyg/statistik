@@ -196,8 +196,8 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getKompletteringarPerFragaTvarsnitt", filter, "vgid=" + vgid)
     }
 
-    def getReportKompletteringarPerFragaTvarsnittInloggadLandsting(String vgid, filter) {
-        return get("/api/landsting/getKompletteringarPerFragaLandsting", filter, "vgid=" + vgid)
+    def getReportKompletteringarPerFragaTvarsnittInloggadRegion(String vgid, filter) {
+        return get(getRegionUrlPrefix() + "/getKompletteringarPerFragaRegion", filter, "vgid=" + vgid)
     }
 
     def getReportAndelKompletteringarTvarsnittInloggad(String vgid, filter) {

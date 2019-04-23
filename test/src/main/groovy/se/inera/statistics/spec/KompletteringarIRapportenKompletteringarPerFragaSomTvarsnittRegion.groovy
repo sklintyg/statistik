@@ -18,13 +18,13 @@
  */
 package se.inera.statistics.spec
 
-class KompletteringarIRapportenKompletteringarPerFragaSomTvarsnittLandsting extends SimpleDetailsReport {
+class KompletteringarIRapportenKompletteringarPerFragaSomTvarsnittRegion extends SimpleDetailsReport {
 
     def grupp
 
     @Override
     public void doExecute() {
-        def report = getReportKompletteringarPerFragaTvarsnittLandsting()
+        def report = getReportKompletteringarPerFragaTvarsnittRegion()
         executeTabell(report)
     }
 

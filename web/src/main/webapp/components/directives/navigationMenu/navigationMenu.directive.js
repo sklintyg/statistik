@@ -369,12 +369,12 @@
                 ctrl: 'RegionAndelKompletteringarCtrl'
             }, {
                 checkEnable: function() {
-                    return UserModel.get().landstingAvailable;
+                    return UserModel.get().regionAvailable;
                 },
-                id: 'navLandstingKompletteringarPerFragaLink',
-                link: '#/landsting/kompletteringarperfraga',
+                id: 'navRegionKompletteringarPerFragaLink',
+                link: '#/region/kompletteringarperfraga',
                 name: 'nav.kompletteringarperfraga',
-                ctrl: 'LandstingKompletteringarPerFragaCtrl'
+                ctrl: 'RegionKompletteringarPerFragaCtrl'
             }]
         };
 

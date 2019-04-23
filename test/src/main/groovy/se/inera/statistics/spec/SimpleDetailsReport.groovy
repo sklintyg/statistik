@@ -229,11 +229,11 @@ abstract class SimpleDetailsReport extends Rapport {
         return reportsUtil.getReportKompletteringarPerFragaTvarsnitt();
     }
 
-    def getReportKompletteringarPerFragaTvarsnittLandsting() {
+    def getReportKompletteringarPerFragaTvarsnittRegion() {
         if (inloggad) {
-            return reportsUtil.getReportKompletteringarPerFragaTvarsnittInloggadLandsting(vg, filter);
+            return reportsUtil.getReportKompletteringarPerFragaTvarsnittInloggadRegion(vg, filter);
         }
-        throw new RuntimeException("Report -Kompletteringar per fråga som tvärsnitt landsting- is not available on national level");
+        throw new RuntimeException("Report -Kompletteringar per fråga som tvärsnitt region- is not available on national level");
     }
 
 }

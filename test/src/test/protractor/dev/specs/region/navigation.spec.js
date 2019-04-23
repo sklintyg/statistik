@@ -113,6 +113,7 @@ describe('Navigering region: ', function() {
         validateDetailReport('navRegionMessagesLink', 2);
         validateDetailReport('navRegionMessagesEnhetLink', 1);
         validateDetailReport('navRegionAndelKompletteringarLink', 2);
+        validateDetailReport('navRegionKompletteringarPerFragaLink', 1);
     }
 
     function validateDetailReport(menuId, expectedNumberOfCharts) {
