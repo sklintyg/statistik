@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 !3 Givet att:
@@ -13,17 +12,10 @@ Test
 | 1002 | 19790717-9181 | 2014-06-30T10:00:00 | G01 | LISJP | enhet2 |
 
 | Foljande meddelanden finns |
-| meddelandeid | personnr | skickat | intygsid | ämne |
-| 2001 | 19790717-9191 | 2014-04-05T10:00:00 | 1001 | KOMPLT |
-| 2002 | 19790717-9191 | 2014-06-03T10:00:00 | 1001 | KOMPLT |
-| 2003 | 19790717-9181 | 2014-06-01T10:00:00 | 1002 | KOMPLT |
-
-| Foljande kompletteringsbegaran finns |
-| personnr | meddelandeid | frageid |
-| 19790717-9191 | 2001 | 35 |
-| 19790717-9191 | 2001 | 1 |
-| 19790717-9191 | 2002 | 1 |
-| 19790717-9181 | 2003 | 1 |
+| personnr | skickat | intygsid | ämne | frågeid |
+| 19790717-9191 | 2014-04-05T10:00:00 | 1001 | KOMPLT | 35,1 |
+| 19790717-9191 | 2014-06-03T10:00:00 | 1001 | KOMPLT | 1 |
+| 19790717-9181 | 2014-06-01T10:00:00 | 1002 | KOMPLT | 1 |
 
 !3 Då gäller:
 Sjukskrivningslängd-filtret ger ingen effekt på denna rapport.
@@ -38,14 +30,14 @@ Inloggad:
 
 | Kompletteringar i rapporten kompletteringar per fraga som tvarsnitt |
 | inloggad som | grupp | totalt? | män? | kvinnor? |
-| user1 | Intyget baseras på | 3 | 2 | 1 |
-| user1 | Funktionsnedsättning | 1 | 1 | 0 |
+| user2 | Intyget baseras på | 3 | 2 | 1 |
+| user2 | Funktionsnedsättning | 1 | 1 | 0 |
 
 | Kompletteringar i rapporten kompletteringar per fraga |
 | inloggad som | år | månad | grupp | män? | kvinnor? |
-| user1 | 2014 | apr | Intyget baseras på | 2 | 0 |
-| user1 | 2014 | apr | Funktionsnedsättning | 1 | 0 |
-| user1 | 2014 | maj | Intyget baseras på | 0 | 0 |
-| user1 | 2014 | maj | Funktionsnedsättning | 0 | 0 |
-| user1 | 2014 | jun | Intyget baseras på | 0 | 1 |
-| user1 | 2014 | jun | Funktionsnedsättning | 0 | 0 |
+| user2 | 2014 | apr | Intyget baseras på | 2 | 0 |
+| user2 | 2014 | apr | Funktionsnedsättning | 1 | 0 |
+| user2 | 2014 | maj | Intyget baseras på | 0 | 0 |
+| user2 | 2014 | maj | Funktionsnedsättning | 0 | 0 |
+| user2 | 2014 | jun | Intyget baseras på | 0 | 1 |
+| user2 | 2014 | jun | Funktionsnedsättning | 0 | 0 |

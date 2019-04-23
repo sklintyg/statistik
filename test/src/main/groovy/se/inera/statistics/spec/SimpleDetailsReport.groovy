@@ -222,4 +222,18 @@ abstract class SimpleDetailsReport extends Rapport {
         throw new RuntimeException("Report -Andel kompletterade intyg som tvärsnitt- is not available on national level");
     }
 
+    def getReportKompletteringarPerFragaTvarsnitt() {
+        if (inloggad) {
+            return reportsUtil.getReportKompletteringarPerFragaTvarsnittInloggad(vg, filter);
+        }
+        return reportsUtil.getReportKompletteringarPerFragaTvarsnitt();
+    }
+
+    def getReportKompletteringarPerFragaTvarsnittLandsting() {
+        if (inloggad) {
+            return reportsUtil.getReportKompletteringarPerFragaTvarsnittInloggadLandsting(vg, filter);
+        }
+        throw new RuntimeException("Report -Kompletteringar per fråga som tvärsnitt landsting- is not available on national level");
+    }
+
 }

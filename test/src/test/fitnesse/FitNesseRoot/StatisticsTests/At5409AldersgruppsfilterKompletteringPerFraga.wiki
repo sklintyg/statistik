@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 !3 Givet att:
@@ -13,17 +12,10 @@ Test
 | 1002 | 19890117-9181 | 2014-06-30T10:00:00 | G01 | LISJP | enhet1 | 25år |
 
 | Foljande meddelanden finns |
-| meddelandeid | personnr | skickat | intygsid | ämne |
-| 2001 | 19790117-9191 | 2014-04-05T10:00:00 | 1001 | KOMPLT |
-| 2002 | 19790117-9191 | 2014-06-03T10:00:00 | 1001 | KOMPLT |
-| 2003 | 19890117-9181 | 2014-06-01T10:00:00 | 1002 | KOMPLT |
-
-| Foljande kompletteringsbegaran finns |
-| personnr | meddelandeid | frageid |
-| 19790117-9191 | 2001 | 35 |
-| 19790117-9191 | 2001 | 1 |
-| 19790117-9191 | 2002 | 1 |
-| 19890117-9181 | 2003 | 1 |
+| personnr | skickat | intygsid | ämne | frågeid |
+| 19790117-9191 | 2014-04-05T10:00:00 | 1001 | KOMPLT | 35,1 |
+| 19790117-9191 | 2014-06-03T10:00:00 | 1001 | KOMPLT | 1 |
+| 19890117-9181 | 2014-06-01T10:00:00 | 1002 | KOMPLT | 1 |
 
 !3 Då gäller:
 1= Intyget baseras på

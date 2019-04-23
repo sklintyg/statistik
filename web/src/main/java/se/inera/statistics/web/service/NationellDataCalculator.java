@@ -92,6 +92,7 @@ public class NationellDataCalculator {
         result.setMeddelandenPerAmne(buildNumberOfMeddelandenPerAmne(data));
         result.setIntygPerTyp(buildIntygPerTyp(data));
         result.setAndelKompletteringar(buildAndelKompletteringar(data));
+        result.setKompletteringarPerFraga(buildKompletteringarPerFraga(data));
         LOG.info("National data calculation: Done");
         return result;
     }
@@ -176,6 +177,13 @@ public class NationellDataCalculator {
         final Range range = data.getAndelKompletteringarRange();
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
         return new AndelKompletteringarConverter().convert(andelKompletteringar, filterSettings);
+    }
+
+    private TableDataReport buildKompletteringarPerFraga(NationellDataInfo data) {
+        final SimpleKonResponse kompletteringar = data.getKompletteringarPerFragaResult();
+        final Range range = data.getKompletteringarPerFragaRange();
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
+        return SimpleDualSexConverter.newGenericTvarsnitt().convert(kompletteringar, filterSettings);
     }
 
 }

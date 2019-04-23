@@ -228,6 +228,13 @@ abstract class DualSexTimeSeriesReport extends Rapport {
         return reportsUtil.getReportAndelKompletteringar();
     }
 
+    def getReportKompletteringarPerFraga() {
+        if (inloggad) {
+            return reportsUtil.getReportKompletteringarPerFragaInloggad(vg, filter);
+        }
+        return new RuntimeException("Report Kompletteringar Per Fraga -- is not available on national level");
+    }
+
     def getReportAndelKompletteringarLandsting() {
         if (inloggad) {
             return reportsUtil.getReportAndelKompletteringarLandsting(vg, filter);

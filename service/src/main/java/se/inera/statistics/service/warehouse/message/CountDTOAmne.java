@@ -34,6 +34,7 @@ public class CountDTOAmne {
     private String dx;
     private String intygid;
     private HsaIdLakare lakareId;
+    private String svarIds;
 
     public int getCount() {
         return count;
@@ -115,4 +116,11 @@ public class CountDTOAmne {
         this.lakareId = lakareId;
     }
 
+    public void setSvarIds(String svarIds) {
+        this.svarIds = svarIds;
+    }
+
+    public String getSvarIds() {
+        return svarIds;
+    }
 }

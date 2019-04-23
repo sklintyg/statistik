@@ -234,6 +234,22 @@ angular.module('StatisticsApp').factory('statisticsData',
         makeRequestVerksamhet('getSickLeaveLengthData', successCallback, failureCallback);
     };
 
+    factory.getNationalKompletteringarPerFragaData = function (successCallback, failureCallback) {
+        makeRequestNational('getKompletteringarPerFragaTvarsnitt', successCallback, failureCallback);
+    };
+
+    factory.getKompletteringarPerFragaDataVerksamhet = function (successCallback, failureCallback) {
+        makeRequestVerksamhet('getKompletteringarPerFragaTvarsnitt', successCallback, failureCallback);
+    };
+
+    factory.getKompletteringarPerFragaDataLandsting = function (successCallback, failureCallback) {
+        makeRequestLandsting('getKompletteringarPerFragaLandsting', successCallback, failureCallback);
+    };
+
+    factory.getKompletteringarPerFragaTimeSeriesDataVerksamhet = function (successCallback, failureCallback) {
+        makeRequestVerksamhet('getKompletteringarPerFraga', successCallback, failureCallback);
+    };
+
     factory.getSickLeaveLengthTimeSeriesDataVerksamhet = function (successCallback, failureCallback) {
         makeRequestVerksamhet('getSickLeaveLengthTimeSeries', successCallback, failureCallback);
     };

@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 !contents -R2 -g -p -f -h
@@ -13,12 +12,8 @@ Test
 | 1001 | 19790717-9191 | 2014-04-05T10:00:00 | G01 | LISJP | enhet1 |
 
 | Foljande meddelanden finns |
-| meddelandeid | personnr | skickat | intygsid | ämne |
-| 2001 | 19790717-9191 | 2014-04-05T10:00:00 | 1001 | KOMPLT |
-
-| Foljande kompletteringsbegaran finns |
-| personnr | meddelandeid | frageid |
-| 19790717-9191 | 2001 | 35 |
+| personnr | skickat | intygsid | ämne | frågeid |
+| 19790717-9191 | 2014-04-05T10:00:00 | 1001 | KOMPLT | 35 |
 
 | Foljande intyg finns |
 | intygid | personnr | händelsetyp | signeringstid | diagnoskod | intygformat | enhet |

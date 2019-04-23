@@ -493,6 +493,42 @@ public class ProtectedChartDataService {
         return getResponse(result, format, request, Report.V_ANDELKOMPLETTERINGAR, ReportType.TVARSNITT);
     }
 
+    @GET
+    @Path("getKompletteringarPerFraga")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    @PrometheusTimeMethod(
+            help = "API-tjänst för skyddad åtkomst till kompletteringar per fråga")
+    public Response getKompletteringarPerFraga(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+                                          @QueryParam("format") String format) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
+        KonDataResponse casesPerMonth = warehouse.getKompletteringarPerFraga(filterSettings.getFilter(),
+                filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        DualSexStatisticsData result = new SimpleMultiDualSexConverter().convert(casesPerMonth, filterSettings);
+        return getResponse(result, format, request, Report.V_KOMPLETTERINGARPERFRAGA, ReportType.TIDSSERIE);
+    }
+
+    @GET
+    @Path("getKompletteringarPerFragaTvarsnitt")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    @PrometheusTimeMethod(
+            help = "API-tjänst för skyddad åtkomst till tvärsnittet av kompletteringar per fråga")
+    public Response getKompletteringarPerFragaTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+                                                   @QueryParam("format") String format) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
+        final Filter filter = filterSettings.getFilter();
+        final Range range = filterSettings.getRange();
+        SimpleKonResponse casesPerMonth = warehouse.getKompletteringarPerFragaTvarsnitt(filter, range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleDetailsData result = SimpleDualSexConverter.newGenericTvarsnitt().convert(casesPerMonth, filterSettings);
+        return getResponse(result, format, request, Report.V_KOMPLETTERINGARPERFRAGA, ReportType.TVARSNITT);
+    }
+
     /**
      * Gets sjukfall per enhet for verksamhetId.
      */

@@ -62,6 +62,12 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'NationalSickLeaveLengthCtrl',
                 resolve: { config: app.nationalSickLeaveLengthConfig },
                 title: 'nav.sjukskrivningslangd'
+            }).when('/nationell/kompletteringarperfraga', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'columnChartDetailsViewCtrl',
+                controllerAs: 'NationalKompletteringarPerFragaCtrl',
+                resolve: { config: app.kompletteringarPerFragaTvarsnittConfig },
+                title: 'nav.kompletteringarperfraga'
             }).when('/nationell/lan', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'columnChartDetailsViewCtrl',
@@ -235,6 +241,18 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'VerksamhetDegreeOfSickLeaveCtrl',
                 resolve: { config: app.degreeOfSickLeaveTvarsnittConfig },
                 title: 'nav.sjukskrivningsgrad'
+            }).when('/verksamhet/kompletteringarperfraga', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'columnChartDetailsViewCtrl',
+                controllerAs: 'VerksamhetKompletteringarPerFragaCtrl',
+                resolve: { config: app.kompletteringarPerFragaTvarsnittConfig },
+                title: 'nav.kompletteringarperfraga'
+            }).when('/verksamhet/kompletteringarperfragaTidsserie', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'doubleAreaChartsCtrl',
+                controllerAs: 'VerksamhetKompletteringarPerFragaCtrl',
+                resolve: { config: app.kompletteringarPerFragaTimeSeriesConfig },
+                title: 'nav.kompletteringarperfraga'
             }).when('/verksamhet/sjukskrivningslangd', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'columnChartDetailsViewCtrl',
@@ -438,6 +456,12 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'LandstingAndelKompletteringarCtrl',
                 resolve: { config: app.andelKompletteringarLandstingConfig },
                 title: 'nav.andelkompletteringar'
+            }).when('/landsting/kompletteringarperfraga', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'columnChartDetailsViewCtrl',
+                controllerAs: 'LandstingKompletteringarPerFragaCtrl',
+                resolve: { config: app.kompletteringarPerFragaLandstingConfig },
+                title: 'nav.kompletteringarperfraga'
             }).when('/landsting/om', {
                 templateUrl: '/app/views/landsting/aboutlandsting.html',
                 controllerAs: 'LandstingAboutCtrl',

@@ -177,6 +177,24 @@ public class WarehouseService {
         return messagesQuery.getAndelKompletteringarTvarsnitt(getMeddelandeFilter(vardgivarId, filter, range));
     }
 
+    public KonDataResponse getKompletteringarPerFraga(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
+        return messagesQuery.getKompletteringarPerFraga(getMeddelandeFilter(vardgivarId, filter, range), 0);
+    }
+
+    public SimpleKonResponse getKompletteringarPerFragaLandsting(FilterSettings filterSettings) {
+        Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
+        final Range range = filterSettings.getRange();
+        return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {
+            final MessagesFilter meddelandeFilter = getMeddelandeFilter(entry.getKey(), filterSettings.getFilter(), range);
+            final int cutoff = sjukfallQuery.getCutoff();
+            return messagesQuery.getKompletteringarPerFragaTvarsnittAggregated(konDataResponse, meddelandeFilter, cutoff);
+        }, (konDataResponse, konDataResponse2) -> konDataResponse2);
+    }
+
+    public SimpleKonResponse getKompletteringarPerFragaTvarsnitt(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
+        return messagesQuery.getKompletteringarPerFragaTvarsnitt(getMeddelandeFilter(vardgivarId, filter, range), 0);
+    }
+
     public KonDataResponse getMessagesPerAmnePerEnhet(Filter filter, Range range, HsaIdVardgivare vardgivarId,
                                                       Map<HsaIdEnhet, String> idToNameMap) {
         return messagesQuery.getMessagesPerAmnePerEnhet(getMeddelandeFilter(vardgivarId, filter, range), idToNameMap);

@@ -138,6 +138,11 @@
                 link: '#/nationell/andelkompletteringar',
                 name: 'nav.andelkompletteringar',
                 ctrl: 'NationalAndelKompletteringarCtrl'
+            }, {
+                id: 'navNationalKompletteringarPerFragaLink',
+                link: '#/nationell/kompletteringarperfraga',
+                name: 'nav.kompletteringarperfraga',
+                ctrl: 'NationalKompletteringarPerFragaCtrl'
             }]
         };
 
@@ -274,6 +279,11 @@
                 link: '#/verksamhet/andelkompletteringar',
                 name: 'nav.andelkompletteringar',
                 ctrl: 'VerksamhetAndelKompletteringarCtrl'
+            }, {
+                id: 'navBusinessKompletteringarPerFragaLink',
+                link: '#/verksamhet/kompletteringarperfraga',
+                name: 'nav.kompletteringarperfraga',
+                ctrl: 'VerksamhetKompletteringarPerFragaCtrl'
             }]
         };
 
@@ -357,6 +367,14 @@
                 link: '#/landsting/andelkompletteringar',
                 name: 'nav.andelkompletteringar',
                 ctrl: 'LandstingAndelKompletteringarCtrl'
+            }, {
+                checkEnable: function() {
+                    return UserModel.get().landstingAvailable;
+                },
+                id: 'navLandstingKompletteringarPerFragaLink',
+                link: '#/landsting/kompletteringarperfraga',
+                name: 'nav.kompletteringarperfraga',
+                ctrl: 'LandstingKompletteringarPerFragaCtrl'
             }]
         };
 

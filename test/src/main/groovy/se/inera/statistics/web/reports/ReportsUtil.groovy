@@ -176,6 +176,22 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getAndelKompletteringar", filter, "vgid=" + vgid)
     }
 
+    def getReportKompletteringarPerFragaInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getKompletteringarPerFraga", filter, "vgid=" + vgid)
+    }
+
+    def getReportKompletteringarPerFragaTvarsnitt() {
+        return get("/api/getKompletteringarPerFragaTvarsnitt")
+    }
+
+    def getReportKompletteringarPerFragaTvarsnittInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getKompletteringarPerFragaTvarsnitt", filter, "vgid=" + vgid)
+    }
+
+    def getReportKompletteringarPerFragaTvarsnittInloggadLandsting(String vgid, filter) {
+        return get("/api/landsting/getKompletteringarPerFragaLandsting", filter, "vgid=" + vgid)
+    }
+
     def getReportAndelKompletteringarTvarsnittInloggad(String vgid, filter) {
         return get(getVerksamhetUrlPrefix() + "/getAndelKompletteringarTvarsnitt", filter, "vgid=" + vgid)
     }

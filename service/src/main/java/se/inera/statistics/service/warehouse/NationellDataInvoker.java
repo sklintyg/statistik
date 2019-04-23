@@ -116,6 +116,7 @@ public class NationellDataInvoker {
     private void calculateMeddelandenPerVg(HsaIdVardgivare vardgivareId, NationellDataInfo result) {
         calculateMsgPerAmne(vardgivareId, result);
         calulateAndelIntyg(vardgivareId, result);
+        calulateKompletteringarPerFraga(vardgivareId, result);
     }
 
     private void calculateMsgPerAmne(HsaIdVardgivare vardgivareId, NationellDataInfo result) {
@@ -135,6 +136,17 @@ public class NationellDataInvoker {
         final KonDataResponse konDataResponse = result.getAndelKompletteringarResult();
         final KonDataResponse response = messagesQuery.getAndelKompletteringarAggregated(konDataResponse, messagesFilter, cutoff);
         result.setAndelKompletteringarResult(response);
+    }
+
+    private void calulateKompletteringarPerFraga(HsaIdVardgivare vardgivareId, NationellDataInfo result) {
+        final Range range = result.getKompletteringarPerFragaRange();
+        final LocalDate from = range.getFrom();
+        final LocalDate to = range.getTo();
+        final MessagesFilter messagesFilter = new MessagesFilter(vardgivareId, from, to, null, null, null, null);
+        final SimpleKonResponse konDataResponse = result.getKompletteringarPerFragaResult();
+        final SimpleKonResponse response = messagesQuery.getKompletteringarPerFragaTvarsnittAggregated(
+                konDataResponse, messagesFilter, cutoff);
+        result.setKompletteringarPerFragaResult(response);
     }
 
     private void calculateIntygPerVg(HsaIdVardgivare vardgivareId, NationellDataInfo result) {
@@ -227,6 +239,7 @@ public class NationellDataInvoker {
         result.setMeddelandenPerAmneRange(longRange);
         result.setIntygPerTypeRange(longRange);
         result.setAndelKompletteringarRange(longRange);
+        result.setKompletteringarPerFragaRange(yearRange);
     }
 
     private NationellDataInfo populateResults(NationellDataInfo result, NationellDataHolder data) {
@@ -292,6 +305,11 @@ public class NationellDataInvoker {
         if (result.getAndelKompletteringarResult() == null) {
             KonDataResponse response = new KonDataResponse(AvailableFilters.getForNationell(), new ArrayList<>(), new ArrayList<>());
             result.setAndelKompletteringarResult(response);
+        }
+
+        if (result.getKompletteringarPerFragaResult() == null) {
+            SimpleKonResponse response = new SimpleKonResponse(AvailableFilters.getForNationell(), new ArrayList<>());
+            result.setKompletteringarPerFragaResult(response);
         }
 
         return result;

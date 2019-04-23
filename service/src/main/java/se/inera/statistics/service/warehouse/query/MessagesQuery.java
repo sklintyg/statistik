@@ -27,10 +27,15 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -60,6 +65,7 @@ import se.inera.statistics.service.warehouse.message.MsgAmne;
 @Component
 public class MessagesQuery {
 
+    private static final Logger LOG = LoggerFactory.getLogger(MessagesQuery.class);
     public static final String GROUP_NAME_SEPARATOR = " : ";
 
     @Autowired
@@ -67,6 +73,7 @@ public class MessagesQuery {
 
     @Autowired
     private LakareManager lakareManager;
+    public static final int MAX_PERCENTAGE = 100;
 
     public KonDataResponse getMeddelandenPerAmneAggregated(KonDataResponse resultToAggregateIn, MessagesFilter filter, int cutoff) {
         final KonDataResponse messagesTvarsnittPerAmne = getMessagesPerAmne(filter);
@@ -113,6 +120,21 @@ public class MessagesQuery {
         return getKonDataResponseAggregated(resultToAggregateIn, filter, cutoff, andelKompletteringar);
     }
 
+    public KonDataResponse getKompletteringarPerFraga(MessagesFilter filter, int cutoff) {
+        List<CountDTOAmne> rows = messageWidelineLoader.getKompletteringar(getMessagesFilterForKompletteringarPerFraga(filter));
+        return convertToKompletteringarPerFraga(rows, filter.getFrom(), filter.getNumberOfMonths(), cutoff);
+    }
+
+    public SimpleKonResponse getKompletteringarPerFragaTvarsnittAggregated(
+            SimpleKonResponse resultToAggregateIn, MessagesFilter filter, int cutoff) {
+        final SimpleKonResponse kompletteringar = getKompletteringarPerFragaTvarsnitt(filter, cutoff);
+        AvailableFilters availableFilters = resultToAggregateIn != null
+                ? resultToAggregateIn.getAvailableFilters() : AvailableFilters.getForMeddelanden();
+        final List<SimpleKonResponse> collect = Stream.of(resultToAggregateIn, kompletteringar)
+                .filter(Objects::nonNull).collect(Collectors.toList());
+        return SimpleKonResponse.merge(collect, true, availableFilters);
+    }
+
     private KonDataResponse getKonDataResponseAggregated(KonDataResponse resultToAggregateIn, MessagesFilter filter,
                                                          int cutoff, KonDataResponse andelKompletteringar) {
         final KonDataResponse resultToAggregate = resultToAggregateIn != null
@@ -129,6 +151,19 @@ public class MessagesQuery {
     public SimpleKonResponse getAndelKompletteringarTvarsnitt(MessagesFilter filter) {
         List<CountDTOAmne> rows = messageWidelineLoader.getKompletteringarPerIntyg(filter);
         return convertToAndelKompletteringarTvarsnitt(rows);
+    }
+
+    public SimpleKonResponse getKompletteringarPerFragaTvarsnitt(MessagesFilter filter, int cutoff) {
+        List<CountDTOAmne> rows = messageWidelineLoader.getKompletteringar(getMessagesFilterForKompletteringarPerFraga(filter));
+        return convertToKompletteringarPerFragaTvarsnitt(rows, cutoff);
+    }
+
+    //Handles the requirement that it should be possible to apply intygsfilter
+    // on the report even though Lisjp is the only valid type.
+    private MessagesFilter getMessagesFilterForKompletteringarPerFraga(MessagesFilter filter) {
+        final MessagesFilter messageFilterForSjukpenning = getMessageFilterForSjukpenningWithRange(filter,
+                new Range(filter.getFrom(), filter.getTo()));
+        return new MessagesFilter(messageFilterForSjukpenning, Collections.singletonList(MsgAmne.KOMPLT.name()));
     }
 
     public KonDataResponse getMessagesPerAmnePerEnhet(MessagesFilter filter, Map<HsaIdEnhet, String> idToNameMap) {
@@ -153,12 +188,7 @@ public class MessagesQuery {
 
     private KonDataResponse convertToMessagesPerAmne(List<CountDTOAmne> rows, LocalDate start, int perioder) {
         List<KonDataRow> result = new ArrayList<>();
-        Map<LocalDate, List<CountDTOAmne>> map;
-        if (rows != null) {
-            map = rows.stream().collect(Collectors.groupingBy(CountDTOAmne::getDate));
-        } else {
-            map = new HashMap<>();
-        }
+        Map<LocalDate, List<CountDTOAmne>> map = mapList(rows, CountDTOAmne::getDate);
 
         final MsgAmne[] msgAmnes = MsgAmne.values();
         final int seriesLength = msgAmnes.length;
@@ -173,13 +203,7 @@ public class MessagesQuery {
             List<CountDTOAmne> dtos = map.get(temp);
 
             if (dtos != null) {
-                for (CountDTOAmne dto : dtos) {
-                    if (dto.getKon().equals(Kon.FEMALE)) {
-                        femaleSeries[dto.getAmne().ordinal()] += dto.getCount();
-                    } else {
-                        maleSeries[dto.getAmne().ordinal()] += dto.getCount();
-                    }
-                }
+                addCountOnAmne(maleSeries, femaleSeries, dtos);
             }
 
             final ArrayList<KonField> data = new ArrayList<>();
@@ -189,6 +213,10 @@ public class MessagesQuery {
             result.add(new KonDataRow(displayDate, data));
         }
 
+        return getKonDataResponse(result, msgAmnes);
+    }
+
+    private KonDataResponse getKonDataResponse(List<KonDataRow> result, MsgAmne[] msgAmnes) {
         final ArrayList<String> groups = new ArrayList<>();
         for (MsgAmne msgAmne : msgAmnes) {
             groups.add(msgAmne.name());
@@ -196,51 +224,35 @@ public class MessagesQuery {
         return new KonDataResponse(AvailableFilters.getForMeddelanden(), groups, result);
     }
 
-    private SimpleKonResponse convertToAndelKompletteringarTvarsnitt(List<CountDTOAmne> rows) {
-        Map<String, List<CountDTOAmne>> map;
-        if (rows != null) {
-            map = rows.stream().collect(Collectors.groupingBy(CountDTOAmne::getIntygTyp));
-        } else {
-            map = new HashMap<>();
+    private void addCountOnAmne(int[] maleSeries, int[] femaleSeries, List<CountDTOAmne> dtos) {
+        for (CountDTOAmne dto : dtos) {
+            if (dto.getKon().equals(Kon.FEMALE)) {
+                femaleSeries[dto.getAmne().ordinal()] += dto.getCount();
+            } else {
+                maleSeries[dto.getAmne().ordinal()] += dto.getCount();
+            }
         }
+    }
 
+    private SimpleKonResponse convertToAndelKompletteringarTvarsnitt(List<CountDTOAmne> rows) {
+        Map<String, List<CountDTOAmne>> map = mapList(rows, CountDTOAmne::getIntygTyp);
         final IntygType[] intygTypes = IntygType.values();
         final int seriesLength = intygTypes.length;
-
-
-        int[] maleKompl = new int[seriesLength];
-        int[] femaleKompl = new int[seriesLength];
-        int[] maleIntyg = new int[seriesLength];
-        int[] femaleIntyg = new int[seriesLength];
+        AndelKompletteringarCount male = new AndelKompletteringarCount(seriesLength);
+        AndelKompletteringarCount female = new AndelKompletteringarCount(seriesLength);
 
         for (IntygType intygType : intygTypes) {
             List<CountDTOAmne> allDtos = map.get(intygType.name());
-            if (allDtos != null) {
-                final Map<String, List<CountDTOAmne>> dtosPerIntygid = allDtos.stream()
-                        .collect(Collectors.groupingBy(CountDTOAmne::getIntygid));
-                for (List<CountDTOAmne> dtos : dtosPerIntygid.values()) {
-                    final CountDTOAmne aDto = dtos.get(0);
-                    final boolean isKomplt = dtos.stream().anyMatch(dto -> MsgAmne.KOMPLT.equals(dto.getAmne()));
-                    final int ordinal = IntygType.parseString(aDto.getIntygTyp()).ordinal();
-                    if (aDto.getKon().equals(Kon.FEMALE)) {
-                        femaleIntyg[ordinal] += 1;
-                        femaleKompl[ordinal] += isKomplt ? 1 : 0;
-                    } else {
-                        maleIntyg[ordinal] += 1;
-                        maleKompl[ordinal] += isKomplt ? 1 : 0;
-                    }
-                }
-            }
+            addCountAndelKompletteringar(male, female, allDtos);
         }
 
-        final int percentConvertion = 100;
         final List<SimpleKonDataRow> result = new ArrayList<>();
         for (int j = 0, intygTypesLength = intygTypes.length; j < intygTypesLength; j++) {
             final IntygType intygType = intygTypes[j];
             if (intygType.isIncludedInKompletteringReport()) {
-                int f = femaleIntyg[j] == 0 ? 0 : percentConvertion * femaleKompl[j] / femaleIntyg[j];
-                int m = maleIntyg[j] == 0 ? 0 : percentConvertion * maleKompl[j] / maleIntyg[j];
-                final AndelExtras extras = new AndelExtras(femaleIntyg[j], femaleKompl[j], maleIntyg[j], maleKompl[j]);
+                int f = female.intyg[j] == 0 ? 0 : MAX_PERCENTAGE * female.kompl[j] / female.intyg[j];
+                int m = male.intyg[j] == 0 ? 0 : MAX_PERCENTAGE * male.kompl[j] / male.intyg[j];
+                final AndelExtras extras = new AndelExtras(female.intyg[j], female.kompl[j], male.intyg[j], male.kompl[j]);
                 result.add(new SimpleKonDataRow(intygType.name(), f, m, extras));
             }
         }
@@ -248,73 +260,183 @@ public class MessagesQuery {
         return new SimpleKonResponse(AvailableFilters.getForMeddelanden(), result);
     }
 
+    private void addCountAndelKompletteringar(AndelKompletteringarCount male, AndelKompletteringarCount female,
+                                              List<CountDTOAmne> allDtos) {
+        if (allDtos != null) {
+            final Map<String, List<CountDTOAmne>> dtosPerIntygid = allDtos.stream()
+                    .collect(Collectors.groupingBy(CountDTOAmne::getIntygid));
+            for (List<CountDTOAmne> dtos : dtosPerIntygid.values()) {
+                final CountDTOAmne aDto = dtos.get(0);
+                final boolean isKomplt = dtos.stream().anyMatch(dto -> MsgAmne.KOMPLT.equals(dto.getAmne()));
+                final int ordinal = IntygType.parseString(aDto.getIntygTyp()).ordinal();
+                if (aDto.getKon().equals(Kon.FEMALE)) {
+                    female.intyg[ordinal] += 1;
+                    female.kompl[ordinal] += isKomplt ? 1 : 0;
+                } else {
+                    male.intyg[ordinal] += 1;
+                    male.kompl[ordinal] += isKomplt ? 1 : 0;
+                }
+            }
+        }
+    }
+
+    private static class AndelKompletteringarCount {
+        int[] kompl, intyg;
+
+        AndelKompletteringarCount(int size) {
+            kompl = new int[size];
+            intyg = new int[size];
+        }
+    }
+
+    private static class FinalCountAndelKompletteringar {
+        int kompl, intyg, andel;
+    }
+
     private KonDataResponse convertToAndelKompletteringar(List<CountDTOAmne> rows, LocalDate start, int perioder, int cutoff) {
         List<KonDataRow> result = new ArrayList<>();
-        Map<LocalDate, List<CountDTOAmne>> map;
-        if (rows != null) {
-            map = rows.stream().collect(Collectors.groupingBy(CountDTOAmne::getDate));
-        } else {
-            map = new HashMap<>();
-        }
+        Map<LocalDate, List<CountDTOAmne>> map = mapList(rows, CountDTOAmne::getDate);
 
         final IntygType[] intygTypes = IntygType.values();
         final int seriesLength = intygTypes.length;
 
         for (int i = 0; i < perioder; i++) {
-            int[] maleKompl = new int[seriesLength];
-            int[] femaleKompl = new int[seriesLength];
-            int[] maleIntyg = new int[seriesLength];
-            int[] femaleIntyg = new int[seriesLength];
+            AndelKompletteringarCount male = new AndelKompletteringarCount(seriesLength);
+            AndelKompletteringarCount female = new AndelKompletteringarCount(seriesLength);
 
             LocalDate temp = start.plusMonths(i);
             String displayDate = ReportUtil.toDiagramPeriod(temp);
-
             List<CountDTOAmne> allDtos = map.get(temp);
-
-            if (allDtos != null) {
-                final Map<String, List<CountDTOAmne>> dtosPerIntygid = allDtos.stream()
-                        .collect(Collectors.groupingBy(CountDTOAmne::getIntygid));
-                for (List<CountDTOAmne> dtos : dtosPerIntygid.values()) {
-                    final CountDTOAmne aDto = dtos.get(0);
-                    final boolean isKomplt = dtos.stream().anyMatch(dto -> MsgAmne.KOMPLT.equals(dto.getAmne()));
-                    final int ordinal = IntygType.parseString(aDto.getIntygTyp()).ordinal();
-                    if (aDto.getKon().equals(Kon.FEMALE)) {
-                        femaleIntyg[ordinal] += 1;
-                        femaleKompl[ordinal] += isKomplt ? 1 : 0;
-                    } else {
-                        maleIntyg[ordinal] += 1;
-                        maleKompl[ordinal] += isKomplt ? 1 : 0;
-                    }
-                }
-            }
-
-            final int percentConvertion = 100;
+            addCountAndelKompletteringar(male, female, allDtos);
             final ArrayList<KonField> data = new ArrayList<>();
             for (int j = 0; j < seriesLength; j++) {
                 if (intygTypes[j].isIncludedInKompletteringReport()) {
-                    boolean includeFemale = femaleKompl[j] >= cutoff;
-                    final int femaleKomplJ = includeFemale ? femaleKompl[j] : 0;
-                    final int femaleIntygJ = includeFemale ? femaleIntyg[j] : 0;
-                    int f = femaleIntygJ == 0 ? 0 : percentConvertion * femaleKomplJ / femaleIntygJ;
-
-                    boolean includeMale = maleKompl[j] >= cutoff;
-                    final int maleKomplJ = includeMale ? maleKompl[j] : 0;
-                    final int maleIntygJ = includeMale ? maleIntyg[j] : 0;
-                    int m = maleIntygJ == 0 ? 0 : percentConvertion * maleKomplJ / maleIntygJ;
-
-                    data.add(new KonField(f, m, new AndelExtras(femaleIntygJ, femaleKomplJ, maleIntygJ, maleKomplJ)));
+                    final FinalCountAndelKompletteringar femaleJ = getFinalCountAndelKompletteringar(cutoff, female, j);
+                    final FinalCountAndelKompletteringar maleJ = getFinalCountAndelKompletteringar(cutoff, male, j);
+                    final AndelExtras extras = new AndelExtras(femaleJ.intyg, femaleJ.kompl, maleJ.intyg, maleJ.kompl);
+                    data.add(new KonField(femaleJ.andel, maleJ.andel, extras));
                 }
             }
             result.add(new KonDataRow(displayDate, data));
         }
 
         final ArrayList<String> groups = new ArrayList<>();
-        for (int j = 0; j < seriesLength; j++) {
-            if (intygTypes[j].isIncludedInKompletteringReport()) {
-                groups.add(intygTypes[j].name());
+        for (IntygType intygType : intygTypes) {
+            if (intygType.isIncludedInKompletteringReport()) {
+                groups.add(intygType.name());
             }
         }
         return new KonDataResponse(AvailableFilters.getForMeddelanden(), groups, result);
+    }
+
+    private FinalCountAndelKompletteringar getFinalCountAndelKompletteringar(int cutoff, AndelKompletteringarCount femaleCount, int index) {
+        final FinalCountAndelKompletteringar female = new FinalCountAndelKompletteringar();
+        boolean includeFemale = femaleCount.kompl[index] >= cutoff;
+        female.kompl = includeFemale ? femaleCount.kompl[index] : 0;
+        female.intyg = includeFemale ? femaleCount.intyg[index] : 0;
+        female.andel = female.intyg == 0 ? 0 : MAX_PERCENTAGE * female.kompl / female.intyg;
+        return female;
+    }
+
+    private SimpleKonResponse convertToKompletteringarPerFragaTvarsnitt(List<CountDTOAmne> rows, int cutoff) {
+        final Intygsfraga[] intygsfraga = Intygsfraga.values();
+        final int seriesLength = intygsfraga.length;
+        int[] maleKompl = new int[seriesLength];
+        int[] femaleKompl = new int[seriesLength];
+
+        final List<CountDTOAmne> nullSafeRows = rows == null ? Collections.emptyList() : rows;
+        for (CountDTOAmne row : nullSafeRows) {
+            final String svarIdsString = row.getSvarIds();
+            final String[] svarsIds = svarIdsString == null ? new String[0] : svarIdsString.split(",");
+            for (String svarsId : svarsIds) {
+                try {
+                    final int[] genderData = row.getKon().equals(Kon.FEMALE) ? femaleKompl : maleKompl;
+                    addFrageCount(genderData, svarsId);
+                } catch (NumberFormatException e) {
+                    LOG.warn("Unknown frageid: " + svarsId);
+                }
+            }
+        }
+
+        final List<SimpleKonDataRow> result = new ArrayList<>();
+        for (int j = 0, intygTypesLength = intygsfraga.length; j < intygTypesLength; j++) {
+            final Intygsfraga intygType = intygsfraga[j];
+            final int female = handleCutoff(femaleKompl[j], cutoff);
+            final int male = handleCutoff(maleKompl[j], cutoff);
+            result.add(new SimpleKonDataRow(intygType.getText(), female, male));
+        }
+        return new SimpleKonResponse(AvailableFilters.getForMeddelanden(), result);
+    }
+
+    private void addFrageCount(int[] count, String frageIdString) {
+        try {
+            final int frageId = Integer.parseInt(frageIdString.trim());
+            final Optional<Intygsfraga> intygsfraga = Intygsfraga.getByFrageid(frageId);
+            intygsfraga.ifPresent(fraga -> count[fraga.ordinal()] += 1);
+        } catch (Exception e) {
+            LOG.warn("Could not parse id to int: '" + frageIdString + "'");
+        }
+    }
+
+    private int handleCutoff(int value, int cutoff) {
+        return value >= cutoff ? value : 0;
+    }
+
+    private KonDataResponse convertToKompletteringarPerFraga(List<CountDTOAmne> rows, LocalDate start, int perioder, int cutoff) {
+        List<KonDataRow> result = new ArrayList<>();
+        Map<LocalDate, List<CountDTOAmne>> map = mapList(rows, CountDTOAmne::getDate);
+
+        final Intygsfraga[] intygsfragas = Intygsfraga.values();
+        final int seriesLength = intygsfragas.length;
+
+        for (int i = 0; i < perioder; i++) {
+            int[] maleIntyg = new int[seriesLength];
+            int[] femaleIntyg = new int[seriesLength];
+
+            LocalDate currentMonth = start.plusMonths(i);
+            String displayDate = ReportUtil.toDiagramPeriod(currentMonth);
+
+            List<CountDTOAmne> allDtos = map.get(currentMonth);
+
+            if (allDtos != null) {
+                final Map<String, List<CountDTOAmne>> dtosPerIntygid = allDtos.stream()
+                        .collect(Collectors.groupingBy(CountDTOAmne::getIntygid));
+                for (List<CountDTOAmne> dtos : dtosPerIntygid.values()) {
+                    for (CountDTOAmne aDto : dtos) {
+                        final String svarIdsString = aDto.getSvarIds();
+                        final String[] svarIds = svarIdsString.split(",");
+                        for (String svarId : svarIds) {
+                            final int[] genderData = aDto.getKon().equals(Kon.FEMALE) ? femaleIntyg : maleIntyg;
+                            addFrageCount(genderData, svarId);
+                        }
+                    }
+                }
+            }
+
+            final ArrayList<KonField> data = new ArrayList<>();
+            for (int j = 0; j < seriesLength; j++) {
+                final int femaleIntygJ = handleCutoff(femaleIntyg[j], cutoff);
+                final int maleIntygJ = handleCutoff(maleIntyg[j], cutoff);
+                data.add(new KonField(femaleIntygJ, maleIntygJ));
+            }
+            result.add(new KonDataRow(displayDate, data));
+        }
+
+        final ArrayList<String> groups = new ArrayList<>();
+        for (int j = 0; j < seriesLength; j++) {
+            groups.add(intygsfragas[j].getText());
+        }
+        return new KonDataResponse(AvailableFilters.getForMeddelanden(), groups, result);
+    }
+
+    private <T, R> Map<T, List<R>> mapList(List<R> rows, Function<R, T> groupByFunction) {
+        Map<T, List<R>> map;
+        if (rows != null) {
+            map = rows.stream().collect(Collectors.groupingBy(groupByFunction));
+        } else {
+            map = new HashMap<>();
+        }
+        return map;
     }
 
     private KonDataResponse convertToMessagesPerAmnePerLakare(List<CountDTOAmne> rows, LocalDate start, int perioder) {
@@ -384,16 +506,9 @@ public class MessagesQuery {
 
     private <T> KonDataResponse convertToMessagesPerAmnePerType(List<CountDTOAmne> rows, LocalDate start, int perioder, List<T> types,
                                                                 Function<CountDTOAmne, T> typeInDto, Function<T, String> typeToName) {
-        Map<LocalDate, List<CountDTOAmne>> map;
-        if (rows != null) {
-            map = rows.stream().collect(Collectors.groupingBy(CountDTOAmne::getDate));
-        } else {
-            map = new HashMap<>();
-        }
-
+        Map<LocalDate, List<CountDTOAmne>> map = mapList(rows, CountDTOAmne::getDate);
         final MsgAmne[] msgAmnes = MsgAmne.values();
         final int seriesLength = msgAmnes.length;
-
 
         List<KonDataRow> result = new ArrayList<>();
         for (int i = 0; i < perioder; i++) {
@@ -454,10 +569,10 @@ public class MessagesQuery {
         for (int i = 0; i < perioder; i++) {
             LocalDate temp = start.plusMonths(i);
             String displayDate = ReportUtil.toDiagramPeriod(temp);
-            int male = 0;
-            int female = 0;
 
             List<MessageWidelineLoader.CountDTO> dtos = map.get(temp);
+            int male = 0;
+            int female = 0;
 
             if (dtos != null) {
                 for (MessageWidelineLoader.CountDTO dto : dtos) {
@@ -502,13 +617,7 @@ public class MessagesQuery {
         int[] maleSeries = new int[seriesLength];
         int[] femaleSeries = new int[seriesLength];
 
-        for (CountDTOAmne dto : rows) {
-            if (dto.getKon().equals(Kon.FEMALE)) {
-                femaleSeries[dto.getAmne().ordinal()] += dto.getCount();
-            } else {
-                maleSeries[dto.getAmne().ordinal()] += dto.getCount();
-            }
-        }
+        addCountOnAmne(maleSeries, femaleSeries, rows);
 
         for (int i = 0; i < seriesLength; i++) {
             final MsgAmne msgAmne = msgAmnes[i];
@@ -557,41 +666,40 @@ public class MessagesQuery {
             result.add(new KonDataRow(typeToName.apply(types.get(k)), data));
         }
 
-        final ArrayList<String> groups = new ArrayList<>();
-        for (MsgAmne msgAmne : msgAmnes) {
-            groups.add(msgAmne.name());
-        }
-        return new KonDataResponse(AvailableFilters.getForMeddelanden(), groups, result);
+        return getKonDataResponse(result, msgAmnes);
     }
 
-    public List<OverviewChartRowExtended> getOverviewKompletteringar(MessagesFilter messagesFilterWithoutRange,
-                                                                     Range currentPeriod, Range previousPeriod) {
+    List<OverviewChartRowExtended> getOverviewKompletteringar(MessagesFilter messagesFilterWithoutRange,
+                                                              Range currentPeriod, Range previousPeriod) {
         MessagesFilter messageFilterCurrentRange = getMessageFilterForSjukpenningWithRange(messagesFilterWithoutRange, currentPeriod);
         MessagesFilter messageFilterPreviousRange = getMessageFilterForSjukpenningWithRange(messagesFilterWithoutRange, previousPeriod);
         final SimpleKonResponse andelKompletteringarCurrent = getAndelKompletteringarTvarsnitt(messageFilterCurrentRange);
         final SimpleKonResponse andelKompletteringarPrevious = getAndelKompletteringarTvarsnitt(messageFilterPreviousRange);
-        final AndelExtras currentExtras = (AndelExtras) andelKompletteringarCurrent.getRows().stream()
-                .filter(p -> IntygType.parseString(p.getName()).isSjukpenningintyg()).findAny()
-                .orElse(new SimpleKonDataRow(null, 0, 0)).getExtras();
-        final int maxPercentage = 100;
-        final int current = currentExtras.getWhole() != 0 ? maxPercentage * currentExtras.getPart() / currentExtras.getWhole() : 0;
-        final AndelExtras previousExtras = (AndelExtras) andelKompletteringarPrevious.getRows().stream()
-                .filter(p -> IntygType.parseString(p.getName()).isSjukpenningintyg()).findAny()
-                .orElse(new SimpleKonDataRow(null, 0, 0)).getExtras();
-        final int previous = previousExtras.getWhole() != 0 ? maxPercentage * previousExtras.getPart() / previousExtras.getWhole() : 0;
+        final int current = getAndel(andelKompletteringarCurrent);
+        final int previous = getAndel(andelKompletteringarPrevious);
         List<OverviewChartRowExtended> resp = new ArrayList<>();
         final int alternation = current - previous;
         resp.add(new OverviewChartRowExtended("Sjukpenningintyg med komplettering", current, alternation,
                 ReportColor.ST_COLOR_01.getColor(), false));
-        resp.add(new OverviewChartRowExtended("Sjukpenningintyg utan komplettering", maxPercentage - current, -1 * alternation,
+        resp.add(new OverviewChartRowExtended("Sjukpenningintyg utan komplettering", MAX_PERCENTAGE - current, -1 * alternation,
                 ReportColor.ST_COLOR_02.getColor(), true));
         return resp;
     }
 
+    private int getAndel(SimpleKonResponse andelKompletteringar) {
+        final AndelExtras andelExtras = (AndelExtras) andelKompletteringar.getRows().stream()
+                .filter(p -> IntygType.parseString(p.getName()).isSjukpenningintyg()).findAny()
+                .orElse(new SimpleKonDataRow(null, 0, 0)).getExtras();
+        return andelExtras.getWhole() != 0 ? MAX_PERCENTAGE * andelExtras.getPart() / andelExtras.getWhole() : 0;
+    }
+
     private MessagesFilter getMessageFilterForSjukpenningWithRange(MessagesFilter filter, Range range) {
         final Collection<String> intygstyper = filter.getIntygstyper() == null || filter.getIntygstyper().isEmpty()
-                ? Collections.singleton(IntygType.SJUKPENNING.name())
-                : filter.getIntygstyper().stream().filter(s -> IntygType.SJUKPENNING.getText().equals(s)).collect(Collectors.toSet());
+                ? Collections.singleton(IntygType.SJUKPENNING.getText())
+                : Stream.concat(
+                        filter.getIntygstyper().stream().filter(s -> IntygType.SJUKPENNING.getText().equals(s)),
+                        Stream.of("NoMatchingIntygTypeWithThisText")) //Make sure the filter is never empty (same as "all selected")
+                .collect(Collectors.toSet());
         final HsaIdVardgivare vgid = filter.getVardgivarId();
         final LocalDate from = range.getFrom();
         final LocalDate to = range.getTo();

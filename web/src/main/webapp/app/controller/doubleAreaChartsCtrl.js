@@ -726,3 +726,29 @@ angular.module('StatisticsApp').andelKompletteringarLandstingConfig =
     return conf;
 };
 
+angular.module('StatisticsApp').kompletteringarPerFragaTimeSeriesConfig =
+    /** @ngInject */
+    function (messageService) {
+        'use strict';
+
+        var conf = {};
+        conf.dataFetcherVerksamhet = 'getKompletteringarPerFragaTimeSeriesDataVerksamhet';
+        conf.exportTableUrlVerksamhet = function () {
+            return 'api/verksamhet/getKompletteringarPerFraga?format=xlsx';
+        };
+        conf.suffixTitle = function (suffix) {
+            return this.title + ' ' + (suffix || '');
+        };
+        conf.title = messageService.getProperty('title.kompletteringarperfraga');
+        conf.chartFootnotes = function(isVerksamhet) {
+            if (isVerksamhet) {
+                return ['help.verksamhet.kompletteringarperfraga'];
+            }
+            return ['help.nationell.kompletteringarperfraga'];
+        };
+
+        conf.exchangeableViews = [
+            {description: 'Tidsserie', state: '/verksamhet/kompletteringarperfragaTidsserie', active: true},
+            {description: 'Tvärsnitt', state: '/verksamhet/kompletteringarperfraga', active: false}];
+        return conf;
+    };
