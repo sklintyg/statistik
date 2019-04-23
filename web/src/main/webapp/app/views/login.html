@@ -3,18 +3,18 @@
     <span message key="login.header"></span> <i class="glyphicon glyphicon-log-in"></i>
   </h1>
 
-  <p data-ng-if="loggedInWithoutStatistikuppdrag" class="alert alert-danger">
-    <strong message key="login.alert-danger"></strong> <span message key="login.alert-info.behorighet"></span>
-  </p>
-  <p data-ng-if="loginTimedOut && !loggedInWithoutStatistikuppdrag" class="alert alert-info">
-    <strong message key="login.alert-info"></strong> <span message key="login.alert-inaktivitet"></span>
-  </p>
-  <p data-ng-if="(errorUrlParam == 'loginfailed')" class="alert alert-info">
-    <strong message key="login.alert-info"></strong> <span message key="login.alert-loginfailed"></span>
-  </p>
-  <p data-ng-if="(hasActiveStatUrl)" class="alert alert-info">
-    <strong message key="login.alert-info"></strong> <span message key="login.alert-loginrequired"></span>
-  </p>
+  <div data-ng-if="loggedInWithoutStatistikuppdrag" class="alert alert-danger">
+    <strong message key="login.alert-info.behorighet.title"></strong> <span message key="login.alert-info.behorighet.body"></span>
+  </div>
+  <div data-ng-if="loginTimedOut && !loggedInWithoutStatistikuppdrag" class="alert alert-info">
+    <strong message key="login.alert-inaktivitet.title"></strong> <span message key="login.alert-inaktivitet.body"></span>
+  </div>
+  <div data-ng-if="(errorUrlParam == 'loginfailed')" class="alert alert-danger">
+    <strong message key="login.alert-loginfailed.title"></strong> <span message key="login.alert-loginfailed.body"></span>
+  </div>
+  <div data-ng-if="hasActiveStatUrl" class="alert alert-danger">
+    <strong message key="login.alert-loginrequired.title"></strong> <span message key="login.alert-loginrequired.body"></span>
+  </div>
 
 
   <p message key="login.instruktioner-for-login"></p>
