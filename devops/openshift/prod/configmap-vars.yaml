@@ -1,11 +1,16 @@
 apiVersion: v1
 data:
+  HSA_WS_CERTIFICATE_TYPE: PKCS12
+  HSA_WS_TRUSTSTORE_TYPE: JKS
   NTJP_WS_CERTIFICATE_TYPE: PKCS12
   NTJP_WS_TRUSTSTORE_TYPE: JKS
-  SAKERHETSTJANST_SAML_IDP_METADATA_URL: "https://idp2.sakerhetstjanst.sjunet.org:443/idp/saml"
-  SAMBI_DISCOVERY_URL: 'https://fed.sambi.se/prod/ds'
-  SAMBI_DISCOVERY_RESPONSE.URL: '/saml/login/alias/defaultAlias?disco=true'
+  REFDATA_URL: file://localhost/opt/statistik/env/refdata-1.0.0.67.jar
+  STATISTICS_RESOURCES_FOLDER: 'classpath:'
 kind: ConfigMap
 metadata:
-  name: statistik-prod-configmap-envvar
-type: Opaque
+  creationTimestamp: 2019-04-16T17:36:20Z
+  name: statistik-configmap-envvar
+  namespace: pintyg
+  resourceVersion: "76014300"
+  selfLink: /api/v1/namespaces/pintyg/configmaps/statistik-configmap-envvar
+  uid: 258b32d9-606e-11e9-935a-005056a1387d
