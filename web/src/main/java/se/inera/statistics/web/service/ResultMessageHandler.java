@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import com.google.common.collect.ImmutableList;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import se.inera.statistics.service.report.util.Icd10;
@@ -81,7 +82,7 @@ public class ResultMessageHandler {
         final Icd10.Id id = parent.get();
         icd10Ints.add(String.valueOf(id.toInt()));
         icd10Ints.addAll(getAllParents(id));
-        return icd10Ints;
+        return ImmutableList.copyOf(icd10Ints);
     }
 
 }
