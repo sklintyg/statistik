@@ -25,7 +25,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public enum IntygType {
 
@@ -48,14 +47,14 @@ public enum IntygType {
     AG114("AG1-14", "ag114", "AG1-14", "AG1-14 Läkarintyg om arbetsförmåga - sjuklöneperioden", true),
     AG7804("AG7804", "ag7804", "AG7804", "AG7804 Läkarintyg om arbetsförmåga - arbetsgivare", true);
 
-    private static final Set<IntygType> INCLUDED_IN_KOMPLETTERING_REPORT = ImmutableSet.of(LISJP, LUSE, LUAE_NA, LUAE_FS);
+    private static final ImmutableSet<IntygType> INCLUDED_IN_KOMPLETTERING_REPORT = ImmutableSet.of(LISJP, LUSE, LUAE_NA, LUAE_FS);
 
-    private static final Set<IntygType> IS_SJUKPENNING = ImmutableSet.of(LISJP, FK7263);
+    private static final ImmutableSet<IntygType> IS_SJUKPENNING = ImmutableSet.of(LISJP, FK7263);
 
-    private static final List<IntygType> INCLUDED_IN_INTYG_TOTALT_REPORT = ImmutableList.of(
+    private static final ImmutableList<IntygType> INCLUDED_IN_INTYG_TOTALT_REPORT = ImmutableList.of(
             AF00213, AF00251, AG114, AG7804, DB, DOI, LISJP, LUSE, LUAE_NA, LUAE_FS, TSTRK1009, TSTRK1007, TSTRK1031, TSTRK1062);
 
-    private static final List<IntygType> INCLUDED_IN_INTYG_FILTER = ImmutableList.of(SJUKPENNING, LUSE, LUAE_NA, LUAE_FS);
+    private static final ImmutableList<IntygType> INCLUDED_IN_INTYG_FILTER = ImmutableList.of(SJUKPENNING, LUSE, LUAE_NA, LUAE_FS);
 
 
     private final String kodverksKod; //From https://riv-ta.atlassian.net/wiki/download/attachments/270532953/Kv%20intygstyp.xlsx

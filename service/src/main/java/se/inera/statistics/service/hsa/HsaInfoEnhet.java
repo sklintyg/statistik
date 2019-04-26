@@ -19,12 +19,12 @@
 package se.inera.statistics.service.hsa;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableList;
 
 /**
  * Immutable value class.
@@ -81,14 +81,14 @@ public class HsaInfoEnhet {
         if (enhetsTyp == null) {
             return Collections.emptyList();
         }
-        return new ArrayList<>(enhetsTyp);
+        return ImmutableList.copyOf(enhetsTyp);
     }
 
     public List<String> getAgarform() {
         if (agarform == null) {
             return Collections.emptyList();
         }
-        return new ArrayList<>(agarform);
+        return ImmutableList.copyOf(agarform);
     }
 
     public LocalDateTime getStartdatum() {
@@ -107,14 +107,14 @@ public class HsaInfoEnhet {
         if (verksamhet == null) {
             return Collections.emptyList();
         }
-        return new ArrayList<>(verksamhet);
+        return ImmutableList.copyOf(verksamhet);
     }
 
     public List<String> getVardform() {
         if (vardform == null) {
             return Collections.emptyList();
         }
-        return new ArrayList<>(vardform);
+        return ImmutableList.copyOf(vardform);
     }
 
     public HsaInfoEnhetGeo getGeografi() {

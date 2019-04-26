@@ -34,6 +34,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.google.common.base.Splitter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -187,32 +188,10 @@ public class MessagesQuery {
     }
 
     private KonDataResponse convertToMessagesPerAmne(List<CountDTOAmne> rows, LocalDate start, int perioder) {
-        List<KonDataRow> result = new ArrayList<>();
         Map<LocalDate, List<CountDTOAmne>> map = mapList(rows, CountDTOAmne::getDate);
-
         final MsgAmne[] msgAmnes = MsgAmne.values();
         final int seriesLength = msgAmnes.length;
-
-        for (int i = 0; i < perioder; i++) {
-            int[] maleSeries = new int[seriesLength];
-            int[] femaleSeries = new int[seriesLength];
-
-            LocalDate temp = start.plusMonths(i);
-            String displayDate = ReportUtil.toDiagramPeriod(temp);
-
-            List<CountDTOAmne> dtos = map.get(temp);
-
-            if (dtos != null) {
-                addCountOnAmne(maleSeries, femaleSeries, dtos);
-            }
-
-            final ArrayList<KonField> data = new ArrayList<>();
-            for (int j = 0; j < seriesLength; j++) {
-                data.add(new KonField(femaleSeries[j], maleSeries[j]));
-            }
-            result.add(new KonDataRow(displayDate, data));
-        }
-
+        List<KonDataRow> result = getResult(start, perioder, 0, map, seriesLength, this::addCountOnAmne);
         return getKonDataResponse(result, msgAmnes);
     }
 
@@ -382,13 +361,26 @@ public class MessagesQuery {
         return value >= cutoff ? value : 0;
     }
 
-    private KonDataResponse convertToKompletteringarPerFraga(List<CountDTOAmne> rows, LocalDate start, int perioder, int cutoff) {
-        List<KonDataRow> result = new ArrayList<>();
-        Map<LocalDate, List<CountDTOAmne>> map = mapList(rows, CountDTOAmne::getDate);
+    private interface CountAdder {
+        void addCount(int[] male, int[] female, List<CountDTOAmne> dtos);
+    }
 
+    private KonDataResponse convertToKompletteringarPerFraga(List<CountDTOAmne> rows, LocalDate start, int perioder, int cutoff) {
+        Map<LocalDate, List<CountDTOAmne>> map = mapList(rows, CountDTOAmne::getDate);
         final Intygsfraga[] intygsfragas = Intygsfraga.values();
         final int seriesLength = intygsfragas.length;
+        List<KonDataRow> result = getResult(start, perioder, cutoff, map, seriesLength, this::addCountOnFrageid);
 
+        final ArrayList<String> groups = new ArrayList<>();
+        for (int j = 0; j < seriesLength; j++) {
+            groups.add(intygsfragas[j].getText());
+        }
+        return new KonDataResponse(AvailableFilters.getForMeddelanden(), groups, result);
+    }
+
+    private List<KonDataRow> getResult(LocalDate start, int perioder, int cutoff, Map<LocalDate, List<CountDTOAmne>> map,
+                                       int seriesLength, CountAdder countAdder) {
+        List<KonDataRow> result = new ArrayList<>();
         for (int i = 0; i < perioder; i++) {
             int[] maleIntyg = new int[seriesLength];
             int[] femaleIntyg = new int[seriesLength];
@@ -399,18 +391,7 @@ public class MessagesQuery {
             List<CountDTOAmne> allDtos = map.get(currentMonth);
 
             if (allDtos != null) {
-                final Map<String, List<CountDTOAmne>> dtosPerIntygid = allDtos.stream()
-                        .collect(Collectors.groupingBy(CountDTOAmne::getIntygid));
-                for (List<CountDTOAmne> dtos : dtosPerIntygid.values()) {
-                    for (CountDTOAmne aDto : dtos) {
-                        final String svarIdsString = aDto.getSvarIds();
-                        final String[] svarIds = svarIdsString.split(",");
-                        for (String svarId : svarIds) {
-                            final int[] genderData = aDto.getKon().equals(Kon.FEMALE) ? femaleIntyg : maleIntyg;
-                            addFrageCount(genderData, svarId);
-                        }
-                    }
-                }
+                countAdder.addCount(maleIntyg, femaleIntyg, allDtos);
             }
 
             final ArrayList<KonField> data = new ArrayList<>();
@@ -421,12 +402,22 @@ public class MessagesQuery {
             }
             result.add(new KonDataRow(displayDate, data));
         }
+        return result;
+    }
 
-        final ArrayList<String> groups = new ArrayList<>();
-        for (int j = 0; j < seriesLength; j++) {
-            groups.add(intygsfragas[j].getText());
+    private void addCountOnFrageid(int[] maleIntyg, int[] femaleIntyg, List<CountDTOAmne> allDtos) {
+        final Map<String, List<CountDTOAmne>> dtosPerIntygid = allDtos.stream()
+                .collect(Collectors.groupingBy(CountDTOAmne::getIntygid));
+        for (List<CountDTOAmne> dtos : dtosPerIntygid.values()) {
+            for (CountDTOAmne aDto : dtos) {
+                final String svarIdsString = aDto.getSvarIds();
+                final Iterable<String> svarIds = Splitter.on(",").trimResults().omitEmptyStrings().split(svarIdsString);
+                for (String svarId : svarIds) {
+                    final int[] genderData = aDto.getKon().equals(Kon.FEMALE) ? femaleIntyg : maleIntyg;
+                    addFrageCount(genderData, svarId);
+                }
+            }
         }
-        return new KonDataResponse(AvailableFilters.getForMeddelanden(), groups, result);
     }
 
     private <T, R> Map<T, List<R>> mapList(List<R> rows, Function<R, T> groupByFunction) {
@@ -512,28 +503,14 @@ public class MessagesQuery {
 
         List<KonDataRow> result = new ArrayList<>();
         for (int i = 0; i < perioder; i++) {
-            int[][][] series = new int[2][][]; //First order is gender, second is type and third is amne
-            series[0] = new int[types.size()][];
-            series[1] = new int[types.size()][];
-            for (int j = 0; j < types.size(); j++) {
-                series[0][j] = new int[seriesLength];
-                series[1][j] = new int[seriesLength];
-            }
-
             LocalDate temp = start.plusMonths(i);
             String displayDate = ReportUtil.toDiagramPeriod(temp);
-
             List<CountDTOAmne> dtos = map.get(temp);
-
-            if (dtos != null) {
-                for (CountDTOAmne dto : dtos) {
-                    final int index = types.indexOf(typeInDto.apply(dto));
-                    series[dto.getKon().equals(Kon.FEMALE) ? 0 : 1][index][dto.getAmne().ordinal()] += dto.getCount();
-                }
-            }
+            final int typesSize = types.size();
+            int[][][] series = getSeries(dtos, types, typeInDto, seriesLength, typesSize);
 
             final ArrayList<KonField> data = new ArrayList<>();
-            for (int k = 0; k < types.size(); k++) {
+            for (int k = 0; k < typesSize; k++) {
                 for (int j = 0; j < seriesLength; j++) {
                     data.add(new KonField(series[0][k][j], series[1][k][j]));
                 }
@@ -645,18 +622,11 @@ public class MessagesQuery {
         final MsgAmne[] msgAmnes = MsgAmne.values();
         final int seriesLength = msgAmnes.length;
         List<KonDataRow> result = new ArrayList<>();
+
         final int typesSize = types.size();
-        int[][][] series = new int[2][][]; //First order is gender, second is type and third is amne
-        series[0] = new int[typesSize][];
-        series[1] = new int[typesSize][];
-        for (int j = 0; j < typesSize; j++) {
-            series[0][j] = new int[seriesLength];
-            series[1][j] = new int[seriesLength];
-        }
-        for (CountDTOAmne dto : rows) {
-            final int index = types.indexOf(typeInDto.apply(dto));
-            series[dto.getKon().equals(Kon.FEMALE) ? 0 : 1][index][dto.getAmne().ordinal()] += dto.getCount();
-        }
+
+
+        int[][][] series = getSeries(rows, types, typeInDto, seriesLength, typesSize);
 
         for (int k = 0; k < typesSize; k++) {
             final ArrayList<KonField> data = new ArrayList<>();
@@ -667,6 +637,24 @@ public class MessagesQuery {
         }
 
         return getKonDataResponse(result, msgAmnes);
+    }
+
+    private <T> int[][][] getSeries(List<CountDTOAmne> rows, List<T> types, Function<CountDTOAmne, T> typeInDto,
+                                    int seriesLength, int typesSize) {
+        int[][][] series = new int[2][][]; //First order is gender, second is type and third is amne
+        series[0] = new int[typesSize][];
+        series[1] = new int[typesSize][];
+        for (int j = 0; j < typesSize; j++) {
+            series[0][j] = new int[seriesLength];
+            series[1][j] = new int[seriesLength];
+        }
+        if (rows != null) {
+            for (CountDTOAmne dto : rows) {
+                final int index = types.indexOf(typeInDto.apply(dto));
+                series[dto.getKon().equals(Kon.FEMALE) ? 0 : 1][index][dto.getAmne().ordinal()] += dto.getCount();
+            }
+        }
+        return series;
     }
 
     List<OverviewChartRowExtended> getOverviewKompletteringar(MessagesFilter messagesFilterWithoutRange,

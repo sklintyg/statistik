@@ -20,8 +20,8 @@ package se.inera.statistics.service.hsa;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableList;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -82,21 +82,21 @@ public class HsaInfoPersonal {
         if (befattning == null) {
             return Collections.emptyList();
         }
-        return new ArrayList<>(befattning);
+        return ImmutableList.copyOf(befattning);
     }
 
     public List<String> getSpecialitet() {
         if (specialitet == null) {
             return Collections.emptyList();
         }
-        return new ArrayList<>(specialitet);
+        return ImmutableList.copyOf(specialitet);
     }
 
     public List<String> getYrkesgrupp() {
         if (yrkesgrupp == null) {
             return Collections.emptyList();
         }
-        return new ArrayList<>(yrkesgrupp);
+        return ImmutableList.copyOf(yrkesgrupp);
     }
 
     public Boolean isSkyddad() {

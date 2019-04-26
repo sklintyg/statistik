@@ -21,6 +21,7 @@ package se.inera.testsupport;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -237,7 +238,8 @@ public class RestSupportService {
     @Path("now")
     @Produces({ MediaType.APPLICATION_JSON })
     public Response setCurrentDateTime(long timeMillis) {
-        changableClock.setCurrentClock(Clock.offset(Clock.systemDefaultZone(), Duration.ofMillis(timeMillis - System.currentTimeMillis())));
+        final Clock baseClock = Clock.system(ZoneId.of("Europe/Stockholm"));
+        changableClock.setCurrentClock(Clock.offset(baseClock, Duration.ofMillis(timeMillis - System.currentTimeMillis())));
         return Response.ok().build();
     }
 
