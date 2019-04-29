@@ -740,6 +740,7 @@ angular.module('StatisticsApp').kompletteringarPerFragaTimeSeriesConfig =
             return this.title + ' ' + (suffix || '');
         };
         conf.title = messageService.getProperty('title.kompletteringarperfraga');
+        conf.chartYAxisTitleUnit = 'kompletteringar';
         conf.chartFootnotes = function(isVerksamhet) {
             if (isVerksamhet) {
                 return ['help.verksamhet.kompletteringarperfraga'];

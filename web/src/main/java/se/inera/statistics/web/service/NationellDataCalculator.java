@@ -183,7 +183,7 @@ public class NationellDataCalculator {
         final SimpleKonResponse kompletteringar = data.getKompletteringarPerFragaResult();
         final Range range = data.getKompletteringarPerFragaRange();
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
-        return SimpleDualSexConverter.newGenericTvarsnitt().convert(kompletteringar, filterSettings);
+        return SimpleDualSexConverter.newGenericKompletteringarTvarsnitt().convert(kompletteringar, filterSettings);
     }
 
 }
