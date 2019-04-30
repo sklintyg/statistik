@@ -73,6 +73,10 @@ public final class MessagesText {
     public static final String REPORT_COLUMN_ANTAL_INTYG_MALE = "Antal intyg för män";
     public static final String REPORT_COLUMN_ANTAL_INTYG_FEMALE = "Antal intyg för kvinnor";
 
+    public static final String REPORT_COLUMN_ANTAL_KOMPLETTERINGAR_TOTALT = "Antal kompletteringar totalt";
+    public static final String REPORT_COLUMN_ANTAL_KOMPLETTERINGAR_MALE = "Antal kompletteringar för män";
+    public static final String REPORT_COLUMN_ANTAL_KOMPLETTERINGAR_FEMALE = "Antal kompletteringar för kvinnor";
+
     public static final String REPORT_COLUMN_ANTAL_MESSAGES_TOTALT = "Antal meddelanden totalt";
     public static final String REPORT_COLUMN_ANTAL_MESSAGES_MALE = "Antal meddelanden för män";
     public static final String REPORT_COLUMN_ANTAL_MESSAGES_FEMALE = "Antal meddelanden för kvinnor";
@@ -96,6 +100,7 @@ public final class MessagesText {
     public static final String REPORT_ANDEL_KOMPLETTERINGAR = "Total andel som fått komplettering, alla intygstyper inkluderade";
     public static final String REPORT_ANTAL_MEDDELANDEN_TOTALT = "Antal meddelanden totalt";
     public static final String REPORT_ANTAL_SJUKFALL_TOTALT = "Antal sjukfall totalt";
+    public static final String REPORT_ANTAL_KOMPLETTERINGAR_TOTALT = "Antal kompletteringar totalt";
     public static final String REPORT_ANTAL_SJUKFALL_PER_1000 = "Antal sjukfall per 1000 listningar i arbetsför ålder";
 
     private MessagesText() { }

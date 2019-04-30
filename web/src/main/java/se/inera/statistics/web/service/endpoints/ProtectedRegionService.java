@@ -452,7 +452,7 @@ public class ProtectedRegionService {
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 18);
         SimpleKonResponse casesPerMonth = warehouse.getKompletteringarPerFragaRegion(filterSettings);
-        SimpleDetailsData result = SimpleDualSexConverter.newGenericTvarsnitt().convert(casesPerMonth, filterSettings);
+        SimpleDetailsData result = SimpleDualSexConverter.newGenericKompletteringarTvarsnitt().convert(casesPerMonth, filterSettings);
         return getResponse(result, format, request, Report.L_KOMPLETTERINGARPERFRAGA, ReportType.TVARSNITT, getLastRegionUpdateDate(vg));
     }
 

@@ -506,7 +506,8 @@ public class ProtectedChartDataService {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         KonDataResponse casesPerMonth = warehouse.getKompletteringarPerFraga(filterSettings.getFilter(),
                 filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        DualSexStatisticsData result = new SimpleMultiDualSexConverter().convert(casesPerMonth, filterSettings);
+        final SimpleMultiDualSexConverter converter = new SimpleMultiDualSexConverter(MessagesText.REPORT_ANTAL_KOMPLETTERINGAR_TOTALT);
+        DualSexStatisticsData result = converter.convert(casesPerMonth, filterSettings);
         return getResponse(result, format, request, Report.V_KOMPLETTERINGARPERFRAGA, ReportType.TIDSSERIE);
     }
 
@@ -525,7 +526,7 @@ public class ProtectedChartDataService {
         final Range range = filterSettings.getRange();
         SimpleKonResponse casesPerMonth = warehouse.getKompletteringarPerFragaTvarsnitt(filter, range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        SimpleDetailsData result = SimpleDualSexConverter.newGenericTvarsnitt().convert(casesPerMonth, filterSettings);
+        SimpleDetailsData result = SimpleDualSexConverter.newGenericKompletteringarTvarsnitt().convert(casesPerMonth, filterSettings);
         return getResponse(result, format, request, Report.V_KOMPLETTERINGARPERFRAGA, ReportType.TVARSNITT);
     }
 

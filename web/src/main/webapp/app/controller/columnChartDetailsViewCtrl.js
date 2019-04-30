@@ -809,6 +809,7 @@ angular.module('StatisticsApp').kompletteringarPerFragaTvarsnittConfig =
             return 'api/verksamhet/getKompletteringarPerFragaTvarsnitt?format=xlsx';
         };
         conf.title = messageService.getProperty('title.kompletteringarperfraga');
+        conf.chartYAxisTitleUnit = 'kompletteringar';
         conf.chartFootnotes = function(isVerksamhet) {
             if (isVerksamhet) {
                 return ['help.verksamhet.kompletteringarperfraga'];
@@ -829,6 +830,7 @@ angular.module('StatisticsApp').kompletteringarPerFragaRegionConfig =
 
         var conf = {};
         conf.dataFetcherRegion = 'getKompletteringarPerFragaDataRegion';
+        conf.chartYAxisTitleUnit = 'kompletteringar';
         conf.exportTableUrlRegion = function () {
             return 'api/region/getKompletteringarPerFragaTvarsnitt?format=xlsx';
         };

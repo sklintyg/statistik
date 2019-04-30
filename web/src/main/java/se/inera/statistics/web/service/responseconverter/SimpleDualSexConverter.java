@@ -73,6 +73,14 @@ public class SimpleDualSexConverter {
                 MessagesText.REPORT_COLUMN_ANTAL_INTYG_MALE);
     }
 
+    public static SimpleDualSexConverter newGenericKompletteringarTvarsnitt() {
+        return new SimpleDualSexConverter("",
+                "%1$s",
+                MessagesText.REPORT_COLUMN_ANTAL_KOMPLETTERINGAR_TOTALT,
+                MessagesText.REPORT_COLUMN_ANTAL_KOMPLETTERINGAR_FEMALE,
+                MessagesText.REPORT_COLUMN_ANTAL_KOMPLETTERINGAR_MALE);
+    }
+
     public SimpleDetailsData convert(SimpleKonResponse casesPerMonth, FilterSettings filterSettings) {
         return convert(casesPerMonth, filterSettings, null);
     }
