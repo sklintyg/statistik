@@ -3,12 +3,6 @@
     ID="https___statistik-demo-demointyg.app-test1.ind-ocp.sth.basefarm.net"
     entityID="https://statistik-demo-demointyg.app-test1.ind-ocp.sth.basefarm.net">
   <md:SPSSODescriptor AuthnRequestsSigned="false" WantAssertionsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
-    <md:Extensions>
-      <idpdisc:DiscoveryResponse
-          xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
-          Binding="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
-          Location="https://statistik-demo-demointyg.app-test1.ind-ocp.sth.basefarm.net/saml/login?disco=true" index="1"/>
-    </md:Extensions>
     <md:KeyDescriptor>
       <KeyInfo>
         <X509Data>

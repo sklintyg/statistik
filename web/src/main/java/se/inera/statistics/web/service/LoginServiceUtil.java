@@ -18,17 +18,7 @@
  */
 package se.inera.statistics.web.service;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import javax.servlet.http.HttpServletRequest;
-
+import com.google.common.base.Splitter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +27,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.stereotype.Component;
-
-import com.google.common.base.Splitter;
 import se.inera.auth.LoginVisibility;
-import se.inera.auth.idpdiscovery.IdpNameDiscoveryService;
 import se.inera.auth.model.User;
 import se.inera.auth.model.UserAccessLevel;
 import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
@@ -70,6 +57,17 @@ import se.inera.statistics.web.model.UserSettingsDTO;
 import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.util.VersionUtil;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import static java.util.stream.Collectors.toMap;
 
 @Component
@@ -95,17 +93,8 @@ public class LoginServiceUtil {
     @Autowired
     private UserSettingsManager userSettingsManager;
 
-    @Autowired
-    private IdpNameDiscoveryService idpNameDiscoveryService;
-
     @Value("${login.url}")
     private String loginUrl;
-
-    @Value("${sakerhetstjanst.saml.default.alias}")
-    private String defaultAlias;
-
-    @Value("${sakerhetstjanst.saml.idp.metadata.url}")
-    private String defaultIDP;
 
     private Kommun kommun = new Kommun();
 
@@ -272,9 +261,6 @@ public class LoginServiceUtil {
         settings.setLoginUrl(loginUrl);
         settings.setLoggedIn(isLoggedIn());
         settings.setProjectVersion(versionUtil.getProjectVersion());
-        settings.setDefaultAlias(defaultAlias);
-        settings.setDefaultIDP(defaultIDP);
-        settings.setIdpMap(idpNameDiscoveryService.buildIdpNameMap());
         return settings;
     }
 
