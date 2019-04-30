@@ -74,6 +74,4 @@
     <bean class="se.inera.statistics.service.warehouse.IntygCommonManager" />
     <bean class="se.inera.statistics.service.warehouse.IntygCommonConverter" />
 
-    <bean class="se.inera.auth.idpdiscovery.IdpNameDiscoveryServiceImpl" />
-
 </beans>

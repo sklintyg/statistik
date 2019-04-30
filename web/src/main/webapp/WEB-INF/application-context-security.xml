@@ -65,9 +65,6 @@
         <bean id="http403ForbiddenEntryPoint"
               class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint"/>
         <security:global-method-security pre-post-annotations="enabled"/>
-
-        <!-- Custom service to resolve IdP names from metadata -->
-        <bean id="idpNameDiscoveryService" class="se.inera.auth.idpdiscovery.IdpNameDiscoveryServiceImpl" />
     </beans>
     <!-- =============================================================== -->
     <!-- Dev profile only supports Fake login                            -->
@@ -229,23 +226,21 @@
 
                         <constructor-arg>
                             <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
-                                <property name="alias" value="${sakerhetstjanst.saml.default.alias}"/>
+                                <property name="alias" value="defaultAlias"/>
                                 <property name="local" value="true"/>
                                 <property name="securityProfile" value="metaiop"/>
                                 <property name="sslSecurityProfile" value="metaiop"/>
                                 <property name="signMetadata" value="true"/>
                                 <!-- The signingKey and encryptionKey refers to the _aliases_ of the key in the keystore defined in the keyManager bean -->
                                 <property name="signingKey"
-                                          value="${saml.keystore.alias}"/>          <!-- sakerhetstjanst.saml.keystore.alias -->
+                                          value="${saml.keystore.alias}"/>
                                 <property name="encryptionKey"
-                                          value="${saml.keystore.alias}"/>       <!-- sakerhetstjanst.saml.keystore.alias -->
+                                          value="${saml.keystore.alias}"/>
                                 <property name="requireArtifactResolveSigned" value="true"/>
                                 <property name="requireLogoutRequestSigned" value="true"/>
                                 <property name="requireLogoutResponseSigned" value="false"/>
 
-                                <property name="idpDiscoveryEnabled" value="true"/>
-                                <property name="idpDiscoveryResponseURL" value="${sambi.discovery.response.url}"/>
-                                <property name="idpDiscoveryURL" value="${sambi.discovery.url}"/>
+                                <property name="idpDiscoveryEnabled" value="false"/>
                             </bean>
                         </constructor-arg>
                     </bean>
@@ -264,7 +259,7 @@
                         </constructor-arg>
                         <constructor-arg>
                             <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
-                                <property name="alias" value="${sakerhetstjanst.saml.default.alias}"/>
+                                <property name="alias" value="defaultAlias"/>
                             </bean>
                         </constructor-arg>
 

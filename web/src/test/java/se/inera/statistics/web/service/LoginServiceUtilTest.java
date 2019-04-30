@@ -24,18 +24,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.test.util.ReflectionTestUtils;
 import se.inera.auth.AuthUtil;
 import se.inera.auth.LoginVisibility;
-import se.inera.auth.idpdiscovery.IdpNameDiscoveryService;
 import se.inera.auth.model.User;
 import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
-import se.inera.statistics.service.region.RegionEnhetHandler;
 import se.inera.statistics.service.processlog.Enhet;
+import se.inera.statistics.service.region.RegionEnhetHandler;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.user.UserSettingsManager;
 import se.inera.statistics.service.warehouse.Warehouse;
@@ -45,7 +43,6 @@ import se.inera.statistics.web.model.StaticData;
 import se.inera.statistics.web.util.VersionUtil;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -75,9 +72,6 @@ public class LoginServiceUtilTest {
     @Mock
     private VersionUtil versionUtil;
 
-    @Mock
-    private IdpNameDiscoveryService idpNameDiscoveryService;
-
     @InjectMocks
     private LoginServiceUtil loginServiceUtilInjected;
 
@@ -90,11 +84,6 @@ public class LoginServiceUtilTest {
         MockitoAnnotations.initMocks(this);
         loginServiceUtil = Mockito.spy(loginServiceUtilInjected);
         Mockito.doReturn(true).when(loginServiceUtil).isLoggedIn();
-
-        when(idpNameDiscoveryService.buildIdpNameMap()).thenReturn(new HashMap<>());
-
-        ReflectionTestUtils.setField(loginServiceUtilInjected, "defaultIDP", "default-idp");
-        ReflectionTestUtils.setField(loginServiceUtilInjected, "defaultAlias", "defaultAlias");
     }
 
     @Test

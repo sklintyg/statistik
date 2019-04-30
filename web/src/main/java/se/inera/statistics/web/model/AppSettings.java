@@ -18,20 +18,12 @@
  */
 package se.inera.statistics.web.model;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class AppSettings {
 
     private String loginUrl;
     private boolean loginVisible;
     private boolean isLoggedIn;
     private String projectVersion;
-    private String defaultIDP;
-    private String defaultAlias;
-    private Map<String, String> idpMap = new HashMap<>();
-
-
 
     public String getLoginUrl() {
         return loginUrl;
@@ -63,29 +55,5 @@ public class AppSettings {
 
     public void setProjectVersion(String projectVersion) {
         this.projectVersion = projectVersion;
-    }
-
-    public String getDefaultIDP() {
-        return defaultIDP;
-    }
-
-    public void setDefaultIDP(String defaultIDP) {
-        this.defaultIDP = defaultIDP;
-    }
-
-    public String getDefaultAlias() {
-        return defaultAlias;
-    }
-
-    public void setDefaultAlias(String defaultAlias) {
-        this.defaultAlias = defaultAlias;
-    }
-
-    public Map<String, String> getIdpMap() {
-        return idpMap;
-    }
-
-    public void setIdpMap(Map<String, String> idpMap) {
-        this.idpMap = idpMap;
     }
 }
