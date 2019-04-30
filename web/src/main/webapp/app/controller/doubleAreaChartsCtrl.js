@@ -732,6 +732,10 @@ angular.module('StatisticsApp').kompletteringarPerFragaTimeSeriesConfig =
         'use strict';
 
         var conf = {};
+        conf.filter = {
+            intygstyper: true,
+            sjukskrivningslangd: false
+        };
         conf.dataFetcherVerksamhet = 'getKompletteringarPerFragaTimeSeriesDataVerksamhet';
         conf.exportTableUrlVerksamhet = function () {
             return 'api/verksamhet/getKompletteringarPerFraga?format=xlsx';

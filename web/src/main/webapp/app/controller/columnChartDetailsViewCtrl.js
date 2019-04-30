@@ -802,6 +802,10 @@ angular.module('StatisticsApp').kompletteringarPerFragaTvarsnittConfig =
         'use strict';
 
         var conf = {};
+        conf.filter = {
+            intygstyper: true,
+            sjukskrivningslangd: false
+        };
         conf.dataFetcher = 'getNationalKompletteringarPerFragaData';
         conf.dataFetcherVerksamhet = 'getKompletteringarPerFragaDataVerksamhet';
         conf.exportTableUrl = 'api/getKompletteringarPerFragaTvarsnitt?format=xlsx';
@@ -829,6 +833,10 @@ angular.module('StatisticsApp').kompletteringarPerFragaRegionConfig =
         'use strict';
 
         var conf = {};
+        conf.filter = {
+            intygstyper: true,
+            sjukskrivningslangd: false
+        };
         conf.dataFetcherRegion = 'getKompletteringarPerFragaDataRegion';
         conf.chartYAxisTitleUnit = 'kompletteringar';
         conf.exportTableUrlRegion = function () {
