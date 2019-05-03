@@ -228,7 +228,6 @@ var stMessages = {
 
         //login view
         'login.header.verksamhet': 'Logga in för verksamhetsstatistik',
-        'login.header': 'Logga in',
         'login.alert-info.behorighet.title': 'Medarbetaruppdrag saknas.',
         'login.alert-info.behorighet.body': 'Det krävs antingen minst ett giltigt medarbetaruppdrag med ändamål \'Statistik\' eller en systemroll till tjänsten för att använda Intygsstatistik.',
         'login.alert-inaktivitet.title': 'Du är utloggad.',
@@ -238,8 +237,7 @@ var stMessages = {
         'login.alert-loginrequired.title': 'Inloggning krävs.',
         'login.alert-loginrequired.body': 'Du försöker nå en sida som kräver inloggning. Vänligen logga in för att komma vidare.',
         'login.alert-danger': 'Ajdå!',
-        'login.instruktioner-for-login': 'För att logga in behöver du ett SITHS-kort samt medarbetaruppdraget "Statistik" i HSA-katalogen.',
-        'login.btn.siths-login': 'Logga in',
+        'login.btn.siths-login': 'Logga in med SITHS-kort',
 
         'selectvg.header': 'Välj vårdgivare',
         'login.instruktioner-for-valj-vg': 'Du har behörighet till vårdenheter som tillhör flera olika vårdgivare. Välj den vårdgivare som du vill se statistik för. Observera att du bara kan se verksamhetsstatistik för de vårdenheter som du har behörighet till inom vald vårdgivare.',
