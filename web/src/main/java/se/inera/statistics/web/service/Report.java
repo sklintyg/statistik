@@ -38,8 +38,7 @@ public enum Report {
     V_INTYGPERTYP(StatisticsLevel.VERKSAMHET, "IntygPerTyp", "Antal utfärdade intyg fördelat på intygstyp"),
     V_MEDDELANDENTOTALT(StatisticsLevel.VERKSAMHET, "MeddelandenTotalt", "Antal inkomna meddelanden"),
     V_MEDDELANDENPERAMNE(StatisticsLevel.VERKSAMHET, "MeddelandenPerAmne", "Antal inkomna meddelanden fördelat på ämne"),
-    V_MEDDELANDENPERAMNEPERENHET(StatisticsLevel.VERKSAMHET, "MeddelandenPerAmnePerEnhet",
-            "Antal inkomna meddelanden fördelat på vårdenhet"),
+    V_MEDDELANDENPERAMNEPERENHET(StatisticsLevel.VERKSAMHET, "Vardenhet", "Antal inkomna meddelanden fördelat på vårdenhet"),
     V_MEDDELANDENPERAMNEPERLAKARE(StatisticsLevel.VERKSAMHET, "Lakare", "Antal inkomna meddelanden fördelat på ämne och läkare"),
     V_ANDELKOMPLETTERINGAR(StatisticsLevel.VERKSAMHET, "Kompletteringandelintyg",
             "Andel utfärdade intyg som fått en kompletteringsbegäran"),
@@ -65,8 +64,7 @@ public enum Report {
     L_KOMPLETTERINGARPERFRAGA(StatisticsLevel.REGION, "Kompletteringarperfraga", "Antal kompletteringar per fråga"),
     L_MEDDELANDENPERAMNE(StatisticsLevel.REGION, "MeddelandenPerAmne", "Antal inkomna meddelanden fördelat på ämne"),
     L_INTYGPERTYP(StatisticsLevel.REGION, "IntygPerTyp", "Antal utfärdade intyg fördelat på intygstyp"),
-    L_MEDDELANDENPERAMNEPERENHET(StatisticsLevel.REGION, "MeddelandenPerAmnePerEnhet",
-            "Antal inkomna meddelanden fördelat på vårdenhet");
+    L_MEDDELANDENPERAMNEPERENHET(StatisticsLevel.REGION, "Vardenhet", "Antal inkomna meddelanden fördelat på vårdenhet");
 
     private final StatisticsLevel statisticsLevel;
     private final String shortName; //e.g. used in file name, should therefore not contain spaces
