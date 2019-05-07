@@ -30,12 +30,12 @@ public enum Report {
     N_LAN(StatisticsLevel.NATIONELL, "Lan", "Antal sjukfall per 1000 invånare fördelat på län"),
     N_LANANDELSJUKFALLPERKON(StatisticsLevel.NATIONELL, "LanAndelSjukfallPerKon", "Andel sjukfall per kön fördelat på län"),
     N_MEDDELANDENPERAMNE(StatisticsLevel.NATIONELL, "MeddelandenPerAmne", "Antal inkomna meddelanden fördelat på ämne"),
-    N_INTYGPERTYP(StatisticsLevel.NATIONELL, "IntygPerTyp", "Antal utfärdade intyg fördelat på intygstyp"),
+    N_INTYGPERTYP(StatisticsLevel.NATIONELL, "Intygtotalt", "Antal utfärdade intyg fördelat på intygstyp"),
     N_ANDELKOMPLETTERINGAR(StatisticsLevel.NATIONELL, "Kompletteringandelintyg", "Andel utfärdade intyg som fått en kompletteringsbegäran"),
     N_KOMPLETTERINGARPERFRAGA(StatisticsLevel.NATIONELL, "Kompletteringarperfraga", "Antal kompletteringar per fråga"),
     V_SJUKFALLTOTALT(StatisticsLevel.VERKSAMHET, "SjukfallTotalt", "Antal sjukfall"),
     V_INTYGPERMANAD(StatisticsLevel.VERKSAMHET, "IntygPerManad", "Antal intyg"),
-    V_INTYGPERTYP(StatisticsLevel.VERKSAMHET, "IntygPerTyp", "Antal utfärdade intyg fördelat på intygstyp"),
+    V_INTYGPERTYP(StatisticsLevel.VERKSAMHET, "Intygtotalt", "Antal utfärdade intyg fördelat på intygstyp"),
     V_MEDDELANDENTOTALT(StatisticsLevel.VERKSAMHET, "MeddelandenTotalt", "Antal inkomna meddelanden"),
     V_MEDDELANDENPERAMNE(StatisticsLevel.VERKSAMHET, "MeddelandenPerAmne", "Antal inkomna meddelanden fördelat på ämne"),
     V_MEDDELANDENPERAMNEPERENHET(StatisticsLevel.VERKSAMHET, "Vardenhet", "Antal inkomna meddelanden fördelat på vårdenhet"),
@@ -63,7 +63,7 @@ public enum Report {
     L_ANDELKOMPLETTERINGAR(StatisticsLevel.REGION, "Kompletteringandelintyg", "Andel utfärdade intyg som fått en kompletteringsbegäran"),
     L_KOMPLETTERINGARPERFRAGA(StatisticsLevel.REGION, "Kompletteringarperfraga", "Antal kompletteringar per fråga"),
     L_MEDDELANDENPERAMNE(StatisticsLevel.REGION, "MeddelandenPerAmne", "Antal inkomna meddelanden fördelat på ämne"),
-    L_INTYGPERTYP(StatisticsLevel.REGION, "IntygPerTyp", "Antal utfärdade intyg fördelat på intygstyp"),
+    L_INTYGPERTYP(StatisticsLevel.REGION, "Intygtotalt", "Antal utfärdade intyg fördelat på intygstyp"),
     L_MEDDELANDENPERAMNEPERENHET(StatisticsLevel.REGION, "Vardenhet", "Antal inkomna meddelanden fördelat på vårdenhet");
 
     private final StatisticsLevel statisticsLevel;
