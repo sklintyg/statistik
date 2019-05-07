@@ -28,7 +28,7 @@ public enum Report {
     N_SJUKSKRIVNINGSGRAD(StatisticsLevel.NATIONELL, "Sjukskrivningsgrad", "Antal sjukfall fördelat på sjukskrivningsgrad"),
     N_SJUKSKRIVNINGSLANGD(StatisticsLevel.NATIONELL, "Sjukskrivningslangd", "Antal sjukfall fördelat på sjukskrivningslängd"),
     N_LAN(StatisticsLevel.NATIONELL, "Lan", "Antal sjukfall per 1000 invånare fördelat på län"),
-    N_LANANDELSJUKFALLPERKON(StatisticsLevel.NATIONELL, "LanAndelSjukfallPerKon", "Andel sjukfall per kön fördelat på län"),
+    N_LANANDELSJUKFALLPERKON(StatisticsLevel.NATIONELL, "Konsfordelningperlan", "Andel sjukfall per kön fördelat på län"),
     N_MEDDELANDENPERAMNE(StatisticsLevel.NATIONELL, "MeddelandenPerAmne", "Antal inkomna meddelanden fördelat på ämne"),
     N_INTYGPERTYP(StatisticsLevel.NATIONELL, "Intygtotalt", "Antal utfärdade intyg fördelat på intygstyp"),
     N_ANDELKOMPLETTERINGAR(StatisticsLevel.NATIONELL, "Kompletteringandelintyg", "Andel utfärdade intyg som fått en kompletteringsbegäran"),
