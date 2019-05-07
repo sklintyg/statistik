@@ -39,7 +39,7 @@ public enum Report {
     V_MEDDELANDENTOTALT(StatisticsLevel.VERKSAMHET, "MeddelandenTotalt", "Antal inkomna meddelanden"),
     V_MEDDELANDENPERAMNE(StatisticsLevel.VERKSAMHET, "MeddelandenPerAmne", "Antal inkomna meddelanden fördelat på ämne"),
     V_MEDDELANDENPERAMNEPERENHET(StatisticsLevel.VERKSAMHET, "Vardenhet", "Antal inkomna meddelanden fördelat på vårdenhet"),
-    V_MEDDELANDENPERAMNEPERLAKARE(StatisticsLevel.VERKSAMHET, "Lakare", "Antal inkomna meddelanden fördelat på ämne och lakare"),
+    V_MEDDELANDENPERAMNEPERLAKARE(StatisticsLevel.VERKSAMHET, "Lakare", "Antal inkomna meddelanden fördelat på ämne och läkare"),
     V_ANDELKOMPLETTERINGAR(StatisticsLevel.VERKSAMHET, "Kompletteringandelintyg",
             "Andel utfärdade intyg som fått en kompletteringsbegäran"),
     V_KOMPLETTERINGARPERFRAGA(StatisticsLevel.VERKSAMHET, "Kompletteringarperfraga", "Antal kompletteringar per fråga"),
