@@ -18,19 +18,9 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import se.inera.statistics.service.report.model.AvailableFilters;
-import se.inera.statistics.service.report.model.DiagnosgruppResponse;
-import se.inera.statistics.service.report.model.Icd;
-import se.inera.statistics.service.report.model.KonDataResponse;
-import se.inera.statistics.service.report.model.SimpleKonDataRow;
-import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.report.model.*;
 import se.inera.statistics.service.report.util.Icd10;
 
 /**
@@ -45,6 +35,7 @@ class NationellDataHolder {
     private KonDataResponse sjukskrivningsgradResult;
     private SimpleKonResponse sjukfallslangdResult;
     private ArrayList<SimpleKonDataRow> lanResult = new ArrayList<>();
+    private SimpleKonResponse certificatePerCaseResult;
 
     private SimpleKonDataRow overviewForandringCurrentResult;
     private SimpleKonDataRow overviewForandringPreviousResult;
@@ -103,6 +94,14 @@ class NationellDataHolder {
 
     ArrayList<SimpleKonDataRow> getLanResult() {
         return lanResult;
+    }
+
+    public SimpleKonResponse getCertificatePerCaseResult() {
+        return certificatePerCaseResult;
+    }
+
+    public void setCertificatePerCaseResult(SimpleKonResponse certificatePerCaseResult) {
+        this.certificatePerCaseResult = certificatePerCaseResult;
     }
 
     ArrayList<SimpleKonDataRow> getOverviewAntalIntygResult() {

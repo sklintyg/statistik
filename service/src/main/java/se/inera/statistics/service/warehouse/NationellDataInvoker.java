@@ -31,20 +31,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.report.model.AvailableFilters;
-import se.inera.statistics.service.report.model.DiagnosgruppResponse;
-import se.inera.statistics.service.report.model.KonDataResponse;
-import se.inera.statistics.service.report.model.Lan;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleKonDataRow;
-import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.report.model.*;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
-import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
-import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
-import se.inera.statistics.service.warehouse.query.MessagesFilter;
-import se.inera.statistics.service.warehouse.query.MessagesQuery;
+import se.inera.statistics.service.warehouse.query.*;
 
 /**
  * Invokes national calculations per aisle and collects the results.
@@ -168,6 +159,9 @@ public class NationellDataInvoker {
 
         nationellData.addSjukfallPerLanToResult(result.getLanRange(), data.getLanResult(), aisle);
 
+        data.setCertificatePerCaseResult(nationellData.getCertificatePerCase(aisle, result.getCertificatePerCaseRange(),
+                data.getCertificatePerCaseResult(), CertificatePerCaseQuery.RANGES));
+
         final Range overviewRange = result.getOverviewRange();
         final Range previousOverviewRange = ReportUtil.getPreviousOverviewPeriod(overviewRange);
         data.setOverviewForandringCurrentResult(
@@ -226,6 +220,7 @@ public class NationellDataInvoker {
         result.setOverviewRange(quarterRange);
         result.setMeddelandenPerAmneRange(longRange);
         result.setIntygPerTypeRange(longRange);
+        result.setCertificatePerCaseRange(longRange); //TODO: Erik: Är det här rätt?
         result.setAndelKompletteringarRange(longRange);
     }
 
@@ -288,6 +283,11 @@ public class NationellDataInvoker {
         if (result.getIntygPerTypResult() == null) {
             result.setIntygPerTypResult(new KonDataResponse(AvailableFilters.getForNationell(), new ArrayList<>(), new ArrayList<>()));
         }
+
+        if (data.getCertificatePerCaseResult() == null) {
+            data.setCertificatePerCaseResult(new SimpleKonResponse(AvailableFilters.getForNationell(), new ArrayList<>()));
+        }
+        result.setCertificatePerCaseResult(data.getCertificatePerCaseResult());
 
         if (result.getAndelKompletteringarResult() == null) {
             KonDataResponse response = new KonDataResponse(AvailableFilters.getForNationell(), new ArrayList<>(), new ArrayList<>());

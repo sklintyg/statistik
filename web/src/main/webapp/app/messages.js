@@ -40,6 +40,7 @@ var stMessages = {
         'nav.meddelandenperamneochlakare': 'Läkare',
         'nav.intygpertyp': 'Intyg, totalt',
         'nav.andelkompletteringar': 'Komplettering, andel intyg',
+        'nav.intyg-pers-jukfall': 'Intyg per sjukfall',
 
         //labels
         'lbl.mobile-menu': 'Meny',
@@ -185,6 +186,7 @@ var stMessages = {
         'title.intyg' : 'Antal intyg',
         'title.intygstyp' : 'Antal utfärdade intyg fördelat på intygstyp',
         'title.andelkompletteringar' : 'Andel utfärdade intyg som fått en kompletteringsbegäran',
+        'title.intyg-per-sjukfall' : 'Antal intyg per sjukfall',
 
         //help texts
         'help.nationell.overview' : 'Intygsstatistik är en webbtjänst som visar samlad statistik över alla elektroniskt utfärdade läkarintyg. Tjänsten visar dessutom statistik över den tillhörande ärendekommunikationen som sker emellan intygsutfärdare och Försäkringskassan. Statistiken är uppdelad i nationell statistik som är tillgänglig för alla, och verksamhetsstatistik som bara går att se med särskild behörighet inom hälso- och sjukvården.',

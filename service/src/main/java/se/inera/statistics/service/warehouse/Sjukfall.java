@@ -19,11 +19,7 @@
 package se.inera.statistics.service.warehouse;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 
 import se.inera.statistics.hsa.model.HsaIdEnhet;
@@ -47,6 +43,7 @@ public class Sjukfall implements Serializable {
     private Collection<HsaIdEnhet> enhets;
     private int realDays;
     private long firstIntygId;
+    private int intygCount;
     private List<Diagnos> diagnoses = new ArrayList<>();
     private Diagnos diagnos;
     private HsaIdEnhet lastEnhet;
@@ -71,6 +68,7 @@ public class Sjukfall implements Serializable {
         sjukfall.enhets = extendedSjukfall.getEnhets();
         sjukfall.lastEnhet = extendedSjukfall.getLastEnhet();
         sjukfall.firstIntygId = extendedSjukfall.getFirstIntygId();
+        sjukfall.intygCount = extendedSjukfall.getIntygCount();
         return sjukfall;
     }
 
@@ -201,6 +199,10 @@ public class Sjukfall implements Serializable {
 
     public long getFirstIntygId() {
         return firstIntygId;
+    }
+
+    public int getIntygCount() {
+        return intygCount;
     }
 
     public Diagnos getFirstDx() {

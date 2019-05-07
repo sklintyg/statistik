@@ -359,6 +359,17 @@ public class ChartDataService {
     }
 
     @GET
+    @Path("getCertificatePerCaseTvarsnitt")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @PrometheusTimeMethod(
+            help = "API-tjänst för åtkomst till statistk för intyg per sjukfall")
+    public Response getCertificatePerCaseTvarsnitt(@QueryParam("format") String format) {
+        LOG.info("Calling getCertificatePerCaseTvarsnitt for national");
+        monitoringLogService.logTrackAccessAnonymousChartData("getCertificatePerCaseTvarsnitt");
+        return getResponse(getNationellDataResult().getCertificatePerCase(), format, Report.N_CERTIFICATEPERCASE);
+    }
+
+    @GET
     @Path("getAndelKompletteringar")
     @Produces({ MediaType.APPLICATION_JSON })
     @PrometheusTimeMethod(

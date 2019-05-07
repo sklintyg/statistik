@@ -18,40 +18,19 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import static se.inera.statistics.service.warehouse.ResponseUtil.filterCutoff;
+
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import se.inera.statistics.service.report.model.AvailableFilters;
-import se.inera.statistics.service.report.model.DiagnosgruppResponse;
-import se.inera.statistics.service.report.model.Icd;
-import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.KonDataResponse;
-import se.inera.statistics.service.report.model.KonDataRow;
-import se.inera.statistics.service.report.model.KonField;
-import se.inera.statistics.service.report.model.Lan;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleKonDataRow;
-import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.report.model.*;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Ranges;
 import se.inera.statistics.service.report.util.ReportUtil;
-import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
-import se.inera.statistics.service.warehouse.query.Counter;
-import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
-import se.inera.statistics.service.warehouse.query.SjukfallQuery;
-import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
-import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
-
-import static se.inera.statistics.service.warehouse.ResponseUtil.filterCutoff;
+import se.inera.statistics.service.warehouse.query.*;
 
 /**
  * Contains calculations for each report on national statistics.
@@ -298,4 +277,22 @@ class NationellData {
         return new SimpleKonResponse(AvailableFilters.getForNationell(), rows);
     }
 
+    SimpleKonResponse getCertificatePerCase(Aisle aisle, Range range, SimpleKonResponse certificatePerCaseResult, Ranges ranges) {
+        SimpleKonResponse certificatePerCase = CertificatePerCaseQuery.getCertificatePerCase(aisle,
+                SjukfallUtil.ALL_ENHETER, range.getFrom(), 1, range.getNumberOfMonths(), sjukfallUtil, ranges);
+        if (certificatePerCaseResult == null) {
+            certificatePerCaseResult = createEmptySimpleKonResponse(certificatePerCase);
+        }
+        Iterator<SimpleKonDataRow> rowsNew = certificatePerCase.getRows().iterator();
+        Iterator<SimpleKonDataRow> rowsOld = certificatePerCaseResult.getRows().iterator();
+        List<SimpleKonDataRow> list = new ArrayList<>(1);
+        while (rowsNew.hasNext() && rowsOld.hasNext()) {
+            SimpleKonDataRow a = rowsNew.next();
+            SimpleKonDataRow b = rowsOld.next();
+
+            list.add(new SimpleKonDataRow(a.getName(), filterCutoff(a.getFemale(), cutoff) + b.getFemale(),
+                    filterCutoff(a.getMale(), cutoff) + b.getMale()));
+        }
+        return new SimpleKonResponse(AvailableFilters.getForNationell(), list);
+    }
 }

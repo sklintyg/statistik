@@ -18,13 +18,13 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import java.util.Map;
+
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.Icd10;
-
-import java.util.Map;
 
 /**
  * Contains the final results for calculated national statistics.
@@ -67,6 +67,8 @@ public class NationellDataInfo {
     private KonDataResponse meddelandenPerAmneResult;
     private KonDataResponse intygPerTypResult;
     private Range intygPerTypeRange;
+    private SimpleKonResponse certificatePerCaseResult;
+    private Range certificatePerCaseRange;
     private KonDataResponse andelKompletteringarResult;
     private Range andelKompletteringarRange;
 
@@ -332,6 +334,22 @@ public class NationellDataInfo {
 
     public void setIntygPerTypeRange(Range intygPerTypeRange) {
         this.intygPerTypeRange = intygPerTypeRange;
+    }
+
+    public SimpleKonResponse getCertificatePerCaseResult() {
+        return certificatePerCaseResult;
+    }
+
+    public void setCertificatePerCaseResult(SimpleKonResponse certificatePerCaseResult) {
+        this.certificatePerCaseResult = certificatePerCaseResult;
+    }
+
+    public Range getCertificatePerCaseRange() {
+        return certificatePerCaseRange;
+    }
+
+    public void setCertificatePerCaseRange(Range certificatePerCaseRange) {
+        this.certificatePerCaseRange = certificatePerCaseRange;
     }
 
     public KonDataResponse getAndelKompletteringarResult() {

@@ -22,11 +22,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import se.inera.statistics.web.model.CasesPerCountyData;
-import se.inera.statistics.web.model.DiagnosisSubGroupStatisticsData;
-import se.inera.statistics.web.model.DualSexStatisticsData;
-import se.inera.statistics.web.model.SimpleDetailsData;
-import se.inera.statistics.web.model.TableDataReport;
+import se.inera.statistics.web.model.*;
 import se.inera.statistics.web.model.overview.OverviewData;
 
 /**
@@ -35,7 +31,6 @@ import se.inera.statistics.web.model.overview.OverviewData;
 public class NationellDataResult implements Serializable {
 
     private SimpleDetailsData numberOfCasesPerMonth;
-    // private SimpleDetailsData numberOfMeddelandenPerMonth;
     private DualSexStatisticsData diagnosgrupper;
     private Map<String, DiagnosisSubGroupStatisticsData> diagnoskapitel = new HashMap<>();
     private OverviewData overview;
@@ -46,6 +41,7 @@ public class NationellDataResult implements Serializable {
     private SimpleDetailsData konsfordelningPerLan;
     private DualSexStatisticsData meddelandenPerAmne;
     private TableDataReport intygPerTyp;
+    private SimpleDetailsData certificatePerCase;
     private TableDataReport andelKompletteringar;
 
     public SimpleDetailsData getNumberOfCasesPerMonth() {
@@ -134,6 +130,14 @@ public class NationellDataResult implements Serializable {
 
     public void setIntygPerTyp(TableDataReport intygPerTyp) {
         this.intygPerTyp = intygPerTyp;
+    }
+
+    public SimpleDetailsData getCertificatePerCase() {
+        return certificatePerCase;
+    }
+
+    public void setCertificatePerCase(SimpleDetailsData certificatePerCase) {
+        this.certificatePerCase = certificatePerCase;
     }
 
     public TableDataReport getAndelKompletteringar() {

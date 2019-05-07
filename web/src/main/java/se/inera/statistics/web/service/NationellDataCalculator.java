@@ -25,36 +25,18 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Component;
+
 import se.inera.statistics.service.countypopulation.CountyPopulation;
 import se.inera.statistics.service.countypopulation.CountyPopulationManager;
-import se.inera.statistics.service.report.model.DiagnosgruppResponse;
-import se.inera.statistics.service.report.model.KonDataResponse;
-import se.inera.statistics.service.report.model.OverviewResponse;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.report.model.*;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.NationellDataInfo;
 import se.inera.statistics.service.warehouse.NationellDataInvoker;
 import se.inera.statistics.service.warehouse.NationellOverviewData;
-import se.inera.statistics.web.model.CasesPerCountyData;
-import se.inera.statistics.web.model.DiagnosisSubGroupStatisticsData;
-import se.inera.statistics.web.model.DualSexStatisticsData;
-import se.inera.statistics.web.model.SimpleDetailsData;
-import se.inera.statistics.web.model.TableDataReport;
+import se.inera.statistics.web.model.*;
 import se.inera.statistics.web.model.overview.OverviewData;
-import se.inera.statistics.web.service.responseconverter.AndelKompletteringarConverter;
-import se.inera.statistics.web.service.responseconverter.CasesPerCountyConverter;
-import se.inera.statistics.web.service.responseconverter.DegreeOfSickLeaveConverter;
-import se.inera.statistics.web.service.responseconverter.DiagnosisGroupsConverter;
-import se.inera.statistics.web.service.responseconverter.DiagnosisSubGroupsConverter;
-import se.inera.statistics.web.service.responseconverter.MessageAmneConverter;
-import se.inera.statistics.web.service.responseconverter.OverviewConverter;
-import se.inera.statistics.web.service.responseconverter.PeriodConverter;
-import se.inera.statistics.web.service.responseconverter.SimpleDualSexConverter;
-import se.inera.statistics.web.service.responseconverter.SimpleMultiDualSexConverter;
-import se.inera.statistics.web.service.responseconverter.SjukfallPerSexConverter;
+import se.inera.statistics.web.service.responseconverter.*;
 
 /**
  * Invokes calculation of national statistics and converts the results into the correct format for the reports.
@@ -91,6 +73,7 @@ public class NationellDataCalculator {
         result.setOverview(buildOverview(data));
         result.setMeddelandenPerAmne(buildNumberOfMeddelandenPerAmne(data));
         result.setIntygPerTyp(buildIntygPerTyp(data));
+        result.setCertificatePerCase(buildCertificatePerCase(data));
         result.setAndelKompletteringar(buildAndelKompletteringar(data));
         LOG.info("National data calculation: Done");
         return result;
@@ -169,6 +152,12 @@ public class NationellDataCalculator {
         final Range range = data.getIntygPerTypeRange();
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
         return new SimpleMultiDualSexConverter("Antal intyg totalt").convert(intygPerTyp, filterSettings);
+    }
+
+    private SimpleDetailsData buildCertificatePerCase(NationellDataInfo data) {
+        SimpleKonResponse certificatePerCase = data.getCertificatePerCaseResult();
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), data.getCertificatePerCaseRange());
+        return SimpleDualSexConverter.newGenericTvarsnitt().convert(certificatePerCase, filterSettings);
     }
 
     private TableDataReport buildAndelKompletteringar(NationellDataInfo data) {

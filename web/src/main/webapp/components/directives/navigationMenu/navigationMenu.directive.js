@@ -107,6 +107,11 @@
                     name: 'nav.lan-andel-sjukfall-per-kon',
                     ctrl: 'NationalCasesPerSexCtrl'
                 }]
+            }, {
+                id: 'navCertificatePerCaseLink',
+                link: '#/nationell/certificatePerCase',
+                name: 'nav.intyg-pers-jukfall',
+                ctrl: 'NationalCertificatePerCaseCtrl'
             }]
         };
 

@@ -152,6 +152,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
                 }
             }
 
+            //TODO: Erik: ?
             ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.filterhash,
                 result.filter.diagnoser, result.allAvailableDxsSelectedInFilter,
                 result.filteredEnhets, result.allAvailableEnhetsSelectedInFilter,
@@ -544,6 +545,25 @@ angular.module('StatisticsApp').intygPerTypeTvarsnittConfig =
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/intygPerTyp', active: true},
         {description: 'Tvärsnitt', state: '/verksamhet/intygPerTypTvarsnitt', active: false}];
+
+    return conf;
+};
+
+angular.module('StatisticsApp').certificatePerCaseTvarsnittConfig =
+    /** @ngInject */
+    function (messageService) {
+    'use strict';
+
+    var conf = {};
+    //TODO: Erik: Det står i Fitnesse-specarna att det ska finnas filter för diagnos. Är det här man lägger till det?
+    conf.dataFetcher = 'getCertificatePerCaseTvarsnitt';
+    conf.exportTableUrl = 'api/getCertificatePerCaseTvarsnitt?format=xlsx';
+    conf.title = messageService.getProperty('title.intyg-per-sjukfall');
+
+    //TODO: Erik: Betyder det här bara vilka tabbar som ska visas?
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '/verksamhet/certificatePerCase', active: false},
+        {description: 'Tvärsnitt', state: '/verksamhet/certificatePerCaseTvarsnitt', active: true}];
 
     return conf;
 };

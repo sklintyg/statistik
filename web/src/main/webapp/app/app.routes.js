@@ -118,6 +118,12 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'NationalIntygPerTypCtrl',
                 resolve: { config: app.intygPerTypePerMonthConfig },
                 title: 'nav.intygpertyp'
+            }).when('/nationell/certificatePerCase', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'columnChartDetailsViewCtrl',
+                controllerAs: 'NationalCertificatePerCaseCtrl',
+                resolve: { config: app.certificatePerCaseTvarsnittConfig },
+                title: 'nav.intyg-pers-jukfall'
             }).when('/verksamhet', {
                 redirectTo: '/verksamhet/oversikt'
             }).when('/valjVardgivare', {

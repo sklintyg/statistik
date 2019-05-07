@@ -154,6 +154,10 @@ angular.module('StatisticsApp').factory('statisticsData',
         makeRequestVerksamhet('getIntygPerTypeTvarsnitt', successCallback, failureCallback);
     };
 
+    factory.getCertificatePerCaseTvarsnitt = function (successCallback, failureCallback) {
+        makeRequestNational('getCertificatePerCaseTvarsnitt', successCallback, failureCallback);
+    };
+
     factory.getNumberOfCasesPerMonthVerksamhet = function (successCallback, failureCallback) {
         makeRequestVerksamhet('getNumberOfCasesPerMonth', successCallback, failureCallback);
     };
@@ -359,6 +363,7 @@ angular.module('StatisticsApp').factory('statisticsData',
             }, []);
         };
 
+        //TOO: Erik: ?
         var param = {
             'enheter': params.enheter || null,
             'sjukskrivningslangd': params.sjukskrivningslangd || null,
