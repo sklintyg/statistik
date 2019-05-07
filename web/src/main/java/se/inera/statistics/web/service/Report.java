@@ -29,7 +29,7 @@ public enum Report {
     N_SJUKSKRIVNINGSLANGD(StatisticsLevel.NATIONELL, "Sjukskrivningslangd", "Antal sjukfall fördelat på sjukskrivningslängd"),
     N_LAN(StatisticsLevel.NATIONELL, "Lan", "Antal sjukfall per 1000 invånare fördelat på län"),
     N_LANANDELSJUKFALLPERKON(StatisticsLevel.NATIONELL, "Konsfordelningperlan", "Andel sjukfall per kön fördelat på län"),
-    N_MEDDELANDENPERAMNE(StatisticsLevel.NATIONELL, "MeddelandenPerAmne", "Antal inkomna meddelanden fördelat på ämne"),
+    N_MEDDELANDENPERAMNE(StatisticsLevel.NATIONELL, "Meddelandentotalt", "Antal inkomna meddelanden fördelat på ämne"),
     N_INTYGPERTYP(StatisticsLevel.NATIONELL, "Intygtotalt", "Antal utfärdade intyg fördelat på intygstyp"),
     N_ANDELKOMPLETTERINGAR(StatisticsLevel.NATIONELL, "Kompletteringandelintyg", "Andel utfärdade intyg som fått en kompletteringsbegäran"),
     N_KOMPLETTERINGARPERFRAGA(StatisticsLevel.NATIONELL, "Kompletteringarperfraga", "Antal kompletteringar per fråga"),
@@ -37,7 +37,7 @@ public enum Report {
     V_INTYGPERMANAD(StatisticsLevel.VERKSAMHET, "IntygPerManad", "Antal intyg"),
     V_INTYGPERTYP(StatisticsLevel.VERKSAMHET, "Intygtotalt", "Antal utfärdade intyg fördelat på intygstyp"),
     V_MEDDELANDENTOTALT(StatisticsLevel.VERKSAMHET, "MeddelandenTotalt", "Antal inkomna meddelanden"),
-    V_MEDDELANDENPERAMNE(StatisticsLevel.VERKSAMHET, "MeddelandenPerAmne", "Antal inkomna meddelanden fördelat på ämne"),
+    V_MEDDELANDENPERAMNE(StatisticsLevel.VERKSAMHET, "Meddelandentotalt", "Antal inkomna meddelanden fördelat på ämne"),
     V_MEDDELANDENPERAMNEPERENHET(StatisticsLevel.VERKSAMHET, "Vardenhet", "Antal inkomna meddelanden fördelat på vårdenhet"),
     V_MEDDELANDENPERAMNEPERLAKARE(StatisticsLevel.VERKSAMHET, "Lakare", "Antal inkomna meddelanden fördelat på ämne och läkare"),
     V_ANDELKOMPLETTERINGAR(StatisticsLevel.VERKSAMHET, "Kompletteringandelintyg",
@@ -62,7 +62,7 @@ public enum Report {
     L_VARDENHETLISTNINGAR(StatisticsLevel.REGION, "VardenhetListningar", "Antal sjukfall per 1000 listningar fördelat på vårdenhet"),
     L_ANDELKOMPLETTERINGAR(StatisticsLevel.REGION, "Kompletteringandelintyg", "Andel utfärdade intyg som fått en kompletteringsbegäran"),
     L_KOMPLETTERINGARPERFRAGA(StatisticsLevel.REGION, "Kompletteringarperfraga", "Antal kompletteringar per fråga"),
-    L_MEDDELANDENPERAMNE(StatisticsLevel.REGION, "MeddelandenPerAmne", "Antal inkomna meddelanden fördelat på ämne"),
+    L_MEDDELANDENPERAMNE(StatisticsLevel.REGION, "Meddelandentotalt", "Antal inkomna meddelanden fördelat på ämne"),
     L_INTYGPERTYP(StatisticsLevel.REGION, "Intygtotalt", "Antal utfärdade intyg fördelat på intygstyp"),
     L_MEDDELANDENPERAMNEPERENHET(StatisticsLevel.REGION, "Vardenhet", "Antal inkomna meddelanden fördelat på vårdenhet");
 
