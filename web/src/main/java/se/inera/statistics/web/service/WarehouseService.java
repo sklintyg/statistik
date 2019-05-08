@@ -30,37 +30,15 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
+
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.EnhetManager;
-import se.inera.statistics.service.report.model.AvailableFilters;
-import se.inera.statistics.service.report.model.DiagnosgruppResponse;
-import se.inera.statistics.service.report.model.KonDataResponse;
-import se.inera.statistics.service.report.model.OverviewChartRowExtended;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.service.report.model.SimpleKonResponses;
-import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
+import se.inera.statistics.service.report.model.*;
 import se.inera.statistics.service.report.util.ReportUtil;
-import se.inera.statistics.service.warehouse.Aisle;
-import se.inera.statistics.service.warehouse.FilterPredicates;
-import se.inera.statistics.service.warehouse.IntygCommonFilter;
-import se.inera.statistics.service.warehouse.IntygCommonManager;
-import se.inera.statistics.service.warehouse.SjukfallUtil;
-import se.inera.statistics.service.warehouse.Warehouse;
-import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
-import se.inera.statistics.service.warehouse.query.CutoffUsage;
-import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
-import se.inera.statistics.service.warehouse.query.LakarbefattningQuery;
-import se.inera.statistics.service.warehouse.query.LakaresAlderOchKonQuery;
-import se.inera.statistics.service.warehouse.query.MessagesFilter;
-import se.inera.statistics.service.warehouse.query.MessagesQuery;
-import se.inera.statistics.service.warehouse.query.OverviewQuery;
-import se.inera.statistics.service.warehouse.query.RangeNotFoundException;
-import se.inera.statistics.service.warehouse.query.SjukfallQuery;
-import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
-import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
+import se.inera.statistics.service.warehouse.*;
+import se.inera.statistics.service.warehouse.query.*;
 import se.inera.statistics.web.service.responseconverter.AldersGroupsConverter;
 import se.inera.statistics.web.service.responseconverter.DiagnosisGroupsConverter;
 
@@ -347,6 +325,16 @@ public class WarehouseService {
             HsaIdVardgivare vardgivarId) {
         return LakarbefattningQuery.getSjukfallSomTidsserie(warehouse.get(vardgivarId), filter, range.getFrom(), range.getNumberOfMonths(),
                 1, sjukfallUtil);
+    }
+
+    public SimpleKonResponse getCertificatePerCaseTvarsnitt(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
+        return CertificatePerCaseQuery.getCertificatePerCaseTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1,
+                range.getNumberOfMonths(), sjukfallUtil, CertificatePerCaseQuery.RANGES);
+    }
+
+    public KonDataResponse getCertificatePerCaseTidsserie(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
+        return CertificatePerCaseQuery.getCertificatePerCaseTidsserie(warehouse.get(vardgivarId), filter, range.getFrom(),
+                range.getNumberOfMonths(), 1, sjukfallUtil);
     }
 
     public SimpleKonResponse getCasesPerMonthRegion(final FilterSettings filterSettings) {

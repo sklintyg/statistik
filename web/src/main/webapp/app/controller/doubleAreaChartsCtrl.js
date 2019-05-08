@@ -476,6 +476,28 @@ angular.module('StatisticsApp').casesPerLakarbefattningTidsserieConfig =
     return conf;
 };
 
+angular.module('StatisticsApp').certificatePerCaseTidsserieConfig =
+    /** @ngInject */
+    function (messageService) {
+    'use strict';
+
+    var conf = {};
+    conf.dataFetcherVerksamhet = 'getCertificatePerCaseTidsserieVerksamhet';
+    conf.exportTableUrlVerksamhet = function () {
+        return 'api/verksamhet/getCertificatePerCaseTidsserie?format=xlsx';
+    };
+    conf.suffixTitle = function (suffix) {
+        return this.title + ' ' + (suffix || '');
+    };
+    conf.title = messageService.getProperty('title.intyg-per-sjukfall');
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '/verksamhet/certificatePerCaseTidsserie', active: true},
+        {description: 'Tvärsnitt', state: '/verksamhet/certificatePerCaseTvarsnitt', active: false}];
+
+    return conf;
+};
+
 angular.module('StatisticsApp').casesPerLakareTimeSeriesConfig =
     /** @ngInject */
     function (messageService) {

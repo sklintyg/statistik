@@ -54,6 +54,7 @@ public enum Report {
     V_ALDERSGRUPP(StatisticsLevel.VERKSAMHET, "Aldersgrupp", "Antal sjukfall fördelat på åldersgrupp"),
     V_LAKARALDEROCHKON(StatisticsLevel.VERKSAMHET, "LakaralderOchKon", "Antal sjukfall fördelat på läkares ålder och kön"),
     V_LAKARBEFATTNING(StatisticsLevel.VERKSAMHET, "Lakarbefattning", "Antal sjukfall fördelat på läkarbefattning"),
+    V_CERTIFICATEPERCASE(StatisticsLevel.VERKSAMHET, "CertificatePerCase", "Antal intyg per sjukfall"),
     V_SJUKSKRIVNINGSGRAD(StatisticsLevel.VERKSAMHET, "Sjukskrivningsgrad", "Antal sjukfall fördelat på sjukskrivningsgrad"),
     V_SJUKSKRIVNINGSLANGD(StatisticsLevel.VERKSAMHET, "Sjukskrivningslangd", "Antal sjukfall fördelat på sjukskrivningslängd"),
     V_SJUKSKRIVNINGSLANGDMERAN90DAGAR(StatisticsLevel.VERKSAMHET,

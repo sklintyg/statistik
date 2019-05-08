@@ -125,7 +125,7 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'NationalIntygPerTypCtrl',
                 resolve: { config: app.intygPerTypePerMonthConfig },
                 title: 'nav.intygpertyp'
-            }).when('/nationell/certificatePerCase', {
+            }).when('/nationell/certificatePerCaseTvarsnitt', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'columnChartDetailsViewCtrl',
                 controllerAs: 'NationalCertificatePerCaseCtrl',
@@ -332,6 +332,18 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'VerksamhetLakarbefattningCtrl',
                 resolve: { config: app.casesPerLakarbefattningTidsserieConfig },
                 title: 'nav.lakarbefattning'
+            }).when('/verksamhet/certificatePerCaseTvarsnitt', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'columnChartDetailsViewCtrl',
+                controllerAs: 'VerksamhetCertificatePerCaseCtrl',
+                resolve: { config: app.certificatePerCaseTvarsnittConfig },
+                title: 'nav.intyg-pers-jukfall'
+            }).when('/verksamhet/certificatePerCaseTidsserie', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'doubleAreaChartsCtrl',
+                controllerAs: 'VerksamhetCertificatePerCaseCtrl',
+                resolve: { config: app.certificatePerCaseTidsserieConfig },
+                title: 'nav.intyg-pers-jukfall'
             }).when('/verksamhet/meddelanden', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'singleLineChartCtrl',

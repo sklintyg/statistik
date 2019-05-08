@@ -158,6 +158,14 @@ angular.module('StatisticsApp').factory('statisticsData',
         makeRequestNational('getCertificatePerCaseTvarsnitt', successCallback, failureCallback);
     };
 
+    factory.getCertificatePerCaseTvarsnittVerksamhet = function (successCallback, failureCallback) {
+        makeRequestVerksamhet('getCertificatePerCaseTvarsnitt', successCallback, failureCallback);
+    };
+
+    factory.getCertificatePerCaseTidsserieVerksamhet = function (successCallback, failureCallback) {
+        makeRequestVerksamhet('getCertificatePerCaseTidsserie', successCallback, failureCallback);
+    };
+
     factory.getNumberOfCasesPerMonthVerksamhet = function (successCallback, failureCallback) {
         makeRequestVerksamhet('getNumberOfCasesPerMonth', successCallback, failureCallback);
     };

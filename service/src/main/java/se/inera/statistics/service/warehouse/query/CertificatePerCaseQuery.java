@@ -24,7 +24,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Lists;
+
 import se.inera.statistics.service.report.model.AvailableFilters;
+import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.CertificatePerCaseGroupUtil;
@@ -48,7 +51,7 @@ public final class CertificatePerCaseQuery {
         return counters;
     }
 
-    public static SimpleKonResponse getCertificatePerCase(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
+    public static SimpleKonResponse getCertificatePerCaseTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
                                                                    int periodLength, SjukfallUtil sjukfallUtil, Ranges ranges) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
@@ -59,6 +62,20 @@ public final class CertificatePerCaseQuery {
             }
         }
         return new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
+    }
+
+    public static KonDataResponse getCertificatePerCaseTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,
+                                                                 int periodLength, SjukfallUtil sjukfallUtil) {
+        final Ranges ranges = RANGES;
+        final ArrayList<Ranges.Range> rangesList = Lists.newArrayList(ranges);
+        final List<String> names = Lists.transform(rangesList, Ranges.Range::getName);
+        final List<Integer> ids = Lists.transform(rangesList, Ranges.Range::getCutoff);
+        final CounterFunction<Integer> counterFunction = (sjukfall, counter) -> {
+            final int age = sjukfall.getIntygCount();
+            final int rangeId = ranges.getRangeCutoffForValue(age);
+            counter.add(rangeId);
+        };
+        return sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, ids, counterFunction);
     }
 
 }

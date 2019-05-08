@@ -557,12 +557,15 @@ angular.module('StatisticsApp').certificatePerCaseTvarsnittConfig =
     var conf = {};
     //TODO: Erik: Det står i Fitnesse-specarna att det ska finnas filter för diagnos. Är det här man lägger till det?
     conf.dataFetcher = 'getCertificatePerCaseTvarsnitt';
+    conf.dataFetcherVerksamhet = 'getCertificatePerCaseTvarsnittVerksamhet';
     conf.exportTableUrl = 'api/getCertificatePerCaseTvarsnitt?format=xlsx';
+    conf.exportTableUrlVerksamhet = function () {
+        return 'api/verksamhet/getCertificatePerCaseTvarsnitt?format=xlsx';
+    };
     conf.title = messageService.getProperty('title.intyg-per-sjukfall');
 
-    //TODO: Erik: Betyder det här bara vilka tabbar som ska visas?
     conf.exchangeableViews = [
-        {description: 'Tidsserie', state: '/verksamhet/certificatePerCase', active: false},
+        {description: 'Tidsserie', state: '/verksamhet/certificatePerCaseTidsserie', active: false},
         {description: 'Tvärsnitt', state: '/verksamhet/certificatePerCaseTvarsnitt', active: true}];
 
     return conf;

@@ -109,7 +109,7 @@
                 }]
             }, {
                 id: 'navCertificatePerCaseLink',
-                link: '#/nationell/certificatePerCase',
+                link: '#/nationell/certificatePerCaseTvarsnitt',
                 name: 'nav.intyg-pers-jukfall',
                 ctrl: 'NationalCertificatePerCaseCtrl'
             }]
@@ -236,6 +236,11 @@
                 link: '#/verksamhet/sjukfallperlakarbefattning',
                 name: 'nav.lakarbefattning',
                 ctrl: 'VerksamhetLakarbefattningCtrl'
+            }, {
+                id: 'navBusinessCertificatePerCaseLink',
+                link: '#/verksamhet/certificatePerCaseTvarsnitt',
+                name: 'nav.intyg-pers-jukfall',
+                ctrl: 'VerksamhetCertificatePerCaseCtrl'
             }
             ]
         };

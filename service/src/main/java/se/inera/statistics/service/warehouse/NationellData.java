@@ -278,7 +278,7 @@ class NationellData {
     }
 
     SimpleKonResponse getCertificatePerCase(Aisle aisle, Range range, SimpleKonResponse certificatePerCaseResult, Ranges ranges) {
-        SimpleKonResponse certificatePerCase = CertificatePerCaseQuery.getCertificatePerCase(aisle,
+        SimpleKonResponse certificatePerCase = CertificatePerCaseQuery.getCertificatePerCaseTvarsnitt(aisle,
                 SjukfallUtil.ALL_ENHETER, range.getFrom(), 1, range.getNumberOfMonths(), sjukfallUtil, ranges);
         if (certificatePerCaseResult == null) {
             certificatePerCaseResult = createEmptySimpleKonResponse(certificatePerCase);

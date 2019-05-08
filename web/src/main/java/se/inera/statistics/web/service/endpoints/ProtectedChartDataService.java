@@ -23,13 +23,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -45,13 +41,7 @@ import org.springframework.stereotype.Service;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.report.model.DiagnosgruppResponse;
-import se.inera.statistics.service.report.model.KonDataResponse;
-import se.inera.statistics.service.report.model.KonDataRow;
-import se.inera.statistics.service.report.model.KonField;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
+import se.inera.statistics.service.report.model.*;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.query.MessagesQuery;
 import se.inera.statistics.service.warehouse.query.RangeNotFoundException;
@@ -59,48 +49,11 @@ import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.error.ErrorSeverity;
 import se.inera.statistics.web.error.ErrorType;
 import se.inera.statistics.web.error.Message;
-import se.inera.statistics.web.model.DiagnosisSubGroupStatisticsData;
-import se.inera.statistics.web.model.DualSexStatisticsData;
-import se.inera.statistics.web.model.LoginInfo;
-import se.inera.statistics.web.model.LoginInfoVg;
-import se.inera.statistics.web.model.SimpleDetailsData;
-import se.inera.statistics.web.model.TableDataReport;
-import se.inera.statistics.web.model.Verksamhet;
+import se.inera.statistics.web.model.*;
 import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
-import se.inera.statistics.web.service.Filter;
-import se.inera.statistics.web.service.FilterHandler;
-import se.inera.statistics.web.service.FilterHashHandler;
-import se.inera.statistics.web.service.FilterSettings;
-import se.inera.statistics.web.service.LoginServiceUtil;
-import se.inera.statistics.web.service.Report;
-import se.inera.statistics.web.service.ReportInfo;
-import se.inera.statistics.web.service.ReportType;
-import se.inera.statistics.web.service.ResponseHandler;
-import se.inera.statistics.web.service.ResultMessageHandler;
-import se.inera.statistics.web.service.WarehouseService;
+import se.inera.statistics.web.service.*;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
-import se.inera.statistics.web.service.responseconverter.AndelKompletteringarConverter;
-import se.inera.statistics.web.service.responseconverter.AndelKompletteringarTvarsnittConverter;
-import se.inera.statistics.web.service.responseconverter.CompareDiagnosisTimeSeriesConverter;
-import se.inera.statistics.web.service.responseconverter.DegreeOfSickLeaveConverter;
-import se.inera.statistics.web.service.responseconverter.DiagnosisGroupsConverter;
-import se.inera.statistics.web.service.responseconverter.DiagnosisGroupsTvarsnittConverter;
-import se.inera.statistics.web.service.responseconverter.DiagnosisSubGroupsConverter;
-import se.inera.statistics.web.service.responseconverter.DiagnosisSubGroupsTvarsnittConverter;
-import se.inera.statistics.web.service.responseconverter.GroupedSjukfallConverter;
-import se.inera.statistics.web.service.responseconverter.IntygTotaltConverter;
-import se.inera.statistics.web.service.responseconverter.MessageAmneConverter;
-import se.inera.statistics.web.service.responseconverter.MessageAmnePerEnhetConverter;
-import se.inera.statistics.web.service.responseconverter.MessageAmnePerEnhetTvarsnittConverter;
-import se.inera.statistics.web.service.responseconverter.MessageAmnePerTypeConverter;
-import se.inera.statistics.web.service.responseconverter.MessageAmnePerTypeTvarsnittConverter;
-import se.inera.statistics.web.service.responseconverter.MessageAmneTvarsnittConverter;
-import se.inera.statistics.web.service.responseconverter.MessagePeriodConverter;
-import se.inera.statistics.web.service.responseconverter.PeriodConverter;
-import se.inera.statistics.web.service.responseconverter.PeriodIntygConverter;
-import se.inera.statistics.web.service.responseconverter.SimpleDualSexConverter;
-import se.inera.statistics.web.service.responseconverter.SimpleMultiDualSexConverter;
-import se.inera.statistics.web.service.responseconverter.VerksamhetOverviewConverter;
+import se.inera.statistics.web.service.responseconverter.*;
 
 /**
  * Statistics services that requires authorization to use. Unless otherwise noted, the data returned
@@ -948,6 +901,44 @@ public class ProtectedChartDataService {
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         DualSexStatisticsData data = new SimpleMultiDualSexConverter().convert(ageGroups, filterSettings);
         return getResponse(data, format, request, Report.V_LAKARBEFATTNING, ReportType.TIDSSERIE);
+    }
+
+    @GET
+    @Path("getCertificatePerCaseTvarsnitt")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    @PrometheusTimeMethod(
+            help = "API-tjänst för skyddad åtkomst till intyg per sjukfall")
+    public Response getCertificatePerCaseTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+                                                   @QueryParam("format") String format) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
+        final Filter filter = filterSettings.getFilter();
+        final Range range = filterSettings.getRange();
+        SimpleKonResponse certificatePerCase = warehouse.getCertificatePerCaseTvarsnitt(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleDetailsData data = SimpleDualSexConverter.newGenericTvarsnitt().convert(certificatePerCase, filterSettings);
+        return getResponse(data, format, request, Report.V_CERTIFICATEPERCASE, ReportType.TVARSNITT);
+    }
+
+    @GET
+    @Path("getCertificatePerCaseTidsserie")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    @PrometheusTimeMethod(
+            help = "API-tjänst för skyddad åtkomst till en tidsserie med intyg per sjukfall")
+    public Response getCertificatePerCaseTidsserie(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+                                                       @QueryParam("format") String format) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
+        final Filter filter = filterSettings.getFilter();
+        final Range range = filterSettings.getRange();
+        KonDataResponse certificatePerCase = warehouse.getCertificatePerCaseTidsserie(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        DualSexStatisticsData data = new SimpleMultiDualSexConverter().convert(certificatePerCase, filterSettings);
+        return getResponse(data, format, request, Report.V_CERTIFICATEPERCASE, ReportType.TIDSSERIE);
     }
 
     /**
