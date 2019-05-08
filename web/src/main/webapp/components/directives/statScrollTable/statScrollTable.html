@@ -49,7 +49,7 @@
               tooltip-placement="auto top"
               tooltip-append-to-body="true"
               style="white-space: nowrap;">
-            <span ng-bind-html="::header.text | highlightWords"></span>
+            <span data-ng-class="{'highlight-words': haveToolTip(header)}" ng-bind-html="::header.text | highlightWords"></span>
             <i data-ng-if="$parent.$parent.$last" class="fa fa-sort" aria-hidden="true"></i>
           </td>
         </tr>
