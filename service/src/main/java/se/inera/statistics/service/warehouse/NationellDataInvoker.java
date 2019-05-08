@@ -220,7 +220,7 @@ public class NationellDataInvoker {
         result.setOverviewRange(quarterRange);
         result.setMeddelandenPerAmneRange(longRange);
         result.setIntygPerTypeRange(longRange);
-        result.setCertificatePerCaseRange(longRange); //TODO: Erik: Är det här rätt?
+        result.setCertificatePerCaseRange(Range.createForLastMonthsExcludingCurrent(yearRange.getNumberOfMonths(), clock));
         result.setAndelKompletteringarRange(longRange);
     }
 
