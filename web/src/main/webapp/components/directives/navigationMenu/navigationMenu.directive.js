@@ -143,6 +143,11 @@
                 link: '#/nationell/andelkompletteringar',
                 name: 'nav.andelkompletteringar',
                 ctrl: 'NationalAndelKompletteringarCtrl'
+            }, {
+                id: 'navNationalKompletteringarPerFragaLink',
+                link: '#/nationell/kompletteringarperfraga',
+                name: 'nav.kompletteringarperfraga',
+                ctrl: 'NationalKompletteringarPerFragaCtrl'
             }]
         };
 
@@ -279,11 +284,16 @@
                 link: '#/verksamhet/andelkompletteringar',
                 name: 'nav.andelkompletteringar',
                 ctrl: 'VerksamhetAndelKompletteringarCtrl'
+            }, {
+                id: 'navBusinessKompletteringarPerFragaLink',
+                link: '#/verksamhet/kompletteringarperfraga',
+                name: 'nav.kompletteringarperfraga',
+                ctrl: 'VerksamhetKompletteringarPerFragaCtrl'
             }]
         };
 
-        // Landsting
-        var sjukfallLandsting = {
+        // Region
+        var sjukfallRegion = {
             id: 'sjukfall-statistics-toggle',
             name: 'nav.sjukfall-header',
             navigationId: 'sjukfall-statistics-collapse',
@@ -291,107 +301,115 @@
             subMenu: [
                 {
                     checkEnable: function() {
-                        return UserModel.get().landstingAvailable;
+                        return UserModel.get().regionAvailable;
                     },
-                    id: 'navLandstingCasesPerMonthLink',
-                    link: '#/landsting/sjukfallPerManad',
+                    id: 'navRegionCasesPerMonthLink',
+                    link: '#/region/sjukfallPerManad',
                     name: 'nav.sjukfall-totalt',
-                    ctrl: 'LandstingCasesPerMonthCtrl'
+                    ctrl: 'RegionCasesPerMonthCtrl'
                 },{
                     checkEnable: function() {
-                        return UserModel.get().landstingAvailable;
+                        return UserModel.get().regionAvailable;
                     },
-                    id: 'navLandstingCasesPerEnhetLink',
-                    link: '#/landsting/sjukfallPerEnhet',
+                    id: 'navRegionCasesPerEnhetLink',
+                    link: '#/region/sjukfallPerEnhet',
                     name: 'nav.vardenhet',
-                    ctrl: 'LandstingCasesPerBusinessCtrl'
+                    ctrl: 'RegionCasesPerBusinessCtrl'
                 },{
                     checkEnable: function() {
-                        return UserModel.get().landstingAvailable;
+                        return UserModel.get().regionAvailable;
                     },
-                    id: 'navLandstingCasesPerPatientsPerEnhetLink',
-                    link: '#/landsting/sjukfallPerListningarPerEnhet',
-                    name: 'nav.landsting.listningsjamforelse',
-                    ctrl: 'LandstingCasesPerPatientsPerBusinessCtrl'
+                    id: 'navRegionCasesPerPatientsPerEnhetLink',
+                    link: '#/region/sjukfallPerListningarPerEnhet',
+                    name: 'nav.region.listningsjamforelse',
+                    ctrl: 'RegionCasesPerPatientsPerBusinessCtrl'
                 }
             ]
         };
 
-        var intygLandsting = {
+        var intygRegion = {
             id: 'intyg-statistics-toggle',
             name: 'nav.intyg-header',
             navigationId: 'intyg-statistics-collapse',
             show: true,
             subMenu: [{
                 checkEnable: function() {
-                    return UserModel.get().landstingAvailable;
+                    return UserModel.get().regionAvailable;
                 },
-                id: 'navLandstingIntygPerTypeLink',
-                link: '#/landsting/intygPerTyp',
+                id: 'navRegionIntygPerTypeLink',
+                link: '#/region/intygPerTyp',
                 name: 'nav.intygpertyp',
-                ctrl: 'LandstingIntygPerTypCtrl'
+                ctrl: 'RegionIntygPerTypCtrl'
             }]
         };
 
-        var kommunikationLandsting = {
+        var kommunikationRegion = {
             id: 'kommunikation-statistics-toggle',
             name: 'nav.kommunikation-header',
             navigationId: 'kommunikation-statistics-collapse',
             show: true,
             subMenu: [{
                 checkEnable: function() {
-                    return UserModel.get().landstingAvailable;
+                    return UserModel.get().regionAvailable;
                 },
-                id: 'navLandstingMessagesLink',
-                link: '#/landsting/meddelandenPerAmne',
+                id: 'navRegionMessagesLink',
+                link: '#/region/meddelandenPerAmne',
                 name: 'nav.meddelanden',
-                ctrl: 'LandstingMeddelandenPerAmneCtrl'
+                ctrl: 'RegionMeddelandenPerAmneCtrl'
             },{
                 checkEnable: function() {
-                    return UserModel.get().landstingAvailable;
+                    return UserModel.get().regionAvailable;
                 },
-                id: 'navLandstingMessagesEnhetLink',
-                link: '#/landsting/meddelandenPerAmneOchEnhet',
+                id: 'navRegionMessagesEnhetLink',
+                link: '#/region/meddelandenPerAmneOchEnhet',
                 name: 'nav.meddelandenperamneochenhet',
-                ctrl: 'LandstingMeddelandenPerAmneOchEnhetCtrl'
+                ctrl: 'RegionMeddelandenPerAmneOchEnhetCtrl'
             }, {
                 checkEnable: function() {
-                    return UserModel.get().landstingAvailable;
+                    return UserModel.get().regionAvailable;
                 },
-                id: 'navLandstingAndelKompletteringarLink',
-                link: '#/landsting/andelkompletteringar',
+                id: 'navRegionAndelKompletteringarLink',
+                link: '#/region/andelkompletteringar',
                 name: 'nav.andelkompletteringar',
-                ctrl: 'LandstingAndelKompletteringarCtrl'
+                ctrl: 'RegionAndelKompletteringarCtrl'
+            }, {
+                checkEnable: function() {
+                    return UserModel.get().regionAvailable;
+                },
+                id: 'navRegionKompletteringarPerFragaLink',
+                link: '#/region/kompletteringarperfraga',
+                name: 'nav.kompletteringarperfraga',
+                ctrl: 'RegionKompletteringarPerFragaCtrl'
             }]
         };
 
-        var miscLandsting = {
-            id: 'misclandsting-statistics-toggle',
-            name: 'nav.landsting-header',
-            navigationId: 'misclandsting-statistics-collapse',
+        var miscRegion = {
+            id: 'miscregion-statistics-toggle',
+            name: 'nav.region-header',
+            navigationId: 'miscregion-statistics-collapse',
             show: true,
             subMenu: [{
                 checkVisible: function() {
-                    return UserModel.get().isLandstingAdmin;
+                    return UserModel.get().isRegionAdmin;
                 },
-                id: 'navLandstingUploadLink',
-                link: '#/landsting/filuppladdning',
-                name: 'nav.landsting.filuppladdning',
-                ctrl: 'LandstingFileUploadCtrl'
+                id: 'navRegionUploadLink',
+                link: '#/region/filuppladdning',
+                name: 'nav.region.filuppladdning',
+                ctrl: 'RegionFileUploadCtrl'
             },{
                 checkVisible: function() {
-                    return UserModel.get().hasLandstingAccess;
+                    return UserModel.get().hasRegionAccess;
                 },
-                id: 'navLandstingAboutLink',
-                link: '#/landsting/om',
-                name: 'nav.landsting.om',
-                ctrl: 'LandstingAboutCtrl'
+                id: 'navRegionAboutLink',
+                link: '#/region/om',
+                name: 'nav.region.om',
+                ctrl: 'RegionAboutCtrl'
             }]
         };
 
         var nationell = [sjukfallNationell, intygNationell, kommunikationNationell];
         var verksamhet = [sjukfallVerksamhet, intygVerksamhet, kommunikationVerksamhet];
-        var landsting = [sjukfallLandsting, intygLandsting, kommunikationLandsting, miscLandsting];
+        var region = [sjukfallRegion, intygRegion, kommunikationRegion, miscRegion];
 
         $scope.$on('navigationUpdate', function (event, navigationGroupId) {
 
@@ -452,13 +470,13 @@
 
         function initMenu() {
             var isVerksamhetShowing = navigationViewState.get().active === navigationViewState.ids.verksamhet;
-            var isLandstingShowing = navigationViewState.get().active === navigationViewState.ids.landsting;
+            var isRegionShowing = navigationViewState.get().active === navigationViewState.ids.region;
             var isShowingNationell = navigationViewState.get().active === navigationViewState.ids.nationell;
 
             if (isVerksamhetShowing) {
                 $scope.menus = verksamhet;
-            } else if (isLandstingShowing) {
-                $scope.menus = landsting;
+            } else if (isRegionShowing) {
+                $scope.menus = region;
             } else if (isShowingNationell || $scope.menus.length === 0) {
                 $scope.menus = nationell;
             }

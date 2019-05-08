@@ -18,10 +18,21 @@
  */
 package se.inera.statistics.web.service;
 
-import org.apache.poi.ss.usermodel.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
+
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.util.Icd10;
@@ -29,11 +40,6 @@ import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.TableHeader;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
@@ -48,7 +54,7 @@ public class XlsxConverterTest {
         assertTrue(cellTexts.toString().startsWith("[Verksamhetsstatistik, Antal sjukfall fördelat på diagnosgrupp 2001 till 2003"));
 
         cellTexts = addXlsxData(Report.L_VARDENHET, "testar");
-        assertTrue(cellTexts.toString().startsWith("[Landstingsstatistik, Antal sjukfall fördelat på vårdenhet testar"));
+        assertTrue(cellTexts.toString().startsWith("[Regionsstatistik, Antal sjukfall fördelat på vårdenhet testar"));
     }
 
     private ArrayList<String> addXlsxData(Report report, String period) {

@@ -107,7 +107,7 @@ public class WarehouseServiceTest {
     }
 
     @Test
-    public void testGetCasesPerEnhetLandstingIsExtendingNameWithIdIfDuplicateSTATISTIK1121() {
+    public void testGetCasesPerEnhetRegionIsExtendingNameWithIdIfDuplicateSTATISTIK1121() {
         //Given
         final Predicate predicate = Mockito.mock(Predicate.class);
         final String testhash = "testhash";
@@ -126,7 +126,7 @@ public class WarehouseServiceTest {
         Mockito.when(enhetManager.getEnhets(enheter)).thenReturn(Arrays.asList(new Enhet(new HsaIdVardgivare("1"), new HsaIdEnhet("e1"), "namne1", "1", "1", "")));
 
         //When
-        final SimpleKonResponse result = warehouseService.getCasesPerEnhetLandsting(filterSettings);
+        final SimpleKonResponse result = warehouseService.getCasesPerEnhetRegion(filterSettings);
 
         //Then
         assertEquals(3, result.getGroups().size());
@@ -136,7 +136,7 @@ public class WarehouseServiceTest {
     }
 
     @Test
-    public void testGetCasesPerPatientsPerEnhetLandstingIsExtendingNameWithIdIfDuplicateSTATISTIK1121() {
+    public void testGetCasesPerPatientsPerEnhetRegionIsExtendingNameWithIdIfDuplicateSTATISTIK1121() {
         //Given
         final Predicate predicate = Mockito.mock(Predicate.class);
         final String testhash = "testhash";
@@ -155,7 +155,7 @@ public class WarehouseServiceTest {
         Mockito.when(enhetManager.getEnhets(enheter)).thenReturn(Arrays.asList(new Enhet(new HsaIdVardgivare("1"), new HsaIdEnhet("e1"), "namne1", "1", "1", "")));
 
         //When
-        final SimpleKonResponse result = warehouseService.getCasesPerPatientsPerEnhetLandsting(filterSettings);
+        final SimpleKonResponse result = warehouseService.getCasesPerPatientsPerEnhetRegion(filterSettings);
 
         //Then
         assertEquals(3, result.getGroups().size());

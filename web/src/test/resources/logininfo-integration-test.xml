@@ -49,10 +49,10 @@
     <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect"/>
     <bean class="se.inera.statistics.web.service.LoginServiceUtil"/>
     <bean class="se.inera.statistics.web.service.endpoints.LoginInfoService"/>
-    <bean class="se.inera.statistics.service.landsting.LandstingEnhetHandler"/>
-    <bean class="se.inera.statistics.service.landsting.persistance.landsting.LandstingManager"/>
-    <bean class="se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhetManager"/>
-    <bean class="se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateManager"/>
+    <bean class="se.inera.statistics.service.region.RegionEnhetHandler"/>
+    <bean class="se.inera.statistics.service.region.persistance.region.RegionManager"/>
+    <bean class="se.inera.statistics.service.region.persistance.regionenhet.RegionEnhetManager"/>
+    <bean class="se.inera.statistics.service.region.persistance.regionenhetupdate.RegionEnhetUpdateManager"/>
     <bean class="se.inera.statistics.service.helper.RegisterCertificateResolver"/>
     <bean class="se.inera.statistics.service.helper.certificate.RegisterCertificateHelper"/>
     <bean class="se.inera.statistics.service.helper.certificate.FkRegisterCertificateHelper"/>
@@ -73,7 +73,5 @@
     <bean class="se.inera.statistics.time.ChangableClock" factory-method="newChangable" />
     <bean class="se.inera.statistics.service.warehouse.IntygCommonManager" />
     <bean class="se.inera.statistics.service.warehouse.IntygCommonConverter" />
-
-    <bean class="se.inera.auth.idpdiscovery.IdpNameDiscoveryServiceImpl" />
 
 </beans>

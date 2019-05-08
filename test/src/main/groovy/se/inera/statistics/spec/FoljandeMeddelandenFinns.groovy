@@ -33,6 +33,7 @@ class FoljandeMeddelandenFinns extends FoljandeFinns {
     def händelsetyp
     def intygsid
     def ämne
+    def frågeid //Only applicable for Komplettering-type
 
     public void reset() {
         personnr = "19790407-1295"
@@ -40,6 +41,7 @@ class FoljandeMeddelandenFinns extends FoljandeFinns {
         exaktmeddelandeid = meddelandeIdCounter++
         ämne = "KOMPLT"
         skickat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date());
+        frågeid = null;
     }
 
     public void execute() {
@@ -67,6 +69,12 @@ class FoljandeMeddelandenFinns extends FoljandeFinns {
         setValue(findNode(meddelande, "skickatTidpunkt"), skickat)
         setValue(findNode(meddelande, "meddelande-id"), exaktmeddelandeid)
         setLeafValue(findNode(meddelande, "amne"), "code", ämne)
+
+        if (frågeid != null) {
+            Node komplNode = result.appendNode("komplettering");
+            komplNode.appendNode("frage-id", frågeid);
+            komplNode.appendNode("instans", 1);
+        }
 
         def builder = groovy.xml.XmlUtil.serialize(result)
         return builder.toString()

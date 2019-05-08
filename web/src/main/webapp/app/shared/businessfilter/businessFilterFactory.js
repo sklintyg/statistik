@@ -30,7 +30,7 @@ angular.module('StatisticsApp.filterFactory.factory')
     );
 
 angular.module('StatisticsApp.filterFactory.factory')
-    .factory('landstingFilterFactory',
+    .factory('regionFilterFactory',
         /** @ngInject */
         function (statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticDataService, StaticData, ControllerCommons, $q, ObjectHelper, ArrayHelper) {
             'use strict';

@@ -20,7 +20,7 @@
 
 angular.module('StatisticsApp').factory('ControllerCommons',
     /** @ngInject */
-    function(_, $cacheFactory, UserModel, UserService, $filter, $route, StaticData, StaticDataService) {
+    function(_, $cacheFactory, UserModel, UserService, $filter, $location, $route, StaticData, StaticDataService) {
         'use strict';
 
         var that = this;
@@ -83,7 +83,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
         };
 
         this.populateActiveEnhetsFilter = function(scope, enhetNames, isAllAvailableEnhetsSelectedInFilter) {
-            if (UserModel.get().isProcessledare && isAllAvailableEnhetsSelectedInFilter) {
+            if (UserModel.get().isProcessledare && isAllAvailableEnhetsSelectedInFilter && that.isShowingVerksamhet($location)) {
                 scope.activeEnhetsFilters = ['Samtliga enheter inom vårdgivaren ' + scope.vgName];
             } else {
                 scope.activeEnhetsFilters = enhetNames;
@@ -126,8 +126,8 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             return this.isShowing($location, 'verksamhet');
         };
 
-        this.isShowingLandsting = function($location) {
-            return this.isShowing($location, 'landsting');
+        this.isShowingRegion = function($location) {
+            return this.isShowing($location, 'region');
         };
 
         this.isShowingNationell = function($location) {
@@ -139,7 +139,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
         };
 
         this.isShowingProtectedPage = function(location) {
-            return this.isShowingVerksamhet(location) || this.isShowingLandsting(location);
+            return this.isShowingVerksamhet(location) || this.isShowingRegion(location);
         };
 
         this.createQueryStringOfQueryParams = function (queryParams) {
@@ -300,9 +300,9 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             return tableData;
         };
 
-        this.checkNationalResultAndEnableExport = function($scope, result, verksamhet, landsting, success) {
+        this.checkNationalResultAndEnableExport = function($scope, result, verksamhet, region, success) {
             $scope.errorPageUrl = null;
-            if (result === '' && !verksamhet && !landsting) {
+            if (result === '' && !verksamhet && !region) {
                 $scope.dataLoadingError = true;
                 $scope.errorPageUrl = '/app/views/error/statisticNotDone.html';
 

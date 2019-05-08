@@ -71,6 +71,8 @@ public class NationellDataInfo {
     private Range certificatePerCaseRange;
     private KonDataResponse andelKompletteringarResult;
     private Range andelKompletteringarRange;
+    private SimpleKonResponse kompletteringarPerFragaResult;
+    private Range kompletteringarPerFragaRange;
 
     public SimpleKonResponse getAntalIntygResult() {
         return antalIntygResult;
@@ -368,4 +370,19 @@ public class NationellDataInfo {
         this.andelKompletteringarRange = andelKompletteringarRange;
     }
 
+    public SimpleKonResponse getKompletteringarPerFragaResult() {
+        return kompletteringarPerFragaResult;
+    }
+
+    public void setKompletteringarPerFragaResult(SimpleKonResponse kompletteringarPerFragaResult) {
+        this.kompletteringarPerFragaResult = kompletteringarPerFragaResult;
+    }
+
+    public Range getKompletteringarPerFragaRange() {
+        return kompletteringarPerFragaRange;
+    }
+
+    public void setKompletteringarPerFragaRange(Range kompletteringarPerFragaRange) {
+        this.kompletteringarPerFragaRange = kompletteringarPerFragaRange;
+    }
 }

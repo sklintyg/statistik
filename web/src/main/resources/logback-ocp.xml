@@ -85,7 +85,7 @@
     <logger name="se.inera.statistics.web.service.endpoints.ProtectedChartDataService" level="INFO" additivity="false">
         <appender-ref ref="ACCESS" />
     </logger>
-    <logger name="se.inera.statistics.web.service.endpoints.ProtectedLandstingService" level="INFO" additivity="false">
+    <logger name="se.inera.statistics.web.service.endpoints.ProtectedRegionService" level="INFO" additivity="false">
         <appender-ref ref="ACCESS" />
     </logger>
 

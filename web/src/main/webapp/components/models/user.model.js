@@ -39,9 +39,9 @@ angular.module('StatisticsApp').factory('UserModel', ['_',
             data.loggedInWithoutStatistikuppdrag = true;
             data.isDelprocessledare = false;
             data.isProcessledare = false;
-            data.hasLandstingAccess = false;
-            data.landstingAvailable = false;
-            data.isLandstingAdmin = false;
+            data.hasRegionAccess = false;
+            data.regionAvailable = false;
+            data.isRegionAdmin = false;
             data.enableVerksamhetMenu = false;
             data.businesses = [];
             return data;
@@ -63,9 +63,9 @@ angular.module('StatisticsApp').factory('UserModel', ['_',
                 data.loggedInWithoutStatistikuppdrag = !(userAccessInfo.businesses && userAccessInfo.businesses.length >= 1);
                 data.isDelprocessledare = userAccessInfo.vgInfo.delprocessledare;
                 data.isProcessledare = userAccessInfo.vgInfo.processledare;
-                data.hasLandstingAccess = userAccessInfo.vgInfo.landstingsvardgivare;
-                data.landstingAvailable = userAccessInfo.vgInfo.landstingsvardgivareWithUpload;
-                data.isLandstingAdmin = userAccessInfo.vgInfo.landstingAdmin;
+                data.hasRegionAccess = userAccessInfo.vgInfo.regionsvardgivare;
+                data.regionAvailable = userAccessInfo.vgInfo.regionsvardgivareWithUpload;
+                data.isRegionAdmin = userAccessInfo.vgInfo.regionAdmin;
                 data.enableVerksamhetMenu = userAccessInfo.businesses && userAccessInfo.businesses.length >= 1;
             },
             setSettings: function(settings) {

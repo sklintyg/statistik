@@ -19,7 +19,8 @@
 
 var app = angular.module('StatisticsApp')
     .config(
-        [ '$routeProvider', function ($routeProvider) {
+        /** @ngInject */
+        function ($routeProvider) {
             'use strict';
 
             $routeProvider.when('/login', {
@@ -62,6 +63,12 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'NationalSickLeaveLengthCtrl',
                 resolve: { config: app.nationalSickLeaveLengthConfig },
                 title: 'nav.sjukskrivningslangd'
+            }).when('/nationell/kompletteringarperfraga', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'columnChartDetailsViewCtrl',
+                controllerAs: 'NationalKompletteringarPerFragaCtrl',
+                resolve: { config: app.kompletteringarPerFragaTvarsnittConfig },
+                title: 'nav.kompletteringarperfraga'
             }).when('/nationell/lan', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'columnChartDetailsViewCtrl',
@@ -241,6 +248,18 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'VerksamhetDegreeOfSickLeaveCtrl',
                 resolve: { config: app.degreeOfSickLeaveTvarsnittConfig },
                 title: 'nav.sjukskrivningsgrad'
+            }).when('/verksamhet/kompletteringarperfraga', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'columnChartDetailsViewCtrl',
+                controllerAs: 'VerksamhetKompletteringarPerFragaCtrl',
+                resolve: { config: app.kompletteringarPerFragaTvarsnittConfig },
+                title: 'nav.kompletteringarperfraga'
+            }).when('/verksamhet/kompletteringarperfragaTidsserie', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'doubleAreaChartsCtrl',
+                controllerAs: 'VerksamhetKompletteringarPerFragaCtrl',
+                resolve: { config: app.kompletteringarPerFragaTimeSeriesConfig },
+                title: 'nav.kompletteringarperfraga'
             }).when('/verksamhet/sjukskrivningslangd', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'columnChartDetailsViewCtrl',
@@ -397,57 +416,63 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'VerksamhetAndelKompletteringarCtrl',
                 resolve: { config: app.andelKompletteringarTvarsnittConfig },
                 title: 'nav.andelkompletteringar'
-            }).when('/landsting/filuppladdning', {
-                templateUrl: '/app/views/landsting/fileupload.html',
-                controller: 'landstingFileUploadCtrl',
-                controllerAs: 'LandstingFileUploadCtrl',
+            }).when('/region/filuppladdning', {
+                templateUrl: '/app/views/region/fileupload.html',
+                controller: 'regionFileUploadCtrl',
+                controllerAs: 'RegionFileUploadCtrl',
                 title: 'Filuppladdning'
-            }).when('/landsting/sjukfallPerManad', {
+            }).when('/region/sjukfallPerManad', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'singleLineChartCtrl',
-                controllerAs: 'LandstingCasesPerMonthCtrl',
+                controllerAs: 'RegionCasesPerMonthCtrl',
                 resolve: { config: app.casesPerMonthConfig },
                 title: 'nav.sjukfall-totalt'
-            }).when('/landsting/sjukfallPerEnhet', {
+            }).when('/region/sjukfallPerEnhet', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'columnChartDetailsViewCtrl',
-                controllerAs: 'LandstingCasesPerBusinessCtrl',
+                controllerAs: 'RegionCasesPerBusinessCtrl',
                 resolve: { config: app.casesPerBusinessConfig },
                 title: 'nav.vardenhet'
-            }).when('/landsting/sjukfallPerListningarPerEnhet', {
+            }).when('/region/sjukfallPerListningarPerEnhet', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'columnChartDetailsViewCtrl',
-                controllerAs: 'LandstingCasesPerPatientsPerBusinessCtrl',
+                controllerAs: 'RegionCasesPerPatientsPerBusinessCtrl',
                 resolve: { config: app.casesPerPatientsPerBusinessConfig },
-                title: 'nav.landsting.listningsjamforelse'
-            }).when('/landsting/meddelandenPerAmne', {
+                title: 'nav.region.listningsjamforelse'
+            }).when('/region/meddelandenPerAmne', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'doubleAreaChartsCtrl',
-                controllerAs: 'LandstingMeddelandenPerAmneCtrl',
-                resolve: { config: app.meddelandenPerAmneLandstingConfig },
+                controllerAs: 'RegionMeddelandenPerAmneCtrl',
+                resolve: { config: app.meddelandenPerAmneRegionConfig },
                 title: 'nav.meddelandenperamne'
-            }).when('/landsting/meddelandenPerAmneOchEnhet', {
+            }).when('/region/meddelandenPerAmneOchEnhet', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'columnChartDetailsViewCtrl',
-                controllerAs: 'LandstingMeddelandenPerAmneOchEnhetCtrl',
-                resolve: { config: app.meddelandenPerAmneOchEnhetLandstingConfig },
+                controllerAs: 'RegionMeddelandenPerAmneOchEnhetCtrl',
+                resolve: { config: app.meddelandenPerAmneOchEnhetRegionConfig },
                 title: 'nav.meddelandenperamneochenhet'
-            }).when('/landsting/intygPerTyp', {
+            }).when('/region/intygPerTyp', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'doubleAreaChartsCtrl',
-                controllerAs: 'LandstingIntygPerTypCtrl',
-                resolve: { config: app.intygPerTypePerMonthLandstingConfig },
+                controllerAs: 'RegionIntygPerTypCtrl',
+                resolve: { config: app.intygPerTypePerMonthRegionConfig },
                 title: 'nav.intygpertyp'
-            }).when('/landsting/andelkompletteringar', {
+            }).when('/region/andelkompletteringar', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'doubleAreaChartsCtrl',
-                controllerAs: 'LandstingAndelKompletteringarCtrl',
-                resolve: { config: app.andelKompletteringarLandstingConfig },
+                controllerAs: 'RegionAndelKompletteringarCtrl',
+                resolve: { config: app.andelKompletteringarRegionConfig },
                 title: 'nav.andelkompletteringar'
-            }).when('/landsting/om', {
-                templateUrl: '/app/views/landsting/aboutlandsting.html',
-                controllerAs: 'LandstingAboutCtrl',
-                title: 'Om Landstingsstatistik'
+            }).when('/region/kompletteringarperfraga', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'columnChartDetailsViewCtrl',
+                controllerAs: 'RegionKompletteringarPerFragaCtrl',
+                resolve: { config: app.kompletteringarPerFragaRegionConfig },
+                title: 'nav.kompletteringarperfraga'
+            }).when('/region/om', {
+                templateUrl: '/app/views/region/aboutregion.html',
+                controllerAs: 'RegionAboutCtrl',
+                title: 'Om Regionsstatistik'
             }).when('/om/kontakt', {
                 templateUrl: '/app/views/about/contact.html',
                 controllerAs: 'AboutContactCtrl',
@@ -456,9 +481,37 @@ var app = angular.module('StatisticsApp')
                 redirectTo: '/nationell/oversikt'
             }).when('/nationell', {
                 redirectTo: '/nationell/oversikt'
+            }).when('/landsting:rest*', {
+                redirectTo: function(path, path2, search) {
+                    var searchPath = '';
+
+                    angular.forEach(search, function(value, key) {
+                        var returnVal = '';
+
+                        if (searchPath) {
+                            returnVal += '&';
+                        }
+
+                        if (key === 'landstingfilter') {
+                            key = 'regionfilter';
+                        }
+
+                        returnVal +=  key + '=' + value;
+
+                        searchPath += returnVal;
+                    });
+
+                    var url = '/region' + path.rest;
+
+                    if (searchPath) {
+                        url += '?' + searchPath;
+                    }
+
+                    return url;
+                }
             }).otherwise({
                 templateUrl: '/app/views/error/pageNotFound.html',
                 title: 'Fel'
             });
 
-        } ]);
+        });

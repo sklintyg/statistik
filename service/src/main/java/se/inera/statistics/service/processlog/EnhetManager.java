@@ -27,6 +27,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -73,7 +74,7 @@ public class EnhetManager {
                 LOG.error("Wrong enhet type found");
             }
         }
-        return enhets;
+        return ImmutableList.copyOf(enhets);
     }
 
 }

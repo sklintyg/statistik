@@ -187,18 +187,18 @@ abstract class SimpleDetailsReport extends Rapport {
         throw new RuntimeException("Report -Enskilt diagnoskapitel som tvärsnitt- is not available on national level");
     }
 
-    def getReportSjukfallTotaltLandsting() {
+    def getReportSjukfallTotaltRegion() {
         if (inloggad) {
-            return reportsUtil.getReportAntalSjukfallLandstingInloggad(vg, filter);
+            return reportsUtil.getReportAntalSjukfallRegionInloggad(vg, filter);
         }
-        throw new RuntimeException("Report -Landsting Sjukfall totalt- is not available on national level");
+        throw new RuntimeException("Report -Region Sjukfall totalt- is not available on national level");
     }
 
-    def getReportSjukfallPerEnhetLandsting() {
+    def getReportSjukfallPerEnhetRegion() {
         if (inloggad) {
-            return reportsUtil.getReportSjukfallPerEnhetLandsting(vg, filter);
+            return reportsUtil.getReportSjukfallPerEnhetRegion(vg, filter);
         }
-        throw new RuntimeException("Report -Landsting Sjukfall per enhet- is not available on national level");
+        throw new RuntimeException("Report -Region Sjukfall per enhet- is not available on national level");
     }
 
     def getReportMeddelandenTotaltTvarsnitt() {
@@ -220,6 +220,20 @@ abstract class SimpleDetailsReport extends Rapport {
             return reportsUtil.getReportAndelKompletteringarTvarsnittInloggad(vg, filter);
         }
         throw new RuntimeException("Report -Andel kompletterade intyg som tvärsnitt- is not available on national level");
+    }
+
+    def getReportKompletteringarPerFragaTvarsnitt() {
+        if (inloggad) {
+            return reportsUtil.getReportKompletteringarPerFragaTvarsnittInloggad(vg, filter);
+        }
+        return reportsUtil.getReportKompletteringarPerFragaTvarsnitt();
+    }
+
+    def getReportKompletteringarPerFragaTvarsnittRegion() {
+        if (inloggad) {
+            return reportsUtil.getReportKompletteringarPerFragaTvarsnittInloggadRegion(vg, filter);
+        }
+        throw new RuntimeException("Report -Kompletteringar per fråga som tvärsnitt region- is not available on national level");
     }
 
 }

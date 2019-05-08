@@ -32,7 +32,7 @@ import org.springframework.security.access.AccessDeniedException;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.service.warehouse.query.CalcException;
 import se.inera.statistics.web.service.endpoints.ProtectedChartDataService;
-import se.inera.statistics.web.service.endpoints.ProtectedLandstingService;
+import se.inera.statistics.web.service.endpoints.ProtectedRegionService;
 
 public class CalcCoordinatorInvoker extends JAXRSInvoker {
 
@@ -41,7 +41,7 @@ public class CalcCoordinatorInvoker extends JAXRSInvoker {
     @Override
     public Object invoke(Exchange exchange, Object requestParams, Object resourceObject) {
         Class<?> realClass = ClassHelper.getRealClass(resourceObject);
-        if (realClass != ProtectedChartDataService.class && realClass != ProtectedLandstingService.class) {
+        if (realClass != ProtectedChartDataService.class && realClass != ProtectedRegionService.class) {
             return super.invoke(exchange, requestParams, resourceObject);
         }
         CalcCoordinator.Ticket ticket = null;

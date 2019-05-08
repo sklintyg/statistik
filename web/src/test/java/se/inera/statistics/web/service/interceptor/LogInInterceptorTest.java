@@ -36,14 +36,14 @@ public class LogInInterceptorTest {
     @Test
     public void testLoggingOfFileUploading() throws Exception {
         String payload = "------WebKitFormBoundary6UVVf08Ori6LNKyB\n" +
-                "Content-Disposition: form-data; name=\"file\"; filename=\"VG3_landsting (5).xlsx\"\n" +
+                "Content-Disposition: form-data; name=\"file\"; filename=\"VG3_region (5).xlsx\"\n" +
                 "Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\n" +
                 "\n" +
                 "QqK\n" +
                 "^Ô¥_rels/.relsMK1ïýaîÝl+HÓ^ÐHýc2ûÁn2";
 
         LoggingMessage loggingMessage = new LoggingMessage("", "83");
-        loggingMessage.getAddress().append("http://localhost:8080/api/landsting/fileupload?vgid=VG3");
+        loggingMessage.getAddress().append("http://localhost:8080/api/region/fileupload?vgid=VG3");
         loggingMessage.getEncoding().append("ISO-8859-1");
         loggingMessage.getHttpMethod().append("POST");
         loggingMessage.getContentType().append("multipart/form-data; boundary=----WebKitFormBoundary6UVVf08Ori6LNKyB");

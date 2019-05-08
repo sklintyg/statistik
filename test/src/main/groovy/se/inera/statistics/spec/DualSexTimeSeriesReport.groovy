@@ -165,11 +165,11 @@ abstract class DualSexTimeSeriesReport extends Rapport {
         return reportsUtil.getReportAntalMeddelanden()
     }
 
-    def getReportMeddelandenTotaltLandsting() {
+    def getReportMeddelandenTotaltRegion() {
         if (inloggad) {
-            return reportsUtil.getReportAntalMeddelandenLandsting(vg, filter)
+            return reportsUtil.getReportAntalMeddelandenRegion(vg, filter)
         }
-        throw new RuntimeException("Report -Meddelanden per ämne landsting- is not available on national level");
+        throw new RuntimeException("Report -Meddelanden per ämne region- is not available on national level");
     }
 
     def getReportMeddelandenVardenhet() {
@@ -186,11 +186,11 @@ abstract class DualSexTimeSeriesReport extends Rapport {
         throw new RuntimeException("Report -Meddelanden per ämne per läkare- is not available on national level");
     }
 
-    def getReportMeddelandenVardenhetLandsting() {
+    def getReportMeddelandenVardenhetRegion() {
         if (inloggad) {
-            return reportsUtil.getReportAntalMeddelandenVardenhetLandsting(vg, filter)
+            return reportsUtil.getReportAntalMeddelandenVardenhetRegion(vg, filter)
         }
-        throw new RuntimeException("Report -Meddelanden per ämne landsting- is not available on national level");
+        throw new RuntimeException("Report -Meddelanden per ämne region- is not available on national level");
     }
 
     def getReportMeddelandenVardenhetTvarsnitt() {
@@ -214,11 +214,11 @@ abstract class DualSexTimeSeriesReport extends Rapport {
         return reportsUtil.getReportAntalIntyg();
     }
 
-    def getReportIntygTotaltLandsting() {
+    def getReportIntygTotaltRegion() {
         if (inloggad) {
-            return reportsUtil.getReportAntalIntygLandsting(vg, filter);
+            return reportsUtil.getReportAntalIntygRegion(vg, filter);
         }
-        return new RuntimeException("Report -Intyg totalt Landsting- is not available on national level");
+        return new RuntimeException("Report -Intyg totalt Region- is not available on national level");
     }
 
     def getReportAndelKompletteringar() {
@@ -228,11 +228,18 @@ abstract class DualSexTimeSeriesReport extends Rapport {
         return reportsUtil.getReportAndelKompletteringar();
     }
 
-    def getReportAndelKompletteringarLandsting() {
+    def getReportKompletteringarPerFraga() {
         if (inloggad) {
-            return reportsUtil.getReportAndelKompletteringarLandsting(vg, filter);
+            return reportsUtil.getReportKompletteringarPerFragaInloggad(vg, filter);
         }
-        return new RuntimeException("Report -Andel kompletteringar landsting- is not available on national level");
+        return new RuntimeException("Report Kompletteringar Per Fraga -- is not available on national level");
+    }
+
+    def getReportAndelKompletteringarRegion() {
+        if (inloggad) {
+            return reportsUtil.getReportAndelKompletteringarRegion(vg, filter);
+        }
+        return new RuntimeException("Report -Andel kompletteringar region- is not available on national level");
     }
 
 }

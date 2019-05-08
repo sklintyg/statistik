@@ -63,6 +63,7 @@ import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.warehouse.message.MessageWidelineLoader;
 import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 import se.inera.statistics.service.warehouse.query.CounterFunctionIntyg;
 
@@ -299,19 +300,19 @@ public class IntygCommonManager {
         final boolean isAgeFilterActive = aldersgrupp != null && !aldersgrupp.isEmpty() && aldersgrupp.size() != AgeGroup.values().length;
         resultList = isAgeFilterActive ? applyAgeFilter(resultList, aldersgrupp) : resultList;
 
-        resultList = applyDxFilter(intygFilter.getDiagnoser(), resultList);
+        resultList = applyDxFilter(intygFilter.getDiagnoser(), resultList, icd10);
 
         return new IntygCommonGroup(range, resultList);
     }
 
-    private List<IntygCommon> applyDxFilter(Collection<String> dxFilter, List<IntygCommon> dtos) {
+    public static List<IntygCommon> applyDxFilter(Collection<String> dxFilter, List<IntygCommon> dtos, Icd10 icd10) {
         final boolean applyDiagnosFilter = dxFilter != null && !dxFilter.isEmpty();
         if (applyDiagnosFilter) {
             return dtos.stream().filter(countDTOAmne -> {
                 final String dxString = countDTOAmne.getDx();
                 try {
                     final Icd10.Id dx = icd10.findFromIcd10Code(dxString);
-                    return isDxMatchInCollection(dx, dxFilter);
+                    return MessageWidelineLoader.isDxMatchInCollection(dx, dxFilter);
                 } catch (Icd10.Icd10NotFoundException e) {
                     return false;
                 }
@@ -320,20 +321,7 @@ public class IntygCommonManager {
         return dtos;
     }
 
-    private boolean isDxMatchInCollection(Icd10.Id dx, Collection<String> diagnoser) {
-        Optional<Icd10.Id> dxlevel = Optional.ofNullable(dx);
-        while (dxlevel.isPresent()) {
-            final Icd10.Id currentDx = dxlevel.get();
-            final boolean contains = diagnoser.contains(String.valueOf(currentDx.toInt()));
-            if (contains) {
-                return true;
-            }
-            dxlevel = currentDx.getParent();
-        }
-        return false;
-    }
-
-    private List<IntygCommon> applyAgeFilter(List<IntygCommon> resultList, Collection<String> aldersgrupp) {
+    public static List<IntygCommon> applyAgeFilter(List<IntygCommon> resultList, Collection<String> aldersgrupp) {
         final List<AgeGroup> ageGroupFilters = aldersgrupp.stream()
                 .map(AgeGroup::getByName).filter(Optional::isPresent).map(Optional::get)
                 .collect(Collectors.toList());

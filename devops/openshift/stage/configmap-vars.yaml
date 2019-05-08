@@ -1,9 +1,6 @@
 apiVersion: v1
 data:
   NTJP_WS_CERTIFICATE_TYPE: JKS
-  SAKERHETSTJANST_SAML_IDP_METADATA_URL: "https://idp2.acctest.sakerhetstjanst.inera.se:443/idp/saml"
-  SAMBI_DISCOVERY_URL: 'https://fed.sambi.se/trial/ds'
-  SAMBI_DISCOVERY_RESPONSE.URL: '/saml/login/alias/defaultAlias?disco=true'
 kind: ConfigMap
 metadata:
   name: statistik-staging-configmap-envvar

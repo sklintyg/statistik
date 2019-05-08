@@ -36,7 +36,7 @@ public class MessageWidelineConverterTest {
     private static final Logger LOG = LoggerFactory.getLogger(MessageWidelineConverterTest.class);
 
     private MessageWideLine wideLine = new MessageWideLine(1, 1, "1231", "123-123-123", MessageEventType.SENT, "19121212-1212",
-            LocalDateTime.now(), "AMNE", 1, 103, "e1", "v1", IntygType.LISJP, LocalDate.now(), "lakare-1234", "");
+            LocalDateTime.now(), "AMNE", 1, 103, "e1", "v1", IntygType.LISJP, LocalDate.now(), "lakare-1234", "", "");
     private MessageWidelineConverter converter = new MessageWidelineConverter();
 
     @Test

@@ -19,7 +19,7 @@
 
 angular.module('StatisticsApp').controller('pageCtrl',
     /** @ngInject */
-    function ($scope, $rootScope, $window, $location, statisticsData, businessFilterFactory, landstingFilterFactory,
+    function ($scope, $rootScope, $window, $location, statisticsData, businessFilterFactory, regionFilterFactory,
         _, ControllerCommons, AppModel, UserModel, filterViewState) {
         'use strict';
 
@@ -32,13 +32,13 @@ angular.module('StatisticsApp').controller('pageCtrl',
             $rootScope.hideNavigationTabs = false;
 
             $scope.isVerksamhetShowing = ControllerCommons.isShowingVerksamhet($location);
-            $scope.isLandstingShowing = ControllerCommons.isShowingLandsting($location);
+            $scope.isRegionShowing = ControllerCommons.isShowingRegion($location);
 
             if ($scope.isVerksamhetShowing) {
                 $scope.viewHeader = 'Verksamhetsstatistik';
             }
-            else if ($scope.isLandstingShowing) {
-                $scope.viewHeader = 'Landstingsstatistik';
+            else if ($scope.isRegionShowing) {
+                $scope.viewHeader = 'Regionsstatistik';
             }
             else {
                 $scope.viewHeader = 'Nationell statistik';
@@ -65,18 +65,18 @@ angular.module('StatisticsApp').controller('pageCtrl',
                     $scope.pageHeaderVerksamhetName = userAccessInfo.vgInfo.name;
                 }
                 $scope.showBusinessesDetails = userAccessInfo.businesses && userAccessInfo.businesses.length > 1;
-                $rootScope.landstingAvailable = userAccessInfo.vgInfo.landstingsvardgivareWithUpload;
-                if ($rootScope.landstingAvailable) {
-                    statisticsData.getLandstingFilterInfo(function(landstingFilterInfo) {
-                        landstingFilterFactory.setup(landstingFilterInfo.businesses,
-                            $location.search().landstingfilter);
-                        $scope.isLandstingInfoFetched = true;
+                $rootScope.regionAvailable = userAccessInfo.vgInfo.regionsvardgivareWithUpload;
+                if ($rootScope.regionAvailable) {
+                    statisticsData.getRegionFilterInfo(function(regionFilterInfo) {
+                        regionFilterFactory.setup(regionFilterInfo.businesses,
+                            $location.search().regionfilter);
+                        $scope.isRegionInfoFetched = true;
                     });
                 }
             } else {
                 UserModel.resetUserAccessInfo();
                 $scope.showBusinessesDetails = false;
-                $rootScope.landstingAvailable = false;
+                $rootScope.regionAvailable = false;
                 $scope.pageHeaderVerksamhetName = '';
                 $scope.vgName = '';
             }
@@ -101,8 +101,8 @@ angular.module('StatisticsApp').controller('pageCtrl',
 
             if (AppModel.get().isLoggedIn) {
                 businessFilterFactory.selectPreselectedFilter($location.search().filter);
-                if ($scope.isLandstingInfoFetched) {
-                    landstingFilterFactory.selectPreselectedFilter($location.search().landstingfilter);
+                if ($scope.isRegionInfoFetched) {
+                    regionFilterFactory.selectPreselectedFilter($location.search().regionfilter);
                 }
             }
         });
@@ -141,8 +141,8 @@ angular.module('StatisticsApp').controller('pageCtrl',
                     });
                 } else {
                     businessFilterFactory.selectPreselectedFilter($location.search().filter);
-                    if ($scope.isLandstingInfoFetched) {
-                        landstingFilterFactory.selectPreselectedFilter($location.search().landstingfilter);
+                    if ($scope.isRegionInfoFetched) {
+                        regionFilterFactory.selectPreselectedFilter($location.search().regionfilter);
                     }
                 }
             }

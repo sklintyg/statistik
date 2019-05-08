@@ -25,7 +25,7 @@ angular.module('StatisticsApp').factory('navigationViewState',
         var ids = {
             nationell: 'nationell',
             verksamhet: 'verksamhet',
-            landsting: 'landsting'
+            region: 'region'
         };
 
         var state = {};

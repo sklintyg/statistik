@@ -18,17 +18,18 @@
  */
 package se.inera.statistics.web.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Test;
+
 import se.inera.auth.model.User;
 import se.inera.auth.model.UserAccessLevel;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.landsting.LandstingsVardgivareStatus;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import se.inera.statistics.service.region.RegionsVardgivareStatus;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -39,12 +40,9 @@ public class LoginInfoTest {
     @Test
     public void testGetLoginInfoForVg() {
         // Given
-        final LoginInfoVg vg1 = new LoginInfoVg(new HsaIdVardgivare("vgid1"), "vg1",
-                LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITHOUT_UPLOAD, new UserAccessLevel(true, 2));
-        final LoginInfoVg vg2 = new LoginInfoVg(new HsaIdVardgivare("vgid2"), "vg2",
-                LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITHOUT_UPLOAD, new UserAccessLevel(true, 2));
-        final LoginInfo loginInfo = new LoginInfo(new HsaIdUser("testid"), "testname", null, new ArrayList<>(Arrays.asList(vg1, vg2)),
-                new UserSettingsDTO(), "FAKE");
+        final LoginInfoVg vg1 = new LoginInfoVg(new HsaIdVardgivare("vgid1"), "vg1", RegionsVardgivareStatus.REGIONSVARDGIVARE_WITHOUT_UPLOAD, new UserAccessLevel(true, 2));
+        final LoginInfoVg vg2 = new LoginInfoVg(new HsaIdVardgivare("vgid2"), "vg2", RegionsVardgivareStatus.REGIONSVARDGIVARE_WITHOUT_UPLOAD, new UserAccessLevel(true, 2));
+        final LoginInfo loginInfo = new LoginInfo(new HsaIdUser("testid"), "testname", null, new ArrayList<>(Arrays.asList(vg1, vg2)), new UserSettingsDTO(), "FAKE");
 
         // Then
         assertEquals(vg1, loginInfo.getLoginInfoForVg(vg1.getHsaId()).get());

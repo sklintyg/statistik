@@ -35,9 +35,9 @@ describe('Model: UserModel', function () {
         expect(UserModel.get().loggedInWithoutStatistikuppdrag).toBeTruthy();
         expect(UserModel.get().isDelprocessledare).toBeFalsy();
         expect(UserModel.get().isProcessledare).toBeFalsy();
-        expect(UserModel.get().hasLandstingAccess).toBeFalsy();
-        expect(UserModel.get().landstingAvailable).toBeFalsy();
-        expect(UserModel.get().isLandstingAdmin).toBeFalsy();
+        expect(UserModel.get().hasRegionAccess).toBeFalsy();
+        expect(UserModel.get().regionAvailable).toBeFalsy();
+        expect(UserModel.get().isRegionAdmin).toBeFalsy();
         expect(UserModel.get().enableVerksamhetMenu).toBeFalsy();
     });
 
@@ -53,9 +53,9 @@ describe('Model: UserModel', function () {
                 verksamhetschef: false,
                 delprocessledare: false,
                 processledare: true,
-                landstingAdmin: false,
-                landstingsvardgivare: false,
-                landstingsvardgivareWithUpload: false
+                regionAdmin: false,
+                regionsvardgivare: false,
+                regionsvardgivareWithUpload: false
             }
         });
 
@@ -64,9 +64,9 @@ describe('Model: UserModel', function () {
         expect(UserModel.get().loggedInWithoutStatistikuppdrag).toBeTruthy();
         expect(UserModel.get().isDelprocessledare).toBeFalsy();
         expect(UserModel.get().isProcessledare).toBeTruthy();
-        expect(UserModel.get().hasLandstingAccess).toBeFalsy();
-        expect(UserModel.get().landstingAvailable).toBeFalsy();
-        expect(UserModel.get().isLandstingAdmin).toBeFalsy();
+        expect(UserModel.get().hasRegionAccess).toBeFalsy();
+        expect(UserModel.get().regionAvailable).toBeFalsy();
+        expect(UserModel.get().isRegionAdmin).toBeFalsy();
         expect(UserModel.get().enableVerksamhetMenu).toBeFalsy();
     });
 
@@ -84,9 +84,9 @@ describe('Model: UserModel', function () {
                 verksamhetschef: true,
                 delprocessledare: true,
                 processledare: false,
-                landstingAdmin: true,
-                landstingsvardgivare: true,
-                landstingsvardgivareWithUpload: false
+                regionAdmin: true,
+                regionsvardgivare: true,
+                regionsvardgivareWithUpload: false
             }
         });
 
@@ -95,9 +95,9 @@ describe('Model: UserModel', function () {
         expect(UserModel.get().loggedInWithoutStatistikuppdrag).toBeFalsy();
         expect(UserModel.get().isDelprocessledare).toBeTruthy();
         expect(UserModel.get().isProcessledare).toBeFalsy();
-        expect(UserModel.get().hasLandstingAccess).toBeTruthy();
-        expect(UserModel.get().landstingAvailable).toBeFalsy();
-        expect(UserModel.get().isLandstingAdmin).toBeTruthy();
+        expect(UserModel.get().hasRegionAccess).toBeTruthy();
+        expect(UserModel.get().regionAvailable).toBeFalsy();
+        expect(UserModel.get().isRegionAdmin).toBeTruthy();
         expect(UserModel.get().enableVerksamhetMenu).toBeTruthy();
     });
 });

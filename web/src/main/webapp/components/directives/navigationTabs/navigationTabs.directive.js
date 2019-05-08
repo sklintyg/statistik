@@ -64,14 +64,14 @@
             content: baseTemplateUrl + 'navigationTabs.verksamhet.html'
         };
 
-        var landstingTab = {
-            id: navigationViewState.ids.landsting,
-            title: 'nav.landsting-header',
+        var regionTab = {
+            id: navigationViewState.ids.region,
+            title: 'nav.region-header',
             url: function() {
-                return UserModel.get().landstingAvailable ? 'landsting/sjukfallPerManad' : 'landsting/om';
+                return UserModel.get().regionAvailable ? 'region/sjukfallPerManad' : 'region/om';
             },
-            urlPrefix: 'landsting',
-            content: baseTemplateUrl + 'navigationTabs.landsting.html'
+            urlPrefix: 'region',
+            content: baseTemplateUrl + 'navigationTabs.region.html'
         };
 
         $scope.$watch('vm.UserModel.get().businesses', function(newValue, oldValue) {
@@ -113,15 +113,15 @@
             var tabs = [];
 
             var verksamhet = UserModel.get().enableVerksamhetMenu;
-            var landsting = UserModel.get().hasLandstingAccess;
+            var region = UserModel.get().hasRegionAccess;
 
-            if (isLoggedIn && (verksamhet || landsting)) {
+            if (isLoggedIn && (verksamhet || region)) {
                 if (verksamhet) {
                     tabs.push(verksamhetTab);
                 }
 
-                if (landsting) {
-                    tabs.push(landstingTab);
+                if (region) {
+                    tabs.push(regionTab);
                 }
 
                 tabs.push(nationellTab);
@@ -136,13 +136,13 @@
 
         function setActiveTab() {
             var isVerksamhetShowing = ControllerCommons.isShowingVerksamhet($location);
-            var isLandstingShowing = ControllerCommons.isShowingLandsting($location);
+            var isRegionShowing = ControllerCommons.isShowingRegion($location);
             var isShowingNationell = ControllerCommons.isShowingNationell($location);
 
             if (isVerksamhetShowing) {
                 vm.activeTab = verksamhetTab.id;
-            } else if (isLandstingShowing) {
-                vm.activeTab = landstingTab.id;
+            } else if (isRegionShowing) {
+                vm.activeTab = regionTab.id;
             } else if (isShowingNationell) {
                 vm.activeTab = nationellTab.id;
             } else if (vm.activeTab === 0) {

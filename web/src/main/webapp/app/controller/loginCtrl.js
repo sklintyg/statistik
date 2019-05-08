@@ -19,7 +19,7 @@
 
 angular.module('StatisticsApp').controller('loginCtrl',
     /** @ngInject */
-    function ($scope, $rootScope, $uibModal, $location, $cookies, AppModel) {
+    function ($scope, $rootScope, $uibModal, $location, $cookies) {
         'use strict';
 
         $rootScope.hideNavigationTabs = true;
@@ -42,39 +42,6 @@ angular.module('StatisticsApp').controller('loginCtrl',
         $scope.errorUrlParam = $location.search().error;
         $scope.hasActiveStatUrl = $cookies.get('statUrl');
 
-        // Start SAMBI code
-        var SELECTED_SAMBI_IDP_KEY = 'selectedSambiIdpST';
-        var DEFAULT_LOGIN_URL = '/saml/login/alias/' + AppModel.get().defaultAlias;
-
-        $scope.resetCookie = function () {
-            $cookies.remove(SELECTED_SAMBI_IDP_KEY);
-            $scope.refresh();
-        };
-
-        $scope.refresh = function () {
-            var storedIdpEntityId = $cookies.get(SELECTED_SAMBI_IDP_KEY);
-
-            $scope.defaultUrl = DEFAULT_LOGIN_URL + '?idp=' + AppModel.get().defaultIDP;
-            $scope.hasStoredLogin = typeof storedIdpEntityId !== 'undefined';
-
-            if ($scope.hasStoredLogin) {
-                var decodedIdpEntityId = decodeURIComponent(storedIdpEntityId);
-                $scope.sambiUrl = DEFAULT_LOGIN_URL + '?idp=' + decodedIdpEntityId;
-                $scope.sambiLabel = resolveIdpName(decodedIdpEntityId);
-            } else {
-                $scope.sambiUrl = '/saml/login/discovery';
-                $scope.sambiLabel = 'Logga in via Sambi';
-            }
-        };
-
-        $scope.refresh();
-
-        function resolveIdpName(entityId) {
-            if (typeof AppModel.get().idpMap[entityId] !== 'undefined') {
-                return AppModel.get().idpMap[entityId];
-            }
-            return entityId;
-        }
-
+        $scope.defaultUrl = '/saml/login';
     }
 );

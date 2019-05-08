@@ -19,6 +19,7 @@
 package se.inera.statistics.web.service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -90,7 +91,7 @@ public class ResponseHandler {
                 + "_"
                 + report.getShortName()
                 + "_"
-                + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMdd_HHmmss"))
+                + LocalDateTime.now(ZoneId.of("Europe/Stockholm")).format(DateTimeFormatter.ofPattern("yyMMdd_HHmmss"))
                 + "."
                 + fileExtension;
         return filename.replaceAll("\\s", "");

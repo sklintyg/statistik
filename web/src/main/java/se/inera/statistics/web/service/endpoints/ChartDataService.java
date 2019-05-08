@@ -381,6 +381,17 @@ public class ChartDataService {
     }
 
     @GET
+    @Path("getKompletteringarPerFragaTvarsnitt")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @PrometheusTimeMethod(
+            help = "API-tjänst för åtkomst till tvärsnittet av kompletteringar per fråga")
+    public Response getKompletteringarPerFragaTvarsnitt(@QueryParam("format") String format) {
+        LOG.info("Calling getKompletteringarPerFragaTvarsnitt for national");
+        monitoringLogService.logTrackAccessAnonymousChartData("getKompletteringarPerFragaTvarsnitt");
+        return getResponse(getNationellDataResult().getKompletteringarPerFraga(), format, Report.N_KOMPLETTERINGARPERFRAGA);
+    }
+
+    @GET
     @Path("getIcd10Structure")
     @Produces({ MediaType.APPLICATION_JSON })
     @PrometheusTimeMethod(
