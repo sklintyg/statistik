@@ -30,13 +30,13 @@ public enum NumberOfCertificateGroup {
 
     GROUP1_1_CERTIFICATE("1 intyg", 1, 1, "#E11964"),
     GROUP2_2_CERTIFICATES("2 intyg", 2, 2, "#032C53"),
-    GROUP3_3_CERTIFICATES("3 intyg", 3, 3, "#799745"),
-    GROUP4_4_CERTIFICATES("4 intyg", 4, 4, "#3CA3FF"),
-    GROUP5_5_CERTIFICATES("5 intyg", 5, 5, "#C37EB2"),
-    GROUP6_6_CERTIFICATES("6 intyg", 6, 6, "#2A5152"),
-    GROUP7_7_CERTIFICATES("7 intyg", 7, 7, "#FB7F4D"),
-    GROUP8_8_CERTIFICATES("8 intyg", 8, 8, "#5CC2BC"),
-    GROUP9_9_CERTIFICATES("9 intyg", 9, 9, "#704F38"),
+    GROUP3_3_CERTIFICATES("3 intyg", 3, 3, "#FFBA3E"),
+    GROUP4_4_CERTIFICATES("4 intyg", 4, 4, "#799745"),
+    GROUP5_5_CERTIFICATES("5 intyg", 5, 5, "#3CA3FF"),
+    GROUP6_6_CERTIFICATES("6 intyg", 6, 6, "#C37EB2"),
+    GROUP7_7_CERTIFICATES("7 intyg", 7, 7, "#2A5152"),
+    GROUP8_8_CERTIFICATES("8 intyg", 8, 8, "#FB7F4D"),
+    GROUP9_9_CERTIFICATES("9 intyg", 9, 9, "#5CC2BC"),
     GROUP10_10_CERTIFICATES("10 intyg", 10, 10, "#704F38"),
     GROUP11_MORE_THAN_10_CERTIFICATES("Över 10 intyg", 11, Integer.MAX_VALUE - 1, "#600030");
 

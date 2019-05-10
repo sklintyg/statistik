@@ -164,6 +164,14 @@ class ReportsUtil {
         return get("/api/getIntygPerTyp")
     }
 
+    def getReportCertificatePerCaseTvarsnitt() {
+        return get("/api/getCertificatePerCaseTvarsnitt")
+    }
+
+    def getReportCertificatePerCaseTidsserie() {
+        return get("/api/getCertificatePerCaseTidsserie")
+    }
+
     def getReportAntalIntygPerManad(String vgid, filter) {
         return get(getVerksamhetUrlPrefix() + "/getTotalNumberOfIntygPerMonth", filter, "vgid=" + vgid)
     }
@@ -318,6 +326,14 @@ class ReportsUtil {
 
     def getReportIntygstypInloggad(String vgid, filter) {
         return get(getVerksamhetUrlPrefix() + "/getIntygPerTypePerMonth", filter, "vgid=" + vgid)
+    }
+
+    def getReportCertificatePerCaseTvarsnittInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getCertificatePerCaseTvarsnitt", filter, "vgid=" + vgid)
+    }
+
+    def getReportCertificatePerCaseTidsserieInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getCertificatePerCaseTidsserie", filter, "vgid=" + vgid)
     }
 
     def getReportDiagnosgruppSomTvarsnittInloggad(String vgid, FilterData filter) {
