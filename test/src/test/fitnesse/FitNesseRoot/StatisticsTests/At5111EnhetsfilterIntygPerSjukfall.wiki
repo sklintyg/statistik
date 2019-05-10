@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 !3 Givet att:
@@ -18,6 +17,6 @@ Inloggad:
 
 | Sjukfall i rapporten intyg per sjukfall som tvarsnitt |
 | inloggad som | antal intyg | filter enheter | allaEnhetsfilterValda? | enhetsfilterlista? | totalt? | män? | kvinnor? |
-| user1 | 1 intyg | | true | [enhet1, enhet2] | 3 | 3 | 0 |
-| user1 | 1 intyg | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 3 | 3 | 0 |
-| user1 | 1 intyg | enhet2 | false | [enhet2] | 1 | 1 | 0 |
+| user2 | 1 intyg | | true | [enhet1, enhet2] | 3 | 3 | 0 |
+| user2 | 1 intyg | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 3 | 3 | 0 |
+| user2 | 1 intyg | enhet2 | false | [enhet2] | 1 | 1 | 0 |
