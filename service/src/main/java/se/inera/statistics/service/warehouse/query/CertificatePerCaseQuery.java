@@ -45,7 +45,7 @@ public final class CertificatePerCaseQuery {
     private static Map<Ranges.Range, Counter<Ranges.Range>> count(Collection<Sjukfall> sjukfalls, Ranges ranges) {
         Map<Ranges.Range, Counter<Ranges.Range>> counters = Counter.mapFor(ranges);
         for (Sjukfall sjukfall : sjukfalls) {
-            Counter counter = counters.get(ranges.rangeFor(sjukfall.getIntygCount()));
+            Counter counter = counters.get(ranges.rangeFor(sjukfall.getCertificateCount()));
             counter.increase(sjukfall);
         }
         return counters;
@@ -71,8 +71,8 @@ public final class CertificatePerCaseQuery {
         final List<String> names = Lists.transform(rangesList, Ranges.Range::getName);
         final List<Integer> ids = Lists.transform(rangesList, Ranges.Range::getCutoff);
         final CounterFunction<Integer> counterFunction = (sjukfall, counter) -> {
-            final int age = sjukfall.getIntygCount();
-            final int rangeId = ranges.getRangeCutoffForValue(age);
+            final int certificateCount = sjukfall.getCertificateCountIncludingBeforeCurrentPeriod();
+            final int rangeId = ranges.getRangeCutoffForValue(certificateCount);
             counter.add(rangeId);
         };
         return sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, ids, counterFunction);

@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 !3 Givet att:
@@ -30,8 +29,8 @@ Tidsserie:
 | user1 | 2018 | jan | 2 intyg | 0 | 0 |
 | user1 | 2018 | jan | 3 intyg | 0 | 0 |
 | user1 | 2018 | feb | 1 intyg | 1 | 0 |
-| user1 | 2018 | feb | 2 intyg | 2 | 0 |
+| user1 | 2018 | feb | 2 intyg | 1 | 0 |
 | user1 | 2018 | feb | 3 intyg | 0 | 0 |
 | user1 | 2018 | mar | 1 intyg | 0 | 0 |
-| user1 | 2018 | mar | 2 intyg | 2 | 0 |
+| user1 | 2018 | mar | 2 intyg | 1 | 0 |
 | user1 | 2018 | mar | 3 intyg | 0 | 0 |
