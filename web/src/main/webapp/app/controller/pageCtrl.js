@@ -113,6 +113,11 @@ angular.module('StatisticsApp').controller('pageCtrl',
             }
         });
 
+        $scope.$watch('AppModel.get().driftbanners', function(value){
+            $scope.serviceBannerMessageList = value;
+        });
+
+
         $scope.$watch('AppModel.get().isLoggedIn', function(value){
             if (value) {
                 if (!$scope.isLoginInfoFetched) {

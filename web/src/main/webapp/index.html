@@ -25,6 +25,9 @@
 </head>
 <body data-ng-controller="pageCtrl">
   <stat-cookie-banner></stat-cookie-banner>
+  <div ng-if="serviceBannerMessageList" ng-repeat="serviceMessage in serviceBannerMessageList">
+    <show-message severity="serviceMessage.severity" text="serviceMessage.message" show-default-title="false"></show-message>
+  </div>
   <highlight-words></highlight-words>
 
   <div class="header-container">
