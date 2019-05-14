@@ -1,9 +1,9 @@
-<div class="top-20px-margin alert alert-info" role="alert" ng-if="isInfo">
-  <strong>Observera!</strong> {{::text}}
+<div class="top-20px-margin alert alert-info messagebox" role="alert" ng-if="isInfo">
+  <strong ng-if="showDefaultTitle">Observera!</strong> {{::text}}
 </div>
-<div class="top-20px-margin alert alert-warning" role="alert" ng-if="isWarning">
-  <strong>Varning!</strong> {{::text}}
+<div class="top-20px-margin alert alert-warning messagebox" role="alert" ng-if="isWarning">
+  <strong ng-if="showDefaultTitle">Varning!</strong> {{::text}}
 </div>
-<div class="top-20px-margin alert alert-danger" role="alert" ng-if="isDanger">
-  <strong>Ajdå!</strong> {{::text}}
+<div class="top-20px-margin alert alert-danger messagebox" role="alert" ng-if="isDanger">
+  <strong ng-if="showDefaultTitle">Ajdå!</strong> {{::text}}
 </div>

@@ -18,12 +18,17 @@
  */
 package se.inera.statistics.web.model;
 
+import se.inera.statistics.web.error.Message;
+
+import java.util.List;
+
 public class AppSettings {
 
     private String loginUrl;
     private boolean loginVisible;
     private boolean isLoggedIn;
     private String projectVersion;
+    private List<Message> driftbanners;
 
     public String getLoginUrl() {
         return loginUrl;
@@ -55,5 +60,13 @@ public class AppSettings {
 
     public void setProjectVersion(String projectVersion) {
         this.projectVersion = projectVersion;
+    }
+
+    public void setDriftbanners(List<Message> driftbanners) {
+        this.driftbanners = driftbanners;
+    }
+
+    public List<Message> getDriftbanners() {
+        return driftbanners;
     }
 }

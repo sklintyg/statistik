@@ -29,12 +29,14 @@ angular.module('StatisticsApp')
             scope: {
                 type: '<',
                 severity: '<',
-                text: '<'
+                text: '<',
+                showDefaultTitle: '=?'
             },
             link: function($scope) {
                 $scope.isInfo = $scope.severity === 'INFO';
                 $scope.isWarning = $scope.severity === 'WARN';
                 $scope.isDanger = $scope.severity === 'ERROR';
+                $scope.showDefaultTitle = angular.isDefined($scope.hideDefaultTitle) ? $scope.showDefaultTitle : true;
             }
         };
     });

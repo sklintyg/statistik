@@ -31,6 +31,7 @@ angular.module('StatisticsApp').factory('AppModel',
             data.loginUrl = '';
             data.loginVisible = false;
             data.projectVersion = '';
+            data.driftbanners = null;
             return data;
         }
 
@@ -45,6 +46,7 @@ angular.module('StatisticsApp').factory('AppModel',
                 data.loginUrl = app.loginUrl;
                 data.loginVisible = app.loginVisible;
                 data.projectVersion = app.projectVersion;
+                data.driftbanners = app.driftbanners;
             },
             get: function() {
                 return data;

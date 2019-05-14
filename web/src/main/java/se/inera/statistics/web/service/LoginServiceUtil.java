@@ -48,6 +48,9 @@ import se.inera.statistics.service.user.UserSettings;
 import se.inera.statistics.service.user.UserSettingsManager;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.web.error.ErrorSeverity;
+import se.inera.statistics.web.error.ErrorType;
+import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.model.AppSettings;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.LoginInfoVg;
@@ -58,6 +61,7 @@ import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.util.VersionUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -261,7 +265,23 @@ public class LoginServiceUtil {
         settings.setLoginUrl(loginUrl);
         settings.setLoggedIn(isLoggedIn());
         settings.setProjectVersion(versionUtil.getProjectVersion());
+        settings.setDriftbanners(getFakeMessages());
         return settings;
+    }
+
+    int count = 0;
+
+    //Only to be used until the real backend source for messages are available
+    private List<Message> getFakeMessages() {
+        List<Message> messages = new ArrayList<>();
+        final int timesBetweenMessages = 3;
+        if (count % timesBetweenMessages == 0) {
+//        messages.add(Message.create(ErrorType.UNSET, ErrorSeverity.INFO, "Detta är ett test på infonivå " + count));
+//        messages.add(Message.create(ErrorType.UNSET, ErrorSeverity.WARN, "Detta är ett test på varningsnivå " + count));
+            messages.add(Message.create(ErrorType.UNSET, ErrorSeverity.ERROR, "Detta är ett test på felnivå " + count));
+        }
+        count++;
+        return messages;
     }
 
     public StaticData getStaticData() {
