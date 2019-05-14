@@ -59,6 +59,9 @@ public class WarehouseService {
     private SjukfallQuery sjukfallQuery;
 
     @Autowired
+    private CertificatePerCaseQuery certificatePerCaseQuery;
+
+    @Autowired
     private IntygCommonManager intygCommonManager;
 
     @Autowired
@@ -329,7 +332,7 @@ public class WarehouseService {
 
     public SimpleKonResponse getCertificatePerCaseTvarsnitt(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
         return CertificatePerCaseQuery.getCertificatePerCaseTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1,
-                range.getNumberOfMonths(), sjukfallUtil, CertificatePerCaseQuery.RANGES);
+                range.getNumberOfMonths(), sjukfallUtil);
     }
 
     public KonDataResponse getCertificatePerCaseTidsserie(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
@@ -373,6 +376,18 @@ public class WarehouseService {
                 });
         final SimpleKonResponse merged = SimpleKonResponse.merge(results, false, AvailableFilters.getForSjukfall());
         return SimpleKonResponses.addExtrasToNameDuplicates(merged);
+    }
+
+    public SimpleKonResponse getCertificatePerCaseTvarsnittRegion(final FilterSettings filterSettings) {
+        Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
+        final Range range = filterSettings.getRange();
+        Collection<SimpleKonResponse> results = Collections2.transform(enhetsPerVgid.entrySet(),
+                entry -> {
+                    final Aisle aisle = warehouse.get(entry.getKey());
+                    return certificatePerCaseQuery.getCertificatePerCaseTvarsnittRegion(aisle, filterSettings.getFilter().getPredicate(),
+                            range.getFrom(), 1, range.getNumberOfMonths(), sjukfallUtil);
+                });
+        return SimpleKonResponse.merge(results, true, AvailableFilters.getForSjukfall());
     }
 
     public KonDataResponse getIntygPerTypeRegion(final FilterSettings filterSettings) {

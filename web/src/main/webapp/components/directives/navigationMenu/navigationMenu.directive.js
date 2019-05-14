@@ -328,6 +328,14 @@
                     link: '#/region/sjukfallPerListningarPerEnhet',
                     name: 'nav.region.listningsjamforelse',
                     ctrl: 'RegionCasesPerPatientsPerBusinessCtrl'
+                },{
+                    checkEnable: function() {
+                        return UserModel.get().regionAvailable;
+                    },
+                    id: 'navRegionCertificatePerCaseLink',
+                    link: '#/region/certificatePerCaseTvarsnitt',
+                    name: 'nav.intyg-pers-jukfall',
+                    ctrl: 'RegionCertificatePerCaseCtrl'
                 }
             ]
         };

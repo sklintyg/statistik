@@ -451,6 +451,12 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'RegionCasesPerPatientsPerBusinessCtrl',
                 resolve: { config: app.casesPerPatientsPerBusinessConfig },
                 title: 'nav.region.listningsjamforelse'
+            }).when('/region/certificatePerCaseTvarsnitt', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'columnChartDetailsViewCtrl',
+                controllerAs: 'RegionCertificatePerCaseCtrl',
+                resolve: { config: app.certificatePerCaseTvarsnittConfig },
+                title: 'nav.intyg-pers-jukfall'
             }).when('/region/meddelandenPerAmne', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'doubleAreaChartsCtrl',

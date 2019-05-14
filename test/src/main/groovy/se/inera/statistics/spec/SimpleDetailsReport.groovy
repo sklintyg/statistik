@@ -187,6 +187,13 @@ abstract class SimpleDetailsReport extends Rapport {
         return reportsUtil.getReportCertificatePerCaseTvarsnitt();
     }
 
+    def getReportCertificatePerCaseTvarsnittRegion() {
+        if (inloggad) {
+            return reportsUtil.getReportCertificatePerCaseTvarsnittRegionInloggad(vg, filter);
+        }
+        throw new RuntimeException("Report -Region Intyg per sjukfall- is not available on national level");
+    }
+
     def getReportUnderdiagnosgruppTvarsnitt(String valdUnderdiagnos) {
         if (inloggad) {
             return reportsUtil.getReportEnskiltDiagnoskapitelSomTvarsnittInloggad(vg, valdUnderdiagnos, filter);

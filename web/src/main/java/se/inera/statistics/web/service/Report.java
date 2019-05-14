@@ -62,6 +62,7 @@ public enum Report {
     L_SJUKFALLTOTALT(StatisticsLevel.REGION, "SjukfallTotalt", "Antal sjukfall"),
     L_VARDENHET(StatisticsLevel.REGION, "Vardenhet", "Antal sjukfall fördelat på vårdenhet"),
     L_VARDENHETLISTNINGAR(StatisticsLevel.REGION, "VardenhetListningar", "Antal sjukfall per 1000 listningar fördelat på vårdenhet"),
+    L_CERTIFICATEPERCASE(StatisticsLevel.REGION, "CertificatePerCase", "Antal intyg per sjukfall"),
     L_ANDELKOMPLETTERINGAR(StatisticsLevel.REGION, "Kompletteringandelintyg", "Andel utfärdade intyg som fått en kompletteringsbegäran"),
     L_KOMPLETTERINGARPERFRAGA(StatisticsLevel.REGION, "Kompletteringarperfraga", "Antal kompletteringar per fråga"),
     L_MEDDELANDENPERAMNE(StatisticsLevel.REGION, "Meddelandentotalt", "Antal inkomna meddelanden fördelat på ämne"),

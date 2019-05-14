@@ -277,9 +277,9 @@ class NationellData {
         return new SimpleKonResponse(AvailableFilters.getForNationell(), rows);
     }
 
-    SimpleKonResponse getCertificatePerCase(Aisle aisle, Range range, SimpleKonResponse certificatePerCaseResult, Ranges ranges) {
+    SimpleKonResponse getCertificatePerCase(Aisle aisle, Range range, SimpleKonResponse certificatePerCaseResult) {
         SimpleKonResponse certificatePerCase = CertificatePerCaseQuery.getCertificatePerCaseTvarsnitt(aisle,
-                SjukfallUtil.ALL_ENHETER, range.getFrom(), 1, range.getNumberOfMonths(), sjukfallUtil, ranges);
+                SjukfallUtil.ALL_ENHETER, range.getFrom(), 1, range.getNumberOfMonths(), sjukfallUtil);
         if (certificatePerCaseResult == null) {
             certificatePerCaseResult = createEmptySimpleKonResponse(certificatePerCase);
         }

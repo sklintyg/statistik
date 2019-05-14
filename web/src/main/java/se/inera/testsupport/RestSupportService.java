@@ -22,27 +22,15 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -65,50 +53,35 @@ import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAStore;
 import se.inera.statistics.service.hsa.HsaDataInjectable;
 import se.inera.statistics.service.hsa.HsaWsResponderMock;
-import se.inera.statistics.service.region.persistance.region.RegionManager;
-import se.inera.statistics.service.region.persistance.regionenhet.RegionEnhet;
-import se.inera.statistics.service.region.persistance.regionenhet.RegionEnhetManager;
-import se.inera.statistics.service.region.persistance.regionenhetupdate.RegionEnhetUpdateManager;
-import se.inera.statistics.service.region.persistance.regionenhetupdate.RegionEnhetUpdateOperation;
-import se.inera.statistics.service.processlog.Enhet;
-import se.inera.statistics.service.processlog.IntygEvent;
+import se.inera.statistics.service.processlog.*;
 import se.inera.statistics.service.processlog.Lakare;
-import se.inera.statistics.service.processlog.LogConsumer;
-import se.inera.statistics.service.processlog.Receiver;
 import se.inera.statistics.service.processlog.intygsent.IntygSentEvent;
 import se.inera.statistics.service.processlog.intygsent.IntygsentLogConsumer;
 import se.inera.statistics.service.processlog.intygsent.ProcessIntygsentLog;
 import se.inera.statistics.service.processlog.message.MessageEvent;
 import se.inera.statistics.service.processlog.message.MessageLogConsumer;
 import se.inera.statistics.service.processlog.message.ProcessMessageLog;
+import se.inera.statistics.service.region.persistance.region.RegionManager;
+import se.inera.statistics.service.region.persistance.regionenhet.RegionEnhet;
+import se.inera.statistics.service.region.persistance.regionenhet.RegionEnhetManager;
+import se.inera.statistics.service.region.persistance.regionenhetupdate.RegionEnhetUpdateManager;
+import se.inera.statistics.service.region.persistance.regionenhetupdate.RegionEnhetUpdateOperation;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.service.warehouse.Aisle;
-import se.inera.statistics.service.warehouse.NationellDataInvoker;
-import se.inera.statistics.service.warehouse.SjukfallUtil;
-import se.inera.statistics.service.warehouse.Warehouse;
-import se.inera.statistics.service.warehouse.WidelineConverter;
+import se.inera.statistics.service.warehouse.*;
 import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 import se.inera.statistics.service.warehouse.model.db.MessageWideLine;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
+import se.inera.statistics.service.warehouse.query.CertificatePerCaseQuery;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.time.ChangableClock;
 import se.inera.statistics.web.service.endpoints.ChartDataService;
 import se.inera.testsupport.fkrapport.FkReportCreator;
 import se.inera.testsupport.fkrapport.FkReportDataRow;
-import se.inera.testsupport.socialstyrelsenspecial.IntygCommonSosManager;
-import se.inera.testsupport.socialstyrelsenspecial.SjukfallsLangdGroupSos;
-import se.inera.testsupport.socialstyrelsenspecial.SosCalculatedRow;
-import se.inera.testsupport.socialstyrelsenspecial.SosCountRow;
-import se.inera.testsupport.socialstyrelsenspecial.SosMeCfs1ReportCreator;
-import se.inera.testsupport.socialstyrelsenspecial.SosMeCfs1Row;
-import se.inera.testsupport.socialstyrelsenspecial.SosMeCfs2ReportCreator;
-import se.inera.testsupport.socialstyrelsenspecial.SosMeCfs2Row;
-import se.inera.testsupport.socialstyrelsenspecial.SosReportCreator;
-import se.inera.testsupport.socialstyrelsenspecial.SosRow;
+import se.inera.testsupport.socialstyrelsenspecial.*;
 import se.inera.testsupport.specialrapport.SjukfallLengthSpecialReportCreator;
 import se.inera.testsupport.specialrapport.SjukfallLengthSpecialRow;
 
@@ -170,6 +143,9 @@ public class RestSupportService {
     private SjukfallQuery sjukfallQuery;
 
     @Autowired
+    private CertificatePerCaseQuery certificatePerCaseQuery;
+
+    @Autowired
     private CountyPopulationManagerForTest countyPopulationManager;
 
     @Autowired
@@ -224,6 +200,7 @@ public class RestSupportService {
     public Response setCutoff(int cutoff) {
         nationellData.setCutoff(cutoff);
         sjukfallQuery.setCutoff(cutoff);
+        certificatePerCaseQuery.setRegionCutoff(cutoff);
         return Response.ok().build();
     }
 

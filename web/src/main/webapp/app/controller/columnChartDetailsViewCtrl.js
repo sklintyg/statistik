@@ -152,7 +152,6 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
                 }
             }
 
-            //TODO: Erik: ?
             ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.filterhash,
                 result.filter.diagnoser, result.allAvailableDxsSelectedInFilter,
                 result.filteredEnhets, result.allAvailableEnhetsSelectedInFilter,
@@ -555,14 +554,24 @@ angular.module('StatisticsApp').certificatePerCaseTvarsnittConfig =
     'use strict';
 
     var conf = {};
-    //TODO: Erik: Det står i Fitnesse-specarna att det ska finnas filter för diagnos. Är det här man lägger till det?
     conf.dataFetcher = 'getCertificatePerCaseTvarsnitt';
     conf.dataFetcherVerksamhet = 'getCertificatePerCaseTvarsnittVerksamhet';
+    conf.dataFetcherRegion = 'getCertificatePerCaseTvarsnittRegion';
+
     conf.exportTableUrl = 'api/getCertificatePerCaseTvarsnitt?format=xlsx';
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getCertificatePerCaseTvarsnitt?format=xlsx';
     };
+    conf.exportTableUrlRegion = function () {
+        return 'api/region/getCertificatePerCaseTvarsnitt?format=xlsx';
+    };
+
     conf.title = messageService.getProperty('title.intyg-per-sjukfall');
+    conf.chartFootnotesExtra = function(result, isVerksamhet, isRegion, $filter) {
+        if (isRegion) {
+            return $filter('messageFilter')('help.region.intyg-per-sjukfall', '', '', [result.fileUploadDate], '');
+        }
+    };
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/certificatePerCaseTidsserie', active: false},

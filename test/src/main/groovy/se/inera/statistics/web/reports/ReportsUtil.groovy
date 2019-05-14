@@ -332,6 +332,10 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getCertificatePerCaseTvarsnitt", filter, "vgid=" + vgid)
     }
 
+    def getReportCertificatePerCaseTvarsnittRegionInloggad(vgid, filter) {
+        return get(getRegionUrlPrefix() + "/getCertificatePerCaseTvarsnitt", filter, "vgid=" + vgid, "regionfilter")
+    }
+
     def getReportCertificatePerCaseTidsserieInloggad(String vgid, filter) {
         return get(getVerksamhetUrlPrefix() + "/getCertificatePerCaseTidsserie", filter, "vgid=" + vgid)
     }

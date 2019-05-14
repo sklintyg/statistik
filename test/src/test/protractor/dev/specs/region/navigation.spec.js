@@ -107,6 +107,7 @@ describe('Navigering region: ', function() {
         validateDetailReport('navRegionCasesPerMonthLink', 1);
         validateDetailReport('navRegionCasesPerEnhetLink', 1);
         validateDetailReport('navRegionCasesPerPatientsPerEnhetLink', 1);
+        validateDetailReport('navRegionCertificatePerCaseLink', 1);
 
         validateDetailReport('navRegionIntygPerTypeLink', 2);
 

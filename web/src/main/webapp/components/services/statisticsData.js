@@ -162,6 +162,10 @@ angular.module('StatisticsApp').factory('statisticsData',
         makeRequestVerksamhet('getCertificatePerCaseTvarsnitt', successCallback, failureCallback);
     };
 
+    factory.getCertificatePerCaseTvarsnittRegion = function (successCallback, failureCallback) {
+        makeRequestRegion('getCertificatePerCaseTvarsnitt', successCallback, failureCallback);
+    };
+
     factory.getCertificatePerCaseTidsserieVerksamhet = function (successCallback, failureCallback) {
         makeRequestVerksamhet('getCertificatePerCaseTidsserie', successCallback, failureCallback);
     };

@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 !3 Givet att:
@@ -22,8 +21,8 @@ Test
 !3 Då gäller:
 Region:
 
-| Sjukfall i rapporten intyg per sjukfall som tvarsnitt |
+| Sjukfall i rapporten intyg per sjukfall som tvarsnitt region |
 | inloggad som | antal intyg | totalt? | män? | kvinnor? |
-| user1 | 1 intyg | 1 | 1 | 0 |
-| user1 | 2 intyg | 2 | 2 | 0 |
-| user1 | 3 intyg | 0 | 0 | 0 |
+| user3 | 1 intyg | 1 | 1 | 0 |
+| user3 | 2 intyg | 1 | 1 | 0 |
+| user3 | 3 intyg | 0 | 0 | 0 |

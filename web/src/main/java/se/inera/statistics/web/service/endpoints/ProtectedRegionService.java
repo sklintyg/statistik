@@ -18,23 +18,16 @@
  */
 package se.inera.statistics.web.service.endpoints;
 
+import static se.inera.statistics.web.service.ReportType.TIDSSERIE;
+import static se.inera.statistics.web.service.ReportType.TVARSNITT;
+
 import java.io.ByteArrayOutputStream;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+
 import javax.activation.DataSource;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -51,48 +44,26 @@ import org.springframework.stereotype.Service;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.processlog.Enhet;
+import se.inera.statistics.service.processlog.EnhetManager;
+import se.inera.statistics.service.region.NoRegionSetForVgException;
 import se.inera.statistics.service.region.RegionEnhetFileData;
 import se.inera.statistics.service.region.RegionEnhetFileDataRow;
 import se.inera.statistics.service.region.RegionEnhetHandler;
-import se.inera.statistics.service.region.NoRegionSetForVgException;
 import se.inera.statistics.service.region.persistance.regionenhet.RegionEnhet;
 import se.inera.statistics.service.region.persistance.regionenhetupdate.RegionEnhetUpdate;
 import se.inera.statistics.service.region.persistance.regionenhetupdate.RegionEnhetUpdateOperation;
-import se.inera.statistics.service.processlog.Enhet;
-import se.inera.statistics.service.processlog.EnhetManager;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.MessagesText;
-import se.inera.statistics.web.model.DualSexStatisticsData;
-import se.inera.statistics.web.model.LoginInfo;
-import se.inera.statistics.web.model.LoginInfoVg;
-import se.inera.statistics.web.model.SimpleDetailsData;
-import se.inera.statistics.web.model.TableDataReport;
-import se.inera.statistics.web.model.Verksamhet;
-import se.inera.statistics.web.service.FilterHandler;
-import se.inera.statistics.web.service.FilterSettings;
-import se.inera.statistics.web.service.LoginServiceUtil;
-import se.inera.statistics.web.service.Report;
-import se.inera.statistics.web.service.ReportInfo;
-import se.inera.statistics.web.service.ReportType;
-import se.inera.statistics.web.service.ResponseHandler;
-import se.inera.statistics.web.service.WarehouseService;
+import se.inera.statistics.web.model.*;
+import se.inera.statistics.web.service.*;
+import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 import se.inera.statistics.web.service.region.RegionEnhetFileParseException;
 import se.inera.statistics.web.service.region.RegionFileGenerationException;
 import se.inera.statistics.web.service.region.RegionFileReader;
 import se.inera.statistics.web.service.region.RegionFileWriter;
-import se.inera.statistics.web.service.monitoring.MonitoringLogService;
-import se.inera.statistics.web.service.responseconverter.AndelKompletteringarConverter;
-import se.inera.statistics.web.service.responseconverter.GroupedSjukfallWithRegionSortingConverter;
-import se.inera.statistics.web.service.responseconverter.MessageAmneConverter;
-import se.inera.statistics.web.service.responseconverter.MessageAmnePerEnhetTvarsnittConverter;
-import se.inera.statistics.web.service.responseconverter.PeriodConverter;
-import se.inera.statistics.web.service.responseconverter.SimpleDualSexConverter;
-import se.inera.statistics.web.service.responseconverter.SimpleMultiDualSexConverter;
-import se.inera.statistics.web.service.responseconverter.SjukfallPerPatientsPerEnhetConverter;
-
-import static se.inera.statistics.web.service.ReportType.TIDSSERIE;
-import static se.inera.statistics.web.service.ReportType.TVARSNITT;
+import se.inera.statistics.web.service.responseconverter.*;
 
 /**
  * Statistics services that requires authorization to use. Unless otherwise noted, the data returned
@@ -361,6 +332,22 @@ public class ProtectedRegionService {
         final SimpleDetailsData data = new SjukfallPerPatientsPerEnhetConverter(regionEnhets, connectedEnhetIds)
                 .convert(casesPerEnhet, filterSettings, null);
         return getResponse(data, format, request, Report.L_VARDENHETLISTNINGAR, TVARSNITT, getLastRegionUpdateDate(vgIdForLoggedInUser));
+    }
+
+    @GET
+    @Path("getCertificatePerCaseTvarsnitt")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
+    @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
+    @PrometheusTimeMethod(
+            help = "API-tjänst för skyddad åtkomst till intyg per sjukfall per region")
+    public Response getCertificatePerCaseTvarsnitt(@Context HttpServletRequest request, @QueryParam("regionfilter") String filterHash,
+                                                   @QueryParam("format") String format) {
+        final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 12);
+        SimpleKonResponse certificatePerCase = warehouse.getCertificatePerCaseTvarsnittRegion(filterSettings);
+        final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        final SimpleDetailsData data = new PeriodConverter().convert(certificatePerCase, filterSettings);
+        return getResponse(data, format, request, Report.L_CERTIFICATEPERCASE, TVARSNITT, getLastRegionUpdateDate(vgIdForLoggedInUser));
     }
 
     @GET

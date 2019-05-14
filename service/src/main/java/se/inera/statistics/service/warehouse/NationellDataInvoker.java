@@ -35,7 +35,10 @@ import se.inera.statistics.service.report.model.*;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
-import se.inera.statistics.service.warehouse.query.*;
+import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
+import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
+import se.inera.statistics.service.warehouse.query.MessagesFilter;
+import se.inera.statistics.service.warehouse.query.MessagesQuery;
 
 /**
  * Invokes national calculations per aisle and collects the results.
@@ -172,7 +175,7 @@ public class NationellDataInvoker {
         nationellData.addSjukfallPerLanToResult(result.getLanRange(), data.getLanResult(), aisle);
 
         data.setCertificatePerCaseResult(nationellData.getCertificatePerCase(aisle, result.getCertificatePerCaseRange(),
-                data.getCertificatePerCaseResult(), CertificatePerCaseQuery.RANGES));
+                data.getCertificatePerCaseResult()));
 
         final Range overviewRange = result.getOverviewRange();
         final Range previousOverviewRange = ReportUtil.getPreviousOverviewPeriod(overviewRange);
