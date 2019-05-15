@@ -24,10 +24,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
@@ -43,32 +40,15 @@ import se.inera.statistics.service.warehouse.*;
 @Component
 public class CertificatePerCaseQuery {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CertificatePerCaseQuery.class);
+    @Autowired
+    private RegionCutoff regionCutoff;
 
     public static final Ranges RANGES = CertificatePerCaseGroupUtil.RANGES;
-
-    private static final int DEFAULT_REGION_CUTOFF = 5;
-    private int regionCutoff = DEFAULT_REGION_CUTOFF;
-
-    @Autowired
-    public void initProperty(@Value("${reports.landsting.cutoff}") int cutoff) {
-        final int minimumCutoffValue = 3;
-        if (cutoff < minimumCutoffValue) {
-            LOG.warn("Region cutoff value is too low. Using minimum value: " + minimumCutoffValue);
-            this.regionCutoff = minimumCutoffValue;
-            return;
-        }
-        this.regionCutoff = cutoff;
-    }
-
-    public void setRegionCutoff(int cutoff) {
-        this.regionCutoff = cutoff;
-    }
 
     private static Map<Ranges.Range, Counter<Ranges.Range>> count(Collection<Sjukfall> sjukfalls, Ranges ranges) {
         Map<Ranges.Range, Counter<Ranges.Range>> counters = Counter.mapFor(ranges);
         for (Sjukfall sjukfall : sjukfalls) {
-            Counter counter = counters.get(ranges.rangeFor(sjukfall.getCertificateCount()));
+            Counter counter = counters.get(ranges.rangeFor(sjukfall.getCertificateCountIncludingBeforeCurrentPeriod()));
             counter.increase(sjukfall);
         }
         return counters;
@@ -95,7 +75,7 @@ public class CertificatePerCaseQuery {
 
     public SimpleKonResponse getCertificatePerCaseTvarsnittRegion(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
                                                             int periodLength, SjukfallUtil sjukfallUtil) {
-        return getCertificatePerCaseTvarsnitt(aisle, filter, from, periods, periodLength, sjukfallUtil, this.regionCutoff);
+        return getCertificatePerCaseTvarsnitt(aisle, filter, from, periods, periodLength, sjukfallUtil, regionCutoff.getCutoff());
     }
 
     public static KonDataResponse getCertificatePerCaseTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,

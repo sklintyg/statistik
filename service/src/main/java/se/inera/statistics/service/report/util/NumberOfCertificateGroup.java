@@ -26,19 +26,21 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import se.inera.statistics.service.report.common.ReportColor;
+
 public enum NumberOfCertificateGroup {
 
-    GROUP1_1_CERTIFICATE("1 intyg", 1, 1, "#E11964"),
-    GROUP2_2_CERTIFICATES("2 intyg", 2, 2, "#032C53"),
-    GROUP3_3_CERTIFICATES("3 intyg", 3, 3, "#FFBA3E"),
-    GROUP4_4_CERTIFICATES("4 intyg", 4, 4, "#799745"),
-    GROUP5_5_CERTIFICATES("5 intyg", 5, 5, "#3CA3FF"),
-    GROUP6_6_CERTIFICATES("6 intyg", 6, 6, "#C37EB2"),
-    GROUP7_7_CERTIFICATES("7 intyg", 7, 7, "#2A5152"),
-    GROUP8_8_CERTIFICATES("8 intyg", 8, 8, "#FB7F4D"),
-    GROUP9_9_CERTIFICATES("9 intyg", 9, 9, "#5CC2BC"),
-    GROUP10_10_CERTIFICATES("10 intyg", 10, 10, "#704F38"),
-    GROUP11_MORE_THAN_10_CERTIFICATES("Över 10 intyg", 11, Integer.MAX_VALUE - 1, "#600030");
+    GROUP1_1_CERTIFICATE("1 intyg", 1, 1, ReportColor.ST_COLOR_01.getColor()),
+    GROUP2_2_CERTIFICATES("2 intyg", 2, 2, ReportColor.ST_COLOR_02.getColor()),
+    GROUP3_3_CERTIFICATES("3 intyg", 3, 3, ReportColor.ST_COLOR_03.getColor()),
+    GROUP4_4_CERTIFICATES("4 intyg", 4, 4, ReportColor.ST_COLOR_04.getColor()),
+    GROUP5_5_CERTIFICATES("5 intyg", 5, 5, ReportColor.ST_COLOR_05.getColor()),
+    GROUP6_6_CERTIFICATES("6 intyg", 6, 6, ReportColor.ST_COLOR_06.getColor()),
+    GROUP7_7_CERTIFICATES("7 intyg", 7, 7, ReportColor.ST_COLOR_07.getColor()),
+    GROUP8_8_CERTIFICATES("8 intyg", 8, 8, ReportColor.ST_COLOR_08.getColor()),
+    GROUP9_9_CERTIFICATES("9 intyg", 9, 9, ReportColor.ST_COLOR_09.getColor()),
+    GROUP10_10_CERTIFICATES("10 intyg", 10, 10, ReportColor.ST_COLOR_10.getColor()),
+    GROUP11_MORE_THAN_10_CERTIFICATES("Över 10 intyg", 11, Integer.MAX_VALUE - 1, ReportColor.ST_COLOR_11.getColor());
 
     private static final Logger LOG = LoggerFactory.getLogger(NumberOfCertificateGroup.class);
 

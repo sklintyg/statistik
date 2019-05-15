@@ -75,8 +75,7 @@ import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 import se.inera.statistics.service.warehouse.model.db.MessageWideLine;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
-import se.inera.statistics.service.warehouse.query.CertificatePerCaseQuery;
-import se.inera.statistics.service.warehouse.query.SjukfallQuery;
+import se.inera.statistics.service.warehouse.query.RegionCutoff;
 import se.inera.statistics.time.ChangableClock;
 import se.inera.statistics.web.service.endpoints.ChartDataService;
 import se.inera.testsupport.fkrapport.FkReportCreator;
@@ -140,10 +139,7 @@ public class RestSupportService {
     private RegionEnhetUpdateManager regionEnhetUpdateManager;
 
     @Autowired
-    private SjukfallQuery sjukfallQuery;
-
-    @Autowired
-    private CertificatePerCaseQuery certificatePerCaseQuery;
+    private RegionCutoff regionCutoff;
 
     @Autowired
     private CountyPopulationManagerForTest countyPopulationManager;
@@ -199,8 +195,7 @@ public class RestSupportService {
     @Produces({ MediaType.APPLICATION_JSON })
     public Response setCutoff(int cutoff) {
         nationellData.setCutoff(cutoff);
-        sjukfallQuery.setCutoff(cutoff);
-        certificatePerCaseQuery.setRegionCutoff(cutoff);
+        regionCutoff.setCutoff(cutoff);
         return Response.ok().build();
     }
 

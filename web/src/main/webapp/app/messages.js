@@ -41,7 +41,7 @@ var stMessages = {
         'nav.intygpertyp': 'Intyg, totalt',
         'nav.andelkompletteringar': 'Komplettering, andel intyg',
         'nav.kompletteringarperfraga': 'Komplettering, per fråga',
-        'nav.intyg-pers-jukfall': 'Intyg per sjukfall',
+        'nav.intyg-per-sjukfall': 'Intyg per sjukfall',
 
         //labels
         'lbl.mobile-menu': 'Meny',

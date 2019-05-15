@@ -130,7 +130,7 @@ var app = angular.module('StatisticsApp')
                 controller: 'columnChartDetailsViewCtrl',
                 controllerAs: 'NationalCertificatePerCaseCtrl',
                 resolve: { config: app.certificatePerCaseTvarsnittConfig },
-                title: 'nav.intyg-pers-jukfall'
+                title: 'nav.intyg-per-sjukfall'
             }).when('/verksamhet', {
                 redirectTo: '/verksamhet/oversikt'
             }).when('/valjVardgivare', {
@@ -337,13 +337,13 @@ var app = angular.module('StatisticsApp')
                 controller: 'columnChartDetailsViewCtrl',
                 controllerAs: 'VerksamhetCertificatePerCaseCtrl',
                 resolve: { config: app.certificatePerCaseTvarsnittConfig },
-                title: 'nav.intyg-pers-jukfall'
+                title: 'nav.intyg-per-sjukfall'
             }).when('/verksamhet/certificatePerCaseTidsserie', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'doubleAreaChartsCtrl',
                 controllerAs: 'VerksamhetCertificatePerCaseCtrl',
                 resolve: { config: app.certificatePerCaseTidsserieConfig },
-                title: 'nav.intyg-pers-jukfall'
+                title: 'nav.intyg-per-sjukfall'
             }).when('/verksamhet/meddelanden', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'singleLineChartCtrl',
@@ -456,7 +456,7 @@ var app = angular.module('StatisticsApp')
                 controller: 'columnChartDetailsViewCtrl',
                 controllerAs: 'RegionCertificatePerCaseCtrl',
                 resolve: { config: app.certificatePerCaseTvarsnittConfig },
-                title: 'nav.intyg-pers-jukfall'
+                title: 'nav.intyg-per-sjukfall'
             }).when('/region/meddelandenPerAmne', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'doubleAreaChartsCtrl',

@@ -43,7 +43,6 @@ public class Sjukfall implements Serializable {
     private Collection<HsaIdEnhet> enhets;
     private int realDays;
     private long firstIntygId;
-    private int certificateCount;
     private int certificateCountIncludingBeforeCurrentPeriod;
     private List<Diagnos> diagnoses = new ArrayList<>();
     private Diagnos diagnos;
@@ -69,7 +68,6 @@ public class Sjukfall implements Serializable {
         sjukfall.enhets = extendedSjukfall.getEnhets();
         sjukfall.lastEnhet = extendedSjukfall.getLastEnhet();
         sjukfall.firstIntygId = extendedSjukfall.getFirstIntygId();
-        sjukfall.certificateCount = extendedSjukfall.getIntygCount();
         sjukfall.certificateCountIncludingBeforeCurrentPeriod = extendedSjukfall.getCertificateCountIncludingBeforeCurrentPeriod();
         return sjukfall;
     }
@@ -201,10 +199,6 @@ public class Sjukfall implements Serializable {
 
     public long getFirstIntygId() {
         return firstIntygId;
-    }
-
-    public int getCertificateCount() {
-        return certificateCount;
     }
 
     public int getCertificateCountIncludingBeforeCurrentPeriod() {

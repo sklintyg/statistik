@@ -32,7 +32,6 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -59,7 +58,6 @@ import se.inera.statistics.service.warehouse.SjukfallUtil;
 public class SjukfallQuery {
 
     private static final Logger LOG = LoggerFactory.getLogger(SjukfallQuery.class);
-    public static final int DEFAULT_CUTOFF = 5;
 
     @Autowired
     private LakareManager lakareManager;
@@ -67,25 +65,11 @@ public class SjukfallQuery {
     @Autowired
     private SjukfallUtil sjukfallUtil;
 
-    private int cutoff = DEFAULT_CUTOFF;
-
     @Autowired
-    public void initProperty(@Value("${reports.landsting.cutoff}") int cutoff) {
-        final int minimumCutoffValue = 3;
-        if (cutoff < minimumCutoffValue) {
-            LOG.warn("Region cutoff value is too low. Using minimum value: " + minimumCutoffValue);
-            this.cutoff = minimumCutoffValue;
-            return;
-        }
-        this.cutoff = cutoff;
-    }
+    private RegionCutoff regionCutoff;
 
     public int getCutoff() {
-        return cutoff;
-    }
-
-    public void setCutoff(int cutoff) {
-        this.cutoff = cutoff;
+        return regionCutoff.getCutoff();
     }
 
     public SimpleKonResponse getSjukfall(Aisle aisle, FilterPredicates filter, LocalDate start, int perioder,
@@ -108,8 +92,8 @@ public class SjukfallQuery {
             int male = countMale(sjukfallGroup.getSjukfall());
             int female = sjukfallGroup.getSjukfall().size() - male;
             if (applyCutoff) {
-                male = male >= cutoff ? male : 0;
-                female = female >= cutoff ? female : 0;
+                male = male >= regionCutoff.getCutoff() ? male : 0;
+                female = female >= regionCutoff.getCutoff() ? female : 0;
             }
             result.add(new SimpleKonDataRow(rowName.apply(sjukfallGroup), female, male));
         }
@@ -147,12 +131,12 @@ public class SjukfallQuery {
         int female = sjukfallPerGenderPerEnhet.femalePerEnhet.count(enhetId);
         int male = sjukfallPerGenderPerEnhet.malePerEnhet.count(enhetId);
         if (CutoffUsage.APPLY_CUTOFF_PER_SEX.equals(cutoffUsage)) {
-            male = male >= cutoff ? male : 0;
-            female = female >= cutoff ? female : 0;
+            male = male >= regionCutoff.getCutoff() ? male : 0;
+            female = female >= regionCutoff.getCutoff() ? female : 0;
         } else if (CutoffUsage.APPLY_CUTOFF_ON_TOTAL.equals(cutoffUsage)) {
             final int totalSum = male + female;
-            male = totalSum >= cutoff ? male : 0;
-            female = totalSum >= cutoff ? female : 0;
+            male = totalSum >= regionCutoff.getCutoff() ? male : 0;
+            female = totalSum >= regionCutoff.getCutoff() ? female : 0;
         }
         if (male + female > 0) {
             return Optional.of(new SimpleKonDataRow(enhetName, female, male, enhetId));

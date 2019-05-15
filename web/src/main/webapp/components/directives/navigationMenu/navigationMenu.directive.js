@@ -110,7 +110,7 @@
             }, {
                 id: 'navCertificatePerCaseLink',
                 link: '#/nationell/certificatePerCaseTvarsnitt',
-                name: 'nav.intyg-pers-jukfall',
+                name: 'nav.intyg-per-sjukfall',
                 ctrl: 'NationalCertificatePerCaseCtrl'
             }]
         };
@@ -239,7 +239,7 @@
             }, {
                 id: 'navBusinessCertificatePerCaseLink',
                 link: '#/verksamhet/certificatePerCaseTvarsnitt',
-                name: 'nav.intyg-pers-jukfall',
+                name: 'nav.intyg-per-sjukfall',
                 ctrl: 'VerksamhetCertificatePerCaseCtrl'
             }
             ]
@@ -334,7 +334,7 @@
                     },
                     id: 'navRegionCertificatePerCaseLink',
                     link: '#/region/certificatePerCaseTvarsnitt',
-                    name: 'nav.intyg-pers-jukfall',
+                    name: 'nav.intyg-per-sjukfall',
                     ctrl: 'RegionCertificatePerCaseCtrl'
                 }
             ]
