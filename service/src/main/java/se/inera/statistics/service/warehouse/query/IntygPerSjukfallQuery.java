@@ -33,17 +33,17 @@ import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.service.report.util.CertificatePerCaseGroupUtil;
+import se.inera.statistics.service.report.util.IntygPerSjukfallGroupUtil;
 import se.inera.statistics.service.report.util.Ranges;
 import se.inera.statistics.service.warehouse.*;
 
 @Component
-public class CertificatePerCaseQuery {
+public class IntygPerSjukfallQuery {
 
     @Autowired
     private RegionCutoff regionCutoff;
 
-    public static final Ranges RANGES = CertificatePerCaseGroupUtil.RANGES;
+    public static final Ranges RANGES = IntygPerSjukfallGroupUtil.RANGES;
 
     private static Map<Ranges.Range, Counter<Ranges.Range>> count(Collection<Sjukfall> sjukfalls, Ranges ranges) {
         Map<Ranges.Range, Counter<Ranges.Range>> counters = Counter.mapFor(ranges);
@@ -54,8 +54,8 @@ public class CertificatePerCaseQuery {
         return counters;
     }
 
-    private static SimpleKonResponse getCertificatePerCaseTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
-                                                                    int periodLength, SjukfallUtil sjukfallUtil, int cutoff) {
+    private static SimpleKonResponse getIntygPerSjukfallTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
+                                                                  int periodLength, SjukfallUtil sjukfallUtil, int cutoff) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
             Map<Ranges.Range, Counter<Ranges.Range>> counterMap = count(sjukfallGroup.getSjukfall(), RANGES);
@@ -68,18 +68,18 @@ public class CertificatePerCaseQuery {
         return new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
     }
 
-    public static SimpleKonResponse getCertificatePerCaseTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
-                                                                   int periodLength, SjukfallUtil sjukfallUtil) {
-        return getCertificatePerCaseTvarsnitt(aisle, filter, from, periods, periodLength, sjukfallUtil, 0);
-    }
-
-    public SimpleKonResponse getCertificatePerCaseTvarsnittRegion(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
-                                                            int periodLength, SjukfallUtil sjukfallUtil) {
-        return getCertificatePerCaseTvarsnitt(aisle, filter, from, periods, periodLength, sjukfallUtil, regionCutoff.getCutoff());
-    }
-
-    public static KonDataResponse getCertificatePerCaseTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,
+    public static SimpleKonResponse getIntygPerSjukfallTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
                                                                  int periodLength, SjukfallUtil sjukfallUtil) {
+        return getIntygPerSjukfallTvarsnitt(aisle, filter, from, periods, periodLength, sjukfallUtil, 0);
+    }
+
+    public SimpleKonResponse getIntygPerSjukfallTvarsnittRegion(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
+                                                                int periodLength, SjukfallUtil sjukfallUtil) {
+        return getIntygPerSjukfallTvarsnitt(aisle, filter, from, periods, periodLength, sjukfallUtil, regionCutoff.getCutoff());
+    }
+
+    public static KonDataResponse getIntygPerSjukfallTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,
+                                                               int periodLength, SjukfallUtil sjukfallUtil) {
         final Ranges ranges = RANGES;
         final ArrayList<Ranges.Range> rangesList = Lists.newArrayList(ranges);
         final List<String> names = Lists.transform(rangesList, Ranges.Range::getName);

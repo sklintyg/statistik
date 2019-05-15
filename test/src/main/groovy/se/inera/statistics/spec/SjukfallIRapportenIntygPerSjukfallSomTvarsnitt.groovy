@@ -24,7 +24,7 @@ class SjukfallIRapportenIntygPerSjukfallSomTvarsnitt extends SimpleDetailsReport
 
     @Override
     public void doExecute() {
-        def report = getReportCertificatePerCaseTvarsnitt()
+        def report = getReportIntygPerSjukfallTvarsnitt()
         executeTabell(report)
     }
 

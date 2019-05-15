@@ -343,14 +343,14 @@ public class ChartDataService {
     }
 
     @GET
-    @Path("getCertificatePerCaseTvarsnitt")
+    @Path("getIntygPerSjukfallTvarsnitt")
     @Produces({ MediaType.APPLICATION_JSON })
     @PrometheusTimeMethod(
             help = "API-tjänst för åtkomst till intyg per sjukfall")
-    public Response getCertificatePerCaseTvarsnitt(@QueryParam("format") String format) {
-        LOG.info("Calling getCertificatePerCaseTvarsnitt for national");
-        monitoringLogService.logTrackAccessAnonymousChartData("getCertificatePerCaseTvarsnitt");
-        return getResponse(getNationellDataResult().getCertificatePerCase(), format, Report.N_CERTIFICATEPERCASE);
+    public Response getIntygPerSjukfallTvarsnitt(@QueryParam("format") String format) {
+        LOG.info("Calling getIntygPerSjukfallTvarsnitt for national");
+        monitoringLogService.logTrackAccessAnonymousChartData("getIntygPerSjukfallTvarsnitt");
+        return getResponse(getNationellDataResult().getIntygPerSjukfall(), format, Report.N_INTYGPERSJUKFALL);
     }
 
     @GET

@@ -335,19 +335,19 @@ public class ProtectedRegionService {
     }
 
     @GET
-    @Path("getCertificatePerCaseTvarsnitt")
+    @Path("getIntygPerSjukfallTvarsnitt")
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till intyg per sjukfall per region")
-    public Response getCertificatePerCaseTvarsnitt(@Context HttpServletRequest request, @QueryParam("regionfilter") String filterHash,
-                                                   @QueryParam("format") String format) {
+    public Response getIntygPerSjukfallTvarsnitt(@Context HttpServletRequest request, @QueryParam("regionfilter") String filterHash,
+                                                 @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 12);
-        SimpleKonResponse certificatePerCase = warehouse.getCertificatePerCaseTvarsnittRegion(filterSettings);
+        SimpleKonResponse intygPerSjukfall = warehouse.getIntygPerSjukfallTvarsnittRegion(filterSettings);
         final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        final SimpleDetailsData data = new PeriodConverter().convert(certificatePerCase, filterSettings);
-        return getResponse(data, format, request, Report.L_CERTIFICATEPERCASE, TVARSNITT, getLastRegionUpdateDate(vgIdForLoggedInUser));
+        final SimpleDetailsData data = new PeriodConverter().convert(intygPerSjukfall, filterSettings);
+        return getResponse(data, format, request, Report.L_INTYGPERSJUKFALL, TVARSNITT, getLastRegionUpdateDate(vgIdForLoggedInUser));
     }
 
     @GET

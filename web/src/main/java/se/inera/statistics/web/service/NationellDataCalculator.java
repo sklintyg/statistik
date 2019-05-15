@@ -73,7 +73,7 @@ public class NationellDataCalculator {
         result.setOverview(buildOverview(data));
         result.setMeddelandenPerAmne(buildNumberOfMeddelandenPerAmne(data));
         result.setIntygPerTyp(buildIntygPerTyp(data));
-        result.setCertificatePerCase(buildCertificatePerCase(data));
+        result.setIntygPerSjukfall(buildIntygPerSjukfall(data));
         result.setAndelKompletteringar(buildAndelKompletteringar(data));
         result.setKompletteringarPerFraga(buildKompletteringarPerFraga(data));
         LOG.info("National data calculation: Done");
@@ -155,10 +155,10 @@ public class NationellDataCalculator {
         return new SimpleMultiDualSexConverter("Antal intyg totalt").convert(intygPerTyp, filterSettings);
     }
 
-    private SimpleDetailsData buildCertificatePerCase(NationellDataInfo data) {
-        SimpleKonResponse certificatePerCase = data.getCertificatePerCaseResult();
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), data.getCertificatePerCaseRange());
-        return SimpleDualSexConverter.newGenericTvarsnitt().convert(certificatePerCase, filterSettings);
+    private SimpleDetailsData buildIntygPerSjukfall(NationellDataInfo data) {
+        SimpleKonResponse intygPerSjukfall = data.getIntygPerSjukfallResult();
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), data.getIntygPerSjukfallRange());
+        return SimpleDualSexConverter.newGenericTvarsnitt().convert(intygPerSjukfall, filterSettings);
     }
 
     private TableDataReport buildAndelKompletteringar(NationellDataInfo data) {

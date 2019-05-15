@@ -67,8 +67,8 @@ public class NationellDataInfo {
     private KonDataResponse meddelandenPerAmneResult;
     private KonDataResponse intygPerTypResult;
     private Range intygPerTypeRange;
-    private SimpleKonResponse certificatePerCaseResult;
-    private Range certificatePerCaseRange;
+    private SimpleKonResponse intygPerSjukfallResult;
+    private Range intygPerSjukfallRange;
     private KonDataResponse andelKompletteringarResult;
     private Range andelKompletteringarRange;
     private SimpleKonResponse kompletteringarPerFragaResult;
@@ -338,20 +338,20 @@ public class NationellDataInfo {
         this.intygPerTypeRange = intygPerTypeRange;
     }
 
-    public SimpleKonResponse getCertificatePerCaseResult() {
-        return certificatePerCaseResult;
+    public SimpleKonResponse getIntygPerSjukfallResult() {
+        return intygPerSjukfallResult;
     }
 
-    public void setCertificatePerCaseResult(SimpleKonResponse certificatePerCaseResult) {
-        this.certificatePerCaseResult = certificatePerCaseResult;
+    public void setIntygPerSjukfallResult(SimpleKonResponse intygPerSjukfallResult) {
+        this.intygPerSjukfallResult = intygPerSjukfallResult;
     }
 
-    public Range getCertificatePerCaseRange() {
-        return certificatePerCaseRange;
+    public Range getIntygPerSjukfallRange() {
+        return intygPerSjukfallRange;
     }
 
-    public void setCertificatePerCaseRange(Range certificatePerCaseRange) {
-        this.certificatePerCaseRange = certificatePerCaseRange;
+    public void setIntygPerSjukfallRange(Range intygPerSjukfallRange) {
+        this.intygPerSjukfallRange = intygPerSjukfallRange;
     }
 
     public KonDataResponse getAndelKompletteringarResult() {

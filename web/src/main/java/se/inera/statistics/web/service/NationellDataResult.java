@@ -41,7 +41,7 @@ public class NationellDataResult implements Serializable {
     private SimpleDetailsData konsfordelningPerLan;
     private DualSexStatisticsData meddelandenPerAmne;
     private TableDataReport intygPerTyp;
-    private SimpleDetailsData certificatePerCase;
+    private SimpleDetailsData intygPerSjukfall;
     private TableDataReport andelKompletteringar;
     private TableDataReport kompletteringarPerFraga;
 
@@ -133,12 +133,12 @@ public class NationellDataResult implements Serializable {
         this.intygPerTyp = intygPerTyp;
     }
 
-    public SimpleDetailsData getCertificatePerCase() {
-        return certificatePerCase;
+    public SimpleDetailsData getIntygPerSjukfall() {
+        return intygPerSjukfall;
     }
 
-    public void setCertificatePerCase(SimpleDetailsData certificatePerCase) {
-        this.certificatePerCase = certificatePerCase;
+    public void setIntygPerSjukfall(SimpleDetailsData intygPerSjukfall) {
+        this.intygPerSjukfall = intygPerSjukfall;
     }
 
     public TableDataReport getAndelKompletteringar() {

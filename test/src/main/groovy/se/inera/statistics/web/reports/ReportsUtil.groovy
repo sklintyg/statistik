@@ -164,12 +164,12 @@ class ReportsUtil {
         return get("/api/getIntygPerTyp")
     }
 
-    def getReportCertificatePerCaseTvarsnitt() {
-        return get("/api/getCertificatePerCaseTvarsnitt")
+    def getReportIntygPerSjukfallTvarsnitt() {
+        return get("/api/getIntygPerSjukfallTvarsnitt")
     }
 
-    def getReportCertificatePerCaseTidsserie() {
-        return get("/api/getCertificatePerCaseTidsserie")
+    def getReportIntygPerSjukfallTidsserie() {
+        return get("/api/getIntygPerSjukfallTidsserie")
     }
 
     def getReportAntalIntygPerManad(String vgid, filter) {
@@ -328,16 +328,16 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getIntygPerTypePerMonth", filter, "vgid=" + vgid)
     }
 
-    def getReportCertificatePerCaseTvarsnittInloggad(String vgid, filter) {
-        return get(getVerksamhetUrlPrefix() + "/getCertificatePerCaseTvarsnitt", filter, "vgid=" + vgid)
+    def getReportIntygPerSjukfallTvarsnittInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getIntygPerSjukfallTvarsnitt", filter, "vgid=" + vgid)
     }
 
-    def getReportCertificatePerCaseTvarsnittRegionInloggad(vgid, filter) {
-        return get(getRegionUrlPrefix() + "/getCertificatePerCaseTvarsnitt", filter, "vgid=" + vgid, "regionfilter")
+    def getReportIntygPerSjukfallTvarsnittRegionInloggad(vgid, filter) {
+        return get(getRegionUrlPrefix() + "/getIntygPerSjukfallTvarsnitt", filter, "vgid=" + vgid, "regionfilter")
     }
 
-    def getReportCertificatePerCaseTidsserieInloggad(String vgid, filter) {
-        return get(getVerksamhetUrlPrefix() + "/getCertificatePerCaseTidsserie", filter, "vgid=" + vgid)
+    def getReportIntygPerSjukfallTidsserieInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getIntygPerSjukfallTidsserie", filter, "vgid=" + vgid)
     }
 
     def getReportDiagnosgruppSomTvarsnittInloggad(String vgid, FilterData filter) {

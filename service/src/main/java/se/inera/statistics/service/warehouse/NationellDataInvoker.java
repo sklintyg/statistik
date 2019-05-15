@@ -174,8 +174,8 @@ public class NationellDataInvoker {
 
         nationellData.addSjukfallPerLanToResult(result.getLanRange(), data.getLanResult(), aisle);
 
-        data.setCertificatePerCaseResult(nationellData.getCertificatePerCase(aisle, result.getCertificatePerCaseRange(),
-                data.getCertificatePerCaseResult()));
+        data.setIntygPerSjukfallResult(nationellData.getIntygPerSjukfall(aisle, result.getIntygPerSjukfallRange(),
+                data.getIntygPerSjukfallResult()));
 
         final Range overviewRange = result.getOverviewRange();
         final Range previousOverviewRange = ReportUtil.getPreviousOverviewPeriod(overviewRange);
@@ -235,7 +235,7 @@ public class NationellDataInvoker {
         result.setOverviewRange(quarterRange);
         result.setMeddelandenPerAmneRange(longRange);
         result.setIntygPerTypeRange(longRange);
-        result.setCertificatePerCaseRange(Range.createForLastMonthsExcludingCurrent(yearRange.getNumberOfMonths(), clock));
+        result.setIntygPerSjukfallRange(Range.createForLastMonthsExcludingCurrent(yearRange.getNumberOfMonths(), clock));
         result.setAndelKompletteringarRange(longRange);
         result.setKompletteringarPerFragaRange(yearRange);
     }
@@ -300,10 +300,10 @@ public class NationellDataInvoker {
             result.setIntygPerTypResult(new KonDataResponse(AvailableFilters.getForNationell(), new ArrayList<>(), new ArrayList<>()));
         }
 
-        if (data.getCertificatePerCaseResult() == null) {
-            data.setCertificatePerCaseResult(new SimpleKonResponse(AvailableFilters.getForNationell(), new ArrayList<>()));
+        if (data.getIntygPerSjukfallResult() == null) {
+            data.setIntygPerSjukfallResult(new SimpleKonResponse(AvailableFilters.getForNationell(), new ArrayList<>()));
         }
-        result.setCertificatePerCaseResult(data.getCertificatePerCaseResult());
+        result.setIntygPerSjukfallResult(data.getIntygPerSjukfallResult());
 
         if (result.getAndelKompletteringarResult() == null) {
             KonDataResponse response = new KonDataResponse(AvailableFilters.getForNationell(), new ArrayList<>(), new ArrayList<>());

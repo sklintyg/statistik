@@ -277,14 +277,14 @@ class NationellData {
         return new SimpleKonResponse(AvailableFilters.getForNationell(), rows);
     }
 
-    SimpleKonResponse getCertificatePerCase(Aisle aisle, Range range, SimpleKonResponse certificatePerCaseResult) {
-        SimpleKonResponse certificatePerCase = CertificatePerCaseQuery.getCertificatePerCaseTvarsnitt(aisle,
+    SimpleKonResponse getIntygPerSjukfall(Aisle aisle, Range range, SimpleKonResponse intygPerSjukfallResult) {
+        SimpleKonResponse intygPerSjukfall = IntygPerSjukfallQuery.getIntygPerSjukfallTvarsnitt(aisle,
                 SjukfallUtil.ALL_ENHETER, range.getFrom(), 1, range.getNumberOfMonths(), sjukfallUtil);
-        if (certificatePerCaseResult == null) {
-            certificatePerCaseResult = createEmptySimpleKonResponse(certificatePerCase);
+        if (intygPerSjukfallResult == null) {
+            intygPerSjukfallResult = createEmptySimpleKonResponse(intygPerSjukfall);
         }
-        Iterator<SimpleKonDataRow> rowsNew = certificatePerCase.getRows().iterator();
-        Iterator<SimpleKonDataRow> rowsOld = certificatePerCaseResult.getRows().iterator();
+        Iterator<SimpleKonDataRow> rowsNew = intygPerSjukfall.getRows().iterator();
+        Iterator<SimpleKonDataRow> rowsOld = intygPerSjukfallResult.getRows().iterator();
         List<SimpleKonDataRow> list = new ArrayList<>(1);
         while (rowsNew.hasNext() && rowsOld.hasNext()) {
             SimpleKonDataRow a = rowsNew.next();

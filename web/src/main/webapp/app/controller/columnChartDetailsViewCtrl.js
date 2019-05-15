@@ -548,22 +548,22 @@ angular.module('StatisticsApp').intygPerTypeTvarsnittConfig =
     return conf;
 };
 
-angular.module('StatisticsApp').certificatePerCaseTvarsnittConfig =
+angular.module('StatisticsApp').intygPerSjukfallTvarsnittConfig =
     /** @ngInject */
     function (messageService) {
     'use strict';
 
     var conf = {};
-    conf.dataFetcher = 'getCertificatePerCaseTvarsnitt';
-    conf.dataFetcherVerksamhet = 'getCertificatePerCaseTvarsnittVerksamhet';
-    conf.dataFetcherRegion = 'getCertificatePerCaseTvarsnittRegion';
+    conf.dataFetcher = 'getIntygPerSjukfallTvarsnitt';
+    conf.dataFetcherVerksamhet = 'getIntygPerSjukfallTvarsnittVerksamhet';
+    conf.dataFetcherRegion = 'getIntygPerSjukfallTvarsnittRegion';
 
-    conf.exportTableUrl = 'api/getCertificatePerCaseTvarsnitt?format=xlsx';
+    conf.exportTableUrl = 'api/getIntygPerSjukfallTvarsnitt?format=xlsx';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getCertificatePerCaseTvarsnitt?format=xlsx';
+        return 'api/verksamhet/getIntygPerSjukfallTvarsnitt?format=xlsx';
     };
     conf.exportTableUrlRegion = function () {
-        return 'api/region/getCertificatePerCaseTvarsnitt?format=xlsx';
+        return 'api/region/getIntygPerSjukfallTvarsnitt?format=xlsx';
     };
 
     conf.title = messageService.getProperty('title.intyg-per-sjukfall');
@@ -574,8 +574,8 @@ angular.module('StatisticsApp').certificatePerCaseTvarsnittConfig =
     };
 
     conf.exchangeableViews = [
-        {description: 'Tidsserie', state: '/verksamhet/certificatePerCaseTidsserie', active: false},
-        {description: 'Tvärsnitt', state: '/verksamhet/certificatePerCaseTvarsnitt', active: true}];
+        {description: 'Tidsserie', state: '/verksamhet/intygPerSjukfallTidsserie', active: false},
+        {description: 'Tvärsnitt', state: '/verksamhet/intygPerSjukfallTvarsnitt', active: true}];
 
     return conf;
 };

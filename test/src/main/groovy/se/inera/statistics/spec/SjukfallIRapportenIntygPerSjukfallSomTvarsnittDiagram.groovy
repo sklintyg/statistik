@@ -24,7 +24,7 @@ class SjukfallIRapportenIntygPerSjukfallSomTvarsnittDiagram extends SimpleDetail
 
     @Override
     public void doExecute() {
-        def report = getReportCertificatePerCaseTvarsnitt()
+        def report = getReportIntygPerSjukfallTvarsnitt()
         executeDiagram(report)
     }
 

@@ -57,7 +57,7 @@
         <filter-name>CompressingFilter</filter-name>
         <url-pattern>/app/*</url-pattern>
         <url-pattern>/js/*</url-pattern>
-        <!-- TODO: Erik: Borde getCertificatePerCaseTvarsnitt finnas här? -->
+        <!-- TODO: Erik: Borde getIntygPerSjukfallTvarsnitt finnas här? -->
         <url-pattern>/api/getOverview</url-pattern>
         <url-pattern>/api/getNumberOfCasesPerMonth</url-pattern>
         <url-pattern>/api/getDiagnoskapitelstatistik</url-pattern>

@@ -28,28 +28,28 @@ import org.slf4j.LoggerFactory;
 
 import se.inera.statistics.service.report.common.ReportColor;
 
-public enum NumberOfCertificateGroup {
+public enum NumberOfIntygGroup {
 
-    GROUP1_1_CERTIFICATE("1 intyg", 1, 1, ReportColor.ST_COLOR_01.getColor()),
-    GROUP2_2_CERTIFICATES("2 intyg", 2, 2, ReportColor.ST_COLOR_02.getColor()),
-    GROUP3_3_CERTIFICATES("3 intyg", 3, 3, ReportColor.ST_COLOR_03.getColor()),
-    GROUP4_4_CERTIFICATES("4 intyg", 4, 4, ReportColor.ST_COLOR_04.getColor()),
-    GROUP5_5_CERTIFICATES("5 intyg", 5, 5, ReportColor.ST_COLOR_05.getColor()),
-    GROUP6_6_CERTIFICATES("6 intyg", 6, 6, ReportColor.ST_COLOR_06.getColor()),
-    GROUP7_7_CERTIFICATES("7 intyg", 7, 7, ReportColor.ST_COLOR_07.getColor()),
-    GROUP8_8_CERTIFICATES("8 intyg", 8, 8, ReportColor.ST_COLOR_08.getColor()),
-    GROUP9_9_CERTIFICATES("9 intyg", 9, 9, ReportColor.ST_COLOR_09.getColor()),
-    GROUP10_10_CERTIFICATES("10 intyg", 10, 10, ReportColor.ST_COLOR_10.getColor()),
-    GROUP11_MORE_THAN_10_CERTIFICATES("Över 10 intyg", 11, Integer.MAX_VALUE - 1, ReportColor.ST_COLOR_11.getColor());
+    GROUP1_1_INTYG("1 intyg", 1, 1, ReportColor.ST_COLOR_01.getColor()),
+    GROUP2_2_INTYG("2 intyg", 2, 2, ReportColor.ST_COLOR_02.getColor()),
+    GROUP3_3_INTYG("3 intyg", 3, 3, ReportColor.ST_COLOR_03.getColor()),
+    GROUP4_4_INTYG("4 intyg", 4, 4, ReportColor.ST_COLOR_04.getColor()),
+    GROUP5_5_INTYG("5 intyg", 5, 5, ReportColor.ST_COLOR_05.getColor()),
+    GROUP6_6_INTYG("6 intyg", 6, 6, ReportColor.ST_COLOR_06.getColor()),
+    GROUP7_7_INTYG("7 intyg", 7, 7, ReportColor.ST_COLOR_07.getColor()),
+    GROUP8_8_INTYG("8 intyg", 8, 8, ReportColor.ST_COLOR_08.getColor()),
+    GROUP9_9_INTYG("9 intyg", 9, 9, ReportColor.ST_COLOR_09.getColor()),
+    GROUP10_10_INTYG("10 intyg", 10, 10, ReportColor.ST_COLOR_10.getColor()),
+    GROUP11_MORE_THAN_10_INTYG("Över 10 intyg", 11, Integer.MAX_VALUE - 1, ReportColor.ST_COLOR_11.getColor());
 
-    private static final Logger LOG = LoggerFactory.getLogger(NumberOfCertificateGroup.class);
+    private static final Logger LOG = LoggerFactory.getLogger(NumberOfIntygGroup.class);
 
     private final String groupName;
     private final int from;
     private final int to;
     private final String color;
 
-    NumberOfCertificateGroup(String groupName, int from, int to, String color) {
+    NumberOfIntygGroup(String groupName, int from, int to, String color) {
         this.groupName = groupName;
         this.from = from;
         this.to = to;
@@ -72,13 +72,13 @@ public enum NumberOfCertificateGroup {
         return color;
     }
 
-    public static Optional<NumberOfCertificateGroup> getByName(String name) {
+    public static Optional<NumberOfIntygGroup> getByName(String name) {
         return Arrays.stream(values()).filter(group -> group.groupName.equalsIgnoreCase(name)).findFirst();
     }
 
-    public static Optional<NumberOfCertificateGroup> parse(String name) {
+    public static Optional<NumberOfIntygGroup> parse(String name) {
         try {
-            final NumberOfCertificateGroup group = valueOf(name);
+            final NumberOfIntygGroup group = valueOf(name);
             return Optional.of(group);
         } catch (IllegalArgumentException e) {
             LOG.debug("Failed to parse name: {}", name, e);
@@ -87,8 +87,8 @@ public enum NumberOfCertificateGroup {
     }
 
     public static Map<String, String> getColors() {
-        return Arrays.stream(values()).collect(Collectors.toMap(NumberOfCertificateGroup::getGroupName,
-                NumberOfCertificateGroup::getColor));
+        return Arrays.stream(values()).collect(Collectors.toMap(NumberOfIntygGroup::getGroupName,
+                NumberOfIntygGroup::getColor));
     }
 
 }

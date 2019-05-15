@@ -59,7 +59,7 @@ public class WarehouseService {
     private SjukfallQuery sjukfallQuery;
 
     @Autowired
-    private CertificatePerCaseQuery certificatePerCaseQuery;
+    private IntygPerSjukfallQuery intygPerSjukfallQuery;
 
     @Autowired
     private IntygCommonManager intygCommonManager;
@@ -330,13 +330,13 @@ public class WarehouseService {
                 1, sjukfallUtil);
     }
 
-    public SimpleKonResponse getCertificatePerCaseTvarsnitt(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
-        return CertificatePerCaseQuery.getCertificatePerCaseTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1,
+    public SimpleKonResponse getIntygPerSjukfallTvarsnitt(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
+        return IntygPerSjukfallQuery.getIntygPerSjukfallTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1,
                 range.getNumberOfMonths(), sjukfallUtil);
     }
 
-    public KonDataResponse getCertificatePerCaseTidsserie(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
-        return CertificatePerCaseQuery.getCertificatePerCaseTidsserie(warehouse.get(vardgivarId), filter, range.getFrom(),
+    public KonDataResponse getIntygPerSjukfallTidsserie(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
+        return IntygPerSjukfallQuery.getIntygPerSjukfallTidsserie(warehouse.get(vardgivarId), filter, range.getFrom(),
                 range.getNumberOfMonths(), 1, sjukfallUtil);
     }
 
@@ -378,13 +378,13 @@ public class WarehouseService {
         return SimpleKonResponses.addExtrasToNameDuplicates(merged);
     }
 
-    public SimpleKonResponse getCertificatePerCaseTvarsnittRegion(final FilterSettings filterSettings) {
+    public SimpleKonResponse getIntygPerSjukfallTvarsnittRegion(final FilterSettings filterSettings) {
         Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
         final Range range = filterSettings.getRange();
         Collection<SimpleKonResponse> results = Collections2.transform(enhetsPerVgid.entrySet(),
                 entry -> {
                     final Aisle aisle = warehouse.get(entry.getKey());
-                    return certificatePerCaseQuery.getCertificatePerCaseTvarsnittRegion(aisle, filterSettings.getFilter().getPredicate(),
+                    return intygPerSjukfallQuery.getIntygPerSjukfallTvarsnittRegion(aisle, filterSettings.getFilter().getPredicate(),
                             range.getFrom(), 1, range.getNumberOfMonths(), sjukfallUtil);
                 });
         return SimpleKonResponse.merge(results, true, AvailableFilters.getForSjukfall());

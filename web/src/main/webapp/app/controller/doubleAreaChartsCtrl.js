@@ -476,15 +476,15 @@ angular.module('StatisticsApp').casesPerLakarbefattningTidsserieConfig =
     return conf;
 };
 
-angular.module('StatisticsApp').certificatePerCaseTidsserieConfig =
+angular.module('StatisticsApp').intygPerSjukfallTidsserieConfig =
     /** @ngInject */
     function (messageService) {
     'use strict';
 
     var conf = {};
-    conf.dataFetcherVerksamhet = 'getCertificatePerCaseTidsserieVerksamhet';
+    conf.dataFetcherVerksamhet = 'getIntygPerSjukfallTidsserieVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getCertificatePerCaseTidsserie?format=xlsx';
+        return 'api/verksamhet/getIntygPerSjukfallTidsserie?format=xlsx';
     };
     conf.suffixTitle = function (suffix) {
         return this.title + ' ' + (suffix || '');
@@ -492,8 +492,8 @@ angular.module('StatisticsApp').certificatePerCaseTidsserieConfig =
     conf.title = messageService.getProperty('title.intyg-per-sjukfall');
 
     conf.exchangeableViews = [
-        {description: 'Tidsserie', state: '/verksamhet/certificatePerCaseTidsserie', active: true},
-        {description: 'Tvärsnitt', state: '/verksamhet/certificatePerCaseTvarsnitt', active: false}];
+        {description: 'Tidsserie', state: '/verksamhet/intygPerSjukfallTidsserie', active: true},
+        {description: 'Tvärsnitt', state: '/verksamhet/intygPerSjukfallTvarsnitt', active: false}];
 
     return conf;
 };

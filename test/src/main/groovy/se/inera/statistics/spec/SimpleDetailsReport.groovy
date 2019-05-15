@@ -180,16 +180,16 @@ abstract class SimpleDetailsReport extends Rapport {
         throw new RuntimeException("Report -Intygstyp som tvärsnitt- is not available on national level");
     }
 
-    def getReportCertificatePerCaseTvarsnitt() {
+    def getReportIntygPerSjukfallTvarsnitt() {
         if (inloggad) {
-            return reportsUtil.getReportCertificatePerCaseTvarsnittInloggad(vg, filter);
+            return reportsUtil.getReportIntygPerSjukfallTvarsnittInloggad(vg, filter);
         }
-        return reportsUtil.getReportCertificatePerCaseTvarsnitt();
+        return reportsUtil.getReportIntygPerSjukfallTvarsnitt();
     }
 
-    def getReportCertificatePerCaseTvarsnittRegion() {
+    def getReportIntygPerSjukfallTvarsnittRegion() {
         if (inloggad) {
-            return reportsUtil.getReportCertificatePerCaseTvarsnittRegionInloggad(vg, filter);
+            return reportsUtil.getReportIntygPerSjukfallTvarsnittRegionInloggad(vg, filter);
         }
         throw new RuntimeException("Report -Region Intyg per sjukfall- is not available on national level");
     }

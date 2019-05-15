@@ -108,10 +108,10 @@
                     ctrl: 'NationalCasesPerSexCtrl'
                 }]
             }, {
-                id: 'navCertificatePerCaseLink',
-                link: '#/nationell/certificatePerCaseTvarsnitt',
+                id: 'navIntygPerSjukfallLink',
+                link: '#/nationell/intygPerSjukfallTvarsnitt',
                 name: 'nav.intyg-per-sjukfall',
-                ctrl: 'NationalCertificatePerCaseCtrl'
+                ctrl: 'NationalIntygPerSjukfallCtrl'
             }]
         };
 
@@ -237,10 +237,10 @@
                 name: 'nav.lakarbefattning',
                 ctrl: 'VerksamhetLakarbefattningCtrl'
             }, {
-                id: 'navBusinessCertificatePerCaseLink',
-                link: '#/verksamhet/certificatePerCaseTvarsnitt',
+                id: 'navBusinessIntygPerSjukfallLink',
+                link: '#/verksamhet/intygPerSjukfallTvarsnitt',
                 name: 'nav.intyg-per-sjukfall',
-                ctrl: 'VerksamhetCertificatePerCaseCtrl'
+                ctrl: 'VerksamhetIntygPerSjukfallCtrl'
             }
             ]
         };
@@ -332,10 +332,10 @@
                     checkEnable: function() {
                         return UserModel.get().regionAvailable;
                     },
-                    id: 'navRegionCertificatePerCaseLink',
-                    link: '#/region/certificatePerCaseTvarsnitt',
+                    id: 'navRegionIntygPerSjukfallLink',
+                    link: '#/region/intygPerSjukfallTvarsnitt',
                     name: 'nav.intyg-per-sjukfall',
-                    ctrl: 'RegionCertificatePerCaseCtrl'
+                    ctrl: 'RegionIntygPerSjukfallCtrl'
                 }
             ]
         };

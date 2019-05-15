@@ -904,41 +904,41 @@ public class ProtectedChartDataService {
     }
 
     @GET
-    @Path("getCertificatePerCaseTvarsnitt")
+    @Path("getIntygPerSjukfallTvarsnitt")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till intyg per sjukfall")
-    public Response getCertificatePerCaseTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
-                                                   @QueryParam("format") String format) {
+    public Response getIntygPerSjukfallTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+                                                 @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        SimpleKonResponse certificatePerCase = warehouse.getCertificatePerCaseTvarsnitt(filter.getPredicate(), range,
+        SimpleKonResponse intygPerSjukfall = warehouse.getIntygPerSjukfallTvarsnitt(filter.getPredicate(), range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        SimpleDetailsData data = SimpleDualSexConverter.newGenericTvarsnitt().convert(certificatePerCase, filterSettings);
-        return getResponse(data, format, request, Report.V_CERTIFICATEPERCASE, ReportType.TVARSNITT);
+        SimpleDetailsData data = SimpleDualSexConverter.newGenericTvarsnitt().convert(intygPerSjukfall, filterSettings);
+        return getResponse(data, format, request, Report.V_INTYGPERSJUKFALL, ReportType.TVARSNITT);
     }
 
     @GET
-    @Path("getCertificatePerCaseTidsserie")
+    @Path("getIntygPerSjukfallTidsserie")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till en tidsserie med intyg per sjukfall")
-    public Response getCertificatePerCaseTidsserie(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
-                                                       @QueryParam("format") String format) {
+    public Response getIntygPerSjukfallTidsserie(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+                                                 @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        KonDataResponse certificatePerCase = warehouse.getCertificatePerCaseTidsserie(filter.getPredicate(), range,
+        KonDataResponse intygPerSjukfall = warehouse.getIntygPerSjukfallTidsserie(filter.getPredicate(), range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        DualSexStatisticsData data = new SimpleMultiDualSexConverter().convert(certificatePerCase, filterSettings);
-        return getResponse(data, format, request, Report.V_CERTIFICATEPERCASE, ReportType.TIDSSERIE);
+        DualSexStatisticsData data = new SimpleMultiDualSexConverter().convert(intygPerSjukfall, filterSettings);
+        return getResponse(data, format, request, Report.V_INTYGPERSJUKFALL, ReportType.TIDSSERIE);
     }
 
     /**

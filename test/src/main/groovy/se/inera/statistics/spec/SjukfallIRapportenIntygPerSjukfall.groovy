@@ -21,7 +21,7 @@ package se.inera.statistics.spec
 class SjukfallIRapportenIntygPerSjukfall extends DualSexTimeSeriesReport {
 
     public void doExecute() {
-        def report = getReportCertificatePerCaseTidsserie()
+        def report = getReportIntygPerSjukfallTidsserie()
         executeTabell(report)
     }
 

@@ -154,20 +154,20 @@ angular.module('StatisticsApp').factory('statisticsData',
         makeRequestVerksamhet('getIntygPerTypeTvarsnitt', successCallback, failureCallback);
     };
 
-    factory.getCertificatePerCaseTvarsnitt = function (successCallback, failureCallback) {
-        makeRequestNational('getCertificatePerCaseTvarsnitt', successCallback, failureCallback);
+    factory.getIntygPerSjukfallTvarsnitt = function (successCallback, failureCallback) {
+        makeRequestNational('getIntygPerSjukfallTvarsnitt', successCallback, failureCallback);
     };
 
-    factory.getCertificatePerCaseTvarsnittVerksamhet = function (successCallback, failureCallback) {
-        makeRequestVerksamhet('getCertificatePerCaseTvarsnitt', successCallback, failureCallback);
+    factory.getIntygPerSjukfallTvarsnittVerksamhet = function (successCallback, failureCallback) {
+        makeRequestVerksamhet('getIntygPerSjukfallTvarsnitt', successCallback, failureCallback);
     };
 
-    factory.getCertificatePerCaseTvarsnittRegion = function (successCallback, failureCallback) {
-        makeRequestRegion('getCertificatePerCaseTvarsnitt', successCallback, failureCallback);
+    factory.getIntygPerSjukfallTvarsnittRegion = function (successCallback, failureCallback) {
+        makeRequestRegion('getIntygPerSjukfallTvarsnitt', successCallback, failureCallback);
     };
 
-    factory.getCertificatePerCaseTidsserieVerksamhet = function (successCallback, failureCallback) {
-        makeRequestVerksamhet('getCertificatePerCaseTidsserie', successCallback, failureCallback);
+    factory.getIntygPerSjukfallTidsserieVerksamhet = function (successCallback, failureCallback) {
+        makeRequestVerksamhet('getIntygPerSjukfallTidsserie', successCallback, failureCallback);
     };
 
     factory.getNumberOfCasesPerMonthVerksamhet = function (successCallback, failureCallback) {
