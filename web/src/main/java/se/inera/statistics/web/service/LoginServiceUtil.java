@@ -18,7 +18,17 @@
  */
 package se.inera.statistics.web.service;
 
-import com.google.common.base.Splitter;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +37,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.stereotype.Component;
+
+import com.google.common.base.Splitter;
 import se.inera.auth.LoginVisibility;
 import se.inera.auth.model.User;
 import se.inera.auth.model.UserAccessLevel;
 import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
+import se.inera.intyg.infra.integration.ia.model.Banner;
+import se.inera.intyg.infra.integration.ia.model.BannerPriority;
+import se.inera.intyg.infra.integration.ia.services.IABannerService;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
@@ -60,18 +75,6 @@ import se.inera.statistics.web.model.UserSettingsDTO;
 import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.util.VersionUtil;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import static java.util.stream.Collectors.toMap;
 
 @Component
@@ -96,6 +99,9 @@ public class LoginServiceUtil {
 
     @Autowired
     private UserSettingsManager userSettingsManager;
+
+    @Autowired
+    private IABannerService iaBannerService;
 
     @Value("${login.url}")
     private String loginUrl;
@@ -265,23 +271,30 @@ public class LoginServiceUtil {
         settings.setLoginUrl(loginUrl);
         settings.setLoggedIn(isLoggedIn());
         settings.setProjectVersion(versionUtil.getProjectVersion());
-        settings.setDriftbanners(getFakeMessages());
+        settings.setDriftbanners(getBanners());
         return settings;
     }
 
-    int count = 0;
-
-    //Only to be used until the real backend source for messages are available
-    private List<Message> getFakeMessages() {
-        List<Message> messages = new ArrayList<>();
-        final int timesBetweenMessages = 3;
-        if (count % timesBetweenMessages == 0) {
-//        messages.add(Message.create(ErrorType.UNSET, ErrorSeverity.INFO, "Detta är ett test på infonivå " + count));
-//        messages.add(Message.create(ErrorType.UNSET, ErrorSeverity.WARN, "Detta är ett test på varningsnivå " + count));
-            messages.add(Message.create(ErrorType.UNSET, ErrorSeverity.ERROR, "Detta är ett test på felnivå " + count));
+    private ErrorSeverity mapToSeverity(BannerPriority priority) {
+        switch (priority) {
+            case HIGH:
+                return ErrorSeverity.ERROR;
+            case MEDIUM:
+                return ErrorSeverity.WARN;
+            case LOW:
+                return ErrorSeverity.INFO;
         }
-        count++;
-        return messages;
+
+        return ErrorSeverity.INFO;
+    }
+
+    private List<Message> getBanners() {
+        List<Banner> banners = iaBannerService.getCurrentBanners();
+
+        return banners.stream()
+                .map(banner ->
+                        Message.create(ErrorType.UNSET, mapToSeverity(banner.getPriority()), banner.getMessage()))
+                .collect(Collectors.toList());
     }
 
     public StaticData getStaticData() {

@@ -19,7 +19,7 @@
 
 angular.module('StatisticsApp').controller('fakeLoginCtrl',
     /** @ngInject */
-    function($scope, $rootScope, _) {
+    function($scope, $rootScope, _, $http) {
         'use strict';
 
         $rootScope.hideNavigationTabs = true;
@@ -176,6 +176,47 @@ angular.module('StatisticsApp').controller('fakeLoginCtrl',
             }];
 
         $scope.selectPerson(0);
+
+        var iAdateFormat =  'YYYY-MM-DDTHH:mm:ss';
+        $scope.IA = {
+
+            banner: {
+                message: '',
+                priority: 'HIGH',
+                application: 'STATISTIK',
+                createdAt: moment().format(iAdateFormat),
+                displayFrom: moment().subtract(1, 'days').format(iAdateFormat),
+                displayTo: moment().add(7, 'days').format(iAdateFormat)
+            }
+        };
+
+        $scope.clearIACache = function(evt) {
+            evt.preventDefault();
+            $http({
+                url: '/services/api/ia-api/cache',
+                method: 'DELETE',
+                transformResponse: undefined
+            }).then(
+                function success() {
+                    $scope.IA.latestEvent = 'IA-cache tömd!';
+                }, function error(response) {
+                    $scope.IA.latestEvent = 'Fel vid tömning av cache' + response.data;
+                });
+        };
+
+        $scope.createIABanner = function() {
+            $http({
+                url: '/services/api/ia-api/banner',
+                method: 'PUT',
+                data: $scope.IA.banner
+            }).then(
+                function success() {
+                    $scope.IA.banner.message = '';
+                    $scope.IA.latestEvent = 'Banner skapad!';
+                }, function error(response) {
+                    $scope.IA.latestEvent = 'Fel vid skapande av banner' + response.data;
+                });
+        };
 
     }
 );
