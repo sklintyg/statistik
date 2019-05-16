@@ -68,7 +68,7 @@ public class Sjukfall implements Serializable {
         sjukfall.enhets = extendedSjukfall.getEnhets();
         sjukfall.lastEnhet = extendedSjukfall.getLastEnhet();
         sjukfall.firstIntygId = extendedSjukfall.getFirstIntygId();
-        sjukfall.certificateCountIncludingBeforeCurrentPeriod = extendedSjukfall.getCertificateCountIncludingBeforeCurrentPeriod();
+        sjukfall.certificateCountIncludingBeforeCurrentPeriod = extendedSjukfall.getIntygCountIncludingBeforeCurrentPeriod();
         return sjukfall;
     }
 

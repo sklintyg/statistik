@@ -47,7 +47,7 @@ public class SjukfallExtended {
             return f1.getStartdatum() - f2.getStartdatum();
         }
     };
-    private int certificateCountBeforeCurrentPeriod;
+    private int intygCountBeforeCurrentPeriod;
 
     public SjukfallExtended(Fact line) {
         start = line.getStartdatum();
@@ -63,6 +63,7 @@ public class SjukfallExtended {
         sjukskrivningsperiods.addAll(previous.sjukskrivningsperiods);
         facts.addAll(previous.facts);
         extending = previous;
+        intygCountBeforeCurrentPeriod = previous.intygCountBeforeCurrentPeriod;
     }
 
     SjukfallExtended(SjukfallExtended previous, SjukfallExtended sjukfall) {
@@ -79,6 +80,7 @@ public class SjukfallExtended {
         sjukskrivningsperiods.addAll(sjukfall.sjukskrivningsperiods);
         facts.addAll(sjukfall.facts);
         extending = sjukfall.extending;
+        intygCountBeforeCurrentPeriod = sjukfall.intygCountBeforeCurrentPeriod;
     }
 
     private Lakare getLakareFromFact(Fact line) {
@@ -126,7 +128,7 @@ public class SjukfallExtended {
         final SjukfallExtended sjukfall = new SjukfallExtended(this);
         sjukfall.start = startdatum;
         sjukfall.sjukskrivningsperiods.add(new Sjukskrivningsperiod(startdatum, sjukskrivningslangd));
-        sjukfall.certificateCountBeforeCurrentPeriod++;
+        sjukfall.intygCountBeforeCurrentPeriod++;
         return sjukfall;
     }
 
@@ -176,8 +178,8 @@ public class SjukfallExtended {
         return facts.size();
     }
 
-    public int getCertificateCountIncludingBeforeCurrentPeriod() {
-        return facts.size() + certificateCountBeforeCurrentPeriod;
+    public int getIntygCountIncludingBeforeCurrentPeriod() {
+        return facts.size() + intygCountBeforeCurrentPeriod;
     }
 
     public int getStart() {
