@@ -47,13 +47,14 @@ public class SjukfallExtended {
             return f1.getStartdatum() - f2.getStartdatum();
         }
     };
-    private int intygCountBeforeCurrentPeriod;
+    private Set<Long> allIntygUsedInSjukfall = new HashSet<>();
 
     public SjukfallExtended(Fact line) {
         start = line.getStartdatum();
         end = line.getSlutdatum();
         sjukskrivningsperiods.add(new Sjukskrivningsperiod(start, line.getSjukskrivningslangd()));
         facts.add(line);
+        allIntygUsedInSjukfall.add(line.getLakarintyg());
     }
 
     public SjukfallExtended(SjukfallExtended previous, Fact line) {
@@ -63,7 +64,7 @@ public class SjukfallExtended {
         sjukskrivningsperiods.addAll(previous.sjukskrivningsperiods);
         facts.addAll(previous.facts);
         extending = previous;
-        intygCountBeforeCurrentPeriod = previous.intygCountBeforeCurrentPeriod;
+        addInAllIntygUsedInSjukfall(previous.facts);
     }
 
     SjukfallExtended(SjukfallExtended previous, SjukfallExtended sjukfall) {
@@ -72,6 +73,7 @@ public class SjukfallExtended {
         end = Math.max(this.end, previous.getEnd());
         sjukskrivningsperiods.addAll(previous.sjukskrivningsperiods);
         facts.addAll(previous.facts);
+        addInAllIntygUsedInSjukfall(previous.facts);
     }
 
     private SjukfallExtended(SjukfallExtended sjukfall) {
@@ -80,7 +82,7 @@ public class SjukfallExtended {
         sjukskrivningsperiods.addAll(sjukfall.sjukskrivningsperiods);
         facts.addAll(sjukfall.facts);
         extending = sjukfall.extending;
-        intygCountBeforeCurrentPeriod = sjukfall.intygCountBeforeCurrentPeriod;
+        allIntygUsedInSjukfall.addAll(sjukfall.allIntygUsedInSjukfall);
     }
 
     private Lakare getLakareFromFact(Fact line) {
@@ -128,7 +130,7 @@ public class SjukfallExtended {
         final SjukfallExtended sjukfall = new SjukfallExtended(this);
         sjukfall.start = startdatum;
         sjukfall.sjukskrivningsperiods.add(new Sjukskrivningsperiod(startdatum, sjukskrivningslangd));
-        sjukfall.intygCountBeforeCurrentPeriod++;
+        sjukfall.allIntygUsedInSjukfall.add(intygForExtending.getLakarintyg());
         return sjukfall;
     }
 
@@ -150,7 +152,7 @@ public class SjukfallExtended {
                 + "start=" + WidelineConverter.toDate(start) + " (" + start + ")"
                 + ", end=" + WidelineConverter.toDate(end) + " (" + end + ")"
                 + ", realDays=" + getRealDays()
-                + ", intygCount=" + getIntygCount()
+                + ", factCount=" + getFactCount()
                 + '}';
     }
 
@@ -174,12 +176,12 @@ public class SjukfallExtended {
         return Sjukskrivningsperiod.getLengthOfJoinedPeriods(sjukskrivningsperiods);
     }
 
-    public int getIntygCount() {
+    public int getFactCount() {
         return facts.size();
     }
 
     public int getIntygCountIncludingBeforeCurrentPeriod() {
-        return facts.size() + intygCountBeforeCurrentPeriod;
+        return allIntygUsedInSjukfall.size();
     }
 
     public int getStart() {
@@ -262,6 +264,9 @@ public class SjukfallExtended {
                 sjukfall.sjukskrivningsperiods.add(new Sjukskrivningsperiod(startInPeriod, newPeriodLength));
             }
         }
+
+        addAllWithinPeriodInAllIntygUsedInSjukfall(sjukfall, previous.facts);
+
         return sjukfall;
     }
 
@@ -282,6 +287,20 @@ public class SjukfallExtended {
             factIds = facts.stream().map(Fact::getId).collect(Collectors.toList());
         }
         return factIds;
+    }
+
+    private void addInAllIntygUsedInSjukfall(NavigableSet<Fact> facts) {
+        for (Fact fact : facts) {
+            allIntygUsedInSjukfall.add(fact.getLakarintyg());
+        }
+    }
+
+    private void addAllWithinPeriodInAllIntygUsedInSjukfall(SjukfallExtended sjukfallExtended, NavigableSet<Fact> facts) {
+        for (Fact fact : facts) {
+            if (fact.getStartdatum() > sjukfallExtended.getStart() && fact.getSlutdatum() < sjukfallExtended.getEnd()) {
+                sjukfallExtended.allIntygUsedInSjukfall.add(fact.getLakarintyg());
+            }
+        }
     }
 
 }

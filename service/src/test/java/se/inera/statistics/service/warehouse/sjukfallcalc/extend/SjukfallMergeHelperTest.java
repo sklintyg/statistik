@@ -81,7 +81,7 @@ public class SjukfallMergeHelperTest {
         final SjukfallExtended result = SjukfallMergeHelper.mergeAllSjukfallInList(sjukfalls).get();
 
         //Then
-        assertEquals(3, result.getIntygCount());
+        assertEquals(3, result.getFactCount());
         assertEquals(10, result.getStart());
         assertEquals(112, result.getEnd());
         assertEquals(21, result.getRealDays());

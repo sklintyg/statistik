@@ -48,7 +48,7 @@ public class IntygPerSjukfallQuery {
     private static Map<Ranges.Range, Counter<Ranges.Range>> count(Collection<Sjukfall> sjukfalls, Ranges ranges) {
         Map<Ranges.Range, Counter<Ranges.Range>> counters = Counter.mapFor(ranges);
         for (Sjukfall sjukfall : sjukfalls) {
-            Counter counter = counters.get(ranges.rangeFor(sjukfall.getCertificateCountIncludingBeforeCurrentPeriod()));
+            Counter counter = counters.get(ranges.rangeFor(sjukfall.getIntygCountIncludingBeforeCurrentPeriod()));
             counter.increase(sjukfall);
         }
         return counters;
@@ -85,7 +85,7 @@ public class IntygPerSjukfallQuery {
         final List<String> names = Lists.transform(rangesList, Ranges.Range::getName);
         final List<Integer> ids = Lists.transform(rangesList, Ranges.Range::getCutoff);
         final CounterFunction<Integer> counterFunction = (sjukfall, counter) -> {
-            final int certificateCount = sjukfall.getCertificateCountIncludingBeforeCurrentPeriod();
+            final int certificateCount = sjukfall.getIntygCountIncludingBeforeCurrentPeriod();
             final int rangeId = ranges.getRangeCutoffForValue(certificateCount);
             counter.add(rangeId);
         };

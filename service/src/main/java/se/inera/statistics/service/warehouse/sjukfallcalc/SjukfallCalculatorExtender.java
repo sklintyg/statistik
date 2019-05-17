@@ -54,7 +54,7 @@ class SjukfallCalculatorExtender {
             ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient, long patient) {
         final Collection<SjukfallExtended> sjukfalls = sjukfallForAvailableEnhets.get(patient);
         Collection<SjukfallExtended> sjukfallFromAllIntygForPatient = sjukfallsPerPatient.get(patient);
-        final boolean noExtraSjukfallExistsOnOtherEnhet = countIntyg(sjukfalls) == countIntyg(sjukfallFromAllIntygForPatient);
+        final boolean noExtraSjukfallExistsOnOtherEnhet = countFacts(sjukfalls) == countFacts(sjukfallFromAllIntygForPatient);
         if (noExtraSjukfallExistsOnOtherEnhet) {
             return; // All intygs for patient are already included
         }
@@ -63,10 +63,10 @@ class SjukfallCalculatorExtender {
         }
     }
 
-    private int countIntyg(Collection<SjukfallExtended> sjukfalls) {
+    private int countFacts(Collection<SjukfallExtended> sjukfalls) {
         int counter = 0;
         for (SjukfallExtended sjukfall : sjukfalls) {
-            counter += sjukfall.getIntygCount();
+            counter += sjukfall.getFactCount();
         }
         return counter;
     }

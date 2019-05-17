@@ -42,7 +42,7 @@ public class SjukfallTest {
         assertEquals(1, result.getDiagnosavsnitt());
         assertEquals(1, result.getDiagnoskapitel());
         assertEquals(1, result.getDiagnoskategori());
-        assertEquals(1, result.getIntygCount());
+        assertEquals(1, result.getFactCount());
         assertEquals(1, result.getRealDays());
         assertEquals(1, result.getSjukskrivningsgrad());
         assertEquals(1, result.getStart());
@@ -67,7 +67,7 @@ public class SjukfallTest {
         assertEquals(2, result.getDiagnoskapitel());
         assertEquals(2, result.getDiagnoskategori());
         assertEquals(3, result.getEnd());
-        assertEquals(2, result.getIntygCount());
+        assertEquals(2, result.getFactCount());
         assertEquals(3, result.getRealDays());
         assertEquals(2, result.getSjukskrivningsgrad());
         assertEquals(1, result.getStart());
