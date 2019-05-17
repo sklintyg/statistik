@@ -57,7 +57,6 @@
         <filter-name>CompressingFilter</filter-name>
         <url-pattern>/app/*</url-pattern>
         <url-pattern>/js/*</url-pattern>
-        <!-- TODO: Erik: Borde getIntygPerSjukfallTvarsnitt finnas här? -->
         <url-pattern>/api/getOverview</url-pattern>
         <url-pattern>/api/getNumberOfCasesPerMonth</url-pattern>
         <url-pattern>/api/getDiagnoskapitelstatistik</url-pattern>
@@ -67,6 +66,7 @@
         <url-pattern>/api/getCountyStatistics</url-pattern>
         <url-pattern>/api/getSjukfallPerSexStatistics</url-pattern>
         <url-pattern>/api/getIcd10Structure</url-pattern>
+        <url-pattern>/api/getIntygPerSjukfallTvarsnitt</url-pattern>
         <url-pattern>/api/login/getStaticData</url-pattern>
     </filter-mapping>
 
