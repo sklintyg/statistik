@@ -80,10 +80,12 @@
         <bean id="dynamicLinkRepository" class="se.inera.intyg.infra.dynamiclink.repository.DynamicLinkRepositoryImpl" />
         <bean id="dynamicLinkService" class="se.inera.intyg.infra.dynamiclink.service.DynamicLinkServiceImpl"/>
         <bean id="linkService" class="se.inera.statistics.web.service.links.LinkService"/>
+        <bean class="se.inera.statistics.web.scheduler.BannerJobConfiguration"/>
 
         <import resource="classpath*:hsa-services-config.xml"/>
         <import resource="classpath*:hsaws-services-config.xml"/>
         <import resource="classpath*:icd10.xml"/>
+        <import resource="classpath*:ia-services-config.xml"/>
         <import resource="application-context-cxf.xml"/>
         <import resource="application-context-security.xml"/>
         <import resource="application-context-jmx.xml"/>
@@ -130,11 +132,11 @@
     </beans>
 
     <beans profile="testapi">
-        <bean class="se.inera.testsupport.RestTemplateStub" />
+        <bean id="restTemplateStat" class="se.inera.testsupport.RestTemplateStub" />
         <bean class="se.inera.statistics.time.ChangableClock" factory-method="newChangable" />
     </beans>
     <beans profile="!testapi">
-        <bean class="org.springframework.web.client.RestTemplate" />
+        <bean id="restTemplateStat" class="org.springframework.web.client.RestTemplate" />
         <bean class="java.time.Clock" factory-method="systemDefaultZone"/>
     </beans>
 

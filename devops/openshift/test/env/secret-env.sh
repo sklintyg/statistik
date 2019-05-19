@@ -14,7 +14,7 @@ export REDIS_PASSWORD=${REDIS_PASSWORD:-redis}
 export REDIS_PORT=$REDIS_SERVICE_PORT
 export REDIS_HOST=$REDIS_SERVICE_HOST
 
-SPRING_PROFILES_ACTIVE="${SPRING_PROFILES_ACTIVE:-test,caching-enabled,testapi,hsa-stub,wc-hsa-stub,security-fake}"
+SPRING_PROFILES_ACTIVE="${SPRING_PROFILES_ACTIVE:-test,caching-enabled,testapi,hsa-stub,wc-hsa-stub,security-fake,ia-stub}"
 
 export CATALINA_OPTS_APPEND="\
 -Dspring.profiles.active=$SPRING_PROFILES_ACTIVE \

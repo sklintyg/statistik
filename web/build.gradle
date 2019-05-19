@@ -61,7 +61,7 @@ build.dependsOn zipResources
 
 gretty {
     def baseUrl = 'http://localhost:8080'
-    def jvmArgSpringProfiles = '-Dspring.profiles.active=dev,caching-enabled,testapi,embedded,hsa-stub,wc-hsa-stub,security-both,noprocessing'
+    def jvmArgSpringProfiles = '-Dspring.profiles.active=dev,caching-enabled,testapi,embedded,hsa-stub,wc-hsa-stub,security-both,noprocessing,ia-stub'
 
     servletContainer = 'jetty9'
     contextPath = '/'
@@ -100,6 +100,7 @@ dependencies {
     compile "se.riv.clinicalprocess.healthcond.monitoring:clinicalprocess-healthcond-monitoring-schemas:${monitoringSchemaVersion}"
     compile "se.inera.intyg.infra:dynamiclink:${infraVersion}"
     compile "se.inera.intyg.infra:security-filter:${infraVersion}"
+    compile "se.inera.intyg.infra:ia-integration:${infraVersion}"
 
     compile "org.springframework.security.extensions:spring-security-saml2-core:${springSecuritySamlVersion}"
     compile "xml-apis:xml-apis:${xmlApisVersion}"
