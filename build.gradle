@@ -20,7 +20,7 @@ ext {
     commonDCHPVersion = "2.0"
     commonsLang3Version = "3.8.1"
     commonsTextVersion = "1.6"
-    cxfVersion = '3.1.15'
+    cxfVersion = '3.1.3'
     googleGuavaVersion = "27.0.1-jre"
     gparsVersion = "1.1.0"
     groovyAllVersion = "2.3.6"
@@ -34,7 +34,7 @@ ext {
     jacksonVersion = "2.8.3"
     javaxServletVersion = "3.1.0"
     javaxWsRsApiVersion = "2.0.1"
-    jaxb2Version = "1.11.1"
+    jaxb2Version = "0.9.5"
     jmsVersion = "1.1.1"
     liquibaseVersion = "2.0.5"
     logbackVersion = "1.2.3"
