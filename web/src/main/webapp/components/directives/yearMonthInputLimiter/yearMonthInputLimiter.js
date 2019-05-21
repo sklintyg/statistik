@@ -29,7 +29,7 @@ angular.module('StatisticsApp').directive(
                                 //Reject new value, revert to previous
                                 updateViewValue(oldValue);
                             } else {
-                                //new value is ok, but did we modifiy it?
+                                //new value is ok, but did we modify it?
                                 if (hasUpdatedValue) {
                                     updateViewValue(newValue);
                                 }
