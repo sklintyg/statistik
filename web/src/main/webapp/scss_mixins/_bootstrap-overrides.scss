@@ -142,6 +142,14 @@ p {
   }
 }
 
+.btn-default {
+  &:hover,
+  &.hover{
+    background-color: $st-color-21;
+    background-image: none;
+  }
+}
+
 .alert-info {
   h1, h2, h3, h4 {
     color: $st-color-38;
