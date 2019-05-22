@@ -11,7 +11,7 @@ ext {
 
     intygSchematronVersion = "1.0.39"
     certificateSchemaVersion = "3.2.0-RC3"
-    monitoringSchemaVersion = "1.0.0.0"
+    monitoringSchemaVersion = "1.0.3"
     intygTransportstyrelsenSchemasVersion = "1.0.4"
 
     activeMqVersion = "5.13.5"
@@ -67,8 +67,8 @@ ext {
 allprojects {
     repositories {
         mavenLocal()
-        maven { url "https://build-inera.nordicmedtest.se/nexus/repository/snapshots/" }
         maven { url "https://build-inera.nordicmedtest.se/nexus/repository/releases/" }
+        maven { url "https://build-inera.nordicmedtest.se/nexus/repository/snapshots/" }
         mavenCentral()
     }
 
