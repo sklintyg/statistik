@@ -18,16 +18,6 @@
  */
 package se.inera.statistics.service.countypopulation;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
-import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.KonField;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
@@ -36,6 +26,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
+
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.KonField;
 
 @Component
 public class CountyPopulationFetcher {
@@ -48,6 +50,7 @@ public class CountyPopulationFetcher {
     private static final String POPULATION_REQUEST_FILE = "/scb-county-population-request.json";
 
     @Autowired
+    @Qualifier("restTemplateStat")
     private RestTemplate rest;
 
     @Value("${scb.population.url}")

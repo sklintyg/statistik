@@ -165,7 +165,7 @@
         </div>
       </div>
 
-      <div class="collapsible-panel-body" uib-collapse="status.isChartCollapsed">
+      <div class="collapsible-panel-body" ng-show="!status.isChartCollapsed">
         <div data-ng-if="!hideChart">
           <div class="row">
             <div data-ng-repeat="chartContainer in chartContainers"
@@ -207,7 +207,7 @@
                 </i>
 
               </uib-accordion-heading>
-              <stat-scroll-table header-rows="headerrows" rows="rows"></stat-scroll-table>
+              <stat-scroll-table header-rows="headerrows" rows="rows"  ng-show="status.isTableOpen"></stat-scroll-table>
             </div>
           </uib-accordion>
         </div>
