@@ -44,6 +44,7 @@ import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.web.Messages;
 import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.error.ErrorSeverity;
 import se.inera.statistics.web.error.ErrorType;
@@ -129,13 +130,13 @@ public class ResponseHandler {
 
         if (result != null && result.isEmpty()) {
             if (filterActive(result.getFilter(), filterSelections)) {
-                messages.add(Message.create(ErrorType.FILTER, ErrorSeverity.WARN, MessagesText.MESSAGE_NO_DATA_FILTER));
+                messages.add(Message.create(ErrorType.FILTER, ErrorSeverity.WARN, Messages.ST_F_FI_010));
             } else {
                 messages.add(Message.create(ErrorType.UNSET, ErrorSeverity.INFO, MessagesText.MESSAGE_NO_DATA));
             }
         }
 
-        mappedResult.put(MESSAGE_KEY, messages);
+        mappedResult.put(MESSAGE_KEY, Message.filterByPrio(messages));
 
         if (extras != null) {
             mappedResult.putAll(extras);

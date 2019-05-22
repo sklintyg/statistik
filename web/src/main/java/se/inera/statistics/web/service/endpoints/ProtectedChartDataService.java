@@ -56,6 +56,7 @@ import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.query.MessagesQuery;
 import se.inera.statistics.service.warehouse.query.RangeNotFoundException;
+import se.inera.statistics.web.Messages;
 import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.error.ErrorSeverity;
 import se.inera.statistics.web.error.ErrorType;
@@ -749,9 +750,7 @@ public class ProtectedChartDataService {
 
     private Message getCompareDiagnosisMessage(Filter filter, List<String> diagnosis) {
         if (resultMessageHandler.isDxFilterDisableAllSelectedDxs(diagnosis, filter.getDiagnoser())) {
-
-            String msg = MessagesText.MESSAGE_DIAGNOS_MISS_MATCH;
-            return Message.create(ErrorType.FILTER, ErrorSeverity.WARN, msg);
+            return Message.create(ErrorType.FILTER, ErrorSeverity.WARN, Messages.ST_F_FI_011);
         }
         return null;
     }
@@ -822,9 +821,7 @@ public class ProtectedChartDataService {
         if (noMsg) {
             return null;
         }
-        final String msg = "Översikten visar alltid de senaste tre avslutade kalendermånaderna ("
-                + actualRangeUsed.toStringShortMonths()
-                + ") oavsett valt tidsintervall.";
+        final String msg = String.format(MessagesText.MESSAGE_OVERVIEW_WITH_FILTER, actualRangeUsed.toStringShortMonths());
         return Message.create(ErrorType.FILTER, ErrorSeverity.INFO, msg);
     }
 

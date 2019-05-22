@@ -460,7 +460,7 @@ public class ResponseHandlerTest {
         Message message = (Message) ((List) ((Map) response.getEntity()).get(ResponseHandler.MESSAGE_KEY)).get(0);
         assertEquals(ErrorType.FILTER, message.getType());
         assertEquals(ErrorSeverity.WARN, message.getSeverity());
-        assertEquals(MessagesText.MESSAGE_NO_DATA_FILTER, message.getMessage());
+        assertEquals(MessagesText.FILTER_NO_DATA, message.getMessage());
     }
 
     private void validateNoDataNoFilterMessage(Response response) {
