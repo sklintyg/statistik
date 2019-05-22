@@ -33,10 +33,14 @@ import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.caching.Cache;
 import se.inera.statistics.service.caching.NoOpRedisTemplate;
-import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.MutableAisle;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
+import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.model.KonField;
 
 public class IntygPerSjukfallQueryTest {
 

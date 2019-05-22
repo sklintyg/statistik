@@ -35,7 +35,12 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.IntygPerSjukfallGroupUtil;
 import se.inera.statistics.service.report.util.Ranges;
-import se.inera.statistics.service.warehouse.*;
+import se.inera.statistics.service.warehouse.Sjukfall;
+import se.inera.statistics.service.warehouse.Aisle;
+import se.inera.statistics.service.warehouse.FilterPredicates;
+import se.inera.statistics.service.warehouse.SjukfallUtil;
+import se.inera.statistics.service.warehouse.SjukfallGroup;
+import se.inera.statistics.service.warehouse.ResponseUtil;
 
 @Component
 public class IntygPerSjukfallQuery {

@@ -22,12 +22,23 @@ import static se.inera.statistics.web.service.ReportType.TIDSSERIE;
 import static se.inera.statistics.web.service.ReportType.TVARSNITT;
 
 import java.io.ByteArrayOutputStream;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.activation.DataSource;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -56,14 +67,33 @@ import se.inera.statistics.service.region.persistance.regionenhetupdate.RegionEn
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.MessagesText;
-import se.inera.statistics.web.model.*;
-import se.inera.statistics.web.service.*;
+import se.inera.statistics.web.model.DualSexStatisticsData;
+import se.inera.statistics.web.model.LoginInfo;
+import se.inera.statistics.web.model.LoginInfoVg;
+import se.inera.statistics.web.model.SimpleDetailsData;
+import se.inera.statistics.web.model.TableDataReport;
+import se.inera.statistics.web.model.Verksamhet;
+import se.inera.statistics.web.service.FilterHandler;
+import se.inera.statistics.web.service.FilterSettings;
+import se.inera.statistics.web.service.LoginServiceUtil;
+import se.inera.statistics.web.service.Report;
+import se.inera.statistics.web.service.ReportInfo;
+import se.inera.statistics.web.service.ReportType;
+import se.inera.statistics.web.service.ResponseHandler;
+import se.inera.statistics.web.service.WarehouseService;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 import se.inera.statistics.web.service.region.RegionEnhetFileParseException;
 import se.inera.statistics.web.service.region.RegionFileGenerationException;
 import se.inera.statistics.web.service.region.RegionFileReader;
 import se.inera.statistics.web.service.region.RegionFileWriter;
-import se.inera.statistics.web.service.responseconverter.*;
+import se.inera.statistics.web.service.responseconverter.AndelKompletteringarConverter;
+import se.inera.statistics.web.service.responseconverter.GroupedSjukfallWithRegionSortingConverter;
+import se.inera.statistics.web.service.responseconverter.MessageAmneConverter;
+import se.inera.statistics.web.service.responseconverter.MessageAmnePerEnhetTvarsnittConverter;
+import se.inera.statistics.web.service.responseconverter.PeriodConverter;
+import se.inera.statistics.web.service.responseconverter.SimpleDualSexConverter;
+import se.inera.statistics.web.service.responseconverter.SimpleMultiDualSexConverter;
+import se.inera.statistics.web.service.responseconverter.SjukfallPerPatientsPerEnhetConverter;
 
 /**
  * Statistics services that requires authorization to use. Unless otherwise noted, the data returned

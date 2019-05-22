@@ -21,16 +21,38 @@ package se.inera.statistics.service.warehouse;
 import static se.inera.statistics.service.warehouse.ResponseUtil.filterCutoff;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.AvailableFilters;
+import se.inera.statistics.service.report.model.DiagnosgruppResponse;
+import se.inera.statistics.service.report.model.Icd;
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.model.KonDataRow;
+import se.inera.statistics.service.report.model.KonField;
+import se.inera.statistics.service.report.model.Lan;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Ranges;
 import se.inera.statistics.service.report.util.ReportUtil;
-import se.inera.statistics.service.warehouse.query.*;
+import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
+import se.inera.statistics.service.warehouse.query.Counter;
+import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
+import se.inera.statistics.service.warehouse.query.IntygPerSjukfallQuery;
+import se.inera.statistics.service.warehouse.query.SjukfallQuery;
+import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
+import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
 
 /**
  * Contains calculations for each report on national statistics.

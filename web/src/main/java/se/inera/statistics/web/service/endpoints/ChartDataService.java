@@ -18,9 +18,19 @@
  */
 package se.inera.statistics.web.service.endpoints;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -41,7 +51,13 @@ import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.overview.OverviewData;
-import se.inera.statistics.web.service.*;
+import se.inera.statistics.web.service.DiagnosisKapitelAndAvsnittAndKategoriResponse;
+import se.inera.statistics.web.service.FilterException;
+import se.inera.statistics.web.service.FilterHashHandler;
+import se.inera.statistics.web.service.NationellDataCalculator;
+import se.inera.statistics.web.service.NationellDataResult;
+import se.inera.statistics.web.service.Report;
+import se.inera.statistics.web.service.ResponseHandler;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
 /**

@@ -22,7 +22,11 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import se.inera.statistics.web.model.*;
+import se.inera.statistics.web.model.CasesPerCountyData;
+import se.inera.statistics.web.model.DiagnosisSubGroupStatisticsData;
+import se.inera.statistics.web.model.DualSexStatisticsData;
+import se.inera.statistics.web.model.SimpleDetailsData;
+import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.overview.OverviewData;
 
 /**
