@@ -41,6 +41,7 @@ var stMessages = {
         'nav.intygpertyp': 'Intyg, totalt',
         'nav.andelkompletteringar': 'Komplettering, andel intyg',
         'nav.kompletteringarperfraga': 'Komplettering, per fråga',
+        'nav.intyg-per-sjukfall': 'Intyg per sjukfall',
 
         //labels
         'lbl.mobile-menu': 'Meny',
@@ -187,6 +188,7 @@ var stMessages = {
         'title.intygstyp' : 'Antal utfärdade intyg fördelat på intygstyp',
         'title.andelkompletteringar' : 'Andel utfärdade intyg som fått en kompletteringsbegäran',
         'title.kompletteringarperfraga' : 'Antal kompletteringar fördelat på fråga i FK 7804',
+        'title.intyg-per-sjukfall' : 'Antal intyg per sjukfall',
 
         //help texts
         'help.nationell.overview' : 'Intygsstatistik är en webbtjänst som visar samlad statistik över alla elektroniskt utfärdade läkarintyg. Tjänsten visar dessutom statistik över den tillhörande ärendekommunikationen som sker emellan intygsutfärdare och Försäkringskassan. Statistiken är uppdelad i nationell statistik som är tillgänglig för alla, och verksamhetsstatistik som bara går att se med särskild behörighet inom hälso- och sjukvården.',
@@ -214,6 +216,7 @@ var stMessages = {
         'help.region.vardenhet': 'Denna rapport visar statistik för de vårdenheter som tillhör regionen och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i regionen har rapporterats in av regionen självt %0. Vårdenheternas namn hämtas från HSA-katalogen.',
         'help.region.vardenhet-listning1': 'Denna rapport visar statistik för de vårdenheter som tillhör regionen och för vilka antal listade patienter i arbetsför ålder rapporterats in. Antal sjukfall per 1000 listningar är ett mått som gör att det går att jämföra antalet sjukfall på olika vårdenheter trots att vårdenheterna inte är lika stora. Detta eftersom antalet sjukfall sätts i relation till antalet listade patienter i arbetsför ålder.',
         'help.region.vardenhet-listning2': 'Information om vilka vårdenheter som ingår i regionen och uppgift om antal listade patienter i arbetsför ålder på respektive vårdenhet har rapporteras in av regionen självt %0. Vårdenheternas namn hämtas från HSA-katalogen.',
+        'help.region.intyg-per-sjukfall': 'Denna rapport visar sammanlagd statistik för de vårdenheter som tillhör regionen och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i regionen har rapporteras in av regionen självt %0.',
         'help.region.meddelandenperamne': 'Denna rapport visar sammanlagd statistik för de vårdenheter som tillhör regionen och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i regionen har rapporteras in av regionen självt %0. Ämnet på meddelanden sätts av Försäkringskassan. Observera att statistiken i denna rapport endast innefattar de meddelanden som tillhör Försäkringskassans intyg (med undantag för FK 7263).',
         'help.region.meddelandenperamneochenhet': 'Denna rapport visar statistik för de vårdenheter som tillhör regionen och som utfärdar läkarintyg och läkarutlåtanden. Information om vilka vårdenheter som ingår i regionen har rapporterats in av regionen självt %0. Vårdenheternas namn hämtas från HSA-katalogen. Observera att statistiken i denna rapport endast innefattar de meddelanden som tillhör Försäkringskassans intyg (med undantag för FK 7263).',
         'help.region.intygpertyp': 'Denna rapport visar sammanlagd statistik för de vårdenheter som tillhör regionen och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i regionen har rapporteras in av regionen självt %0.',

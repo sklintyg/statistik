@@ -548,6 +548,38 @@ angular.module('StatisticsApp').intygPerTypeTvarsnittConfig =
     return conf;
 };
 
+angular.module('StatisticsApp').intygPerSjukfallTvarsnittConfig =
+    /** @ngInject */
+    function (messageService) {
+    'use strict';
+
+    var conf = {};
+    conf.dataFetcher = 'getIntygPerSjukfallTvarsnitt';
+    conf.dataFetcherVerksamhet = 'getIntygPerSjukfallTvarsnittVerksamhet';
+    conf.dataFetcherRegion = 'getIntygPerSjukfallTvarsnittRegion';
+
+    conf.exportTableUrl = 'api/getIntygPerSjukfallTvarsnitt?format=xlsx';
+    conf.exportTableUrlVerksamhet = function () {
+        return 'api/verksamhet/getIntygPerSjukfallTvarsnitt?format=xlsx';
+    };
+    conf.exportTableUrlRegion = function () {
+        return 'api/region/getIntygPerSjukfallTvarsnitt?format=xlsx';
+    };
+
+    conf.title = messageService.getProperty('title.intyg-per-sjukfall');
+    conf.chartFootnotesExtra = function(result, isVerksamhet, isRegion, $filter) {
+        if (isRegion) {
+            return $filter('messageFilter')('help.region.intyg-per-sjukfall', '', '', [result.fileUploadDate], '');
+        }
+    };
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '/verksamhet/intygPerSjukfallTidsserie', active: false},
+        {description: 'Tvärsnitt', state: '/verksamhet/intygPerSjukfallTvarsnitt', active: true}];
+
+    return conf;
+};
+
 angular.module('StatisticsApp').longSickLeavesTvarsnittConfig =
     /** @ngInject */
     function (messageService) {

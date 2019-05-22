@@ -18,13 +18,13 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import java.util.Map;
+
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.Icd10;
-
-import java.util.Map;
 
 /**
  * Contains the final results for calculated national statistics.
@@ -67,6 +67,8 @@ public class NationellDataInfo {
     private KonDataResponse meddelandenPerAmneResult;
     private KonDataResponse intygPerTypResult;
     private Range intygPerTypeRange;
+    private SimpleKonResponse intygPerSjukfallResult;
+    private Range intygPerSjukfallRange;
     private KonDataResponse andelKompletteringarResult;
     private Range andelKompletteringarRange;
     private SimpleKonResponse kompletteringarPerFragaResult;
@@ -334,6 +336,22 @@ public class NationellDataInfo {
 
     public void setIntygPerTypeRange(Range intygPerTypeRange) {
         this.intygPerTypeRange = intygPerTypeRange;
+    }
+
+    public SimpleKonResponse getIntygPerSjukfallResult() {
+        return intygPerSjukfallResult;
+    }
+
+    public void setIntygPerSjukfallResult(SimpleKonResponse intygPerSjukfallResult) {
+        this.intygPerSjukfallResult = intygPerSjukfallResult;
+    }
+
+    public Range getIntygPerSjukfallRange() {
+        return intygPerSjukfallRange;
+    }
+
+    public void setIntygPerSjukfallRange(Range intygPerSjukfallRange) {
+        this.intygPerSjukfallRange = intygPerSjukfallRange;
     }
 
     public KonDataResponse getAndelKompletteringarResult() {

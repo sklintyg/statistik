@@ -25,8 +25,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Component;
+
 import se.inera.statistics.service.countypopulation.CountyPopulation;
 import se.inera.statistics.service.countypopulation.CountyPopulationManager;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
@@ -91,6 +91,7 @@ public class NationellDataCalculator {
         result.setOverview(buildOverview(data));
         result.setMeddelandenPerAmne(buildNumberOfMeddelandenPerAmne(data));
         result.setIntygPerTyp(buildIntygPerTyp(data));
+        result.setIntygPerSjukfall(buildIntygPerSjukfall(data));
         result.setAndelKompletteringar(buildAndelKompletteringar(data));
         result.setKompletteringarPerFraga(buildKompletteringarPerFraga(data));
         LOG.info("National data calculation: Done");
@@ -170,6 +171,12 @@ public class NationellDataCalculator {
         final Range range = data.getIntygPerTypeRange();
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
         return new SimpleMultiDualSexConverter("Antal intyg totalt").convert(intygPerTyp, filterSettings);
+    }
+
+    private SimpleDetailsData buildIntygPerSjukfall(NationellDataInfo data) {
+        SimpleKonResponse intygPerSjukfall = data.getIntygPerSjukfallResult();
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), data.getIntygPerSjukfallRange());
+        return SimpleDualSexConverter.newGenericTvarsnitt().convert(intygPerSjukfall, filterSettings);
     }
 
     private TableDataReport buildAndelKompletteringar(NationellDataInfo data) {

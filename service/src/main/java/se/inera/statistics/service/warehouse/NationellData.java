@@ -18,6 +18,8 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import static se.inera.statistics.service.warehouse.ResponseUtil.filterCutoff;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,11 +49,10 @@ import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
 import se.inera.statistics.service.warehouse.query.Counter;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
+import se.inera.statistics.service.warehouse.query.IntygPerSjukfallQuery;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
-
-import static se.inera.statistics.service.warehouse.ResponseUtil.filterCutoff;
 
 /**
  * Contains calculations for each report on national statistics.
@@ -298,4 +299,22 @@ class NationellData {
         return new SimpleKonResponse(AvailableFilters.getForNationell(), rows);
     }
 
+    SimpleKonResponse getIntygPerSjukfall(Aisle aisle, Range range, SimpleKonResponse intygPerSjukfallResult) {
+        SimpleKonResponse intygPerSjukfall = IntygPerSjukfallQuery.getIntygPerSjukfallTvarsnitt(aisle,
+                SjukfallUtil.ALL_ENHETER, range.getFrom(), 1, range.getNumberOfMonths(), sjukfallUtil);
+        if (intygPerSjukfallResult == null) {
+            intygPerSjukfallResult = createEmptySimpleKonResponse(intygPerSjukfall);
+        }
+        Iterator<SimpleKonDataRow> rowsNew = intygPerSjukfall.getRows().iterator();
+        Iterator<SimpleKonDataRow> rowsOld = intygPerSjukfallResult.getRows().iterator();
+        List<SimpleKonDataRow> list = new ArrayList<>(1);
+        while (rowsNew.hasNext() && rowsOld.hasNext()) {
+            SimpleKonDataRow a = rowsNew.next();
+            SimpleKonDataRow b = rowsOld.next();
+
+            list.add(new SimpleKonDataRow(a.getName(), filterCutoff(a.getFemale(), cutoff) + b.getFemale(),
+                    filterCutoff(a.getMale(), cutoff) + b.getMale()));
+        }
+        return new SimpleKonResponse(AvailableFilters.getForNationell(), list);
+    }
 }

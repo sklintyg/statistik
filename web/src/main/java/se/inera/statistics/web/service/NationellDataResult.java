@@ -35,7 +35,6 @@ import se.inera.statistics.web.model.overview.OverviewData;
 public class NationellDataResult implements Serializable {
 
     private SimpleDetailsData numberOfCasesPerMonth;
-    // private SimpleDetailsData numberOfMeddelandenPerMonth;
     private DualSexStatisticsData diagnosgrupper;
     private Map<String, DiagnosisSubGroupStatisticsData> diagnoskapitel = new HashMap<>();
     private OverviewData overview;
@@ -46,6 +45,7 @@ public class NationellDataResult implements Serializable {
     private SimpleDetailsData konsfordelningPerLan;
     private DualSexStatisticsData meddelandenPerAmne;
     private TableDataReport intygPerTyp;
+    private SimpleDetailsData intygPerSjukfall;
     private TableDataReport andelKompletteringar;
     private TableDataReport kompletteringarPerFraga;
 
@@ -135,6 +135,14 @@ public class NationellDataResult implements Serializable {
 
     public void setIntygPerTyp(TableDataReport intygPerTyp) {
         this.intygPerTyp = intygPerTyp;
+    }
+
+    public SimpleDetailsData getIntygPerSjukfall() {
+        return intygPerSjukfall;
+    }
+
+    public void setIntygPerSjukfall(SimpleDetailsData intygPerSjukfall) {
+        this.intygPerSjukfall = intygPerSjukfall;
     }
 
     public TableDataReport getAndelKompletteringar() {

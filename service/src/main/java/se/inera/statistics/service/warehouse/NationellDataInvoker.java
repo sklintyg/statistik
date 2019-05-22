@@ -180,6 +180,9 @@ public class NationellDataInvoker {
 
         nationellData.addSjukfallPerLanToResult(result.getLanRange(), data.getLanResult(), aisle);
 
+        data.setIntygPerSjukfallResult(nationellData.getIntygPerSjukfall(aisle, result.getIntygPerSjukfallRange(),
+                data.getIntygPerSjukfallResult()));
+
         final Range overviewRange = result.getOverviewRange();
         final Range previousOverviewRange = ReportUtil.getPreviousOverviewPeriod(overviewRange);
         data.setOverviewForandringCurrentResult(
@@ -238,6 +241,7 @@ public class NationellDataInvoker {
         result.setOverviewRange(quarterRange);
         result.setMeddelandenPerAmneRange(longRange);
         result.setIntygPerTypeRange(longRange);
+        result.setIntygPerSjukfallRange(Range.createForLastMonthsExcludingCurrent(yearRange.getNumberOfMonths(), clock));
         result.setAndelKompletteringarRange(longRange);
         result.setKompletteringarPerFragaRange(yearRange);
     }
@@ -301,6 +305,11 @@ public class NationellDataInvoker {
         if (result.getIntygPerTypResult() == null) {
             result.setIntygPerTypResult(new KonDataResponse(AvailableFilters.getForNationell(), new ArrayList<>(), new ArrayList<>()));
         }
+
+        if (data.getIntygPerSjukfallResult() == null) {
+            data.setIntygPerSjukfallResult(new SimpleKonResponse(AvailableFilters.getForNationell(), new ArrayList<>()));
+        }
+        result.setIntygPerSjukfallResult(data.getIntygPerSjukfallResult());
 
         if (result.getAndelKompletteringarResult() == null) {
             KonDataResponse response = new KonDataResponse(AvailableFilters.getForNationell(), new ArrayList<>(), new ArrayList<>());

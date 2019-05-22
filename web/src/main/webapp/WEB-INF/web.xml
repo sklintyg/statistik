@@ -66,6 +66,7 @@
         <url-pattern>/api/getCountyStatistics</url-pattern>
         <url-pattern>/api/getSjukfallPerSexStatistics</url-pattern>
         <url-pattern>/api/getIcd10Structure</url-pattern>
+        <url-pattern>/api/getIntygPerSjukfallTvarsnitt</url-pattern>
         <url-pattern>/api/login/getStaticData</url-pattern>
     </filter-mapping>
 

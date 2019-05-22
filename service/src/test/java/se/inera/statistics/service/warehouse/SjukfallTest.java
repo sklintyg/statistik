@@ -42,7 +42,7 @@ public class SjukfallTest {
         assertEquals(1, result.getDiagnosavsnitt());
         assertEquals(1, result.getDiagnoskapitel());
         assertEquals(1, result.getDiagnoskategori());
-        assertEquals(1, result.getIntygCount());
+        assertEquals(1, result.getFactCount());
         assertEquals(1, result.getRealDays());
         assertEquals(1, result.getSjukskrivningsgrad());
         assertEquals(1, result.getStart());
@@ -51,6 +51,7 @@ public class SjukfallTest {
 
         assertEquals("01", result.getLanskod());
         assertEquals(false, result.isExtended());
+        assertEquals(1, result.getIntygCountIncludingBeforeCurrentPeriod());
     }
 
     @Test
@@ -67,7 +68,7 @@ public class SjukfallTest {
         assertEquals(2, result.getDiagnoskapitel());
         assertEquals(2, result.getDiagnoskategori());
         assertEquals(3, result.getEnd());
-        assertEquals(2, result.getIntygCount());
+        assertEquals(2, result.getFactCount());
         assertEquals(3, result.getRealDays());
         assertEquals(2, result.getSjukskrivningsgrad());
         assertEquals(1, result.getStart());
@@ -78,6 +79,7 @@ public class SjukfallTest {
         assertTrue(lakare.contains(new HsaIdLakare("2")));
         assertEquals("02", result.getLanskod());
         assertEquals(true, result.isExtended());
+        assertEquals(2, result.getIntygCountIncludingBeforeCurrentPeriod());
     }
 
     @Test
@@ -241,11 +243,12 @@ public class SjukfallTest {
     @Test
     public void testGetRealDaysExtendingWithNewStart() throws Exception {
         //When
-        final SjukfallExtended sjukfall1 = new SjukfallExtended(createFact(2, 4));
-        final SjukfallExtended sjukfall2 = sjukfall1.extendSjukfallWithNewStart(createFact(10, 3));
+        final SjukfallExtended sjukfall1 = new SjukfallExtended(createFact(2, 4, 1L));
+        final SjukfallExtended sjukfall2 = sjukfall1.extendSjukfallWithNewStart(createFact(10, 3, 2L));
 
         //Then
         assertEquals(7, sjukfall2.getRealDays());
+        assertEquals(2, sjukfall2.getIntygCountIncludingBeforeCurrentPeriod());
     }
 
     @Test
@@ -261,12 +264,13 @@ public class SjukfallTest {
     @Test
     public void testExtendWithRealDaysWithinPeriod() throws Exception {
         //When
-        final SjukfallExtended sjukfall1 = new SjukfallExtended(createFact(2, 4));
-        final SjukfallExtended sjukfall2 = new SjukfallExtended(sjukfall1, createFact(20, 4));
-        final SjukfallExtended sjukfall3 = sjukfall2.extendWithRealDaysWithinPeriod(new SjukfallExtended(createFact(10, 2)));
+        final SjukfallExtended sjukfall1 = new SjukfallExtended(createFact(2, 4, 1L));
+        final SjukfallExtended sjukfall2 = new SjukfallExtended(sjukfall1, createFact(20, 4, 2L));
+        final SjukfallExtended sjukfall3 = sjukfall2.extendWithRealDaysWithinPeriod(new SjukfallExtended(createFact(10, 2, 3L)));
 
         //Then
         assertEquals(10, sjukfall3.getRealDays());
+        assertEquals(3, sjukfall3.getIntygCountIncludingBeforeCurrentPeriod());
     }
 
     @Test
@@ -278,6 +282,18 @@ public class SjukfallTest {
 
         //Then
         assertEquals(18, sjukfall3.getRealDays());
+    }
+
+    @Test
+    public void testExtendWithRealDaysAfterPeriod() throws Exception {
+        //When
+        final SjukfallExtended sjukfall1 = new SjukfallExtended(createFact(2, 4, 1L));
+        final SjukfallExtended sjukfall2 = new SjukfallExtended(sjukfall1, createFact(20, 4, 2L));
+        final SjukfallExtended sjukfall3 = sjukfall2.extendWithRealDaysWithinPeriod(new SjukfallExtended(createFact(30, 12, 3L)));
+
+        //Then
+        assertEquals(8, sjukfall3.getRealDays());
+        assertEquals(2, sjukfall3.getIntygCountIncludingBeforeCurrentPeriod());
     }
 
     @Test
@@ -303,6 +319,10 @@ public class SjukfallTest {
 
     private Fact createFact(int startdatum, int sjukskrivningslangd, int diagnoskapitel) {
         return FactBuilder.newFact(1L, 1,1,1,1,1,1, startdatum,startdatum + sjukskrivningslangd - 1,1,1, diagnoskapitel,1,1,1,1,1,1,new int[0], 1);
+    }
+
+    private Fact createFact(int startdatum, int sjukskrivningslangd, long intygsid) {
+        return FactBuilder.newFact(1L, 1,1,1,1,intygsid,1, startdatum,startdatum + sjukskrivningslangd - 1,1,1,1,1,1,1,1,1,1,new int[0], 1);
     }
 
     @Test

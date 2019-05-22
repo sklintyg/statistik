@@ -1,23 +1,22 @@
 ---
-Prune
 Test
 ---
 !3 Givet att:
-| script  | dagens datum  | 2018-11-06  |
+| script | dagens datum | 2018-11-06 |
 
-| script  | troskel varde  | 1  |
+| script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
-| personnr | diagnoskod  | start | slut | enhet |
-| 19890717-9191  | G01 | 2018-01-01  | 2018-02-01  | enhet1  |
-| 19790717-9191  | G01 | 2018-02-02  | 2018-04-01  | enhet1  |
-| 19690717-9191  | G01 | 2018-01-01  | 2018-02-01  | enhet2  |
+| personnr | diagnoskod | start | slut | enhet |
+| 19890717-9191 | G01 | 2018-01-01 | 2018-02-01 | enhet1 |
+| 19790717-9191 | G01 | 2018-02-02 | 2018-04-01 | enhet1 |
+| 19690717-9191 | G01 | 2018-01-01 | 2018-02-01 | enhet2 |
 
 !3 Då gäller:
 Inloggad:
 
-| Sjukfall i rapporten intyg per sjukfall som tvarsnitt  |
-| inloggad som  | antal intyg  | filter enheter | allaEnhetsfilterValda? | enhetsfilterlista? | totalt?  | män?  | kvinnor?  |
-| user1 | 1 intyg | | true | [enhet1,enhet2] | 3 | 3 | 0 |
-| user1 | 1 intyg | enhet1,enhet2,vg1-enhet-1 | true | [enhet1,enhet2] | 3 | 3 | 0 |
-| user1 | 1 intyg | enhet2 | false | [enhet2] | 1 | 1 | 0 |
+| Sjukfall i rapporten intyg per sjukfall som tvarsnitt |
+| inloggad som | antal intyg | filter enheter | allaEnhetsfilterValda? | enhetsfilterlista? | totalt? | män? | kvinnor? |
+| user2 | 1 intyg | | true | [enhet1, enhet2] | 3 | 3 | 0 |
+| user2 | 1 intyg | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 3 | 3 | 0 |
+| user2 | 1 intyg | enhet2 | false | [enhet2] | 1 | 1 | 0 |

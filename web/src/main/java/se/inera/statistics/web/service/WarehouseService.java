@@ -30,6 +30,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
+
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Enhet;
@@ -52,6 +53,7 @@ import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
 import se.inera.statistics.service.warehouse.query.CutoffUsage;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
+import se.inera.statistics.service.warehouse.query.IntygPerSjukfallQuery;
 import se.inera.statistics.service.warehouse.query.LakarbefattningQuery;
 import se.inera.statistics.service.warehouse.query.LakaresAlderOchKonQuery;
 import se.inera.statistics.service.warehouse.query.MessagesFilter;
@@ -79,6 +81,9 @@ public class WarehouseService {
 
     @Autowired
     private SjukfallQuery sjukfallQuery;
+
+    @Autowired
+    private IntygPerSjukfallQuery intygPerSjukfallQuery;
 
     @Autowired
     private IntygCommonManager intygCommonManager;
@@ -349,6 +354,16 @@ public class WarehouseService {
                 1, sjukfallUtil);
     }
 
+    public SimpleKonResponse getIntygPerSjukfallTvarsnitt(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
+        return IntygPerSjukfallQuery.getIntygPerSjukfallTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1,
+                range.getNumberOfMonths(), sjukfallUtil);
+    }
+
+    public KonDataResponse getIntygPerSjukfallTidsserie(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
+        return IntygPerSjukfallQuery.getIntygPerSjukfallTidsserie(warehouse.get(vardgivarId), filter, range.getFrom(),
+                range.getNumberOfMonths(), 1, sjukfallUtil);
+    }
+
     public SimpleKonResponse getCasesPerMonthRegion(final FilterSettings filterSettings) {
         Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
         final Range range = filterSettings.getRange();
@@ -385,6 +400,18 @@ public class WarehouseService {
                 });
         final SimpleKonResponse merged = SimpleKonResponse.merge(results, false, AvailableFilters.getForSjukfall());
         return SimpleKonResponses.addExtrasToNameDuplicates(merged);
+    }
+
+    public SimpleKonResponse getIntygPerSjukfallTvarsnittRegion(final FilterSettings filterSettings) {
+        Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
+        final Range range = filterSettings.getRange();
+        Collection<SimpleKonResponse> results = Collections2.transform(enhetsPerVgid.entrySet(),
+                entry -> {
+                    final Aisle aisle = warehouse.get(entry.getKey());
+                    return intygPerSjukfallQuery.getIntygPerSjukfallTvarsnittRegion(aisle, filterSettings.getFilter().getPredicate(),
+                            range.getFrom(), 1, range.getNumberOfMonths(), sjukfallUtil);
+                });
+        return SimpleKonResponse.merge(results, true, AvailableFilters.getForSjukfall());
     }
 
     public KonDataResponse getIntygPerTypeRegion(final FilterSettings filterSettings) {

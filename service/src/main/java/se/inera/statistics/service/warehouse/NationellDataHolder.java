@@ -45,6 +45,7 @@ class NationellDataHolder {
     private KonDataResponse sjukskrivningsgradResult;
     private SimpleKonResponse sjukfallslangdResult;
     private ArrayList<SimpleKonDataRow> lanResult = new ArrayList<>();
+    private SimpleKonResponse intygPerSjukfallResult;
 
     private SimpleKonDataRow overviewForandringCurrentResult;
     private SimpleKonDataRow overviewForandringPreviousResult;
@@ -103,6 +104,14 @@ class NationellDataHolder {
 
     ArrayList<SimpleKonDataRow> getLanResult() {
         return lanResult;
+    }
+
+    public SimpleKonResponse getIntygPerSjukfallResult() {
+        return intygPerSjukfallResult;
+    }
+
+    public void setIntygPerSjukfallResult(SimpleKonResponse intygPerSjukfallResult) {
+        this.intygPerSjukfallResult = intygPerSjukfallResult;
     }
 
     ArrayList<SimpleKonDataRow> getOverviewAntalIntygResult() {

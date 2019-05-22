@@ -44,6 +44,7 @@ describe('Nationell basic: ', function() {
         validateDetailReport('navSickLeaveLengthLink', 1, 3, 9);
         validateDetailReport('navCountyLink', 1, 3, 24);
         validateDetailReport('navCasesPerSexLink', 1, 2, 24);
+        validateDetailReport('navIntygPerSjukfallLink', 1, 3, 12);
     });
 
     function validateDetailReport(menuId, expectedNumberOfCharts, expectedNumberOfLegends, expectedRowsInTable) {

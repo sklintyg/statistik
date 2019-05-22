@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -65,11 +66,6 @@ import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAStore;
 import se.inera.statistics.service.hsa.HsaDataInjectable;
 import se.inera.statistics.service.hsa.HsaWsResponderMock;
-import se.inera.statistics.service.region.persistance.region.RegionManager;
-import se.inera.statistics.service.region.persistance.regionenhet.RegionEnhet;
-import se.inera.statistics.service.region.persistance.regionenhet.RegionEnhetManager;
-import se.inera.statistics.service.region.persistance.regionenhetupdate.RegionEnhetUpdateManager;
-import se.inera.statistics.service.region.persistance.regionenhetupdate.RegionEnhetUpdateOperation;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.IntygEvent;
 import se.inera.statistics.service.processlog.Lakare;
@@ -81,6 +77,11 @@ import se.inera.statistics.service.processlog.intygsent.ProcessIntygsentLog;
 import se.inera.statistics.service.processlog.message.MessageEvent;
 import se.inera.statistics.service.processlog.message.MessageLogConsumer;
 import se.inera.statistics.service.processlog.message.ProcessMessageLog;
+import se.inera.statistics.service.region.persistance.region.RegionManager;
+import se.inera.statistics.service.region.persistance.regionenhet.RegionEnhet;
+import se.inera.statistics.service.region.persistance.regionenhet.RegionEnhetManager;
+import se.inera.statistics.service.region.persistance.regionenhetupdate.RegionEnhetUpdateManager;
+import se.inera.statistics.service.region.persistance.regionenhetupdate.RegionEnhetUpdateOperation;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
@@ -94,7 +95,7 @@ import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 import se.inera.statistics.service.warehouse.model.db.MessageWideLine;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
-import se.inera.statistics.service.warehouse.query.SjukfallQuery;
+import se.inera.statistics.service.warehouse.query.RegionCutoff;
 import se.inera.statistics.time.ChangableClock;
 import se.inera.statistics.web.service.endpoints.ChartDataService;
 import se.inera.testsupport.fkrapport.FkReportCreator;
@@ -167,7 +168,7 @@ public class RestSupportService {
     private RegionEnhetUpdateManager regionEnhetUpdateManager;
 
     @Autowired
-    private SjukfallQuery sjukfallQuery;
+    private RegionCutoff regionCutoff;
 
     @Autowired
     private CountyPopulationManagerForTest countyPopulationManager;
@@ -223,7 +224,7 @@ public class RestSupportService {
     @Produces({ MediaType.APPLICATION_JSON })
     public Response setCutoff(int cutoff) {
         nationellData.setCutoff(cutoff);
-        sjukfallQuery.setCutoff(cutoff);
+        regionCutoff.setCutoff(cutoff);
         return Response.ok().build();
     }
 

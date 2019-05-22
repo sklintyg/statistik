@@ -359,6 +359,17 @@ public class ChartDataService {
     }
 
     @GET
+    @Path("getIntygPerSjukfallTvarsnitt")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @PrometheusTimeMethod(
+            help = "API-tjänst för åtkomst till intyg per sjukfall")
+    public Response getIntygPerSjukfallTvarsnitt(@QueryParam("format") String format) {
+        LOG.info("Calling getIntygPerSjukfallTvarsnitt for national");
+        monitoringLogService.logTrackAccessAnonymousChartData("getIntygPerSjukfallTvarsnitt");
+        return getResponse(getNationellDataResult().getIntygPerSjukfall(), format, Report.N_INTYGPERSJUKFALL);
+    }
+
+    @GET
     @Path("getAndelKompletteringar")
     @Produces({ MediaType.APPLICATION_JSON })
     @PrometheusTimeMethod(

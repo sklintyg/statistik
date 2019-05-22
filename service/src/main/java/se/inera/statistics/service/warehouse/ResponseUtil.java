@@ -96,7 +96,7 @@ public final class ResponseUtil {
         return null;
     }
 
-    static int filterCutoff(int actual, int cutoff) {
+    public static int filterCutoff(int actual, int cutoff) {
         return isApplyCutoff(actual, cutoff) ? 0 : actual;
     }
 

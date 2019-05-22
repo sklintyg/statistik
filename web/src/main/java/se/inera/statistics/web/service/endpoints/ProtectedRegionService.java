@@ -18,6 +18,9 @@
  */
 package se.inera.statistics.web.service.endpoints;
 
+import static se.inera.statistics.web.service.ReportType.TIDSSERIE;
+import static se.inera.statistics.web.service.ReportType.TVARSNITT;
+
 import java.io.ByteArrayOutputStream;
 import java.util.Collections;
 import java.util.HashMap;
@@ -25,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import javax.activation.DataSource;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -51,15 +55,15 @@ import org.springframework.stereotype.Service;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.processlog.Enhet;
+import se.inera.statistics.service.processlog.EnhetManager;
+import se.inera.statistics.service.region.NoRegionSetForVgException;
 import se.inera.statistics.service.region.RegionEnhetFileData;
 import se.inera.statistics.service.region.RegionEnhetFileDataRow;
 import se.inera.statistics.service.region.RegionEnhetHandler;
-import se.inera.statistics.service.region.NoRegionSetForVgException;
 import se.inera.statistics.service.region.persistance.regionenhet.RegionEnhet;
 import se.inera.statistics.service.region.persistance.regionenhetupdate.RegionEnhetUpdate;
 import se.inera.statistics.service.region.persistance.regionenhetupdate.RegionEnhetUpdateOperation;
-import se.inera.statistics.service.processlog.Enhet;
-import se.inera.statistics.service.processlog.EnhetManager;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.MessagesText;
@@ -77,11 +81,11 @@ import se.inera.statistics.web.service.ReportInfo;
 import se.inera.statistics.web.service.ReportType;
 import se.inera.statistics.web.service.ResponseHandler;
 import se.inera.statistics.web.service.WarehouseService;
+import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 import se.inera.statistics.web.service.region.RegionEnhetFileParseException;
 import se.inera.statistics.web.service.region.RegionFileGenerationException;
 import se.inera.statistics.web.service.region.RegionFileReader;
 import se.inera.statistics.web.service.region.RegionFileWriter;
-import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 import se.inera.statistics.web.service.responseconverter.AndelKompletteringarConverter;
 import se.inera.statistics.web.service.responseconverter.GroupedSjukfallWithRegionSortingConverter;
 import se.inera.statistics.web.service.responseconverter.MessageAmneConverter;
@@ -90,9 +94,6 @@ import se.inera.statistics.web.service.responseconverter.PeriodConverter;
 import se.inera.statistics.web.service.responseconverter.SimpleDualSexConverter;
 import se.inera.statistics.web.service.responseconverter.SimpleMultiDualSexConverter;
 import se.inera.statistics.web.service.responseconverter.SjukfallPerPatientsPerEnhetConverter;
-
-import static se.inera.statistics.web.service.ReportType.TIDSSERIE;
-import static se.inera.statistics.web.service.ReportType.TVARSNITT;
 
 /**
  * Statistics services that requires authorization to use. Unless otherwise noted, the data returned
@@ -361,6 +362,22 @@ public class ProtectedRegionService {
         final SimpleDetailsData data = new SjukfallPerPatientsPerEnhetConverter(regionEnhets, connectedEnhetIds)
                 .convert(casesPerEnhet, filterSettings, null);
         return getResponse(data, format, request, Report.L_VARDENHETLISTNINGAR, TVARSNITT, getLastRegionUpdateDate(vgIdForLoggedInUser));
+    }
+
+    @GET
+    @Path("getIntygPerSjukfallTvarsnitt")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
+    @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
+    @PrometheusTimeMethod(
+            help = "API-tjänst för skyddad åtkomst till intyg per sjukfall per region")
+    public Response getIntygPerSjukfallTvarsnitt(@Context HttpServletRequest request, @QueryParam("regionfilter") String filterHash,
+                                                 @QueryParam("format") String format) {
+        final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 12);
+        SimpleKonResponse intygPerSjukfall = warehouse.getIntygPerSjukfallTvarsnittRegion(filterSettings);
+        final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        final SimpleDetailsData data = new PeriodConverter().convert(intygPerSjukfall, filterSettings);
+        return getResponse(data, format, request, Report.L_INTYGPERSJUKFALL, TVARSNITT, getLastRegionUpdateDate(vgIdForLoggedInUser));
     }
 
     @GET

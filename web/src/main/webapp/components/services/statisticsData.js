@@ -154,6 +154,22 @@ angular.module('StatisticsApp').factory('statisticsData',
         makeRequestVerksamhet('getIntygPerTypeTvarsnitt', successCallback, failureCallback);
     };
 
+    factory.getIntygPerSjukfallTvarsnitt = function (successCallback, failureCallback) {
+        makeRequestNational('getIntygPerSjukfallTvarsnitt', successCallback, failureCallback);
+    };
+
+    factory.getIntygPerSjukfallTvarsnittVerksamhet = function (successCallback, failureCallback) {
+        makeRequestVerksamhet('getIntygPerSjukfallTvarsnitt', successCallback, failureCallback);
+    };
+
+    factory.getIntygPerSjukfallTvarsnittRegion = function (successCallback, failureCallback) {
+        makeRequestRegion('getIntygPerSjukfallTvarsnitt', successCallback, failureCallback);
+    };
+
+    factory.getIntygPerSjukfallTidsserieVerksamhet = function (successCallback, failureCallback) {
+        makeRequestVerksamhet('getIntygPerSjukfallTidsserie', successCallback, failureCallback);
+    };
+
     factory.getNumberOfCasesPerMonthVerksamhet = function (successCallback, failureCallback) {
         makeRequestVerksamhet('getNumberOfCasesPerMonth', successCallback, failureCallback);
     };
@@ -375,6 +391,7 @@ angular.module('StatisticsApp').factory('statisticsData',
             }, []);
         };
 
+        //TOO: Erik: ?
         var param = {
             'enheter': params.enheter || null,
             'sjukskrivningslangd': params.sjukskrivningslangd || null,

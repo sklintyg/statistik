@@ -107,6 +107,11 @@
                     name: 'nav.lan-andel-sjukfall-per-kon',
                     ctrl: 'NationalCasesPerSexCtrl'
                 }]
+            }, {
+                id: 'navIntygPerSjukfallLink',
+                link: '#/nationell/intygPerSjukfallTvarsnitt',
+                name: 'nav.intyg-per-sjukfall',
+                ctrl: 'NationalIntygPerSjukfallCtrl'
             }]
         };
 
@@ -231,6 +236,11 @@
                 link: '#/verksamhet/sjukfallperlakarbefattning',
                 name: 'nav.lakarbefattning',
                 ctrl: 'VerksamhetLakarbefattningCtrl'
+            }, {
+                id: 'navBusinessIntygPerSjukfallLink',
+                link: '#/verksamhet/intygPerSjukfallTvarsnitt',
+                name: 'nav.intyg-per-sjukfall',
+                ctrl: 'VerksamhetIntygPerSjukfallCtrl'
             }
             ]
         };
@@ -318,6 +328,14 @@
                     link: '#/region/sjukfallPerListningarPerEnhet',
                     name: 'nav.region.listningsjamforelse',
                     ctrl: 'RegionCasesPerPatientsPerBusinessCtrl'
+                },{
+                    checkEnable: function() {
+                        return UserModel.get().regionAvailable;
+                    },
+                    id: 'navRegionIntygPerSjukfallLink',
+                    link: '#/region/intygPerSjukfallTvarsnitt',
+                    name: 'nav.intyg-per-sjukfall',
+                    ctrl: 'RegionIntygPerSjukfallCtrl'
                 }
             ]
         };

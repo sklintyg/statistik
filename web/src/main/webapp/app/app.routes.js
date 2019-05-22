@@ -125,6 +125,12 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'NationalIntygPerTypCtrl',
                 resolve: { config: app.intygPerTypePerMonthConfig },
                 title: 'nav.intygpertyp'
+            }).when('/nationell/intygPerSjukfallTvarsnitt', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'columnChartDetailsViewCtrl',
+                controllerAs: 'NationalIntygPerSjukfallCtrl',
+                resolve: { config: app.intygPerSjukfallTvarsnittConfig },
+                title: 'nav.intyg-per-sjukfall'
             }).when('/verksamhet', {
                 redirectTo: '/verksamhet/oversikt'
             }).when('/valjVardgivare', {
@@ -326,6 +332,18 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'VerksamhetLakarbefattningCtrl',
                 resolve: { config: app.casesPerLakarbefattningTidsserieConfig },
                 title: 'nav.lakarbefattning'
+            }).when('/verksamhet/intygPerSjukfallTvarsnitt', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'columnChartDetailsViewCtrl',
+                controllerAs: 'VerksamhetIntygPerSjukfallCtrl',
+                resolve: { config: app.intygPerSjukfallTvarsnittConfig },
+                title: 'nav.intyg-per-sjukfall'
+            }).when('/verksamhet/intygPerSjukfallTidsserie', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'doubleAreaChartsCtrl',
+                controllerAs: 'VerksamhetIntygPersjukfallCtrl',
+                resolve: { config: app.intygPerSjukfallTidsserieConfig },
+                title: 'nav.intyg-per-sjukfall'
             }).when('/verksamhet/meddelanden', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'singleLineChartCtrl',
@@ -433,6 +451,12 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'RegionCasesPerPatientsPerBusinessCtrl',
                 resolve: { config: app.casesPerPatientsPerBusinessConfig },
                 title: 'nav.region.listningsjamforelse'
+            }).when('/region/intygPerSjukfallTvarsnitt', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'columnChartDetailsViewCtrl',
+                controllerAs: 'RegionIntygPerSjukfallCtrl',
+                resolve: { config: app.intygPerSjukfallTvarsnittConfig },
+                title: 'nav.intyg-per-sjukfall'
             }).when('/region/meddelandenPerAmne', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'doubleAreaChartsCtrl',
