@@ -57,6 +57,7 @@ import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
+import se.inera.statistics.web.Messages;
 import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.error.ErrorSeverity;
 import se.inera.statistics.web.error.ErrorType;
@@ -113,14 +114,19 @@ public class FilterHandler {
             LOG.debug("Could not use selected region filter. Falling back to default filter.", e);
             return new FilterSettings(getFilterForAllAvailableEnhetsRegion(request),
                     Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock),
-                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN, MessagesText.FILTER_COULD_NOT_APPLY));
+                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN, Messages.ST_F_FI_013));
         } catch (TooEarlyEndDateException e) {
             LOG.warn("End date too early. Falling back to default filter. Msg: " + e.getMessage());
             LOG.debug("End date too early. Falling back to default filter.", e);
             return new FilterSettings(getFilterForAllAvailableEnhets(request),
                     Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock),
-                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN,
-                            MessagesText.FILTER_NO_DATA));
+                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN, Messages.ST_F_FI_004));
+        } catch (TooLateStartDateException e) {
+            LOG.warn("Start date too late. Falling back to default filter. Msg: " + e.getMessage());
+            LOG.debug("Start date too late. Falling back to default filter.", e);
+            return new FilterSettings(getFilterForAllAvailableEnhets(request),
+                    Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock),
+                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN, Messages.ST_F_FI_009));
         }
     }
 
@@ -145,18 +151,24 @@ public class FilterHandler {
             LOG.debug("Could not use selected filter. Falling back to default filter.", e);
             return new FilterSettings(getFilterForAllAvailableEnhets(request),
                     Range.createForLastMonthsIncludingCurrent(defaultNumberOfMonthsInRange, clock),
-                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN, MessagesText.FILTER_COULD_NOT_APPLY));
+                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN, Messages.ST_F_FI_013));
         } catch (TooEarlyEndDateException e) {
             LOG.warn("End date too early. Falling back to default filter. Msg: " + e.getMessage());
             LOG.debug("End date too early. Falling back to default filter.", e);
             return new FilterSettings(getFilterForAllAvailableEnhets(request),
                     Range.createForLastMonthsIncludingCurrent(defaultNumberOfMonthsInRange, clock),
-                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN, MessagesText.FILTER_NO_DATA));
+                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN, Messages.ST_F_FI_004));
+        } catch (TooLateStartDateException e) {
+            LOG.warn("Start date too late. Falling back to default filter. Msg: " + e.getMessage());
+            LOG.debug("Start date too late. Falling back to default filter.", e);
+            return new FilterSettings(getFilterForAllAvailableEnhets(request),
+                    Range.createForLastMonthsIncludingCurrent(defaultNumberOfMonthsInRange, clock),
+                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN, Messages.ST_F_FI_009));
         }
     }
 
     private FilterSettings getFilterSettings(HttpServletRequest request, String filterHash, int defaultRangeValue, FilterData inFilter,
-            List<HsaIdEnhet> enhetsInFilter) throws FilterException, TooEarlyEndDateException {
+            List<HsaIdEnhet> enhetsInFilter) throws FilterException, TooEarlyEndDateException, TooLateStartDateException {
         Set<HsaIdEnhet> enheter = getEnhetNameMap(request, enhetsInFilter).keySet();
         final Predicate<Fact> enhetFilter = sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaIdEnhet[enheter.size()]))
                 .getIntygFilter();
@@ -164,7 +176,8 @@ public class FilterHandler {
     }
 
     private FilterSettings getFilterSettingsRegion(HttpServletRequest request, String filterHash, int defaultRangeValue,
-            FilterData inFilter, ArrayList<HsaIdEnhet> enhetsInFilter) throws FilterException, TooEarlyEndDateException {
+            FilterData inFilter, ArrayList<HsaIdEnhet> enhetsInFilter) throws FilterException, TooEarlyEndDateException,
+            TooLateStartDateException {
         Set<HsaIdEnhet> enheter = getEnhetNameMapRegion(request, enhetsInFilter).keySet();
         final Predicate<Fact> enhetFilter = sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaIdEnhet[enheter.size()]))
                 .getIntygFilter();
@@ -173,7 +186,7 @@ public class FilterHandler {
 
     private FilterSettings getFilterSettings(String filterHash, int defaultRangeValue, FilterData inFilter,
             Collection<HsaIdEnhet> enhetsIDs, Predicate<Fact> enhetFilter)
-            throws FilterException, TooEarlyEndDateException {
+            throws FilterException, TooEarlyEndDateException, TooLateStartDateException {
         final List<String> diagnoser = inFilter.getDiagnoser();
         final Predicate<Fact> diagnosFilter = getDiagnosFilter(diagnoser);
         final List<String> aldersgrupp = inFilter.getAldersgrupp();
@@ -241,7 +254,7 @@ public class FilterHandler {
     }
 
     private RangeMessageDTO getRange(@NotNull FilterData inFilter, int defaultRangeValue)
-            throws FilterException, TooEarlyEndDateException {
+            throws FilterException, TooEarlyEndDateException, TooLateStartDateException {
         if (inFilter.isUseDefaultPeriod()) {
             return new RangeMessageDTO(Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock), null);
         }
@@ -263,7 +276,7 @@ public class FilterHandler {
     }
 
     private RangeMessageDTO validateAndGetFilterRangeMessage(LocalDate originalFrom, LocalDate originalTo)
-            throws FilterException, TooEarlyEndDateException {
+            throws FilterException, TooEarlyEndDateException, TooLateStartDateException {
         String message = null;
         LocalDate from = originalFrom;
         LocalDate to = originalTo;
@@ -290,6 +303,8 @@ public class FilterHandler {
                 message = String.format(MessagesText.FILTER_WRONG_FROM_DATE,
                         LOWEST_ACCEPTED_START_DATE.format(formatter));
             }
+        } else if (isAfter && from.isAfter(highestAcceptedEndDate)) {
+            throw new TooLateStartDateException();
         } else if (isAfter) {
             to = highestAcceptedEndDate;
             message = String.format(MessagesText.FILTER_WRONG_END_DATE,

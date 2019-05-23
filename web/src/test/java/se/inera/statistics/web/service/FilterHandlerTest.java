@@ -47,6 +47,7 @@ import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
+import se.inera.statistics.web.Messages;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.LoginInfoVg;
 import se.inera.statistics.web.model.UserSettingsDTO;
@@ -242,6 +243,56 @@ public class FilterHandlerTest {
         final String nowMonth = LocalDate.now().toString().substring(0, 7);
         assertEquals("Det finns ingen statistik innan 2013-10 och ingen efter " + nowMonth + ", visar "
                 + "statistik mellan 2013-10 och " + nowMonth + ".", filter1.getMessage().getMessage());
+    }
+
+    @Test
+    public void testGetFilterStartAndEndDateTooEarlyIntygfv11329() {
+        // Given
+        final String fromDate = "2013-08-01";
+        final String toDate = "2013-09-01";
+
+        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+        final HsaIdVardgivare vgid = new HsaIdVardgivare("vgid");
+
+        String filterHash = "abc1";
+        final List<String> diagnoser = null;
+        final List<String> enheter = Arrays.asList("E1", "E2", "E3");
+        final List<Verksamhet> businesses = Arrays.asList(createVerksamhet("E1", vgid), createVerksamhet("E2", vgid),
+                createVerksamhet("E3", vgid));
+        final ArrayList<LoginInfoVg> loginInfoVgs = Lists.newArrayList();
+
+        setupMocks(fromDate, toDate, request, vgid, filterHash, diagnoser, enheter, null, false, businesses, null, loginInfoVgs);
+
+        // When
+        FilterSettings filter1 = filterHandler.getFilter(request, filterHash, 1);
+
+        // Then
+        assertEquals(Messages.ST_F_FI_004.getText(), filter1.getMessage().getMessage());
+    }
+
+    @Test
+    public void testGetFilterStartAndEndDateTooLateIntygfv11329() {
+        // Given
+        final String fromDate = LocalDate.now().plusMonths(1).toString();
+        final String toDate = LocalDate.now().plusMonths(2).toString();
+
+        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+        final HsaIdVardgivare vgid = new HsaIdVardgivare("vgid");
+
+        String filterHash = "abc1";
+        final List<String> diagnoser = null;
+        final List<String> enheter = Arrays.asList("E1", "E2", "E3");
+        final List<Verksamhet> businesses = Arrays.asList(createVerksamhet("E1", vgid), createVerksamhet("E2", vgid),
+                createVerksamhet("E3", vgid));
+        final ArrayList<LoginInfoVg> loginInfoVgs = Lists.newArrayList();
+
+        setupMocks(fromDate, toDate, request, vgid, filterHash, diagnoser, enheter, null, false, businesses, null, loginInfoVgs);
+
+        // When
+        FilterSettings filter1 = filterHandler.getFilter(request, filterHash, 1);
+
+        // Then
+        assertEquals(Messages.ST_F_FI_009.getText(), filter1.getMessage().getMessage());
     }
 
     private void setupMocks(String fromDate, String toDate, HttpServletRequest request, HsaIdVardgivare vgid, String filterHash,

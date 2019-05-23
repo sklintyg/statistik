@@ -18,22 +18,27 @@
  */
 package se.inera.statistics.web.error;
 
+import se.inera.statistics.web.Messages;
+
 import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Magnus Ekstrand on 2016-11-09.
  */
 public final class Message implements Serializable {
 
-    private ErrorType type = null;
-    private ErrorSeverity severity = null;
+    private ErrorType type;
+    private ErrorSeverity severity;
+    private int priority;
+    private String message;
 
-    private String message = null;
-
-    private Message(ErrorType type, ErrorSeverity severity, String message) {
+    private Message(ErrorType type, ErrorSeverity severity, String message, int prio) {
         this.type = type;
         this.severity = severity;
         this.message = message;
+        this.priority = prio;
     }
 
     /**
@@ -50,7 +55,14 @@ public final class Message implements Serializable {
         if (type == null || severity == null || text == null || text.isEmpty()) {
             return null;
         }
-        return new Message(type, severity, text);
+        return new Message(type, severity, text, Messages.ALWAYS_SHOW);
+    }
+
+    public static Message create(ErrorType type, ErrorSeverity severity, Messages message) {
+        if (type == null || severity == null || message == null) {
+            return null;
+        }
+        return new Message(type, severity, message.getText(), message.getPrio());
     }
 
     public ErrorType getType() {
@@ -63,6 +75,21 @@ public final class Message implements Serializable {
 
     public String getMessage() {
         return message;
+    }
+
+    public static List<Message> filterByPrio(List<Message> msgs) {
+        final int highestPrio = getHighestPrioInList(msgs);
+        return msgs.stream()
+                .filter(message -> message.priority == Messages.ALWAYS_SHOW || message.priority >= highestPrio)
+                .collect(Collectors.toList());
+    }
+
+    private static int getHighestPrioInList(List<Message> msgs) {
+        int highestPrio = -1;
+        for (Message msg : msgs) {
+            highestPrio = msg.priority > highestPrio ? msg.priority : highestPrio;
+        }
+        return highestPrio;
     }
 
     @Override

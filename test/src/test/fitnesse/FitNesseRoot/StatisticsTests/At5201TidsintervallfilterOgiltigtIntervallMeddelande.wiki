@@ -43,7 +43,7 @@ Vid ogiltigt tidsintervall i backendkontroll (vilket kan "undslippa" GUI-kontrol
 | user2        | enhet1    | true          | G00-G99        | enhet1,enhet2  | | 2014-09-30 | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 3 | 2 | 1 |
 | user2        | enhet1    | true          | G00-G99        | enhet1,enhet2  | 20013-10-01 | 2014-09-30 | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 3 | 2 | 1 |
 | user2        | enhet1    | true          | G00-G99        | enhet1,enhet2  | 2013-100-01 | 2014-09-30 | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 3 | 2 | 1 |
-| user2        | enhet1    | true          | G00-G99        | enhet1,enhet2  | 2015-10-01 | 2015-10-30 | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 3 | 2 | 1 |
+| user2        | enhet1    | true          | G00-G99        | enhet1,enhet2  | 2015-10-01 | 2015-10-30 | Du har valt två framtida datum. Vänligen välj ett tidigare från- och tilldatum. | 3 | 2 | 1 |
 | user2        | enhet1    | true          | G00-G99        | enhet1,enhet2  | 2014-10-01 | 2015-09-30 | Det finns ingen statistik efter 2014-12. Visar statistik fram till senast möjliga datum. | 2 | 2 | 0 |
 | user2        | enhet1    | true          | G00-G99        | enhet1,enhet2  | 20xx-10-01 | 201/-09-30 | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 3 | 2 | 1 |
-| user2        | enhet1    | true          | G00-G99        | enhet1,enhet2  | 2011-01-01 | 2012-01-01 | Det finns ingen statistik att visa för den angivna filtreringen. Överväg en mindre restriktiv filtrering. | 3 | 2 | 1 |
+| user2        | enhet1    | true          | G00-G99        | enhet1,enhet2  | 2011-01-01 | 2012-01-01 | Det finns ingen statistik innan 2013-10. Vänligen välj ett senare från- och tilldatum. | 3 | 2 | 1 |
