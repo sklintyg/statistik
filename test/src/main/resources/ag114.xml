@@ -92,7 +92,12 @@
             <delsvar id="6.1">false</delsvar>
         </svar>
         <svar id="7">
-            <delsvar id="7.1">89</delsvar>
+            <delsvar id="7.1">
+                <ns3:pq>
+                    <ns3:value>89.0</ns3:value>
+                    <ns3:unit>%</ns3:unit>
+                </ns3:pq>
+            </delsvar>
             <delsvar id="7.2">
                 <ns3:datePeriod>
                     <ns3:start>2018-12-07</ns3:start>

@@ -18,8 +18,13 @@
  */
 package se.inera.statistics.service.helper.certificate;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
 import java.time.LocalDate;
 import java.util.stream.IntStream;
+
 import javax.xml.bind.JAXBException;
 
 import org.junit.Assert;
@@ -35,14 +40,11 @@ import se.riv.clinicalprocess.healthcond.certificate.types.v3.PersonId;
 import se.riv.clinicalprocess.healthcond.certificate.v3.Intyg;
 import se.riv.clinicalprocess.healthcond.certificate.v3.Patient;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-
 public class Ag114RegisterCertificateHelperTest {
 
     private static final String xmlIntyg = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
-            "<ns2:RegisterCertificate xmlns=\"urn:riv:clinicalprocess:healthcond:certificate:3\" xmlns:ns2=\"urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:3\" xmlns:ns3=\"urn:riv:clinicalprocess:healthcond:certificate:types:3\">\n" +
+            "<ns2:RegisterCertificate xmlns=\"urn:riv:clinicalprocess:healthcond:certificate:3\" xmlns:ns2=\"urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:3\" xmlns:ns3=\"urn:riv:clinicalprocess:healthcond:certificate:types:3\">\n"
+            +
             "    <ns2:intyg>\n" +
             "        <intygs-id>\n" +
             "            <ns3:root>123456789</ns3:root>\n" +
@@ -135,7 +137,12 @@ public class Ag114RegisterCertificateHelperTest {
             "            <delsvar id=\"6.1\">false</delsvar>\n" +
             "        </svar>\n" +
             "        <svar id=\"7\">\n" +
-            "            <delsvar id=\"7.1\">89</delsvar>\n" +
+            "            <delsvar id=\"7.1\">" +
+            "                <ns3:pq>\n" +
+            "                    <ns3:value>89.0</ns3:value>\n" +
+            "                    <ns3:unit>%</ns3:unit>\n" +
+            "                </ns3:pq>\n" +
+            "            </delsvar>\n" +
             "            <delsvar id=\"7.2\">\n" +
             "                <ns3:datePeriod>\n" +
             "                    <ns3:start>2018-12-07</ns3:start>\n" +
@@ -151,7 +158,6 @@ public class Ag114RegisterCertificateHelperTest {
             "</ns2:RegisterCertificate>\n";
 
     private Ag114RegisterCertificateHelper registerCertificateHelper = new Ag114RegisterCertificateHelper();
-
 
     @Test
     public void testConvertToDTONull() {
@@ -223,17 +229,17 @@ public class Ag114RegisterCertificateHelperTest {
 
         personId.setExtension(pnr);
 
-        //When
+        // When
         return registerCertificateHelper.getPatientData(registerCertificateType);
     }
 
     @Test
     public void unmarshalRegisterCertificateXmlHandlesConcurrentCalls() {
-        IntStream.range(1,25).parallel().forEach(value -> {
+        IntStream.range(1, 25).parallel().forEach(value -> {
             try {
                 registerCertificateHelper.unmarshalXml(xmlIntyg);
             } catch (JAXBException e) {
-                //ok in this test
+                // ok in this test
             } catch (Exception e) {
                 fail("Unexpected exception: " + e.toString());
             }
