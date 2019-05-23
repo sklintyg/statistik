@@ -139,7 +139,7 @@ public class Ag114RegisterCertificateHelperTest {
             "        <svar id=\"7\">\n" +
             "            <delsvar id=\"7.1\">" +
             "                <ns3:pq>\n" +
-            "                    <ns3:value>89%</ns3:value>\n" +
+            "                    <ns3:value>89.0</ns3:value>\n" +
             "                    <ns3:unit>%</ns3:unit>\n" +
             "                </ns3:pq>\n" +
             "            </delsvar>\n" +
