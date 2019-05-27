@@ -25,9 +25,7 @@
 </head>
 <body data-ng-controller="pageCtrl">
   <stat-cookie-banner></stat-cookie-banner>
-  <div ng-if="serviceBannerMessageList" ng-repeat="serviceMessage in serviceBannerMessageList">
-    <show-message severity="serviceMessage.severity" text="serviceMessage.message" show-default-title="false"></show-message>
-  </div>
+  <service-banner banners="serviceBannerMessageList"></service-banner>
   <highlight-words></highlight-words>
 
   <div class="header-container">
@@ -143,6 +141,7 @@
   <script src="/components/directives/selectVardgivare/selectVardgivare.directive.js"></script>
   <script src="/components/directives/selectVardgivareModal/modal/modal.controller.js"></script>
   <script src="/components/directives/selectVardgivareModal/selectVardgivareModal.directive.js"></script>
+  <script src="/components/directives/serviceBanner/serviceBanner.directive.js"></script>
   <script src="/components/directives/showBusinesses/modal/modal.controller.js"></script>
   <script src="/components/directives/showBusinesses/showBusinesses.directive.js"></script>
   <script src="/components/directives/showFilterList/showFilterList.directive.js"></script>
