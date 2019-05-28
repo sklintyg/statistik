@@ -36,7 +36,7 @@ angular.module('StatisticsApp')
                 $scope.isInfo = $scope.severity === 'INFO';
                 $scope.isWarning = $scope.severity === 'WARN';
                 $scope.isDanger = $scope.severity === 'ERROR';
-                $scope.showDefaultTitle = angular.isDefined($scope.hideDefaultTitle) ? $scope.showDefaultTitle : true;
+                $scope.showDefaultTitle = angular.isDefined($scope.showDefaultTitle) ? $scope.showDefaultTitle : true;
             }
         };
     });
