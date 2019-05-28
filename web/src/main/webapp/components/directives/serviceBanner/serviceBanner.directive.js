@@ -26,7 +26,8 @@ angular.module('StatisticsApp').directive('serviceBanner', function() {
             banners: '<'
         },
         templateUrl: '/components/directives/serviceBanner/serviceBanner.directive.html',
-        controller: function($scope) {
+        controller: /** @ngInject */
+        function($scope) {
 
             function getClass(severity) {
                 switch(severity) {
@@ -39,16 +40,18 @@ angular.module('StatisticsApp').directive('serviceBanner', function() {
                 }
             }
 
-            var banners = [];
+            $scope.$watch('banners', function() {
+                var banners = [];
 
-            angular.forEach($scope.banners, function(banner) {
-                banners.push({
-                    bannerClass: getClass(banner.severity),
-                    message: banner.message
+                angular.forEach($scope.banners, function(banner) {
+                    banners.push({
+                        bannerClass: getClass(banner.severity),
+                        message: banner.message
+                    });
                 });
-            });
 
-            $scope.processedBanners = banners;
+                $scope.processedBanners = banners;
+            });
         }
     };
 });
