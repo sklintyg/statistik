@@ -210,4 +210,20 @@ class AnonymiseraXmlTest {
         //Then
         assertEquals(expected.replaceAll("\\s", ""), actual.replaceAll("\\s", ""));
     }
+
+    @Test
+    void testaAnonymiseringAvSendMessageToCare2() {
+        //Given
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19121212-1212"}] as AnonymiseraPersonId
+        AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, null, null)
+
+        String expected = FileUtils.readFileToString(new ClassPathResource("/sendmessagetocare_anonymized2.xml").getFile(), "UTF-8")
+
+        //When
+        String document = FileUtils.readFileToString(new ClassPathResource("/sendmessagetocare_not_anonymized2.xml").getFile(), "UTF-8")
+        String actual = anonymiseraXml.anonymiseraMeddelandeXml(document, "SENT")
+
+        //Then
+        assertEquals(expected.replaceAll("\\s", ""), actual.replaceAll("\\s", ""));
+    }
 }

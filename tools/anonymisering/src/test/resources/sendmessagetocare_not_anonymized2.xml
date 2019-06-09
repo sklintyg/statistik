@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p1:SendMessageToCare xmlns:p1='urn:riv:clinicalprocess:healthcond:certificate:SendMessageToCareResponder:2'>
+  <p1:meddelande-id>039c2e82-9369-4a4c-89ad-923dbba116ad</p1:meddelande-id>
+  <p1:referens-id>190423163029</p1:referens-id>
+  <p1:skickatTidpunkt>2019-01-28T20:41:00</p1:skickatTidpunkt>
+  <p1:intygs-id>
+    <p2:root xmlns:p2='urn:riv:clinicalprocess:healthcond:certificate:types:3'>1234567890</p2:root>
+    <p2:extension xmlns:p2='urn:riv:clinicalprocess:healthcond:certificate:types:3'>e19a6aea-d13f-4820-bab0-3f6d22b6cdf8</p2:extension>
+  </p1:intygs-id>
+  <p1:patientPerson-id>
+    <p2:root xmlns:p2='urn:riv:clinicalprocess:healthcond:certificate:types:3'>1.2.752.129.2.1.3.1</p2:root>
+    <p2:extension xmlns:p2='urn:riv:clinicalprocess:healthcond:certificate:types:3'>19121212-1212</p2:extension>
+  </p1:patientPerson-id>
+  <p1:logiskAdressMottagare>SE12345-6789</p1:logiskAdressMottagare>
+  <p1:amne>
+    <p2:code xmlns:p2='urn:riv:clinicalprocess:healthcond:certificate:types:3'>KOMPLT</p2:code>
+    <p2:codeSystem xmlns:p2='urn:riv:clinicalprocess:healthcond:certificate:types:3'>ffa59d8f-8d7e-46ae-ac9e-31804e8e8499
+    </p2:codeSystem>
+    <p2:displayName xmlns:p2='urn:riv:clinicalprocess:healthcond:certificate:types:3'>Komplettering</p2:displayName>
+  </p1:amne>
+  <p1:meddelande>Det vore bra om du kunde vara lite tydligare.</p1:meddelande>
+  <p1:skickatAv>
+    <p1:part>
+      <p2:code xmlns:p2='urn:riv:clinicalprocess:healthcond:certificate:types:3'>FKASSA</p2:code>
+      <p2:codeSystem xmlns:p2='urn:riv:clinicalprocess:healthcond:certificate:types:3'>769bb12b-bd9f-4203-a5cd-fd14f2eb3b80
+      </p2:codeSystem>
+      <p2:displayName xmlns:p2='urn:riv:clinicalprocess:healthcond:certificate:types:3'>Försäkringskassan</p2:displayName>
+    </p1:part>
+    <p1:kontaktInfo>Förnamn Efternamn tel: +46101234567</p1:kontaktInfo>
+  </p1:skickatAv>
+  <p1:komplettering>
+    <p1:frage-id>29</p1:frage-id>
+    <p1:text>Jag undrar lite om hur du menar. Kan du förtydliga?
+    </p1:text>
+  </p1:komplettering>
+  <p1:sistaDatumForSvar>2019-02-07</p1:sistaDatumForSvar>
+</p1:SendMessageToCare>

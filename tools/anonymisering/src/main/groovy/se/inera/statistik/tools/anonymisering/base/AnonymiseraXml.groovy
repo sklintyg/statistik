@@ -134,6 +134,8 @@ class AnonymiseraXml {
     private void anonymizeMessageXml(def message) {
         anonymizePnrNode message."patientPerson-id".extension
         anonymizeNode message.meddelande
+        anonymizeNode message.komplettering.text
+        anonymizeNode message.skickatAv.kontaktInfo
     }
 
     private void anonymizeNode(def node) {
