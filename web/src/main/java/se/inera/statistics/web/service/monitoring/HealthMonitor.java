@@ -18,26 +18,21 @@
  */
 package se.inera.statistics.web.service.monitoring;
 
-import io.prometheus.client.Collector;
-import io.prometheus.client.Gauge;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.script.DefaultRedisScript;
-import org.springframework.data.redis.core.script.RedisScript;
-import org.springframework.stereotype.Component;
-import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
-import se.inera.statistics.service.warehouse.query.CalcCoordinator;
-import se.inera.statistics.web.service.endpoints.ChartDataService;
+import java.util.Collections;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import java.sql.Time;
-import java.util.Collections;
-import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import io.prometheus.client.Collector;
+import io.prometheus.client.Gauge;
+import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
+import se.inera.statistics.service.warehouse.query.CalcCoordinator;
+import se.inera.statistics.web.service.endpoints.ChartDataService;
 
 /**
  * Exposes health metrics as Prometheus values. To simplify any 3rd party scraping applications, all metrics produced
@@ -65,11 +60,6 @@ public class HealthMonitor extends Collector {
             .help("Current uptime in seconds")
             .register();
 
-    private static final Gauge LOGGED_IN_USERS = Gauge.build()
-            .name(PREFIX + "logged_in_users" + VALUE)
-            .help("Current number of logged in users")
-            .register();
-
     private static final Gauge WORKLOAD_STATUS = Gauge.build()
             .name(PREFIX + "workload_status" + VALUE)
             .help("Current workload status")
@@ -92,10 +82,7 @@ public class HealthMonitor extends Collector {
 
     private static final long MILLIS_PER_SECOND = 1000L;
 
-    private static final String CURR_TIME_SQL = "SELECT CURRENT_TIME()";
-
-    @Value("${app.name}")
-    private String appName;
+    private static final String PING_SQL = "SELECT 1";
 
     @Autowired
     private ChartDataService chartDataService;
@@ -106,25 +93,23 @@ public class HealthMonitor extends Collector {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Autowired
-    @Qualifier("rediscache")
-    private RedisTemplate<Object, Object> redisTemplate;
+    @FunctionalInterface
+    interface Tester {
+        void run() throws Exception;
+    }
 
-    // Runs a lua script to count number of keys matching our session keys.
-    private RedisScript<Long> redisScript;
-
+    /**
+     * Registers this class as a prometheus collector.
+     */
     @PostConstruct
     public void init() {
-        redisScript = new DefaultRedisScript<>(
-                "return #redis.call('keys','spring:session:" + appName + ":index:*')", Long.class);
         this.register();
     }
 
     @Override
     public List<MetricFamilySamples> collect() {
         UPTIME.set(getUptime());
-        LOGGED_IN_USERS.set(countSessions());
-        DB_ACCESSIBLE.set(checkTimeFromDb() ? 0 : 1);
+        DB_ACCESSIBLE.set(checkDbConnection() ? 0 : 1);
         HSA_ACCESSIBLE.set(getHsaStatus() ? 0 : 1);
         CHARTSERVICE_ACCESSIBLE.set(getOverviewStatus() ? 0 : 1);
         WORKLOAD_STATUS.set(getWorkloadStatus());
@@ -136,20 +121,8 @@ public class HealthMonitor extends Collector {
         return (System.currentTimeMillis() - START_TIME) / MILLIS_PER_SECOND;
     }
 
-    private int countSessions() {
-        Long numberOfUsers = redisTemplate.execute(redisScript, Collections.emptyList());
-        return numberOfUsers.intValue();
-    }
-
-    private boolean checkTimeFromDb() {
-        Time timestamp;
-        try {
-            Query query = entityManager.createNativeQuery(CURR_TIME_SQL);
-            timestamp = (Time) query.getSingleResult();
-        } catch (Exception e) {
-            return false;
-        }
-        return timestamp != null;
+    private boolean checkDbConnection() {
+        return invoke(() -> entityManager.createNativeQuery(PING_SQL).getSingleResult());
     }
 
     private boolean getOverviewStatus() {
@@ -172,5 +145,14 @@ public class HealthMonitor extends Collector {
 
     private int getWorkloadStatus() {
         return CalcCoordinator.getWorkloadPercentage();
+    }
+
+    private boolean invoke(Tester tester) {
+        try {
+            tester.run();
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 }
