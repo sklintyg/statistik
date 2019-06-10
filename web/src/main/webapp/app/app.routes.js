@@ -494,7 +494,7 @@ var app = angular.module('StatisticsApp')
             }).when('/om/kontakt', {
                 templateUrl: '/app/views/about/contact.html',
                 controllerAs: 'AboutContactCtrl',
-                title: 'Kontakt till support'
+                title: 'Kontakt till Inera Support'
             }).when('/', {
                 redirectTo: '/nationell/oversikt'
             }).when('/nationell', {
