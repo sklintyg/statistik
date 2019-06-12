@@ -1,7 +1,6 @@
-<%@ page import="java.util.Date" %>
-<%@ page import="java.text.SimpleDateFormat" %>
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="false"
+         trimDirectiveWhitespaces="true"
+         import="java.time.LocalDateTime" %>
 <%--
   ~ Copyright (C) 2013 - 2014 Inera AB (http://www.inera.se)
   ~
@@ -55,7 +54,7 @@
     <div>Application build time: <span class="label label-info">${versionUtil.buildTime}</span></div>
     <div>Spring profiles: <span class="label label-info"><%= System.getProperty("spring.profiles.active") %></span></div>
   </div>
-  <div class="muted">Server now time: <%= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) %></div>
+  <div class="muted">Server now time: <%= LocalDateTime.now() %></div>
 </div>
 </body>
 </html>
