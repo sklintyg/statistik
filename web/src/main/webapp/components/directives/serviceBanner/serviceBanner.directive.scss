@@ -1,10 +1,27 @@
 service-banner {
   display: block;
 
+  .service-banner-container {
+    margin: 20px;
+  }
+
   .alert {
     border-radius: 0;
     width: 100%;
     max-width: 100%;
-    margin: 20px;
+  }
+
+  /* IE11 underline fix */
+  a::after {
+    text-decoration: underline;
+  }
+
+  a::after {
+    @extend .glyphicon;
+    content: '\e164';
+
+    font-size: inherit;
+    text-decoration: none;
+    margin-left: 3px;
   }
 }
