@@ -45,9 +45,9 @@ public class BannerJob {
     @PrometheusTimeMethod(help = "Jobb för att hämta banners från IA")
     public void run() {
         logMDCHelper.run(() -> {
-            LOG.info(JOB_NAME);
+            LOG.debug(JOB_NAME);
 
-            iaBannerService.loadBanners(Application.STATISTIK);
+            iaBannerService.loadBanners(Application.INTYGSSTATISTIK);
         });
     }
 }
