@@ -11,10 +11,12 @@ service-banner {
     max-width: 100%;
   }
 
+  /* autoprefixer: off */
   /* IE11 underline fix */
   a::after {
     text-decoration: underline;
   }
+  /* autoprefixer: on */
 
   a::after {
     @extend .glyphicon;
