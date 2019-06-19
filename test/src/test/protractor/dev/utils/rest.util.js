@@ -29,7 +29,7 @@ module.exports = {
         var banner = {
             message: message,
             priority: prio,
-            application: 'STATISTIK',
+            application: 'INTYGSSTATISTIK',
             createdAt: new Date().toISOString().substring(0, 19),
             displayFrom: new Date().toISOString().substring(0, 19),
             displayTo: toDate.toISOString().substring(0, 19)
