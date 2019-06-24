@@ -38,7 +38,7 @@ describe('Driftbanner', function() {
     });
 
     it('Skapa banner', function() {
-        restUtil.createBanners("message", "HIGH");
+        restUtil.createBanners("message", "HOG");
         browser.refresh();
         expect(banners.count()).toBe(1);
         expect(banners.getText()).toEqual(['message']);
