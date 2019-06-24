@@ -277,11 +277,11 @@ public class LoginServiceUtil {
 
     private ErrorSeverity mapToSeverity(BannerPriority priority) {
         switch (priority) {
-            case HIGH:
+            case HOG:
                 return ErrorSeverity.ERROR;
-            case MEDIUM:
+            case MEDEL:
                 return ErrorSeverity.WARN;
-            case LOW:
+            case LAG:
                 return ErrorSeverity.INFO;
         }
 
