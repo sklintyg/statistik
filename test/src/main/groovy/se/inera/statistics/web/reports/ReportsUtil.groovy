@@ -282,20 +282,23 @@ class ReportsUtil {
             println("GET: " + url + "?" + queryWithFilter)
             def response = restClient.get(path: url, queryString : queryWithFilter)
             return response.data;
-        } catch (Throwable e) {
-            println "e.message: " + e.message
-            if ('Service Unavailable' == e.message) {
+        } catch (HttpResponseException e) {
+            println "e.response.status: " + e.response.status
+            if (503 == e.response.status) {
                 println 'error = 503'
                 return []
-            } else if ('Access is denied' == e.message) {
+            } else if (401 == e.response.status) {
                 println 'error: Access is denied'
                 return []
-            } else if ('Forbidden' == e.message) {
+            } else if (403 == e.response.status) {
                 println 'error: Forbidden'
                 return []
             } else {
                 throw e
             }
+        } catch (Throwable e) {
+            println "e.message: " + e.message
+            throw e
         }
     }
 

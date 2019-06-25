@@ -43,6 +43,11 @@ public final class CalcCoordinator {
     }
 
     public static Ticket getTicket() {
+        if (denyAll) {
+            LOG.warn("No available executors, denyAll active");
+            throw new CalcException("No available executors, denyAll active");
+        }
+
         Ticket returnTicket = null;
         int size = 0;
         synchronized (LOCK) {
@@ -55,7 +60,7 @@ public final class CalcCoordinator {
                 }
             }
         }
-        if (returnTicket == null || denyAll) {
+        if (returnTicket == null) {
             LOG.warn("No available executors");
             throw new CalcException("No available executors");
         }
