@@ -18,91 +18,86 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
+
+import static se.inera.statistics.service.warehouse.query.OverviewQuery.PERCENT;
+
+@Component
 public final class CalcCoordinator {
     private static final Logger LOG = LoggerFactory.getLogger(CalcCoordinator.class);
-    private static final int EXECUTORS = Runtime.getRuntime().availableProcessors();
-    private static final int NO_OF_TICKETS = Runtime.getRuntime().availableProcessors() + 2;
-    private static final Object LOCK = new Object();
-    private static final long POLL_TIME = 100L;
-    private static final int MAX_WAIT = 5_000;
-    private static final Ticket[] TICKETS = new Ticket[NO_OF_TICKETS];
-    private static int queueSize;
-    static {
-        for (int i = 0; i < TICKETS.length; i++) {
-            TICKETS[i] = new Ticket();
-        }
-        LOG.info("Using " +  NO_OF_TICKETS + " tickets.");
-    }
+    private static final int POLL_TIME = 100;
 
-    private static boolean denyAll = false;
+    @Value("${calcCoordinator.maxConcurrentTasks:4}")
+    private int maxConcurrentTasks;
+    @Value("${calcCoordinator.maxWaitingTasks:4}")
+    private int maxWaitingTasks;
+    @Value("${calcCoordinator.waitTimeoutMillis:10000}")
+    private int maxWait;
 
-    private CalcCoordinator() {
-    }
+    private AtomicInteger tasks = new AtomicInteger();
+    private AtomicInteger waits = new AtomicInteger();
+    private volatile boolean denyAll;
 
-    public static Ticket getTicket() {
-        Ticket returnTicket = null;
-        int size = 0;
-        synchronized (LOCK) {
-            for (Ticket ticket : TICKETS) {
-                if (ticket.free) {
-                    ticket.free = false;
-                    returnTicket = ticket;
-                    size = queueSize;
-                    break;
-                }
-            }
+    /**
+     * Allows maxConcurrentTasks (concurrent tasks), and maxWaitingTasks (waiting tasks).
+     *
+     * @param task the task to run
+     * @param <T> return type
+     * @return the task return value
+     * @throws CalcException when no ticket is available.
+     * @throws Exception on task errors.
+     */
+    public <T> T submit(Callable<T> task) throws Exception {
+        if (denyAll) {
+            LOG.info("No available executors, denyAll active");
+            throw new CalcException("No available executors, denyAll active");
         }
-        if (returnTicket == null || denyAll) {
-            LOG.warn("No available executors");
-            throw new CalcException("No available executors");
-        }
-        int counter = 0;
-        long start = System.currentTimeMillis();
-        while (size > EXECUTORS) {
-            synchronized (LOCK) {
-                size = queueSize;
-            }
-            LOG.info("Waited for " + counter++ + " loops");
-            if (System.currentTimeMillis() - start > MAX_WAIT) {
-                returnTicket(returnTicket);
-                LOG.warn("Max wait time exceeded");
-                throw new CalcException("Max wait time exceeded");
-            }
+
+        for (int n = 0; n < maxWait;) {
             try {
-                Thread.sleep(POLL_TIME);
-            } catch (InterruptedException e) {
-                LOG.trace("Ignoring wake-up");
+                if (tasks.incrementAndGet() < maxConcurrentTasks) {
+                    return task.call();
+                }
+                n += await();
+            } finally {
+                tasks.decrementAndGet();
             }
         }
-        synchronized (LOCK) {
-            queueSize++;
-        }
-        return returnTicket;
+
+        LOG.warn("No available executors, max wait time exceeded");
+        throw new CalcException("Max wait time exceeded");
     }
 
-    public static void returnTicket(Ticket ticket) {
-        synchronized (LOCK) {
-            if (ticket != null) {
-                ticket.free = true;
-                queueSize--;
-            }
-        }
-    }
-
-    public static void setDenyAll(boolean denyAll) {
+    @Profile("testapi")
+    public void setDenyAll(boolean denyAll) {
         LOG.info("Deny all = " + denyAll);
-        CalcCoordinator.denyAll = denyAll;
+        this.denyAll = denyAll;
     }
 
-    public static int getWorkloadPercentage() {
-        final int percentageConstant = 100;
-        return percentageConstant * queueSize / NO_OF_TICKETS;
+    public int getWorkloadPercentage() {
+        return PERCENT * tasks.get() / maxConcurrentTasks;
     }
 
-    public static final class Ticket {
-        private boolean free = true;
+    private int await() {
+        try {
+            if (waits.incrementAndGet() >= maxWaitingTasks) {
+                LOG.warn("No available executors, max queue size exceeded");
+                throw new CalcException("No available executors, max queue size exceeded");
+            }
+            TimeUnit.MILLISECONDS.sleep(POLL_TIME);
+        } catch (InterruptedException e) {
+            LOG.trace("Ignoring wake-up");
+        } finally {
+            waits.decrementAndGet();
+        }
+        return POLL_TIME;
     }
 }

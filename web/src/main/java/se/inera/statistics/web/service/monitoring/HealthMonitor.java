@@ -18,18 +18,16 @@
  */
 package se.inera.statistics.web.service.monitoring;
 
+import io.prometheus.client.Collector;
+import io.prometheus.client.Gauge;
 import java.util.Collections;
 import java.util.List;
-
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import io.prometheus.client.Collector;
-import io.prometheus.client.Gauge;
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.web.service.endpoints.ChartDataService;
@@ -53,36 +51,12 @@ public class HealthMonitor extends Collector {
     private static final String NORMAL = "_normal";
     private static final String VALUE = "_value";
 
-    private static final long START_TIME = System.currentTimeMillis();
-
-    private static final Gauge UPTIME = Gauge.build()
-            .name(PREFIX + "uptime" + VALUE)
-            .help("Current uptime in seconds")
-            .register();
-
-    private static final Gauge WORKLOAD_STATUS = Gauge.build()
-            .name(PREFIX + "workload_status" + VALUE)
-            .help("Current workload status")
-            .register();
-
-    private static final Gauge DB_ACCESSIBLE = Gauge.build()
-            .name(PREFIX + "db_accessible" + NORMAL)
-            .help("0 == OK 1 == NOT OK")
-            .register();
-
-    private static final Gauge CHARTSERVICE_ACCESSIBLE = Gauge.build()
-            .name(PREFIX + "chartservice_accessible" + NORMAL)
-            .help("0 == OK 1 == NOT OK")
-            .register();
-
-    private static final Gauge HSA_ACCESSIBLE = Gauge.build()
-            .name(PREFIX + "hsa_accessible" + NORMAL)
-            .help("0 == OK 1 == NOT OK")
-            .register();
-
     private static final long MILLIS_PER_SECOND = 1000L;
 
     private static final String PING_SQL = "SELECT 1";
+
+    @Autowired
+    private CalcCoordinator calcCoordinator;
 
     @Autowired
     private ChartDataService chartDataService;
@@ -92,6 +66,10 @@ public class HealthMonitor extends Collector {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    private Gauge uptime, workloadStatus, dbAccessible, chartserviceAccessible, hsaAccessible;
+    private AtomicBoolean initialized = new AtomicBoolean();
+    private long startTime;
 
     @FunctionalInterface
     interface Tester {
@@ -103,26 +81,40 @@ public class HealthMonitor extends Collector {
      */
     @PostConstruct
     public void init() {
+        this.startTime = System.currentTimeMillis();
+        this.uptime = register("uptime", "Current uptime in seconds", VALUE);
+        this.workloadStatus = register("workload_status", "Current workload status", VALUE);
+        this.dbAccessible = register("db_accessible", "0 == OK 1 == NOT OK", NORMAL);
+        this.chartserviceAccessible = register("chartservice_accessible", "0 == OK 1 == NOT OK", NORMAL);
+        this.hsaAccessible = register("hsa_accessible", "0 == OK 1 == NOT OK", NORMAL);
         this.register();
+        this.initialized.set(true);
     }
 
     @Override
     public List<MetricFamilySamples> collect() {
-        UPTIME.set(getUptime());
-        DB_ACCESSIBLE.set(checkDbConnection() ? 0 : 1);
-        HSA_ACCESSIBLE.set(getHsaStatus() ? 0 : 1);
-        CHARTSERVICE_ACCESSIBLE.set(getOverviewStatus() ? 0 : 1);
-        WORKLOAD_STATUS.set(getWorkloadStatus());
-
+        if (initialized.get()) {
+            uptime.set(getUptime());
+            dbAccessible.set(checkDbConnection() ? 0 : 1);
+            hsaAccessible.set(getHsaStatus() ? 0 : 1);
+            chartserviceAccessible.set(getOverviewStatus() ? 0 : 1);
+            workloadStatus.set(calcCoordinator.getWorkloadPercentage());
+        }
         return Collections.emptyList();
     }
 
     private long getUptime() {
-        return (System.currentTimeMillis() - START_TIME) / MILLIS_PER_SECOND;
+        return (System.currentTimeMillis() - startTime) / MILLIS_PER_SECOND;
     }
 
     private boolean checkDbConnection() {
         return invoke(() -> entityManager.createNativeQuery(PING_SQL).getSingleResult());
+    }
+
+    private Gauge register(String name, String help, String type) {
+        return Gauge.build()
+                .name(PREFIX + name + type).help(help)
+                .register();
     }
 
     private boolean getOverviewStatus() {
@@ -141,10 +133,6 @@ public class HealthMonitor extends Collector {
         } catch (Exception e) {
             return false;
         }
-    }
-
-    private int getWorkloadStatus() {
-        return CalcCoordinator.getWorkloadPercentage();
     }
 
     private boolean invoke(Tester tester) {

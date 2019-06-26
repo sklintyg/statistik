@@ -19,7 +19,6 @@
 package se.inera.statistics.web.service;
 
 import javax.ws.rs.core.Response;
-
 import org.apache.cxf.common.util.ClassHelper;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.jaxrs.JAXRSInvoker;
@@ -27,8 +26,8 @@ import org.apache.cxf.message.Exchange;
 import org.apache.cxf.message.MessageContentsList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
-
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.service.warehouse.query.CalcException;
 import se.inera.statistics.web.service.endpoints.ProtectedChartDataService;
@@ -38,27 +37,29 @@ public class CalcCoordinatorInvoker extends JAXRSInvoker {
 
     private static final Logger LOG = LoggerFactory.getLogger(CalcCoordinatorInvoker.class);
 
+    @Autowired
+    CalcCoordinator calcCoordinator;
+
     @Override
     public Object invoke(Exchange exchange, Object requestParams, Object resourceObject) {
         Class<?> realClass = ClassHelper.getRealClass(resourceObject);
         if (realClass != ProtectedChartDataService.class && realClass != ProtectedRegionService.class) {
             return super.invoke(exchange, requestParams, resourceObject);
         }
-        CalcCoordinator.Ticket ticket = null;
         try {
-            ticket = CalcCoordinator.getTicket();
-            return super.invoke(exchange, requestParams, resourceObject);
-        } catch (CalcException c) {
-            LOG.debug("calc exception", c);
-            return new MessageContentsList(Response.status(Response.Status.SERVICE_UNAVAILABLE).build());
+            return calcCoordinator.submit(() -> super.invoke(exchange, requestParams, resourceObject));
         } catch (Fault f) {
             if (f.getCause() instanceof AccessDeniedException) {
                 throw (AccessDeniedException) f.getCause();
             }
             throw f;
-        } finally {
-            CalcCoordinator.returnTicket(ticket);
+        } catch (Exception e) {
+            if (e instanceof CalcException) {
+                LOG.debug("Unable to submit", e);
+            } else {
+                LOG.error("Unexpected error", e);
+            }
+            return new MessageContentsList(Response.status(Response.Status.SERVICE_UNAVAILABLE).build());
         }
     }
-
 }
