@@ -13,6 +13,7 @@
 
         <bean id="jacksonJsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider"/>
         <bean id="accessDeniedExceptionHandler" class="se.inera.statistics.web.handler.AccessDeniedExceptionHandler"/>
+        <bean id="calcCoordinator" class="se.inera.statistics.service.warehouse.query.CalcCoordinator"/>
 
         <jaxrs:server id="restContainer" address="/">
             <jaxrs:invoker>

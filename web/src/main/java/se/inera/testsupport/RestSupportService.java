@@ -189,6 +189,9 @@ public class RestSupportService {
     @Autowired
     private Cache cache;
 
+    @Autowired
+    private CalcCoordinator calcCoordinator;
+
     private IntygCommonSosManager intygCommonSosManager;
 
     @PostConstruct
@@ -369,7 +372,7 @@ public class RestSupportService {
     @Produces({ MediaType.APPLICATION_JSON })
     public Response denyCalc() {
         LOG.info("Deny calc");
-        CalcCoordinator.setDenyAll(true);
+        calcCoordinator.setDenyAll(true);
         return Response.ok().build();
     }
 
@@ -378,7 +381,7 @@ public class RestSupportService {
     @Produces({ MediaType.APPLICATION_JSON })
     public Response allowCalc() {
         LOG.info("Allow calc");
-        CalcCoordinator.setDenyAll(false);
+        calcCoordinator.setDenyAll(false);
         return Response.ok().build();
     }
 
