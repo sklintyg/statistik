@@ -18,25 +18,10 @@
  */
 package se.inera.statistics.web.service;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import javax.ws.rs.core.Response;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.report.util.AgeGroup;
@@ -53,6 +38,19 @@ import se.inera.statistics.web.model.FilteredDataReport;
 import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableDataReport;
+
+import javax.ws.rs.core.Response;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ResponseHandler {
 
@@ -92,7 +90,7 @@ public class ResponseHandler {
                 + "_"
                 + report.getShortName()
                 + "_"
-                + LocalDateTime.now(ZoneId.of("Europe/Stockholm")).format(DateTimeFormatter.ofPattern("yyMMdd_HHmmss"))
+                + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMdd_HHmmss"))
                 + "."
                 + fileExtension;
         return filename.replaceAll("\\s", "");

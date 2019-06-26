@@ -46,7 +46,7 @@ public final class ChangableClock extends Clock implements Serializable {
      * To be used when creating a clock instance that should be possible to change.
      */
     public static ChangableClock newChangable() {
-        return new ChangableClock(Clock.system(ZoneId.of("Europe/Stockholm")), true);
+        return new ChangableClock(Clock.system(ZoneId.systemDefault()), true);
     }
 
     /**
