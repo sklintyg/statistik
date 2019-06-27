@@ -872,7 +872,7 @@ angular.module('StatisticsApp').kompletteringarPerFragaRegionConfig =
         conf.dataFetcherRegion = 'getKompletteringarPerFragaDataRegion';
         conf.chartYAxisTitleUnit = 'kompletteringar';
         conf.exportTableUrlRegion = function () {
-            return 'api/region/getKompletteringarPerFragaTvarsnitt?format=xlsx';
+            return 'api/region/getKompletteringarPerFragaRegion?format=xlsx';
         };
         conf.title = messageService.getProperty('title.kompletteringarperfraga');
         conf.chartFootnotes = [];
