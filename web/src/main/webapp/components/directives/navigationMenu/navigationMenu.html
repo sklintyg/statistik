@@ -7,51 +7,53 @@
     </button>
   </div>
 
-  <ul class="statistics-menu-list" uib-dropdown-menu >
-    <li data-ng-repeat="menu in menus">
-      <a data-ng-click="toggleMenu(menu, $event)" id="{{::menu.id}}">
-        <span class="statistics-menu-heading" message key="{{::menu.name}}" disable-highlight-words="true"></span>
-        <i class="fa statistict-left-menu-expand-icon" data-ng-class="{collapsed: !menu.show}"></i>
-      </a>
+  <div class="menu-container" uib-dropdown-menu>
+    <ul class="statistics-menu-list" >
+      <li data-ng-repeat="menu in menus">
+        <a data-ng-click="toggleMenu(menu, $event)" id="{{::menu.id}}">
+          <span class="statistics-menu-heading" message key="{{::menu.name}}" disable-highlight-words="true"></span>
+          <i class="fa statistict-left-menu-expand-icon" data-ng-class="{collapsed: !menu.show}"></i>
+        </a>
 
-      <ul uib-collapse="!menu.show" class="navigation-group" id="{{::menu.navigationId}}">
-        <li data-ng-repeat="submenu in menu.subMenu | filter: showMenu">
-          <a
-              class="menu-disabled"
-              data-ng-if="!menuEnabled(submenu)">
-            <span message key="{{::submenu.name}}" disable-highlight-words="true"></span>
-          </a>
-          <a
-              id="{{::submenu.id}}"
-              data-ng-if="menuEnabled(submenu)"
-              data-ng-href="{{::submenu.link}}{{queryString}}"
-              ctrlname="{{::submenu.ctrl}}"
-              navigationaware>
-            <span message key="{{::submenu.name}}" disable-highlight-words="true"></span>
+        <ul uib-collapse="!menu.show" class="navigation-group" id="{{::menu.navigationId}}">
+          <li data-ng-repeat="submenu in menu.subMenu | filter: showMenu">
+            <a
+                class="menu-disabled"
+                data-ng-if="!menuEnabled(submenu)">
+              <span message key="{{::submenu.name}}" disable-highlight-words="true"></span>
+            </a>
+            <a
+                id="{{::submenu.id}}"
+                data-ng-if="menuEnabled(submenu)"
+                data-ng-href="{{::submenu.link}}{{queryString}}"
+                ctrlname="{{::submenu.ctrl}}"
+                navigationaware>
+              <span message key="{{::submenu.name}}" disable-highlight-words="true"></span>
 
-            <i data-ng-if="submenu.subMenu"
-               class="fa statistict-left-menu-expand-icon"
-               data-ng-class="{collapsed: !submenu.show}"
-               data-ng-click="toggleMenu(submenu, $event)"></i>
-          </a>
+              <i data-ng-if="submenu.subMenu"
+                 class="fa statistict-left-menu-expand-icon"
+                 data-ng-class="{collapsed: !submenu.show}"
+                 data-ng-click="toggleMenu(submenu, $event)"></i>
+            </a>
 
-          <ul
-              uib-collapse="!submenu.show"
-              data-ng-if="submenu.subMenu"
-              id="{{::submenu.subMenuId}}">
-            <li data-ng-repeat="subsubmenu in submenu.subMenu">
-              <a
-                  data-ng-href="{{::subsubmenu.link}}{{queryString}}"
-                  id="{{::subsubmenu.id}}"
-                  ctrlname="{{::subsubmenu.ctrl}}"
-                  navigationaware>
-                - <span message key="{{::subsubmenu.name}}" disable-highlight-words="true"></span>
-              </a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-  </ul>
-  <div class="intygsskolan-link"><i class="fa fa-graduation-cap"></i><br/><span dynamiclink key="st-lank-001"></span></div>
+            <ul
+                uib-collapse="!submenu.show"
+                data-ng-if="submenu.subMenu"
+                id="{{::submenu.subMenuId}}">
+              <li data-ng-repeat="subsubmenu in submenu.subMenu">
+                <a
+                    data-ng-href="{{::subsubmenu.link}}{{queryString}}"
+                    id="{{::subsubmenu.id}}"
+                    ctrlname="{{::subsubmenu.ctrl}}"
+                    navigationaware>
+                  - <span message key="{{::subsubmenu.name}}" disable-highlight-words="true"></span>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <div class="intygsskolan-link"><i class="fa fa-graduation-cap"></i><br/><span dynamiclink key="st-lank-001"></span></div>
+  </div>
 </div>
