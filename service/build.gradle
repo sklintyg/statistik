@@ -9,7 +9,7 @@ sourceSets {
 }
 
 // JPA expects classes and configuration files to be in the same directory.
-sourceSets.main.output.resourcesDir = sourceSets.main.output.classesDir
+sourceSets.main.output.resourcesDir = sourceSets.main.java.outputDir
 // B/c of the above, we create duplicates within the JAR. This configuration excludes the duplicates.
 jar.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
@@ -38,7 +38,7 @@ dependencies {
 
     compileOnly "org.apache.geronimo.specs:geronimo-jms_1.1_spec:${jmsVersion}"
     compileOnly "org.apache.activemq:activemq-client:${activeMqVersion}"
-    
+
     testCompile "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
     testCompile "org.apache.activemq:activemq-spring:${activeMqVersion}"
     testCompile "org.springframework:spring-aop:${springContextVersion}"
