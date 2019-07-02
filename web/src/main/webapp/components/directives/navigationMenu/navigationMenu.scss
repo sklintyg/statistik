@@ -23,31 +23,18 @@ navigation-menu {
     min-width: 250px;
   }
 
-  @media (min-width: $screen-sm-min) {
-    .dropdown-menu {
-      display: block;
-      padding: 0;
-      margin: 0;
-      float: none;
-      position: static;
-      top: 100%;
-      left: 0;
-      min-width: 200px;
-      z-index: 1;
-      border: 0;
-      box-shadow: none;
-      border-radius: 0;
-      width: 100%;
-    }
-  }
-
   .statistics-menu-list {
-    margin-bottom: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 0;
   }
 
   .menu-disabled {
     color: $st-color-23;
     cursor: not-allowed;
+  }
+
+  .menu-container {
+    background: $st-color-19;
   }
 
   ul {
@@ -95,6 +82,7 @@ navigation-menu {
   }
 
   .intygsskolan-link {
+    @extend %st-typo-04;
     text-align: center;
     color: $st-color-47;
 
@@ -112,15 +100,37 @@ navigation-menu {
     padding: 15px;
     border-radius: 4px;
     background: white;
-    position: fixed;
-    bottom: 0;
-    max-width: 240px;
+    max-width: 250px;
 
     .external-link {
       white-space: normal;
       display: inherit;
     }
 
+  }
+
+  @media (min-width: $screen-sm-min) {
+    .dropdown-menu {
+      display: block;
+      padding: 0;
+      margin: 0;
+      float: none;
+      position: static;
+      top: 100%;
+      left: 0;
+      min-width: 200px;
+      z-index: 1;
+      border: 0;
+      box-shadow: none;
+      border-radius: 0;
+      width: 100%;
+    }
+
+    .intygsskolan-link {
+      position: fixed;
+      bottom: 0;
+      max-width: 240px;
+    }
   }
 
 }
