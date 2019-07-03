@@ -1,8 +1,0 @@
-ENV_CFG="-Dspring.profiles.active={{ profile }}"
-JVM_CFG="-Xms1024m -Xmx{{ xmx_memory }} -Dfile.encoding=UTF-8 -XX:-UseGCOverheadLimit"
-DEBUG_CFG="-XX:-HeapDumpOnOutOfMemoryError -XX:HeapDumpPath={{ inera_tomcat_folder }}"
-CREDENTIALS_CFG="-Dstatistics.credentials.file={{ tomcat_etc }}/credentials.properties"
-LOGBACK_CFG="-Dlogback.configurationFile={{ tomcat_etc }}/statistics-logback.xml"
-STATISTIK_CFG="-Dstatistics.config.folder={{ tomcat_etc }} -Dstatistics.config.file={{ tomcat_etc }}/statistics.properties -Dstatistics.resources.folder={{ app_resources_folder }}"
-ACTIVE_MQ_CFG="-Dorg.apache.activemq.SERIALIZABLE_PACKAGES=\"*\""
-export JAVA_OPTS="$JAVA_OPTS $ENV_CFG $JVM_CFG $DEBUG_CFG $CREDENTIALS_CFG $STATISTIK_CFG $LOGBACK_CFG $ACTIVE_MQ_CFG"
