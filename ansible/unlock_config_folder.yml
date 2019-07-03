@@ -1,8 +1,0 @@
----
-# This playbook provisions the resources needed by tomcat hosts of statistik
-
-- hosts: tomcat
-  sudo: yes 
-  
-  roles:
-    - unlock-config-folder

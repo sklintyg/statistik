@@ -1,9 +1,0 @@
----
-
-config_etc_folder: "{{ config_folder }}/dev"
-profile: dev,testapi,hsa-stub,wc-hsa-stub,security-fake,qm,active,hsacached
-host_url: https://vm.statistik
-
-deploy_from_repo: false
-
-activemq_broker_url: "tcp://localhost:61616"

@@ -51,10 +51,10 @@ Applikationen kommer då att starta upp med debugPort = **5011**. Det är denna 
 debug-konfiguration i din utvecklingsmiljö.
 
 ### Bygga klienten utanför gradle
-Installera nodjs 10.12.0 tex med NVM, https://github.com/creationix/nvm
+Installera nodjs 10.15.1 tex med NVM, https://github.com/creationix/nvm
 
-    nvm install 10.12
-    nvm alias default 10.12
+    nvm install 10.15.1
+    nvm alias default 10.15.1
 
 Installera grunt och bower
 
@@ -275,46 +275,3 @@ Försöker man komma åt en verksamhet som man saknar behörighet till, så retu
 
 ### Icke existerande URL:er
 404 Not Found
-
-## Övrigt
-### Söka i json-dokument i databasen
-Det finns inbyggt stöd för json i PostgreSQL 9.3 och senare, och det har vi använt när vi behövt göra adhoc-analyser. D v s, för att analysera innehåll i json-objekt lagrade i en tabell så har vi exporterat tabellen till PostgreSQL. Det finns ett exempelskript incheckat under tools/dbscripts/postgresql .
-
-## Testa SAML / Sambi lokalt
-Om man vill testa av så applikationen startar korrekt med security-saml/security-both profil kan man göra enligt följande:
-
-- Ändra i web/build.gradle. Kommentera bort blocket jvmArgs och ersätt med följande:
-
-
-    jvmArgs = [
-                '-Dspring.profiles.active=dev,caching-enabled,testapi,embedded,hsa-stub,wc-hsa-stub,security-both,noprocessing',
-                '-DbaseUrl=' + baseUrl,
-                '-Dstatistics.test.max.intyg=200',
-                '-Dstatistics.config.file=' + projectDir + '/../devops/openshift/dev/config/statistik.properties',
-                '-Dstatistics.credentials.file=' + projectDir + '/../devops/openshift/dev/env/secret-env.properties',
-                '-Dcertificate.folder=' + projectDir + '/../devops/openshift/dev/certifikat',
-                '-Dstatistics.resources.folder=classpath:'
-        ]
-
-- Se till att kopiera certifikat för ändamålet till /devops/openshift/dev/certifikat
-- Starta lokala instanser av mysql, redis-server och activemq. Kan behöva göras i tre separata konsolfönster.
-
-    > mysqld
-    > redis-server
-    > cd $ACTIVEMQ_HOME/bin
-    > ./activemq start
-    
-- Skapa användare och databas för 'statistik' i din lokala MySQL
-
-    > mysql -u root
-    $ CREATE DATABASE statistik;
-    $ CREATE USER statistik;
-    $ GRANT ALL ON statistik.* to 'statistik'@'localhost' IDENTIFIED BY 'statistik';
-
-- Starta statistiktjänsten
-
-    > ./gradlew build appRun
-    
-Nu bootas SAML-subsystemet, SP/IdP-metadata läses från /devops/openshift/dev/config, certifikaten från /devops/openshift/dev/certifikat osv används. 
-
-Om SAMBI-metadata för Trial-miljö används så skall Sambi-inloggning mot IdPn https://trial-idp-01.sambi.se/saml2/idp/metadata.php (aka "Sambi Trial IdP") fungera även lokalt.

@@ -1,6 +1,0 @@
----
-# This playbook provisions the environment for Statistik
-
-- include: provision_mysql.yml
-- include: provision_tomcat.yml
-- include: provision_cron.yml

@@ -1,5 +1,0 @@
-[tomcat]
-statistik-test ansible_ssh_host=statistik.inera.nordicmedtest.se ansible_ssh_user=inera ansible_ssh_port=24022 ansible_ssh_private_key_file=~/.ssh/inera_rsa
-
-[mysql]
-statistik-test ansible_ssh_host=statistik.inera.nordicmedtest.se ansible_ssh_user=inera ansible_ssh_port=24022 ansible_ssh_private_key_file=~/.ssh/inera_rsa
