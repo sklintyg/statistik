@@ -3,6 +3,9 @@
   "description": "Applikation för statistik",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "postinstall": "bower install"
+  },
   "dependencies": {},
   "devDependencies": {
     "autoprefixer": "^8.4.1",
