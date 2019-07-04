@@ -51,7 +51,6 @@ uploadArchives {
             snapshotRepository(url: "https://build-inera.nordicmedtest.se/nexus/repository/snapshots") {
                 authentication(userName: nexusUsername, password: nexusPassword)
             }
-            uniqueVersion = false
         }
     }
 }

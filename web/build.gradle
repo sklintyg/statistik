@@ -1,5 +1,5 @@
 apply plugin: 'war'
-apply plugin: 'org.akhikhl.gretty'
+apply plugin: 'org.gretty'
 apply plugin: 'com.moowork.grunt'
 apply plugin: 'idea'
 
@@ -33,18 +33,8 @@ if (project.hasProperty('useMinifiedJavaScript')) {
     war.dependsOn grunt_build_no_minify
 }
 
-task bowerInstall(type: NodeTask, dependsOn:npmInstall) {
-    script = file('node_modules/bower/bin/bower')
-    args = ["--config.storage.cache=${gradle.getGradleUserHomeDir()}/caches/bower/cache",
-            "--config.storage.packages=${gradle.getGradleUserHomeDir()}/caches/bower/packages",
-            "--config.storage.registry=${gradle.getGradleUserHomeDir()}/caches/bower/registry",
-            'install']
-    inputs.files file('bower.json')
-    outputs.files file('src/main/webapp/bower_components')
-}
-
-grunt_build.dependsOn bowerInstall
-grunt_build_no_minify.dependsOn bowerInstall
+grunt_build.dependsOn npmInstall
+grunt_build_no_minify.dependsOn npmInstall
 
 war.dependsOn createVersionPropertyFile
 
@@ -65,13 +55,12 @@ gretty {
 
     servletContainer = 'jetty9'
     contextPath = '/'
+    contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
 
     if (project.hasProperty('runWithIntyg')) {
         httpPort = 9101
         baseUrl = 'http://localhost:9101'
     }
-
-    contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
 
     scanInterval = 0
     debugPort = 5011
