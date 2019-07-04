@@ -62,7 +62,7 @@ fitnesse {
 }
 
 if (project.hasProperty('runFitnesse')) {
-    apply plugin: 'org.akhikhl.gretty'
+    apply plugin: 'org.gretty'
     gretty {
         def baseUrl = 'http://localhost:8080'
 

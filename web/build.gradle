@@ -1,5 +1,5 @@
 apply plugin: 'war'
-apply plugin: 'org.akhikhl.gretty'
+apply plugin: 'org.gretty'
 apply plugin: 'com.moowork.grunt'
 apply plugin: 'idea'
 
@@ -65,13 +65,12 @@ gretty {
 
     servletContainer = 'jetty9'
     contextPath = '/'
-
+    contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
+    
     if (project.hasProperty('runWithIntyg')) {
         httpPort = 9101
         baseUrl = 'http://localhost:9101'
     }
-
-    contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
 
     scanInterval = 0
     debugPort = 5011
