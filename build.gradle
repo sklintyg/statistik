@@ -60,16 +60,25 @@ ext {
     springTestVersion = "4.2.2.RELEASE"
     jettyVersion = "9.4.12.v20180830"
 
-    nodeJsVersion = "10.15.1"
-    npmVersion = "6.4.1"
+    nodeJsVersion = "10.16.2"
+    npmVersion = "6.10.3"
 }
 
 allprojects {
     repositories {
         mavenLocal()
-        maven { url "https://build-inera.nordicmedtest.se/nexus/repository/releases/" }
-        maven { url "https://build-inera.nordicmedtest.se/nexus/repository/snapshots/" }
-        mavenCentral()
+        maven {
+            url "https://build-inera.nordicmedtest.se/nexus/repository/releases/"
+            mavenContent {
+                releasesOnly()
+            }
+        }
+        maven {
+            url "https://build-inera.nordicmedtest.se/nexus/repository/snapshots/"
+            mavenContent {
+                snapshotsOnly()
+            }
+        }
         jcenter()
     }
 
