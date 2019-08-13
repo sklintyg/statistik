@@ -10,9 +10,9 @@ ext {
     refDataVersion = System.properties['refDataVersion'] ?: '1.0-SNAPSHOT'
 
     intygSchematronVersion = "1.0.47"
-    certificateSchemaVersion = "4.0"
-    monitoringSchemaVersion = "1.0.3"
-    intygTransportstyrelsenSchemasVersion = "1.0.4"
+    certificateSchemaVersion = "4.0.3"
+    monitoringSchemaVersion = "1.0.4"
+    intygTransportstyrelsenSchemasVersion = "1.0.5"
 
     activeMqVersion = "5.13.5"
     aspectJVersion = "1.8.9"
