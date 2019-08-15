@@ -18,11 +18,28 @@
  */
 package se.inera.statistics.fileservice.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(
+    name = "HsaUnit",
+    namespace = "urn:riv:hsa:HsaWsResponder:3"
+)
 public final class HsaUnit {
+
+    @XmlElement(
+        namespace = "urn:riv:hsa:HsaWsResponder:3"
+    )
     private String hsaIdentity;
+    @XmlElement(
+        namespace = "urn:riv:hsa:HsaWsResponder:3"
+    )
     private String name;
 
-    private HsaUnit() {
+    public HsaUnit() {
     }
 
     public String getHsaIdentity() {
