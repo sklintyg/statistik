@@ -86,7 +86,7 @@ gretty {
 dependencies {
     compile project(':statistik-service')
 
-    compile "se.riv.clinicalprocess.healthcond.monitoring:clinicalprocess-healthcond-monitoring-schemas:${monitoringSchemaVersion}"
+    compile "se.riv.clinicalprocess.healthcond.monitoring:clinicalprocess-healthcond-monitoring-schemas:${internalMonitoringSchemaVersion}"
     compile "se.inera.intyg.infra:dynamiclink:${infraVersion}"
     compile "se.inera.intyg.infra:security-filter:${infraVersion}"
     compile "se.inera.intyg.infra:ia-integration:${infraVersion}"
