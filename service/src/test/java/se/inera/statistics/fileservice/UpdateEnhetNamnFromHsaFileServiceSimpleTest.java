@@ -19,7 +19,7 @@
 package se.inera.statistics.fileservice;
 
 import org.junit.Test;
-import se.inera.statistics.fileservice.model.FileGetHsaUnitsResponse;
+import se.inera.ifv.hsawsresponder.v3.ListGetHsaUnitsResponseType;
 import java.io.ByteArrayInputStream;
 
 import static org.junit.Assert.assertEquals;
@@ -69,7 +69,7 @@ public class UpdateEnhetNamnFromHsaFileServiceSimpleTest {
                 "        </hsaUnit>\n" +
                 "    </hsaUnits>\n" +
                 "</FileGetHsaUnitsResponse>\n";
-        final FileGetHsaUnitsResponse resp = UpdateEnhetNamnFromHsaFileService.unmarshalXml(new ByteArrayInputStream(in.getBytes()));
+        final ListGetHsaUnitsResponseType resp = UpdateEnhetNamnFromHsaFileService.unmarshalXml(new ByteArrayInputStream(in.getBytes()));
         assertEquals(5, resp.getHsaUnits().getHsaUnit().size());
         assertEquals("Furugården", resp.getHsaUnits().getHsaUnit().get(4).getName());
         assertEquals("SE2120001231-00F1KO", resp.getHsaUnits().getHsaUnit().get(4).getHsaIdentity());

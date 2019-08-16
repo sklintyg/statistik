@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import se.inera.statistics.service.helper.certificate.AbstractRegisterCertificateHelper;
 import se.inera.statistics.service.report.model.Kon;
 import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMessageToCareType;
 
@@ -36,7 +37,8 @@ public class SendMessageToCareHelper {
     private static final Logger LOG = LoggerFactory.getLogger(SendMessageToCareHelper.class);
 
     public SendMessageToCareType unmarshalSendMessageToCareTypeXml(String data) {
-        final StringReader reader = new StringReader(data);
+        final String dataV3 = AbstractRegisterCertificateHelper.convertToV3(data);
+        final StringReader reader = new StringReader(dataV3);
         return JAXB.unmarshal(reader, SendMessageToCareType.class);
     }
 
