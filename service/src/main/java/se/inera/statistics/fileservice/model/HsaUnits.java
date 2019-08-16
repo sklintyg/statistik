@@ -19,12 +19,24 @@
 package se.inera.statistics.fileservice.model;
 
 import java.util.ArrayList;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(
+    name = "HsaUnits",
+    namespace = "urn:riv:hsa:HsaWsResponder:3"
+)
 public class HsaUnits {
 
+    @XmlElement(
+        namespace = "urn:riv:hsa:HsaWsResponder:3"
+    )
     private ArrayList<HsaUnit> hsaUnit = new ArrayList<>();
 
-    private HsaUnits() {
+    public HsaUnits() {
     }
 
     public HsaUnits(ArrayList<HsaUnit> hsaUnit) {

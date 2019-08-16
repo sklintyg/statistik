@@ -23,8 +23,7 @@ task wsdl2Java(type: JavaExec) {
     classpath configurations.wsdlgen
     jvmArgs "-Djavax.xml.accessExternalSchema=all"
     main "org.apache.cxf.tools.wsdlto.WSDLToJava"
-    args "-xjc-XhashCode", "-xjc-Xequals", "-xjc-XtoString", "-xjc-Xinheritance",
-            "-xjc-b,${projectDir}/src/main/resources/jaxb-bindings.xjb", "-validate", "-verbose",
+    args "-xjc", "-b", "${projectDir}/src/main/resources/jaxb-bindings.xjb", "-validate", "-verbose",
             "-p", "urn:riv:hsa:HsaWs:3=se.inera.ifv.hsaws.v3",
             "-p", "urn:riv:hsa:HsaWsResponder:3=se.inera.ifv.hsawsresponder.v3",
             "-p", "http://www.w3.org/2005/08/addressing=org.w3.wsaddressing10", '-d', generatedJavaDir.path, wsdlFile

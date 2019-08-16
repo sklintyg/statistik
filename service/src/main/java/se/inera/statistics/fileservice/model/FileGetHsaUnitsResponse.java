@@ -18,9 +18,29 @@
  */
 package se.inera.statistics.fileservice.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(
+    name = "FileGetHsaUnitsResponse",
+    namespace = "urn:riv:hsa:HsaWsResponder:3"
+)
 public class FileGetHsaUnitsResponse {
+
+    @XmlElement(
+        namespace = "urn:riv:hsa:HsaWsResponder:3"
+    )
     private String startDate;
+    @XmlElement(
+        namespace = "urn:riv:hsa:HsaWsResponder:3"
+    )
     private String endDate;
+    @XmlElement(
+        namespace = "urn:riv:hsa:HsaWsResponder:3"
+    )
     private HsaUnits hsaUnits;
 
     public String getStartDate() {
