@@ -30,8 +30,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import net.javacrumbs.shedlock.core.SchedulerLock;
+import se.inera.ifv.hsawsresponder.v3.ListGetHsaUnitsResponseType;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
-import se.inera.statistics.fileservice.model.FileGetHsaUnitsResponse;
 
 public class UpdateEnhetNamnFromHsaFileService {
 
@@ -71,7 +71,7 @@ public class UpdateEnhetNamnFromHsaFileService {
 
     void doUpdateEnhetnamesFromHsaFileServiceInputstream(InputStream inputStream) {
         final long start = System.currentTimeMillis();
-        final FileGetHsaUnitsResponse resp = unmarshalXml(inputStream);
+        final ListGetHsaUnitsResponseType resp = unmarshalXml(inputStream);
 
         LOG.info("Updating enhet names");
         final Integer updateCount = resp.getHsaUnits().getHsaUnit().stream().reduce(0, (integer, hsaUnit) -> {
@@ -94,8 +94,8 @@ public class UpdateEnhetNamnFromHsaFileService {
         LOG.info(updateCount + " enheter uppdated of " + enheterCount + " enheter in " + totTime + " milliseconds");
     }
 
-    static FileGetHsaUnitsResponse unmarshalXml(InputStream inputStream) {
-        return JAXB.unmarshal(inputStream, FileGetHsaUnitsResponse.class);
+    static ListGetHsaUnitsResponseType unmarshalXml(InputStream inputStream) {
+        return JAXB.unmarshal(inputStream, ListGetHsaUnitsResponseType.class);
     }
 
     private static final Logger LOG = LoggerFactory.getLogger(UpdateEnhetNamnFromHsaFileService.class);
