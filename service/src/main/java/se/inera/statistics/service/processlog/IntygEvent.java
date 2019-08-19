@@ -29,6 +29,7 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = IntygEvent.TABLE)
 public class IntygEvent {
+
     public static final String TABLE = "intyghandelse";
 
     @Id

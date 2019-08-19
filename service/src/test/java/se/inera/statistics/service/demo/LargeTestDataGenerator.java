@@ -18,14 +18,24 @@
  */
 package se.inera.statistics.service.demo;
 
+import static se.inera.statistics.service.helper.certificate.JsonDocumentHelper.getEnhetId;
+import static se.inera.statistics.service.helper.certificate.JsonDocumentHelper.getLakarId;
+import static se.inera.statistics.service.helper.certificate.JsonDocumentHelper.getVardgivareId;
+
 import com.fasterxml.jackson.databind.JsonNode;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.certificate.JsonDocumentHelper;
-import se.inera.statistics.service.testsupport.UtlatandeBuilder;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAService;
 import se.inera.statistics.service.hsa.HsaInfo;
@@ -35,23 +45,15 @@ import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10.Avsnitt;
 import se.inera.statistics.service.report.util.Icd10.Kapitel;
 import se.inera.statistics.service.report.util.Icd10.Kategori;
+import se.inera.statistics.service.testsupport.UtlatandeBuilder;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.VgNumber;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.WidelineConverter;
 import se.inera.statistics.service.warehouse.WidelineManager;
 
-import javax.annotation.PostConstruct;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-
-import static se.inera.statistics.service.helper.certificate.JsonDocumentHelper.*;
-
 public class LargeTestDataGenerator {
+
     private static final int NUMBER_OF_UNITS = 3000;
 
     private static final int INTYG_PER_DAY = 666;
@@ -161,8 +163,8 @@ public class LargeTestDataGenerator {
     public JsonNode permutate(UtlatandeBuilder builder, String patientId, LocalDate start) {
         // CHECKSTYLE:OFF MagicNumber
         LocalDate end = random.nextFloat() < LONG_PERIOD_FRACTION ?
-                start.plusDays(random.nextInt(LONG_PERIOD_DAYS) + 7) :
-                start.plusDays(random.nextInt(SHORT_PERIOD_DAYS) + 7);
+            start.plusDays(random.nextInt(LONG_PERIOD_DAYS) + 7) :
+            start.plusDays(random.nextInt(SHORT_PERIOD_DAYS) + 7);
         // CHECKSTYLE:ON MagicNumber
 
         int vardId = random.nextInt(NUMBER_OF_UNITS);

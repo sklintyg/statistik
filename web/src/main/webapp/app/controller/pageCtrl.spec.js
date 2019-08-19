@@ -18,25 +18,26 @@
  */
 
 describe('Controller: pageCtrl', function() {
-    'use strict';
+  'use strict';
 
-    beforeEach(function() {
-        module('StatisticsApp');
-        module('StatisticsApp.treeMultiSelector');
-    });
+  beforeEach(function() {
+    module('StatisticsApp');
+    module('StatisticsApp.treeMultiSelector');
+  });
 
-    var ctrl;
+  var ctrl;
 
-    beforeEach(inject(function($rootScope, $controller, $window) {
-        var scope = $rootScope.$new();
-        ctrl = $controller('pageCtrl', {
-            $scope: scope,
-            $rootScope: $rootScope,
-            $window: $window,
-            $cookies: {},
-            statisticsData: {},
-            businessFilter: {}}
-        );
-    }));
+  beforeEach(inject(function($rootScope, $controller, $window) {
+    var scope = $rootScope.$new();
+    ctrl = $controller('pageCtrl', {
+          $scope: scope,
+          $rootScope: $rootScope,
+          $window: $window,
+          $cookies: {},
+          statisticsData: {},
+          businessFilter: {}
+        }
+    );
+  }));
 
 });

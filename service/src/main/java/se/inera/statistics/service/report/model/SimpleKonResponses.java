@@ -18,14 +18,13 @@
  */
 package se.inera.statistics.service.report.model;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 
 public final class SimpleKonResponses {
 

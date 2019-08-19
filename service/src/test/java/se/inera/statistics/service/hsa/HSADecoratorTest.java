@@ -18,8 +18,20 @@
  */
 package se.inera.statistics.service.hsa;
 
+import static junit.framework.TestCase.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import javax.persistence.EntityManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -27,19 +39,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import se.inera.statistics.service.JSONSource;
-
-import javax.persistence.EntityManager;
-import java.io.IOException;
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-
-import static junit.framework.TestCase.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HSADecoratorTest {
@@ -79,15 +78,18 @@ public class HSADecoratorTest {
         verify(hsaService, times(1)).getHSAInfo(any(HSAKey.class), any(HsaInfo.class));
         verify(hsaDecoratorSpy, times(1)).storeHSAInfo(eq("aaa"), any(HsaInfo.class));
     }
+
     private HsaInfo getFullJsonNode() {
         final HsaInfoEnhet enhet = getHsaEnhet("cachedvgid");
         final HsaInfoVg vardgivare = new HsaInfoVg("", "", LocalDateTime.now(clock), LocalDateTime.now(clock), false);
-        final HsaInfoPersonal personal = new HsaInfoPersonal("", "", "", Arrays.asList(""), Arrays.asList(""), Arrays.asList(""), false, "", "");
+        final HsaInfoPersonal personal = new HsaInfoPersonal("", "", "", Arrays.asList(""), Arrays.asList(""), Arrays.asList(""), false, "",
+            "");
         return new HsaInfo(enhet, enhet, vardgivare, personal);
     }
 
     private HsaInfoEnhet getHsaEnhet(String vgid) {
-        return new HsaInfoEnhet("", Arrays.asList(""), Arrays.asList(""), LocalDateTime.now(clock), LocalDateTime.now(clock), false, Arrays.asList(""), Arrays.asList(""), new HsaInfoEnhetGeo(new HsaInfoCoordinate("", "", ""), "", "", "", "", ""), vgid);
+        return new HsaInfoEnhet("", Arrays.asList(""), Arrays.asList(""), LocalDateTime.now(clock), LocalDateTime.now(clock), false,
+            Arrays.asList(""), Arrays.asList(""), new HsaInfoEnhetGeo(new HsaInfoCoordinate("", "", ""), "", "", "", "", ""), vgid);
     }
 
     @Test
@@ -167,7 +169,8 @@ public class HSADecoratorTest {
         //Given
         HSADecorator hsaDecoratorSpy = Mockito.spy(this.hsaDecorator);
         HsaInfo fullJsonNode = getFullJsonNode();
-        HsaInfo jsonNode = new HsaInfo(fullJsonNode.getEnhet(), fullJsonNode.getHuvudenhet(), fullJsonNode.getVardgivare(), fullJsonNode.getPersonal());
+        HsaInfo jsonNode = new HsaInfo(fullJsonNode.getEnhet(), fullJsonNode.getHuvudenhet(), fullJsonNode.getVardgivare(),
+            fullJsonNode.getPersonal());
         Mockito.doReturn(jsonNode).when(hsaDecoratorSpy).getHSAInfo(anyString());
 
         JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString());

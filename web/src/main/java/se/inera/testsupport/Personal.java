@@ -18,9 +18,8 @@
  */
 package se.inera.testsupport;
 
-import se.inera.statistics.service.hsa.HsaKon;
-
 import java.util.List;
+import se.inera.statistics.service.hsa.HsaKon;
 
 public class Personal {
 
@@ -45,7 +44,8 @@ public class Personal {
     /**
      * For json mapper.
      */
-    Personal() { }
+    Personal() {
+    }
 
     public String getId() {
         return id;

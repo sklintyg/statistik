@@ -21,6 +21,7 @@ package se.inera.testsupport;
 import se.inera.statistics.service.processlog.EventType;
 
 public class Intyg {
+
     private EventType type;
     private String data;
     private String documentId;
@@ -36,7 +37,7 @@ public class Intyg {
     // CHECKSTYLE:OFF ParameterNumberCheck
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public Intyg(EventType type, String data, String documentId, long timestamp, String county, String kommun, String huvudenhetId,
-            String enhetName, String vgId, String enhetId, String lakareId) {
+        String enhetName, String vgId, String enhetId, String lakareId) {
         this.type = type;
         this.data = data;
         this.documentId = documentId;

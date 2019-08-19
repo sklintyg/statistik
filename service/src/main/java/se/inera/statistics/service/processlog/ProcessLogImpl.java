@@ -19,9 +19,7 @@
 package se.inera.statistics.service.processlog;
 
 import java.util.List;
-
 import javax.persistence.TypedQuery;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -29,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class ProcessLogImpl extends AbstractProcessLog implements ProcessLog {
+
     private static final Logger LOG = LoggerFactory.getLogger(ProcessLogImpl.class);
 
     public ProcessLogImpl() {
@@ -39,7 +38,7 @@ public class ProcessLogImpl extends AbstractProcessLog implements ProcessLog {
     @Transactional
     public long store(EventType type, String data, String correlationId, long timestamp) {
         TypedQuery<IntygEvent> select = getManager()
-                .createQuery("SELECT e FROM IntygEvent e WHERE e.correlationId = :correlationId AND e.type = :type", IntygEvent.class);
+            .createQuery("SELECT e FROM IntygEvent e WHERE e.correlationId = :correlationId AND e.type = :type", IntygEvent.class);
         select.setParameter("correlationId", correlationId).setParameter("type", type);
         List<IntygEvent> result = select.getResultList();
         if (result.isEmpty()) {
@@ -61,7 +60,7 @@ public class ProcessLogImpl extends AbstractProcessLog implements ProcessLog {
     @Transactional
     public List<IntygEvent> getPending(int max) {
         TypedQuery<IntygEvent> allQuery = getManager().createQuery("SELECT e from IntygEvent e WHERE e.id > :lastId ORDER BY e.id ASC",
-                IntygEvent.class);
+            IntygEvent.class);
         allQuery.setParameter("lastId", getLastId());
         allQuery.setMaxResults(max);
         return allQuery.getResultList();

@@ -18,6 +18,12 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import static org.junit.Assert.assertEquals;
+
+import java.time.Clock;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import org.junit.Test;
 import se.inera.statistics.service.countypopulation.CountyPopulation;
 import se.inera.statistics.service.report.model.AvailableFilters;
@@ -26,13 +32,6 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.model.CasesPerCountyData;
-
-import java.time.Clock;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import static org.junit.Assert.*;
 
 public class CasesPerCountyConverterTest {
 

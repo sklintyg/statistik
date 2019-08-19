@@ -18,10 +18,10 @@
  */
 package se.inera.statistics.service.warehouse.model.db;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
 import java.sql.Date;
 import java.time.LocalDate;
+import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 
 @Converter(autoApply = true)
 public class LocalDateConverter implements AttributeConverter<LocalDate, Date> {

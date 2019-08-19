@@ -21,6 +21,7 @@ package se.inera.statistics.testsupport;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public final class TestData {
+
     private Object replyObject;
     private JsonNode jsonNode;
 

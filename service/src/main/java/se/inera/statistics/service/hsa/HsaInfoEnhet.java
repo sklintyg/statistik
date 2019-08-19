@@ -18,13 +18,12 @@
  */
 package se.inera.statistics.service.hsa;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Immutable value class.
@@ -59,7 +58,7 @@ public class HsaInfoEnhet {
     // CHECKSTYLE:OFF ParameterNumberCheck
     @java.lang.SuppressWarnings("squid:S00107") // Parameter number check ignored in Sonar
     public HsaInfoEnhet(String id, List<String> enhetsTyp, List<String> agarform, LocalDateTime startdatum, LocalDateTime slutdatum,
-            Boolean arkiverad, List<String> verksamhet, List<String> vardform, HsaInfoEnhetGeo geografi, String vgid) {
+        Boolean arkiverad, List<String> verksamhet, List<String> vardform, HsaInfoEnhetGeo geografi, String vgid) {
         this.id = id;
         this.enhetsTyp = enhetsTyp;
         this.agarform = agarform;
@@ -128,17 +127,17 @@ public class HsaInfoEnhet {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("enhetsTyp", enhetsTyp)
-                .add("agarform", agarform)
-                .add("startdatum", startdatum)
-                .add("slutdatum", slutdatum)
-                .add("arkiverad", arkiverad)
-                .add("verksamhet", verksamhet)
-                .add("vardform", vardform)
-                .add("geografi", geografi)
-                .add("vgid", vgid)
-                .toString();
+            .add("id", id)
+            .add("enhetsTyp", enhetsTyp)
+            .add("agarform", agarform)
+            .add("startdatum", startdatum)
+            .add("slutdatum", slutdatum)
+            .add("arkiverad", arkiverad)
+            .add("verksamhet", verksamhet)
+            .add("vardform", vardform)
+            .add("geografi", geografi)
+            .add("vgid", vgid)
+            .toString();
     }
 
 }

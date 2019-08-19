@@ -22,7 +22,6 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
-
 import se.inera.statistics.service.report.model.Range;
 
 public final class ReportUtil {

@@ -18,6 +18,10 @@
  */
 package se.inera.testsupport;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -30,17 +34,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import javax.annotation.PostConstruct;
-
 import org.apache.cxf.helpers.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Multimap;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -53,6 +51,7 @@ import se.inera.statistics.service.testsupport.UtlatandeBuilder;
 import se.inera.statistics.service.warehouse.WidelineConverter;
 
 public class TestIntygInjector {
+
     private static final int SEED = 1235;
 
     private static final Logger LOG = LoggerFactory.getLogger(TestIntygInjector.class);
@@ -66,7 +65,7 @@ public class TestIntygInjector {
     private LocalDate base;
 
     private static final List<HsaIdVardgivare> VG = Arrays.asList(new HsaIdVardgivare("vg1"), new HsaIdVardgivare("vg2"),
-            new HsaIdVardgivare("vg3"), new HsaIdVardgivare("vg4"), new HsaIdVardgivare("vg5"));
+        new HsaIdVardgivare("vg3"), new HsaIdVardgivare("vg4"), new HsaIdVardgivare("vg5"));
 
     private static final List<HsaIdLakare> LAKARE = new ArrayList<>();
 
@@ -163,7 +162,7 @@ public class TestIntygInjector {
         // CHECKSTYLE:OFF MagicNumber
         LocalDate start = base.plusMonths(random.nextInt(MONTHS)).plusDays(random.nextInt(SHORT_PERIOD_DAYS));
         LocalDate end = random.nextFloat() < LONG_PERIOD_FRACTION ? start.plusDays(random.nextInt(LONG_PERIOD_DAYS) + 7)
-                : start.plusDays(random.nextInt(SHORT_PERIOD_DAYS) + 7);
+            : start.plusDays(random.nextInt(SHORT_PERIOD_DAYS) + 7);
         // CHECKSTYLE:ON MagicNumber
 
         HsaIdVardgivare vardgivare = random(VG);

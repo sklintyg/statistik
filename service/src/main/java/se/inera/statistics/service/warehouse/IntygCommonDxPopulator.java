@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.persistence.EntityManager;
@@ -27,7 +28,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +36,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.fasterxml.jackson.databind.JsonNode;
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.helper.RegisterCertificateResolver;
 import se.inera.statistics.service.helper.certificate.JsonDocumentHelper;
@@ -76,7 +74,7 @@ public class IntygCommonDxPopulator implements ApplicationListener<ContextRefres
         final CriteriaQuery<IntygCommon> query = criteriaBuilder.createQuery(IntygCommon.class);
         final Root<IntygCommon> from = query.from(IntygCommon.class);
         final CriteriaQuery<IntygCommon> dxIsNullQuery = query.select(from)
-                .where(criteriaBuilder.isNull(from.get("dx")));
+            .where(criteriaBuilder.isNull(from.get("dx")));
         final List<IntygCommon> resultList = manager.createQuery(dxIsNullQuery).getResultList();
         LOG.info("Found " + resultList.size() + " rows in intygcommon where dx is null which will be populated");
 
@@ -84,7 +82,7 @@ public class IntygCommonDxPopulator implements ApplicationListener<ContextRefres
         final Root<IntygEvent> ier = ieq.from(IntygEvent.class);
         final ParameterExpression<String> corridParam = criteriaBuilder.parameter(String.class);
         final CriteriaQuery<IntygEvent> ieQuery = ieq.select(ier)
-                .where(criteriaBuilder.equal(ier.get("correlationId"), corridParam));
+            .where(criteriaBuilder.equal(ier.get("correlationId"), corridParam));
 
         resultList.forEach(intygCommon -> {
             LOG.info("Processing intyg" + intygCommon.getIntygid());

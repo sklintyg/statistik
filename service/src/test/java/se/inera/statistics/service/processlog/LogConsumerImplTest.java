@@ -18,7 +18,16 @@
  */
 package se.inera.statistics.service.processlog;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.fasterxml.jackson.databind.JsonNode;
+import java.util.Collections;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -29,16 +38,6 @@ import se.inera.ifv.statistics.spi.authorization.impl.HsaCommunicationException;
 import se.inera.statistics.service.JSONSource;
 import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.hsa.HsaInfo;
-
-import java.util.Collections;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LogConsumerImplTest {
@@ -90,7 +89,8 @@ public class LogConsumerImplTest {
         int count = consumer.processBatch();
         assertEquals(0, count);
         verify(processLog).getPending(100);
-        verify(processor, Mockito.never()).accept(any(IntygDTO.class), any(HsaInfo.class), Mockito.anyLong(), anyString(), any(EventType.class));
+        verify(processor, Mockito.never())
+            .accept(any(IntygDTO.class), any(HsaInfo.class), Mockito.anyLong(), anyString(), any(EventType.class));
     }
 
     @Test
@@ -98,7 +98,8 @@ public class LogConsumerImplTest {
         IntygEvent event = new IntygEvent(EventType.CREATED, "{}", "correlationId", 1);
         when(processLog.getPending(100)).thenReturn(Collections.singletonList(event));
         when(hsa.decorate(any(JsonNode.class), anyString())).thenReturn(new HsaInfo(null, null, null, null));
-        doThrow(new IllegalArgumentException("Invalid intyg")).when(processor).accept(any(IntygDTO.class), any(HsaInfo.class), Mockito.anyLong(), anyString(), any(EventType.class));
+        doThrow(new IllegalArgumentException("Invalid intyg")).when(processor)
+            .accept(any(IntygDTO.class), any(HsaInfo.class), Mockito.anyLong(), anyString(), any(EventType.class));
         int count = consumer.processBatch();
         assertEquals(1, count);
         verify(processLog).getPending(100);

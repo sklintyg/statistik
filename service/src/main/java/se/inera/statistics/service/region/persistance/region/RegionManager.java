@@ -18,19 +18,15 @@
  */
 package se.inera.statistics.service.region.persistance.region;
 
+import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.google.common.collect.Lists;
-
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 @Component
@@ -48,7 +44,7 @@ public class RegionManager {
     @Transactional
     public Optional<Region> get(long id) {
         final Region region = manager.find(Region.class, id);
-        return region == null ? Optional.<Region> empty() : Optional.of(region);
+        return region == null ? Optional.<Region>empty() : Optional.of(region);
     }
 
     @Transactional
@@ -63,9 +59,9 @@ public class RegionManager {
     @Transactional
     public Optional<Region> getForVg(HsaIdVardgivare vgId) {
         TypedQuery<Region> query = manager.createQuery("SELECT l FROM Region l where l.vardgivareId = :vgId", Region.class)
-                .setParameter("vgId", vgId.getId());
+            .setParameter("vgId", vgId.getId());
         final List<Region> resultList = query.getResultList();
-        return resultList.isEmpty() ? Optional.<Region> empty() : Optional.of(resultList.get(0));
+        return resultList.isEmpty() ? Optional.<Region>empty() : Optional.of(resultList.get(0));
     }
 
 }

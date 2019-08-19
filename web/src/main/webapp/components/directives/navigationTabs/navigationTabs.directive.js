@@ -18,138 +18,138 @@
  */
 
 (function() {
-    'use strict';
+  'use strict';
 
-    var baseTemplateUrl = '/components/directives/navigationTabs/';
+  var baseTemplateUrl = '/components/directives/navigationTabs/';
 
-    angular.module('StatisticsApp').directive('navigationTabs',
-        [function() {
+  angular.module('StatisticsApp').directive('navigationTabs',
+      [function() {
 
-            return {
-                restrict: 'E',
-                scope: {
-                    isMobile: '=',
-                    loginVisible: '=',
-                    loginClicked: '&',
-                    queryString: '='
-                },
-                templateUrl: baseTemplateUrl + 'navigationTabs.directive.html',
-                controller: Ctrl,
-                controllerAs: 'vm',
-                bindToController: true
-            };
-        }]);
-
-    /** @ngInject */
-    function Ctrl($scope, $rootScope, $location, UserModel, AppModel, ControllerCommons, navigationViewState) {
-        var vm = this;
-        vm.AppModel = AppModel;
-        vm.UserModel = UserModel;
-        vm.activeTab = 0;
-
-        var isLoggedIn = AppModel.get().isLoggedIn;
-
-        var nationellTab = {
-            id: navigationViewState.ids.nationell,
-            title: 'nav.national-header',
-            url: 'nationell/oversikt',
-            urlPrefix: 'nationell'
+        return {
+          restrict: 'E',
+          scope: {
+            isMobile: '=',
+            loginVisible: '=',
+            loginClicked: '&',
+            queryString: '='
+          },
+          templateUrl: baseTemplateUrl + 'navigationTabs.directive.html',
+          controller: Ctrl,
+          controllerAs: 'vm',
+          bindToController: true
         };
+      }]);
 
-        var verksamhetTab = {
-            id: navigationViewState.ids.verksamhet,
-            title: 'nav.business-header',
-            url: 'verksamhet/oversikt',
-            urlPrefix: 'verksamhet',
-            content: baseTemplateUrl + 'navigationTabs.verksamhet.html'
-        };
+  /** @ngInject */
+  function Ctrl($scope, $rootScope, $location, UserModel, AppModel, ControllerCommons, navigationViewState) {
+    var vm = this;
+    vm.AppModel = AppModel;
+    vm.UserModel = UserModel;
+    vm.activeTab = 0;
 
-        var regionTab = {
-            id: navigationViewState.ids.region,
-            title: 'nav.region-header',
-            url: function() {
-                return UserModel.get().regionAvailable ? 'region/sjukfallPerManad' : 'region/om';
-            },
-            urlPrefix: 'region',
-            content: baseTemplateUrl + 'navigationTabs.region.html'
-        };
+    var isLoggedIn = AppModel.get().isLoggedIn;
 
-        $scope.$watch('vm.UserModel.get().businesses', function(newValue, oldValue) {
-            if (oldValue !== newValue) {
-                isLoggedIn = AppModel.get().isLoggedIn;
-                initTabs();
-            }
-        });
+    var nationellTab = {
+      id: navigationViewState.ids.nationell,
+      title: 'nav.national-header',
+      url: 'nationell/oversikt',
+      urlPrefix: 'nationell'
+    };
 
-        $scope.$watch('vm.UserModel.get().enableVerksamhetMenu', function() {
-            initTabs();
-        });
+    var verksamhetTab = {
+      id: navigationViewState.ids.verksamhet,
+      title: 'nav.business-header',
+      url: 'verksamhet/oversikt',
+      urlPrefix: 'verksamhet',
+      content: baseTemplateUrl + 'navigationTabs.verksamhet.html'
+    };
 
-        $rootScope.$on('$routeChangeSuccess', function () {
-            setActiveTab();
-        });
+    var regionTab = {
+      id: navigationViewState.ids.region,
+      title: 'nav.region-header',
+      url: function() {
+        return UserModel.get().regionAvailable ? 'region/sjukfallPerManad' : 'region/om';
+      },
+      urlPrefix: 'region',
+      content: baseTemplateUrl + 'navigationTabs.region.html'
+    };
 
-        vm.tabActivated = function(tab) {
-            if (!ControllerCommons.isShowing($location, tab.urlPrefix) && !ControllerCommons.isShowing($location, 'om')) {
-                if (angular.isFunction(tab.url)) {
-                    $location.path(tab.url());
-                } else {
-                    $location.path(tab.url);
-                }
-            }
-
-            navigationViewState.set({
-                active: tab.id
-            });
-        };
-
-        vm.tabDeselect = function(tab) {
-            if (ControllerCommons.isShowing($location, tab.urlPrefix)) {
-                tab.url = $location.path();
-            }
-        };
-
-        function initTabs() {
-            var tabs = [];
-
-            var verksamhet = UserModel.get().enableVerksamhetMenu;
-            var region = UserModel.get().hasRegionAccess;
-
-            if (isLoggedIn && (verksamhet || region)) {
-                if (verksamhet) {
-                    tabs.push(verksamhetTab);
-                }
-
-                if (region) {
-                    tabs.push(regionTab);
-                }
-
-                tabs.push(nationellTab);
-
-                vm.tabClass = tabs.length > 2 ? 'navigation-three-tabs' : 'navigation-two-tabs';
-            }
-
-            vm.tabs = tabs;
-
-            setActiveTab();
-        }
-
-        function setActiveTab() {
-            var isVerksamhetShowing = ControllerCommons.isShowingVerksamhet($location);
-            var isRegionShowing = ControllerCommons.isShowingRegion($location);
-            var isShowingNationell = ControllerCommons.isShowingNationell($location);
-
-            if (isVerksamhetShowing) {
-                vm.activeTab = verksamhetTab.id;
-            } else if (isRegionShowing) {
-                vm.activeTab = regionTab.id;
-            } else if (isShowingNationell) {
-                vm.activeTab = nationellTab.id;
-            } else if (vm.activeTab === 0) {
-                vm.activeTab = vm.tabs.length ? vm.tabs[0].id : 0;
-            }
-        }
-
+    $scope.$watch('vm.UserModel.get().businesses', function(newValue, oldValue) {
+      if (oldValue !== newValue) {
+        isLoggedIn = AppModel.get().isLoggedIn;
         initTabs();
+      }
+    });
+
+    $scope.$watch('vm.UserModel.get().enableVerksamhetMenu', function() {
+      initTabs();
+    });
+
+    $rootScope.$on('$routeChangeSuccess', function() {
+      setActiveTab();
+    });
+
+    vm.tabActivated = function(tab) {
+      if (!ControllerCommons.isShowing($location, tab.urlPrefix) && !ControllerCommons.isShowing($location, 'om')) {
+        if (angular.isFunction(tab.url)) {
+          $location.path(tab.url());
+        } else {
+          $location.path(tab.url);
+        }
+      }
+
+      navigationViewState.set({
+        active: tab.id
+      });
+    };
+
+    vm.tabDeselect = function(tab) {
+      if (ControllerCommons.isShowing($location, tab.urlPrefix)) {
+        tab.url = $location.path();
+      }
+    };
+
+    function initTabs() {
+      var tabs = [];
+
+      var verksamhet = UserModel.get().enableVerksamhetMenu;
+      var region = UserModel.get().hasRegionAccess;
+
+      if (isLoggedIn && (verksamhet || region)) {
+        if (verksamhet) {
+          tabs.push(verksamhetTab);
+        }
+
+        if (region) {
+          tabs.push(regionTab);
+        }
+
+        tabs.push(nationellTab);
+
+        vm.tabClass = tabs.length > 2 ? 'navigation-three-tabs' : 'navigation-two-tabs';
+      }
+
+      vm.tabs = tabs;
+
+      setActiveTab();
     }
+
+    function setActiveTab() {
+      var isVerksamhetShowing = ControllerCommons.isShowingVerksamhet($location);
+      var isRegionShowing = ControllerCommons.isShowingRegion($location);
+      var isShowingNationell = ControllerCommons.isShowingNationell($location);
+
+      if (isVerksamhetShowing) {
+        vm.activeTab = verksamhetTab.id;
+      } else if (isRegionShowing) {
+        vm.activeTab = regionTab.id;
+      } else if (isShowingNationell) {
+        vm.activeTab = nationellTab.id;
+      } else if (vm.activeTab === 0) {
+        vm.activeTab = vm.tabs.length ? vm.tabs[0].id : 0;
+      }
+    }
+
+    initTabs();
+  }
 }());

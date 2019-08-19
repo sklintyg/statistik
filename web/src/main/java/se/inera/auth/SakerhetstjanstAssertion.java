@@ -18,6 +18,8 @@
  */
 package se.inera.auth;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.Attribute;
 import org.opensaml.saml2.core.AttributeStatement;
@@ -25,9 +27,6 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.schema.impl.XSAnyImpl;
 import org.opensaml.xml.schema.impl.XSStringImpl;
 import org.springframework.security.saml.SAMLCredential;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author andreaskaltenbach
@@ -53,7 +52,7 @@ public class SakerhetstjanstAssertion {
 
         if (!assertion.getAuthnStatements().isEmpty()) {
             authenticationScheme = assertion.getAuthnStatements().get(0).getAuthnContext().getAuthnContextClassRef()
-                    .getAuthnContextClassRef();
+                .getAuthnContextClassRef();
         }
     }
 
@@ -79,17 +78,17 @@ public class SakerhetstjanstAssertion {
         for (Attribute attribute : attributes) {
             switch (attribute.getName()) {
 
-            case HSA_ID_ATTRIBUTE:
-                hsaId = getValue(attribute);
-                break;
-            case HSA_ID_ATTRIBUTE_LEGACY:
-                String val = getValue(attribute);
-                if (val != null && hsaId == null) { // Only set if other not already set.
-                    hsaId = val;
-                }
-                break;
-            default:
-                // Ignore.
+                case HSA_ID_ATTRIBUTE:
+                    hsaId = getValue(attribute);
+                    break;
+                case HSA_ID_ATTRIBUTE_LEGACY:
+                    String val = getValue(attribute);
+                    if (val != null && hsaId == null) { // Only set if other not already set.
+                        hsaId = val;
+                    }
+                    break;
+                default:
+                    // Ignore.
             }
         }
     }

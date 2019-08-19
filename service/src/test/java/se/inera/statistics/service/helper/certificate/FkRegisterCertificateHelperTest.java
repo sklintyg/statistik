@@ -18,13 +18,17 @@
  */
 package se.inera.statistics.service.helper.certificate;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+import static se.inera.statistics.service.helper.certificate.FkRegisterCertificateHelper.BEHOV_AV_SJUKSKRIVNING_PERIOD_DELSVARSVAR_ID_32;
+import static se.inera.statistics.service.helper.certificate.FkRegisterCertificateHelper.BEHOV_AV_SJUKSKRIVNING_SVAR_ID_32;
+
 import java.time.LocalDate;
 import java.util.stream.IntStream;
 import javax.xml.bind.JAXBException;
-
 import org.junit.Assert;
 import org.junit.Test;
-
 import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.processlog.IntygDTO;
@@ -37,15 +41,10 @@ import se.riv.clinicalprocess.healthcond.certificate.v3.Intyg;
 import se.riv.clinicalprocess.healthcond.certificate.v3.Patient;
 import se.riv.clinicalprocess.healthcond.certificate.v3.Svar;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-import static se.inera.statistics.service.helper.certificate.FkRegisterCertificateHelper.BEHOV_AV_SJUKSKRIVNING_PERIOD_DELSVARSVAR_ID_32;
-import static se.inera.statistics.service.helper.certificate.FkRegisterCertificateHelper.BEHOV_AV_SJUKSKRIVNING_SVAR_ID_32;
-
 public class FkRegisterCertificateHelperTest {
 
-    private static final String xmlIntyg = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><p1:RegisterCertificate xmlns:ns3=\"urn:riv:insuranceprocess:healthreporting:2\"\n" +
+    private static final String xmlIntyg =
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><p1:RegisterCertificate xmlns:ns3=\"urn:riv:insuranceprocess:healthreporting:2\"\n" +
             "    xmlns:ns0=\"urn:riv:insuranceprocess:healthreporting:RegisterMedicalCertificateResponder:3\"\n" +
             "    xmlns:ns5=\"urn:riv:insuranceprocess:healthreporting:mu7263:3\"\n" +
             "    xmlns:p2=\"urn:riv:clinicalprocess:healthcond:certificate:3\"\n" +
@@ -128,10 +127,12 @@ public class FkRegisterCertificateHelperTest {
             "         </p2:delsvar>\n" +
             "      </p2:svar>\n" +
             "      <p2:svar id=\"17\">\n" +
-            "         <p2:delsvar id=\"17.1\">Kraftigt nedsatt rörlighet i överarmen pga skadan. Böj- och sträckförmågan är mycket dålig.\n" +
+            "         <p2:delsvar id=\"17.1\">Kraftigt nedsatt rörlighet i överarmen pga skadan. Böj- och sträckförmågan är mycket dålig.\n"
+            +
             "            Smärtar vid rörelse vilket ger att patienten inte kan använda armen särkilt mycket.\n" +
             "            Patienten bör/kan inte använda armen förrän skadan läkt. Skadan förvärras vid för tidigt\n" +
-            "            påtvingad belastning. Patienten kan inte lyfta armen utan den ska hållas riktad nedåt och i fast läge så mycket\n" +
+            "            påtvingad belastning. Patienten kan inte lyfta armen utan den ska hållas riktad nedåt och i fast läge så mycket\n"
+            +
             "            som möjligt under tiden för läkning.\n" +
             "         </p2:delsvar>\n" +
             "      </p2:svar>\n" +
@@ -179,7 +180,8 @@ public class FkRegisterCertificateHelperTest {
             "               <p3:codeSystem>KV_FKMU_0006</p3:codeSystem>\n" +
             "            </p3:cv>\n" +
             "         </p2:delsvar>\n" +
-            "         <p2:delsvar id=\"39.2\">Skadan har förvärrats vid varje tillfälle patienten använt armen. Måste hållas i total stillhet\n" +
+            "         <p2:delsvar id=\"39.2\">Skadan har förvärrats vid varje tillfälle patienten använt armen. Måste hållas i total stillhet\n"
+            +
             "            tills läkningsprocessen kommit en bit på väg. Eventuellt kan utredning visa att operation är nödvändig för att\n" +
             "            läka skadan.\n" +
             "         </p2:delsvar>\n" +
@@ -296,7 +298,7 @@ public class FkRegisterCertificateHelperTest {
 
     @Test
     public void unmarshalRegisterCertificateXmlHandlesConcurrentCalls() {
-        IntStream.range(1,25).parallel().forEach(value -> {
+        IntStream.range(1, 25).parallel().forEach(value -> {
             try {
                 registerCertificateHelper.unmarshalXml(xmlIntyg);
             } catch (JAXBException e) {

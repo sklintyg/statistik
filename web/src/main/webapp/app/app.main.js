@@ -20,28 +20,28 @@
 /* App Module */
 var app = angular.module('StatisticsApp',
     ['ngRoute',
-     'ngCookies',
-     'ngSanitize',
-     'ngAnimate',
-     'ui.bootstrap',
-     'underscore',
-     'StatisticsApp.constants',
-     'StatisticsApp.treeMultiSelector',
-     'StatisticsApp.businessFilter',
-     'dropzone',
-     'ngStorage',
-     'smoothScroll']);
+      'ngCookies',
+      'ngSanitize',
+      'ngAnimate',
+      'ui.bootstrap',
+      'underscore',
+      'StatisticsApp.constants',
+      'StatisticsApp.treeMultiSelector',
+      'StatisticsApp.businessFilter',
+      'dropzone',
+      'ngStorage',
+      'smoothScroll']);
 
 app.run(
     /** @ngInject */
-    function (AppService, $rootScope) {
-    'use strict';
+    function(AppService, $rootScope) {
+      'use strict';
 
-        $rootScope.isLoggedIn = false;
-        $rootScope.pdfFontLoaded = false;
+      $rootScope.isLoggedIn = false;
+      $rootScope.pdfFontLoaded = false;
 
-        AppService.get().then(function(data) {
-            $rootScope.isLoggedIn = data.loggedIn;
-        });
+      AppService.get().then(function(data) {
+        $rootScope.isLoggedIn = data.loggedIn;
+      });
     }
 );

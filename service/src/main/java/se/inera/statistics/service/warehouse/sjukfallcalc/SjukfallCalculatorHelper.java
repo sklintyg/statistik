@@ -20,11 +20,10 @@ package se.inera.statistics.service.warehouse.sjukfallcalc;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import se.inera.statistics.service.warehouse.SjukfallExtended;
-import se.inera.statistics.service.warehouse.WidelineConverter;
-
 import java.time.LocalDate;
 import java.util.Collection;
+import se.inera.statistics.service.warehouse.SjukfallExtended;
+import se.inera.statistics.service.warehouse.WidelineConverter;
 
 final class SjukfallCalculatorHelper {
 
@@ -32,7 +31,7 @@ final class SjukfallCalculatorHelper {
     }
 
     static Multimap<Long, SjukfallExtended> filterPersonifiedSjukfallsFromDate(LocalDate from,
-            Multimap<Long, SjukfallExtended> sjukfallsPerPatient) {
+        Multimap<Long, SjukfallExtended> sjukfallsPerPatient) {
         final int firstday = WidelineConverter.toDay(from);
         Multimap<Long, SjukfallExtended> result = ArrayListMultimap.create();
         for (Long patient : sjukfallsPerPatient.keySet()) {

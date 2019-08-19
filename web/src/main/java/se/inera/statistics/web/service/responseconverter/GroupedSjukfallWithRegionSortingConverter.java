@@ -20,7 +20,6 @@ package se.inera.statistics.web.service.responseconverter;
 
 import java.util.Collections;
 import java.util.List;
-
 import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -46,8 +45,8 @@ public class GroupedSjukfallWithRegionSortingConverter extends SimpleDualSexConv
     @Override
     protected ChartData convertToChartData(SimpleKonResponse casesPerMonth) {
         Collections.sort(casesPerMonth.getRows(),
-                (SimpleKonDataRow o1, SimpleKonDataRow o2) ->
-                        Math.max(o2.getMale(), o2.getFemale()) - Math.max(o1.getMale(), o1.getFemale()));
+            (SimpleKonDataRow o1, SimpleKonDataRow o2) ->
+                Math.max(o2.getMale(), o2.getFemale()) - Math.max(o1.getMale(), o1.getFemale()));
         return super.convertToChartData(casesPerMonth);
     }
 

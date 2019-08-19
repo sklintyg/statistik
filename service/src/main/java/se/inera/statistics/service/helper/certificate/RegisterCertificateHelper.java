@@ -19,9 +19,7 @@
 package se.inera.statistics.service.helper.certificate;
 
 import java.time.LocalDate;
-
 import org.springframework.stereotype.Component;
-
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 
 @Component

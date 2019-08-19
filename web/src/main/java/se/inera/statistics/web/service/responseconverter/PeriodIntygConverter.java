@@ -24,10 +24,10 @@ public class PeriodIntygConverter extends SimpleDualSexConverter {
 
     public PeriodIntygConverter() {
         super(MessagesText.REPORT_PERIOD,
-                "%1$s",
-                MessagesText.REPORT_COLUMN_ANTAL_INTYG_TOTALT,
-                MessagesText.REPORT_COLUMN_ANTAL_INTYG_FEMALE,
-                MessagesText.REPORT_COLUMN_ANTAL_INTYG_MALE);
+            "%1$s",
+            MessagesText.REPORT_COLUMN_ANTAL_INTYG_TOTALT,
+            MessagesText.REPORT_COLUMN_ANTAL_INTYG_FEMALE,
+            MessagesText.REPORT_COLUMN_ANTAL_INTYG_MALE);
     }
 
 }

@@ -20,13 +20,13 @@
 'use strict';
 
 var RegionUploadAgreementPage = function() {
-    this.container = element(by.id('region-upload-agreement-page'));
-    this.agreementCheckbox = element(by.id('agreementAcceptedChecked'));
-    this.agreementButton = element(by.id('agreementButton'));
+  this.container = element(by.id('region-upload-agreement-page'));
+  this.agreementCheckbox = element(by.id('agreementAcceptedChecked'));
+  this.agreementButton = element(by.id('agreementButton'));
 
-    this.isAtPage = function() {
-        expect(this.container.isDisplayed()).toBeTruthy();
-    };
+  this.isAtPage = function() {
+    expect(this.container.isDisplayed()).toBeTruthy();
+  };
 };
 
 module.exports = new RegionUploadAgreementPage();

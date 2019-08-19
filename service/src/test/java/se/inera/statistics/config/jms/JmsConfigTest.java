@@ -24,4 +24,5 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource("classpath:jms-test.properties")
 public class JmsConfigTest {
+
 }

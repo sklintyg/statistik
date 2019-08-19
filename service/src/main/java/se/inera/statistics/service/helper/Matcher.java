@@ -18,22 +18,25 @@
  */
 package se.inera.statistics.service.helper;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 public interface Matcher {
 
     boolean match(JsonNode node);
+
     Matcher add(Matcher matcher);
 
     final class Builder {
+
         private Builder() {
         }
+
         public static Matcher matcher(String name, String value) {
             return new ValueMatcher(name, value);
         }
+
         public static Matcher matcher(String name) {
             return new NodeMatcher(name);
         }
@@ -55,7 +58,7 @@ public interface Matcher {
         }
 
         private boolean subFind(JsonNode node) {
-            for (Matcher matcher: matchers) {
+            for (Matcher matcher : matchers) {
                 if (!matcher.match(node)) {
                     return false;
                 }

@@ -19,7 +19,6 @@
 package se.inera.statistics.web.service;
 
 import java.util.Collection;
-
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
@@ -37,7 +36,7 @@ public class Filter {
 
     //CHECKSTYLE:OFF ParameterNumber
     Filter(FilterPredicates predicate, Collection<HsaIdEnhet> enheter, Collection<String> diagnoser, Collection<String> sjukskrivningslangd,
-            Collection<String> aldersgrupp, String hashValue, Collection<String> intygstyper, boolean useDefaultPeriod) {
+        Collection<String> aldersgrupp, String hashValue, Collection<String> intygstyper, boolean useDefaultPeriod) {
         this.predicate = predicate;
         this.enheter = enheter;
         this.diagnoser = diagnoser;

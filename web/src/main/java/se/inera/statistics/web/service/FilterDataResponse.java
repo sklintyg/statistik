@@ -18,14 +18,12 @@
  */
 package se.inera.statistics.web.service;
 
+import com.google.common.collect.Lists;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import com.google.common.collect.Lists;
-
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 
 public class FilterDataResponse implements Serializable {
@@ -43,8 +41,8 @@ public class FilterDataResponse implements Serializable {
     }
 
     FilterDataResponse(String filterhash, Collection<String> diagnoser, Collection<HsaIdEnhet> enheter,
-            Collection<String> sjukskrivningslangd, Collection<String> aldersgrupp, Collection<String> intygstyper,
-                       boolean useDefaultPeriod) {
+        Collection<String> sjukskrivningslangd, Collection<String> aldersgrupp, Collection<String> intygstyper,
+        boolean useDefaultPeriod) {
         this.filterhash = filterhash;
         this.diagnoser = diagnoser == null ? null : Collections.unmodifiableList(new ArrayList<>(diagnoser));
         this.sjukskrivningslangd = sjukskrivningslangd == null ? null : Collections.unmodifiableList(new ArrayList<>(sjukskrivningslangd));
@@ -56,7 +54,7 @@ public class FilterDataResponse implements Serializable {
 
     public FilterDataResponse(Filter filter) {
         this(filter.getFilterHash(), filter.getDiagnoser(), filter.getEnheter(), filter.getSjukskrivningslangd(),
-                filter.getAldersgrupp(), filter.getIntygstyper(), filter.isUseDefaultPeriod());
+            filter.getAldersgrupp(), filter.getIntygstyper(), filter.isUseDefaultPeriod());
     }
 
     public static FilterDataResponse empty() {

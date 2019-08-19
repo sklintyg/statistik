@@ -22,10 +22,8 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import se.inera.statistics.service.report.common.ReportColor;
 
 public enum NumberOfIntygGroup {
@@ -88,7 +86,7 @@ public enum NumberOfIntygGroup {
 
     public static Map<String, String> getColors() {
         return Arrays.stream(values()).collect(Collectors.toMap(NumberOfIntygGroup::getGroupName,
-                NumberOfIntygGroup::getColor));
+            NumberOfIntygGroup::getColor));
     }
 
 }

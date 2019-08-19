@@ -5,5 +5,4 @@ var texter = require('fs').readFileSync(file, 'utf8');
 
 var res = eval(texter + ';exports.text = stMessages;');
 
-
 module.exports = res.text.sv;

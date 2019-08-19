@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
@@ -242,17 +241,17 @@ class NationellDataHolder {
         final List<Icd> previousIcdTyps = overviewDiagnosgrupperPreviousResult.getIcdTyps();
         final List<Icd> icdTyps = currentIcdTyps.size() < previousIcdTyps.size() ? previousIcdTyps : currentIcdTyps;
         return new DiagnosgruppResponse(AvailableFilters.getForNationell(), icdTyps,
-                Arrays.asList(overviewDiagnosgrupperPreviousResult.getRows().get(0),
-                        overviewDiagnosgrupperCurrentResult.getRows().get(0)));
+            Arrays.asList(overviewDiagnosgrupperPreviousResult.getRows().get(0),
+                overviewDiagnosgrupperCurrentResult.getRows().get(0)));
     }
 
     SimpleKonResponse getOverviewForandringResult() {
         final SimpleKonDataRow prev = overviewForandringPreviousResult != null
-                ? overviewForandringPreviousResult
-                : new SimpleKonDataRow("", -1, -1);
+            ? overviewForandringPreviousResult
+            : new SimpleKonDataRow("", -1, -1);
         final SimpleKonDataRow curr = overviewForandringCurrentResult != null
-                ? overviewForandringCurrentResult
-                : new SimpleKonDataRow("", -1, -1);
+            ? overviewForandringCurrentResult
+            : new SimpleKonDataRow("", -1, -1);
         return new SimpleKonResponse(AvailableFilters.getForNationell(), Arrays.asList(prev, curr));
     }
 

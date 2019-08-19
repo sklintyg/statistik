@@ -19,16 +19,16 @@
 
 angular.module('StatisticsApp').controller('IntygsskolanModalCtrl',
     function($scope, $uibModalInstance, AppModel) {
-        'use strict';
+      'use strict';
 
-        $scope.projectVersion = AppModel.get().projectVersion;
+      $scope.projectVersion = AppModel.get().projectVersion;
 
-        $scope.cancel = function() {
-            $uibModalInstance.dismiss();
-        };
+      $scope.cancel = function() {
+        $uibModalInstance.dismiss();
+      };
 
-        $scope.selectVardgivare = function(vgId) {
-            $uibModalInstance.close(vgId);
-        };
+      $scope.selectVardgivare = function(vgId) {
+        $uibModalInstance.close(vgId);
+      };
     }
 );

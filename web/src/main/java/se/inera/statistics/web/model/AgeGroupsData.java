@@ -24,7 +24,7 @@ import se.inera.statistics.web.service.FilterDataResponse;
 public class AgeGroupsData extends SimpleDetailsData {
 
     public AgeGroupsData(TableData tableData, ChartData chartData, String period, AvailableFilters availableFilters,
-                         FilterDataResponse filter) {
+        FilterDataResponse filter) {
         super(tableData, chartData, period, availableFilters, filter);
     }
 

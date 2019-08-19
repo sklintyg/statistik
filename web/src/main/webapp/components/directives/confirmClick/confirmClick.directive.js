@@ -19,19 +19,19 @@
 
 angular.module('StatisticsApp').directive('confirmClick',
     /** @ngInject */
-    function($window){
-        'use strict';
+    function($window) {
+      'use strict';
 
-        return {
-            link: function (scope, element, attr) {
-                var msg = attr.confirmMessage || 'Är du säker?';
-                var clickAction = attr.confirmedClickAction;
-                element.bind('click',function () {
-                    if ($window.confirm(msg) ) {
-                        scope.$eval(clickAction);
-                    }
-                });
+      return {
+        link: function(scope, element, attr) {
+          var msg = attr.confirmMessage || 'Är du säker?';
+          var clickAction = attr.confirmedClickAction;
+          element.bind('click', function() {
+            if ($window.confirm(msg)) {
+              scope.$eval(clickAction);
             }
-        };
+          });
+        }
+      };
     }
 );

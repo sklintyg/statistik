@@ -26,7 +26,7 @@ public class CasesPerCountyData extends SimpleDetailsData {
     private String sourceDate;
 
     public CasesPerCountyData(TableData tableData, ChartData chartData, String period, AvailableFilters availableFilters,
-                              FilterDataResponse filter, String sourceDate) {
+        FilterDataResponse filter, String sourceDate) {
         super(tableData, chartData, period, availableFilters, filter);
         this.sourceDate = sourceDate;
     }

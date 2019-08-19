@@ -18,12 +18,14 @@
  */
 package se.inera.statistics.web.model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.junit.Test;
-
 import se.inera.auth.model.User;
 import se.inera.auth.model.UserAccessLevel;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
@@ -31,18 +33,17 @@ import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.region.RegionsVardgivareStatus;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 public class LoginInfoTest {
 
     @Test
     public void testGetLoginInfoForVg() {
         // Given
-        final LoginInfoVg vg1 = new LoginInfoVg(new HsaIdVardgivare("vgid1"), "vg1", RegionsVardgivareStatus.REGIONSVARDGIVARE_WITHOUT_UPLOAD, new UserAccessLevel(true, 2));
-        final LoginInfoVg vg2 = new LoginInfoVg(new HsaIdVardgivare("vgid2"), "vg2", RegionsVardgivareStatus.REGIONSVARDGIVARE_WITHOUT_UPLOAD, new UserAccessLevel(true, 2));
-        final LoginInfo loginInfo = new LoginInfo(new HsaIdUser("testid"), "testname", null, new ArrayList<>(Arrays.asList(vg1, vg2)), new UserSettingsDTO(), "FAKE");
+        final LoginInfoVg vg1 = new LoginInfoVg(new HsaIdVardgivare("vgid1"), "vg1",
+            RegionsVardgivareStatus.REGIONSVARDGIVARE_WITHOUT_UPLOAD, new UserAccessLevel(true, 2));
+        final LoginInfoVg vg2 = new LoginInfoVg(new HsaIdVardgivare("vgid2"), "vg2",
+            RegionsVardgivareStatus.REGIONSVARDGIVARE_WITHOUT_UPLOAD, new UserAccessLevel(true, 2));
+        final LoginInfo loginInfo = new LoginInfo(new HsaIdUser("testid"), "testname", null, new ArrayList<>(Arrays.asList(vg1, vg2)),
+            new UserSettingsDTO(), "FAKE");
 
         // Then
         assertEquals(vg1, loginInfo.getLoginInfoForVg(vg1.getHsaId()).get());
@@ -71,7 +72,7 @@ public class LoginInfoTest {
     public void testLoginInfoIsImmutable() {
         // Given
         final LoginInfo loginInfo = new LoginInfo(new HsaIdUser("testid"), "testname", new ArrayList<>(), new ArrayList<>(),
-                new UserSettingsDTO(), "FAKE");
+            new UserSettingsDTO(), "FAKE");
 
         // When
         try {
@@ -94,7 +95,7 @@ public class LoginInfoTest {
         final Verksamhet e2 = createVerksamhet("e2", "vg1");
         final Verksamhet e3 = createVerksamhet("e3", "vg2");
         final LoginInfo loginInfo = new LoginInfo(new HsaIdUser("testid"), "testname", new ArrayList<>(Arrays.asList(e1, e2, e3)), null,
-                null, "FAKE");
+            null, "FAKE");
 
         // When
         final List<Verksamhet> businessesForVg1 = loginInfo.getBusinessesForVg(e1.getVardgivarId());

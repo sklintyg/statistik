@@ -18,12 +18,11 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Collection;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 public class MessagesFilter {
 
@@ -37,7 +36,7 @@ public class MessagesFilter {
     private Collection<String> amne;
 
     public MessagesFilter(HsaIdVardgivare vardgivarId, LocalDate from, LocalDate to, Collection<HsaIdEnhet> enheter,
-                          Collection<String> aldersgrupp, Collection<String> diagnoser, Collection<String> intygstyper) {
+        Collection<String> aldersgrupp, Collection<String> diagnoser, Collection<String> intygstyper) {
         this.vardgivarId = vardgivarId;
         this.from = from;
         this.to = to;

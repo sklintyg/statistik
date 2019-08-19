@@ -18,6 +18,17 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static se.inera.statistics.service.warehouse.FactBuilder.aFact;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -38,18 +49,6 @@ import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.WidelineLoader;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static se.inera.statistics.service.warehouse.FactBuilder.aFact;
 
 public class SjukskrivningslangdQueryTest {
 
@@ -81,7 +80,7 @@ public class SjukskrivningslangdQueryTest {
         fact(4010, 45);
         Mockito.when(widelineLoader.getAilesForVgs(any())).thenReturn(Collections.singletonList(new Aisle(VARDGIVARE, facts)));
         Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
-        Map<Ranges.Range,Counter<Ranges.Range>> count = SjukskrivningslangdQuery.count(sjukfall);
+        Map<Ranges.Range, Counter<Ranges.Range>> count = SjukskrivningslangdQuery.count(sjukfall);
         assertEquals(1, count.get(SjukfallslangdUtil.RANGES.rangeFor(45)).getCount());
     }
 
@@ -108,7 +107,7 @@ public class SjukskrivningslangdQueryTest {
         fact(4010, 400);
         Mockito.when(widelineLoader.getAilesForVgs(any())).thenReturn(Collections.singletonList(new Aisle(VARDGIVARE, facts)));
         Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
-        List<Counter<Ranges.Range>> count = SjukskrivningslangdQuery.count(sjukfall,6);
+        List<Counter<Ranges.Range>> count = SjukskrivningslangdQuery.count(sjukfall, 6);
 
         assertEquals(6, count.size());
         assertAmountAndName(count.get(0), 4, "Under 15");
@@ -126,11 +125,11 @@ public class SjukskrivningslangdQueryTest {
 
     private void fact(int startday, int length) {
         Fact fact = aFact().withId(1).withLan(3).withKommun(380).withForsamling(38002).
-                withEnhet(1).withLakarintyg(intyg++).
-                withPatient(patient++).withKon(Kon.FEMALE).withAlder(45).
-                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
-                withSjukskrivningsgrad(100).withStartdatum(startday).withSlutdatum(startday + length - 1).
-                withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).build();
+            withEnhet(1).withLakarintyg(intyg++).
+            withPatient(patient++).withKon(Kon.FEMALE).withAlder(45).
+            withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
+            withSjukskrivningsgrad(100).withStartdatum(startday).withSlutdatum(startday + length - 1).
+            withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).build();
         facts.add(fact);
     }
 

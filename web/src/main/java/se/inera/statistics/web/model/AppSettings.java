@@ -18,9 +18,8 @@
  */
 package se.inera.statistics.web.model;
 
-import se.inera.statistics.web.error.Message;
-
 import java.util.List;
+import se.inera.statistics.web.error.Message;
 
 public class AppSettings {
 

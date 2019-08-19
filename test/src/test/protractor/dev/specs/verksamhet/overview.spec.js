@@ -30,59 +30,59 @@ var report = pages.report;
 
 describe('Verksamhetsöversikt: ', function() {
 
-    beforeAll(function() {
-        browser.get('/');
-        features.user.loginUser1(true);
-        overview.isAtPage();
+  beforeAll(function() {
+    browser.get('/');
+    features.user.loginUser1(true);
+    overview.isAtPage();
+  });
+
+  it('Alla diagram syns', function() {
+    expect(overview.alterationChart.isDisplayed()).toBeTruthy();
+    expect(overview.distributionPerSex.isDisplayed()).toBeTruthy();
+    expect(overview.diagnosisChart.isDisplayed()).toBeTruthy();
+    expect(overview.ageChart.isDisplayed()).toBeTruthy();
+    expect(overview.degreeOfSickLeaveChart.isDisplayed()).toBeTruthy();
+    expect(overview.sicklengthChart.isDisplayed()).toBeTruthy();
+  });
+
+  describe('Navigera', function() {
+    beforeEach(function() {
+      navmenu.navVerksamhetOversiktLink.click();
+      overview.isAtPage();
     });
 
-    it('Alla diagram syns', function() {
-        expect(overview.alterationChart.isDisplayed()).toBeTruthy();
-        expect(overview.distributionPerSex.isDisplayed()).toBeTruthy();
-        expect(overview.diagnosisChart.isDisplayed()).toBeTruthy();
-        expect(overview.ageChart.isDisplayed()).toBeTruthy();
-        expect(overview.degreeOfSickLeaveChart.isDisplayed()).toBeTruthy();
-        expect(overview.sicklengthChart.isDisplayed()).toBeTruthy();
+    it('Fördelning per kön', function() {
+      overview.distributionPerSex.click();
+      report.isAtPage('title.sickleave');
     });
 
-    describe('Navigera', function() {
-        beforeEach(function() {
-            navmenu.navVerksamhetOversiktLink.click();
-            overview.isAtPage();
-        });
-
-        it('Fördelning per kön', function() {
-            overview.distributionPerSex.click();
-            report.isAtPage('title.sickleave');
-        });
-
-        it('Förändring', function() {
-            overview.alterationChart.click();
-            report.isAtPage('title.sickleave');
-        });
-
-        it('Diagnosgrupper', function() {
-            overview.diagnosisChart.click();
-            report.isAtPage('title.diagnosisgroup');
-        });
-
-        it('Ålder', function() {
-            overview.ageChart.click();
-            report.isAtPage('title.agegroup');
-        });
-
-        it('Sjukskrivningsgrad', function() {
-            overview.degreeOfSickLeaveChart.click();
-            report.isAtPage('title.degreeofsickleave');
-        });
-
-        it('Sjukskrivningslängd', function() {
-            overview.sicklengthChart.click();
-            report.isAtPage('title.sickleavelength');
-        });
+    it('Förändring', function() {
+      overview.alterationChart.click();
+      report.isAtPage('title.sickleave');
     });
 
-    afterAll(function() {
-        features.user.makeSureNotLoggedIn();
+    it('Diagnosgrupper', function() {
+      overview.diagnosisChart.click();
+      report.isAtPage('title.diagnosisgroup');
     });
+
+    it('Ålder', function() {
+      overview.ageChart.click();
+      report.isAtPage('title.agegroup');
+    });
+
+    it('Sjukskrivningsgrad', function() {
+      overview.degreeOfSickLeaveChart.click();
+      report.isAtPage('title.degreeofsickleave');
+    });
+
+    it('Sjukskrivningslängd', function() {
+      overview.sicklengthChart.click();
+      report.isAtPage('title.sickleavelength');
+    });
+  });
+
+  afterAll(function() {
+    features.user.makeSureNotLoggedIn();
+  });
 });

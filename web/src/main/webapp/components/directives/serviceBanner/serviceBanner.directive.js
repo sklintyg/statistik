@@ -18,40 +18,40 @@
  */
 
 angular.module('StatisticsApp').directive('serviceBanner', function() {
-    'use strict';
+  'use strict';
 
-    return {
-        restrict: 'E',
-        scope: {
-            banners: '<'
-        },
-        templateUrl: '/components/directives/serviceBanner/serviceBanner.directive.html',
-        controller: /** @ngInject */
-        function($scope) {
+  return {
+    restrict: 'E',
+    scope: {
+      banners: '<'
+    },
+    templateUrl: '/components/directives/serviceBanner/serviceBanner.directive.html',
+    controller: /** @ngInject */
+    function($scope) {
 
-            function getClass(severity) {
-                switch(severity) {
-                case 'ERROR':
-                    return 'alert-danger';
-                case 'WARN':
-                    return 'alert-warning';
-                case 'INFO':
-                    return 'alert-info';
-                }
-            }
-
-            $scope.$watch('banners', function() {
-                var banners = [];
-
-                angular.forEach($scope.banners, function(banner) {
-                    banners.push({
-                        bannerClass: getClass(banner.severity),
-                        message: banner.message
-                    });
-                });
-
-                $scope.processedBanners = banners;
-            });
+      function getClass(severity) {
+        switch (severity) {
+        case 'ERROR':
+          return 'alert-danger';
+        case 'WARN':
+          return 'alert-warning';
+        case 'INFO':
+          return 'alert-info';
         }
-    };
+      }
+
+      $scope.$watch('banners', function() {
+        var banners = [];
+
+        angular.forEach($scope.banners, function(banner) {
+          banners.push({
+            bannerClass: getClass(banner.severity),
+            message: banner.message
+          });
+        });
+
+        $scope.processedBanners = banners;
+      });
+    }
+  };
 });

@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
-
 import se.inera.statistics.service.report.common.ReportColor;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -54,7 +53,7 @@ public class AndelKompletteringarConverter extends MultiDualSexConverter {
             indexOfEmptyInternalGroup = getIndexOfGroupToRemove(groups, rows);
         }
         final KonDataResponse konDataResponse = new KonDataResponse(data.getAvailableFilters(),
-                convertGroupNamesToText(groups), updateGenderFields(rows));
+            convertGroupNamesToText(groups), updateGenderFields(rows));
         final Map<String, String> colors = getColorMap(groups);
         return super.convert(konDataResponse, filterSettings, null, "%1$s", colors);
     }
@@ -141,7 +140,7 @@ public class AndelKompletteringarConverter extends MultiDualSexConverter {
         List<Object> data = new ArrayList<>();
         for (KonField konField : row.getData()) {
             final AndelExtras tot = konField.getExtras() instanceof AndelExtras
-                    ? (AndelExtras) konField.getExtras() : new AndelExtras(0, 0, 0, 0);
+                ? (AndelExtras) konField.getExtras() : new AndelExtras(0, 0, 0, 0);
             final int total = tot.getWhole() == 0 ? 0 : PERCENTAGE_CONVERT * tot.getPart() / tot.getWhole();
             data.add(total + "%");
             data.add(konField.getFemale() + "%");
@@ -157,7 +156,7 @@ public class AndelKompletteringarConverter extends MultiDualSexConverter {
     TableData convertTable(KonDataResponse resp, String seriesNameTemplate) {
         final TableData tableData = super.convertTable(resp, seriesNameTemplate);
         final List<List<TableHeader>> newHeaders = tableData.getHeaders().stream().map(row -> row.stream().map(
-                this::getTableHeaderWithTitle).collect(Collectors.toList())).collect(Collectors.toList());
+            this::getTableHeaderWithTitle).collect(Collectors.toList())).collect(Collectors.toList());
         return new TableData(tableData.getRows(), newHeaders);
     }
 
@@ -171,13 +170,13 @@ public class AndelKompletteringarConverter extends MultiDualSexConverter {
         switch (text) {
             case MessagesText.REPORT_GROUP_TOTALT:
                 return "Kolumnen Totalt visar hur stor andel av alla utfärdade "
-                        + meta + " som har fått en komplettering.";
+                    + meta + " som har fått en komplettering.";
             case MessagesText.REPORT_GROUP_MALE:
                 return "Kolumnen Män visar hur stor andel av alla "
-                        + meta + " utfärdade till manliga patienter som har fått en komplettering.";
+                    + meta + " utfärdade till manliga patienter som har fått en komplettering.";
             case MessagesText.REPORT_GROUP_FEMALE:
                 return "Kolumnen Kvinnor visar hur stor andel av alla "
-                        + meta + " utfärdade till kvinnliga patienter som har fått en komplettering.";
+                    + meta + " utfärdade till kvinnliga patienter som har fått en komplettering.";
         }
         return null;
     }

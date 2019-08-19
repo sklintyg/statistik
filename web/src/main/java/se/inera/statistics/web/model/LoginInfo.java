@@ -18,13 +18,11 @@
  */
 package se.inera.statistics.web.model;
 
+import com.google.common.base.Strings;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import com.google.common.base.Strings;
-
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
@@ -47,7 +45,7 @@ public class LoginInfo {
     }
 
     public LoginInfo(HsaIdUser userId, String userName, List<Verksamhet> businesses, List<LoginInfoVg> loginInfoVgs,
-            UserSettingsDTO userSettings, String authenticationMethod) {
+        UserSettingsDTO userSettings, String authenticationMethod) {
         this.hsaId = userId != null ? userId : new HsaIdUser("");
         this.name = Strings.nullToEmpty(userName);
         this.businesses = businesses != null ? Collections.unmodifiableList(businesses) : Collections.emptyList();
@@ -78,8 +76,8 @@ public class LoginInfo {
 
     public List<Verksamhet> getBusinessesForVg(HsaIdVardgivare vgId) {
         return businesses.stream()
-                .filter(verksamhet -> verksamhet.getVardgivarId().equals(vgId))
-                .collect(Collectors.toList());
+            .filter(verksamhet -> verksamhet.getVardgivarId().equals(vgId))
+            .collect(Collectors.toList());
     }
 
     public UserSettingsDTO getUserSettings() {

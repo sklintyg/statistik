@@ -18,11 +18,10 @@
  */
 package se.inera.statistics.service.report.model;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
-
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class SimpleKonResponsesTest {
 

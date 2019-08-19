@@ -26,9 +26,9 @@ import java.util.stream.Collectors;
 public final class IntygPerSjukfallGroupUtil {
 
     public static final Ranges RANGES = new Ranges(Arrays.stream(NumberOfIntygGroup.values())
-            .map(group -> range(group.getGroupName(), group.getTo() + 1, group.getColor()))
-            .collect(Collectors.toList())
-            .toArray(new Ranges.Range[0]));
+        .map(group -> range(group.getGroupName(), group.getTo() + 1, group.getColor()))
+        .collect(Collectors.toList())
+        .toArray(new Ranges.Range[0]));
 
     private IntygPerSjukfallGroupUtil() {
 

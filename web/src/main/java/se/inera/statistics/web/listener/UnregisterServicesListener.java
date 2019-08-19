@@ -18,17 +18,17 @@
  */
 package se.inera.statistics.web.listener;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Enumeration;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UnregisterServicesListener implements ServletContextListener {
+
     private static final Logger LOG = LoggerFactory.getLogger(UnregisterServicesListener.class);
 
     // Public constructor is required by servlet spec

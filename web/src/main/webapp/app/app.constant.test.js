@@ -18,4 +18,4 @@
  */
 
 angular.module('StatisticsApp')
-    .constant('debugInfoState', true);
+.constant('debugInfoState', true);

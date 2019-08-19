@@ -19,7 +19,6 @@
 package se.inera.testsupport.socialstyrelsenspecial;
 
 import java.util.Objects;
-
 import se.inera.statistics.service.report.model.Kon;
 
 public final class SosMeCfs2Tuple {

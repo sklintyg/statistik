@@ -18,9 +18,9 @@
  */
 package se.inera.statistics.service.helper;
 
+import com.google.common.base.Joiner;
 import java.util.Collections;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.inera.statistics.hsa.model.HsaIdLakare;
@@ -34,8 +34,6 @@ import se.inera.statistics.service.report.model.Kommun;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.VerksamhetsTyp;
-
-import com.google.common.base.Joiner;
 import se.inera.statistics.service.warehouse.WidelineConverter;
 import se.inera.statistics.service.warehouse.query.LakarbefattningQuery;
 
@@ -105,8 +103,8 @@ public final class HSAServiceHelper {
             }
             try {
                 final boolean isValidKommunId = result != null
-                        && result.length() <= WidelineConverter.MAX_LENGTH_KOMMUN_ID
-                        && Integer.parseInt(result) >= 0;
+                    && result.length() <= WidelineConverter.MAX_LENGTH_KOMMUN_ID
+                    && Integer.parseInt(result) >= 0;
                 return isValidKommunId ? result : Kommun.OVRIGT_ID.substring(2);
             } catch (NumberFormatException e) {
                 return Kommun.OVRIGT_ID.substring(2);
@@ -160,7 +158,7 @@ public final class HSAServiceHelper {
     }
 
     private static HsaInfoPersonal getHsaInfoPersonalNullSafe(HsaInfo hsaData) {
-        if  (hsaData == null) {
+        if (hsaData == null) {
             return null;
         }
         return hsaData.getPersonal();

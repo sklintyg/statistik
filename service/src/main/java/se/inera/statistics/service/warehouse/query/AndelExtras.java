@@ -58,7 +58,7 @@ public class AndelExtras {
 
     public static AndelExtras combined(AndelExtras a, AndelExtras b) {
         return new AndelExtras(a.getFemaleIntyg() + b.getFemaleIntyg(), a.getFemaleKompl() + b.getFemaleKompl(),
-                a.getMaleIntyg() + b.getMaleIntyg(), a.getMaleKompl() + b.getMaleKompl());
+            a.getMaleIntyg() + b.getMaleIntyg(), a.getMaleKompl() + b.getMaleKompl());
     }
 
 }

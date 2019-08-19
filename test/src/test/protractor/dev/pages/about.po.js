@@ -22,23 +22,23 @@
 'use strict';
 
 var AboutPage = function() {
-    this.about = element(by.id('about-about-page'));
-    this.contact = element(by.id('about-contact-page'));
-    this.login = element(by.id('about-login-page'));
-    this.faq = element(by.id('about-faq-page'));
+  this.about = element(by.id('about-about-page'));
+  this.contact = element(by.id('about-contact-page'));
+  this.login = element(by.id('about-login-page'));
+  this.faq = element(by.id('about-faq-page'));
 
-    this.isAtAbout = function() {
-        expect(this.about.isDisplayed()).toBeTruthy('Är inte på about');
-    };
-    this.isAtContact = function() {
-        expect(this.contact.isDisplayed()).toBeTruthy('Är inte på contact');
-    };
-    this.isAtLogin = function() {
-        expect(this.login.isDisplayed()).toBeTruthy('Är inte på login');
-    };
-    this.isAtFaq = function() {
-        expect(this.faq.isDisplayed()).toBeTruthy('Är inte på faq');
-    };
+  this.isAtAbout = function() {
+    expect(this.about.isDisplayed()).toBeTruthy('Är inte på about');
+  };
+  this.isAtContact = function() {
+    expect(this.contact.isDisplayed()).toBeTruthy('Är inte på contact');
+  };
+  this.isAtLogin = function() {
+    expect(this.login.isDisplayed()).toBeTruthy('Är inte på login');
+  };
+  this.isAtFaq = function() {
+    expect(this.faq.isDisplayed()).toBeTruthy('Är inte på faq');
+  };
 };
 
 module.exports = new AboutPage();

@@ -18,14 +18,13 @@
  */
 package se.inera.statistics.web.service.monitoring;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.security.web.context.support.SecurityWebApplicationContextUtils;
-import org.springframework.security.web.session.HttpSessionDestroyedEvent;
-
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
-import java.util.concurrent.atomic.AtomicInteger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.security.web.context.support.SecurityWebApplicationContextUtils;
+import org.springframework.security.web.session.HttpSessionDestroyedEvent;
 
 public class SessionCounterListener implements HttpSessionListener {
 
@@ -53,8 +52,7 @@ public class SessionCounterListener implements HttpSessionListener {
      *
      * For more details about this, see javadoc of {@link org.springframework.security.web.session.HttpSessionEventPublisher}
      *
-     * @param arg0
-     *      The HttpSessionEvent notifying that a session has been destroyed.
+     * @param arg0 The HttpSessionEvent notifying that a session has been destroyed.
      */
     @Override
     public void sessionDestroyed(HttpSessionEvent arg0) {

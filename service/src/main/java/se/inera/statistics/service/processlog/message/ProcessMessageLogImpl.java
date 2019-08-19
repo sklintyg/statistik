@@ -19,19 +19,17 @@
 package se.inera.statistics.service.processlog.message;
 
 import java.util.List;
-
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import se.inera.statistics.service.processlog.AbstractProcessLog;
 
 @Component
 public class ProcessMessageLogImpl extends AbstractProcessLog implements ProcessMessageLog {
+
     private static final Logger LOG = LoggerFactory.getLogger(ProcessMessageLogImpl.class);
 
     public ProcessMessageLogImpl() {
@@ -42,8 +40,8 @@ public class ProcessMessageLogImpl extends AbstractProcessLog implements Process
     @Transactional
     public long store(MessageEventType type, String data, String messageId, long timestamp) {
         TypedQuery<MessageEvent> select = getManager()
-                .createQuery("SELECT e FROM MessageEvent e WHERE e.correlationId = :correlationId AND e.type = :type",
-                        MessageEvent.class);
+            .createQuery("SELECT e FROM MessageEvent e WHERE e.correlationId = :correlationId AND e.type = :type",
+                MessageEvent.class);
         select.setParameter("correlationId", messageId).setParameter("type", type);
         List<MessageEvent> result = select.getResultList();
         if (result.isEmpty()) {

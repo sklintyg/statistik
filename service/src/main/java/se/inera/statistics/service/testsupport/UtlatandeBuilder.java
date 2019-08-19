@@ -18,6 +18,8 @@
  */
 package se.inera.statistics.service.testsupport;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
@@ -28,9 +30,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -59,38 +58,38 @@ public class UtlatandeBuilder {
     }
 
     public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaIdEnhet vardenhet, HsaIdVardgivare vardgivare,
-            String diagnos, int arbetsformaga) {
+        String diagnos, int arbetsformaga) {
         return build(patientId, start, end, new HsaIdLakare("Personal HSA-ID"), vardenhet, vardgivare, diagnos,
-                Collections.singletonList(String.valueOf(arbetsformaga)));
+            Collections.singletonList(String.valueOf(arbetsformaga)));
     }
 
     public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaIdEnhet vardenhet, HsaIdVardgivare vardgivare,
-            String diagnos, List<String> arbetsformaga) {
+        String diagnos, List<String> arbetsformaga) {
         return build(patientId, start, end, new HsaIdLakare("Personal HSA-ID"), vardenhet, vardgivare, diagnos, arbetsformaga);
     }
 
     // CHECKSTYLE:OFF ParameterNumberCheck
     @java.lang.SuppressWarnings("squid:S00107") // Parameter number check ignored in Sonar
     public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaIdLakare personal, HsaIdEnhet vardenhet,
-            HsaIdVardgivare vardgivare, String diagnos, int arbetsformaga) {
+        HsaIdVardgivare vardgivare, String diagnos, int arbetsformaga) {
         return build(patientId, start, end, personal, vardenhet, vardgivare, diagnos,
-                Collections.singletonList(String.valueOf(arbetsformaga)));
+            Collections.singletonList(String.valueOf(arbetsformaga)));
     }
 
     @java.lang.SuppressWarnings("squid:S00107") // Parameter number check ignored in Sonar
     public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaIdLakare personal, HsaIdEnhet vardenhet,
-            HsaIdVardgivare vardgivare, String diagnos, List<String> arbetsformaga) {
+        HsaIdVardgivare vardgivare, String diagnos, List<String> arbetsformaga) {
         return build(patientId, list(start), list(end), personal, vardenhet, vardgivare, diagnos, arbetsformaga);
     }
 
     public JsonNode build(String person, List<LocalDate> starts, List<LocalDate> stops, HsaIdEnhet enhet, HsaIdVardgivare vardgivare,
-            String diagnos, List<String> grads) {
+        String diagnos, List<String> grads) {
         return build(person, starts, stops, new HsaIdLakare("personalId"), enhet, vardgivare, diagnos, grads);
     }
 
     @java.lang.SuppressWarnings("squid:S00107") // Parameter number check ignored in Sonar
     public JsonNode build(String person, List<LocalDate> starts, List<LocalDate> stops, HsaIdLakare personal, HsaIdEnhet enhet,
-            HsaIdVardgivare vardgivare, String diagnos, List<String> grads) {
+        HsaIdVardgivare vardgivare, String diagnos, List<String> grads) {
         ObjectNode intyg = template.deepCopy();
         ObjectNode patientIdNode = (ObjectNode) intyg.path(GRUND_DATA).path("patient");
         patientIdNode.put("personId", person);
@@ -114,20 +113,20 @@ public class UtlatandeBuilder {
 
     private void addGrad(List<LocalDate> starts, List<LocalDate> stops, ObjectNode intyg, String grad) {
         switch (grad) {
-        case "0":
-            createNedsatNode(starts, stops, intyg, "nedsattMed100");
-            break;
-        case "25":
-            createNedsatNode(starts, stops, intyg, "nedsattMed75");
-            break;
-        case "50":
-            createNedsatNode(starts, stops, intyg, "nedsattMed50");
-            break;
-        case "75":
-            createNedsatNode(starts, stops, intyg, "nedsattMed25");
-            break;
-        default:
-            throw new IllegalStateException("Unrecognized sjukskrivningsgrad:  " + grad);
+            case "0":
+                createNedsatNode(starts, stops, intyg, "nedsattMed100");
+                break;
+            case "25":
+                createNedsatNode(starts, stops, intyg, "nedsattMed75");
+                break;
+            case "50":
+                createNedsatNode(starts, stops, intyg, "nedsattMed50");
+                break;
+            case "75":
+                createNedsatNode(starts, stops, intyg, "nedsattMed25");
+                break;
+            default:
+                throw new IllegalStateException("Unrecognized sjukskrivningsgrad:  " + grad);
         }
     }
 

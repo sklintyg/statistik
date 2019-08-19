@@ -18,11 +18,10 @@
  */
 package se.inera.statistics.service.processlog;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
-
 import se.inera.statistics.service.IntygCreatorHelper;
-
-import static org.junit.Assert.*;
 
 public class IntygEventTest {
 

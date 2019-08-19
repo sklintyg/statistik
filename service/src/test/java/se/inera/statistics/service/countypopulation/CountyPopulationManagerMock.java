@@ -18,12 +18,11 @@
  */
 package se.inera.statistics.service.countypopulation;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.Range;
-
-import java.util.HashMap;
-import java.util.Iterator;
 
 public class CountyPopulationManagerMock implements CountyPopulationManager {
 

@@ -18,17 +18,15 @@
  */
 package se.inera.statistics.service.helper.certificate;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.databind.JsonNode;
 import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
@@ -147,12 +145,12 @@ public final class JsonDocumentHelper {
     public static List<Arbetsnedsattning> getArbetsnedsattning(JsonNode document) {
         List<Arbetsnedsattning> result = new ArrayList<>();
 
-            addArbetsnedsattning(document, result, NEDSATT_MED_25, NEDSATT25);
-            addArbetsnedsattning(document, result, NEDSATT_MED_50, NEDSATT50);
-            addArbetsnedsattning(document, result, NEDSATT_MED_75, NEDSATT75);
-            addArbetsnedsattning(document, result, NEDSATT_MED_100, NEDSATT100);
+        addArbetsnedsattning(document, result, NEDSATT_MED_25, NEDSATT25);
+        addArbetsnedsattning(document, result, NEDSATT_MED_50, NEDSATT50);
+        addArbetsnedsattning(document, result, NEDSATT_MED_75, NEDSATT75);
+        addArbetsnedsattning(document, result, NEDSATT_MED_100, NEDSATT100);
 
-            return result;
+        return result;
     }
 
     private static void addArbetsnedsattning(JsonNode document, List<Arbetsnedsattning> result, String nedsattMedString, int nedsattMed) {

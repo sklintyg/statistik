@@ -18,6 +18,11 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
@@ -33,12 +38,6 @@ import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10.Kategori;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
-
-import java.time.Clock;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class WidelineConverter extends AbstractWidlineConverter {
@@ -96,7 +95,7 @@ public class WidelineConverter extends AbstractWidlineConverter {
         List<WideLine> lines = new ArrayList<>();
         for (Arbetsnedsattning arbetsnedsattning : dto.getArbetsnedsattnings()) {
             WideLine line = createWideLine(logId, correlationId, type, lkf, enhet, vardgivare, patient, kon, alder, dx,
-                    lakarkon, lakaralder, lakarbefattning, lakareid, arbetsnedsattning, active);
+                lakarkon, lakaralder, lakarbefattning, lakareid, arbetsnedsattning, active);
             lines.add(line);
         }
         return lines;
@@ -105,8 +104,8 @@ public class WidelineConverter extends AbstractWidlineConverter {
     // CHECKSTYLE:OFF ParameterNumberCheck
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     private WideLine createWideLine(long logId, String correlationId, EventType type, String lkf, String enhet, HsaIdVardgivare vardgivare,
-            String patient, int kon, int alder, Diagnos dx, int lakarkon, int lakaralder, String lakarbefattning,
-            HsaIdLakare lakareid, Arbetsnedsattning arbetsnedsattning, boolean active) {
+        String patient, int kon, int alder, Diagnos dx, int lakarkon, int lakaralder, String lakarbefattning,
+        HsaIdLakare lakareid, Arbetsnedsattning arbetsnedsattning, boolean active) {
         WideLine line = new WideLine();
 
         int sjukskrivningsgrad = arbetsnedsattning.getNedsattning();
@@ -229,6 +228,7 @@ public class WidelineConverter extends AbstractWidlineConverter {
     }
 
     private static class Diagnos {
+
         private String diagnoskod;
         private String diagnoskapitel;
         private String diagnosavsnitt;

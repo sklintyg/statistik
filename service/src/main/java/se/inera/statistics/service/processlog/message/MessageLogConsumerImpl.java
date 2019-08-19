@@ -19,20 +19,19 @@
 package se.inera.statistics.service.processlog.message;
 
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import se.inera.statistics.service.helper.SendMessageToCareHelper;
 import se.inera.statistics.service.processlog.Processor;
 import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMessageToCareType;
 
 @Component
 public class MessageLogConsumerImpl implements MessageLogConsumer {
+
     private static final Logger LOG = LoggerFactory.getLogger(MessageLogConsumerImpl.class);
     public static final int BATCH_SIZE = 100;
 
@@ -62,7 +61,7 @@ public class MessageLogConsumerImpl implements MessageLogConsumer {
             int processed = 0;
             long latestId = startId;
 
-            for (MessageEvent event: result) {
+            for (MessageEvent event : result) {
                 if (!tryIntervals.contains(event.getTries())) {
                     increaseTries(event);
                 } else {

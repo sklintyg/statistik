@@ -18,16 +18,16 @@
  */
 package se.inera.statistics.service.warehouse.sjukfallcalc.extend;
 
-import org.junit.Test;
-import se.inera.statistics.service.warehouse.Fact;
-import se.inera.statistics.service.warehouse.FactBuilder;
-import se.inera.statistics.service.warehouse.SjukfallExtended;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.Assert.*;
+import org.junit.Test;
+import se.inera.statistics.service.warehouse.Fact;
+import se.inera.statistics.service.warehouse.FactBuilder;
+import se.inera.statistics.service.warehouse.SjukfallExtended;
 
 public class SjukfallMergeHelperTest {
 
@@ -193,7 +193,7 @@ public class SjukfallMergeHelperTest {
     }
 
     private Fact createFact(int startdatum, int slutdatum) {
-        return FactBuilder.newFact(1L, 1,1,1,1,1,1, startdatum, slutdatum,1,1,1,1,1,1,1,1,1, new int[0],1);
+        return FactBuilder.newFact(1L, 1, 1, 1, 1, 1, 1, startdatum, slutdatum, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
     }
 
 }

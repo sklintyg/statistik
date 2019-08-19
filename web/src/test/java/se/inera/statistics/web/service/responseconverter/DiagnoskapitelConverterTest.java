@@ -18,8 +18,12 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
+import java.time.Clock;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.Test;
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
@@ -29,12 +33,6 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.service.Filter;
 import se.inera.statistics.web.service.FilterSettings;
-
-import java.time.Clock;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
 
 public class DiagnoskapitelConverterTest {
 
@@ -74,7 +72,8 @@ public class DiagnoskapitelConverterTest {
         assertEquals("[period1]", data.getMaleChart().getCategories().toString());
         assertEquals("[A00-B99 name1: [2]]", data.getMaleChart().getSeries().toString());
 
-        assertEquals("[[;1, ;1, A00-B99 name1;3], [Period;1, Antal sjukfall totalt;1, Totalt;1, Kvinnor;1, Män;1]]", data.getTableData().getHeaders().toString());
+        assertEquals("[[;1, ;1, A00-B99 name1;3], [Period;1, Antal sjukfall totalt;1, Totalt;1, Kvinnor;1, Män;1]]",
+            data.getTableData().getHeaders().toString());
         assertEquals("[period1: [5, 5, 3, 2]]", data.getTableData().getRows().toString());
     }
 
@@ -113,13 +112,20 @@ public class DiagnoskapitelConverterTest {
         assertEquals(7, data.getFemaleChart().getSeries().size());
 
         assertEquals("[period1]", data.getFemaleChart().getCategories().toString());
-        assertEquals("[A00-B94 name1: [55], A00-B95 name1: [8], A00-B93 name1: [7], A00-B97 name1: [6], A00-B91 name1: [4], A00-B90 name1: [3], Övriga: [3]]", data.getFemaleChart().getSeries().toString());
+        assertEquals(
+            "[A00-B94 name1: [55], A00-B95 name1: [8], A00-B93 name1: [7], A00-B97 name1: [6], A00-B91 name1: [4], A00-B90 name1: [3], Övriga: [3]]",
+            data.getFemaleChart().getSeries().toString());
 
         assertEquals("[period1]", data.getMaleChart().getCategories().toString());
-        assertEquals("[A00-B94 name1: [50], A00-B95 name1: [80], A00-B93 name1: [70], A00-B97 name1: [60], A00-B91 name1: [40], A00-B90 name1: [30], Övriga: [30]]", data.getMaleChart().getSeries().toString());
+        assertEquals(
+            "[A00-B94 name1: [50], A00-B95 name1: [80], A00-B93 name1: [70], A00-B97 name1: [60], A00-B91 name1: [40], A00-B90 name1: [30], Övriga: [30]]",
+            data.getMaleChart().getSeries().toString());
 
-        assertEquals("[[;1, ;1, A00-B90 name1;3, A00-B91 name1;3, A00-B92 name1;3, A00-B93 name1;3, A00-B94 name1;3, A00-B95 name1;3, A00-B96 name1;3, A00-B97 name1;3], [Period;1, Antal sjukfall totalt;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1]]", data.getTableData().getHeaders().toString());
-        assertEquals("[period1: [446, 33, 3, 30, 44, 4, 40, 11, 1, 10, 77, 7, 70, 105, 55, 50, 88, 8, 80, 22, 2, 20, 66, 6, 60]]", data.getTableData().getRows().toString());
+        assertEquals(
+            "[[;1, ;1, A00-B90 name1;3, A00-B91 name1;3, A00-B92 name1;3, A00-B93 name1;3, A00-B94 name1;3, A00-B95 name1;3, A00-B96 name1;3, A00-B97 name1;3], [Period;1, Antal sjukfall totalt;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1]]",
+            data.getTableData().getHeaders().toString());
+        assertEquals("[period1: [446, 33, 3, 30, 44, 4, 40, 11, 1, 10, 77, 7, 70, 105, 55, 50, 88, 8, 80, 22, 2, 20, 66, 6, 60]]",
+            data.getTableData().getRows().toString());
         // CHECKSTYLE:ON MagicNumber
     }
 

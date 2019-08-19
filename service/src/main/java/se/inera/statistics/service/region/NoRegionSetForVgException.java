@@ -19,4 +19,5 @@
 package se.inera.statistics.service.region;
 
 public class NoRegionSetForVgException extends Exception {
+
 }

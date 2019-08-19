@@ -18,6 +18,33 @@
  */
 package se.inera.testsupport;
 
+import java.time.Clock;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,34 +109,6 @@ import se.inera.testsupport.socialstyrelsenspecial.SosReportCreator;
 import se.inera.testsupport.socialstyrelsenspecial.SosRow;
 import se.inera.testsupport.specialrapport.SjukfallLengthSpecialReportCreator;
 import se.inera.testsupport.specialrapport.SjukfallLengthSpecialRow;
-
-import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.time.Clock;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service("restSupportService")
 public class RestSupportService {
@@ -180,7 +179,7 @@ public class RestSupportService {
     @Autowired
     private ChangableClock changableClock;
 
-    @Autowired (required = false)
+    @Autowired(required = false)
     @Qualifier("intygCommonDxPopulator")
     private ApplicationListener<ApplicationEvent> intygCommonDxPopulator;
 
@@ -202,7 +201,7 @@ public class RestSupportService {
      */
     @GET
     @Path("invokeIntygCommonDxPopulator")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public Response populateIntygCommonDx() {
         intygCommonDxPopulator.onApplicationEvent(new ApplicationEvent(this) {
             @Override
@@ -215,14 +214,14 @@ public class RestSupportService {
 
     @GET
     @Path("converteddate/{internalDate}")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public Response getConvertedDate(@PathParam("internalDate") int internalDate) {
         return Response.ok(WidelineConverter.toDate(internalDate).toString()).build();
     }
 
     @POST
     @Path("cutoff")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public Response setCutoff(int cutoff) {
         nationellData.setCutoff(cutoff);
         regionCutoff.setCutoff(cutoff);
@@ -231,14 +230,14 @@ public class RestSupportService {
 
     @GET
     @Path("now")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public Response getCurrentDateTime() {
         return Response.ok(changableClock.millis()).build();
     }
 
     @POST
     @Path("now")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public Response setCurrentDateTime(long timeMillis) {
         final Clock baseClock = Clock.system(ZoneId.systemDefault());
         changableClock.setCurrentClock(Clock.offset(baseClock, Duration.ofMillis(timeMillis - System.currentTimeMillis())));
@@ -247,7 +246,7 @@ public class RestSupportService {
 
     @POST
     @Path("clearDatabase")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     @Transactional
     public Response clearDatabase() {
         manager.createNativeQuery("TRUNCATE TABLE " + IntygEvent.TABLE).executeUpdate();
@@ -265,7 +264,7 @@ public class RestSupportService {
 
     @POST
     @Path("clearCaches")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     @Transactional
     public Response clearCaches() {
         cache.clearCaches();
@@ -274,8 +273,8 @@ public class RestSupportService {
 
     @PUT
     @Path("intyg")
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     @Transactional
     public Response insertIntyg(Intyg intyg) {
         LOG.info("Insert intyg. id: " + intyg.getDocumentId() + ", data: " + intyg.getData());
@@ -312,8 +311,8 @@ public class RestSupportService {
 
     @PUT
     @Path("meddelande")
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     @Transactional
     public Response insertIntyg(Meddelande meddelande) {
         LOG.info("Insert meddelande. id: " + meddelande.getMessageId() + ", data: " + meddelande.getData());
@@ -328,7 +327,7 @@ public class RestSupportService {
 
     @POST
     @Path("processIntyg")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public Response processIntyg() {
         LOG.debug("Log Job");
         int count;
@@ -351,7 +350,7 @@ public class RestSupportService {
 
     @POST
     @Path("processMeddelande")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public Response processMeddelande() {
         LOG.debug("Log Job");
 
@@ -367,7 +366,7 @@ public class RestSupportService {
 
     @POST
     @Path("denyCalc")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public Response denyCalc() {
         LOG.info("Deny calc");
         calcCoordinator.setDenyAll(true);
@@ -376,7 +375,7 @@ public class RestSupportService {
 
     @POST
     @Path("allowCalc")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public Response allowCalc() {
         LOG.info("Allow calc");
         calcCoordinator.setDenyAll(false);
@@ -385,22 +384,22 @@ public class RestSupportService {
 
     @PUT
     @Path("personal")
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     public Response insertPersonal(Personal personal) {
         if (hsaDataInjectable != null) {
             LOG.info("Insert personal: " + personal);
             hsaDataInjectable.addPersonal(new HsaIdLakare(personal.getId()), personal.getFirstName(), personal.getLastName(),
-                    personal.getKon(), personal.getAge(),
-                    personal.getBefattning(), personal.isSkyddad());
+                personal.getKon(), personal.getAge(),
+                personal.getBefattning(), personal.isSkyddad());
         }
         return Response.ok().build();
     }
 
     @PUT
     @Path("region/vgid/{vgid}")
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     public Response insertRegion(@PathParam("vgid") String vgId) {
         LOG.info("Insert region with vgid {}", vgId);
         if (!regionManager.getForVg(new HsaIdVardgivare(vgId)).isPresent()) {
@@ -411,8 +410,8 @@ public class RestSupportService {
 
     @DELETE
     @Path("clearRegionFileUploads")
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     public Response clearRegionFileUploads() {
         LOG.info("Clearing all uploaded region files");
         final List<RegionEnhet> allRegionEnhets = regionEnhetManager.getAll();
@@ -420,14 +419,14 @@ public class RestSupportService {
             final long regionId = regionEnhet.getRegionId();
             regionEnhetManager.removeByRegionId(regionId);
             regionEnhetUpdateManager.update(regionId, this.getClass().getSimpleName(), new HsaIdUser(""), "-",
-                    RegionEnhetUpdateOperation.REMOVE);
+                RegionEnhetUpdateOperation.REMOVE);
         });
         return Response.ok().build();
     }
 
     @POST
     @Path("clearCountyPopulation")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     @Transactional
     public Response clearCountyPopulation() {
         countyPopulationInjector.clearCountyPopulations();
@@ -437,8 +436,8 @@ public class RestSupportService {
 
     @PUT
     @Path("countyPopulation/{date}")
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     @Transactional
     public Response insertCountyPopulation(Map<String, KonField> countyPopulation, @PathParam("date") String date) {
         LOG.info("For date: {}, insert county population: {}", date, countyPopulation);
@@ -450,8 +449,8 @@ public class RestSupportService {
 
     @POST
     @Path("sendIntygToMottagare/{intygId}/{mottagare}")
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     public Response sendIntygToMottagare(@PathParam("intygId") String intygId, @PathParam("mottagare") String mottagare) {
         processIntygsentLog.store(intygId, mottagare, System.currentTimeMillis());
         intygsentLogConsumer.processBatch();
@@ -463,12 +462,12 @@ public class RestSupportService {
      */
     @GET
     @Path("getSocialstyrelsenReport")
-    @Produces({ MediaType.APPLICATION_JSON })
-    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
     public Response getSosStatistics(@QueryParam(SOC_PARAM_DX) List<String> dx,
-                                     @QueryParam(SOC_PARAM_STARTDX) String startWithSpecifiedDx,
-                                     @QueryParam(SOC_PARAM_FROMYEAR) String fromYearParam,
-                                     @QueryParam(SOC_PARAM_TOYEAR) String toYearParam) {
+        @QueryParam(SOC_PARAM_STARTDX) String startWithSpecifiedDx,
+        @QueryParam(SOC_PARAM_FROMYEAR) String fromYearParam,
+        @QueryParam(SOC_PARAM_TOYEAR) String toYearParam) {
         final List<SosRow> sosReport = getSosRows(dx, startWithSpecifiedDx, fromYearParam, toYearParam);
         return Response.ok(sosReport).build();
     }
@@ -478,7 +477,7 @@ public class RestSupportService {
         int fromYear = getYear(fromYearParam);
         int toYear = getYear(toYearParam);
         final SosReportCreator sosReportCreator = new SosReportCreator(aisles, sjukfallUtil, icd10, dx,
-                Boolean.parseBoolean(startWithSpecifiedDx), changableClock, fromYear, toYear);
+            Boolean.parseBoolean(startWithSpecifiedDx), changableClock, fromYear, toYear);
         return sosReportCreator.getSosReport();
     }
 
@@ -491,12 +490,12 @@ public class RestSupportService {
      */
     @GET
     @Path("getSocialstyrelsenAntalReport")
-    @Produces({ MediaType.APPLICATION_JSON })
-    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
     public Response getSosCountStatistics(@QueryParam(SOC_PARAM_DX) List<String> dx,
-                                     @QueryParam(SOC_PARAM_STARTDX) String startWithSpecifiedDx,
-                                     @QueryParam(SOC_PARAM_FROMYEAR) String fromYearParam,
-                                     @QueryParam(SOC_PARAM_TOYEAR) String toYearParam) {
+        @QueryParam(SOC_PARAM_STARTDX) String startWithSpecifiedDx,
+        @QueryParam(SOC_PARAM_FROMYEAR) String fromYearParam,
+        @QueryParam(SOC_PARAM_TOYEAR) String toYearParam) {
         final List<SosRow> sosRows = getSosRows(dx, startWithSpecifiedDx, fromYearParam, toYearParam);
         final List<SosCountRow> sosCountRows = getSosCountRows(sosRows);
         final List<Map<String, Object>> response = createCountResponse(sosCountRows);
@@ -505,17 +504,17 @@ public class RestSupportService {
 
     private List<Map<String, Object>> createCountResponse(List<SosCountRow> sosCountRows) {
         return sosCountRows.stream().map((Function<SosCountRow, Map<String, Object>>) r -> {
-                final HashMap<String, Object> map = new HashMap<>();
-                map.put("diagnos", r.getDiagnos());
-                map.put("totalt", r.getTotalt());
-                map.put("kvinnor", r.getKvinnor());
-                map.put("man", r.getMan());
-                for (SjukfallsLangdGroupSos group : SjukfallsLangdGroupSos.values()) {
-                    map.put(group.getGroupName() + " K", r.getFemaleByLength(group));
-                    map.put(group.getGroupName() + " M", r.getMaleByLength(group));
-                }
-                return map;
-            }).collect(Collectors.toList());
+            final HashMap<String, Object> map = new HashMap<>();
+            map.put("diagnos", r.getDiagnos());
+            map.put("totalt", r.getTotalt());
+            map.put("kvinnor", r.getKvinnor());
+            map.put("man", r.getMan());
+            for (SjukfallsLangdGroupSos group : SjukfallsLangdGroupSos.values()) {
+                map.put(group.getGroupName() + " K", r.getFemaleByLength(group));
+                map.put(group.getGroupName() + " M", r.getMaleByLength(group));
+            }
+            return map;
+        }).collect(Collectors.toList());
     }
 
     private List<SosCountRow> getSosCountRows(List<SosRow> sosRows) {
@@ -543,7 +542,7 @@ public class RestSupportService {
 
     private Map<SjukfallsLangdGroupSos, Integer> getCountPerSjukfallsLangd(List<SosRow> sosRows) {
         final Map<SjukfallsLangdGroupSos, List<SosRow>> rowsByLength = sosRows.stream().collect(
-                Collectors.groupingBy(sosRow -> SjukfallsLangdGroupSos.getByLength(sosRow.getLength())));
+            Collectors.groupingBy(sosRow -> SjukfallsLangdGroupSos.getByLength(sosRow.getLength())));
         return rowsByLength.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, it -> it.getValue().size()));
     }
 
@@ -552,17 +551,17 @@ public class RestSupportService {
      */
     @GET
     @Path("getSocialstyrelsenMedianReport")
-    @Produces({ MediaType.APPLICATION_JSON })
-    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
     public Response getSosMedianStatistics(@QueryParam("dx") List<String> dx,
-                                           @QueryParam(SOC_PARAM_STARTDX) String startWithSpecifiedDx,
-                                           @QueryParam("fromyear") String fromYearParam,
-                                           @QueryParam("toyear") String toYearParam) {
+        @QueryParam(SOC_PARAM_STARTDX) String startWithSpecifiedDx,
+        @QueryParam("fromyear") String fromYearParam,
+        @QueryParam("toyear") String toYearParam) {
         final Iterator<Aisle> aisles = warehouse.iterator();
         int fromYear = getYear(fromYearParam);
         int toYear = getYear(toYearParam);
         final SosReportCreator sosReportCreator = new SosReportCreator(aisles, sjukfallUtil, icd10, dx,
-                Boolean.parseBoolean(startWithSpecifiedDx), changableClock, fromYear, toYear);
+            Boolean.parseBoolean(startWithSpecifiedDx), changableClock, fromYear, toYear);
         final List<SosCalculatedRow> medianValuesSosReport = sosReportCreator.getMedianValuesSosReport();
         return Response.ok(medianValuesSosReport).build();
     }
@@ -572,17 +571,17 @@ public class RestSupportService {
      */
     @GET
     @Path("getSocialstyrelsenStdDevReport")
-    @Produces({ MediaType.APPLICATION_JSON })
-    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
     public Response getSosStdDevStatistics(@QueryParam("dx") List<String> dx,
-                                           @QueryParam(SOC_PARAM_STARTDX) String startWithSpecifiedDx,
-                                           @QueryParam("fromyear") String fromYearParam,
-                                           @QueryParam("toyear") String toYearParam) {
+        @QueryParam(SOC_PARAM_STARTDX) String startWithSpecifiedDx,
+        @QueryParam("fromyear") String fromYearParam,
+        @QueryParam("toyear") String toYearParam) {
         final Iterator<Aisle> aisles = warehouse.iterator();
         int fromYear = getYear(fromYearParam);
         int toYear = getYear(toYearParam);
         final SosReportCreator sosReportCreator = new SosReportCreator(aisles, sjukfallUtil, icd10, dx,
-                Boolean.parseBoolean(startWithSpecifiedDx), changableClock, fromYear, toYear);
+            Boolean.parseBoolean(startWithSpecifiedDx), changableClock, fromYear, toYear);
         final List<SosCalculatedRow> medianValuesSosReport = sosReportCreator.getStdDevValuesSosReport();
         return Response.ok(medianValuesSosReport).build();
     }
@@ -592,8 +591,8 @@ public class RestSupportService {
      */
     @GET
     @Path("getSocialstyrelsenMeCfs1Report")
-    @Produces({ MediaType.APPLICATION_JSON })
-    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
     public Response getSocialstyrelsenMeCfs1Report() {
         final SosMeCfs1ReportCreator sosMeCfs1ReportCreator = new SosMeCfs1ReportCreator(intygCommonSosManager, warehouse);
         final List<SosMeCfs1Row> sosReport = sosMeCfs1ReportCreator.getSosReport(nationellData.getCutoff());
@@ -605,12 +604,12 @@ public class RestSupportService {
      */
     @GET
     @Path("getSocialstyrelsenMeCfs2Report")
-    @Produces({ MediaType.APPLICATION_JSON })
-    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
     public Response getSocialstyrelsenMeCfs2Report() {
         final Iterator<Aisle> aisles = warehouse.iterator();
         final List<SosMeCfs2Row> sosReport = new SosMeCfs2ReportCreator(aisles, sjukfallUtil,
-                nationellData.getCutoff(), icd10).getSosReport();
+            nationellData.getCutoff(), icd10).getSosReport();
         return Response.ok(sosReport).build();
     }
 
@@ -619,8 +618,8 @@ public class RestSupportService {
      */
     @GET
     @Path("getFkYearReport")
-    @Produces({ MediaType.APPLICATION_JSON })
-    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
     public Response getFkYearReport(@QueryParam("dx") final List<String> customDiagnoses) {
         List<String> dxList = customDiagnoses;
         if (dxList == null || dxList.size() == 0) {
@@ -638,13 +637,13 @@ public class RestSupportService {
      */
     @GET
     @Path("getSpecialLengthReport")
-    @Produces({ MediaType.APPLICATION_JSON })
-    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
     public Response getSpecialLengthReport(@QueryParam("year") String yearParam) {
         int year = getYear(yearParam);
         final Iterator<Aisle> aisles = warehouse.iterator();
         final List<SjukfallLengthSpecialRow> sosReport = new SjukfallLengthSpecialReportCreator(aisles, sjukfallUtil, icd10)
-                .getReport(year);
+            .getReport(year);
         return Response.ok(sosReport).build();
     }
 

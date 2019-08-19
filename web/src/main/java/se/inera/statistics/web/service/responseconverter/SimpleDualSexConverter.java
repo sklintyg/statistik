@@ -21,7 +21,6 @@ package se.inera.statistics.web.service.responseconverter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
@@ -53,7 +52,7 @@ public class SimpleDualSexConverter {
     }
 
     public SimpleDualSexConverter(String tableGroupTitle, String seriesNameTemplate, String totalColumnName,
-            String femaleColumnName, String maleColumnName) {
+        String femaleColumnName, String maleColumnName) {
         this.tableGroupTitle = tableGroupTitle;
         this.seriesNameTemplate = seriesNameTemplate;
         this.totalColumnName = totalColumnName;
@@ -67,18 +66,18 @@ public class SimpleDualSexConverter {
 
     public static SimpleDualSexConverter newGenericIntygTvarsnitt() {
         return new SimpleDualSexConverter("",
-                "%1$s",
-                MessagesText.REPORT_COLUMN_ANTAL_INTYG_TOTALT,
-                MessagesText.REPORT_COLUMN_ANTAL_INTYG_FEMALE,
-                MessagesText.REPORT_COLUMN_ANTAL_INTYG_MALE);
+            "%1$s",
+            MessagesText.REPORT_COLUMN_ANTAL_INTYG_TOTALT,
+            MessagesText.REPORT_COLUMN_ANTAL_INTYG_FEMALE,
+            MessagesText.REPORT_COLUMN_ANTAL_INTYG_MALE);
     }
 
     public static SimpleDualSexConverter newGenericKompletteringarTvarsnitt() {
         return new SimpleDualSexConverter("",
-                "%1$s",
-                MessagesText.REPORT_COLUMN_ANTAL_KOMPLETTERINGAR_TOTALT,
-                MessagesText.REPORT_COLUMN_ANTAL_KOMPLETTERINGAR_FEMALE,
-                MessagesText.REPORT_COLUMN_ANTAL_KOMPLETTERINGAR_MALE);
+            "%1$s",
+            MessagesText.REPORT_COLUMN_ANTAL_KOMPLETTERINGAR_TOTALT,
+            MessagesText.REPORT_COLUMN_ANTAL_KOMPLETTERINGAR_FEMALE,
+            MessagesText.REPORT_COLUMN_ANTAL_KOMPLETTERINGAR_MALE);
     }
 
     public SimpleDetailsData convert(SimpleKonResponse casesPerMonth, FilterSettings filterSettings) {
@@ -88,8 +87,8 @@ public class SimpleDualSexConverter {
     public SimpleDetailsData convert(SimpleKonResponse casesPerMonthIn, FilterSettings filterSettings, Message message) {
         TableData tableData = convertToTableData(casesPerMonthIn.getRows());
         SimpleKonResponse casesPerMonth = casesPerMonthIn.getRows().isEmpty()
-                ? new SimpleKonResponse(casesPerMonthIn.getAvailableFilters(),
-                    Arrays.asList(new SimpleKonDataRow(MessagesText.REPORT_GROUP_TOTALT, 0, 0))) : casesPerMonthIn;
+            ? new SimpleKonResponse(casesPerMonthIn.getAvailableFilters(),
+            Arrays.asList(new SimpleKonDataRow(MessagesText.REPORT_GROUP_TOTALT, 0, 0))) : casesPerMonthIn;
         ChartData chartData = convertToChartData(casesPerMonth);
         final Filter filter = filterSettings.getFilter();
         final FilterDataResponse filterResponse = new FilterDataResponse(filter);
@@ -107,7 +106,7 @@ public class SimpleDualSexConverter {
         }
 
         return TableData.createWithSingleHeadersRow(data,
-                Arrays.asList(tableGroupTitle, totalColumnName, femaleColumnName, maleColumnName));
+            Arrays.asList(tableGroupTitle, totalColumnName, femaleColumnName, maleColumnName));
     }
 
     protected List<Object> getMergedSexData(SimpleKonDataRow row) {
@@ -116,7 +115,7 @@ public class SimpleDualSexConverter {
         return Arrays.asList(female + male, female, male);
     }
 
-        @java.lang.SuppressWarnings("squid:S1172") // Parameter "row" is used by method in extending class
+    @java.lang.SuppressWarnings("squid:S1172") // Parameter "row" is used by method in extending class
     protected boolean isMarked(SimpleKonDataRow row) {
         return false;
     }

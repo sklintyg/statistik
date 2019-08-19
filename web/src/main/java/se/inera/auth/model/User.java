@@ -18,15 +18,14 @@
  */
 package se.inera.auth.model;
 
-import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
-import se.inera.statistics.hsa.model.HsaIdUser;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.hsa.model.Vardenhet;
-
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
+import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.hsa.model.Vardenhet;
 
 public class User implements Serializable {
 
@@ -39,7 +38,7 @@ public class User implements Serializable {
         this.hsaId = hsaId;
         this.name = name;
         this.vgsWithProcessledarStatus = vgsWithProcessledarStatus != null ? Collections.unmodifiableList(vgsWithProcessledarStatus)
-                : Collections.emptyList();
+            : Collections.emptyList();
         this.vardenhetList = vardenhetsList != null ? Collections.unmodifiableList(vardenhetsList) : Collections.emptyList();
     }
 
@@ -72,8 +71,8 @@ public class User implements Serializable {
 
     public List<Vardenhet> getVardenhetsForVg(HsaIdVardgivare vardgivare) {
         return vardenhetList.stream()
-                .filter(vardenhet -> vardenhet.getVardgivarId().equals(vardgivare))
-                .collect(Collectors.toList());
+            .filter(vardenhet -> vardenhet.getVardgivarId().equals(vardgivare))
+            .collect(Collectors.toList());
     }
 
 }

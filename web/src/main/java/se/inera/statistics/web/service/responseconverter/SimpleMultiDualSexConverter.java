@@ -18,12 +18,11 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import java.util.Map;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.service.FilterSettings;
-
-import java.util.Map;
 
 public class SimpleMultiDualSexConverter extends MultiDualSexConverter {
 

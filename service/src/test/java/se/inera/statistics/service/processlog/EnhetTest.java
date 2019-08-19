@@ -18,10 +18,10 @@
  */
 package se.inera.statistics.service.processlog;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 import se.inera.statistics.service.report.model.Kommun;
-
-import static org.junit.Assert.*;
 
 public class EnhetTest {
 

@@ -32,23 +32,17 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsNamesResponseType;
-import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit;
-import se.inera.ifv.hsawsresponder.v3.StatisticsNameInfo;
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 import se.inera.statistics.hsa.model.GetStatisticsCareGiverResponseDto;
 import se.inera.statistics.hsa.model.GetStatisticsHsaUnitResponseDto;
@@ -172,7 +166,8 @@ public class HSAServiceImplTest {
     }
 
     private HsaInfoEnhet getHsaInfoEnhet(String vgid) {
-        return new HsaInfoEnhet("", Arrays.asList(""), Arrays.asList(""), LocalDateTime.now(clock), LocalDateTime.now(clock), false, Arrays.asList(""), Arrays.asList(""), new HsaInfoEnhetGeo(new HsaInfoCoordinate("", "", ""), "", "", "", "", ""), vgid);
+        return new HsaInfoEnhet("", Arrays.asList(""), Arrays.asList(""), LocalDateTime.now(clock), LocalDateTime.now(clock), false,
+            Arrays.asList(""), Arrays.asList(""), new HsaInfoEnhetGeo(new HsaInfoCoordinate("", "", ""), "", "", "", "", ""), vgid);
     }
 
     @Test
@@ -201,7 +196,6 @@ public class HSAServiceImplTest {
         setupHsaWsCalls();
         final HsaInfo baseHsaInfo = new HsaInfo(null, getHsaInfoEnhet("cachedvgid"), getHsaInfoVg(), getHsaInfoPersonal());
 
-
         //When
         HsaInfo result = serviceImpl.getHSAInfo(new HSAKey("a", "b", "c"), baseHsaInfo);
 
@@ -210,7 +204,6 @@ public class HSAServiceImplTest {
         assertEquals("vgId", result.getHuvudenhet().getVgid());
         assertEquals(baseHsaInfo.getPersonal(), result.getPersonal());
         assertEquals(baseHsaInfo.getVardgivare(), result.getVardgivare());
-
 
         Mockito.verify(wsCalls, times(0)).getStatisticsCareGiver(anyString());
         Mockito.verify(wsCalls, times(1)).getStatisticsHsaUnit(anyString());
@@ -242,7 +235,6 @@ public class HSAServiceImplTest {
         setupHsaWsCalls();
         final HsaInfo baseHsaInfo = new HsaInfo(getHsaInfoEnhet(null), null, getHsaInfoVg(), getHsaInfoPersonal());
 
-
         //When
         HsaInfo result = serviceImpl.getHSAInfo(new HSAKey("a", "b", "c"), baseHsaInfo);
 
@@ -263,7 +255,6 @@ public class HSAServiceImplTest {
         setupHsaWsCalls();
         final HsaInfo baseHsaInfo = new HsaInfo(getHsaInfoEnhet("cachedvgid"), getHsaInfoEnhet("cachedvgid"), getHsaInfoVg(), null);
 
-
         //When
         final HsaInfo result = serviceImpl.getHSAInfo(new HSAKey("a", "b", "c"), baseHsaInfo);
 
@@ -272,7 +263,6 @@ public class HSAServiceImplTest {
         assertEquals(baseHsaInfo.getHuvudenhet(), result.getHuvudenhet());
         assertNotEquals(baseHsaInfo.getPersonal(), result.getPersonal());
         assertEquals(baseHsaInfo.getVardgivare(), result.getVardgivare());
-
 
         Mockito.verify(wsCalls, times(0)).getStatisticsCareGiver(anyString());
         Mockito.verify(wsCalls, times(0)).getStatisticsHsaUnit(anyString());
@@ -285,7 +275,6 @@ public class HSAServiceImplTest {
         //Given
         setupHsaWsCalls();
         final HsaInfo baseHsaInfo = new HsaInfo(getHsaInfoEnhet("cachedvgid"), getHsaInfoEnhet("cachedvgid"), null, getHsaInfoPersonal());
-
 
         //When
         final HsaInfo result = serviceImpl.getHSAInfo(new HSAKey("a", "b", "c"), baseHsaInfo);

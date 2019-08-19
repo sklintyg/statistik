@@ -18,26 +18,24 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
-import org.junit.Test;
-import se.inera.statistics.service.report.model.OverviewChartRow;
-import se.inera.statistics.service.report.model.OverviewChartRowExtended;
-import se.inera.statistics.service.report.model.OverviewResponse;
-import se.inera.statistics.service.report.model.OverviewKonsfordelning;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.util.AgeGroup;
-import se.inera.statistics.service.report.util.DiagnosisGroup;
-import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.service.report.util.Icd10RangeType;
-import se.inera.statistics.web.model.overview.DonutChartData;
-import se.inera.statistics.web.model.overview.SjukfallPerManadOverview;
-import se.inera.statistics.web.model.overview.OverviewData;
-import se.inera.statistics.web.model.overview.SickLeaveLengthOverview;
+import static org.junit.Assert.assertEquals;
 
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+import se.inera.statistics.service.report.model.OverviewChartRow;
+import se.inera.statistics.service.report.model.OverviewChartRowExtended;
+import se.inera.statistics.service.report.model.OverviewKonsfordelning;
+import se.inera.statistics.service.report.model.OverviewResponse;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.util.DiagnosisGroup;
+import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.report.util.Icd10RangeType;
+import se.inera.statistics.web.model.overview.DonutChartData;
+import se.inera.statistics.web.model.overview.OverviewData;
+import se.inera.statistics.web.model.overview.SickLeaveLengthOverview;
+import se.inera.statistics.web.model.overview.SjukfallPerManadOverview;
 
 public class OverviewConverterTest {
 
@@ -50,7 +48,8 @@ public class OverviewConverterTest {
         //Given
         int casesPerMonthProportionMale = 0;
         int casesPerMonthProportionFemale = 1;
-        OverviewKonsfordelning overviewKonsfordelning = new OverviewKonsfordelning(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range(clock));
+        OverviewKonsfordelning overviewKonsfordelning = new OverviewKonsfordelning(casesPerMonthProportionMale,
+            casesPerMonthProportionFemale, new Range(clock));
         int casesPerMonthAlteration = 2;
         List<OverviewChartRowExtended> diagnosisGroups = new ArrayList<>();
         List<OverviewChartRowExtended> ageGroups = new ArrayList<>();
@@ -61,8 +60,9 @@ public class OverviewConverterTest {
         List<OverviewChartRowExtended> perCounty = new ArrayList<>();
 
         //When
-        OverviewResponse resp = new OverviewResponse(overviewKonsfordelning, casesPerMonthAlteration, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
-                sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation, perCounty);
+        OverviewResponse resp = new OverviewResponse(overviewKonsfordelning, casesPerMonthAlteration, diagnosisGroups, ageGroups,
+            degreeOfSickLeaveGroups,
+            sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation, perCounty);
         OverviewData data = new OverviewConverter().convert(resp, Range.createForLastMonthsExcludingCurrent(3, clock));
 
         //Then
@@ -74,7 +74,8 @@ public class OverviewConverterTest {
         //Given
         int casesPerMonthProportionMale = 0;
         int casesPerMonthProportionFemale = 1;
-        OverviewKonsfordelning overviewKonsfordelning = new OverviewKonsfordelning(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range(clock));
+        OverviewKonsfordelning overviewKonsfordelning = new OverviewKonsfordelning(casesPerMonthProportionMale,
+            casesPerMonthProportionFemale, new Range(clock));
         int casesPerMonthAlteration = 2;
         List<OverviewChartRowExtended> diagnosisGroups = new ArrayList<>();
         diagnosisGroups.add(new OverviewChartRowExtended(String.valueOf(Icd10.icd10ToInt("A00-B99", Icd10RangeType.KAPITEL)), 1, -2, null));
@@ -91,8 +92,9 @@ public class OverviewConverterTest {
         perCounty.add(new OverviewChartRowExtended("countyName", 8, 9, null));
 
         //When
-        OverviewResponse resp = new OverviewResponse(overviewKonsfordelning, casesPerMonthAlteration, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
-                sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation, perCounty);
+        OverviewResponse resp = new OverviewResponse(overviewKonsfordelning, casesPerMonthAlteration, diagnosisGroups, ageGroups,
+            degreeOfSickLeaveGroups,
+            sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation, perCounty);
         OverviewData data = new OverviewConverter().convert(resp, Range.createForLastMonthsExcludingCurrent(3, clock));
 
         //Then

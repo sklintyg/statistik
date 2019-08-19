@@ -21,17 +21,18 @@ package se.inera.statistics.service.warehouse;
 import java.io.Serializable;
 
 public final class Diagnos implements Serializable {
-        private final int diagnoskapitel;
-        private final int diagnosavsnitt;
-        private final int diagnoskategori;
-        private final int diagnoskod;
 
-        Diagnos(int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod) {
-            this.diagnoskapitel = diagnoskapitel;
-            this.diagnosavsnitt = diagnosavsnitt;
-            this.diagnoskategori = diagnoskategori;
-            this.diagnoskod = diagnoskod;
-        }
+    private final int diagnoskapitel;
+    private final int diagnosavsnitt;
+    private final int diagnoskategori;
+    private final int diagnoskod;
+
+    Diagnos(int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod) {
+        this.diagnoskapitel = diagnoskapitel;
+        this.diagnosavsnitt = diagnosavsnitt;
+        this.diagnoskategori = diagnoskategori;
+        this.diagnoskod = diagnoskod;
+    }
 
     Diagnos(Fact fact) {
         this(fact.getDiagnoskapitel(), fact.getDiagnosavsnitt(), fact.getDiagnoskategori(), fact.getDiagnoskod());

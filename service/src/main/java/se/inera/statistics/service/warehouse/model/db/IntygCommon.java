@@ -26,13 +26,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.IntygType;
 
 @Entity
 @Table(name = IntygCommon.TABLE)
 public class IntygCommon {
+
     public static final String TABLE = "intygcommon";
 
     @Id
@@ -43,7 +43,8 @@ public class IntygCommon {
     private String enhet;
     private String patientid;
     private LocalDate signeringsdatum;
-    @Enumerated(EnumType.STRING) private IntygType intygtyp;
+    @Enumerated(EnumType.STRING)
+    private IntygType intygtyp;
     private String vardgivareId;
     private int kon;
     private EventType eventType;
@@ -54,7 +55,7 @@ public class IntygCommon {
 
     // CHECKSTYLE:OFF ParameterNumber
     public IntygCommon(String intygid, String patientid, LocalDate signeringsdatum, IntygType intygtyp, String enhet, String vardgivareId,
-                       int kon, EventType eventType, String dx, boolean sentToFk, String lakareId) {
+        int kon, EventType eventType, String dx, boolean sentToFk, String lakareId) {
         this.intygid = intygid;
         this.patientid = patientid;
         this.kon = kon;

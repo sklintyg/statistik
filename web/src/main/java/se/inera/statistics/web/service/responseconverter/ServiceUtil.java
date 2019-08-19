@@ -20,7 +20,6 @@ package se.inera.statistics.web.service.responseconverter;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.web.MessagesText;
@@ -28,7 +27,8 @@ import se.inera.statistics.web.model.NamedData;
 
 public final class ServiceUtil {
 
-    private ServiceUtil() { }
+    private ServiceUtil() {
+    }
 
     static List<Object> getMergedSexData(KonDataRow row) {
         List<Object> data = new ArrayList<>();

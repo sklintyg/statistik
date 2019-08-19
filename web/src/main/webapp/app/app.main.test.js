@@ -18,22 +18,21 @@
  */
 
 /* App Module */
-angular.module('StatisticsApp',                                                                                                                                          
+angular.module('StatisticsApp',
     ['ngRoute',
-     'ngCookies',
-     'ngSanitize',
-     'ui.bootstrap',
-     'underscore',
-     'StatisticsApp.constants',
-     'StatisticsApp.treeMultiSelector',
-     'StatisticsApp.businessFilter',
-     'dropzone',
-     'ngStorage',
-     'ngMockE2E']).run(
-
+      'ngCookies',
+      'ngSanitize',
+      'ui.bootstrap',
+      'underscore',
+      'StatisticsApp.constants',
+      'StatisticsApp.treeMultiSelector',
+      'StatisticsApp.businessFilter',
+      'dropzone',
+      'ngStorage',
+      'ngMockE2E']).run(
     /** @ngInject */
-    function ($httpBackend) {
-        'use strict';
-        $httpBackend.whenGET(/^\/api\/links/).respond(200);
-        $httpBackend.whenGET(/^.+\.html/).passThrough();
+    function($httpBackend) {
+      'use strict';
+      $httpBackend.whenGET(/^\/api\/links/).respond(200);
+      $httpBackend.whenGET(/^.+\.html/).passThrough();
     });

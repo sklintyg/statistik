@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -39,16 +38,16 @@ import se.inera.statistics.web.service.FilterSettings;
 public final class AndelKompletteringarTvarsnittConverter extends SimpleDualSexConverter {
 
     private AndelKompletteringarTvarsnittConverter(String tableGroupTitle, String seriesNameTemplate, String totalColumnName,
-                                                   String femaleColumnName, String maleColumnName) {
+        String femaleColumnName, String maleColumnName) {
         super(tableGroupTitle, seriesNameTemplate, totalColumnName, femaleColumnName, maleColumnName);
     }
 
     public static AndelKompletteringarTvarsnittConverter newTvarsnitt() {
         return new AndelKompletteringarTvarsnittConverter("",
-                "%1$s",
-                MessagesText.REPORT_COLUMN_ANDEL_INTYG_TOTALT,
-                MessagesText.REPORT_COLUMN_ANDEL_INTYG_FEMALE,
-                MessagesText.REPORT_COLUMN_ANDEL_INTYG_MALE);
+            "%1$s",
+            MessagesText.REPORT_COLUMN_ANDEL_INTYG_TOTALT,
+            MessagesText.REPORT_COLUMN_ANDEL_INTYG_FEMALE,
+            MessagesText.REPORT_COLUMN_ANDEL_INTYG_MALE);
     }
 
     @Override
@@ -72,7 +71,7 @@ public final class AndelKompletteringarTvarsnittConverter extends SimpleDualSexC
             categories.add(new ChartCategory(seriesName, isMarked(casesPerMonthRow)));
 
             final AndelExtras tot = casesPerMonthRow.getExtras() instanceof AndelExtras
-                    ? (AndelExtras) casesPerMonthRow.getExtras() : new AndelExtras(0, 0, 0, 0);
+                ? (AndelExtras) casesPerMonthRow.getExtras() : new AndelExtras(0, 0, 0, 0);
             final boolean emptyTot = tot.getWhole() == 0;
             final int total = emptyTot ? 0 : AndelKompletteringarConverter.PERCENTAGE_CONVERT * tot.getPart() / tot.getWhole();
             totals.add(total);
@@ -91,7 +90,7 @@ public final class AndelKompletteringarTvarsnittConverter extends SimpleDualSexC
     protected List<Object> getMergedSexData(SimpleKonDataRow row) {
         List<Object> data = new ArrayList<>();
         final AndelExtras tot = row.getExtras() instanceof AndelExtras
-                ? (AndelExtras) row.getExtras() : new AndelExtras(0, 0, 0, 0);
+            ? (AndelExtras) row.getExtras() : new AndelExtras(0, 0, 0, 0);
         final int total = tot.getWhole() == 0 ? 0 : AndelKompletteringarConverter.PERCENTAGE_CONVERT * tot.getPart() / tot.getWhole();
         data.add(total + "%");
         data.add(row.getFemale() + "%");

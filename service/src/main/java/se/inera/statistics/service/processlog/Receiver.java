@@ -18,11 +18,10 @@
  */
 package se.inera.statistics.service.processlog;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.fasterxml.jackson.databind.JsonNode;
 import se.inera.intygstjanster.ts.services.RegisterTSBasResponder.v1.RegisterTSBasType;
 import se.inera.intygstjanster.ts.services.RegisterTSDiabetesResponder.v1.RegisterTSDiabetesType;
 import se.inera.statistics.service.helper.JSONParser;
@@ -33,6 +32,7 @@ import se.inera.statistics.service.hsa.HSADecorator;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 
 public class Receiver {
+
     private static final Logger LOG = LoggerFactory.getLogger(Receiver.class);
 
     @Autowired

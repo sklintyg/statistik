@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonField;
 
@@ -59,8 +57,7 @@ public class CountyPopulationFetcher {
     /**
      * Fetch population per county from SCb for a specific year.
      *
-     * @param year
-     *            Which years population will be fetched
+     * @param year Which years population will be fetched
      * @return An empty optional if no population for the requested yer was found, otherwise the populations per county
      */
     public Optional<CountyPopulation> getPopulationFor(int year) {
@@ -86,7 +83,7 @@ public class CountyPopulationFetcher {
         final String[] rows = result.split("(\\r\\n|\\r|\\n)");
         validateScbResponseHeaders(rows[0], year);
         final Map<String, List<ScbRow>> rowsPerCounty = Arrays.stream(rows).skip(1).map(this::parseScbRow)
-                .collect(Collectors.groupingBy(scbRow -> scbRow.countyId));
+            .collect(Collectors.groupingBy(scbRow -> scbRow.countyId));
         return rowsPerCounty.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> toKonField(e.getValue())));
     }
 
@@ -116,7 +113,7 @@ public class CountyPopulationFetcher {
     }
 
     @java.lang.SuppressWarnings("squid:UnusedPrivateMethod") // SONAR reports this method as not used due to
-                                                             // https://jira.sonarsource.com/browse/SONARJAVA-583
+    // https://jira.sonarsource.com/browse/SONARJAVA-583
     private ScbRow parseScbRow(String row) {
         final String[] rowFields = splitStringAndRemoveQuotationMarks(row);
         final String countyId = rowFields[0].substring(0, 2);
@@ -133,6 +130,7 @@ public class CountyPopulationFetcher {
     }
 
     private static final class ScbRow {
+
         private String countyId;
         private Kon gender;
         private int amount;
@@ -164,7 +162,7 @@ public class CountyPopulationFetcher {
 
     private static String readTemplate(String path) {
         try (BufferedReader in = new BufferedReader(
-                new InputStreamReader(CountyPopulationFetcher.class.getResourceAsStream(path), "utf8"))) {
+            new InputStreamReader(CountyPopulationFetcher.class.getResourceAsStream(path), "utf8"))) {
             StringBuilder sb = new StringBuilder();
             for (String line = in.readLine(); line != null; line = in.readLine()) {
                 sb.append(line).append('\n');

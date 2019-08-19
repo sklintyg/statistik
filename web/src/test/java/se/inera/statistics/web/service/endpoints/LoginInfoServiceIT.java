@@ -18,6 +18,13 @@
  */
 package se.inera.statistics.web.service.endpoints;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.Arrays;
+import java.util.Collections;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,16 +43,8 @@ import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.VerksamhetsTyp;
 import se.inera.statistics.web.model.LoginInfo;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.Collections;
-
-import static org.junit.Assert.assertEquals;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:logininfo-integration-test.xml", "classpath:icd10.xml"  })
+@ContextConfiguration(locations = {"classpath:logininfo-integration-test.xml", "classpath:icd10.xml"})
 @DirtiesContext
 public class LoginInfoServiceIT {
 
@@ -63,14 +62,16 @@ public class LoginInfoServiceIT {
         final User user = new User(new HsaIdUser("USERID"), "UserName", Collections.emptyList(), Arrays.asList(vardenhet));
         AuthUtil.setUserToSecurityContext(user);
 
-        manager.persist(new Enhet(new HsaIdVardgivare("VG2"), new HsaIdEnhet("ENHETID"), "EnhetNamn", Lan.OVRIGT_ID, Kommun.OVRIGT_ID, VerksamhetsTyp.OVRIGT_ID));
+        manager.persist(new Enhet(new HsaIdVardgivare("VG2"), new HsaIdEnhet("ENHETID"), "EnhetNamn", Lan.OVRIGT_ID, Kommun.OVRIGT_ID,
+            VerksamhetsTyp.OVRIGT_ID));
 
         //When
         final LoginInfo loginInfo = loginInfoService.getLoginInfo();
 
         //Then
         final String expected = Arrays.toString(Collections.singleton(VerksamhetsTyp.OVRIGT_ID).toArray());
-        final String actual = Arrays.toString(loginInfo.getBusinessesForVg(new HsaIdVardgivare("VG1")).get(0).getVerksamhetsTyper().toArray());
+        final String actual = Arrays
+            .toString(loginInfo.getBusinessesForVg(new HsaIdVardgivare("VG1")).get(0).getVerksamhetsTyper().toArray());
         assertEquals(expected, actual);
     }
 

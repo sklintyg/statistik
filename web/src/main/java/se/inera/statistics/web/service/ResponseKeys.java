@@ -28,5 +28,6 @@ public final class ResponseKeys {
 
     public static final String FILTERED_ENHETS = "filteredEnhets";
 
-    private ResponseKeys() { }
+    private ResponseKeys() {
+    }
 }

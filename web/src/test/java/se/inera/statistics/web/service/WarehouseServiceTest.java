@@ -18,11 +18,15 @@
  */
 package se.inera.statistics.web.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.eq;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Predicate;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -30,7 +34,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Enhet;
@@ -48,11 +51,6 @@ import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
 import se.inera.statistics.service.warehouse.query.OverviewQuery;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.web.util.SpyableClock;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.eq;
 
 public class WarehouseServiceTest {
 
@@ -94,7 +92,9 @@ public class WarehouseServiceTest {
         rows.add(new SimpleKonDataRow("CBA", 0, 0, 3));
         final SimpleKonResponse response = new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
         final Range range = new Range(clock);
-        Mockito.when(sjukfallQuery.getSjukfallPerEnhet(null, null, range.getFrom(), 1, range.getNumberOfMonths(), null, CutoffUsage.DO_NOT_APPLY_CUTOFF)).thenReturn(response);
+        Mockito.when(sjukfallQuery
+            .getSjukfallPerEnhet(null, null, range.getFrom(), 1, range.getNumberOfMonths(), null, CutoffUsage.DO_NOT_APPLY_CUTOFF))
+            .thenReturn(response);
 
         //When
         final SimpleKonResponse casesPerEnhet = warehouseService.getCasesPerEnhet(null, null, range, null);
@@ -111,7 +111,7 @@ public class WarehouseServiceTest {
         //Given
         final Predicate predicate = Mockito.mock(Predicate.class);
         final String testhash = "testhash";
-        final FilterPredicates predicate1 =  new FilterPredicates(predicate, sjukfall -> true, testhash, false);
+        final FilterPredicates predicate1 = new FilterPredicates(predicate, sjukfall -> true, testhash, false);
         final ArrayList<HsaIdEnhet> enheter = new ArrayList<>();
         final ArrayList<String> diagnoser = new ArrayList<>();
         final Filter filter = new Filter(predicate1, enheter, diagnoser, null, null, testhash, null, true);
@@ -122,8 +122,11 @@ public class WarehouseServiceTest {
         rows.add(new SimpleKonDataRow("abc", 0, 0, 2));
         rows.add(new SimpleKonDataRow("CBA", 0, 0, 3));
         final SimpleKonResponse simpleKonResponse = new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
-        Mockito.when(sjukfallQuery.getSjukfallPerEnhet(any(Aisle.class), eq(predicate1), eq(range.getFrom()), anyInt(), eq(range.getNumberOfMonths()), any(Map.class), eq(CutoffUsage.APPLY_CUTOFF_PER_SEX))).thenReturn(simpleKonResponse);
-        Mockito.when(enhetManager.getEnhets(enheter)).thenReturn(Arrays.asList(new Enhet(new HsaIdVardgivare("1"), new HsaIdEnhet("e1"), "namne1", "1", "1", "")));
+        Mockito.when(sjukfallQuery
+            .getSjukfallPerEnhet(any(Aisle.class), eq(predicate1), eq(range.getFrom()), anyInt(), eq(range.getNumberOfMonths()),
+                any(Map.class), eq(CutoffUsage.APPLY_CUTOFF_PER_SEX))).thenReturn(simpleKonResponse);
+        Mockito.when(enhetManager.getEnhets(enheter))
+            .thenReturn(Arrays.asList(new Enhet(new HsaIdVardgivare("1"), new HsaIdEnhet("e1"), "namne1", "1", "1", "")));
 
         //When
         final SimpleKonResponse result = warehouseService.getCasesPerEnhetRegion(filterSettings);
@@ -151,8 +154,11 @@ public class WarehouseServiceTest {
         rows.add(new SimpleKonDataRow("abc", 0, 0, 2));
         rows.add(new SimpleKonDataRow("CBA", 0, 0, 3));
         final SimpleKonResponse simpleKonResponse = new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
-        Mockito.when(sjukfallQuery.getSjukfallPerEnhet(any(Aisle.class), eq(predicate1), eq(range.getFrom()), anyInt(), eq(range.getNumberOfMonths()), any(Map.class), eq(CutoffUsage.APPLY_CUTOFF_ON_TOTAL))).thenReturn(simpleKonResponse);
-        Mockito.when(enhetManager.getEnhets(enheter)).thenReturn(Arrays.asList(new Enhet(new HsaIdVardgivare("1"), new HsaIdEnhet("e1"), "namne1", "1", "1", "")));
+        Mockito.when(sjukfallQuery
+            .getSjukfallPerEnhet(any(Aisle.class), eq(predicate1), eq(range.getFrom()), anyInt(), eq(range.getNumberOfMonths()),
+                any(Map.class), eq(CutoffUsage.APPLY_CUTOFF_ON_TOTAL))).thenReturn(simpleKonResponse);
+        Mockito.when(enhetManager.getEnhets(enheter))
+            .thenReturn(Arrays.asList(new Enhet(new HsaIdVardgivare("1"), new HsaIdEnhet("e1"), "namne1", "1", "1", "")));
 
         //When
         final SimpleKonResponse result = warehouseService.getCasesPerPatientsPerEnhetRegion(filterSettings);

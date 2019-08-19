@@ -18,15 +18,17 @@
  */
 package se.inera.statistics.service.schemavalidation;
 
-import org.junit.Test;
-import se.inera.statistics.service.helper.certificate.RegisterCertificateHelper;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+import org.junit.Test;
+import se.inera.statistics.service.helper.certificate.RegisterCertificateHelper;
+
 public class LisjpValidatorTest {
 
-    private final String INTYG_WITH_EMPTY_351 = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ns2:RegisterCertificate xmlns:ns2=\"urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:2\">\n" +
+    private final String INTYG_WITH_EMPTY_351 =
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ns2:RegisterCertificate xmlns:ns2=\"urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:2\">\n"
+            +
             "  <ns2:intyg>\n" +
             "    <intygs-id xmlns=\"urn:riv:clinicalprocess:healthcond:certificate:2\">\n" +
             "      <ns3:root xmlns:ns3=\"urn:riv:clinicalprocess:healthcond:certificate:types:2\">123456789</ns3:root>\n" +
@@ -34,11 +36,14 @@ public class LisjpValidatorTest {
             "    </intygs-id>\n" +
             "    <typ xmlns=\"urn:riv:clinicalprocess:healthcond:certificate:2\">\n" +
             "      <ns3:code xmlns:ns3=\"urn:riv:clinicalprocess:healthcond:certificate:types:2\">LISJP</ns3:code>\n" +
-            "      <ns3:codeSystem xmlns:ns3=\"urn:riv:clinicalprocess:healthcond:certificate:types:2\">b64ea353-e8f6-4832-b563-fc7d46f29548</ns3:codeSystem>\n" +
-            "      <ns3:displayName xmlns:ns3=\"urn:riv:clinicalprocess:healthcond:certificate:types:2\">Läkarintyg för sjukpenning</ns3:displayName>\n" +
+            "      <ns3:codeSystem xmlns:ns3=\"urn:riv:clinicalprocess:healthcond:certificate:types:2\">b64ea353-e8f6-4832-b563-fc7d46f29548</ns3:codeSystem>\n"
+            +
+            "      <ns3:displayName xmlns:ns3=\"urn:riv:clinicalprocess:healthcond:certificate:types:2\">Läkarintyg för sjukpenning</ns3:displayName>\n"
+            +
             "    </typ>\n" +
             "    <version xmlns=\"urn:riv:clinicalprocess:healthcond:certificate:2\">1</version>\n" +
-            "    <signeringstidpunkt xmlns=\"urn:riv:clinicalprocess:healthcond:certificate:2\">2017-04-10T15:34:45</signeringstidpunkt>\n" +
+            "    <signeringstidpunkt xmlns=\"urn:riv:clinicalprocess:healthcond:certificate:2\">2017-04-10T15:34:45</signeringstidpunkt>\n"
+            +
             "    <skickatTidpunkt xmlns=\"urn:riv:clinicalprocess:healthcond:certificate:2\">2015-12-07T15:48:05</skickatTidpunkt>\n" +
             "    <patient xmlns=\"urn:riv:clinicalprocess:healthcond:certificate:2\">\n" +
             "      <person-id>\n" +
@@ -54,17 +59,20 @@ public class LisjpValidatorTest {
             "    <skapadAv xmlns=\"urn:riv:clinicalprocess:healthcond:certificate:2\">\n" +
             "      <personal-id>\n" +
             "        <ns3:root xmlns:ns3=\"urn:riv:clinicalprocess:healthcond:certificate:types:2\">1.2.752.129.2.1.4.1</ns3:root>\n" +
-            "        <ns3:extension xmlns:ns3=\"urn:riv:clinicalprocess:healthcond:certificate:types:2\">Personal HSA-ID</ns3:extension>\n" +
+            "        <ns3:extension xmlns:ns3=\"urn:riv:clinicalprocess:healthcond:certificate:types:2\">Personal HSA-ID</ns3:extension>\n"
+            +
             "      </personal-id>\n" +
             "      <fullstandigtNamn>Karl Karlsson</fullstandigtNamn>\n" +
             "      <forskrivarkod>09874321</forskrivarkod>\n" +
             "      <befattning>\n" +
             "        <ns3:code xmlns:ns3=\"urn:riv:clinicalprocess:healthcond:certificate:types:2\">Klinikchef</ns3:code>\n" +
-            "        <ns3:codeSystem xmlns:ns3=\"urn:riv:clinicalprocess:healthcond:certificate:types:2\">1.2.752.129.2.2.1.4</ns3:codeSystem>\n" +
+            "        <ns3:codeSystem xmlns:ns3=\"urn:riv:clinicalprocess:healthcond:certificate:types:2\">1.2.752.129.2.2.1.4</ns3:codeSystem>\n"
+            +
             "      </befattning>\n" +
             "      <befattning>\n" +
             "        <ns3:code xmlns:ns3=\"urn:riv:clinicalprocess:healthcond:certificate:types:2\">Forskningsledare</ns3:code>\n" +
-            "        <ns3:codeSystem xmlns:ns3=\"urn:riv:clinicalprocess:healthcond:certificate:types:2\">1.2.752.129.2.2.1.4</ns3:codeSystem>\n" +
+            "        <ns3:codeSystem xmlns:ns3=\"urn:riv:clinicalprocess:healthcond:certificate:types:2\">1.2.752.129.2.2.1.4</ns3:codeSystem>\n"
+            +
             "      </befattning>\n" +
             "      <enhet>\n" +
             "        <enhets-id>\n" +

@@ -18,6 +18,19 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static se.inera.statistics.service.warehouse.FactBuilder.aFact;
+import static se.inera.statistics.service.warehouse.WidelineConverter.toDay;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -26,7 +39,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -37,9 +49,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.test.util.ReflectionTestUtils;
-
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -60,17 +69,6 @@ import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.MutableAisle;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.SjukfallUtilTest;
-
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static se.inera.statistics.service.warehouse.FactBuilder.aFact;
-import static se.inera.statistics.service.warehouse.WidelineConverter.toDay;
 
 public class SjukfallQueryTest {
 
@@ -138,12 +136,12 @@ public class SjukfallQueryTest {
                 case "Agata Adamsson":
                     assertEquals(1, lakareRow.getDataForSex(Kon.FEMALE));
                     assertEquals(0, lakareRow.getDataForSex(Kon.MALE));
-                    checksum +=1;
+                    checksum += 1;
                     break;
                 case "Beata Bertilsson":
                     assertEquals(0, lakareRow.getDataForSex(Kon.FEMALE));
                     assertEquals(1, lakareRow.getDataForSex(Kon.MALE));
-                    checksum +=2;
+                    checksum += 2;
                     break;
                 default:
                     throw new RuntimeException("Unexpected doctor name: " + lakareRow.getName());
@@ -171,12 +169,12 @@ public class SjukfallQueryTest {
                 case "Agata Adamsson":
                     assertEquals(1, lakareRow.getDataForSex(Kon.FEMALE));
                     assertEquals(0, lakareRow.getDataForSex(Kon.MALE));
-                    checksum +=1;
+                    checksum += 1;
                     break;
                 case "Beata Bertilsson":
                     assertEquals(1, lakareRow.getDataForSex(Kon.FEMALE));
                     assertEquals(0, lakareRow.getDataForSex(Kon.MALE));
-                    checksum +=2;
+                    checksum += 2;
                     break;
                 default:
                     throw new RuntimeException("Unexpected doctor name: " + lakareRow.getName());
@@ -193,7 +191,9 @@ public class SjukfallQueryTest {
         aisle.addLine(fact(PATIENT1_ID, PATIENT1_KON, LAKARE3_ID));
 
         // When
-        SimpleKonResponse result = sjukfallQuery.getSjukfallPerLakare(aisle.createAisle(), SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID), range.getFrom(), 1, 12);
+        SimpleKonResponse result = sjukfallQuery
+            .getSjukfallPerLakare(aisle.createAisle(), SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID), range.getFrom(),
+                1, 12);
 
         // Then
         assertEquals(2, result.getRows().size());
@@ -203,12 +203,12 @@ public class SjukfallQueryTest {
                 case "Beata Bertilsson LAKARE2":
                     assertEquals(1, lakareRow.getDataForSex(Kon.FEMALE));
                     assertEquals(0, lakareRow.getDataForSex(Kon.MALE));
-                    checksum +=1;
+                    checksum += 1;
                     break;
                 case "Beata Bertilsson LAKARE3":
                     assertEquals(1, lakareRow.getDataForSex(Kon.FEMALE));
                     assertEquals(0, lakareRow.getDataForSex(Kon.MALE));
-                    checksum +=2;
+                    checksum += 2;
                     break;
                 default:
                     throw new RuntimeException("Unexpected doctor name: " + lakareRow.getName());
@@ -246,12 +246,12 @@ public class SjukfallQueryTest {
     }
 
     private Fact fact(int patientId, Kon patientKon, HsaIdLakare lakareId) {
-         return aFact().withId(1).withLan(3).withKommun(380).withForsamling(38002).
-                withEnhet(ENHET1_ID).withLakarintyg(lakarIntygCounter++).
-                withPatient(patientId).withKon(patientKon).withAlder(45).
-                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
-                withSjukskrivningsgrad(100).withStartdatum(toDay(sjukfallDate)).withSlutdatum(toDay(sjukfallDate) + 46).
-                 withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(lakareId).build();
+        return aFact().withId(1).withLan(3).withKommun(380).withForsamling(38002).
+            withEnhet(ENHET1_ID).withLakarintyg(lakarIntygCounter++).
+            withPatient(patientId).withKon(patientKon).withAlder(45).
+            withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
+            withSjukskrivningsgrad(100).withStartdatum(toDay(sjukfallDate)).withSlutdatum(toDay(sjukfallDate) + 46).
+            withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(lakareId).build();
     }
 
     @Test
@@ -260,8 +260,9 @@ public class SjukfallQueryTest {
         final Clock clock = Clock.systemDefaultZone();
         final SjukfallUtil sjukfallUtilMock = Mockito.mock(SjukfallUtil.class);
         Mockito.when(sjukfallUtilMock.calculateKonDataResponse(any(Aisle.class), any(FilterPredicates.class), any(LocalDate.class),
-                anyInt(), anyInt(), anyListOf(String.class), anyListOf(Object.class), any(CounterFunction.class)))
-                .thenReturn(new KonDataResponse(AvailableFilters.getForSjukfall(), Collections.<String>emptyList(), Collections.<KonDataRow>emptyList()));
+            anyInt(), anyInt(), anyListOf(String.class), anyListOf(Object.class), any(CounterFunction.class)))
+            .thenReturn(new KonDataResponse(AvailableFilters.getForSjukfall(), Collections.<String>emptyList(),
+                Collections.<KonDataRow>emptyList()));
         ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtilMock);
 
         final FilterPredicates filter = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
@@ -276,7 +277,9 @@ public class SjukfallQueryTest {
         sjukfallQuery.getSjukfallPerEnhetSeries(currentAisle, filter, start, periods, periodSize, idsToNames);
 
         //Then
-        Mockito.verify(sjukfallUtilMock).calculateKonDataResponse(eq(currentAisle), eq(filter), eq(start), eq(periods), eq(periodSize), names.capture(), ids.capture(), Matchers.<CounterFunction<Object>>any());
+        Mockito.verify(sjukfallUtilMock)
+            .calculateKonDataResponse(eq(currentAisle), eq(filter), eq(start), eq(periods), eq(periodSize), names.capture(), ids.capture(),
+                Matchers.<CounterFunction<Object>>any());
         assertEquals("-1", names.getValue().get(0));
         assertEquals(new HsaIdEnhet("-1"), ids.getValue().get(0));
     }
@@ -286,10 +289,11 @@ public class SjukfallQueryTest {
         //Given
         final Clock clock = Clock.systemDefaultZone();
         final SjukfallUtil sjukfallUtilMock = Mockito.mock(SjukfallUtil.class);
-        final KonDataResponse konDataResponse = new KonDataResponse(AvailableFilters.getForSjukfall(), Arrays.asList("1", "2", "3"), Collections.<KonDataRow>emptyList());
+        final KonDataResponse konDataResponse = new KonDataResponse(AvailableFilters.getForSjukfall(), Arrays.asList("1", "2", "3"),
+            Collections.<KonDataRow>emptyList());
         Mockito.when(sjukfallUtilMock.calculateKonDataResponse(any(Aisle.class), any(FilterPredicates.class), any(LocalDate.class),
-                anyInt(), anyInt(), anyListOf(String.class), anyListOf(Object.class), any(CounterFunction.class)))
-                .thenReturn(konDataResponse);
+            anyInt(), anyInt(), anyListOf(String.class), anyListOf(Object.class), any(CounterFunction.class)))
+            .thenReturn(konDataResponse);
         ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtilMock);
         final FilterPredicates enhetFilterFromInternalIntValues = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
         final HashMap<HsaIdEnhet, String> idsToNames = new HashMap<>();
@@ -298,7 +302,8 @@ public class SjukfallQueryTest {
         idsToNames.put(new HsaIdEnhet("3"), "ABC");
 
         //When
-        final KonDataResponse result = sjukfallQuery.getSjukfallPerEnhetSeries(aisle.createAisle(), enhetFilterFromInternalIntValues, LocalDate.now(clock), 1, 2, idsToNames);
+        final KonDataResponse result = sjukfallQuery
+            .getSjukfallPerEnhetSeries(aisle.createAisle(), enhetFilterFromInternalIntValues, LocalDate.now(clock), 1, 2, idsToNames);
 
         //Then
         assertEquals(3, result.getGroups().size());

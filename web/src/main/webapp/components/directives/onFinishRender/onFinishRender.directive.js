@@ -17,15 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-angular.module('StatisticsApp').directive('onFinishRender', function () {
-    'use strict';
+angular.module('StatisticsApp').directive('onFinishRender', function() {
+  'use strict';
 
-    return {
-        restrict: 'A',
-        link: function (scope, element, attr) {
-            if (scope.$last === true) {
-                scope.$evalAsync(attr.onFinishRender);
-            }
-        }
-    };
+  return {
+    restrict: 'A',
+    link: function(scope, element, attr) {
+      if (scope.$last === true) {
+        scope.$evalAsync(attr.onFinishRender);
+      }
+    }
+  };
 });

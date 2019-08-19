@@ -18,6 +18,16 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static se.inera.statistics.service.warehouse.FactBuilder.aFact;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -40,17 +50,6 @@ import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.WidelineLoader;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static se.inera.statistics.service.warehouse.FactBuilder.aFact;
 
 public class AldersgruppQueryTest {
 
@@ -83,12 +82,13 @@ public class AldersgruppQueryTest {
         fact(4010, 10, 45);
         Mockito.when(widelineLoader.getAilesForVgs(any())).thenReturn(Collections.singletonList(new Aisle(VARDGIVARE, facts)));
         Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
-        Map<Ranges.Range,Counter<Ranges.Range>> count = AldersgruppQuery.count(sjukfall, AldersgruppQuery.RANGES);
+        Map<Ranges.Range, Counter<Ranges.Range>> count = AldersgruppQuery.count(sjukfall, AldersgruppQuery.RANGES);
         assertEquals(1, count.get(AldersgroupUtil.RANGES.rangeFor("41-45 år")).getCount());
     }
 
     private Collection<Sjukfall> calculateSjukfallsHelper(Aisle aisle) {
-        return sjukfallUtil.sjukfallGrupper(LocalDate.of(2000, 1, 1), 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next().getSjukfall();
+        return sjukfallUtil.sjukfallGrupper(LocalDate.of(2000, 1, 1), 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next()
+            .getSjukfall();
     }
 
     @Test
@@ -120,11 +120,11 @@ public class AldersgruppQueryTest {
 
     private void fact(int startday, int length, int alder) {
         Fact fact = aFact().withId(1).withLan(3).withKommun(380).withForsamling(38002).
-                withEnhet(1).withLakarintyg(intyg++).
-                withPatient(patient++).withKon(Kon.FEMALE).withAlder(alder).
-                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
-                withSjukskrivningsgrad(100).withStartdatum(startday).withSlutdatum(startday + length - 1).
-                withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).build();
+            withEnhet(1).withLakarintyg(intyg++).
+            withPatient(patient++).withKon(Kon.FEMALE).withAlder(alder).
+            withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
+            withSjukskrivningsgrad(100).withStartdatum(startday).withSlutdatum(startday + length - 1).
+            withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).build();
         facts.add(fact);
     }
 

@@ -18,26 +18,21 @@
  */
 package se.inera.statistics.service.hsa;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsNamesResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonResponseType;
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 import se.inera.statistics.hsa.model.GetStatisticsCareGiverResponseDto;
 import se.inera.statistics.hsa.model.GetStatisticsHsaUnitResponseDto;
 import se.inera.statistics.hsa.model.GetStatisticsNamesResponseDto;
 import se.inera.statistics.hsa.model.GetStatisticsPersonResponseDto;
 import se.inera.statistics.service.caching.Cache;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 public class HsaWebServiceCachedTest {
 

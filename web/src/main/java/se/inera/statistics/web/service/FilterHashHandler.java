@@ -18,24 +18,23 @@
  */
 package se.inera.statistics.web.service;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Optional;
-
-import org.apache.commons.codec.digest.DigestUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Optional;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.user.UserSelection;
 import se.inera.statistics.service.user.UserSelectionManager;
 
 public class FilterHashHandler {
+
     private static final Logger LOG = LoggerFactory.getLogger(FilterHashHandler.class);
 
     @Autowired
@@ -89,7 +88,7 @@ public class FilterHashHandler {
             final String toDate = rootNode.path("toDate").asText().isEmpty() ? null : rootNode.path("toDate").asText();
             final boolean useDefaultPeriod = rootNode.path("useDefaultPeriod").asBoolean(true);
             return new FilterData(diagnoser, enheter, sjukskrivningslangd, aldersgrupp, intygstyper, fromDate, toDate,
-                    useDefaultPeriod);
+                useDefaultPeriod);
         } catch (IOException e) {
             LOG.error("Failed to parse filter data: " + filterDataString, e);
             throw new FilterHashParseException("Filter data failed");

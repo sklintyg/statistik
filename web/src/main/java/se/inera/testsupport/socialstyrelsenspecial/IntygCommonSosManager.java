@@ -18,6 +18,7 @@
  */
 package se.inera.testsupport.socialstyrelsenspecial;
 
+import com.google.common.collect.HashMultiset;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,8 +32,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-
-import com.google.common.collect.HashMultiset;
 import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -95,10 +94,10 @@ public class IntygCommonSosManager {
     }
 
     public KonDataResponse getIntygPerAgeGroupSocAggregate(KonDataResponse resultToAggregateIn, HsaIdVardgivare vardgivarId,
-                                                           int year, int cutoff) {
+        int year, int cutoff) {
         final KonDataResponse messagesTvarsnittPerAmne = getIntygPerAgeGroupSoc(vardgivarId, year);
         final KonDataResponse resultToAggregate = resultToAggregateIn != null
-                ? resultToAggregateIn : ResponseUtil.createEmptyKonDataResponse(messagesTvarsnittPerAmne);
+            ? resultToAggregateIn : ResponseUtil.createEmptyKonDataResponse(messagesTvarsnittPerAmne);
         Iterator<KonDataRow> rowsNew = messagesTvarsnittPerAmne.getRows().iterator();
         Iterator<KonDataRow> rowsOld = resultToAggregate.getRows().iterator();
         List<KonDataRow> list = ResponseUtil.getKonDataRows(1, rowsNew, rowsOld, cutoff);
@@ -106,8 +105,8 @@ public class IntygCommonSosManager {
     }
 
     private <T> KonDataResponse calculateKonDataResponseSoc(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter,
-                                                            boolean isTvarsnitt, List<String> groupNames, List<T> groupIds,
-                                                            CounterFunctionIntyg<T> counterFunction, List<IntygType> intygTypes) {
+        boolean isTvarsnitt, List<String> groupNames, List<T> groupIds,
+        CounterFunctionIntyg<T> counterFunction, List<IntygType> intygTypes) {
         List<KonDataRow> rows = new ArrayList<>();
         final List<IntygCommonGroup> intygCommonGroups = getIntygCommonGroupsSoc(vardgivarId, intygFilter, isTvarsnitt, intygTypes);
         for (IntygCommonGroup intygCommonGroup : intygCommonGroups) {
@@ -129,7 +128,7 @@ public class IntygCommonSosManager {
     }
 
     private List<IntygCommonGroup> getIntygCommonGroupsSoc(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter,
-            boolean isTvarsnitt, List<IntygType> intygTypes) {
+        boolean isTvarsnitt, List<IntygType> intygTypes) {
         List<IntygCommonGroup> intygCommonGroups = new ArrayList<>();
         final Range range = intygFilter.getRange();
         IntygCommonGroup intygCommonGroup = getIntygCommonGroupSoc(range, vardgivarId, intygFilter, intygTypes);
@@ -146,17 +145,17 @@ public class IntygCommonSosManager {
     }
 
     private IntygCommonGroup getIntygCommonGroupSoc(Range range, HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter,
-            List<IntygType> intygTypes) {
+        List<IntygType> intygTypes) {
 
         final List<IntygType> allIntygTypes = Arrays.asList(IntygType.values());
         List<IntygType> intygTypeFilter = intygFilter.getIntygstyper() != null && !intygFilter.getIntygstyper().isEmpty()
-                ? intygFilter.getIntygstyper().stream()
-                    .map(IntygType::getByName).filter(Optional::isPresent).map(Optional::get)
-                    .flatMap(intygType -> intygType.getUnmappedTypes().stream())
-                    .collect(Collectors.toList())
-                : allIntygTypes;
+            ? intygFilter.getIntygstyper().stream()
+            .map(IntygType::getByName).filter(Optional::isPresent).map(Optional::get)
+            .flatMap(intygType -> intygType.getUnmappedTypes().stream())
+            .collect(Collectors.toList())
+            : allIntygTypes;
         final List<IntygType> intygTypesToQuery = (intygTypes != null ? intygTypes : allIntygTypes).stream()
-                .filter(intygTypeFilter::contains).collect(Collectors.toList());
+            .filter(intygTypeFilter::contains).collect(Collectors.toList());
 
         final int fromDay = WidelineConverter.toDay(range.getFrom());
         final int toDay = WidelineConverter.toDay(range.getTo());

@@ -18,17 +18,17 @@
  */
 package se.inera.statistics.web.scheduler;
 
+import net.javacrumbs.shedlock.core.SchedulerLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
-
-import net.javacrumbs.shedlock.core.SchedulerLock;
 import se.inera.intyg.infra.integration.ia.model.Application;
 import se.inera.intyg.infra.integration.ia.services.IABannerService;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
 
 public class BannerJob {
+
     private static final Logger LOG = LoggerFactory.getLogger(BannerJob.class);
     private static final String JOB_NAME = "BannerJob.run";
 

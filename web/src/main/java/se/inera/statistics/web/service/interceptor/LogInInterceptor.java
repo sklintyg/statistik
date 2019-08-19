@@ -18,13 +18,11 @@
  */
 package se.inera.statistics.web.service.interceptor;
 
+import com.google.common.base.Strings;
 import java.util.Arrays;
 import java.util.List;
-
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingMessage;
-
-import com.google.common.base.Strings;
 
 public class LogInInterceptor extends LoggingInInterceptor {
 

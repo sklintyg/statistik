@@ -20,16 +20,15 @@ package se.inera.statistics.service.warehouse.sjukfallcalc;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.SjukfallExtended;
 import se.inera.statistics.service.warehouse.sjukfallcalc.extend.SjukfallMerger;
 import se.inera.statistics.service.warehouse.sjukfallcalc.perpatient.FactsToSjukfallConverter;
 import se.inera.statistics.service.warehouse.sjukfallcalc.perpatient.FactsToSjukfallConverterForAisle;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 class SjukfallCalculatorExtender {
 
@@ -44,14 +43,14 @@ class SjukfallCalculatorExtender {
     void extendSjukfallConnectedByIntygOnOtherEnhets(Multimap<Long, SjukfallExtended> sjukfallForAvailableEnhets) {
         final Set<Long> patients = new HashSet<>(sjukfallForAvailableEnhets.keySet());
         final ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient = factsToSjukfallConverterForAisle
-                .getSjukfallsPerPatient(patients);
+            .getSjukfallsPerPatient(patients);
         for (long patient : patients) {
             extendSjukfallConnectedByIntygOnOtherEnhetsForPatientIfNeeded(sjukfallForAvailableEnhets, sjukfallsPerPatient, patient);
         }
     }
 
     private void extendSjukfallConnectedByIntygOnOtherEnhetsForPatientIfNeeded(Multimap<Long, SjukfallExtended> sjukfallForAvailableEnhets,
-            ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient, long patient) {
+        ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient, long patient) {
         final Collection<SjukfallExtended> sjukfalls = sjukfallForAvailableEnhets.get(patient);
         Collection<SjukfallExtended> sjukfallFromAllIntygForPatient = sjukfallsPerPatient.get(patient);
         final boolean noExtraSjukfallExistsOnOtherEnhet = countFacts(sjukfalls) == countFacts(sjukfallFromAllIntygForPatient);

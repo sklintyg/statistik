@@ -21,10 +21,10 @@ angular.module('StatisticsApp').filter('thousandseparated',
 
     /** @ngInject */
     function(ControllerCommons) {
-        'use strict';
+      'use strict';
 
-        return function(input) {
-            return ControllerCommons.makeThousandSeparated(input);
-        };
+      return function(input) {
+        return ControllerCommons.makeThousandSeparated(input);
+      };
     }
 );

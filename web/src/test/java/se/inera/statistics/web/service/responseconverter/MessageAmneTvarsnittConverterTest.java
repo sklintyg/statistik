@@ -18,13 +18,13 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import static org.junit.Assert.assertEquals;
+
 import java.time.Clock;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.junit.Test;
-
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -34,8 +34,6 @@ import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.service.Filter;
 import se.inera.statistics.web.service.FilterSettings;
 
-import static org.junit.Assert.assertEquals;
-
 public class MessageAmneTvarsnittConverterTest {
 
     @Test
@@ -43,8 +41,8 @@ public class MessageAmneTvarsnittConverterTest {
         //Given
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.year(Clock.systemDefaultZone()));
         final List<SimpleKonDataRow> simpleKonDataRows = Arrays.stream(MsgAmne.values())
-                .map(msgAmne -> new SimpleKonDataRow(msgAmne.name(), 0, 0, msgAmne))
-                .collect(Collectors.toList());
+            .map(msgAmne -> new SimpleKonDataRow(msgAmne.name(), 0, 0, msgAmne))
+            .collect(Collectors.toList());
         final SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForMeddelanden(), simpleKonDataRows);
 
         //When
@@ -60,8 +58,8 @@ public class MessageAmneTvarsnittConverterTest {
         //Given
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.year(Clock.systemDefaultZone()));
         final List<SimpleKonDataRow> simpleKonDataRows = Arrays.stream(MsgAmne.values())
-                .map(msgAmne -> new SimpleKonDataRow(msgAmne.name(), 1, 0, msgAmne))
-                .collect(Collectors.toList());
+            .map(msgAmne -> new SimpleKonDataRow(msgAmne.name(), 1, 0, msgAmne))
+            .collect(Collectors.toList());
         final SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForMeddelanden(), simpleKonDataRows);
 
         //When

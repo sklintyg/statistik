@@ -21,10 +21,10 @@ angular.module('StatisticsApp').filter('replaceEmpty',
 
     /** @ngInject */
     function() {
-        'use strict';
+      'use strict';
 
-        return function(input) {
-            return input === '-' ? -1 : input;
-        };
+      return function(input) {
+        return input === '-' ? -1 : input;
+      };
     }
 );

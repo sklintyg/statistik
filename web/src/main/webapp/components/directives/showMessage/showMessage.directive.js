@@ -18,25 +18,25 @@
  */
 
 angular.module('StatisticsApp')
-    .directive('showMessage',
+.directive('showMessage',
     /** @ngInject */
     function() {
-        'use strict';
+      'use strict';
 
-        return {
-            templateUrl: '/components/directives/showMessage/showMessage.html',
-            restrict: 'E',
-            scope: {
-                type: '<',
-                severity: '<',
-                text: '<',
-                showDefaultTitle: '=?'
-            },
-            link: function($scope) {
-                $scope.isInfo = $scope.severity === 'INFO';
-                $scope.isWarning = $scope.severity === 'WARN';
-                $scope.isDanger = $scope.severity === 'ERROR';
-                $scope.showDefaultTitle = angular.isDefined($scope.showDefaultTitle) ? $scope.showDefaultTitle : true;
-            }
-        };
+      return {
+        templateUrl: '/components/directives/showMessage/showMessage.html',
+        restrict: 'E',
+        scope: {
+          type: '<',
+          severity: '<',
+          text: '<',
+          showDefaultTitle: '=?'
+        },
+        link: function($scope) {
+          $scope.isInfo = $scope.severity === 'INFO';
+          $scope.isWarning = $scope.severity === 'WARN';
+          $scope.isDanger = $scope.severity === 'ERROR';
+          $scope.showDefaultTitle = angular.isDefined($scope.showDefaultTitle) ? $scope.showDefaultTitle : true;
+        }
+      };
     });

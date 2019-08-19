@@ -97,16 +97,14 @@ public class FakeCredentials implements Serializable {
     }
 
 
-
-
     @Override
     public String toString() {
         return "FakeCredentials{"
-                + "hsaId='" + hsaId + '\''
-                + ", fornamn='" + fornamn + '\''
-                + ", efternamn='" + efternamn + '\''
-                + ", vardgivarIdSomProcessLedare='" + vardgivarIdSomProcessLedare.stream().collect(Collectors.joining()) + '\''
-                + '}';
+            + "hsaId='" + hsaId + '\''
+            + ", fornamn='" + fornamn + '\''
+            + ", efternamn='" + efternamn + '\''
+            + ", vardgivarIdSomProcessLedare='" + vardgivarIdSomProcessLedare.stream().collect(Collectors.joining()) + '\''
+            + '}';
     }
 
 }

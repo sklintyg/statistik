@@ -43,48 +43,49 @@ public class LoginInfoService {
     @Autowired
     private LoginServiceUtil loginServiceUtil;
 
-    public LoginInfoService() { }
+    public LoginInfoService() {
+    }
 
     @GET
     @Path("getLoginInfo")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     @PrometheusTimeMethod(
-            help = "API-tjänst för åtkomst till login info")
+        help = "API-tjänst för åtkomst till login info")
     public LoginInfo getLoginInfo() {
         return loginServiceUtil.getLoginInfo();
     }
 
     @GET
     @Path("getAppSettings")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     @PrometheusTimeMethod(
-            help = "API-tjänst för åtkomst till app-inställningar")
+        help = "API-tjänst för åtkomst till app-inställningar")
     public AppSettings getAppSettings() {
         return loginServiceUtil.getSettings();
     }
 
     @GET
     @Path("getUserAccessInfo/{vgId}")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     @PrometheusTimeMethod(
-            help = "API-tjänst för åtkomst till användarens rättigheter till information från vårdgivare")
+        help = "API-tjänst för åtkomst till användarens rättigheter till information från vårdgivare")
     public UserAccessInfo getUserAccessInfo(@PathParam("vgId") String vgId) {
         return loginServiceUtil.getUserAccessInfoForVg(new HsaIdVardgivare(vgId));
     }
 
     @GET
     @Path("getStaticData")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     @PrometheusTimeMethod(
-            help = "API-tjänst för åtkomst till statisk referensdata")
+        help = "API-tjänst för åtkomst till statisk referensdata")
     public StaticData getStaticData() {
         return loginServiceUtil.getStaticData();
     }
 
     @POST
     @Path("saveUserSettings")
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     public UserSettingsDTO saveUserSettings(UserSettingsDTO userSettingsDTO) {
         return loginServiceUtil.saveUserSettings(userSettingsDTO);
     }

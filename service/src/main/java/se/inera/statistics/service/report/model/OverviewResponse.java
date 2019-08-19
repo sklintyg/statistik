@@ -21,7 +21,7 @@ package se.inera.statistics.service.report.model;
 import java.util.List;
 
 @java.lang.SuppressWarnings("common-java:DuplicatedBlocks") // Code will not be cleaner if extracting a common class for
-                                                            // OverviewResponse and VerksamhetOverviewResponse.
+// OverviewResponse and VerksamhetOverviewResponse.
 public class OverviewResponse {
 
     private final OverviewKonsfordelning casesPerMonthSexProportion;
@@ -42,10 +42,10 @@ public class OverviewResponse {
     // CHECKSTYLE:OFF ParameterNumberCheck
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public OverviewResponse(OverviewKonsfordelning casesPerMonthSexProportion,
-            int casesPerMonthAlteration, List<OverviewChartRowExtended> diagnosisGroups,
-            List<OverviewChartRowExtended> ageGroups, List<OverviewChartRowExtended> degreeOfSickLeaveGroups,
-            List<OverviewChartRow> sickLeaveLengthGroups, int longSickLeavesTotal, int longSickLeavesAlternation,
-            List<OverviewChartRowExtended> perCounty) {
+        int casesPerMonthAlteration, List<OverviewChartRowExtended> diagnosisGroups,
+        List<OverviewChartRowExtended> ageGroups, List<OverviewChartRowExtended> degreeOfSickLeaveGroups,
+        List<OverviewChartRow> sickLeaveLengthGroups, int longSickLeavesTotal, int longSickLeavesAlternation,
+        List<OverviewChartRowExtended> perCounty) {
         this.casesPerMonthSexProportion = casesPerMonthSexProportion;
         this.casesPerMonthAlteration = casesPerMonthAlteration;
         this.diagnosisGroups = diagnosisGroups;
@@ -97,11 +97,11 @@ public class OverviewResponse {
     @Override
     public String toString() {
         return "{\"OverviewResponse\":{\"casesPerMonthSexProportion\":" + casesPerMonthSexProportion + ", \"casesPerMonthAlteration\":"
-                + casesPerMonthAlteration
-                + ", \"diagnosisGroups\":" + diagnosisGroups + ", \"ageGroups\":" + ageGroups + ", \"degreeOfSickLeaveGroups\":"
-                + degreeOfSickLeaveGroups
-                + ", \"sickLeaveLengthGroups\":" + sickLeaveLengthGroups + ", \"longSickLeavesTotal\":" + longSickLeavesTotal
-                + ", \"longSickLeavesAlternation\":"
-                + longSickLeavesAlternation + ", \"perCounty\":" + perCounty + "}}";
+            + casesPerMonthAlteration
+            + ", \"diagnosisGroups\":" + diagnosisGroups + ", \"ageGroups\":" + ageGroups + ", \"degreeOfSickLeaveGroups\":"
+            + degreeOfSickLeaveGroups
+            + ", \"sickLeaveLengthGroups\":" + sickLeaveLengthGroups + ", \"longSickLeavesTotal\":" + longSickLeavesTotal
+            + ", \"longSickLeavesAlternation\":"
+            + longSickLeavesAlternation + ", \"perCounty\":" + perCounty + "}}";
     }
 }

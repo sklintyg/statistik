@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
@@ -39,7 +38,7 @@ public class MessageAmnePerTypeTvarsnittConverter extends MultiDualSexConverter 
     }
 
     private static final Map<String, String> COLORS = Arrays.stream(MsgAmne.values())
-            .collect(Collectors.toMap(MsgAmne::getText, msgAmne -> msgAmne.getColor().getColor()));
+        .collect(Collectors.toMap(MsgAmne::getText, msgAmne -> msgAmne.getColor().getColor()));
 
     public SimpleDetailsData convert(KonDataResponse data, FilterSettings filterSettings) {
         final List<MsgAmne> groups = data.getGroups().stream().map(MsgAmne::parse).collect(Collectors.toList());
@@ -53,7 +52,7 @@ public class MessageAmnePerTypeTvarsnittConverter extends MultiDualSexConverter 
         final DualSexStatisticsData dssd = super.convert(konDataResponse, filterSettings, null, "%1$s", COLORS);
         final ChartData chartData = MessageAmnePerTypeConverter.merge(dssd.getFemaleChart(), dssd.getMaleChart());
         return new SimpleDetailsData(dssd.getTableData(), chartData, dssd.getPeriod(), data.getAvailableFilters(),
-                dssd.getFilter(), dssd.getMessages());
+            dssd.getFilter(), dssd.getMessages());
     }
 
     private List<String> convertGroupNamesToText(List<MsgAmne> groups) {

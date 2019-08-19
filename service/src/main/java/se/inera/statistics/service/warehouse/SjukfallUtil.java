@@ -18,6 +18,8 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import com.google.common.collect.HashMultiset;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -25,14 +27,10 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-
-import java.time.LocalDate;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.caching.Cache;
 import se.inera.statistics.service.caching.SjukfallGroupCacheKey;
@@ -46,13 +44,11 @@ import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.query.CounterFunction;
 
-import com.google.common.collect.HashMultiset;
-
 @Component
 public class SjukfallUtil {
 
     public static final FilterPredicates ALL_ENHETER = new FilterPredicates(fact -> true, sjukfall -> true,
-            FilterPredicates.HASH_EMPTY_FILTER, false);
+        FilterPredicates.HASH_EMPTY_FILTER, false);
 
     @Autowired
     private Cache cache;
@@ -65,13 +61,13 @@ public class SjukfallUtil {
 
     public List<SjukfallGroup> sjukfallGrupper(LocalDate from, int periods, int periodSize, Aisle aisle, FilterPredicates sjukfallFilter) {
         return cache.getSjukfallGroups(
-                new SjukfallGroupCacheKey(from, periods, periodSize, aisle, sjukfallFilter));
+            new SjukfallGroupCacheKey(from, periods, periodSize, aisle, sjukfallFilter));
     }
 
     // CHECKSTYLE:OFF ParameterNumberCheck
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public <T> KonDataResponse calculateKonDataResponse(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize,
-            List<String> groupNames, List<T> groupIds, CounterFunction<T> counterFunction) {
+        List<String> groupNames, List<T> groupIds, CounterFunction<T> counterFunction) {
         List<KonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup : sjukfallGrupper(start, periods, periodSize, aisle, filter)) {
             final HashMultiset<T> maleCounter = HashMultiset.create();
@@ -91,7 +87,7 @@ public class SjukfallUtil {
     }
 
     public <T> KonDataResponse calculateKonDataResponse(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize,
-            Function<Sjukfall, Collection<T>> groupsFunction, CounterFunction<T> counterFunction) {
+        Function<Sjukfall, Collection<T>> groupsFunction, CounterFunction<T> counterFunction) {
         List<KonDataRow> rows = new ArrayList<>();
         final Iterable<SjukfallGroup> sjukfallGroups = sjukfallGrupper(start, periods, periodSize, aisle, filter);
         final HashSet<T> hashSet = new LinkedHashSet<>();
@@ -120,12 +116,12 @@ public class SjukfallUtil {
     // CHECKSTYLE:ON
 
     public SimpleKonResponse calculateSimpleKonResponse(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
-            int periodLength, CounterFunction<Integer> toCount, List<Integer> groups) {
+        int periodLength, CounterFunction<Integer> toCount, List<Integer> groups) {
         return calculateSimpleKonResponse(toCount, groups, sjukfallGrupper(from, periods, periodLength, aisle, filter));
     }
 
     private SimpleKonResponse calculateSimpleKonResponse(CounterFunction<Integer> toCount, List<Integer> groups,
-            Iterable<SjukfallGroup> sjukfallGroups) {
+        Iterable<SjukfallGroup> sjukfallGroups) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         HashMultiset<Integer> maleCounter = HashMultiset.create();
         HashMultiset<Integer> femaleCounter = HashMultiset.create();

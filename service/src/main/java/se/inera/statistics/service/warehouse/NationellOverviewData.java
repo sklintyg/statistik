@@ -18,6 +18,14 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.countypopulation.CountyPopulation;
@@ -37,15 +45,6 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.OverviewAgeGroup;
 import se.inera.statistics.service.report.util.SickLeaveDegree;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Contains calculations for each overview report on national statistics.
@@ -70,7 +69,7 @@ public class NationellOverviewData {
         int forandringLangaSjukskrivningar = getForandringLangaSjukskrivningar(data);
         List<OverviewChartRowExtended> intygPerLan = getIntygPerLan(data);
         return new OverviewResponse(sexProportion, intygForandring, diagnosgrupper, aldersgrupper, sjukskrivningsgrader,
-                sjukskrivningslangdgrupper, langaSjukskrivningar, forandringLangaSjukskrivningar, intygPerLan);
+            sjukskrivningslangdgrupper, langaSjukskrivningar, forandringLangaSjukskrivningar, intygPerLan);
     }
 
     private int getForandring(NationellDataInfo data) {
@@ -119,7 +118,7 @@ public class NationellOverviewData {
         SimpleKonResponse langaSjukfallPrevious = data.getOverviewLangaSjukfallDiffPreviousResult();
         SimpleKonResponse langaSjukfallCurrent = data.getOverviewLangaSjukfallDiffCurrentResult();
         if (langaSjukfallPrevious == null || langaSjukfallPrevious.getRows().isEmpty()
-                || langaSjukfallCurrent == null || langaSjukfallCurrent.getRows().isEmpty()) {
+            || langaSjukfallCurrent == null || langaSjukfallCurrent.getRows().isEmpty()) {
             return 0;
         }
         int previous = total(langaSjukfallPrevious.getRows().get(0));
@@ -212,7 +211,7 @@ public class NationellOverviewData {
     }
 
     private List<OverviewChartRowExtended> getResult(Set<String> include, SimpleKonResponse previousData,
-                                                     SimpleKonResponse currentData, String rest) {
+        SimpleKonResponse currentData, String rest) {
         List<OverviewChartRowExtended> result = new ArrayList<>();
 
         int restCurrent = 0;

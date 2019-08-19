@@ -42,7 +42,7 @@ public class HsaInfoEnhetGeo {
     }
 
     public HsaInfoEnhetGeo(HsaInfoCoordinate koordinat, String plats, String kommundelskod, String kommundelsnamn, String kommun,
-            String lan) {
+        String lan) {
         this.koordinat = koordinat;
         this.plats = plats;
         this.kommundelskod = kommundelskod;
@@ -84,13 +84,13 @@ public class HsaInfoEnhetGeo {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("koordinat", koordinat)
-                .add("plats", plats)
-                .add("kommundelskod", kommundelskod)
-                .add("kommundelsnamn", kommundelsnamn)
-                .add("kommun", kommun)
-                .add("lan", lan)
-                .toString();
+            .add("koordinat", koordinat)
+            .add("plats", plats)
+            .add("kommundelskod", kommundelskod)
+            .add("kommundelsnamn", kommundelsnamn)
+            .add("kommun", kommun)
+            .add("lan", lan)
+            .toString();
     }
 
 }

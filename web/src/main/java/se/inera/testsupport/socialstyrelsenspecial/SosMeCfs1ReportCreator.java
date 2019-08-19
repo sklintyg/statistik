@@ -18,6 +18,11 @@
  */
 package se.inera.testsupport.socialstyrelsenspecial;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -26,12 +31,6 @@ import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.warehouse.VgNumber;
 import se.inera.statistics.service.warehouse.Warehouse;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class SosMeCfs1ReportCreator {
 

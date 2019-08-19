@@ -18,17 +18,17 @@
  */
 package se.inera.statistics.service.report.util;
 
+import static se.inera.statistics.service.report.util.Ranges.range;
+
 import java.util.Arrays;
 import java.util.stream.Collectors;
-
-import static se.inera.statistics.service.report.util.Ranges.range;
 
 public final class SjukfallslangdUtil {
 
     public static final Ranges RANGES = new Ranges(Arrays.stream(SjukfallsLangdGroup.values())
-                    .map(group -> range(group.getGroupName(), group.getTo() + 1))
-                    .collect(Collectors.toList())
-                    .toArray(new Ranges.Range[0]));
+        .map(group -> range(group.getGroupName(), group.getTo() + 1))
+        .collect(Collectors.toList())
+        .toArray(new Ranges.Range[0]));
 
     private SjukfallslangdUtil() {
     }

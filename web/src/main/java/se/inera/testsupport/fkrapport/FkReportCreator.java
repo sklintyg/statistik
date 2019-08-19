@@ -18,6 +18,7 @@
  */
 package se.inera.testsupport.fkrapport;
 
+import com.google.common.collect.Lists;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.Clock;
@@ -30,11 +31,8 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.Range;
@@ -52,6 +50,7 @@ import se.inera.statistics.service.warehouse.WidelineConverter;
  * Creates a flattened multidimensional report of sjukfalls-lengths per diagnos, sex and county.
  */
 public class FkReportCreator {
+
     private static final Logger LOG = LoggerFactory.getLogger(FkReportCreator.class);
 
     private static final String ALL_DIAGNOSES_ENTRY = "Alla";
@@ -102,7 +101,6 @@ public class FkReportCreator {
      * Create the list of DiagnoseEntries that the resultset will be based on.
      *
      * @return The expanded list of all diagnoses to match
-     *
      */
     private List<DiagnoseEntry> buildDiagnoseEntries() {
         List<DiagnoseEntry> result = new ArrayList<>();
@@ -129,8 +127,7 @@ public class FkReportCreator {
      * Fetches alla sub items for a given diagnose category, and adds (exact) matches for all those.
      * Throws IllegalArgumentException if the diagnoseCategory is missing from the Icd10 repository
      *
-     * @param diagnoseCategory
-     *            The category (e.g "F32") to create matches for
+     * @param diagnoseCategory The category (e.g "F32") to create matches for
      */
     private List<DiagnoseEntry> getExactMatchesForSubdiagnoses(String diagnoseCategory) {
         final Icd10.Kategori kategori = icd10.getKategori(diagnoseCategory);
@@ -148,28 +145,28 @@ public class FkReportCreator {
 
         final int fromIntDay = WidelineConverter.toDay(from); // dagnr relativt 2000-01-01
         final int toIntDay = WidelineConverter.toDay(getLastDateOfLastYear()); // dagnr för 2015-12-31 relativt
-                                                                               // 2000-01-01
+        // 2000-01-01
 
         LOG.info("About to iterate aisles");
         // Loopa igenom ALLA facts per VG, dvs ingen sammanslagning sker (viktigt av juridiska skäl)
         Iterable<Aisle> iterableAisles = () -> aisles;
         return StreamSupport.stream(iterableAisles.spliterator(), true)
-                .flatMap(aisle -> getFkFactRowsPerVg(range, fromIntDay, toIntDay, SjukfallUtil.ALL_ENHETER, aisle))
-                .collect(Collectors.toList());
+            .flatMap(aisle -> getFkFactRowsPerVg(range, fromIntDay, toIntDay, SjukfallUtil.ALL_ENHETER, aisle))
+            .collect(Collectors.toList());
     }
 
     private Stream<FkFactRow> getFkFactRowsPerVg(Range range, int fromIntDay, int toIntDay, FilterPredicates sjukfallFilter,
-                                                 Aisle aisle) {
+        Aisle aisle) {
         LOG.info("About to get sjukfall for vg  " + aisle.getVardgivareId());
         // Hämta ut dom som hör till detta år
         final ArrayList<SjukfallGroup> sjukfallGroups = Lists
-                .newArrayList(new SjukfallIterator(range.getFrom(), 1, range.getNumberOfMonths(), aisle, sjukfallFilter));
+            .newArrayList(new SjukfallIterator(range.getFrom(), 1, range.getNumberOfMonths(), aisle, sjukfallFilter));
         return sjukfallGroups.stream()
-                .flatMap(sjukfallGroup -> sjukfallGroup.getSjukfall().stream())
-                .collect(Collectors.toMap(Sjukfall::getFirstIntygId, p -> p, (p, q) -> p)).values().stream() // distinct by property
-                .filter(sjukfall -> inPeriod(sjukfall, fromIntDay, toIntDay))
-                .filter(sjukfall -> inPeriod(getAllFactsInIntyg(sjukfall.getFirstIntygId(), aisle), fromIntDay, toIntDay))
-                .map(sjukfall -> createFkFactRow(sjukfall, aisle));
+            .flatMap(sjukfallGroup -> sjukfallGroup.getSjukfall().stream())
+            .collect(Collectors.toMap(Sjukfall::getFirstIntygId, p -> p, (p, q) -> p)).values().stream() // distinct by property
+            .filter(sjukfall -> inPeriod(sjukfall, fromIntDay, toIntDay))
+            .filter(sjukfall -> inPeriod(getAllFactsInIntyg(sjukfall.getFirstIntygId(), aisle), fromIntDay, toIntDay))
+            .map(sjukfall -> createFkFactRow(sjukfall, aisle));
     }
 
     private FkFactRow createFkFactRow(Sjukfall sjukfall, Aisle aisle) {
@@ -195,7 +192,7 @@ public class FkReportCreator {
 
     private static Stream<Fact> getAllFactsInIntyg(long intygId, Aisle aisle) {
         return StreamSupport.stream(aisle.spliterator(), false)
-                .filter(fact -> fact.getLakarintyg() == intygId);
+            .filter(fact -> fact.getLakarintyg() == intygId);
     }
 
     private String getDiagnoseClearText(Sjukfall sjukfall) {
@@ -222,8 +219,8 @@ public class FkReportCreator {
         });
 
         return (intyg.getStart() <= to && intyg.getStart() >= from) // startsInPeriod
-                || (intyg.getEnd() <= to && intyg.getEnd() >= from) // endInPeriod
-                || (intyg.getStart() < from && intyg.getEnd() > to); // spansPeriod
+            || (intyg.getEnd() <= to && intyg.getEnd() >= from) // endInPeriod
+            || (intyg.getStart() < from && intyg.getEnd() > to); // spansPeriod
     }
 
     private LocalDate getLastDateOfLastYear() {
@@ -241,6 +238,7 @@ public class FkReportCreator {
     }
 
     private static class StartEnd {
+
         private int start;
         private int end;
 

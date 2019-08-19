@@ -19,12 +19,11 @@
 package se.inera.statistics.service.warehouse.sjukfallcalc.perpatient;
 
 import com.google.common.collect.ArrayListMultimap;
+import java.util.ArrayList;
+import java.util.List;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.WidelineConverter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 final class FactsPerPatientAndPeriodGrouper {
 

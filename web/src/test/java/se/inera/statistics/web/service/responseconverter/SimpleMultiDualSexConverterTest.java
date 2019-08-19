@@ -23,9 +23,7 @@ import static org.junit.Assert.assertEquals;
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.Test;
-
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -48,10 +46,12 @@ public class SimpleMultiDualSexConverterTest {
         dualSexRows.add(new SimpleKonDataRow("feb 12", 20, 30));
         dualSexRows.add(new SimpleKonDataRow("mar 12", 5, 25));
         SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForNationell(), dualSexRows);
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.createForLastMonthsExcludingCurrent(1, Clock.systemDefaultZone()));
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(),
+            Range.createForLastMonthsExcludingCurrent(1, Clock.systemDefaultZone()));
         SimpleDetailsData result = converter.convert(casesPerMonth, filterSettings);
         TableData tableData = result.getTableData();
-        assertEquals("[[Period;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]", tableData.getHeaders().toString());
+        assertEquals("[[Period;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]",
+            tableData.getHeaders().toString());
         List<NamedData> rows = tableData.getRows();
         assertEquals(3, rows.size());
         assertEquals("jan 12", rows.get(0).getName());

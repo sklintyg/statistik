@@ -18,12 +18,11 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import com.google.common.collect.HashMultimap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import com.google.common.collect.HashMultimap;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;

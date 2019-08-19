@@ -21,18 +21,6 @@ package se.inera.statistics.service.countypopulation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import se.inera.statistics.service.report.model.KonField;
-import se.inera.statistics.service.report.model.Range;
-
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.io.IOException;
 import java.io.StringReader;
 import java.sql.Date;
@@ -43,6 +31,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import se.inera.statistics.service.report.model.KonField;
+import se.inera.statistics.service.report.model.Range;
 
 @Component
 @Transactional
@@ -67,9 +66,9 @@ public class CountyPopulationManagerImpl implements CountyPopulationManagerForTe
         final LocalDate date = getPopulationFromDate(range);
         final Optional<CountyPopulation> countyPopulation = getCountyPopulation(date);
         return countyPopulation.isPresent()
-                ? countyPopulation.get()
-                : new CountyPopulation(Collections.emptyMap(),
-                        LocalDate.of(date.getYear(), date.getMonthValue(), date.getDayOfMonth()));
+            ? countyPopulation.get()
+            : new CountyPopulation(Collections.emptyMap(),
+                LocalDate.of(date.getYear(), date.getMonthValue(), date.getDayOfMonth()));
     }
 
     LocalDate getPopulationFromDate(Range range) {
@@ -128,7 +127,7 @@ public class CountyPopulationManagerImpl implements CountyPopulationManagerForTe
         }
         query.setMaxResults(1);
         final List resultList = query.getResultList();
-        if (resultList .isEmpty()) {
+        if (resultList.isEmpty()) {
             LOG.info("County population has not yet been fetched for " + from);
             return Optional.empty();
         }

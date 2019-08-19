@@ -24,9 +24,12 @@ import com.google.common.base.MoreObjects;
 
 public class HsaInfoCoordinate {
 
-    @JsonProperty("typ") private String typ;
-    @JsonProperty("x") private String x;
-    @JsonProperty("y") private String y;
+    @JsonProperty("typ")
+    private String typ;
+    @JsonProperty("x")
+    private String x;
+    @JsonProperty("y")
+    private String y;
 
     //Default constructor required by json mapper
     private HsaInfoCoordinate() {
@@ -58,10 +61,10 @@ public class HsaInfoCoordinate {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("typ", typ)
-                .add("x", x)
-                .add("y", y)
-                .toString();
+            .add("typ", typ)
+            .add("x", x)
+            .add("y", y)
+            .toString();
     }
 
 }

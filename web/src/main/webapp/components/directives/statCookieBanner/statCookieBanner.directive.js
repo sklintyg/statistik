@@ -20,41 +20,43 @@
 angular.module('StatisticsApp').directive('statCookieBanner',
     /** @ngInject */
     function($uibModal) {
-        'use strict';
+      'use strict';
 
-        return {
-            restrict: 'E',
-            scope: {},
-            templateUrl: '/components/directives/statCookieBanner/statCookieBanner.html',
-            controller: function($scope, $timeout, $localStorage) {
-                $scope.isOpen = false;
+      return {
+        restrict: 'E',
+        scope: {},
+        templateUrl: '/components/directives/statCookieBanner/statCookieBanner.html',
+        controller: function($scope, $timeout, $localStorage) {
+          $scope.isOpen = false;
 
-                if (!$localStorage.cookieBannerShown) {
-                    $timeout(function() {
-                        $scope.isOpen = true;
-                    }, 500);
-                }
+          if (!$localStorage.cookieBannerShown) {
+            $timeout(function() {
+              $scope.isOpen = true;
+            }, 500);
+          }
 
-                $scope.onCookieConsentClick = function() {
-                    $scope.isOpen = false;
-                    $localStorage.cookieBannerShown = true;
-                };
-            },
-            link: function($scope) {
-                $scope.openDialog = function() {
-                    var modalInstance = $uibModal.open({
-                        animation: true,
-                        templateUrl: '/components/directives/statCookieBanner/modal/modal.html',
-                        controller: 'StatCookieBannerModalCtrl',
-                        size: 'lg',
-                        backdrop: 'true',
-                        scope: $scope,
-                        resolve: { }
-                    });
+          $scope.onCookieConsentClick = function() {
+            $scope.isOpen = false;
+            $localStorage.cookieBannerShown = true;
+          };
+        },
+        link: function($scope) {
+          $scope.openDialog = function() {
+            var modalInstance = $uibModal.open({
+              animation: true,
+              templateUrl: '/components/directives/statCookieBanner/modal/modal.html',
+              controller: 'StatCookieBannerModalCtrl',
+              size: 'lg',
+              backdrop: 'true',
+              scope: $scope,
+              resolve: {}
+            });
 
-                    modalInstance.result.then(function(){}, function(){});
-                };
-            }
-        };
+            modalInstance.result.then(function() {
+            }, function() {
+            });
+          };
+        }
+      };
     }
 );

@@ -18,11 +18,8 @@
  */
 package se.inera.statistics.service.processlog;
 
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.report.model.Kommun;
-import se.inera.statistics.service.report.model.VerksamhetsTyp;
-
+import java.io.Serializable;
+import java.util.Comparator;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,14 +27,16 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import java.io.Serializable;
-import java.util.Comparator;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.report.model.Kommun;
+import se.inera.statistics.service.report.model.VerksamhetsTyp;
 
 @Entity
 @Table(name = Enhet.TABLE)
 @NamedQueries({
-        @NamedQuery(name = "Enhet.getByVg", query = "SELECT e FROM Enhet e WHERE e.vardgivareId = :vgid"),
-        @NamedQuery(name = "Enhet.getByEnhetids", query = "SELECT e FROM Enhet e WHERE e.enhetId IN :enhetids")
+    @NamedQuery(name = "Enhet.getByVg", query = "SELECT e FROM Enhet e WHERE e.vardgivareId = :vgid"),
+    @NamedQuery(name = "Enhet.getByEnhetids", query = "SELECT e FROM Enhet e WHERE e.enhetId IN :enhetids")
 })
 public class Enhet implements Serializable {
 

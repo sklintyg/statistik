@@ -19,17 +19,14 @@
 package se.inera.statistics.service.warehouse;
 
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.IntygDTO;
@@ -55,7 +52,7 @@ public class WidelineManager {
             saveWideline(line);
         } else {
             StringBuilder errorBuilder = new StringBuilder("Faulty intyg logid ").append(logId).append(" id ").append(intygid)
-                    .append(" error count ").append(errCount++);
+                .append(" error count ").append(errCount++);
             for (String error : errors) {
                 errorBuilder.append('\n').append(error);
             }
@@ -91,7 +88,7 @@ public class WidelineManager {
     private boolean isCorrelationIdAlreadyRevoked(String correlationId) {
         final int revokedOrdinal = EventType.REVOKED.ordinal();
         final Query query = manager.createQuery("SELECT intygTyp, correlationId FROM WideLine "
-                + "WHERE intygTyp = " + revokedOrdinal + " AND correlationId = :corrId");
+            + "WHERE intygTyp = " + revokedOrdinal + " AND correlationId = :corrId");
         query.setParameter("corrId", correlationId);
         return !query.getResultList().isEmpty();
     }

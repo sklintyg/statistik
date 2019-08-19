@@ -17,38 +17,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 angular.module('StatisticsApp').factory('AppService',
     /** @ngInject */
     function($log, $q, AppModel, statisticsData) {
-        'use strict';
+      'use strict';
 
-        function _get() {
+      function _get() {
 
-            var promise = $q.defer();
+        var promise = $q.defer();
 
-            var success = function(data) {
-                AppModel.set(data);
-                promise.resolve(data);
-            };
-
-            var error = function(data, status) {
-                $log.error('error ' + status);
-                // Let calling code handle the error of no data response
-                if (data === null) {
-                    promise.reject({errorCode: data, message: 'no response'});
-                } else {
-                    promise.reject(data);
-                }
-            };
-
-            statisticsData.getAppData(success, error);
-
-            return promise.promise;
-        }
-
-        return {
-            get: _get
+        var success = function(data) {
+          AppModel.set(data);
+          promise.resolve(data);
         };
+
+        var error = function(data, status) {
+          $log.error('error ' + status);
+          // Let calling code handle the error of no data response
+          if (data === null) {
+            promise.reject({errorCode: data, message: 'no response'});
+          } else {
+            promise.reject(data);
+          }
+        };
+
+        statisticsData.getAppData(success, error);
+
+        return promise.promise;
+      }
+
+      return {
+        get: _get
+      };
     }
 );

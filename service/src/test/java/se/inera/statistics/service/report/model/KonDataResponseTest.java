@@ -18,13 +18,13 @@
  */
 package se.inera.statistics.service.report.model;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class KonDataResponseTest {
 
@@ -35,7 +35,8 @@ public class KonDataResponseTest {
         final List<KonDataRow> rows = null;
 
         //When
-        final KonDataResponse result = KonDataResponse.createNewWithoutEmptyGroups(AvailableFilters.getForSjukfall(), groups, rows, Collections.<String>emptyList());
+        final KonDataResponse result = KonDataResponse
+            .createNewWithoutEmptyGroups(AvailableFilters.getForSjukfall(), groups, rows, Collections.<String>emptyList());
 
         //Then
         assertTrue(result.getGroups().isEmpty());
@@ -49,7 +50,8 @@ public class KonDataResponseTest {
         final List<KonDataRow> rows = Arrays.asList(new KonDataRow("KDR1", Arrays.asList(new KonField(2, 3))));
 
         //When
-        final KonDataResponse result = KonDataResponse.createNewWithoutEmptyGroups(AvailableFilters.getForSjukfall(), groups, rows, Collections.<String>emptyList());
+        final KonDataResponse result = KonDataResponse
+            .createNewWithoutEmptyGroups(AvailableFilters.getForSjukfall(), groups, rows, Collections.<String>emptyList());
 
         //Then
         assertEquals(1, result.getGroups().size());
@@ -61,12 +63,13 @@ public class KonDataResponseTest {
         //Given
         final List<String> groups = Arrays.asList("ett", "empty", "two");
         final List<KonDataRow> rows = Arrays.asList(
-                new KonDataRow("KDR1", Arrays.asList(new KonField(2, 3), new KonField(0, 0), new KonField(4, 5))),
-                new KonDataRow("KDR2", Arrays.asList(new KonField(2, 3), new KonField(0, 0), new KonField(4, 5))),
-                new KonDataRow("KDR3", Arrays.asList(new KonField(2, 3), new KonField(0, 0), new KonField(4, 5))));
+            new KonDataRow("KDR1", Arrays.asList(new KonField(2, 3), new KonField(0, 0), new KonField(4, 5))),
+            new KonDataRow("KDR2", Arrays.asList(new KonField(2, 3), new KonField(0, 0), new KonField(4, 5))),
+            new KonDataRow("KDR3", Arrays.asList(new KonField(2, 3), new KonField(0, 0), new KonField(4, 5))));
 
         //When
-        final KonDataResponse result = KonDataResponse.createNewWithoutEmptyGroups(AvailableFilters.getForSjukfall(), groups, rows, Collections.<String>emptyList());
+        final KonDataResponse result = KonDataResponse
+            .createNewWithoutEmptyGroups(AvailableFilters.getForSjukfall(), groups, rows, Collections.<String>emptyList());
 
         //Then
         assertEquals(2, result.getGroups().size());
@@ -83,12 +86,13 @@ public class KonDataResponseTest {
         //Given
         final List<String> groups = Arrays.asList("ett", "empty", "two", "empty2");
         final List<KonDataRow> rows = Arrays.asList(
-                new KonDataRow("KDR1", Arrays.asList(new KonField(2, 3), new KonField(0, 0), new KonField(4, 5), new KonField(0, 0))),
-                new KonDataRow("KDR2", Arrays.asList(new KonField(2, 3), new KonField(0, 0), new KonField(4, 5), new KonField(0, 0))),
-                new KonDataRow("KDR3", Arrays.asList(new KonField(2, 3), new KonField(0, 0), new KonField(4, 5), new KonField(0, 0))));
+            new KonDataRow("KDR1", Arrays.asList(new KonField(2, 3), new KonField(0, 0), new KonField(4, 5), new KonField(0, 0))),
+            new KonDataRow("KDR2", Arrays.asList(new KonField(2, 3), new KonField(0, 0), new KonField(4, 5), new KonField(0, 0))),
+            new KonDataRow("KDR3", Arrays.asList(new KonField(2, 3), new KonField(0, 0), new KonField(4, 5), new KonField(0, 0))));
 
         //When
-        final KonDataResponse result = KonDataResponse.createNewWithoutEmptyGroups(AvailableFilters.getForSjukfall(), groups, rows, Arrays.asList("empty2"));
+        final KonDataResponse result = KonDataResponse
+            .createNewWithoutEmptyGroups(AvailableFilters.getForSjukfall(), groups, rows, Arrays.asList("empty2"));
 
         //Then
         assertEquals(3, result.getGroups().size());

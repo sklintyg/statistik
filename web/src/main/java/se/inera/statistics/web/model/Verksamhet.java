@@ -18,24 +18,22 @@
  */
 package se.inera.statistics.web.model;
 
-import java.io.Serializable;
-import java.util.Set;
-
-import org.apache.commons.text.translate.CharSequenceTranslator;
-import org.apache.commons.text.translate.UnicodeEscaper;
-import org.apache.commons.text.translate.UnicodeUnescaper;
-
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-
 import static org.apache.commons.text.translate.UnicodeEscaper.above;
 import static org.apache.commons.text.translate.UnicodeEscaper.between;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import java.io.Serializable;
+import java.util.Set;
+import org.apache.commons.text.translate.CharSequenceTranslator;
+import org.apache.commons.text.translate.UnicodeEscaper;
+import org.apache.commons.text.translate.UnicodeUnescaper;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+
 @JsonAutoDetect(
-        fieldVisibility = JsonAutoDetect.Visibility.ANY,
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        setterVisibility = JsonAutoDetect.Visibility.NONE)
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE)
 public class Verksamhet implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,12 +48,12 @@ public class Verksamhet implements Serializable {
     private final Set<VerksamhetsTyp> verksamhetsTyper;
 
     private static final CharSequenceTranslator ESCAPER = UnicodeEscaper.below('-').with(excludeBetween('-', '0'), excludeBetween('9', 'A'),
-            excludeBetween('Z', 'a'), above('z'));
+        excludeBetween('Z', 'a'), above('z'));
 
     // CHECKSTYLE:OFF ParameterNumber
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public Verksamhet(HsaIdEnhet id, String name, HsaIdVardgivare vardgivarId, String vardgivarName, String lansId, String lansName,
-            String kommunId, String kommunName, Set<VerksamhetsTyp> verksamhetsTyper) {
+        String kommunId, String kommunName, Set<VerksamhetsTyp> verksamhetsTyper) {
         this.id = id.getId();
         this.name = name;
         this.vardgivarId = vardgivarId.getId();
@@ -122,6 +120,7 @@ public class Verksamhet implements Serializable {
     }
 
     public static final class VerksamhetsTyp implements Serializable {
+
         private final String id;
         private final String name;
 

@@ -23,6 +23,7 @@ import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.service.report.model.Kon;
 
 public class FactBuilder {
+
     private long id = -1;
     private int lan = -1;
     private int kommun = -1;
@@ -49,18 +50,18 @@ public class FactBuilder {
         return new FactBuilder();
     }
 
-    @java.lang.SuppressWarnings({ "squid:MethodCyclomaticComplexity", "squid:S1067" }) // I can't think of a better
+    @java.lang.SuppressWarnings({"squid:MethodCyclomaticComplexity", "squid:S1067"}) // I can't think of a better
     // way to write this
     public Fact build() {
         if (id == -1 || lan == -1 || kommun == -1 || forsamling == -1 || enhet == null || lakarintyg == -1 || patient == -1
-                || startdatum == -1 || slutdatum == -1 || kon == -1 || alder == -1 || diagnoskapitel == -1 || diagnosavsnitt == -1
-                || diagnoskategori == -1 || diagnoskod == -1 || sjukskrivningsgrad == -1 || lakarkon == -1
-                || lakaralder == -1 || lakarbefattnings == null || lakarid == null || enkelt == null) {
+            || startdatum == -1 || slutdatum == -1 || kon == -1 || alder == -1 || diagnoskapitel == -1 || diagnosavsnitt == -1
+            || diagnoskategori == -1 || diagnoskod == -1 || sjukskrivningsgrad == -1 || lakarkon == -1
+            || lakaralder == -1 || lakarbefattnings == null || lakarid == null || enkelt == null) {
             throw new UninitializedValuesException("unintialized values");
         }
         return new Fact(id, lan, kommun, forsamling, enhet, lakarintyg, patient, startdatum, slutdatum, kon, alder, diagnoskapitel,
-                diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon,
-                lakaralder, lakarbefattnings, lakarid);
+            diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon,
+            lakaralder, lakarbefattnings, lakarid);
     }
 
     public FactBuilder withId(long id) {
@@ -168,10 +169,13 @@ public class FactBuilder {
         return this;
     }
 
-    public static Fact newFact(long id, int lan, int kommun, int forsamling, int enhet, long lakarintyg, long patient, int startdatum, int slutdatum,
-                               int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod, int sjukskrivningsgrad,
-                               int lakarkon, int lakaralder, int[] lakarbefattnings, int lakarid) {
-        return new Fact(id, lan, kommun, forsamling, new HsaIdEnhet(String.valueOf(enhet)), lakarintyg, patient, startdatum,slutdatum,kon,alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod,sjukskrivningsgrad,lakarkon,lakaralder,lakarbefattnings, new HsaIdLakare(String.valueOf(lakarid)));
+    public static Fact newFact(long id, int lan, int kommun, int forsamling, int enhet, long lakarintyg, long patient, int startdatum,
+        int slutdatum,
+        int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod, int sjukskrivningsgrad,
+        int lakarkon, int lakaralder, int[] lakarbefattnings, int lakarid) {
+        return new Fact(id, lan, kommun, forsamling, new HsaIdEnhet(String.valueOf(enhet)), lakarintyg, patient, startdatum, slutdatum, kon,
+            alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattnings,
+            new HsaIdLakare(String.valueOf(lakarid)));
     }
 
     private static class UninitializedValuesException extends RuntimeException {

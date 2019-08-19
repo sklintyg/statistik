@@ -18,6 +18,9 @@
  */
 package se.inera.statistics.service.liquibase;
 
+import java.sql.SQLException;
+import java.util.List;
+import javax.sql.DataSource;
 import liquibase.Liquibase;
 import liquibase.changelog.ChangeSet;
 import liquibase.database.Database;
@@ -28,15 +31,12 @@ import liquibase.resource.ClassLoaderResourceAccessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.sql.DataSource;
-import java.sql.SQLException;
-import java.util.List;
-
 public class DbChecker {
+
     private static final Logger LOG = LoggerFactory.getLogger(DbChecker.class);
 
     @java.lang.SuppressWarnings("squid:S1118") // Suppress Sonar warning for "Utility classes should not have public
-                                               // constructors" since this contructor is actually invoked by Spring
+    // constructors" since this contructor is actually invoked by Spring
     public DbChecker(DataSource dataSource, String script) {
         try {
             DatabaseConnection connection = new JdbcConnection(dataSource.getConnection());
@@ -50,7 +50,7 @@ public class DbChecker {
                     errors.append('>').append(changeSet.toString()).append('\n');
                 }
                 throw new DbCheckError("Database version mismatch. Check liquibase status. Errors:\n" + errors.toString()
-                        + database.getDatabaseProductName() + ", " + database);
+                    + database.getDatabaseProductName() + ", " + database);
             }
         } catch (liquibase.exception.LiquibaseException | SQLException e) {
             throw new DbCheckError("Database not ok, aborting startup.", e);
@@ -59,7 +59,7 @@ public class DbChecker {
     }
 
     @java.lang.SuppressWarnings("squid:S1194") // I assume there is a reason for throwing and Error and do not dare to
-                                               // change it
+    // change it
     private static class DbCheckError extends Error {
 
         DbCheckError(String s) {

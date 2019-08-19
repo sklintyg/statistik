@@ -21,7 +21,7 @@ package se.inera.statistics.service.report.model;
 import java.util.List;
 
 @java.lang.SuppressWarnings("common-java:DuplicatedBlocks") // Code will not be cleaner if extracting a common class for
-                                                            // OverviewResponse and VerksamhetOverviewResponse.
+// OverviewResponse and VerksamhetOverviewResponse.
 public class VerksamhetOverviewResponse extends AvailableFiltersResponse {
 
     private final int totalCases;
@@ -41,14 +41,14 @@ public class VerksamhetOverviewResponse extends AvailableFiltersResponse {
     // CHECKSTYLE:OFF ParameterNumberCheck
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public VerksamhetOverviewResponse(AvailableFilters availableFilters, int totalCases,
-                                      OverviewKonsfordelning casesPerMonthSexProportionPreviousPeriod,
-                                      List<OverviewChartRowExtended> diagnosisGroups,
-                                      List<OverviewChartRowExtended> ageGroups,
-                                      List<OverviewChartRowExtended> degreeOfSickLeaveGroups,
-                                      List<OverviewChartRow> sickLeaveLengthGroups,
-                                      int longSickLeavesTotal,
-                                      int longSickLeavesAlternation,
-                                      List<OverviewChartRowExtended> kompletteringar) {
+        OverviewKonsfordelning casesPerMonthSexProportionPreviousPeriod,
+        List<OverviewChartRowExtended> diagnosisGroups,
+        List<OverviewChartRowExtended> ageGroups,
+        List<OverviewChartRowExtended> degreeOfSickLeaveGroups,
+        List<OverviewChartRow> sickLeaveLengthGroups,
+        int longSickLeavesTotal,
+        int longSickLeavesAlternation,
+        List<OverviewChartRowExtended> kompletteringar) {
         super(availableFilters);
         this.totalCases = totalCases;
         this.casesPerMonthSexProportionPreviousPeriod = casesPerMonthSexProportionPreviousPeriod;
@@ -101,10 +101,10 @@ public class VerksamhetOverviewResponse extends AvailableFiltersResponse {
     @Override
     public String toString() {
         return "{\"VerksamhetOverviewResponse\":{\"totalCases\":" + totalCases + ", \"casesPerMonthSexProportionPreviousPeriod\":"
-                + casesPerMonthSexProportionPreviousPeriod + ", \"diagnosisGroups\":" + diagnosisGroups + ", \"ageGroups\":"
-                + ageGroups
-                + ", \"degreeOfSickLeaveGroups\":" + degreeOfSickLeaveGroups + ", \"sickLeaveLengthGroups\":" + sickLeaveLengthGroups
-                + ", \"longSickLeavesTotal\":"
-                + longSickLeavesTotal + ", \"longSickLeavesAlternation\":" + longSickLeavesAlternation + "}}";
+            + casesPerMonthSexProportionPreviousPeriod + ", \"diagnosisGroups\":" + diagnosisGroups + ", \"ageGroups\":"
+            + ageGroups
+            + ", \"degreeOfSickLeaveGroups\":" + degreeOfSickLeaveGroups + ", \"sickLeaveLengthGroups\":" + sickLeaveLengthGroups
+            + ", \"longSickLeavesTotal\":"
+            + longSickLeavesTotal + ", \"longSickLeavesAlternation\":" + longSickLeavesAlternation + "}}";
     }
 }

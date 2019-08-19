@@ -18,11 +18,10 @@
  */
 package se.inera.statistics.web.service;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class FilterSelections {
 
@@ -45,11 +44,11 @@ public class FilterSelections {
     private List<String> enhetNames;
 
     FilterSelections(boolean allAvailableDxsSelectedInFilter,
-                     boolean allAvailableEnhetsSelectedInFilter,
-                     boolean allAvailableSjukskrivningslangdsSelectedInFilter,
-                     boolean allAvailableAgeGroupsSelectedInFilter,
-                     boolean allAvailableIntygTypesSelectedInFilter,
-                     List<String> enhetNames) {
+        boolean allAvailableEnhetsSelectedInFilter,
+        boolean allAvailableSjukskrivningslangdsSelectedInFilter,
+        boolean allAvailableAgeGroupsSelectedInFilter,
+        boolean allAvailableIntygTypesSelectedInFilter,
+        List<String> enhetNames) {
         this.allAvailableDxsSelectedInFilter = allAvailableDxsSelectedInFilter;
         this.allAvailableEnhetsSelectedInFilter = allAvailableEnhetsSelectedInFilter;
         this.allAvailableSjukskrivningslangdsSelectedInFilter = allAvailableSjukskrivningslangdsSelectedInFilter;

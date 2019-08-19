@@ -20,7 +20,6 @@ package se.inera.statistics.service.hsa;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.hsa.services.Medarbetaruppdrag;
 

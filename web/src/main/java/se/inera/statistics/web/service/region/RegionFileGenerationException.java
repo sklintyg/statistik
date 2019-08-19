@@ -19,4 +19,5 @@
 package se.inera.statistics.web.service.region;
 
 public class RegionFileGenerationException extends Exception {
+
 }

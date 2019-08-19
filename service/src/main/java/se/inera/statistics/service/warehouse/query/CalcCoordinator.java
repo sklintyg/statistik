@@ -18,6 +18,8 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import static se.inera.statistics.service.warehouse.query.OverviewQuery.PERCENT;
+
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -27,11 +29,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-
-import static se.inera.statistics.service.warehouse.query.OverviewQuery.PERCENT;
-
 @Component
 public final class CalcCoordinator {
+
     private static final Logger LOG = LoggerFactory.getLogger(CalcCoordinator.class);
     private static final int POLL_TIME = 100;
 

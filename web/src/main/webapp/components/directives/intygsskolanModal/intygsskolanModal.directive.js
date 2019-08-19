@@ -19,27 +19,28 @@
 
 angular.module('StatisticsApp').directive('intygsskolanModal',
     /** @ngInject */
-    function ($uibModal) {
-        'use strict';
+    function($uibModal) {
+      'use strict';
 
-        return {
-            restrict: 'E',
-            scope: {
-            },
-            templateUrl: '/components/directives/intygsskolanModal/intygsskolanModal.html',
-            link: function($scope) {
-                $scope.openDialog = function() {
-                    var modalInstance = $uibModal.open({
-                        animation: true,
-                        templateUrl: '/components/directives/intygsskolanModal/modal/modal.html',
-                        controller: 'IntygsskolanModalCtrl',
-                        size: 'lg',
-                        backdrop: 'true',
-                        resolve: { }
-                    });
+      return {
+        restrict: 'E',
+        scope: {},
+        templateUrl: '/components/directives/intygsskolanModal/intygsskolanModal.html',
+        link: function($scope) {
+          $scope.openDialog = function() {
+            var modalInstance = $uibModal.open({
+              animation: true,
+              templateUrl: '/components/directives/intygsskolanModal/modal/modal.html',
+              controller: 'IntygsskolanModalCtrl',
+              size: 'lg',
+              backdrop: 'true',
+              resolve: {}
+            });
 
-                    modalInstance.result.then(function(){}, function(){});
-                };
-            }
-        };
+            modalInstance.result.then(function() {
+            }, function() {
+            });
+          };
+        }
+      };
     });

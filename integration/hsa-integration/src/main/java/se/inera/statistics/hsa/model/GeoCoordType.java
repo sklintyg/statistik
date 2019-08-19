@@ -34,7 +34,7 @@ public enum GeoCoordType {
     }
 
     public static GeoCoordType fromValue(String v) {
-        for (GeoCoordType c: GeoCoordType.values()) {
+        for (GeoCoordType c : GeoCoordType.values()) {
             if (c.value.equals(v)) {
                 return c;
             }

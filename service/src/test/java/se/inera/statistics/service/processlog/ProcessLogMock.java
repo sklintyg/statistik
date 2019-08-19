@@ -18,12 +18,11 @@
  */
 package se.inera.statistics.service.processlog;
 
-import org.springframework.transaction.annotation.Transactional;
-
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 public class ProcessLogMock implements ProcessLog {
 
@@ -46,7 +45,8 @@ public class ProcessLogMock implements ProcessLog {
     @Override
     @Transactional
     public List<IntygEvent> getPending(int max) {
-        TypedQuery<IntygEvent> allQuery = manager.createQuery("SELECT e from IntygEvent e WHERE e.id > :lastId ORDER BY e.id ASC", IntygEvent.class);
+        TypedQuery<IntygEvent> allQuery = manager
+            .createQuery("SELECT e from IntygEvent e WHERE e.id > :lastId ORDER BY e.id ASC", IntygEvent.class);
         allQuery.setParameter("lastId", getLastId());
         allQuery.setMaxResults(max);
         return allQuery.getResultList();

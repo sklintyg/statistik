@@ -20,7 +20,6 @@ package se.inera.statistics.scheduler.active;
 
 import org.junit.Test;
 import org.mockito.Mockito;
-
 import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
 import se.inera.statistics.service.monitoring.MonitoringLogService;
 import se.inera.statistics.service.processlog.LogConsumer;

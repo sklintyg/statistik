@@ -23,7 +23,6 @@ import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -52,10 +51,10 @@ public class SjukfallPerSexConverter {
         }
 
         return TableData.createWithSingleHeadersRow(data,
-                Arrays.asList(MessagesText.REPORT_LAN,
-                        MessagesText.REPORT_COLUMN_ANTAL_SJUKFALL_TOTALT,
-                        MessagesText.REPORT_COLUMN_ANDEL_SJUKFALL_FEMALE,
-                        MessagesText.REPORT_COLUMN_ANDEL_SJUKFALL_MALE));
+            Arrays.asList(MessagesText.REPORT_LAN,
+                MessagesText.REPORT_COLUMN_ANTAL_SJUKFALL_TOTALT,
+                MessagesText.REPORT_COLUMN_ANDEL_SJUKFALL_FEMALE,
+                MessagesText.REPORT_COLUMN_ANDEL_SJUKFALL_MALE));
     }
 
     private NamedData getDataForAllCounties(SimpleKonResponse list) {
@@ -107,6 +106,6 @@ public class SjukfallPerSexConverter {
         TableData tableData = convertToTableData(casesPerMonth);
         ChartData chartData = convertToChartData(casesPerMonth);
         return new SimpleDetailsData(tableData, chartData, range.toString(), casesPerMonth.getAvailableFilters(),
-                FilterDataResponse.empty());
+            FilterDataResponse.empty());
     }
 }

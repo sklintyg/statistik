@@ -27,6 +27,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 
 public final class Range implements Serializable {
+
     private static final String RANGE_SEPARATOR = "\u2013";
     private static final int DEFAULT_PERIOD = 18;
     private static final int YEAR_PERIOD = 12;
@@ -98,6 +99,7 @@ public final class Range implements Serializable {
     }
 
     private static final class RangeFormatter {
+
         private final String monthFormat;
 
         private RangeFormatter(String monthFormat) {
@@ -115,6 +117,7 @@ public final class Range implements Serializable {
                 return formatMonthWithYear(from) + RANGE_SEPARATOR + formatMonthWithYear(to);
             }
         }
+
         private String formatMonthWithYear(LocalDate when) {
             return when.format(DateTimeFormatter.ofPattern(monthFormat + " yyyy", SV));
         }

@@ -23,24 +23,22 @@ import static se.inera.statistics.service.warehouse.FactBuilder.aFact;
 import static se.inera.statistics.service.warehouse.WidelineConverter.toDay;
 
 import java.time.LocalDate;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.util.ReflectionTestUtils;
-
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.caching.Cache;
 import se.inera.statistics.service.caching.NoOpRedisTemplate;
-import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.model.KonField;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.MutableAisle;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
-import se.inera.statistics.service.report.model.KonDataResponse;
-import se.inera.statistics.service.report.model.KonField;
 
 public class IntygPerSjukfallQueryTest {
 
@@ -84,11 +82,11 @@ public class IntygPerSjukfallQueryTest {
 
     private Fact fact(int patientId, Kon patientKon, HsaIdLakare lakareId) {
         return aFact().withId(1).withLan(3).withKommun(380).withForsamling(38002).
-                withEnhet(ENHET1_ID).withLakarintyg(lakarIntygCounter++).
-                withPatient(patientId).withKon(patientKon).withAlder(45).
-                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
-                withSjukskrivningsgrad(100).withStartdatum(toDay(sjukfallDate)).withSlutdatum(toDay(sjukfallDate) + 46).
-                withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(lakareId).build();
+            withEnhet(ENHET1_ID).withLakarintyg(lakarIntygCounter++).
+            withPatient(patientId).withKon(patientKon).withAlder(45).
+            withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
+            withSjukskrivningsgrad(100).withStartdatum(toDay(sjukfallDate)).withSlutdatum(toDay(sjukfallDate) + 46).
+            withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(lakareId).build();
     }
 
     private void verifyThatTheRestIsEmpty(SimpleKonResponse result, int fromIndex) {
@@ -123,7 +121,8 @@ public class IntygPerSjukfallQueryTest {
         }
     }
 
-    private void verifyTidsserieWithOneCaseForFemaleWithTwoIntygAndOneCaseForMaleWithOneIntyg(KonDataResponse result, String name, int index) {
+    private void verifyTidsserieWithOneCaseForFemaleWithTwoIntygAndOneCaseForMaleWithOneIntyg(KonDataResponse result, String name,
+        int index) {
         assertEquals(name, result.getRows().get(index).getName());
         assertEquals(1, result.getRows().get(index).getData().get(0).getMale());
         assertEquals(0, result.getRows().get(index).getData().get(0).getFemale());
@@ -141,7 +140,8 @@ public class IntygPerSjukfallQueryTest {
         aisle.addLine(fact(PATIENT1_ID, Kon.FEMALE, LAKARE1_ID));
         aisle.addLine(fact(PATIENT2_ID, Kon.MALE, LAKARE2_ID));
 
-        SimpleKonResponse result = IntygPerSjukfallQuery.getIntygPerSjukfallTvarsnitt(aisle.createAisle(), SjukfallUtil.ALL_ENHETER, range.getFrom(), PERIOD_1,
+        SimpleKonResponse result = IntygPerSjukfallQuery
+            .getIntygPerSjukfallTvarsnitt(aisle.createAisle(), SjukfallUtil.ALL_ENHETER, range.getFrom(), PERIOD_1,
                 PERIOD_LENGTH_12, sjukfallUtil);
 
         assertEquals(11, result.getRows().size());
@@ -160,7 +160,8 @@ public class IntygPerSjukfallQueryTest {
         aisle.addLine(fact(PATIENT1_ID, Kon.FEMALE, LAKARE1_ID));
         aisle.addLine(fact(PATIENT2_ID, Kon.MALE, LAKARE2_ID));
 
-        KonDataResponse result = IntygPerSjukfallQuery.getIntygPerSjukfallTidsserie(aisle.createAisle(), SjukfallUtil.ALL_ENHETER, range.getFrom(), PERIOD_LENGTH_12,
+        KonDataResponse result = IntygPerSjukfallQuery
+            .getIntygPerSjukfallTidsserie(aisle.createAisle(), SjukfallUtil.ALL_ENHETER, range.getFrom(), PERIOD_LENGTH_12,
                 PERIOD_1, sjukfallUtil);
 
         assertEquals(11, result.getGroups().size());
@@ -189,7 +190,8 @@ public class IntygPerSjukfallQueryTest {
         aisle.addLine(fact(PATIENT4_ID, Kon.FEMALE, LAKARE1_ID));
         aisle.addLine(fact(PATIENT5_ID, Kon.FEMALE, LAKARE1_ID));
 
-        SimpleKonResponse result = intygPerSjukfallQuery.getIntygPerSjukfallTvarsnittRegion(aisle.createAisle(), SjukfallUtil.ALL_ENHETER, range.getFrom(), PERIOD_1,
+        SimpleKonResponse result = intygPerSjukfallQuery
+            .getIntygPerSjukfallTvarsnittRegion(aisle.createAisle(), SjukfallUtil.ALL_ENHETER, range.getFrom(), PERIOD_1,
                 PERIOD_LENGTH_12, sjukfallUtil);
 
         assertEquals(11, result.getGroups().size());
@@ -206,7 +208,8 @@ public class IntygPerSjukfallQueryTest {
         aisle.addLine(fact(PATIENT1_ID, Kon.FEMALE, LAKARE1_ID));
         aisle.addLine(fact(PATIENT2_ID, Kon.MALE, LAKARE2_ID));
 
-        SimpleKonResponse result = intygPerSjukfallQuery.getIntygPerSjukfallTvarsnittRegion(aisle.createAisle(), SjukfallUtil.ALL_ENHETER, range.getFrom(), PERIOD_1,
+        SimpleKonResponse result = intygPerSjukfallQuery
+            .getIntygPerSjukfallTvarsnittRegion(aisle.createAisle(), SjukfallUtil.ALL_ENHETER, range.getFrom(), PERIOD_1,
                 PERIOD_LENGTH_12, sjukfallUtil);
 
         assertEquals(11, result.getGroups().size());

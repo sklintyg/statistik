@@ -18,12 +18,11 @@
  */
 package se.inera.statistics.service.report.model;
 
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Multimap;
 
 public class SimpleKonResponse extends AvailableFiltersResponse {
 
@@ -88,7 +87,7 @@ public class SimpleKonResponse extends AvailableFiltersResponse {
     }
 
     public static SimpleKonResponse merge(Collection<SimpleKonResponse> resps, boolean mergeEqualRows,
-                                          AvailableFilters availableFilters) {
+        AvailableFilters availableFilters) {
         final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
         if (mergeEqualRows) {
             Multimap<String, SimpleKonDataRow> mappedResps = LinkedHashMultimap.create();

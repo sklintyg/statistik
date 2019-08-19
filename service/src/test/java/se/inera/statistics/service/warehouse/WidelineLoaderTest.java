@@ -18,6 +18,12 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import static org.junit.Assert.assertEquals;
+
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -34,17 +40,11 @@ import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:icd10.xml" })
-@DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ContextConfiguration(locations = {"classpath:process-log-impl-test.xml", "classpath:icd10.xml"})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class WidelineLoaderTest {
+
     private static final Logger LOG = LoggerFactory.getLogger(WidelineLoaderTest.class);
 
     public static final HsaIdVardgivare VG1 = new HsaIdVardgivare("vg1");
@@ -117,7 +117,7 @@ public class WidelineLoaderTest {
         for (int i = 1; i < 1000; i++) {
             insertLine(EventType.CREATED, "" + i, VG1);
         }
-        for (int i = 1; i < 1000; i+=3) {
+        for (int i = 1; i < 1000; i += 3) {
             insertLine(EventType.REVOKED, "" + i, VG1);
         }
 
@@ -156,8 +156,8 @@ public class WidelineLoaderTest {
         line1.setCorrelationId(correlationId);
         widelineManager.saveWideline(line1);
         final IntygCommon line = new IntygCommon(correlationId, patientId, LocalDate.now(),
-                IntygType.LISJP, line1.getEnhet().getId(),vg.getId(), line1.getKon(), event,
-                line1.getDiagnoskod(), true, line1.getLakareId().getId());
+            IntygType.LISJP, line1.getEnhet().getId(), vg.getId(), line1.getKon(), event,
+            line1.getDiagnoskod(), true, line1.getLakareId().getId());
         intygCommonManager.persistIfValid(1L, "1", line);
     }
 }

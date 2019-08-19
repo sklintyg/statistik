@@ -17,31 +17,31 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 angular.module('StatisticsApp.treeMultiSelector.controller', [])
-    .controller('treeMultiSelectorCtrl', ['$scope', '$uibModal',
-        function ($scope, $uibModal) {
-        'use strict';
+.controller('treeMultiSelectorCtrl', ['$scope', '$uibModal',
+  function($scope, $uibModal) {
+    'use strict';
 
-        $scope.openDialogClicked = function () {
+    $scope.openDialogClicked = function() {
 
-            if (angular.isFunction($scope.onOpen)) {
-                $scope.onOpen();
-            }
+      if (angular.isFunction($scope.onOpen)) {
+        $scope.onOpen();
+      }
 
-            var modalInstance = $uibModal.open({
-                animation: false,
-                templateUrl: '/app/shared/treemultiselector/modal/modal.html',
-                controller: 'TreeMultiSelectorModalCtrl',
-                windowTopClass: 'tree-multi-selector',
-                size: 'lg',
-                backdrop: 'true',
-                resolve: {
-                    directiveScope: $scope
-                }
-            });
+      var modalInstance = $uibModal.open({
+        animation: false,
+        templateUrl: '/app/shared/treemultiselector/modal/modal.html',
+        controller: 'TreeMultiSelectorModalCtrl',
+        windowTopClass: 'tree-multi-selector',
+        size: 'lg',
+        backdrop: 'true',
+        resolve: {
+          directiveScope: $scope
+        }
+      });
 
-            modalInstance.result.then(function() {
-                $scope.doneClicked();
-            }, function() {
-            });
-        };
-    }]);
+      modalInstance.result.then(function() {
+        $scope.doneClicked();
+      }, function() {
+      });
+    };
+  }]);

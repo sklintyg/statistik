@@ -21,15 +21,13 @@ package se.inera.statistics.web.model;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
-
-import se.inera.statistics.service.report.model.AvailableFilters;
-import se.inera.statistics.web.error.Message;
-import se.inera.statistics.web.service.FilterDataResponse;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.junit.Test;
+import se.inera.statistics.service.report.model.AvailableFilters;
+import se.inera.statistics.web.error.Message;
+import se.inera.statistics.web.service.FilterDataResponse;
 
 public class TableDataReportTest {
 
@@ -103,7 +101,8 @@ public class TableDataReportTest {
 
             @Override
             public List<ChartData> getChartDatas() {
-                return Arrays.asList(new ChartData(Arrays.asList(new ChartSeries("", Arrays.asList(1,2))), Arrays.asList(new ChartCategory("cat1"), new ChartCategory("cat2"))));
+                return Arrays.asList(new ChartData(Arrays.asList(new ChartSeries("", Arrays.asList(1, 2))),
+                    Arrays.asList(new ChartCategory("cat1"), new ChartCategory("cat2"))));
             }
 
             @Override
@@ -146,7 +145,8 @@ public class TableDataReportTest {
 
             @Override
             public List<ChartData> getChartDatas() {
-                return Arrays.asList(new ChartData(Arrays.asList(new ChartSeries("", Arrays.asList(0,0))), Arrays.asList(new ChartCategory("cat1"), new ChartCategory("cat2"))));
+                return Arrays.asList(new ChartData(Arrays.asList(new ChartSeries("", Arrays.asList(0, 0))),
+                    Arrays.asList(new ChartCategory("cat1"), new ChartCategory("cat2"))));
             }
 
             @Override

@@ -23,11 +23,9 @@ import java.time.Clock;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import se.inera.statistics.hsa.model.HsaIdUser;
 
 @Component
@@ -42,16 +40,16 @@ public class RegionEnhetUpdateManager {
     @Transactional
     public Optional<RegionEnhetUpdate> getByRegionId(long regionId) {
         final RegionEnhetUpdate regionEnhetUpdate = manager.find(RegionEnhetUpdate.class, regionId);
-        return regionEnhetUpdate == null ? Optional.<RegionEnhetUpdate> empty() : Optional.of(regionEnhetUpdate);
+        return regionEnhetUpdate == null ? Optional.<RegionEnhetUpdate>empty() : Optional.of(regionEnhetUpdate);
     }
 
     @Transactional
     public void update(long regionId, String updatedByName, HsaIdUser updatedByHsaid, String filename,
-                       RegionEnhetUpdateOperation operation) {
+        RegionEnhetUpdateOperation operation) {
         final Optional<RegionEnhetUpdate> existing = getByRegionId(regionId);
         existing.ifPresent(regionEnhetUpdate -> manager.remove(regionEnhetUpdate));
         final RegionEnhetUpdate regionEnhetUpdate = new RegionEnhetUpdate(regionId, updatedByName, updatedByHsaid,
-                new Timestamp(clock.millis()), filename, operation);
+            new Timestamp(clock.millis()), filename, operation);
         manager.persist(regionEnhetUpdate);
     }
 

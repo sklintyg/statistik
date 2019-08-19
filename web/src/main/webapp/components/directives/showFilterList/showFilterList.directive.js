@@ -18,17 +18,17 @@
  */
 
 angular.module('StatisticsApp')
-    .directive('showFilterList', [function() {
-        'use strict';
-        return {
-            scope: {
-                enhetsFilters: '=',
-            },
-            transclude: true,
-            restrict: 'E',
-            templateUrl: '/components/directives/showFilterList/showFilterList.html',
-            link: function($scope) {
-                $scope.enhetsfilterShown = false;
-            }
-        };
-    }]);
+.directive('showFilterList', [function() {
+  'use strict';
+  return {
+    scope: {
+      enhetsFilters: '=',
+    },
+    transclude: true,
+    restrict: 'E',
+    templateUrl: '/components/directives/showFilterList/showFilterList.html',
+    link: function($scope) {
+      $scope.enhetsfilterShown = false;
+    }
+  };
+}]);

@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.web.service.region;
 
+import com.google.common.math.DoubleMath;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -25,15 +26,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import javax.activation.DataSource;
-
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import com.google.common.math.DoubleMath;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.region.RegionEnhetFileDataRow;
 
@@ -76,7 +74,7 @@ public class RegionFileReader {
                     }
                     if (patients != null && patients < 0) {
                         throw new RegionEnhetFileParseException(
-                                messagePrefix + "Kolumn “Antal listade patienter” innehåller ett negativt tal");
+                            messagePrefix + "Kolumn “Antal listade patienter” innehåller ett negativt tal");
                     }
                     rows.add(new RegionEnhetFileDataRow(id, patients));
                 }
@@ -92,27 +90,27 @@ public class RegionFileReader {
         Cell cellPatients = row.getCell(2);
         if (cellPatients != null) {
             switch (cellPatients.getCellType()) {
-            case Cell.CELL_TYPE_NUMERIC:
-                double patientsDouble = cellPatients.getNumericCellValue();
-                if (DoubleMath.isMathematicalInteger(patientsDouble)) {
-                    patients = (int) patientsDouble;
-                } else {
-                    throw new RegionEnhetFileParseException(
+                case Cell.CELL_TYPE_NUMERIC:
+                    double patientsDouble = cellPatients.getNumericCellValue();
+                    if (DoubleMath.isMathematicalInteger(patientsDouble)) {
+                        patients = (int) patientsDouble;
+                    } else {
+                        throw new RegionEnhetFileParseException(
                             messagePrefix + "Kolumn “Antal listade patienter” innehåller inte ett heltal: " + patientsDouble);
-                }
-                break;
-            case Cell.CELL_TYPE_STRING:
-                final String patientsString = cellPatients.getStringCellValue();
-                try {
-                    patients = Integer.parseInt(patientsString);
-                } catch (NumberFormatException e) {
-                    throw new RegionEnhetFileParseException(
+                    }
+                    break;
+                case Cell.CELL_TYPE_STRING:
+                    final String patientsString = cellPatients.getStringCellValue();
+                    try {
+                        patients = Integer.parseInt(patientsString);
+                    } catch (NumberFormatException e) {
+                        throw new RegionEnhetFileParseException(
                             messagePrefix + "Kolumn “Antal listade patienter” innehåller inte ett heltal");
-                }
-                break;
-            default:
-                patients = null;
-                break;
+                    }
+                    break;
+                default:
+                    patients = null;
+                    break;
             }
         }
         return patients;

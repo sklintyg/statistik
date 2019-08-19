@@ -26,12 +26,13 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public final class Ranges implements Iterable<Ranges.Range> {
+
     private final List<Range> ranges;
     private final Map<String, Range> idMap = new TreeMap<>();
 
-    public Ranges(Range...ranges) {
+    public Ranges(Range... ranges) {
         this.ranges = Arrays.asList(ranges);
-        for (Range range: this.ranges) {
+        for (Range range : this.ranges) {
             idMap.put(range.getName(), range);
         }
     }
@@ -54,7 +55,7 @@ public final class Ranges implements Iterable<Ranges.Range> {
     }
 
     public Range rangeFor(int value) {
-        for (Range range: ranges) {
+        for (Range range : ranges) {
             if (range.cutoff > value) {
                 return range;
             }
@@ -68,7 +69,7 @@ public final class Ranges implements Iterable<Ranges.Range> {
      * @param days days
      * @return groups
      */
-    public  List<Range> lookupRangesLongerThan(int days) {
+    public List<Range> lookupRangesLongerThan(int days) {
         List<Range> result = new ArrayList<>();
         for (Range range : ranges) {
             if (range.cutoff > days) {
@@ -84,7 +85,7 @@ public final class Ranges implements Iterable<Ranges.Range> {
     }
 
     public int getRangeCutoffForValue(int value) {
-        for (Ranges.Range range: ranges) {
+        for (Ranges.Range range : ranges) {
             final int cutoff = range.getCutoff();
             if (cutoff > value) {
                 return cutoff;
@@ -94,6 +95,7 @@ public final class Ranges implements Iterable<Ranges.Range> {
     }
 
     public static final class Range {
+
         private final String name;
         private final int cutoff;
         private final String color;

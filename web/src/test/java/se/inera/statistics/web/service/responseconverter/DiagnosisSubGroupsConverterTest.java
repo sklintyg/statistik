@@ -18,12 +18,14 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.Test;
-
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
@@ -34,10 +36,6 @@ import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.service.Filter;
 import se.inera.statistics.web.service.FilterSettings;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class DiagnosisSubGroupsConverterTest {
 
@@ -91,7 +89,7 @@ public class DiagnosisSubGroupsConverterTest {
     private List<Icd> getIcds(int numberOfIcdToCreate) {
         final List<Icd> icds = new ArrayList<>();
         for (int i = 1; i <= numberOfIcdToCreate; i++) {
-             icds.add(getIcd(i));
+            icds.add(getIcd(i));
 
         }
         return icds;
@@ -184,11 +182,13 @@ public class DiagnosisSubGroupsConverterTest {
         DiagnosgruppResponse response = new DiagnosgruppResponse(AvailableFilters.getForSjukfall(), getIcds(data.size()), rows);
 
         //When
-        final DualSexStatisticsData result = new DiagnosisSubGroupsConverter().convert(response, new FilterSettings(Filter.empty(), Range.quarter(clock)));
+        final DualSexStatisticsData result = new DiagnosisSubGroupsConverter()
+            .convert(response, new FilterSettings(Filter.empty(), Range.quarter(clock)));
 
         //Then
         assertEquals(6, result.getFemaleChart().getSeries().size());
-        assertTrue(result.getFemaleChart().getSeries().stream().noneMatch(chartSeries -> MessagesText.REPORT_GROUP_OTHER.equals(chartSeries.getName())));
+        assertTrue(result.getFemaleChart().getSeries().stream()
+            .noneMatch(chartSeries -> MessagesText.REPORT_GROUP_OTHER.equals(chartSeries.getName())));
     }
 
     @Test
@@ -210,11 +210,13 @@ public class DiagnosisSubGroupsConverterTest {
         DiagnosgruppResponse response = new DiagnosgruppResponse(AvailableFilters.getForSjukfall(), getIcds(data.size()), rows);
 
         //When
-        final DualSexStatisticsData result = new DiagnosisSubGroupsConverter().convert(response, new FilterSettings(Filter.empty(), Range.quarter(clock)));
+        final DualSexStatisticsData result = new DiagnosisSubGroupsConverter()
+            .convert(response, new FilterSettings(Filter.empty(), Range.quarter(clock)));
 
         //Then
         assertEquals(7, result.getFemaleChart().getSeries().size());
-        assertTrue(result.getFemaleChart().getSeries().stream().noneMatch(chartSeries -> MessagesText.REPORT_GROUP_OTHER.equals(chartSeries.getName())));
+        assertTrue(result.getFemaleChart().getSeries().stream()
+            .noneMatch(chartSeries -> MessagesText.REPORT_GROUP_OTHER.equals(chartSeries.getName())));
     }
 
     @Test
@@ -236,11 +238,13 @@ public class DiagnosisSubGroupsConverterTest {
         DiagnosgruppResponse response = new DiagnosgruppResponse(AvailableFilters.getForSjukfall(), getIcds(data.size()), rows);
 
         //When
-        final DualSexStatisticsData result = new DiagnosisSubGroupsConverter().convert(response, new FilterSettings(Filter.empty(), Range.quarter(clock)));
+        final DualSexStatisticsData result = new DiagnosisSubGroupsConverter()
+            .convert(response, new FilterSettings(Filter.empty(), Range.quarter(clock)));
 
         //Then
         assertEquals(7, result.getFemaleChart().getSeries().size());
-        assertTrue(result.getFemaleChart().getSeries().stream().anyMatch(chartSeries -> MessagesText.REPORT_GROUP_OTHER.equals(chartSeries.getName())));
+        assertTrue(result.getFemaleChart().getSeries().stream()
+            .anyMatch(chartSeries -> MessagesText.REPORT_GROUP_OTHER.equals(chartSeries.getName())));
     }
 
 }

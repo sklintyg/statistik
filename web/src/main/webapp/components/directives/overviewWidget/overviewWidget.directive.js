@@ -20,43 +20,43 @@
 /* globals Highcharts */
 angular.module('StatisticsApp').directive('overviewWidget',
     /** @ngInject */
-    function () {
-        'use strict';
+    function() {
+      'use strict';
 
-        return {
-            restrict: 'E',
-            scope: {
-                titleKey: '@',
-                tooltipContent: '<',
-                chartId: '@',
-                options: '<',
-                groups: '<',
-                tableQuantityPostfix: '@',
-                columnTitle1: '@',
-                columnTitle2: '@',
-                columnTitle3: '@'
-            },
-            templateUrl: '/components/directives/overviewWidget/overviewWidget.html',
-            link: function($scope) {
-                var chart = null;
+      return {
+        restrict: 'E',
+        scope: {
+          titleKey: '@',
+          tooltipContent: '<',
+          chartId: '@',
+          options: '<',
+          groups: '<',
+          tableQuantityPostfix: '@',
+          columnTitle1: '@',
+          columnTitle2: '@',
+          columnTitle3: '@'
+        },
+        templateUrl: '/components/directives/overviewWidget/overviewWidget.html',
+        link: function($scope) {
+          var chart = null;
 
-                $scope.$watch('options', function(newValue) {
-                    if (newValue) {
-                        chart = Highcharts.chart($scope.chartId, newValue.options, newValue.onComplete);
-                    }
-                });
-
-                $scope.$on('$destroy', function() {
-                    if(chart && typeof chart.destroy === 'function') {
-                        chart.destroy();
-                    }
-                });
-
-                $scope.tableFilter = function (item) {
-                    if (!item.hideInTable) {
-                        return item;
-                    }
-                };
+          $scope.$watch('options', function(newValue) {
+            if (newValue) {
+              chart = Highcharts.chart($scope.chartId, newValue.options, newValue.onComplete);
             }
-        };
+          });
+
+          $scope.$on('$destroy', function() {
+            if (chart && typeof chart.destroy === 'function') {
+              chart.destroy();
+            }
+          });
+
+          $scope.tableFilter = function(item) {
+            if (!item.hideInTable) {
+              return item;
+            }
+          };
+        }
+      };
     });

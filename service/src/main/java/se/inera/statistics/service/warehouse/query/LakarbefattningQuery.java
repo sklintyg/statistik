@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.Aisle;
@@ -68,10 +67,10 @@ public final class LakarbefattningQuery {
     }
 
     public static SimpleKonResponse getSjukfall(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,
-            int periodLength, SjukfallUtil sjukfallUtil) {
+        int periodLength, SjukfallUtil sjukfallUtil) {
         final Function<Sjukfall, Collection<Lakare>> getLakare = Sjukfall::getLakare;
         final KonDataResponse sjukfallSomTidsserie = getSjukfallCommon(aisle, filter, start, periods, periodLength, sjukfallUtil,
-                getLakare);
+            getLakare);
         return SimpleKonResponse.create(sjukfallSomTidsserie);
     }
 
@@ -88,13 +87,13 @@ public final class LakarbefattningQuery {
     }
 
     public static KonDataResponse getSjukfallSomTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,
-            int periodLength, SjukfallUtil sjukfallUtil) {
+        int periodLength, SjukfallUtil sjukfallUtil) {
         final Function<Sjukfall, Collection<Lakare>> getLakare = sjukfall -> Collections.singleton(sjukfall.getLastLakare());
         return getSjukfallCommon(aisle, filter, start, periods, periodLength, sjukfallUtil, getLakare);
     }
 
     private static KonDataResponse getSjukfallCommon(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength,
-            SjukfallUtil sjukfallUtil, final Function<Sjukfall, Collection<Lakare>> getLakare) {
+        SjukfallUtil sjukfallUtil, final Function<Sjukfall, Collection<Lakare>> getLakare) {
         final ArrayList<Map.Entry<Integer, String>> ranges = new ArrayList<>(getAllLakarbefattnings(true).entrySet());
         final List<String> names = ranges.stream().map(Map.Entry::getValue).collect(Collectors.toList());
         final List<Integer> ids = ranges.stream().map(Map.Entry::getKey).collect(Collectors.toList());
@@ -108,7 +107,7 @@ public final class LakarbefattningQuery {
             }
         };
         final KonDataResponse response = sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, ids,
-                counterFunction);
+            counterFunction);
         return KonDataResponse.createNewWithoutEmptyGroups(response);
     }
 

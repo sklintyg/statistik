@@ -21,18 +21,18 @@
 angular.module('StatisticsApp').filter('highlightWords',
     /** @ngInject */
     function(PHRASES_TO_HIGHLIGHT) {
-        'use strict';
+      'use strict';
 
-        return function(text) {
-            var highlightedText = text;
+      return function(text) {
+        var highlightedText = text;
 
-            for (var key in PHRASES_TO_HIGHLIGHT) {
-                if (PHRASES_TO_HIGHLIGHT.hasOwnProperty(key)) {
-                    highlightedText = highlightedText.replace(new RegExp('(' + key + ')', 'gi'), '<span class="highlight-this-content">$1</span>');
-                }
-            }
+        for (var key in PHRASES_TO_HIGHLIGHT) {
+          if (PHRASES_TO_HIGHLIGHT.hasOwnProperty(key)) {
+            highlightedText = highlightedText.replace(new RegExp('(' + key + ')', 'gi'), '<span class="highlight-this-content">$1</span>');
+          }
+        }
 
-            return highlightedText;
-        };
+        return highlightedText;
+      };
 
     });

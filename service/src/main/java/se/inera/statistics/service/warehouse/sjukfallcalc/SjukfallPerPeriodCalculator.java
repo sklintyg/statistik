@@ -19,12 +19,11 @@
 package se.inera.statistics.service.warehouse.sjukfallcalc;
 
 import com.google.common.collect.Multimap;
+import java.util.List;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.SjukfallExtended;
 import se.inera.statistics.service.warehouse.sjukfallcalc.perpatient.SjukfallPerPatientCalculator;
-
-import java.util.List;
 
 public class SjukfallPerPeriodCalculator {
 
@@ -34,13 +33,12 @@ public class SjukfallPerPeriodCalculator {
     private SjukfallCalculatorExtender sjukfallCalculatorExtender;
 
     /**
-     * @param extendSjukfall
-     *            true = försök att komplettera sjukfall från andra enheter än de man har tillgång till,
-     *            false = titta bara på tillgängliga enheter, lämplig att använda t ex om man vet att man
-     *            har tillgång till alla enheter
+     * @param extendSjukfall true = försök att komplettera sjukfall från andra enheter än de man har tillgång till,
+     * false = titta bara på tillgängliga enheter, lämplig att använda t ex om man vet att man
+     * har tillgång till alla enheter
      */
     public SjukfallPerPeriodCalculator(boolean extendSjukfall, List<Range> ranges, List<Fact> aisle,
-            Iterable<Fact> filteredAisle) {
+        Iterable<Fact> filteredAisle) {
         this.extendSjukfall = extendSjukfall;
         this.ranges = ranges;
         sjukfallPerPatientCalculator = new SjukfallPerPatientCalculator(ranges, filteredAisle);

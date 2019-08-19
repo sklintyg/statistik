@@ -18,13 +18,15 @@
  */
 package se.inera.statistics.service.helper.certificate;
 
-import javax.xml.bind.JAXBException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
 import java.time.LocalDate;
 import java.util.stream.IntStream;
-
+import javax.xml.bind.JAXBException;
 import org.junit.Assert;
 import org.junit.Test;
-
 import se.inera.intygstjanster.ts.services.RegisterTSDiabetesResponder.v1.RegisterTSDiabetesType;
 import se.inera.intygstjanster.ts.services.types.v1.II;
 import se.inera.intygstjanster.ts.services.v1.GrundData;
@@ -32,152 +34,147 @@ import se.inera.intygstjanster.ts.services.v1.Patient;
 import se.inera.intygstjanster.ts.services.v1.TSDiabetesIntyg;
 import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.helper.Patientdata;
-import se.inera.statistics.service.helper.certificate.TsDiabetesHelper;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.IntygType;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-
 public class TsDiabetesHelperTest {
 
     private static final String xmlIntyg = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-            "<ns3:RegisterTSDiabetes xmlns=\"urn:local:se:intygstjanster:services:1\"\n" +
-            "    xmlns:ns2=\"urn:local:se:intygstjanster:services:types:1\"\n" +
-            "    xmlns:ns3=\"urn:local:se:intygstjanster:services:RegisterTSDiabetesResponder:1\">\n" +
-            "  <ns3:intyg>\n" +
-            "    <intygsId>987654321</intygsId>\n" +
-            "    <intygsTyp>ts-diabetes</intygsTyp>\n" +
-            "    <version>02</version>\n" +
-            "    <utgava>06</utgava>\n" +
-            "    <grundData>\n" +
-            "      <signeringsTidstampel>2013-03-17T15:57:00</signeringsTidstampel>\n" +
-            "      <skapadAv>\n" +
-            "        <personId>\n" +
-            "          <ns2:root>1.2.752.129.2.1.4.1</ns2:root>\n" +
-            "          <ns2:extension>Lakareid</ns2:extension>\n" +
-            "        </personId>\n" +
-            "        <fullstandigtNamn>Doktor Thompson</fullstandigtNamn>\n" +
-            "        <atLakare>false</atLakare>\n" +
-            "        <vardenhet>\n" +
-            "          <enhetsId>\n" +
-            "            <ns2:root>1.2.752.129.2.1.4.1</ns2:root>\n" +
-            "            <ns2:extension>Enhetsid</ns2:extension>\n" +
-            "          </enhetsId>\n" +
-            "          <enhetsnamn>Vårdenhet Väst</enhetsnamn>\n" +
-            "          <postadress>Enhetsvägen 12</postadress>\n" +
-            "          <postnummer>54321</postnummer>\n" +
-            "          <postort>Tumba</postort>\n" +
-            "          <telefonnummer>08-1337</telefonnummer>\n" +
-            "          <vardgivare>\n" +
-            "            <vardgivarid>\n" +
-            "              <ns2:root>1.2.752.129.2.1.4.1</ns2:root>\n" +
-            "              <ns2:extension>VardgivarId</ns2:extension>\n" +
-            "            </vardgivarid>\n" +
-            "            <vardgivarnamn>Vårdgivarnamn</vardgivarnamn>\n" +
-            "          </vardgivare>\n" +
-            "        </vardenhet>\n" +
-            "        <specialiteter>SPECIALITET</specialiteter>\n" +
-            "        <befattningar>ST_LAKARE</befattningar>\n" +
-            "      </skapadAv>\n" +
-            "      <patient>\n" +
-            "        <personId>\n" +
-            "          <ns2:root>1.2.752.129.2.1.3.1</ns2:root>\n" +
-            "          <ns2:extension>19121212-1212</ns2:extension>\n" +
-            "        </personId>\n" +
-            "        <fullstandigtNamn>Herr Dundersjuk</fullstandigtNamn>\n" +
-            "        <fornamn>Herr</fornamn>\n" +
-            "        <efternamn>Dundersjuk</efternamn>\n" +
-            "        <postadress>Testvägen 12</postadress>\n" +
-            "        <postnummer>12345</postnummer>\n" +
-            "        <postort>Testort</postort>\n" +
-            "      </patient>\n" +
-            "    </grundData>\n" +
-            "    <intygAvser>\n" +
-            "      <korkortstyp>AM</korkortstyp>\n" +
-            "      <korkortstyp>A1</korkortstyp>\n" +
-            "      <korkortstyp>A2</korkortstyp>\n" +
-            "      <korkortstyp>A</korkortstyp>\n" +
-            "      <korkortstyp>B</korkortstyp>\n" +
-            "      <korkortstyp>BE</korkortstyp>\n" +
-            "      <korkortstyp>TRAKTOR</korkortstyp>\n" +
-            "      <korkortstyp>C1</korkortstyp>\n" +
-            "      <korkortstyp>C1E</korkortstyp>\n" +
-            "      <korkortstyp>C</korkortstyp>\n" +
-            "      <korkortstyp>CE</korkortstyp>\n" +
-            "      <korkortstyp>D1</korkortstyp>\n" +
-            "      <korkortstyp>D1E</korkortstyp>\n" +
-            "      <korkortstyp>D</korkortstyp>\n" +
-            "      <korkortstyp>DE</korkortstyp>\n" +
-            "      <korkortstyp>TAXI</korkortstyp>\n" +
-            "    </intygAvser>\n" +
-            "    <identitetStyrkt>\n" +
-            "      <idkontroll>IDK6</idkontroll>\n" +
-            "    </identitetStyrkt>\n" +
-            "    <diabetes>\n" +
-            "      <debutArDiabetes>2012</debutArDiabetes>\n" +
-            "      <diabetesTyp>TYP2</diabetesTyp>\n" +
-            "      <harBehandlingKost>true</harBehandlingKost>\n" +
-            "      <harBehandlingTabletter>true</harBehandlingTabletter>\n" +
-            "      <harBehandlingInsulin>true</harBehandlingInsulin>\n" +
-            "      <insulinBehandlingSedanAr>2012</insulinBehandlingSedanAr>\n" +
-            "      <annanBehandlingBeskrivning>Hypnos</annanBehandlingBeskrivning>\n" +
-            "    </diabetes>\n" +
-            "    <hypoglykemier>\n" +
-            "      <harKunskapOmAtgarder>true</harKunskapOmAtgarder>\n" +
-            "      <harTeckenNedsattHjarnfunktion>true</harTeckenNedsattHjarnfunktion>\n" +
-            "      <saknarFormagaKannaVarningstecken>true</saknarFormagaKannaVarningstecken>\n" +
-            "      <harAllvarligForekomst>true</harAllvarligForekomst>\n" +
-            "      <allvarligForekomstBeskrivning>Beskrivning</allvarligForekomstBeskrivning>\n" +
-            "      <harAllvarligForekomstTrafiken>true</harAllvarligForekomstTrafiken>\n" +
-            "      <allvarligForekomstTrafikBeskrivning>Beskrivning</allvarligForekomstTrafikBeskrivning>\n" +
-            "      <genomforEgenkontrollBlodsocker>true</genomforEgenkontrollBlodsocker>\n" +
-            "      <harAllvarligForekomstVakenTid>false</harAllvarligForekomstVakenTid>\n" +
-            "    </hypoglykemier>\n" +
-            "    <separatOgonLakarintygKommerSkickas>false</separatOgonLakarintygKommerSkickas>\n" +
-            "    <synfunktion>\n" +
-            "      <harSynfaltsdefekt>false</harSynfaltsdefekt>\n" +
-            "      <synskarpaUtanKorrektion>\n" +
-            "        <hogerOga>0.0</hogerOga>\n" +
-            "        <vansterOga>0.0</vansterOga>\n" +
-            "        <binokulart>0.0</binokulart>\n" +
-            "      </synskarpaUtanKorrektion>\n" +
-            "      <synskarpaMedKorrektion>\n" +
-            "        <hogerOga>0.0</hogerOga>\n" +
-            "        <vansterOga>0.0</vansterOga>\n" +
-            "        <binokulart>0.0</binokulart>\n" +
-            "      </synskarpaMedKorrektion>\n" +
-            "      <harDiplopi>true</harDiplopi>\n" +
-            "      <finnsSynfaltsprovning>true</finnsSynfaltsprovning>\n" +
-            "      <synfaltsprovningUtanAnmarkning>true</synfaltsprovningUtanAnmarkning>\n" +
-            "      <finnsProvningOgatsRorlighet>true</finnsProvningOgatsRorlighet>\n" +
-            "    </synfunktion>\n" +
-            "    <ovrigKommentar>Kommentarer av det viktiga slaget</ovrigKommentar>\n" +
-            "    <bedomning>\n" +
-            "      <korkortstyp>AM</korkortstyp>\n" +
-            "      <korkortstyp>A1</korkortstyp>\n" +
-            "      <korkortstyp>A2</korkortstyp>\n" +
-            "      <korkortstyp>A</korkortstyp>\n" +
-            "      <korkortstyp>B</korkortstyp>\n" +
-            "      <korkortstyp>BE</korkortstyp>\n" +
-            "      <korkortstyp>TRAKTOR</korkortstyp>\n" +
-            "      <korkortstyp>C1</korkortstyp>\n" +
-            "      <korkortstyp>C1E</korkortstyp>\n" +
-            "      <korkortstyp>C</korkortstyp>\n" +
-            "      <korkortstyp>CE</korkortstyp>\n" +
-            "      <korkortstyp>D1</korkortstyp>\n" +
-            "      <korkortstyp>D1E</korkortstyp>\n" +
-            "      <korkortstyp>D</korkortstyp>\n" +
-            "      <korkortstyp>DE</korkortstyp>\n" +
-            "      <korkortstyp>TAXI</korkortstyp>\n" +
-            "      <lamplighetInnehaBehorighetSpecial>true</lamplighetInnehaBehorighetSpecial>\n" +
-            "      <behovAvLakareSpecialistKompetens>Kronologisk bastuberedning</behovAvLakareSpecialistKompetens>\n" +
-            "    </bedomning>\n" +
-            "  </ns3:intyg>\n" +
-            "</ns3:RegisterTSDiabetes>";
+        "<ns3:RegisterTSDiabetes xmlns=\"urn:local:se:intygstjanster:services:1\"\n" +
+        "    xmlns:ns2=\"urn:local:se:intygstjanster:services:types:1\"\n" +
+        "    xmlns:ns3=\"urn:local:se:intygstjanster:services:RegisterTSDiabetesResponder:1\">\n" +
+        "  <ns3:intyg>\n" +
+        "    <intygsId>987654321</intygsId>\n" +
+        "    <intygsTyp>ts-diabetes</intygsTyp>\n" +
+        "    <version>02</version>\n" +
+        "    <utgava>06</utgava>\n" +
+        "    <grundData>\n" +
+        "      <signeringsTidstampel>2013-03-17T15:57:00</signeringsTidstampel>\n" +
+        "      <skapadAv>\n" +
+        "        <personId>\n" +
+        "          <ns2:root>1.2.752.129.2.1.4.1</ns2:root>\n" +
+        "          <ns2:extension>Lakareid</ns2:extension>\n" +
+        "        </personId>\n" +
+        "        <fullstandigtNamn>Doktor Thompson</fullstandigtNamn>\n" +
+        "        <atLakare>false</atLakare>\n" +
+        "        <vardenhet>\n" +
+        "          <enhetsId>\n" +
+        "            <ns2:root>1.2.752.129.2.1.4.1</ns2:root>\n" +
+        "            <ns2:extension>Enhetsid</ns2:extension>\n" +
+        "          </enhetsId>\n" +
+        "          <enhetsnamn>Vårdenhet Väst</enhetsnamn>\n" +
+        "          <postadress>Enhetsvägen 12</postadress>\n" +
+        "          <postnummer>54321</postnummer>\n" +
+        "          <postort>Tumba</postort>\n" +
+        "          <telefonnummer>08-1337</telefonnummer>\n" +
+        "          <vardgivare>\n" +
+        "            <vardgivarid>\n" +
+        "              <ns2:root>1.2.752.129.2.1.4.1</ns2:root>\n" +
+        "              <ns2:extension>VardgivarId</ns2:extension>\n" +
+        "            </vardgivarid>\n" +
+        "            <vardgivarnamn>Vårdgivarnamn</vardgivarnamn>\n" +
+        "          </vardgivare>\n" +
+        "        </vardenhet>\n" +
+        "        <specialiteter>SPECIALITET</specialiteter>\n" +
+        "        <befattningar>ST_LAKARE</befattningar>\n" +
+        "      </skapadAv>\n" +
+        "      <patient>\n" +
+        "        <personId>\n" +
+        "          <ns2:root>1.2.752.129.2.1.3.1</ns2:root>\n" +
+        "          <ns2:extension>19121212-1212</ns2:extension>\n" +
+        "        </personId>\n" +
+        "        <fullstandigtNamn>Herr Dundersjuk</fullstandigtNamn>\n" +
+        "        <fornamn>Herr</fornamn>\n" +
+        "        <efternamn>Dundersjuk</efternamn>\n" +
+        "        <postadress>Testvägen 12</postadress>\n" +
+        "        <postnummer>12345</postnummer>\n" +
+        "        <postort>Testort</postort>\n" +
+        "      </patient>\n" +
+        "    </grundData>\n" +
+        "    <intygAvser>\n" +
+        "      <korkortstyp>AM</korkortstyp>\n" +
+        "      <korkortstyp>A1</korkortstyp>\n" +
+        "      <korkortstyp>A2</korkortstyp>\n" +
+        "      <korkortstyp>A</korkortstyp>\n" +
+        "      <korkortstyp>B</korkortstyp>\n" +
+        "      <korkortstyp>BE</korkortstyp>\n" +
+        "      <korkortstyp>TRAKTOR</korkortstyp>\n" +
+        "      <korkortstyp>C1</korkortstyp>\n" +
+        "      <korkortstyp>C1E</korkortstyp>\n" +
+        "      <korkortstyp>C</korkortstyp>\n" +
+        "      <korkortstyp>CE</korkortstyp>\n" +
+        "      <korkortstyp>D1</korkortstyp>\n" +
+        "      <korkortstyp>D1E</korkortstyp>\n" +
+        "      <korkortstyp>D</korkortstyp>\n" +
+        "      <korkortstyp>DE</korkortstyp>\n" +
+        "      <korkortstyp>TAXI</korkortstyp>\n" +
+        "    </intygAvser>\n" +
+        "    <identitetStyrkt>\n" +
+        "      <idkontroll>IDK6</idkontroll>\n" +
+        "    </identitetStyrkt>\n" +
+        "    <diabetes>\n" +
+        "      <debutArDiabetes>2012</debutArDiabetes>\n" +
+        "      <diabetesTyp>TYP2</diabetesTyp>\n" +
+        "      <harBehandlingKost>true</harBehandlingKost>\n" +
+        "      <harBehandlingTabletter>true</harBehandlingTabletter>\n" +
+        "      <harBehandlingInsulin>true</harBehandlingInsulin>\n" +
+        "      <insulinBehandlingSedanAr>2012</insulinBehandlingSedanAr>\n" +
+        "      <annanBehandlingBeskrivning>Hypnos</annanBehandlingBeskrivning>\n" +
+        "    </diabetes>\n" +
+        "    <hypoglykemier>\n" +
+        "      <harKunskapOmAtgarder>true</harKunskapOmAtgarder>\n" +
+        "      <harTeckenNedsattHjarnfunktion>true</harTeckenNedsattHjarnfunktion>\n" +
+        "      <saknarFormagaKannaVarningstecken>true</saknarFormagaKannaVarningstecken>\n" +
+        "      <harAllvarligForekomst>true</harAllvarligForekomst>\n" +
+        "      <allvarligForekomstBeskrivning>Beskrivning</allvarligForekomstBeskrivning>\n" +
+        "      <harAllvarligForekomstTrafiken>true</harAllvarligForekomstTrafiken>\n" +
+        "      <allvarligForekomstTrafikBeskrivning>Beskrivning</allvarligForekomstTrafikBeskrivning>\n" +
+        "      <genomforEgenkontrollBlodsocker>true</genomforEgenkontrollBlodsocker>\n" +
+        "      <harAllvarligForekomstVakenTid>false</harAllvarligForekomstVakenTid>\n" +
+        "    </hypoglykemier>\n" +
+        "    <separatOgonLakarintygKommerSkickas>false</separatOgonLakarintygKommerSkickas>\n" +
+        "    <synfunktion>\n" +
+        "      <harSynfaltsdefekt>false</harSynfaltsdefekt>\n" +
+        "      <synskarpaUtanKorrektion>\n" +
+        "        <hogerOga>0.0</hogerOga>\n" +
+        "        <vansterOga>0.0</vansterOga>\n" +
+        "        <binokulart>0.0</binokulart>\n" +
+        "      </synskarpaUtanKorrektion>\n" +
+        "      <synskarpaMedKorrektion>\n" +
+        "        <hogerOga>0.0</hogerOga>\n" +
+        "        <vansterOga>0.0</vansterOga>\n" +
+        "        <binokulart>0.0</binokulart>\n" +
+        "      </synskarpaMedKorrektion>\n" +
+        "      <harDiplopi>true</harDiplopi>\n" +
+        "      <finnsSynfaltsprovning>true</finnsSynfaltsprovning>\n" +
+        "      <synfaltsprovningUtanAnmarkning>true</synfaltsprovningUtanAnmarkning>\n" +
+        "      <finnsProvningOgatsRorlighet>true</finnsProvningOgatsRorlighet>\n" +
+        "    </synfunktion>\n" +
+        "    <ovrigKommentar>Kommentarer av det viktiga slaget</ovrigKommentar>\n" +
+        "    <bedomning>\n" +
+        "      <korkortstyp>AM</korkortstyp>\n" +
+        "      <korkortstyp>A1</korkortstyp>\n" +
+        "      <korkortstyp>A2</korkortstyp>\n" +
+        "      <korkortstyp>A</korkortstyp>\n" +
+        "      <korkortstyp>B</korkortstyp>\n" +
+        "      <korkortstyp>BE</korkortstyp>\n" +
+        "      <korkortstyp>TRAKTOR</korkortstyp>\n" +
+        "      <korkortstyp>C1</korkortstyp>\n" +
+        "      <korkortstyp>C1E</korkortstyp>\n" +
+        "      <korkortstyp>C</korkortstyp>\n" +
+        "      <korkortstyp>CE</korkortstyp>\n" +
+        "      <korkortstyp>D1</korkortstyp>\n" +
+        "      <korkortstyp>D1E</korkortstyp>\n" +
+        "      <korkortstyp>D</korkortstyp>\n" +
+        "      <korkortstyp>DE</korkortstyp>\n" +
+        "      <korkortstyp>TAXI</korkortstyp>\n" +
+        "      <lamplighetInnehaBehorighetSpecial>true</lamplighetInnehaBehorighetSpecial>\n" +
+        "      <behovAvLakareSpecialistKompetens>Kronologisk bastuberedning</behovAvLakareSpecialistKompetens>\n" +
+        "    </bedomning>\n" +
+        "  </ns3:intyg>\n" +
+        "</ns3:RegisterTSDiabetes>";
 
     private TsDiabetesHelper tsDiabetesHelper = new TsDiabetesHelper();
 
@@ -259,7 +256,7 @@ public class TsDiabetesHelperTest {
 
     @Test
     public void unmarshalXmlHandlesConcurrentCalls() {
-        IntStream.range(1,25).parallel().forEach(value -> {
+        IntStream.range(1, 25).parallel().forEach(value -> {
             try {
                 tsDiabetesHelper.unmarshalXml(xmlIntyg);
             } catch (JAXBException e) {

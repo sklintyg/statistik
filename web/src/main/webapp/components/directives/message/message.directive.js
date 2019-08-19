@@ -20,30 +20,32 @@
 angular.module('StatisticsApp').directive('message',
     /** @ngInject */
     function($log, $rootScope, $filter) {
-        'use strict';
+      'use strict';
 
-        return {
-            restrict: 'EA',
-            replace: true,
-            scope: {
-                'key': '@',
-                'param': '=',
-                'params': '='
-            },
-            link: function(scope, element, attr) {
-                var result;
-                // observe changes to interpolated attribute
-                function updateMessage(interpolatedKey) {
-                    var params = typeof scope.param !== 'undefined' ? [scope.param] : scope.params;
-                    result = $filter('messageFilter')(interpolatedKey, attr.fallback, attr.fallbackDefaultLang, params, attr.lang, attr.disableHighlightWords);
-                    element.html('<span>' + result + '</span>');
-                }
+      return {
+        restrict: 'EA',
+        replace: true,
+        scope: {
+          'key': '@',
+          'param': '=',
+          'params': '='
+        },
+        link: function(scope, element, attr) {
+          var result;
 
-                attr.$observe('key', function(interpolatedKey) {
-                    updateMessage(interpolatedKey);
-                });
+          // observe changes to interpolated attribute
+          function updateMessage(interpolatedKey) {
+            var params = typeof scope.param !== 'undefined' ? [scope.param] : scope.params;
+            result = $filter('messageFilter')(interpolatedKey, attr.fallback, attr.fallbackDefaultLang, params, attr.lang,
+                attr.disableHighlightWords);
+            element.html('<span>' + result + '</span>');
+          }
 
-                updateMessage(attr.key);
-            }
-        };
+          attr.$observe('key', function(interpolatedKey) {
+            updateMessage(interpolatedKey);
+          });
+
+          updateMessage(attr.key);
+        }
+      };
     });

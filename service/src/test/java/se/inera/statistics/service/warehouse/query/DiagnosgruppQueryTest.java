@@ -18,6 +18,18 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static se.inera.statistics.service.warehouse.FactBuilder.aFact;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,25 +51,12 @@ import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10RangeType;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
+import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.MutableAisle;
 import se.inera.statistics.service.warehouse.Sjukfall;
-import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.WidelineLoader;
-
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static se.inera.statistics.service.warehouse.FactBuilder.aFact;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:icd10.xml", "classpath:query-test.xml"})
@@ -100,7 +99,7 @@ public class DiagnosgruppQueryTest {
         fact(4010, Icd10.icd10ToInt(kapitelCode, Icd10RangeType.KAPITEL));
         Mockito.when(widelineLoader.getAilesForVgs(any())).thenReturn(Collections.singletonList(new Aisle(VARDGIVARE, facts)));
         final Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
-        final Map<Integer,Counter<Integer>> count = query.count(sjukfall);
+        final Map<Integer, Counter<Integer>> count = query.count(sjukfall);
         final Icd10.Kapitel kapitel = icd10.getKapitel(kapitelCode);
         final int kapitelInt = kapitel.toInt();
         final Counter<Integer> kapitelCounter = count.get(kapitelInt);
@@ -140,11 +139,11 @@ public class DiagnosgruppQueryTest {
 
     private void fact(int startday, int diagnoskapitel) {
         Fact fact = aFact().withId(1).withLan(3).withKommun(380).withForsamling(38002).
-                withEnhet(1).withLakarintyg(intyg++).
-                withPatient(patient++).withKon(Kon.FEMALE).withAlder(45).
-                withDiagnoskapitel(diagnoskapitel).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
-                withSjukskrivningsgrad(100).withStartdatum(startday).withSlutdatum(startday + 9).
-                withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).build();
+            withEnhet(1).withLakarintyg(intyg++).
+            withPatient(patient++).withKon(Kon.FEMALE).withAlder(45).
+            withDiagnoskapitel(diagnoskapitel).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
+            withSjukskrivningsgrad(100).withStartdatum(startday).withSlutdatum(startday + 9).
+            withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).build();
         facts.add(fact);
     }
 
@@ -153,7 +152,7 @@ public class DiagnosgruppQueryTest {
         //When
         final LocalDate start = Instant.ofEpochMilli(1416223845652L).atZone(ZoneId.systemDefault()).toLocalDate();
         DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new MutableAisle(new HsaIdVardgivare("vgid")).createAisle(),
-                new FilterPredicates(fact -> false, sjukfall -> true, "hash", false), start, 1, 1, "A00-B99");
+            new FilterPredicates(fact -> false, sjukfall -> true, "hash", false), start, 1, 1, "A00-B99");
 
         //Then
         assertEquals(21, result.getIcdTyps().size());

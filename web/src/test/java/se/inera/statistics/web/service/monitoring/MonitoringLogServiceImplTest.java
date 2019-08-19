@@ -22,6 +22,11 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.classic.spi.LoggingEvent;
+import ch.qos.logback.core.Appender;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,23 +36,17 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.LoggerFactory;
-
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.Logger;
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.classic.spi.LoggingEvent;
-import ch.qos.logback.core.Appender;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MonitoringLogServiceImplTest {
-    
+
     private static final int ROWS = 99;
 
     private static final String FILE_NAME = "FILE_NAME";
     private static final String URI = "URI";
-    
+
     private static final HsaIdUser HSA_USER = new HsaIdUser("HSA_USER");
     private static final HsaIdVardgivare HSA_VARDGIVARE = new HsaIdVardgivare("HSA_VARDGIVARE");
 
@@ -56,7 +55,7 @@ public class MonitoringLogServiceImplTest {
 
     @Captor
     private ArgumentCaptor<LoggingEvent> captorLoggingEvent;
-    
+
     MonitoringLogService logService = new MonitoringLogServiceImpl();
 
     @Before
@@ -64,13 +63,13 @@ public class MonitoringLogServiceImplTest {
         final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
         logger.addAppender(mockAppender);
     }
-    
+
     @After
     public void teardown() {
         final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
         logger.detachAppender(mockAppender);
     }
-    
+
     @Test
     public void shouldLogUserLogin() {
         logService.logUserLogin(HSA_USER);
@@ -102,7 +101,7 @@ public class MonitoringLogServiceImplTest {
 
         // Verify log
         assertThat(loggingEvent.getLevel(), equalTo(logLevel));
-        assertThat(loggingEvent.getFormattedMessage(), 
-                equalTo(logMessage));
+        assertThat(loggingEvent.getFormattedMessage(),
+            equalTo(logMessage));
     }
 }

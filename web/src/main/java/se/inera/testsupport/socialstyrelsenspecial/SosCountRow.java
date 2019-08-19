@@ -30,7 +30,7 @@ public class SosCountRow {
     private Map<SjukfallsLangdGroupSos, Integer> femalePerLength;
 
     public SosCountRow(String diagnos, Number totalt, Number kvinnor, Number man,
-                       Map<SjukfallsLangdGroupSos, Integer> malePerLength, Map<SjukfallsLangdGroupSos, Integer> femalePerLength) {
+        Map<SjukfallsLangdGroupSos, Integer> malePerLength, Map<SjukfallsLangdGroupSos, Integer> femalePerLength) {
         this.diagnos = diagnos;
         this.totalt = totalt;
         this.kvinnor = kvinnor;

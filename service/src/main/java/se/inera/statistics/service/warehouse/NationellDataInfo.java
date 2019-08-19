@@ -19,7 +19,6 @@
 package se.inera.statistics.service.warehouse;
 
 import java.util.Map;
-
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;

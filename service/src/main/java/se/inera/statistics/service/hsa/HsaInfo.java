@@ -23,10 +23,14 @@ import com.google.common.base.MoreObjects;
 
 public class HsaInfo {
 
-    @JsonProperty("enhet") private HsaInfoEnhet enhet;
-    @JsonProperty("huvudenhet") private HsaInfoEnhet huvudenhet;
-    @JsonProperty("vardgivare") private HsaInfoVg vardgivare;
-    @JsonProperty("personal") private HsaInfoPersonal personal;
+    @JsonProperty("enhet")
+    private HsaInfoEnhet enhet;
+    @JsonProperty("huvudenhet")
+    private HsaInfoEnhet huvudenhet;
+    @JsonProperty("vardgivare")
+    private HsaInfoVg vardgivare;
+    @JsonProperty("personal")
+    private HsaInfoPersonal personal;
 
     //Default constructor required by json mapper
     HsaInfo() {
@@ -74,11 +78,11 @@ public class HsaInfo {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("enhet", enhet)
-                .add("huvudenhet", huvudenhet)
-                .add("vardgivare", vardgivare)
-                .add("personal", personal)
-                .toString();
+            .add("enhet", enhet)
+            .add("huvudenhet", huvudenhet)
+            .add("vardgivare", vardgivare)
+            .add("personal", personal)
+            .toString();
     }
 
 }

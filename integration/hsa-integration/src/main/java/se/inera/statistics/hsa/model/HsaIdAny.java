@@ -20,7 +20,6 @@ package se.inera.statistics.hsa.model;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.google.common.base.Objects;
-
 import java.io.IOException;
 import java.io.Serializable;
 

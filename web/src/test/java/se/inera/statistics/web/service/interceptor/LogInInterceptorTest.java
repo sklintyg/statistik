@@ -18,11 +18,11 @@
  */
 package se.inera.statistics.web.service.interceptor;
 
+import static org.junit.Assert.assertTrue;
+
 import org.apache.cxf.interceptor.LoggingMessage;
 import org.junit.Test;
 import org.mockito.InjectMocks;
-
-import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -36,18 +36,19 @@ public class LogInInterceptorTest {
     @Test
     public void testLoggingOfFileUploading() throws Exception {
         String payload = "------WebKitFormBoundary6UVVf08Ori6LNKyB\n" +
-                "Content-Disposition: form-data; name=\"file\"; filename=\"VG3_region (5).xlsx\"\n" +
-                "Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\n" +
-                "\n" +
-                "QqK\n" +
-                "^Ô¥_rels/.relsMK1ïýaîÝl+HÓ^ÐHýc2ûÁn2";
+            "Content-Disposition: form-data; name=\"file\"; filename=\"VG3_region (5).xlsx\"\n" +
+            "Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\n" +
+            "\n" +
+            "QqK\n" +
+            "^Ô¥_rels/.relsMK1ïýaîÝl+HÓ^ÐHýc2ûÁn2";
 
         LoggingMessage loggingMessage = new LoggingMessage("", "83");
         loggingMessage.getAddress().append("http://localhost:8080/api/region/fileupload?vgid=VG3");
         loggingMessage.getEncoding().append("ISO-8859-1");
         loggingMessage.getHttpMethod().append("POST");
         loggingMessage.getContentType().append("multipart/form-data; boundary=----WebKitFormBoundary6UVVf08Ori6LNKyB");
-        loggingMessage.getHeader().append("{Accept=[application/json], accept-encoding=[gzip, deflate, br], Accept-Language=[sv,en-US;q=0.9,en;q=0.8,nb;q=0.7], Cache-Control=[no-cache], connection=[keep-alive], Content-Length=[9666], content-type=[multipart/form-data; boundary=----WebKitFormBoundary6UVVf08Ori6LNKyB], Cookie=[textwrapon=false; textautoformat=false; wysiwyg=textarea; __ngDebug=true; JSESSIONID=e65v9i48vm82gqxif3nepjis], DNT=[1], Host=[localhost:8080], Origin=[http://localhost:8080], Referer=[http://localhost:8080/], User-Agent=[Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36], X-Requested-With=[XMLHttpRequest]}");
+        loggingMessage.getHeader().append(
+            "{Accept=[application/json], accept-encoding=[gzip, deflate, br], Accept-Language=[sv,en-US;q=0.9,en;q=0.8,nb;q=0.7], Cache-Control=[no-cache], connection=[keep-alive], Content-Length=[9666], content-type=[multipart/form-data; boundary=----WebKitFormBoundary6UVVf08Ori6LNKyB], Cookie=[textwrapon=false; textautoformat=false; wysiwyg=textarea; __ngDebug=true; JSESSIONID=e65v9i48vm82gqxif3nepjis], DNT=[1], Host=[localhost:8080], Origin=[http://localhost:8080], Referer=[http://localhost:8080/], User-Agent=[Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36], X-Requested-With=[XMLHttpRequest]}");
         loggingMessage.getPayload().append(payload);
 
         String formattedLogMsg = testee.formatLoggingMessage(loggingMessage);
@@ -62,9 +63,9 @@ public class LogInInterceptorTest {
     @Test
     public void testLoggingOfCreatePdf() throws Exception {
         String payload = "pdf=JVBERi0xLjMKJf%2F%2F%2F%2F8KMTAgMCBvYmoKPDwKL1R5cGUgL0V4dEdTdGF0ZQovY2" +
-                "EgMQo%2BPgplbmRvYmoKMTEgMCBvYmoKPDwKL1R5cGUgL0V4dEdTdGF0ZQovQ0EgMQo%2BPgplbmRvYmoKNyAwI" +
-                "G9iago8PAovVHlwZSAvUGFnZQovUGFyZW50IDEgMCBSCi9NZWRpYUJveCBbMCAwIDU5NS4yOCA4NDEuODldCi9D" +
-                "b250ZW50cyA1IDAgUgovUmVzb3VyY2VzIDY";
+            "EgMQo%2BPgplbmRvYmoKMTEgMCBvYmoKPDwKL1R5cGUgL0V4dEdTdGF0ZQovQ0EgMQo%2BPgplbmRvYmoKNyAwI" +
+            "G9iago8PAovVHlwZSAvUGFnZQovUGFyZW50IDEgMCBSCi9NZWRpYUJveCBbMCAwIDU5NS4yOCA4NDEuODldCi9D" +
+            "b250ZW50cyA1IDAgUgovUmVzb3VyY2VzIDY";
 
         LoggingMessage loggingMessage = new LoggingMessage("", "37");
         loggingMessage.getAddress().append("http://localhost:8080/api/pdf/create");

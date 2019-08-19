@@ -18,11 +18,10 @@
  */
 package se.inera.statistics.scheduler.active;
 
+import net.javacrumbs.shedlock.core.SchedulerLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
-
-import net.javacrumbs.shedlock.core.SchedulerLock;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
 import se.inera.statistics.service.monitoring.MonitoringLogService;
@@ -31,6 +30,7 @@ import se.inera.statistics.service.processlog.intygsent.IntygsentLogConsumer;
 import se.inera.statistics.service.processlog.message.MessageLogConsumer;
 
 public class LogJob {
+
     private static final Logger LOG = LoggerFactory.getLogger(LogJob.class);
     private static final String JOB_NAME = "LogJob.run";
 
@@ -42,7 +42,7 @@ public class LogJob {
     private LogMDCHelper logMDCHelper;
 
     public LogJob(MonitoringLogService monitoringLogService, LogConsumer consumer, IntygsentLogConsumer intygsentLogConsumer,
-                  MessageLogConsumer messageLogConsumer, LogMDCHelper logMDCHelper) {
+        MessageLogConsumer messageLogConsumer, LogMDCHelper logMDCHelper) {
         this.monitoringLogService = monitoringLogService;
         this.consumer = consumer;
         this.intygsentLogConsumer = intygsentLogConsumer;

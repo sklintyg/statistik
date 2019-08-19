@@ -20,7 +20,6 @@ package se.inera.statistics.web.service.responseconverter;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.message.MsgAmne;
@@ -32,16 +31,16 @@ import se.inera.statistics.web.service.FilterSettings;
 public final class MessageAmneTvarsnittConverter extends SimpleDualSexConverter {
 
     private MessageAmneTvarsnittConverter(String tableGroupTitle, String seriesNameTemplate, String totalColumnName,
-                                   String femaleColumnName, String maleColumnName) {
+        String femaleColumnName, String maleColumnName) {
         super(tableGroupTitle, seriesNameTemplate, totalColumnName, femaleColumnName, maleColumnName);
     }
 
     public static MessageAmneTvarsnittConverter newTvarsnitt() {
         return new MessageAmneTvarsnittConverter("",
-                "%1$s",
-                MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_TOTALT,
-                MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_FEMALE,
-                MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_MALE);
+            "%1$s",
+            MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_TOTALT,
+            MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_FEMALE,
+            MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_MALE);
     }
 
     @Override

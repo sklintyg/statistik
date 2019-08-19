@@ -18,11 +18,10 @@
  */
 package se.inera.testsupport.specialrapport;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Arrays;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public enum SjukfallsLangdGroupSpecial {
 

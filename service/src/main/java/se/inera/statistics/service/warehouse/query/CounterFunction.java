@@ -21,7 +21,7 @@ package se.inera.statistics.service.warehouse.query;
 import com.google.common.collect.HashMultiset;
 import se.inera.statistics.service.warehouse.Sjukfall;
 
-public interface CounterFunction <T> {
+public interface CounterFunction<T> {
 
     void addCount(Sjukfall sjukfall, HashMultiset<T> counter);
 

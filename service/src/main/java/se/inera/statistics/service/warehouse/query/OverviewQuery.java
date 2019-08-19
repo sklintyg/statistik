@@ -21,10 +21,8 @@ package se.inera.statistics.service.warehouse.query;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.OverviewChartRow;
@@ -53,7 +51,7 @@ public class OverviewQuery {
     private SjukfallUtil sjukfallUtil;
 
     public VerksamhetOverviewResponse getOverview(Aisle aisle, FilterPredicates filter, Range currentPeriod,
-                                                  Range previousPeriod, MessagesFilter messagesFilterWithoutRange) {
+        Range previousPeriod, MessagesFilter messagesFilterWithoutRange) {
         SjukfallGroup currentSjukfall = getSjukfallGroup(aisle, filter, currentPeriod);
         SjukfallGroup previousSjukfall = getSjukfallGroup(aisle, filter, previousPeriod);
 
@@ -63,20 +61,20 @@ public class OverviewQuery {
         int previousLongSjukfall = SjukskrivningslangdQuery.getLong(previousSjukfall.getSjukfall());
 
         List<OverviewChartRowExtended> aldersgrupper = AldersgruppQuery.getOverviewAldersgrupper(currentSjukfall.getSjukfall(),
-                previousSjukfall.getSjukfall());
+            previousSjukfall.getSjukfall());
         List<OverviewChartRowExtended> diagnosgrupper = query.getOverviewDiagnosgrupper(currentSjukfall.getSjukfall(),
-                previousSjukfall.getSjukfall(), Integer.MAX_VALUE);
+            previousSjukfall.getSjukfall(), Integer.MAX_VALUE);
         List<OverviewChartRowExtended> sjukskrivningsgrad = SjukskrivningsgradQuery
-                .getOverviewSjukskrivningsgrad(currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall());
+            .getOverviewSjukskrivningsgrad(currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall());
         List<OverviewChartRow> sjukskrivningslangd = SjukskrivningslangdQuery
-                .getOverviewSjukskrivningslangd(currentSjukfall.getSjukfall(), Integer.MAX_VALUE);
+            .getOverviewSjukskrivningslangd(currentSjukfall.getSjukfall(), Integer.MAX_VALUE);
 
         List<OverviewChartRowExtended> kompletteringar = messagesQuery.getOverviewKompletteringar(
-                messagesFilterWithoutRange, currentPeriod, previousPeriod);
+            messagesFilterWithoutRange, currentPeriod, previousPeriod);
 
         return new VerksamhetOverviewResponse(AvailableFilters.getForSjukfall(), currentSjukfall.getSjukfall().size(),
-                currentKonsfordelning, diagnosgrupper, aldersgrupper, sjukskrivningsgrad,
-                sjukskrivningslangd, currentLongSjukfall, percentChange(currentLongSjukfall, previousLongSjukfall), kompletteringar);
+            currentKonsfordelning, diagnosgrupper, aldersgrupper, sjukskrivningsgrad,
+            sjukskrivningslangd, currentLongSjukfall, percentChange(currentLongSjukfall, previousLongSjukfall), kompletteringar);
     }
 
     private SjukfallGroup getSjukfallGroup(Aisle aisle, FilterPredicates filter, Range range) {

@@ -20,13 +20,11 @@ package se.inera.statistics.web.service.responseconverter;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
 import org.junit.Test;
 import se.inera.statistics.web.error.ErrorSeverity;
 import se.inera.statistics.web.error.ErrorType;
 import se.inera.statistics.web.error.Message;
-import se.inera.statistics.web.service.responseconverter.Converters;
-
-import java.util.List;
 
 public class ConvertersTest {
 

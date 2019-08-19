@@ -18,6 +18,9 @@
  */
 package se.inera.statistics.web.service;
 
+import static java.util.stream.Collectors.toMap;
+
+import com.google.common.base.Splitter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,7 +31,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +39,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.stereotype.Component;
-
-import com.google.common.base.Splitter;
 import se.inera.auth.LoginVisibility;
 import se.inera.auth.model.User;
 import se.inera.auth.model.UserAccessLevel;
@@ -74,8 +74,6 @@ import se.inera.statistics.web.model.UserAccessInfo;
 import se.inera.statistics.web.model.UserSettingsDTO;
 import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.util.VersionUtil;
-
-import static java.util.stream.Collectors.toMap;
 
 @Component
 public class LoginServiceUtil {
@@ -132,13 +130,13 @@ public class LoginServiceUtil {
             return new LoginInfo();
         }
         Map<HsaIdVardgivare, String> allVgNames = realUser.getVardenhetList().stream()
-                .collect(toMap(Vardenhet::getVardgivarId, Vardenhet::getVardgivarNamn, (p, q) -> p));
+            .collect(toMap(Vardenhet::getVardgivarId, Vardenhet::getVardgivarNamn, (p, q) -> p));
 
         List<Verksamhet> verksamhets = getVerksamhetsList(realUser);
 
         final List<LoginInfoVg> loginInfoVgs = allVgNames.entrySet().stream()
-                .map(vgidWithName -> toLoginInfoVg(realUser, vgidWithName))
-                .collect(Collectors.toList());
+            .map(vgidWithName -> toLoginInfoVg(realUser, vgidWithName))
+            .collect(Collectors.toList());
 
         // INTYG-3446: We create a LoginInfoVg entry for each item in vgWithProcessledarStatus
         for (Vardgivare vardgivare : realUser.getVgsWithProcessledarStatus()) {
@@ -157,7 +155,7 @@ public class LoginServiceUtil {
         UserSettingsDTO userSettingsDTO = getUserSettings(hsaId);
 
         return new LoginInfo(realUser.getHsaId(), realUser.getName(), verksamhets, loginInfoVgs, userSettingsDTO,
-                getAuthenticationMethod());
+            getAuthenticationMethod());
     }
 
     private UserSettingsDTO getUserSettings(String hsaId) {
@@ -213,44 +211,44 @@ public class LoginServiceUtil {
     private List<Verksamhet> getVerksamhetsList(User realUser) {
         return Stream.concat(realUser.getVardenhetList().stream()
                 .map(Vardenhet::getVardgivarId),
-                realUser.getVgsWithProcessledarStatus().stream()
-                        .map(vg -> new HsaIdVardgivare(vg.getId())))
-                .distinct()
-                .map(hsaIdVardgivare -> {
-                    Collection<Enhet> allEnhetsForVg = warehouse.getEnhets(hsaIdVardgivare);
-                    if (realUser.isProcessledareForVg(hsaIdVardgivare) && allEnhetsForVg != null && !allEnhetsForVg.isEmpty()) {
-                        return allEnhetsForVg.stream().map(this::enhetToVerksamhet);
-                    } else {
-                        final List<Vardenhet> vardenhetsForVg = realUser.getVardenhetsForVg(hsaIdVardgivare);
-                        return vardenhetsForVg.stream().map(vardEnhet -> vardenhetToVerksamhet(vardEnhet, allEnhetsForVg));
-                    }
-                })
-                .flatMap(i -> i)
-                .collect(Collectors.toList());
+            realUser.getVgsWithProcessledarStatus().stream()
+                .map(vg -> new HsaIdVardgivare(vg.getId())))
+            .distinct()
+            .map(hsaIdVardgivare -> {
+                Collection<Enhet> allEnhetsForVg = warehouse.getEnhets(hsaIdVardgivare);
+                if (realUser.isProcessledareForVg(hsaIdVardgivare) && allEnhetsForVg != null && !allEnhetsForVg.isEmpty()) {
+                    return allEnhetsForVg.stream().map(this::enhetToVerksamhet);
+                } else {
+                    final List<Vardenhet> vardenhetsForVg = realUser.getVardenhetsForVg(hsaIdVardgivare);
+                    return vardenhetsForVg.stream().map(vardEnhet -> vardenhetToVerksamhet(vardEnhet, allEnhetsForVg));
+                }
+            })
+            .flatMap(i -> i)
+            .collect(Collectors.toList());
     }
 
     public Verksamhet enhetToVerksamhet(Enhet enhet) {
         return new Verksamhet(enhet.getEnhetId(), enhet.getNamn(), enhet.getVardgivareId(), null, enhet.getLansId(),
-                lan.getNamn(enhet.getLansId()), enhet.getKommunId(), kommun.getNamn(enhet.getLansId() + enhet.getKommunId()),
-                getVerksamhetsTyper(enhet.getVerksamhetsTyper()));
+            lan.getNamn(enhet.getLansId()), enhet.getKommunId(), kommun.getNamn(enhet.getLansId() + enhet.getKommunId()),
+            getVerksamhetsTyper(enhet.getVerksamhetsTyper()));
     }
 
     private Verksamhet vardenhetToVerksamhet(final Vardenhet vardEnhet, Collection<Enhet> enhetsList) {
         Optional<Enhet> enhetOpt = enhetsList.stream()
-                .filter(enhet -> enhet.getEnhetId().equals(vardEnhet.getId()))
-                .findAny();
+            .filter(enhet -> enhet.getEnhetId().equals(vardEnhet.getId()))
+            .findAny();
 
         String lansId = enhetOpt.map(Enhet::getLansId).orElse(Lan.OVRIGT_ID);
         String lansNamn = lan.getNamn(lansId);
         String kommunId = enhetOpt.map(enhet -> lansId + enhet.getKommunId()).orElse(Kommun.OVRIGT_ID);
         String kommunNamn = kommun.getNamn(kommunId);
         Set<Verksamhet.VerksamhetsTyp> verksamhetsTyper = enhetOpt
-                .map(enhet -> getVerksamhetsTyper(enhet.getVerksamhetsTyper()))
-                .orElseGet(() -> Collections.singleton(new Verksamhet.VerksamhetsTyp(VerksamhetsTyp.OVRIGT_ID, VerksamhetsTyp.OVRIGT)));
+            .map(enhet -> getVerksamhetsTyper(enhet.getVerksamhetsTyper()))
+            .orElseGet(() -> Collections.singleton(new Verksamhet.VerksamhetsTyp(VerksamhetsTyp.OVRIGT_ID, VerksamhetsTyp.OVRIGT)));
 
         return new Verksamhet(vardEnhet.getId(), vardEnhet.getNamn(), vardEnhet.getVardgivarId(), vardEnhet.getVardgivarNamn(), lansId,
-                lansNamn, kommunId,
-                kommunNamn, verksamhetsTyper);
+            lansNamn, kommunId,
+            kommunNamn, verksamhetsTyper);
     }
 
     private Set<Verksamhet.VerksamhetsTyp> getVerksamhetsTyper(String verksamhetsTyper) {
@@ -292,22 +290,22 @@ public class LoginServiceUtil {
         List<Banner> banners = iaBannerService.getCurrentBanners();
 
         return banners.stream()
-                .map(banner ->
-                        Message.create(ErrorType.UNSET, mapToSeverity(banner.getPriority()), banner.getMessage()))
-                .collect(Collectors.toList());
+            .map(banner ->
+                Message.create(ErrorType.UNSET, mapToSeverity(banner.getPriority()), banner.getMessage()))
+            .collect(Collectors.toList());
     }
 
     public StaticData getStaticData() {
         final Map<String, String> sjukskrivningLengths = Arrays
-                .stream(SjukfallsLangdGroup.values())
-                .collect(toMap(Enum::name, SjukfallsLangdGroup::getGroupName));
+            .stream(SjukfallsLangdGroup.values())
+            .collect(toMap(Enum::name, SjukfallsLangdGroup::getGroupName));
         final Map<String, String> ageGroups = Arrays
-                .stream(AgeGroup.values())
-                .collect(toMap(Enum::name, AgeGroup::getGroupName));
+            .stream(AgeGroup.values())
+            .collect(toMap(Enum::name, AgeGroup::getGroupName));
         final Map<String, String> intygTypes = IntygType.getInIntygtypFilter().stream()
-                .collect(toMap(Enum::name, IntygType::getText));
+            .collect(toMap(Enum::name, IntygType::getText));
         final Map<String, String> intygTypeTooltips = Arrays.stream(IntygType.values())
-                .collect(toMap(IntygType::getText, IntygType::getShortText));
+            .collect(toMap(IntygType::getText, IntygType::getShortText));
 
         final List<Icd> icdStructure = icd10.getIcdStructure();
         return new StaticData(sjukskrivningLengths, ageGroups, intygTypes, intygTypeTooltips, icdStructure);

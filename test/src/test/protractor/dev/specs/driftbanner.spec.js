@@ -27,27 +27,27 @@ var restUtil = utils.rest;
 
 describe('Driftbanner', function() {
 
-    var banners = $$('#service-banners .alert');
+  var banners = $$('#service-banners .alert');
 
-    beforeAll(function() {
-        browser.get('/');
-    });
+  beforeAll(function() {
+    browser.get('/');
+  });
 
-    it('Inga banners default', function() {
-        expect(banners.count()).toBe(0);
-    });
+  it('Inga banners default', function() {
+    expect(banners.count()).toBe(0);
+  });
 
-    it('Skapa banner', function() {
-        restUtil.createBanners("message", "HOG");
-        browser.refresh();
-        expect(banners.count()).toBe(1);
-        expect(banners.getText()).toEqual(['message']);
-    });
+  it('Skapa banner', function() {
+    restUtil.createBanners("message", "HOG");
+    browser.refresh();
+    expect(banners.count()).toBe(1);
+    expect(banners.getText()).toEqual(['message']);
+  });
 
-    it('Ta bort banner', function() {
-        restUtil.clearBanners();
-        browser.refresh();
+  it('Ta bort banner', function() {
+    restUtil.clearBanners();
+    browser.refresh();
 
-        expect(banners.count()).toBe(0);
-    });
+    expect(banners.count()).toBe(0);
+  });
 });

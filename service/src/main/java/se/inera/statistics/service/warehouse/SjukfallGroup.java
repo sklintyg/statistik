@@ -18,13 +18,13 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import se.inera.statistics.service.report.model.Range;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import se.inera.statistics.service.report.model.Range;
 
 public class SjukfallGroup implements Serializable {
+
     private final Range range;
     private final Collection<Sjukfall> sjukfall;
 

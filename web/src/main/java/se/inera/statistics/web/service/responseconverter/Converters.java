@@ -18,13 +18,12 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
-import se.inera.statistics.service.report.model.OverviewChartRowExtended;
-import se.inera.statistics.web.error.Message;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import se.inera.statistics.service.report.model.OverviewChartRowExtended;
+import se.inera.statistics.web.error.Message;
 
 public final class Converters {
 
@@ -33,12 +32,12 @@ public final class Converters {
 
     public static List<Message> combineMessages(Message... messages) {
         return Stream.of(messages)
-                .filter(m -> m != null && m.getMessage() != null && !m.getMessage().isEmpty())
-                .collect(Collectors.toList());
+            .filter(m -> m != null && m.getMessage() != null && !m.getMessage().isEmpty())
+            .collect(Collectors.toList());
     }
 
     public static List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> rows, int maxRows,
-                                                         String extraText, String extraColor) {
+        String extraText, String extraColor) {
         List<OverviewChartRowExtended> result = new ArrayList<>();
         int i = 0;
         int numberOfRows = rows.size();

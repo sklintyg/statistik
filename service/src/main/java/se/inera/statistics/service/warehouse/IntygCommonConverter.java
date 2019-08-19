@@ -18,6 +18,10 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import java.time.Clock;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -28,11 +32,6 @@ import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.model.db.IntygCommon;
-
-import java.time.Clock;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class IntygCommonConverter {
@@ -62,7 +61,7 @@ public class IntygCommonConverter {
 
         final String vgid = vardgivare.getId();
         return new IntygCommon(correlationId, patient, signeringsDatum, intygTyp, enhet,
-                vgid, kon, eventType, diagnoskod, sentToFk, lakareId);
+            vgid, kon, eventType, diagnoskod, sentToFk, lakareId);
     }
 
     String parseDiagnos(String diagnoskod) {

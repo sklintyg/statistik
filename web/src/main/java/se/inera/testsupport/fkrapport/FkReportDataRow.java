@@ -22,7 +22,6 @@ import static se.inera.testsupport.fkrapport.FkReportCreator.roundToTwoDecimals;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.testsupport.socialstyrelsenspecial.MathStatistics;
 
@@ -34,6 +33,7 @@ import se.inera.testsupport.socialstyrelsenspecial.MathStatistics;
  * been distributed.
  */
 public class FkReportDataRow {
+
     private static final String KON_BOTH = "BOTH";
     private String diagnos;
     private String regexpMatcher;

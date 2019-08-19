@@ -25,13 +25,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
-
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.Icd10RangeType;
 
 // CHECKSTYLE:OFF FinalClass
 public class Sjukfall implements Serializable {
+
     // CHECKSTYLE:ON FinalClass
     public static final int MAX_GAP = 5;
 
@@ -83,10 +83,10 @@ public class Sjukfall implements Serializable {
     @Override
     public String toString() {
         return "Sjukfall{"
-                + "start=" + start
-                + ", end=" + end
-                + ", realDays=" + getRealDays()
-                + '}';
+            + "start=" + start
+            + ", end=" + end
+            + ", realDays=" + getRealDays()
+            + '}';
     }
 
     public int getDiagnoskategori() {
@@ -114,7 +114,8 @@ public class Sjukfall implements Serializable {
                 case KOD:
                     result.add(getDiagnoskod());
                     break;
-                default: throw new UnknownRangeTypeException("Unknown range type: " + rangeTypes);
+                default:
+                    throw new UnknownRangeTypeException("Unknown range type: " + rangeTypes);
             }
         }
         return result;
@@ -138,7 +139,8 @@ public class Sjukfall implements Serializable {
                     case KOD:
                         result.add(diagnose.getDiagnoskod());
                         break;
-                    default: throw new UnknownRangeTypeException("Unknown icd range type: " + icd10RangeType);
+                    default:
+                        throw new UnknownRangeTypeException("Unknown icd range type: " + icd10RangeType);
                 }
             }
         }
@@ -218,6 +220,7 @@ public class Sjukfall implements Serializable {
     }
 
     private static class UnknownRangeTypeException extends RuntimeException {
+
         UnknownRangeTypeException(String s) {
             super(s);
         }

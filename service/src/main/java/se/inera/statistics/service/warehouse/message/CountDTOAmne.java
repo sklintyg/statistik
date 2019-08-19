@@ -18,12 +18,12 @@
  */
 package se.inera.statistics.service.warehouse.message;
 
+import java.time.LocalDate;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.service.report.model.Kon;
 
-import java.time.LocalDate;
-
 public class CountDTOAmne {
+
     private int count;
     private LocalDate date;
     private Kon kon;

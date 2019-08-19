@@ -19,37 +19,37 @@
 
 angular.module('StatisticsApp').directive('selectVardgivareModal',
     /** @ngInject */
-    function ($uibModal) {
-        'use strict';
+    function($uibModal) {
+      'use strict';
 
-        return {
-            restrict: 'E',
-            scope: {
-                vardgivare: '=',
-                selectVardgivare: '&'
-            },
-            templateUrl: '/components/directives/selectVardgivareModal/selectVardgivareModal.html',
-            link: function($scope) {
-                $scope.openDialog = function() {
-                    var modalInstance = $uibModal.open({
-                        animation: true,
-                        templateUrl: '/components/directives/selectVardgivareModal/modal/modal.html',
-                        controller: 'SelectVardgivareModalCtrl',
-                        size: 'lg',
-                        backdrop: 'true',
-                        resolve: {
-                            vardgivare: function () {
-                                return $scope.vardgivare;
-                            }
-                        }
-                    });
+      return {
+        restrict: 'E',
+        scope: {
+          vardgivare: '=',
+          selectVardgivare: '&'
+        },
+        templateUrl: '/components/directives/selectVardgivareModal/selectVardgivareModal.html',
+        link: function($scope) {
+          $scope.openDialog = function() {
+            var modalInstance = $uibModal.open({
+              animation: true,
+              templateUrl: '/components/directives/selectVardgivareModal/modal/modal.html',
+              controller: 'SelectVardgivareModalCtrl',
+              size: 'lg',
+              backdrop: 'true',
+              resolve: {
+                vardgivare: function() {
+                  return $scope.vardgivare;
+                }
+              }
+            });
 
-                    modalInstance.result.then(function(value) {
-                        $scope.selectVardgivare({vgId: value});
-                    }, function() {
+            modalInstance.result.then(function(value) {
+              $scope.selectVardgivare({vgId: value});
+            }, function() {
 
-                    });
-                };
-            }
-        };
+            });
+          };
+        }
+      };
     });

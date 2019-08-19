@@ -18,6 +18,17 @@
  */
 package se.inera.statistics.service.queue;
 
+import static org.junit.Assert.assertEquals;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,26 +42,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.testsupport.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.LogConsumer;
+import se.inera.statistics.service.testsupport.UtlatandeBuilder;
 import se.inera.statistics.service.warehouse.IntygType;
-
-import javax.jms.ConnectionFactory;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import static org.junit.Assert.assertEquals;
 
 // CHECKSTYLE:OFF MagicNumber
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:application-context-test.xml", "classpath:process-log-qm-test.xml", "classpath:icd10.xml" })
+@ContextConfiguration(locations = {"classpath:application-context-test.xml", "classpath:process-log-qm-test.xml", "classpath:icd10.xml"})
 @DirtiesContext
 @ActiveProfiles("transactional-test-mock")
 public class ReceiverTransactionalIT {
@@ -66,7 +64,7 @@ public class ReceiverTransactionalIT {
 
     @Autowired
     private QueueAspect queueAspect;
-    
+
     @Autowired
     private LogConsumer consumer;
 
@@ -93,8 +91,10 @@ public class ReceiverTransactionalIT {
         int i = 0;
         for (TestIntyg intyg : getIntygWithHelsjukAndSingelmanadAndSingelDiagnos(getPerson(PERSON_K1950))) {
             LOG.info("Intyg: " + intyg);
-            queueSender.simpleSend(builder.build(intyg.personNr, intyg.startDate, intyg.endDate, intyg.vardenhet, intyg.vardgivare, intyg.diagnos, intyg.grads).toString(),
-                    "" + i++, IntygType.FK7263.getItIntygType());
+            queueSender.simpleSend(
+                builder.build(intyg.personNr, intyg.startDate, intyg.endDate, intyg.vardenhet, intyg.vardgivare, intyg.diagnos, intyg.grads)
+                    .toString(),
+                "" + i++, IntygType.FK7263.getItIntygType());
         }
 
         try {
@@ -167,7 +167,8 @@ public class ReceiverTransactionalIT {
     }
 
     private LocalDate getStop(int i) {
-        LocalDate[] dates = {LocalDate.parse("2012-01-22"), LocalDate.parse("2011-02-21"), LocalDate.parse("2011-03-11"), LocalDate.parse("2013-11-17")};
+        LocalDate[] dates = {LocalDate.parse("2012-01-22"), LocalDate.parse("2011-02-21"), LocalDate.parse("2011-03-11"),
+            LocalDate.parse("2013-11-17")};
         return dates[i];
     }
 
@@ -190,6 +191,7 @@ public class ReceiverTransactionalIT {
     }
 
     public static class TestIntyg {
+
         private final String personNr;
         private final List<String> grads;
         private final LocalDate startDate;
@@ -198,7 +200,8 @@ public class ReceiverTransactionalIT {
         private final HsaIdVardgivare vardgivare;
         private final String diagnos;
 
-        public TestIntyg(String personNr, List<String> grads, LocalDate startDate, LocalDate endDate, HsaIdEnhet vardenhet, HsaIdVardgivare vardgivare, String diagnos) {
+        public TestIntyg(String personNr, List<String> grads, LocalDate startDate, LocalDate endDate, HsaIdEnhet vardenhet,
+            HsaIdVardgivare vardgivare, String diagnos) {
             this.personNr = personNr;
             this.grads = grads;
             this.startDate = startDate;
@@ -210,8 +213,9 @@ public class ReceiverTransactionalIT {
 
         @Override
         public String toString() {
-            return "TestIntyg{" + "personNr='" + personNr + '\'' + ", grads=" + grads + ", startDate=" + startDate + ", endDate=" + endDate + ", vardenhet='"
-                    + vardenhet + '\'' + ", vardgivare='" + vardgivare + '\'' + ", diagnos='" + diagnos + '\'' + '}';
+            return "TestIntyg{" + "personNr='" + personNr + '\'' + ", grads=" + grads + ", startDate=" + startDate + ", endDate=" + endDate
+                + ", vardenhet='"
+                + vardenhet + '\'' + ", vardgivare='" + vardgivare + '\'' + ", diagnos='" + diagnos + '\'' + '}';
         }
     }
 }

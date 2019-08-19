@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.web.service;
 
+import com.google.common.annotations.VisibleForTesting;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Collections;
@@ -25,7 +26,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -38,8 +38,6 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.annotations.VisibleForTesting;
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.web.MessagesText;
@@ -50,6 +48,7 @@ import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.TableHeader;
 
 final class XlsxConverter {
+
     private static final Logger LOG = LoggerFactory.getLogger(XlsxConverter.class);
     private static final int LAST_MERGE_COLUMN = 5;
 
@@ -64,7 +63,7 @@ final class XlsxConverter {
         try {
             final ByteArrayOutputStream generatedFile = generateExcelFile(tableData, filterSelections, report);
             return Response.ok(generatedFile.toByteArray(), MediaType.APPLICATION_OCTET_STREAM)
-                    .header("Content-Disposition", "attachment; filename=" + fileName).build();
+                .header("Content-Disposition", "attachment; filename=" + fileName).build();
         } catch (XslxFileGenerationException e) {
             LOG.debug("Xlsx file generation failed", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not generate xlsx file").build();
@@ -72,7 +71,7 @@ final class XlsxConverter {
     }
 
     private ByteArrayOutputStream generateExcelFile(TableDataReport tableData, FilterSelections filterSelections,
-                                                    Report report) throws XslxFileGenerationException {
+        Report report) throws XslxFileGenerationException {
         try (Workbook workbook = new XSSFWorkbook()) {
             addData(workbook, tableData, filterSelections, report);
             final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -114,19 +113,19 @@ final class XlsxConverter {
     }
 
     private int addFilters(AvailableFilters availableFilters, FilterDataResponse filter, FilterSelections filterSelections,
-                           Sheet dataSheet, int startRow) {
+        Sheet dataSheet, int startRow) {
         final List<String> enheter = filterSelections.getEnhetNames();
         final List<String> dxs = filterSelections.isAllAvailableDxsSelectedInFilter()
-                ? Collections.emptyList() : filter.getDiagnoser();
+            ? Collections.emptyList() : filter.getDiagnoser();
         final List<String> sjukskrivningslangds = filterSelections.isAllAvailableSjukskrivningslangdsSelectedInFilter()
-                ? Collections.emptyList() : filter.getSjukskrivningslangd();
+            ? Collections.emptyList() : filter.getSjukskrivningslangd();
         final List<String> aldersgrupps = filterSelections.isAllAvailableAgeGroupsSelectedInFilter()
-                ? Collections.emptyList() : filter.getAldersgrupp();
+            ? Collections.emptyList() : filter.getAldersgrupp();
         final List<String> intygstyper = filterSelections.isAllAvailableIntygTypesSelectedInFilter()
-                ? Collections.emptyList() : filter.getIntygstyper();
+            ? Collections.emptyList() : filter.getIntygstyper();
 
         final boolean useSeparateSheetForFilters = isUseSeparateSheetForFilters(enheter, dxs, sjukskrivningslangds,
-                aldersgrupps, intygstyper);
+            aldersgrupps, intygstyper);
         String urvalSheetName = MessagesText.EXCEL_FILTER_SHEET_NAME;
         final Sheet sheet = useSeparateSheetForFilters ? dataSheet.getWorkbook().createSheet(urvalSheetName) : dataSheet;
         int currentRow = useSeparateSheetForFilters ? 0 : startRow;
@@ -169,18 +168,18 @@ final class XlsxConverter {
 
     private List<String> getDxNames(List<String> dxs) {
         return dxs == null ? null : dxs.stream().map(icdNumId -> {
-                final Icd10.Id icd = icd10.findIcd10FromNumericId(Integer.parseInt(icdNumId));
-                return (icd.getVisibleId() + " " + icd.getName()).trim();
-            }).collect(Collectors.toList());
+            final Icd10.Id icd = icd10.findIcd10FromNumericId(Integer.parseInt(icdNumId));
+            return (icd.getVisibleId() + " " + icd.getName()).trim();
+        }).collect(Collectors.toList());
     }
 
     private boolean isUseSeparateSheetForFilters(List<String> enheter, List<String> dxs,
-                                                 List<String> sjukskrivningslangds, List<String> aldersgrupps, List<String> intygstyper) {
+        List<String> sjukskrivningslangds, List<String> aldersgrupps, List<String> intygstyper) {
         final int totalFilters = (enheter == null ? 0 : enheter.size())
-                + (dxs == null ? 0 : dxs.size())
-                + (sjukskrivningslangds == null ? 0 : sjukskrivningslangds.size())
-                + (aldersgrupps == null ? 0 : aldersgrupps.size())
-                + (intygstyper == null ? 0 : intygstyper.size());
+            + (dxs == null ? 0 : dxs.size())
+            + (sjukskrivningslangds == null ? 0 : sjukskrivningslangds.size())
+            + (aldersgrupps == null ? 0 : aldersgrupps.size())
+            + (intygstyper == null ? 0 : intygstyper.size());
         final int maxFiltersOnDataSheet = 8;
         return totalFilters > maxFiltersOnDataSheet;
     }
@@ -195,10 +194,10 @@ final class XlsxConverter {
         cell.setCellStyle(getHlinkStyle(sheet.getWorkbook()));
 
         sheet.addMergedRegion(new CellRangeAddress(
-                row.getRowNum(),
-                row.getRowNum(),
-                0,
-                LAST_MERGE_COLUMN
+            row.getRowNum(),
+            row.getRowNum(),
+            0,
+            LAST_MERGE_COLUMN
         ));
     }
 
@@ -239,7 +238,7 @@ final class XlsxConverter {
         int currentRow = startRow;
         addTitle(sheet, currentRow++, report.getStatisticsLevel().getText());
         final String titleExtras = tableData instanceof DiagnosisSubGroupStatisticsData
-                ? " " + ((DiagnosisSubGroupStatisticsData) tableData).getDxGroup() : "";
+            ? " " + ((DiagnosisSubGroupStatisticsData) tableData).getDxGroup() : "";
         addTitle(sheet, currentRow++, report.getLongName() + titleExtras + " " + tableData.getPeriod());
         return currentRow;
     }

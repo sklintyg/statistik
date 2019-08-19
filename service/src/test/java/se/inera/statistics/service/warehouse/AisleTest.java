@@ -18,14 +18,13 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import static org.junit.Assert.assertEquals;
+import static se.inera.statistics.service.warehouse.FactBuilder.aFact;
+
+import java.util.Iterator;
 import org.junit.Test;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Kon;
-
-import java.util.Iterator;
-
-import static org.junit.Assert.assertEquals;
-import static se.inera.statistics.service.warehouse.FactBuilder.aFact;
 
 public class AisleTest {
 
@@ -34,18 +33,18 @@ public class AisleTest {
     @Test
     public void outOfOrderFactsGetsSorted() {
         Fact fact1 = aFact().withId(1).withLan(3).withKommun(380).withForsamling(38002).
-                withEnhet(1).withLakarintyg(1).
-                withPatient(1).withKon(Kon.FEMALE).withAlder(45).
-                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
-                withSjukskrivningsgrad(100).withStartdatum(4010).withSlutdatum(4056).
-                withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).build();
+            withEnhet(1).withLakarintyg(1).
+            withPatient(1).withKon(Kon.FEMALE).withAlder(45).
+            withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
+            withSjukskrivningsgrad(100).withStartdatum(4010).withSlutdatum(4056).
+            withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact1);
         Fact fact2 = aFact().withId(2).withLan(3).withKommun(380).withForsamling(38002).
-                withEnhet(1).withLakarintyg(2).
-                withPatient(1).withKon(Kon.FEMALE).withAlder(45).
-                withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
-                withSjukskrivningsgrad(100).withStartdatum(4000).withSlutdatum(4046).
-                withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).build();
+            withEnhet(1).withLakarintyg(2).
+            withPatient(1).withKon(Kon.FEMALE).withAlder(45).
+            withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
+            withSjukskrivningsgrad(100).withStartdatum(4000).withSlutdatum(4046).
+            withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact2);
         Iterator<Fact> iterator = aisle.createAisle().iterator();
         assertEquals(2, iterator.next().getLakarintyg());

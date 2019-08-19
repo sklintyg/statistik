@@ -18,24 +18,6 @@
  */
 package se.inera.statistics.service.report.util;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.core.io.Resource;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdLakare;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.testsupport.UtlatandeBuilder;
-import se.inera.statistics.service.queue.JmsReceiver;
-
-import javax.annotation.PostConstruct;
-import javax.jms.ConnectionFactory;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Queue;
-import javax.jms.Session;
-import javax.jms.TextMessage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -44,6 +26,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import javax.annotation.PostConstruct;
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Queue;
+import javax.jms.Session;
+import javax.jms.TextMessage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.Resource;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.queue.JmsReceiver;
+import se.inera.statistics.service.testsupport.UtlatandeBuilder;
 
 // CHECKSTYLE:OFF MagicNumber
 public class RemoteSender {
@@ -69,33 +68,48 @@ public class RemoteSender {
     public void setPersoner(RandomValues personer) {
         this.personer = personer;
     }
-    
+
     public void setVardgivare(RandomValues vardgivare) {
         this.vardgivare = vardgivare;
     }
-    
+
     public void setEnheter(RandomValues enheter) {
         this.enheter = enheter;
     }
-    
+
     public void setLakare(RandomValues lakare) {
         this.lakare = lakare;
     }
-    
+
 
     public void send() {
         UtlatandeBuilder builder = new UtlatandeBuilder();
-        simpleSend(builder.build("20121212-2212", LocalDate.parse("2013-10-20"), LocalDate.parse("2013-11-11"), new HsaIdLakare("TST5565595230-106J"), new HsaIdEnhet("IFV1239877878-103H"), new HsaIdVardgivare("IFV1239877878-0001"), "D01", 0).toString(), UUID.randomUUID().toString());
-        simpleSend(builder.build("20121212-2212", LocalDate.parse("2013-10-20"), LocalDate.parse("2013-11-11"), new HsaIdLakare("TST5565595230-106J"), new HsaIdEnhet("IFV1239877878-103H"), new HsaIdVardgivare("IFV1239877878-0001"), "INVALID", 0).toString(), UUID.randomUUID().toString());
-        simpleSend(builder.build("20121262-2212", LocalDate.parse("2013-10-20"), LocalDate.parse("2013-11-11"), new HsaIdLakare("TST5565595230-106J"), new HsaIdEnhet("IFV1239877878-103H"), new HsaIdVardgivare("IFV1239877878-0001"), "D01", 0).toString(), UUID.randomUUID().toString());
-        simpleSend(builder.build("20126212-2212", LocalDate.parse("2013-10-20"), LocalDate.parse("2013-11-11"), new HsaIdLakare("TST5565595230-106J"), new HsaIdEnhet("IFV1239877878-103H"), new HsaIdVardgivare("IFV1239877878-0001"), "D01", 0).toString(), UUID.randomUUID().toString());
-        simpleSend(builder.build("20126212-2212", LocalDate.parse("2013-10-20"), LocalDate.parse("2013-11-11"), new HsaIdLakare("TST5565595230-106J"), new HsaIdEnhet(longify("IFV1239877878-103H", 100)), new HsaIdVardgivare(longify("IFV1239877878-0001", 100)), "D01", 0).toString(), UUID.randomUUID().toString());
+        simpleSend(builder
+                .build("20121212-2212", LocalDate.parse("2013-10-20"), LocalDate.parse("2013-11-11"), new HsaIdLakare("TST5565595230-106J"),
+                    new HsaIdEnhet("IFV1239877878-103H"), new HsaIdVardgivare("IFV1239877878-0001"), "D01", 0).toString(),
+            UUID.randomUUID().toString());
+        simpleSend(builder
+                .build("20121212-2212", LocalDate.parse("2013-10-20"), LocalDate.parse("2013-11-11"), new HsaIdLakare("TST5565595230-106J"),
+                    new HsaIdEnhet("IFV1239877878-103H"), new HsaIdVardgivare("IFV1239877878-0001"), "INVALID", 0).toString(),
+            UUID.randomUUID().toString());
+        simpleSend(builder
+                .build("20121262-2212", LocalDate.parse("2013-10-20"), LocalDate.parse("2013-11-11"), new HsaIdLakare("TST5565595230-106J"),
+                    new HsaIdEnhet("IFV1239877878-103H"), new HsaIdVardgivare("IFV1239877878-0001"), "D01", 0).toString(),
+            UUID.randomUUID().toString());
+        simpleSend(builder
+                .build("20126212-2212", LocalDate.parse("2013-10-20"), LocalDate.parse("2013-11-11"), new HsaIdLakare("TST5565595230-106J"),
+                    new HsaIdEnhet("IFV1239877878-103H"), new HsaIdVardgivare("IFV1239877878-0001"), "D01", 0).toString(),
+            UUID.randomUUID().toString());
+        simpleSend(builder
+            .build("20126212-2212", LocalDate.parse("2013-10-20"), LocalDate.parse("2013-11-11"), new HsaIdLakare("TST5565595230-106J"),
+                new HsaIdEnhet(longify("IFV1239877878-103H", 100)), new HsaIdVardgivare(longify("IFV1239877878-0001", 100)), "D01", 0)
+            .toString(), UUID.randomUUID().toString());
     }
 
     private String longify(String base, int length) {
         StringBuilder builder = new StringBuilder(base);
         builder.ensureCapacity(base.length() + length + 1);
-        while (length -- > 0) {
+        while (length-- > 0) {
             builder.append(" ");
         }
         builder.append(('S'));
@@ -110,8 +124,12 @@ public class RemoteSender {
             String enhetid = enheter.getRandom();
             String vargivarid = vardgivare.getRandom();
             String uuid = UUID.randomUUID().toString();
-            simpleSend(builder.build(personid, LocalDate.parse("2013-10-20"), LocalDate.parse("2013-11-11"), new HsaIdLakare(lakarid), new HsaIdEnhet(enhetid), new HsaIdVardgivare(vargivarid), "D01", 0).toString(), uuid);
-            if (i % 100 == 0) { System.err.println(i);};
+            simpleSend(builder.build(personid, LocalDate.parse("2013-10-20"), LocalDate.parse("2013-11-11"), new HsaIdLakare(lakarid),
+                new HsaIdEnhet(enhetid), new HsaIdVardgivare(vargivarid), "D01", 0).toString(), uuid);
+            if (i % 100 == 0) {
+                System.err.println(i);
+            }
+            ;
         }
     }
 
@@ -136,7 +154,7 @@ public class RemoteSender {
             Thread.sleep(5000);
         }
     }
-    
+
     public static class RandomValues {
 
         private static Random random = new Random();
@@ -154,7 +172,7 @@ public class RemoteSender {
             values = new ArrayList<String>();
             try (BufferedReader br = new BufferedReader(new InputStreamReader(source.getInputStream()))) {
                 String line;
-                while ( (line = br.readLine()) != null) {
+                while ((line = br.readLine()) != null) {
                     values.add(line);
                 }
             }

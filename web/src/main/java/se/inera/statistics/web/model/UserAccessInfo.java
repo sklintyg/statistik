@@ -18,9 +18,8 @@
  */
 package se.inera.statistics.web.model;
 
-import se.inera.statistics.hsa.model.HsaIdUser;
-
 import java.util.List;
+import se.inera.statistics.hsa.model.HsaIdUser;
 
 public class UserAccessInfo {
 

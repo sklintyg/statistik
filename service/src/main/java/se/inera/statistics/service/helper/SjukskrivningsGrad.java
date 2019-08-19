@@ -63,8 +63,8 @@ public enum SjukskrivningsGrad {
 
     public static SjukskrivningsGrad fromId(int id) {
         return Stream.of(values())
-                .filter(typ -> typ.id == id).findFirst()
-                .orElseThrow(IllegalArgumentException::new);
+            .filter(typ -> typ.id == id).findFirst()
+            .orElseThrow(IllegalArgumentException::new);
     }
 
 }

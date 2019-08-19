@@ -19,7 +19,10 @@
 package se.inera.statistics.web.scheduler;
 
 import java.time.Duration;
-
+import net.javacrumbs.shedlock.core.LockProvider;
+import net.javacrumbs.shedlock.provider.redis.spring.RedisLockProvider;
+import net.javacrumbs.shedlock.spring.ScheduledLockConfiguration;
+import net.javacrumbs.shedlock.spring.ScheduledLockConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +31,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.scheduling.annotation.EnableScheduling;
-
-import net.javacrumbs.shedlock.core.LockProvider;
-import net.javacrumbs.shedlock.provider.redis.spring.RedisLockProvider;
-import net.javacrumbs.shedlock.spring.ScheduledLockConfiguration;
-import net.javacrumbs.shedlock.spring.ScheduledLockConfigurationBuilder;
 import se.inera.intyg.infra.integration.ia.services.IABannerService;
 import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
 
@@ -61,10 +59,10 @@ public class BannerJobConfiguration {
     public ScheduledLockConfiguration taskScheduler(final LockProvider lockProvider) {
         LOG.info("Profile caching-enabled: creating scheduled lock configuration");
         return ScheduledLockConfigurationBuilder
-                .withLockProvider(lockProvider)
-                .withPoolSize(POOL_SIZE)
-                .withDefaultLockAtMostFor(Duration.ofMinutes(LOCK_AT_MOST_MINUTES))
-                .build();
+            .withLockProvider(lockProvider)
+            .withPoolSize(POOL_SIZE)
+            .withDefaultLockAtMostFor(Duration.ofMinutes(LOCK_AT_MOST_MINUTES))
+            .build();
     }
 
     @Bean

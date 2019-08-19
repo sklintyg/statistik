@@ -18,12 +18,11 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import se.inera.statistics.hsa.model.HsaIdAny;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-
 import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import se.inera.statistics.hsa.model.HsaIdAny;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
 
 public class FilterPredicates {
 
@@ -35,7 +34,7 @@ public class FilterPredicates {
     private String hash;
 
     public FilterPredicates(Predicate<Fact> intygFilter, Predicate<Sjukfall> sjukfallFilter, String hash,
-            boolean sjukfallangdfilterActive) {
+        boolean sjukfallangdfilterActive) {
         if (intygFilter == null) {
             throw new IllegalArgumentException("Intygfilter must not be null");
         }

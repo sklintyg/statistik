@@ -18,13 +18,12 @@
  */
 package se.inera.statistics.service.queue;
 
+import java.util.concurrent.CountDownLatch;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
-
-import java.util.concurrent.CountDownLatch;
 
 @Aspect
 @Component

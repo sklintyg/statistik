@@ -24,6 +24,7 @@ import se.inera.statistics.service.report.model.Kon;
  * Represents a singular fact about a sjukfall for the FK report.
  */
 public class FkFactRow {
+
     private String diagnos;
     private Kon kon;
     private String lanId;

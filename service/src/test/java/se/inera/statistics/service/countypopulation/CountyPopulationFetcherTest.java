@@ -18,6 +18,13 @@
  */
 package se.inera.statistics.service.countypopulation;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+
+import java.time.LocalDate;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -29,16 +36,6 @@ import org.mockito.Spy;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.web.client.RestTemplate;
-
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
-
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyMap;
-import static org.mockito.Matchers.anyString;
 
 public class CountyPopulationFetcherTest {
 
@@ -52,48 +49,48 @@ public class CountyPopulationFetcherTest {
     private CountyPopulationFetcher countyPopulationFetcher = new CountyPopulationFetcher();
 
     private static final String RESPONSE = "\"region\",\"kön\",\"Folkmängd 2013\"\n" +
-            "\"01 Stockholms län\",\"män\",1073900\n" +
-            "\"01 Stockholms län\",\"kvinnor\",1089142\n" +
-            "\"03 Uppsala län\",\"män\",172125\n" +
-            "\"03 Uppsala län\",\"kvinnor\",173356\n" +
-            "\"04 Södermanlands län\",\"män\",138358\n" +
-            "\"04 Södermanlands län\",\"kvinnor\",139211\n" +
-            "\"05 Östergötlands län\",\"män\",220024\n" +
-            "\"05 Östergötlands län\",\"kvinnor\",217824\n" +
-            "\"06 Jönköpings län\",\"män\",171115\n" +
-            "\"06 Jönköpings län\",\"kvinnor\",170120\n" +
-            "\"07 Kronobergs län\",\"män\",94597\n" +
-            "\"07 Kronobergs län\",\"kvinnor\",92559\n" +
-            "\"08 Kalmar län\",\"män\",117112\n" +
-            "\"08 Kalmar län\",\"kvinnor\",116762\n" +
-            "\"09 Gotlands län\",\"män\",28388\n" +
-            "\"09 Gotlands län\",\"kvinnor\",28773\n" +
-            "\"10 Blekinge län\",\"män\",77387\n" +
-            "\"10 Blekinge län\",\"kvinnor\",75370\n" +
-            "\"12 Skåne län\",\"män\",631800\n" +
-            "\"12 Skåne län\",\"kvinnor\",642269\n" +
-            "\"13 Hallands län\",\"män\",152800\n" +
-            "\"13 Hallands län\",\"kvinnor\",154040\n" +
-            "\"14 Västra Götalands län\",\"män\",806676\n" +
-            "\"14 Västra Götalands län\",\"kvinnor\",808408\n" +
-            "\"17 Värmlands län\",\"män\",136903\n" +
-            "\"17 Värmlands län\",\"kvinnor\",136912\n" +
-            "\"18 Örebro län\",\"män\",142240\n" +
-            "\"18 Örebro län\",\"kvinnor\",143155\n" +
-            "\"19 Västmanlands län\",\"män\",129449\n" +
-            "\"19 Västmanlands län\",\"kvinnor\",129605\n" +
-            "\"20 Dalarnas län\",\"män\",139115\n" +
-            "\"20 Dalarnas län\",\"kvinnor\",138234\n" +
-            "\"21 Gävleborgs län\",\"män\",139111\n" +
-            "\"21 Gävleborgs län\",\"kvinnor\",138859\n" +
-            "\"22 Västernorrlands län\",\"män\",121305\n" +
-            "\"22 Västernorrlands län\",\"kvinnor\",120851\n" +
-            "\"23 Jämtlands län\",\"män\",63473\n" +
-            "\"23 Jämtlands län\",\"kvinnor\",62988\n" +
-            "\"24 Västerbottens län\",\"män\",131556\n" +
-            "\"24 Västerbottens län\",\"kvinnor\",129556\n" +
-            "\"25 Norrbottens län\",\"män\",126923\n" +
-            "\"25 Norrbottens län\",\"kvinnor\",122513\n";
+        "\"01 Stockholms län\",\"män\",1073900\n" +
+        "\"01 Stockholms län\",\"kvinnor\",1089142\n" +
+        "\"03 Uppsala län\",\"män\",172125\n" +
+        "\"03 Uppsala län\",\"kvinnor\",173356\n" +
+        "\"04 Södermanlands län\",\"män\",138358\n" +
+        "\"04 Södermanlands län\",\"kvinnor\",139211\n" +
+        "\"05 Östergötlands län\",\"män\",220024\n" +
+        "\"05 Östergötlands län\",\"kvinnor\",217824\n" +
+        "\"06 Jönköpings län\",\"män\",171115\n" +
+        "\"06 Jönköpings län\",\"kvinnor\",170120\n" +
+        "\"07 Kronobergs län\",\"män\",94597\n" +
+        "\"07 Kronobergs län\",\"kvinnor\",92559\n" +
+        "\"08 Kalmar län\",\"män\",117112\n" +
+        "\"08 Kalmar län\",\"kvinnor\",116762\n" +
+        "\"09 Gotlands län\",\"män\",28388\n" +
+        "\"09 Gotlands län\",\"kvinnor\",28773\n" +
+        "\"10 Blekinge län\",\"män\",77387\n" +
+        "\"10 Blekinge län\",\"kvinnor\",75370\n" +
+        "\"12 Skåne län\",\"män\",631800\n" +
+        "\"12 Skåne län\",\"kvinnor\",642269\n" +
+        "\"13 Hallands län\",\"män\",152800\n" +
+        "\"13 Hallands län\",\"kvinnor\",154040\n" +
+        "\"14 Västra Götalands län\",\"män\",806676\n" +
+        "\"14 Västra Götalands län\",\"kvinnor\",808408\n" +
+        "\"17 Värmlands län\",\"män\",136903\n" +
+        "\"17 Värmlands län\",\"kvinnor\",136912\n" +
+        "\"18 Örebro län\",\"män\",142240\n" +
+        "\"18 Örebro län\",\"kvinnor\",143155\n" +
+        "\"19 Västmanlands län\",\"män\",129449\n" +
+        "\"19 Västmanlands län\",\"kvinnor\",129605\n" +
+        "\"20 Dalarnas län\",\"män\",139115\n" +
+        "\"20 Dalarnas län\",\"kvinnor\",138234\n" +
+        "\"21 Gävleborgs län\",\"män\",139111\n" +
+        "\"21 Gävleborgs län\",\"kvinnor\",138859\n" +
+        "\"22 Västernorrlands län\",\"män\",121305\n" +
+        "\"22 Västernorrlands län\",\"kvinnor\",120851\n" +
+        "\"23 Jämtlands län\",\"män\",63473\n" +
+        "\"23 Jämtlands län\",\"kvinnor\",62988\n" +
+        "\"24 Västerbottens län\",\"män\",131556\n" +
+        "\"24 Västerbottens län\",\"kvinnor\",129556\n" +
+        "\"25 Norrbottens län\",\"män\",126923\n" +
+        "\"25 Norrbottens län\",\"kvinnor\",122513\n";
 
     @Before
     public void setUp() throws Exception {
@@ -155,7 +152,8 @@ public class CountyPopulationFetcherTest {
     @Test
     public void testGetPopulationForMissingOneGender() throws Exception {
         //Given
-        Mockito.when(rest.postForObject(anyString(), any(), any())).thenReturn(RESPONSE.replace("\"17 Värmlands län\",\"män\",136903\n", ""));
+        Mockito.when(rest.postForObject(anyString(), any(), any()))
+            .thenReturn(RESPONSE.replace("\"17 Värmlands län\",\"män\",136903\n", ""));
 
         //When
         final Optional<CountyPopulation> countyPopulation = countyPopulationFetcher.getPopulationFor(2013);

@@ -19,32 +19,32 @@
 
 angular.module('StatisticsApp').directive('navigationaware',
     /** @ngInject */
-    function ($rootScope, $route) {
-        'use strict';
-        var isActivePage = function(currentRoute, navLinkAttrs) {
-            return currentRoute.controllerAs === navLinkAttrs.ctrlname || currentRoute.controller === navLinkAttrs.ctrlname;
-        };
+    function($rootScope, $route) {
+      'use strict';
+      var isActivePage = function(currentRoute, navLinkAttrs) {
+        return currentRoute.controllerAs === navLinkAttrs.ctrlname || currentRoute.controller === navLinkAttrs.ctrlname;
+      };
 
-        return {
-            restrict: 'A',
-            link: function ($scope, elem, $attrs) {
+      return {
+        restrict: 'A',
+        link: function($scope, elem, $attrs) {
 
-                init($route.current);
+          init($route.current);
 
-                function init(current) {
-                    elem.parent().removeClass('active');
-                    if (angular.isDefined(current) && isActivePage(current, $attrs)){
-                        elem.parent().addClass('active');
-                        var groupId = elem.closest('.navigation-group').attr('id');
-                        if (groupId) {
-                            $rootScope.$broadcast('navigationUpdate', groupId);
-                        }
-                    }
-                }
-
-                $rootScope.$on('$routeChangeSuccess', function(angularEvent, current) {
-                    init(current);
-                });
+          function init(current) {
+            elem.parent().removeClass('active');
+            if (angular.isDefined(current) && isActivePage(current, $attrs)) {
+              elem.parent().addClass('active');
+              var groupId = elem.closest('.navigation-group').attr('id');
+              if (groupId) {
+                $rootScope.$broadcast('navigationUpdate', groupId);
+              }
             }
-        };
+          }
+
+          $rootScope.$on('$routeChangeSuccess', function(angularEvent, current) {
+            init(current);
+          });
+        }
+      };
     });

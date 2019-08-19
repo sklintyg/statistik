@@ -23,6 +23,7 @@ import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 public class HSAKey {
+
     private final HsaIdVardgivare vardgivareId;
     private final HsaIdEnhet enhetId;
     private final HsaIdLakare lakareId;
@@ -35,8 +36,8 @@ public class HSAKey {
 
     public HSAKey(String vardgivareId, String enhetId, String lakareId) {
         this(vardgivareId != null ? new HsaIdVardgivare(vardgivareId) : null,
-                enhetId != null ? new HsaIdEnhet(enhetId) : null,
-                lakareId != null ? new HsaIdLakare(lakareId) : null);
+            enhetId != null ? new HsaIdEnhet(enhetId) : null,
+            lakareId != null ? new HsaIdLakare(lakareId) : null);
     }
 
     public HsaIdLakare getLakareId() {

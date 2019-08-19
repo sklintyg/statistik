@@ -17,48 +17,47 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 angular.module('StatisticsApp').factory('UserService',
     /** @ngInject */
     function($log, $q, UserModel, statisticsData) {
-        'use strict';
+      'use strict';
 
-        function _saveSettings(settings) {
+      function _saveSettings(settings) {
 
-            var promise = $q.defer();
+        var promise = $q.defer();
 
-            var success = function(data) {
-                UserModel.setSettings(data);
-                promise.resolve(data);
-            };
-
-            var error = function(data, status) {
-                $log.error('error ' + status);
-                // Let calling code handle the error of no data response
-                if (data === null) {
-                    promise.reject({errorCode: data, message: 'no response'});
-                } else {
-                    promise.reject(data);
-                }
-            };
-
-            statisticsData.saveUserSettings(settings).then(success, error);
-
-            return promise.promise;
-        }
-
-        function _updateOneSetting(key, value) {
-
-            var settings = angular.copy(UserModel.get().settings);
-
-            settings[key] = value;
-
-            return _saveSettings(settings);
-        }
-
-        return {
-            saveSettings: _saveSettings,
-            updateOneSetting: _updateOneSetting
+        var success = function(data) {
+          UserModel.setSettings(data);
+          promise.resolve(data);
         };
+
+        var error = function(data, status) {
+          $log.error('error ' + status);
+          // Let calling code handle the error of no data response
+          if (data === null) {
+            promise.reject({errorCode: data, message: 'no response'});
+          } else {
+            promise.reject(data);
+          }
+        };
+
+        statisticsData.saveUserSettings(settings).then(success, error);
+
+        return promise.promise;
+      }
+
+      function _updateOneSetting(key, value) {
+
+        var settings = angular.copy(UserModel.get().settings);
+
+        settings[key] = value;
+
+        return _saveSettings(settings);
+      }
+
+      return {
+        saveSettings: _saveSettings,
+        updateOneSetting: _updateOneSetting
+      };
     }
 );

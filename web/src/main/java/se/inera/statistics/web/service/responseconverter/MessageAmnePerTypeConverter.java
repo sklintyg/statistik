@@ -23,7 +23,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
@@ -43,7 +42,7 @@ public class MessageAmnePerTypeConverter extends MultiDualSexConverter {
 
     public SimpleDetailsData convert(KonDataResponse data, FilterSettings filterSettings) {
         final List<String[]> separatedGroups = data.getGroups().stream()
-                .map(s -> s.split(MessagesQuery.GROUP_NAME_SEPARATOR)).collect(Collectors.toList());
+            .map(s -> s.split(MessagesQuery.GROUP_NAME_SEPARATOR)).collect(Collectors.toList());
         final List<MsgAmne> amnes = separatedGroups.stream().map(strings -> MsgAmne.parse(strings[1])).collect(Collectors.toList());
         final List<KonDataRow> rows = data.getRows();
         int indexOfEmptyInternalIcd10Group = getIndexOfGroupToRemove(amnes, rows);
@@ -57,7 +56,7 @@ public class MessageAmnePerTypeConverter extends MultiDualSexConverter {
         final DualSexStatisticsData dssd = super.convert(konDataResponse, filterSettings, null, "%1$s", groupsAndColors);
         final ChartData chartData = merge(dssd.getFemaleChart(), dssd.getMaleChart());
         return new SimpleDetailsData(dssd.getTableData(), chartData, dssd.getPeriod(), data.getAvailableFilters(),
-                dssd.getFilter(), dssd.getMessages());
+            dssd.getFilter(), dssd.getMessages());
     }
 
     static ChartData merge(ChartData femaleChart, ChartData maleChart) {
@@ -68,7 +67,7 @@ public class MessageAmnePerTypeConverter extends MultiDualSexConverter {
 
             final List<Number> data = new ArrayList<>();
             for (int j = 0; j < fs.getData().size(); j++) {
-                 data.add(fs.getData().get(j).intValue() + ms.getData().get(j).intValue());
+                data.add(fs.getData().get(j).intValue() + ms.getData().get(j).intValue());
             }
 
             series.add(new ChartSeries(fs.getName(), data, null, fs.getColor()));

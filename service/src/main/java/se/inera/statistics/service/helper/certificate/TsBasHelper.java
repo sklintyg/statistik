@@ -21,9 +21,7 @@ package se.inera.statistics.service.helper.certificate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 import org.springframework.stereotype.Component;
-
 import se.inera.intygstjanster.ts.services.RegisterTSBasResponder.v1.RegisterTSBasType;
 import se.inera.statistics.service.helper.IntygHelper;
 import se.inera.statistics.service.warehouse.IntygType;

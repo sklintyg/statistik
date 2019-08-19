@@ -18,6 +18,9 @@
  */
 package se.inera.auth;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +36,6 @@ import se.inera.statistics.hsa.services.HsaOrganizationsService;
 import se.inera.statistics.hsa.services.UserAuthorization;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 import se.riv.infrastructure.directory.v1.PersonInformationType;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class UserDetailsService implements SAMLUserDetailsService {
 
@@ -61,9 +60,9 @@ public class UserDetailsService implements SAMLUserDetailsService {
         final HsaIdUser hsaId = new HsaIdUser(assertion.getHsaId());
         List<PersonInformationType> hsaPersonInfo = hsaPersonService.getHsaPersonInfo(hsaId.getId());
         UserAuthorization userAuthorization = hsaOrganizationsService.getAuthorizedEnheterForHosPerson(hsaId);
-        final List<Vardgivare> vardgivareWithProcessledarStatusList =  getVgsWithProcessledarStatus(userAuthorization.getSystemRoles())
-                .stream().map(vgHsaId -> hsaOrganizationsService.getVardgivare(vgHsaId))
-                .collect(Collectors.toList());
+        final List<Vardgivare> vardgivareWithProcessledarStatusList = getVgsWithProcessledarStatus(userAuthorization.getSystemRoles())
+            .stream().map(vgHsaId -> hsaOrganizationsService.getVardgivare(vgHsaId))
+            .collect(Collectors.toList());
 
         monitoringLogService.logUserLogin(hsaId);
 

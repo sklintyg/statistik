@@ -18,11 +18,10 @@
  */
 package se.inera.statistics.service.processlog;
 
-import se.inera.statistics.service.helper.Patientdata;
-import se.inera.statistics.service.warehouse.IntygType;
-
 import java.time.LocalDate;
 import java.util.List;
+import se.inera.statistics.service.helper.Patientdata;
+import se.inera.statistics.service.warehouse.IntygType;
 
 public class IntygDTO {
 

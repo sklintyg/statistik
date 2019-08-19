@@ -22,18 +22,20 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
-import org.junit.Test;
-import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
-import javax.xml.bind.JAXBException;
 import java.time.LocalDate;
 import java.util.stream.IntStream;
+import javax.xml.bind.JAXBException;
+import org.junit.Test;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.IntygType;
+import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 
 public class Tstrk1009RegisterCertificateHelperTest {
 
-    private static final String xmlIntyg = "<ns4:RegisterCertificate xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:dsf=\"http://www.w3.org/2002/06/xmldsig-filter2\" xmlns:ns3=\"urn:riv:clinicalprocess:healthcond:certificate:3\" xmlns:ns4=\"urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:3\" xmlns:ns5=\"urn:riv:clinicalprocess:healthcond:certificate:types:3\" xmlns:ns6=\"urn:riv:clinicalprocess:healthcond:certificate:3.2\" xmlns:ns7=\"urn:riv:itintegration:registry:1\">\n" +
+    private static final String xmlIntyg =
+        "<ns4:RegisterCertificate xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:dsf=\"http://www.w3.org/2002/06/xmldsig-filter2\" xmlns:ns3=\"urn:riv:clinicalprocess:healthcond:certificate:3\" xmlns:ns4=\"urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:3\" xmlns:ns5=\"urn:riv:clinicalprocess:healthcond:certificate:types:3\" xmlns:ns6=\"urn:riv:clinicalprocess:healthcond:certificate:3.2\" xmlns:ns7=\"urn:riv:itintegration:registry:1\">\n"
+            +
             "  <ns4:intyg>\n" +
             "    <ns3:intygs-id>\n" +
             "      <ns5:root>TSTNMT2321000156-1077</ns5:root>\n" +
@@ -307,7 +309,7 @@ public class Tstrk1009RegisterCertificateHelperTest {
 
     @Test
     public void unmarshalRegisterCertificateXmlHandlesConcurrentCalls() {
-        IntStream.range(1,25).parallel().forEach(value -> {
+        IntStream.range(1, 25).parallel().forEach(value -> {
             try {
                 registerCertificateHelper.unmarshalXml(xmlIntyg);
             } catch (JAXBException e) {

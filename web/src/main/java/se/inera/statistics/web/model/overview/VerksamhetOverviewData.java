@@ -18,12 +18,11 @@
  */
 package se.inera.statistics.web.model.overview;
 
+import java.util.List;
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.model.FilteredDataReport;
 import se.inera.statistics.web.service.FilterDataResponse;
-
-import java.util.List;
 
 public class VerksamhetOverviewData implements FilteredDataReport {
 
@@ -41,10 +40,10 @@ public class VerksamhetOverviewData implements FilteredDataReport {
     // CHECKSTYLE:OFF ParameterNumber
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public VerksamhetOverviewData(String periodText, VerksamhetNumberOfCasesPerMonthOverview casesPerMonth,
-                                  List<DonutChartData> diagnosisGroups,
-                                  List<DonutChartData> ageGroups, List<DonutChartData> degreeOfSickLeaveGroups,
-                                  SickLeaveLengthOverview sickLeaveLength, List<DonutChartData> kompletteringar,
-                                  AvailableFilters availableFilters, FilterDataResponse filter, List<Message> messages) {
+        List<DonutChartData> diagnosisGroups,
+        List<DonutChartData> ageGroups, List<DonutChartData> degreeOfSickLeaveGroups,
+        SickLeaveLengthOverview sickLeaveLength, List<DonutChartData> kompletteringar,
+        AvailableFilters availableFilters, FilterDataResponse filter, List<Message> messages) {
         this.periodText = periodText;
         this.casesPerMonth = casesPerMonth;
         this.diagnosisGroups = diagnosisGroups;

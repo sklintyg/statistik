@@ -18,22 +18,22 @@
  */
 package se.inera.statistics.service.report.util;
 
+import static se.inera.statistics.service.report.util.Ranges.range;
+
 import java.util.Arrays;
 import java.util.stream.Collectors;
-
-import static se.inera.statistics.service.report.util.Ranges.range;
 
 public final class AldersgroupUtil {
 
     public static final Ranges RANGES = new Ranges(Arrays.stream(AgeGroup.values())
-            .map(group -> range(group.getGroupName(), group.getTo() + 1, group.getColor()))
-            .collect(Collectors.toList())
-            .toArray(new Ranges.Range[0]));
+        .map(group -> range(group.getGroupName(), group.getTo() + 1, group.getColor()))
+        .collect(Collectors.toList())
+        .toArray(new Ranges.Range[0]));
 
     public static final Ranges OVERVIEW_RANGES = new Ranges(Arrays.stream(OverviewAgeGroup.values())
-            .map(group -> range(group.getGroupName(), group.getTo() + 1, group.getColor()))
-            .collect(Collectors.toList())
-            .toArray(new Ranges.Range[0]));
+        .map(group -> range(group.getGroupName(), group.getTo() + 1, group.getColor()))
+        .collect(Collectors.toList())
+        .toArray(new Ranges.Range[0]));
 
     private AldersgroupUtil() {
     }

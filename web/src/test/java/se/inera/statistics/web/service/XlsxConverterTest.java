@@ -18,11 +18,12 @@
  */
 package se.inera.statistics.web.service;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -32,7 +33,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
-
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.util.Icd10;
@@ -40,8 +40,6 @@ import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.TableHeader;
-
-import static org.junit.Assert.assertTrue;
 
 public class XlsxConverterTest {
 
@@ -59,14 +57,14 @@ public class XlsxConverterTest {
 
     private ArrayList<String> addXlsxData(Report report, String period) {
         return addXlsxData(report, period, Arrays.asList(), null,
-                Arrays.asList(new NamedData("datarad1", Arrays.asList(1, 2, 3))));
+            Arrays.asList(new NamedData("datarad1", Arrays.asList(1, 2, 3))));
     }
 
     @Test
     public void testExportShouldAlwaysContainListOfEnhets() {
         ArrayList<String> cellTexts = addXlsxDataForEnhetTest(
-                Arrays.asList("TestEnhet"),
-                Arrays.asList(new HsaIdEnhet("enhet1")));
+            Arrays.asList("TestEnhet"),
+            Arrays.asList(new HsaIdEnhet("enhet1")));
         assertTrue(cellTexts.toString().contains("Valda enheter, TestEnhet"));
 
         cellTexts = addXlsxDataForEnhetTest(Arrays.asList("TestEnhet"), Arrays.asList());
@@ -78,18 +76,18 @@ public class XlsxConverterTest {
 
     private ArrayList<String> addXlsxDataForEnhetTest(List<String> testEnhet, Collection<HsaIdEnhet> enhetsfilter) {
         return addXlsxData(Report.V_DIAGNOSGRUPP, "", testEnhet, enhetsfilter,
-                Arrays.asList(new NamedData("datarad1", Arrays.asList(1, 2, 3))));
+            Arrays.asList(new NamedData("datarad1", Arrays.asList(1, 2, 3))));
     }
 
     @Test
     public void testAllDataRowsAreAdded() {
         ArrayList<String> cellTexts = addXlsxData(Arrays.asList(
-                new NamedData("datarad1", Arrays.asList(1, 2, 3))));
+            new NamedData("datarad1", Arrays.asList(1, 2, 3))));
         assertTrue(cellTexts.toString().contains("datarad1, 1.0, 2.0, 3.0"));
 
         cellTexts = addXlsxData(Arrays.asList(
-                new NamedData("datarad1", Arrays.asList(1, 2, 3)),
-                new NamedData("datarad2", Arrays.asList(10, 20, 30))));
+            new NamedData("datarad1", Arrays.asList(1, 2, 3)),
+            new NamedData("datarad2", Arrays.asList(10, 20, 30))));
         assertTrue(cellTexts.toString().contains("datarad1, 1.0, 2.0, 3.0, datarad2, 10.0, 20.0, 30.0"));
     }
 
@@ -100,7 +98,8 @@ public class XlsxConverterTest {
     /**
      * Set up a workbook mock and return all text fields added to it
      */
-    private ArrayList<String> addXlsxData(Report report, String period, List<String> testEnhet, Collection<HsaIdEnhet> enhetsfilter, List<NamedData> dataList) {
+    private ArrayList<String> addXlsxData(Report report, String period, List<String> testEnhet, Collection<HsaIdEnhet> enhetsfilter,
+        List<NamedData> dataList) {
         final ArrayList<String> cellTexts = new ArrayList<>();
         final Icd10 icd10 = Mockito.mock(Icd10.class);
         final XlsxConverter xlsxConverter = new XlsxConverter(icd10);

@@ -20,12 +20,10 @@ package se.inera.statistics.service.hsa;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import se.inera.statistics.hsa.model.GeoCoordDto;
 import se.inera.statistics.hsa.model.GeoCoordType;
 import se.inera.statistics.hsa.model.GetStatisticsCareGiverResponseDto;
@@ -37,6 +35,7 @@ import se.inera.statistics.hsa.model.StatisticsHsaUnitDto;
 
 @Component
 public class HSAServiceImpl implements HSAService {
+
     private static final Logger LOG = LoggerFactory.getLogger(HSAServiceImpl.class);
     private static final String SKYDDAD_IDENTITET_FORNAMN = "Sekretessmarkerad";
     private static final String SKYDDAD_IDENTITET_EFTERNAMN = "läkare";
@@ -66,8 +65,8 @@ public class HSAServiceImpl implements HSAService {
         HsaInfoEnhet huvudenhet = nonNullBase.getHuvudenhet();
 
         if (noEnhetIsDefined(enhet)
-                || enhetHasNoVgAndNoHuvudenhetIsDefined(enhet, huvudenhet)
-                || neitherEnhetOrHuvudenhetHasVg(enhet, huvudenhet)) {
+            || enhetHasNoVgAndNoHuvudenhetIsDefined(enhet, huvudenhet)
+            || neitherEnhetOrHuvudenhetHasVg(enhet, huvudenhet)) {
             GetStatisticsHsaUnitResponseDto unit = getStatisticsHsaUnit(key.getEnhetId().getId());
             if (unit != null) {
                 // huvudenhet=vårdenhet och enhet kan vara vårdenhet, om det inte finns huvudenhet, annars motsvarar det
@@ -113,7 +112,7 @@ public class HSAServiceImpl implements HSAService {
             final HsaIdVardgivare vgIdFromHsa = getVardgivareHsaId(enhet, huvudenhet);
             if (vgIdFromHsa == null || !vgIdFromHsa.equals(key.getVardgivareId())) {
                 LOG.info("VardgivarId mismatch found for enhet: {}. Expected {} from intyg but was {} in HSA", key.getEnhetId(),
-                        key.getVardgivareId(), vgIdFromHsa);
+                    key.getVardgivareId(), vgIdFromHsa);
             }
             if (vgIdFromHsa != null && !vgIdFromHsa.isEmpty()) {
                 GetStatisticsCareGiverResponseDto caregiver = getStatisticsCareGiver(vgIdFromHsa.getId());
@@ -234,7 +233,7 @@ public class HSAServiceImpl implements HSAService {
         final HsaInfoEnhetGeo geografiskIndelning = createGeografiskIndelning(unit);
         final String careGiverHsaIdentity = unit.getCareGiverHsaIdentity();
         return new HsaInfoEnhet(hsaIdentity, enhetsTyp, agarTyp, startDate, endDate, isArchived, verksamhet, vardform, geografiskIndelning,
-                careGiverHsaIdentity);
+            careGiverHsaIdentity);
     }
 
     private HsaInfoEnhetGeo createGeografiskIndelning(StatisticsHsaUnitDto unit) {
@@ -245,7 +244,7 @@ public class HSAServiceImpl implements HSAService {
         final String municipalityCode = unit.getMunicipalityCode();
         final String countyCode = unit.getCountyCode();
         final HsaInfoEnhetGeo hsaInfoEnhetGeo = new HsaInfoEnhetGeo(coordinate, location, municipalitySectionCode, municipalitySectionName,
-                municipalityCode, countyCode);
+            municipalityCode, countyCode);
         return hsaInfoEnhetGeo.isEmpty() ? null : hsaInfoEnhetGeo;
     }
 

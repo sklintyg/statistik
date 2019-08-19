@@ -25,7 +25,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import se.inera.statistics.hsa.model.HsaIdUser;
 
 /**
@@ -54,7 +53,7 @@ public class RegionEnhetUpdate {
     }
 
     public RegionEnhetUpdate(long regionId, String updatedByName, HsaIdUser updatedByHsaid, Timestamp timestamp, String filename,
-                             RegionEnhetUpdateOperation operation) {
+        RegionEnhetUpdateOperation operation) {
         this.regionId = regionId;
         this.updatedByName = updatedByName;
         setUpdatedByHsaid(updatedByHsaid);

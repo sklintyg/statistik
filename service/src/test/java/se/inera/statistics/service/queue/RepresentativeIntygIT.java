@@ -18,24 +18,7 @@
  */
 package se.inera.statistics.service.queue;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.testsupport.UtlatandeBuilder;
-import se.inera.statistics.service.processlog.LogConsumer;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.testsupport.QueueHelper;
-import se.inera.statistics.testsupport.QueueSender;
-import se.inera.statistics.testsupport.TestData;
-import se.inera.statistics.service.warehouse.IntygType;
+import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,14 +30,31 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-
-import static org.junit.Assert.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.processlog.LogConsumer;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.testsupport.UtlatandeBuilder;
+import se.inera.statistics.service.warehouse.IntygType;
+import se.inera.statistics.testsupport.QueueHelper;
+import se.inera.statistics.testsupport.QueueSender;
+import se.inera.statistics.testsupport.TestData;
 
 // CHECKSTYLE:OFF MagicNumber
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:application-context-test.xml", "classpath:process-log-qm-test.xml", "classpath:icd10.xml" })
+@ContextConfiguration(locations = {"classpath:application-context-test.xml", "classpath:process-log-qm-test.xml", "classpath:icd10.xml"})
 @DirtiesContext
 public class RepresentativeIntygIT {
+
     private static final int PERSON_K1950 = 0;
     private static final int PERSON_K1960 = 1;
     private static final int PERSON_M1979 = 2;
@@ -101,10 +101,13 @@ public class RepresentativeIntygIT {
 
         LOG.info("===========INPUT==========");
         int i = 0;
-        for (TestIntyg intyg : getIntygWithHelsjukAndSingelmanadAndSingelDiagnos(getPerson(PERSON_K1950), getPerson(PERSON_K1960), getPerson(PERSON_M1979))) {
+        for (TestIntyg intyg : getIntygWithHelsjukAndSingelmanadAndSingelDiagnos(getPerson(PERSON_K1950), getPerson(PERSON_K1960),
+            getPerson(PERSON_M1979))) {
             LOG.info("Intyg: " + intyg);
-            queueSender.simpleSend(builder.build(intyg.personNr, intyg.startDate, intyg.endDate, intyg.vardenhet, intyg.vardgivare, intyg.diagnos, intyg.grads).toString(),
-                    "" + i++, IntygType.FK7263.getItIntygType());
+            queueSender.simpleSend(
+                builder.build(intyg.personNr, intyg.startDate, intyg.endDate, intyg.vardenhet, intyg.vardgivare, intyg.diagnos, intyg.grads)
+                    .toString(),
+                "" + i++, IntygType.FK7263.getItIntygType());
         }
 
         try {
@@ -116,7 +119,8 @@ public class RepresentativeIntygIT {
         assertEquals("Verify that all messages have been processed.", 3, consumer.processBatch());
 
         LOG.info("===========RESULT=========");
-        Map<String, TestData> result = queueHelper.printAndGetPersistedData(getVardenhet(ENVE), getVardenhet(TVAVE), new Range(getStart(0), getStop(3)));
+        Map<String, TestData> result = queueHelper
+            .printAndGetPersistedData(getVardenhet(ENVE), getVardenhet(TVAVE), new Range(getStart(0), getStop(3)));
 
         LOG.info("============END===========\n");
 
@@ -138,20 +142,26 @@ public class RepresentativeIntygIT {
         List<String> persons = Arrays.asList(getPerson(PERSON_K1950), getPerson(PERSON_K1960), getPerson(PERSON_M1979));
         List<String> diagnosKods = Arrays.asList(G01, L99, A00, "F99", "R00", "Z00", "M00", "P00", "G02");
         List<LocalDate> start = Arrays.asList(LocalDate.parse("2012-02-05"), LocalDate.parse("2012-03-01"), LocalDate.parse("2012-02-05"),
-                LocalDate.parse("2012-03-01"), LocalDate.parse("2013-02-05"), LocalDate.parse("2013-01-01"), LocalDate.parse("2013-02-05"),
-                LocalDate.parse("2013-01-01"), LocalDate.parse("2013-02-05"));
+            LocalDate.parse("2012-03-01"), LocalDate.parse("2013-02-05"), LocalDate.parse("2013-01-01"), LocalDate.parse("2013-02-05"),
+            LocalDate.parse("2013-01-01"), LocalDate.parse("2013-02-05"));
         List<LocalDate> stop = Arrays.asList(LocalDate.parse("2012-02-06"), LocalDate.parse("2013-03-31"), LocalDate.parse("2012-02-07"),
-                LocalDate.parse("2013-01-29"), LocalDate.parse("2013-02-08"), LocalDate.parse("2013-01-30"), LocalDate.parse("2013-02-09"),
-                LocalDate.parse("2013-01-31"), LocalDate.parse("2013-02-10"));
-        List<HsaIdVardgivare> vardgivares = Arrays.asList(new HsaIdVardgivare("EnVG"), new HsaIdVardgivare("TvaVG"), new HsaIdVardgivare("EnVG"), new HsaIdVardgivare("TvaVG"), new HsaIdVardgivare("EnVG"), new HsaIdVardgivare("TvaVG"), new HsaIdVardgivare("EnVG"), new HsaIdVardgivare("TvaVG"), new HsaIdVardgivare("EnVG"));
-        List<HsaIdEnhet> vardenhet = Arrays.asList(getVardenhet(ENVE), getVardenhet(TVAVE), getVardenhet(ENVE), getVardenhet(TVAVE), getVardenhet(ENVE),
+            LocalDate.parse("2013-01-29"), LocalDate.parse("2013-02-08"), LocalDate.parse("2013-01-30"), LocalDate.parse("2013-02-09"),
+            LocalDate.parse("2013-01-31"), LocalDate.parse("2013-02-10"));
+        List<HsaIdVardgivare> vardgivares = Arrays
+            .asList(new HsaIdVardgivare("EnVG"), new HsaIdVardgivare("TvaVG"), new HsaIdVardgivare("EnVG"), new HsaIdVardgivare("TvaVG"),
+                new HsaIdVardgivare("EnVG"), new HsaIdVardgivare("TvaVG"), new HsaIdVardgivare("EnVG"), new HsaIdVardgivare("TvaVG"),
+                new HsaIdVardgivare("EnVG"));
+        List<HsaIdEnhet> vardenhet = Arrays
+            .asList(getVardenhet(ENVE), getVardenhet(TVAVE), getVardenhet(ENVE), getVardenhet(TVAVE), getVardenhet(ENVE),
                 getVardenhet(TVAVE), getVardenhet(ENVE), getVardenhet(TVAVE), getVardenhet(ENVE));
         List<TestIntyg> intygs = getIntygWithHelsjukAndSingelmanadAndDiagnosList(persons, diagnosKods, start, stop, vardgivares, vardenhet);
         int i = 1000;
         for (TestIntyg intyg : intygs) {
             LOG.info("Intyg: " + intyg);
-            queueSender.simpleSend(builder.build(intyg.personNr, intyg.startDate, intyg.endDate, intyg.vardenhet, intyg.vardgivare, intyg.diagnos, intyg.grads).toString(),
-                    "" + i++, IntygType.FK7263.getItIntygType());
+            queueSender.simpleSend(
+                builder.build(intyg.personNr, intyg.startDate, intyg.endDate, intyg.vardenhet, intyg.vardgivare, intyg.diagnos, intyg.grads)
+                    .toString(),
+                "" + i++, IntygType.FK7263.getItIntygType());
         }
 
         try {
@@ -192,8 +202,9 @@ public class RepresentativeIntygIT {
         return testIntygs;
     }
 
-    private List<TestIntyg> getIntygWithHelsjukAndSingelmanadAndDiagnosList(List<String> personNummers, List<String> diagnosKods, List<LocalDate> starts,
-            List<LocalDate> stops, List<HsaIdVardgivare> vardgivares, List<HsaIdEnhet> vardenhets) {
+    private List<TestIntyg> getIntygWithHelsjukAndSingelmanadAndDiagnosList(List<String> personNummers, List<String> diagnosKods,
+        List<LocalDate> starts,
+        List<LocalDate> stops, List<HsaIdVardgivare> vardgivares, List<HsaIdEnhet> vardenhets) {
         List<TestIntyg> testIntygs = new ArrayList<>();
         for (String person : personNummers) {
             for (int i = 0; i < diagnosKods.size(); i++) {
@@ -220,7 +231,8 @@ public class RepresentativeIntygIT {
     }
 
     private LocalDate getStop(int i) {
-        LocalDate[] dates = {LocalDate.parse("2012-01-22"), LocalDate.parse("2011-02-21"), LocalDate.parse("2011-03-11"), LocalDate.parse("2013-11-17")};
+        LocalDate[] dates = {LocalDate.parse("2012-01-22"), LocalDate.parse("2011-02-21"), LocalDate.parse("2011-03-11"),
+            LocalDate.parse("2013-11-17")};
         return dates[i];
     }
 
@@ -243,6 +255,7 @@ public class RepresentativeIntygIT {
     }
 
     public static class TestIntyg {
+
         private final String personNr;
         private final List<String> grads;
         private final LocalDate startDate;
@@ -251,7 +264,8 @@ public class RepresentativeIntygIT {
         private final HsaIdVardgivare vardgivare;
         private final String diagnos;
 
-        public TestIntyg(String personNr, List<String> grads, LocalDate startDate, LocalDate endDate, HsaIdEnhet vardenhet, HsaIdVardgivare vardgivare, String diagnos) {
+        public TestIntyg(String personNr, List<String> grads, LocalDate startDate, LocalDate endDate, HsaIdEnhet vardenhet,
+            HsaIdVardgivare vardgivare, String diagnos) {
             this.personNr = personNr;
             this.grads = grads;
             this.startDate = startDate;
@@ -263,8 +277,9 @@ public class RepresentativeIntygIT {
 
         @Override
         public String toString() {
-            return "TestIntyg{" + "personNr='" + personNr + '\'' + ", grads=" + grads + ", startDate=" + startDate + ", endDate=" + endDate + ", vardenhet='"
-                    + vardenhet + '\'' + ", vardgivare='" + vardgivare + '\'' + ", diagnos='" + diagnos + '\'' + '}';
+            return "TestIntyg{" + "personNr='" + personNr + '\'' + ", grads=" + grads + ", startDate=" + startDate + ", endDate=" + endDate
+                + ", vardenhet='"
+                + vardenhet + '\'' + ", vardgivare='" + vardgivare + '\'' + ", diagnos='" + diagnos + '\'' + '}';
         }
     }
 

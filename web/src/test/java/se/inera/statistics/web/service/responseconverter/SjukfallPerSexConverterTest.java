@@ -18,12 +18,12 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import static org.junit.Assert.assertEquals;
+
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.Test;
-
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -31,8 +31,6 @@ import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableData;
-
-import static org.junit.Assert.assertEquals;
 
 public class SjukfallPerSexConverterTest {
 
@@ -46,9 +44,11 @@ public class SjukfallPerSexConverterTest {
         dualSexRows.add(new SimpleKonDataRow("län 2", 20, 30));
         dualSexRows.add(new SimpleKonDataRow("län 3", 5, 25));
         SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForSjukfall(), dualSexRows);
-        SimpleDetailsData result = converter.convert(casesPerMonth, Range.createForLastMonthsExcludingCurrent(1, Clock.systemDefaultZone()));
+        SimpleDetailsData result = converter
+            .convert(casesPerMonth, Range.createForLastMonthsExcludingCurrent(1, Clock.systemDefaultZone()));
         TableData tableData = result.getTableData();
-        assertEquals("[[Län;1, Antal sjukfall totalt;1, Andel sjukfall för kvinnor;1, Andel sjukfall för män;1]]", tableData.getHeaders().toString());
+        assertEquals("[[Län;1, Antal sjukfall totalt;1, Andel sjukfall för kvinnor;1, Andel sjukfall för män;1]]",
+            tableData.getHeaders().toString());
         List<NamedData> rows = tableData.getRows();
         assertEquals(4, rows.size());
         assertEquals(SjukfallPerSexConverter.SAMTLIGA_LAN, rows.get(0).getName());

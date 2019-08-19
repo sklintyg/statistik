@@ -19,34 +19,34 @@
 
 angular.module('StatisticsApp').directive('showBusinesses',
     /** @ngInject */
-    function ($uibModal) {
-        'use strict';
+    function($uibModal) {
+      'use strict';
 
-        return {
-            restrict: 'E',
-            scope: {
-                vgName: '=',
-                businesses: '='
-            },
-            templateUrl: '/components/directives/showBusinesses/showBusinesses.html',
-            link: function($scope) {
-                $scope.openModal = function() {
-                    $uibModal.open({
-                        animation: true,
-                        templateUrl: '/components/directives/showBusinesses/modal/modal.html',
-                        controller: 'ShowBusinessesModalCtrl',
-                        size: 'md',
-                        backdrop: 'true',
-                        resolve: {
-                            businesses: function () {
-                                return $scope.businesses;
-                            },
-                            vgName: function () {
-                                return $scope.vgName;
-                            }
-                        }
-                    });
-                };
-            }
-        };
+      return {
+        restrict: 'E',
+        scope: {
+          vgName: '=',
+          businesses: '='
+        },
+        templateUrl: '/components/directives/showBusinesses/showBusinesses.html',
+        link: function($scope) {
+          $scope.openModal = function() {
+            $uibModal.open({
+              animation: true,
+              templateUrl: '/components/directives/showBusinesses/modal/modal.html',
+              controller: 'ShowBusinessesModalCtrl',
+              size: 'md',
+              backdrop: 'true',
+              resolve: {
+                businesses: function() {
+                  return $scope.businesses;
+                },
+                vgName: function() {
+                  return $scope.vgName;
+                }
+              }
+            });
+          };
+        }
+      };
     });

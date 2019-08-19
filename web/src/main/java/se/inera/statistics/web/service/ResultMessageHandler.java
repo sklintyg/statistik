@@ -18,16 +18,14 @@
  */
 package se.inera.statistics.web.service;
 
+import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
-import com.google.common.collect.ImmutableList;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import se.inera.statistics.service.report.util.Icd10;
 
 public class ResultMessageHandler {

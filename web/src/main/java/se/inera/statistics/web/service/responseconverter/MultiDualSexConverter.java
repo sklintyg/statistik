@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
@@ -70,7 +69,7 @@ abstract class MultiDualSexConverter {
     }
 
     DualSexStatisticsData convert(KonDataResponse dataIn, FilterSettings filterSettings, Message message, String seriesNameTemplate,
-                                  Map<String, String> colors) {
+        Map<String, String> colors) {
         TableData tableData = convertTable(dataIn, seriesNameTemplate);
         KonDataResponse data = dataIn.getGroups().isEmpty() ? createEmptyResponse(dataIn.getAvailableFilters()) : dataIn;
         ChartData maleChart = extractChartData(data, Kon.MALE, seriesNameTemplate, colors);
@@ -80,7 +79,7 @@ abstract class MultiDualSexConverter {
         final Range range = filterSettings.getRange();
         final List<Message> combinedMessage = Converters.combineMessages(filterSettings.getMessage(), message);
         return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), dataIn.getAvailableFilters(),
-                filterResponse, combinedMessage);
+            filterResponse, combinedMessage);
     }
 
     private KonDataResponse createEmptyResponse(AvailableFilters availableFilters) {

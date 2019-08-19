@@ -20,58 +20,57 @@
 angular.module('StatisticsApp').service('sortableTableViewState',
 
     function() {
-        'use strict';
+      'use strict';
 
-        var state = {};
+      var state = {};
 
-        function _reset() {
-            state.sortIndex = -1;
+      function _reset() {
+        state.sortIndex = -1;
+        state.sortReverse = true;
+        state.sortedRows = [];
+      }
+
+      function _getSortIndex() {
+        return state.sortIndex;
+      }
+
+      function _getSortReverse() {
+        return state.sortReverse;
+      }
+
+      function _getSortedRows() {
+        return state.sortedRows;
+      }
+
+      function _updateSortIndex(index) {
+        if (state.sortIndex === index) {
+          if (!state.sortReverse) {
             state.sortReverse = true;
-            state.sortedRows = [];
+            state.sortIndex = -1;
+          } else {
+            state.sortReverse = false;
+          }
+        } else {
+          state.sortIndex = index;
+          state.sortReverse = true;
         }
+      }
 
-        function _getSortIndex() {
-            return state.sortIndex;
-        }
+      function _updateSortedRows(rows) {
+        state.sortedRows = rows;
+      }
 
-        function _getSortReverse() {
-            return state.sortReverse;
-        }
+      _reset();
 
-        function _getSortedRows() {
-            return state.sortedRows;
-        }
-
-        function _updateSortIndex(index) {
-            if (state.sortIndex === index) {
-                if (!state.sortReverse) {
-                    state.sortReverse = true;
-                    state.sortIndex = -1;
-                } else {
-                    state.sortReverse = false;
-                }
-            }
-            else {
-                state.sortIndex = index;
-                state.sortReverse = true;
-            }
-        }
-
-        function _updateSortedRows(rows) {
-            state.sortedRows = rows;
-        }
-
-        _reset();
-
-        // Return public API for the service
-        return {
-            reset: _reset,
-            getSortIndex: _getSortIndex,
-            getSortReverse: _getSortReverse,
-            getSortedRows: _getSortedRows,
-            updateSortIndex: _updateSortIndex,
-            updateSortedRows: _updateSortedRows
-        };
+      // Return public API for the service
+      return {
+        reset: _reset,
+        getSortIndex: _getSortIndex,
+        getSortReverse: _getSortReverse,
+        getSortedRows: _getSortedRows,
+        updateSortIndex: _updateSortIndex,
+        updateSortedRows: _updateSortedRows
+      };
 
     }
 );
