@@ -73,7 +73,7 @@ public class BannerJobConfiguration {
     }
 
     @Bean
-    public BannerJob logJob() {
+    public BannerJob bannerJob() {
         return new BannerJob(iaBannerService, logMDCHelper);
     }
 }
