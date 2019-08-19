@@ -18,18 +18,10 @@
  */
 package se.inera.statistics.web.scheduler;
 
-import java.time.Duration;
-import net.javacrumbs.shedlock.core.LockProvider;
-import net.javacrumbs.shedlock.provider.redis.spring.RedisLockProvider;
-import net.javacrumbs.shedlock.spring.ScheduledLockConfiguration;
-import net.javacrumbs.shedlock.spring.ScheduledLockConfigurationBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import se.inera.intyg.infra.integration.ia.services.IABannerService;
 import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
@@ -42,13 +34,6 @@ import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
 @EnableScheduling
 public class BannerJobConfiguration {
 
-    private static final Logger LOG = LoggerFactory.getLogger(BannerJobConfiguration.class);
-    private static final int POOL_SIZE = 5;
-    private static final int LOCK_AT_MOST_MINUTES = 20;
-
-    @Autowired
-    private JedisConnectionFactory jedisConnectionFactory;
-
     @Autowired
     private IABannerService iaBannerService;
 
@@ -56,22 +41,7 @@ public class BannerJobConfiguration {
     private LogMDCHelper logMDCHelper;
 
     @Bean
-    public ScheduledLockConfiguration taskScheduler(final LockProvider lockProvider) {
-        LOG.info("Profile caching-enabled: creating scheduled lock configuration");
-        return ScheduledLockConfigurationBuilder
-            .withLockProvider(lockProvider)
-            .withPoolSize(POOL_SIZE)
-            .withDefaultLockAtMostFor(Duration.ofMinutes(LOCK_AT_MOST_MINUTES))
-            .build();
-    }
-
-    @Bean
-    public LockProvider lockProvider() {
-        return new RedisLockProvider(jedisConnectionFactory, "statistik");
-    }
-
-    @Bean
-    public BannerJob logJob() {
+    public BannerJob bannerJob() {
         return new BannerJob(iaBannerService, logMDCHelper);
     }
 }
