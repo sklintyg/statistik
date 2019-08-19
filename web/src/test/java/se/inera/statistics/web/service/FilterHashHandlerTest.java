@@ -18,6 +18,12 @@
  */
 package se.inera.statistics.web.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.never;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -26,12 +32,6 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import se.inera.statistics.service.user.UserSelection;
 import se.inera.statistics.service.user.UserSelectionManager;
-
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.never;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FilterHashHandlerTest {
@@ -75,7 +75,7 @@ public class FilterHashHandlerTest {
         assertEquals(null, filterFromHash.getToDate());
     }
 
-    @Test (expected = RuntimeException.class)
+    @Test(expected = RuntimeException.class)
     public void testGetFilterFromHashUnparsableData() throws Exception {
         //Given
         Mockito.when(userSelectionManager.find(anyString())).thenReturn(new UserSelection("mykey", "UnparsableData"));
@@ -86,7 +86,7 @@ public class FilterHashHandlerTest {
         //Then Exception is thrown
     }
 
-    @Test (expected = RuntimeException.class)
+    @Test(expected = RuntimeException.class)
     public void testGetFilterFromHashDataNotFound() throws Exception {
         //Given
         Mockito.when(userSelectionManager.find(anyString())).thenReturn(null);

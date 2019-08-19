@@ -18,6 +18,15 @@
  */
 package se.inera.statistics.service.processlog.message;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,16 +38,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import se.inera.statistics.service.helper.SendMessageToCareHelper;
 import se.inera.statistics.service.processlog.Processor;
 import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMessageToCareType;
-
-import java.util.Arrays;
-import java.util.Collections;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MessageLogConsumerImplTest {
@@ -92,7 +91,8 @@ public class MessageLogConsumerImplTest {
         MessageEvent event = new MessageEvent(MessageEventType.SENT, "{}", "correlationId", 1);
         event.setId(1);
         when(processLog.getPending(100, 0, 3)).thenReturn(Collections.singletonList(event));
-        doThrow(new IllegalArgumentException("Invalid meddelande")).when(processor).accept(any(SendMessageToCareType.class), Mockito.anyLong(), anyString(), any(MessageEventType.class));
+        doThrow(new IllegalArgumentException("Invalid meddelande")).when(processor)
+            .accept(any(SendMessageToCareType.class), Mockito.anyLong(), anyString(), any(MessageEventType.class));
 
         // When
         long count = consumer.processBatch(0);

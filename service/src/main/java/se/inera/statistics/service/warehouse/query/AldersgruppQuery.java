@@ -18,13 +18,12 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import com.google.common.collect.Lists;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import com.google.common.collect.Lists;
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
@@ -39,6 +38,7 @@ import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 public final class AldersgruppQuery {
+
     public static final Ranges RANGES = AldersgroupUtil.RANGES;
     public static final Ranges OVERVIEW_RANGES = AldersgroupUtil.OVERVIEW_RANGES;
 
@@ -46,7 +46,7 @@ public final class AldersgruppQuery {
     }
 
     public static List<OverviewChartRowExtended> getOverviewAldersgrupper(Collection<Sjukfall> currentSjukfall,
-            Collection<Sjukfall> previousSjukfall) {
+        Collection<Sjukfall> previousSjukfall) {
         Map<Ranges.Range, Counter<Ranges.Range>> previousCount = count(previousSjukfall, OVERVIEW_RANGES);
         Map<Ranges.Range, Counter<Ranges.Range>> map = count(currentSjukfall, OVERVIEW_RANGES);
         List<OverviewChartRowExtended> result = new ArrayList<>();
@@ -71,7 +71,7 @@ public final class AldersgruppQuery {
     }
 
     public static SimpleKonResponse getAldersgrupper(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
-                                                     int periodLength, SjukfallUtil sjukfallUtil, Ranges ranges) {
+        int periodLength, SjukfallUtil sjukfallUtil, Ranges ranges) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
             Map<Ranges.Range, Counter<Ranges.Range>> counterMap = AldersgruppQuery.count(sjukfallGroup.getSjukfall(), ranges);
@@ -84,7 +84,7 @@ public final class AldersgruppQuery {
     }
 
     public static KonDataResponse getAldersgrupperSomTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,
-            int periodLength, SjukfallUtil sjukfallUtil) {
+        int periodLength, SjukfallUtil sjukfallUtil) {
         final Ranges ranges = RANGES;
         final ArrayList<Ranges.Range> rangesList = Lists.newArrayList(ranges);
         final List<String> names = Lists.transform(rangesList, Ranges.Range::getName);

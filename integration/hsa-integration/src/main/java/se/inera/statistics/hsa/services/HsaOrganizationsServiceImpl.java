@@ -18,6 +18,10 @@
  */
 package se.inera.statistics.hsa.services;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +37,6 @@ import se.inera.statistics.hsa.model.Vardenhet;
 import se.riv.infrastructure.directory.organization.getunitresponder.v1.UnitType;
 import se.riv.infrastructure.directory.v1.CommissionType;
 import se.riv.infrastructure.directory.v1.CredentialInformationType;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Interfaces with the {@link AuthorizationManagementService} in order to fetch Medarbetaruppdrag for the given
@@ -76,7 +75,7 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
             for (CredentialInformationType info : response) {
                 vardenhetList.addAll(getAllVardenhetsWithMuWithStatistikPurpose(info));
                 systemRoles.addAll(
-                        info.getHsaSystemRole().stream().map(sr -> sr.getSystemId() + ";" + sr.getRole()).collect(Collectors.toList()));
+                    info.getHsaSystemRole().stream().map(sr -> sr.getSystemId() + ";" + sr.getRole()).collect(Collectors.toList()));
             }
             vardenhetList = vardenhetList.stream().distinct().sorted(veComparator).collect(Collectors.toList());
         }
@@ -102,7 +101,7 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
         for (CommissionType commissionType : info.getCommission()) {
             if (Medarbetaruppdrag.STATISTIK.equalsIgnoreCase(commissionType.getCommissionPurpose())) {
                 enhets.add(new Vardenhet(new HsaIdEnhet(commissionType.getHealthCareUnitHsaId()), commissionType.getHealthCareUnitName(),
-                        new HsaIdVardgivare(commissionType.getHealthCareProviderHsaId()), commissionType.getHealthCareProviderName()));
+                    new HsaIdVardgivare(commissionType.getHealthCareProviderHsaId()), commissionType.getHealthCareProviderName()));
             }
         }
         return enhets;

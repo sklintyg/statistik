@@ -20,11 +20,11 @@ package se.inera.statistics.service.warehouse;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 
 public class IntygCommonGroup {
+
     private final Range dateRange;
     private final Collection<IntygCommon> intyg;
 

@@ -18,11 +18,10 @@
  */
 package se.inera.statistics.web.error;
 
-import se.inera.statistics.web.Messages;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
+import se.inera.statistics.web.Messages;
 
 /**
  * @author Magnus Ekstrand on 2016-11-09.
@@ -48,7 +47,6 @@ public final class Message implements Serializable {
      * @param type the type of error
      * @param severity the severity of the error
      * @param text the error message, cannot be null or empty string
-     *
      * @return Returns a Message object if all arguments are set, otherwise null
      */
     public static Message create(ErrorType type, ErrorSeverity severity, String text) {
@@ -80,8 +78,8 @@ public final class Message implements Serializable {
     public static List<Message> filterByPrio(List<Message> msgs) {
         final int highestPrio = getHighestPrioInList(msgs);
         return msgs.stream()
-                .filter(message -> message.priority == Messages.ALWAYS_SHOW || message.priority >= highestPrio)
-                .collect(Collectors.toList());
+            .filter(message -> message.priority == Messages.ALWAYS_SHOW || message.priority >= highestPrio)
+            .collect(Collectors.toList());
     }
 
     private static int getHighestPrioInList(List<Message> msgs) {
@@ -95,10 +93,10 @@ public final class Message implements Serializable {
     @Override
     public String toString() {
         return "Message{"
-                + "type=" + type
-                + ", severity=" + severity
-                + ", message='" + message + '\''
-                + "}";
+            + "type=" + type
+            + ", severity=" + severity
+            + ", message='" + message + '\''
+            + "}";
     }
 
 }

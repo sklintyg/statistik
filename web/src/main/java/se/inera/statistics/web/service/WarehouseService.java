@@ -18,19 +18,16 @@
  */
 package se.inera.statistics.web.service;
 
+import com.google.common.collect.Collections2;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.google.common.collect.Collections2;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
-
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Enhet;
@@ -96,17 +93,17 @@ public class WarehouseService {
 
     public VerksamhetOverviewResponse getOverview(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
         final MessagesFilter messagesFilterWithoutRange = new MessagesFilter(vardgivarId, null, null, filter.getEnheter(),
-                filter.getAldersgrupp(), filter.getDiagnoser(), filter.getIntygstyper());
+            filter.getAldersgrupp(), filter.getDiagnoser(), filter.getIntygstyper());
         VerksamhetOverviewResponse overview = overviewQuery.getOverview(warehouse.get(vardgivarId), filter.getPredicate(),
-                range, ReportUtil.getPreviousOverviewPeriod(range), messagesFilterWithoutRange);
+            range, ReportUtil.getPreviousOverviewPeriod(range), messagesFilterWithoutRange);
 
         List<OverviewChartRowExtended> diagnosisGroups = new DiagnosisGroupsConverter().convert(overview.getDiagnosisGroups());
         List<OverviewChartRowExtended> ageGroups = new AldersGroupsConverter().convert(overview.getAgeGroups());
 
         return new VerksamhetOverviewResponse(AvailableFilters.getForSjukfall(), overview.getTotalCases(),
-                overview.getCasesPerMonthSexProportionPreviousPeriod(),
-                diagnosisGroups, ageGroups, overview.getDegreeOfSickLeaveGroups(), overview.getSickLeaveLengthGroups(),
-                overview.getLongSickLeavesTotal(), overview.getLongSickLeavesAlternation(), overview.getKompletteringar());
+            overview.getCasesPerMonthSexProportionPreviousPeriod(),
+            diagnosisGroups, ageGroups, overview.getDegreeOfSickLeaveGroups(), overview.getSickLeaveLengthGroups(),
+            overview.getLongSickLeavesTotal(), overview.getLongSickLeavesAlternation(), overview.getKompletteringar());
     }
 
     public SimpleKonResponse getCasesPerMonth(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
@@ -114,7 +111,7 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse getCasesPerMonthTvarsnitt(FilterPredicates filter, Range range,
-            HsaIdVardgivare vardgivarId) {
+        HsaIdVardgivare vardgivarId) {
         return sjukfallQuery.getSjukfallTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getNumberOfMonths(), false);
     }
 
@@ -133,7 +130,7 @@ public class WarehouseService {
     private IntygCommonFilter getIntygCommonFilter(FilterSettings filterSettings) {
         final Filter filter = filterSettings.getFilter();
         return new IntygCommonFilter(filterSettings.getRange(), filter.getEnheter(),
-                filter.getDiagnoser(), filter.getAldersgrupp(), filter.getIntygstyper());
+            filter.getDiagnoser(), filter.getAldersgrupp(), filter.getIntygstyper());
     }
 
     public SimpleKonResponse getIntygPerTypeTvarsnitt(HsaIdVardgivare vardgivarId, FilterSettings filterSettings) {
@@ -201,7 +198,7 @@ public class WarehouseService {
     }
 
     public KonDataResponse getMessagesPerAmnePerEnhet(Filter filter, Range range, HsaIdVardgivare vardgivarId,
-                                                      Map<HsaIdEnhet, String> idToNameMap) {
+        Map<HsaIdEnhet, String> idToNameMap) {
         return messagesQuery.getMessagesPerAmnePerEnhet(getMeddelandeFilter(vardgivarId, filter, range), idToNameMap);
     }
 
@@ -211,7 +208,7 @@ public class WarehouseService {
 
     private MessagesFilter getMeddelandeFilter(HsaIdVardgivare vardgivarId, Filter filter, Range range) {
         return new MessagesFilter(vardgivarId, range.getFrom(), range.getTo(), filter.getEnheter(),
-                filter.getAldersgrupp(), filter.getDiagnoser(), filter.getIntygstyper());
+            filter.getAldersgrupp(), filter.getDiagnoser(), filter.getIntygstyper());
     }
 
     public KonDataResponse getMessagesPerAmnePerLakareTvarsnitt(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
@@ -219,7 +216,7 @@ public class WarehouseService {
     }
 
     public KonDataResponse getMessagesPerAmnePerEnhetTvarsnitt(Filter filter, Range range, HsaIdVardgivare vardgivarId,
-                                                               Map<HsaIdEnhet, String> idToNameMap) {
+        Map<HsaIdEnhet, String> idToNameMap) {
         return messagesQuery.getMessagesTvarsnittPerAmnePerEnhet(getMeddelandeFilter(vardgivarId, filter, range), idToNameMap);
     }
 
@@ -228,7 +225,7 @@ public class WarehouseService {
         final Range range = filterSettings.getRange();
         return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {
             final Map<HsaIdEnhet, String> idsToNames = entry.getValue().stream()
-                    .collect(Collectors.toMap(Enhet::getEnhetId, Enhet::getNamn));
+                .collect(Collectors.toMap(Enhet::getEnhetId, Enhet::getNamn));
             final MessagesFilter meddelandeFilter = getMeddelandeFilter(entry.getKey(), filterSettings.getFilter(), range);
             final int cutoff = sjukfallQuery.getCutoff();
             return messagesQuery.getMeddelandenPerAmneOchEnhetAggregated(konDataResponse, meddelandeFilter, cutoff, idsToNames);
@@ -240,86 +237,86 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse getDiagnosgrupperTvarsnitt(FilterPredicates filter, Range range,
-            HsaIdVardgivare vardgivarId) {
+        HsaIdVardgivare vardgivarId) {
         return query.getDiagnosgrupperTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getNumberOfMonths());
     }
 
     public KonDataResponse getSjukskrivningsgradPerMonth(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
         return SjukskrivningsgradQuery.getSjukskrivningsgrad(warehouse.get(vardgivarId), filter, range.getFrom(), range.getNumberOfMonths(),
-                1, sjukfallUtil);
+            1, sjukfallUtil);
     }
 
     public SimpleKonResponse getSjukskrivningsgradTvarsnitt(FilterPredicates filter, Range range,
-            HsaIdVardgivare vardgivarId) {
+        HsaIdVardgivare vardgivarId) {
         return SjukskrivningsgradQuery.getSjukskrivningsgradTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1,
-                range.getNumberOfMonths(), sjukfallUtil);
+            range.getNumberOfMonths(), sjukfallUtil);
     }
 
     public SimpleKonResponse getSjukskrivningslangd(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
         return SjukskrivningslangdQuery.getSjuksrivningslangd(warehouse.get(vardgivarId), filter, range.getFrom(), 1,
-                range.getNumberOfMonths(), sjukfallUtil);
+            range.getNumberOfMonths(), sjukfallUtil);
     }
 
     public KonDataResponse getSjukskrivningslangdTidsserie(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
         return SjukskrivningslangdQuery.getSjuksrivningslangdomTidsserie(warehouse.get(vardgivarId), filter, range.getFrom(),
-                range.getNumberOfMonths(), 1, sjukfallUtil);
+            range.getNumberOfMonths(), 1, sjukfallUtil);
     }
 
     public SimpleKonResponse getLangaSjukskrivningarPerManad(FilterPredicates filter, Range range,
-            HsaIdVardgivare vardgivarId) {
+        HsaIdVardgivare vardgivarId) {
         return SjukskrivningslangdQuery.getLangaSjukfall(warehouse.get(vardgivarId), filter, range.getFrom(), range.getNumberOfMonths(), 1,
-                sjukfallUtil);
+            sjukfallUtil);
     }
 
     public SimpleKonResponse getLangaSjukskrivningarTvarsnitt(FilterPredicates filter, Range range,
-            HsaIdVardgivare vardgivarId) {
+        HsaIdVardgivare vardgivarId) {
         return SjukskrivningslangdQuery.getLangaSjukfallTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1,
-                range.getNumberOfMonths(), sjukfallUtil);
+            range.getNumberOfMonths(), sjukfallUtil);
     }
 
     public SimpleKonResponse getAldersgrupper(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
         return AldersgruppQuery.getAldersgrupper(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getNumberOfMonths(),
-                sjukfallUtil, AldersgruppQuery.RANGES);
+            sjukfallUtil, AldersgruppQuery.RANGES);
     }
 
     public KonDataResponse getAldersgrupperSomTidsserie(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
         return AldersgruppQuery.getAldersgrupperSomTidsserie(warehouse.get(vardgivarId), filter, range.getFrom(), range.getNumberOfMonths(),
-                1, sjukfallUtil);
+            1, sjukfallUtil);
     }
 
     public DiagnosgruppResponse getUnderdiagnosgrupper(FilterPredicates filter, Range range, String kapitelId, HsaIdVardgivare vardgivarId)
-            throws RangeNotFoundException {
+        throws RangeNotFoundException {
         return query.getUnderdiagnosgrupper(warehouse.get(vardgivarId), filter, range.getFrom(), range.getNumberOfMonths(), 1, kapitelId);
     }
 
     public SimpleKonResponse getUnderdiagnosgrupperTvarsnitt(FilterPredicates filter, Range range, String kapitelId,
-            HsaIdVardgivare vardgivarId) throws RangeNotFoundException {
+        HsaIdVardgivare vardgivarId) throws RangeNotFoundException {
         return query.getUnderdiagnosgrupperTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getNumberOfMonths(),
-                kapitelId);
+            kapitelId);
     }
 
     public SimpleKonResponse getJamforDiagnoser(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId,
-            List<String> diagnosis) {
+        List<String> diagnosis) {
         return query.getJamforDiagnoser(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getNumberOfMonths(), diagnosis);
     }
 
     public KonDataResponse getJamforDiagnoserTidsserie(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId,
-            List<String> diagnosis) {
+        List<String> diagnosis) {
         return query.getJamforDiagnoserTidsserie(warehouse.get(vardgivarId), filter, range.getFrom(), range.getNumberOfMonths(), 1,
-                diagnosis);
+            diagnosis);
     }
 
     public SimpleKonResponse getCasesPerEnhet(FilterPredicates filter, Map<HsaIdEnhet, String> idsToNames, Range range,
-            HsaIdVardgivare vardgivarId) {
+        HsaIdVardgivare vardgivarId) {
         final SimpleKonResponse sjukfallPerEnhet = sjukfallQuery.getSjukfallPerEnhet(warehouse.get(vardgivarId), filter,
-                range.getFrom(), 1, range.getNumberOfMonths(), idsToNames, CutoffUsage.DO_NOT_APPLY_CUTOFF);
+            range.getFrom(), 1, range.getNumberOfMonths(), idsToNames, CutoffUsage.DO_NOT_APPLY_CUTOFF);
         return SimpleKonResponses.addExtrasToNameDuplicates(sjukfallPerEnhet);
     }
 
     public KonDataResponse getCasesPerEnhetTimeSeries(FilterPredicates filter, Map<HsaIdEnhet, String> idsToNames, Range range,
-            HsaIdVardgivare vardgivarId) {
+        HsaIdVardgivare vardgivarId) {
         return sjukfallQuery.getSjukfallPerEnhetSeries(warehouse.get(vardgivarId), filter, range.getFrom(), range.getNumberOfMonths(), 1,
-                idsToNames);
+            idsToNames);
     }
 
     public SimpleKonResponse getCasesPerLakare(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
@@ -328,51 +325,51 @@ public class WarehouseService {
 
     public KonDataResponse getCasesPerLakareSomTidsserie(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
         return sjukfallQuery.getSjukfallPerLakareSomTidsserie(warehouse.get(vardgivarId), filter, range.getFrom(),
-                range.getNumberOfMonths(), 1);
+            range.getNumberOfMonths(), 1);
     }
 
     public SimpleKonResponse getCasesPerDoctorAgeAndGender(FilterPredicates filter, Range range,
-            HsaIdVardgivare vardgivarId) {
+        HsaIdVardgivare vardgivarId) {
         return new LakaresAlderOchKonQuery(sjukfallUtil).getSjukfallPerLakaresAlderOchKon(warehouse.get(vardgivarId), filter,
-                range.getFrom(), 1, range.getNumberOfMonths());
+            range.getFrom(), 1, range.getNumberOfMonths());
     }
 
     public KonDataResponse getCasesPerDoctorAgeAndGenderTimeSeries(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
         return new LakaresAlderOchKonQuery(sjukfallUtil).getSjukfallPerLakaresAlderOchKonSomTidsserie(warehouse.get(vardgivarId), filter,
-                range.getFrom(), range.getNumberOfMonths(), 1);
+            range.getFrom(), range.getNumberOfMonths(), 1);
     }
 
     public SimpleKonResponse getNumberOfCasesPerLakarbefattning(FilterPredicates filter, Range range,
-            HsaIdVardgivare vardgivarId) {
+        HsaIdVardgivare vardgivarId) {
         return LakarbefattningQuery.getSjukfall(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getNumberOfMonths(),
-                sjukfallUtil);
+            sjukfallUtil);
     }
 
     public KonDataResponse getNumberOfCasesPerLakarbefattningSomTidsserie(FilterPredicates filter, Range range,
-            HsaIdVardgivare vardgivarId) {
+        HsaIdVardgivare vardgivarId) {
         return LakarbefattningQuery.getSjukfallSomTidsserie(warehouse.get(vardgivarId), filter, range.getFrom(), range.getNumberOfMonths(),
-                1, sjukfallUtil);
+            1, sjukfallUtil);
     }
 
     public SimpleKonResponse getIntygPerSjukfallTvarsnitt(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
         return IntygPerSjukfallQuery.getIntygPerSjukfallTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1,
-                range.getNumberOfMonths(), sjukfallUtil);
+            range.getNumberOfMonths(), sjukfallUtil);
     }
 
     public KonDataResponse getIntygPerSjukfallTidsserie(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
         return IntygPerSjukfallQuery.getIntygPerSjukfallTidsserie(warehouse.get(vardgivarId), filter, range.getFrom(),
-                range.getNumberOfMonths(), 1, sjukfallUtil);
+            range.getNumberOfMonths(), 1, sjukfallUtil);
     }
 
     public SimpleKonResponse getCasesPerMonthRegion(final FilterSettings filterSettings) {
         Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
         final Range range = filterSettings.getRange();
         Collection<SimpleKonResponse> results = Collections2.transform(enhetsPerVgid.keySet(),
-                vgid -> {
-                    final Aisle aisle = warehouse.get(vgid);
-                    return sjukfallQuery.getSjukfall(aisle, filterSettings.getFilter().getPredicate(), range.getFrom(),
-                            range.getNumberOfMonths(), 1, true);
-                });
+            vgid -> {
+                final Aisle aisle = warehouse.get(vgid);
+                return sjukfallQuery.getSjukfall(aisle, filterSettings.getFilter().getPredicate(), range.getFrom(),
+                    range.getNumberOfMonths(), 1, true);
+            });
         return SimpleKonResponse.merge(results, true, AvailableFilters.getForSjukfall());
     }
 
@@ -385,19 +382,19 @@ public class WarehouseService {
     }
 
     private SimpleKonResponse getCasesPerEnhetRegion(final FilterSettings filterSettings,
-                                                     final CutoffUsage cutoffUsage) {
+        final CutoffUsage cutoffUsage) {
         Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
         final Range range = filterSettings.getRange();
         Collection<SimpleKonResponse> results = Collections2.transform(enhetsPerVgid.entrySet(),
-                entry -> {
-                    final HashMap<HsaIdEnhet, String> idsToNames = Maps.newHashMapWithExpectedSize(entry.getValue().size());
-                    for (Enhet enhet : entry.getValue()) {
-                        idsToNames.put(enhet.getEnhetId(), enhet.getNamn());
-                    }
-                    final Aisle aisle = warehouse.get(entry.getKey());
-                    return sjukfallQuery.getSjukfallPerEnhet(aisle, filterSettings.getFilter().getPredicate(), range.getFrom(), 1,
-                            range.getNumberOfMonths(), idsToNames, cutoffUsage);
-                });
+            entry -> {
+                final HashMap<HsaIdEnhet, String> idsToNames = Maps.newHashMapWithExpectedSize(entry.getValue().size());
+                for (Enhet enhet : entry.getValue()) {
+                    idsToNames.put(enhet.getEnhetId(), enhet.getNamn());
+                }
+                final Aisle aisle = warehouse.get(entry.getKey());
+                return sjukfallQuery.getSjukfallPerEnhet(aisle, filterSettings.getFilter().getPredicate(), range.getFrom(), 1,
+                    range.getNumberOfMonths(), idsToNames, cutoffUsage);
+            });
         final SimpleKonResponse merged = SimpleKonResponse.merge(results, false, AvailableFilters.getForSjukfall());
         return SimpleKonResponses.addExtrasToNameDuplicates(merged);
     }
@@ -406,11 +403,11 @@ public class WarehouseService {
         Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
         final Range range = filterSettings.getRange();
         Collection<SimpleKonResponse> results = Collections2.transform(enhetsPerVgid.entrySet(),
-                entry -> {
-                    final Aisle aisle = warehouse.get(entry.getKey());
-                    return intygPerSjukfallQuery.getIntygPerSjukfallTvarsnittRegion(aisle, filterSettings.getFilter().getPredicate(),
-                            range.getFrom(), 1, range.getNumberOfMonths(), sjukfallUtil);
-                });
+            entry -> {
+                final Aisle aisle = warehouse.get(entry.getKey());
+                return intygPerSjukfallQuery.getIntygPerSjukfallTvarsnittRegion(aisle, filterSettings.getFilter().getPredicate(),
+                    range.getFrom(), 1, range.getNumberOfMonths(), sjukfallUtil);
+            });
         return SimpleKonResponse.merge(results, true, AvailableFilters.getForSjukfall());
     }
 
@@ -419,7 +416,7 @@ public class WarehouseService {
         final IntygCommonFilter intygCommonFilter = getIntygCommonFilter(filterSettings);
         return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {
             return intygCommonManager.getIntygPerTypeTidsserieAggregated(konDataResponse, entry.getKey(), intygCommonFilter,
-                    sjukfallQuery.getCutoff());
+                sjukfallQuery.getCutoff());
         }, (konDataResponse, konDataResponse2) -> konDataResponse2);
     }
 

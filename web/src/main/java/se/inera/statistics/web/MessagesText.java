@@ -104,7 +104,8 @@ public final class MessagesText {
     public static final String REPORT_ANTAL_KOMPLETTERINGAR_TOTALT = "Antal kompletteringar totalt";
     public static final String REPORT_ANTAL_SJUKFALL_PER_1000 = "Antal sjukfall per 1000 listningar i arbetsför ålder";
 
-    private MessagesText() { }
+    private MessagesText() {
+    }
 
 }
 

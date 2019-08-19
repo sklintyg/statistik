@@ -19,17 +19,6 @@
 package se.inera.testsupport.socialstyrelsenspecial;
 
 import com.google.common.math.Quantiles;
-import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.service.report.util.Icd10RangeType;
-import se.inera.statistics.service.warehouse.Aisle;
-import se.inera.statistics.service.warehouse.FilterPredicates;
-import se.inera.statistics.service.warehouse.Sjukfall;
-import se.inera.statistics.service.warehouse.SjukfallGroup;
-import se.inera.statistics.service.warehouse.SjukfallUtil;
-import se.inera.statistics.service.warehouse.WidelineConverter;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,6 +29,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.report.util.Icd10RangeType;
+import se.inera.statistics.service.warehouse.Aisle;
+import se.inera.statistics.service.warehouse.FilterPredicates;
+import se.inera.statistics.service.warehouse.Sjukfall;
+import se.inera.statistics.service.warehouse.SjukfallGroup;
+import se.inera.statistics.service.warehouse.SjukfallUtil;
+import se.inera.statistics.service.warehouse.WidelineConverter;
 
 public class SosMeCfs2ReportCreator {
 
@@ -77,7 +76,7 @@ public class SosMeCfs2ReportCreator {
 
             final Range range = new Range(fromDate, toDate);
             final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(range.getFrom(), 1,
-                    range.getNumberOfMonths(), aisle, filter);
+                range.getNumberOfMonths(), aisle, filter);
 
             final ArrayList<SosMeCfs2ComputeRow> sosRowsOnVg = new ArrayList<>();
 
@@ -104,7 +103,7 @@ public class SosMeCfs2ReportCreator {
             }
             //Apply cutoff for first part of report
             final Map<SosMeCfs2Tuple, List<SosMeCfs2ComputeRow>> vgRowsGroupedByGenderAndAgegroup = sosRowsOnVg.stream()
-                    .collect(Collectors.groupingBy(p -> new SosMeCfs2Tuple(p.getKon(), p.getAgeGroup())));
+                .collect(Collectors.groupingBy(p -> new SosMeCfs2Tuple(p.getKon(), p.getAgeGroup())));
             for (List<SosMeCfs2ComputeRow> sosMeCfs2ComputeRows : vgRowsGroupedByGenderAndAgegroup.values()) {
                 if (sosMeCfs2ComputeRows.size() >= cutoff) {
                     sosRows.addAll(sosMeCfs2ComputeRows);
@@ -112,7 +111,7 @@ public class SosMeCfs2ReportCreator {
             }
         }
         final Map<SosMeCfs2Tuple, List<SosMeCfs2ComputeRow>> groupedByGenderAndAgegroup = sosRows.stream()
-                .collect(Collectors.groupingBy(p -> new SosMeCfs2Tuple(p.getKon(), p.getAgeGroup())));
+            .collect(Collectors.groupingBy(p -> new SosMeCfs2Tuple(p.getKon(), p.getAgeGroup())));
         final List<SosMeCfs2Row> collect = groupedByGenderAndAgegroup.entrySet().stream().map(sos3TupleListEntry -> {
             final List<SosMeCfs2ComputeRow> rows = sos3TupleListEntry.getValue();
             final List<Integer> lengths = rows.stream().map(SosMeCfs2ComputeRow::getLength).collect(Collectors.toList());
@@ -129,8 +128,8 @@ public class SosMeCfs2ReportCreator {
         final Map<Integer, Long> countedDxs = dxs.stream().collect(Collectors.groupingBy(t -> t, Collectors.counting()));
         final int maxNumberOfDxsToShow = 10;
         final List<Map.Entry<Integer, Long>> mostCombinedDxs = countedDxs.entrySet().stream()
-                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .filter(r -> r.getKey() != g93).limit(maxNumberOfDxsToShow).collect(Collectors.toList());
+            .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+            .filter(r -> r.getKey() != g93).limit(maxNumberOfDxsToShow).collect(Collectors.toList());
         for (int i = 0; i < mostCombinedDxs.size(); i++) {
             final Map.Entry<Integer, Long> combinedDx = mostCombinedDxs.get(i);
             final String dxId = icd10.findIcd10FromNumericId(combinedDx.getKey()).getId();

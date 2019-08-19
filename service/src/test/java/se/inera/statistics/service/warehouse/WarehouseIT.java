@@ -18,6 +18,16 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import static org.junit.Assert.assertTrue;
+
+import java.io.FileNotFoundException;
+import java.lang.management.GarbageCollectorMXBean;
+import java.lang.management.ManagementFactory;
+import java.time.LocalDate;
+import java.util.Collection;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,20 +39,9 @@ import org.springframework.util.StopWatch;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.demo.LargeTestDataGenerator;
 
-import java.io.FileNotFoundException;
-import java.lang.management.GarbageCollectorMXBean;
-import java.lang.management.ManagementFactory;
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
-import static org.junit.Assert.assertTrue;
-
 // CHECKSTYLE:OFF MagicNumber
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:warehouse-integration-test.xml", "classpath:icd10.xml"  })
+@ContextConfiguration(locations = {"classpath:warehouse-integration-test.xml", "classpath:icd10.xml"})
 @DirtiesContext
 public class WarehouseIT {
 
@@ -90,7 +89,8 @@ public class WarehouseIT {
     }
 
     private Collection<Sjukfall> calculateSjukfallsHelper(Aisle aisle) {
-        return sjukfallUtil.sjukfallGrupper(LocalDate.of(2000, 1, 1), 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next().getSjukfall();
+        return sjukfallUtil.sjukfallGrupper(LocalDate.of(2000, 1, 1), 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next()
+            .getSjukfall();
     }
 
     private void measureSjukfall(Aisle aisle) {
@@ -98,7 +98,7 @@ public class WarehouseIT {
         int realDays = 0;
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        for (Sjukfall sjukfall: sjukfalls) {
+        for (Sjukfall sjukfall : sjukfalls) {
             realDays += sjukfall.getRealDays();
         }
         stopWatch.stop();
@@ -107,9 +107,9 @@ public class WarehouseIT {
 
     private void showMem() {
         StringBuilder gc = new StringBuilder();
-        for (GarbageCollectorMXBean bean: ManagementFactory.getGarbageCollectorMXBeans()) {
+        for (GarbageCollectorMXBean bean : ManagementFactory.getGarbageCollectorMXBeans()) {
             gc.append(bean.getCollectionCount())
-            .append(" ").append(bean.getCollectionTime()).append(" ");
+                .append(" ").append(bean.getCollectionTime()).append(" ");
         }
 
         Runtime r = Runtime.getRuntime();

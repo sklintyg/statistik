@@ -18,6 +18,16 @@
  */
 package se.inera.statistics.web.service.endpoints;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import com.google.common.collect.Lists;
 import java.io.ByteArrayOutputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -31,7 +41,6 @@ import javax.activation.DataSource;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.junit.Before;
@@ -43,8 +52,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-
-import com.google.common.collect.Lists;
 import se.inera.auth.model.User;
 import se.inera.auth.model.UserAccessLevel;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
@@ -65,20 +72,11 @@ import se.inera.statistics.web.model.LoginInfoVg;
 import se.inera.statistics.web.model.UserSettingsDTO;
 import se.inera.statistics.web.service.LoginServiceUtil;
 import se.inera.statistics.web.service.WarehouseService;
+import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 import se.inera.statistics.web.service.region.RegionEnhetFileParseException;
 import se.inera.statistics.web.service.region.RegionFileGenerationException;
 import se.inera.statistics.web.service.region.RegionFileReader;
 import se.inera.statistics.web.service.region.RegionFileWriter;
-import se.inera.statistics.web.service.monitoring.MonitoringLogService;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProtectedRegionServiceTest {
@@ -128,7 +126,7 @@ public class ProtectedRegionServiceTest {
         final MultipartBody mb = Mockito.mock(MultipartBody.class);
         final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
         Mockito.when(loginServiceUtil.getLoginInfo())
-                .thenReturn(new LoginInfo(new HsaIdUser(""), "", new ArrayList<>(), new ArrayList<>(), new UserSettingsDTO(), "FAKE"));
+            .thenReturn(new LoginInfo(new HsaIdUser(""), "", new ArrayList<>(), new ArrayList<>(), new UserSettingsDTO(), "FAKE"));
 
         // When
         final Response response = chartDataService.fileupload(req, mb);
@@ -152,7 +150,8 @@ public class ProtectedRegionServiceTest {
         final HsaIdVardgivare vg = new HsaIdVardgivare("TestVg");
         Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vg);
         final LoginInfoVg loginInfoVg = new LoginInfoVg(vg, "", RegionsVardgivareStatus.NO_REGIONSVARDGIVARE, new UserAccessLevel(true, 1));
-        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(new LoginInfo(new HsaIdUser(""), "", new ArrayList<>(), Lists.newArrayList(loginInfoVg), new UserSettingsDTO(), "FAKE"));
+        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(
+            new LoginInfo(new HsaIdUser(""), "", new ArrayList<>(), Lists.newArrayList(loginInfoVg), new UserSettingsDTO(), "FAKE"));
         Mockito.when(regionFileReader.readExcelData(any(DataSource.class))).thenThrow(new RegionEnhetFileParseException(""));
 
         // When
@@ -179,7 +178,8 @@ public class ProtectedRegionServiceTest {
         final HsaIdVardgivare vg = new HsaIdVardgivare("TestVg");
         Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vg);
         final LoginInfoVg loginInfoVg = new LoginInfoVg(vg, "", RegionsVardgivareStatus.NO_REGIONSVARDGIVARE, new UserAccessLevel(true, 1));
-        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(new LoginInfo(new HsaIdUser(""), "", new ArrayList<>(), Lists.newArrayList(loginInfoVg), new UserSettingsDTO(), "FAKE"));
+        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(
+            new LoginInfo(new HsaIdUser(""), "", new ArrayList<>(), Lists.newArrayList(loginInfoVg), new UserSettingsDTO(), "FAKE"));
         final String msg = "This is a test message";
         Mockito.when(regionFileReader.readExcelData(any(DataSource.class))).thenThrow(new RegionEnhetFileParseException(msg));
 
@@ -188,7 +188,7 @@ public class ProtectedRegionServiceTest {
 
         // Then
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus()); // Returns OK even for failures since IE9 will not show the
-                                                                                // html-page when status code is 500
+        // html-page when status code is 500
         assertTrue(((String) response.getEntity()).startsWith("<html>"));
         assertTrue(((String) response.getEntity()).contains(msg));
         Mockito.verify(regionEnhetHandler, times(0)).update(any(RegionEnhetFileData.class));
@@ -210,7 +210,9 @@ public class ProtectedRegionServiceTest {
         final HsaIdVardgivare vg = new HsaIdVardgivare("TestVg");
         Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vg);
         final LoginInfoVg loginInfoVg = new LoginInfoVg(vg, "", RegionsVardgivareStatus.NO_REGIONSVARDGIVARE, new UserAccessLevel(true, 1));
-        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(new LoginInfo(user.getHsaId(), user.getName(), new ArrayList<>(), Lists.newArrayList(loginInfoVg), new UserSettingsDTO(), "FAKE"));
+        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(
+            new LoginInfo(user.getHsaId(), user.getName(), new ArrayList<>(), Lists.newArrayList(loginInfoVg), new UserSettingsDTO(),
+                "FAKE"));
         final ArrayList<RegionEnhetFileDataRow> parseResult = new ArrayList<>();
         Mockito.when(regionFileReader.readExcelData(any(DataSource.class))).thenReturn(parseResult);
 
@@ -280,7 +282,8 @@ public class ProtectedRegionServiceTest {
         final HsaIdVardgivare vgid = new HsaIdVardgivare("VgidTest");
         Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vgid);
 
-        final RegionEnhetUpdate regionEnhetUpdate = new RegionEnhetUpdate(123L, "Test Name", new HsaIdUser("TESTHSAID"), new Timestamp(5L), "TestFile.xls", RegionEnhetUpdateOperation.UPDATE);
+        final RegionEnhetUpdate regionEnhetUpdate = new RegionEnhetUpdate(123L, "Test Name", new HsaIdUser("TESTHSAID"), new Timestamp(5L),
+            "TestFile.xls", RegionEnhetUpdateOperation.UPDATE);
         Mockito.when(regionEnhetHandler.getLastUpdateInfo(vgid)).thenReturn(Optional.of(regionEnhetUpdate));
 
         final ArrayList<RegionEnhet> regionEnhets = new ArrayList<>();

@@ -19,11 +19,10 @@
 package se.inera.statistics.service.warehouse.sjukfallcalc.perpatient;
 
 import com.google.common.collect.ArrayListMultimap;
-import se.inera.statistics.service.warehouse.Fact;
-import se.inera.statistics.service.warehouse.SjukfallExtended;
-
 import java.util.Collection;
 import java.util.List;
+import se.inera.statistics.service.warehouse.Fact;
+import se.inera.statistics.service.warehouse.SjukfallExtended;
 
 public class FactsToSjukfallConverter {
 

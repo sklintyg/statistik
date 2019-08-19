@@ -18,6 +18,13 @@
  */
 package se.inera.statistics.web.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyVararg;
+
+import com.google.common.collect.Lists;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +33,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.servlet.http.HttpServletRequest;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -34,8 +40,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-
-import com.google.common.collect.Lists;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -53,12 +57,6 @@ import se.inera.statistics.web.model.LoginInfoVg;
 import se.inera.statistics.web.model.UserSettingsDTO;
 import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.util.SpyableClock;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyVararg;
 
 public class FilterHandlerTest {
 
@@ -95,7 +93,7 @@ public class FilterHandlerTest {
         final String filterHash = "abc";
         final List<String> sjukskrivningslangd = Arrays.stream(SjukfallsLangdGroup.values()).map(Enum::name).collect(Collectors.toList());
         setupMocks(null, null, request, null, filterHash, null, null, sjukskrivningslangd, true, Lists.newArrayList(), null,
-                Lists.newArrayList());
+            Lists.newArrayList());
 
         // When
         final FilterSettings filter = filterHandler.getFilter(request, filterHash, 1);
@@ -151,10 +149,10 @@ public class FilterHandlerTest {
         final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
         final String filterHash = "abc";
         final List<String> sjukskrivningslangd = Stream
-                .concat(Arrays.stream(SjukfallsLangdGroup.values()).map(Enum::name), Stream.of("EjGiltigLangd"))
-                .collect(Collectors.toList());
+            .concat(Arrays.stream(SjukfallsLangdGroup.values()).map(Enum::name), Stream.of("EjGiltigLangd"))
+            .collect(Collectors.toList());
         setupMocks(null, null, request, null, filterHash, null, null, sjukskrivningslangd, true, Lists.newArrayList(), null,
-                Lists.newArrayList());
+            Lists.newArrayList());
 
         // When
         final FilterSettings filter = filterHandler.getFilter(request, filterHash, 1);
@@ -173,7 +171,7 @@ public class FilterHandlerTest {
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
         String filterHash = "abc";
         setupMocks("2013-09-01", LocalDate.now().plusMonths(2).toString(), request, null, filterHash, null, null, null, false,
-                Lists.newArrayList(), null, Lists.newArrayList());
+            Lists.newArrayList(), null, Lists.newArrayList());
 
         // When
         FilterSettings filter = filterHandler.getFilter(request, filterHash, 1);
@@ -197,7 +195,7 @@ public class FilterHandlerTest {
         final String toDate = LocalDate.now().plusMonths(2).toString();
         final List<String> enheter = Arrays.asList("E1", "E2", "E3");
         final List<Verksamhet> businesses = Arrays.asList(createVerksamhet("E1", vgid), createVerksamhet("E2", vgid),
-                createVerksamhet("E3", vgid));
+            createVerksamhet("E3", vgid));
         final ArrayList<LoginInfoVg> loginInfoVgs = Lists.newArrayList();
 
         setupMocks(fromDate, toDate, request, vgid, filterHash, null, enheter, null, false, businesses, null, loginInfoVgs);
@@ -207,7 +205,7 @@ public class FilterHandlerTest {
 
         // Given
         setupFilterHashHandlerMock("2013-09-01", LocalDate.now().plusMonths(2).toString(), filterHash, null, Arrays.asList("E1", "E3"),
-                null, false, null);
+            null, false, null);
 
         // When
         FilterSettings filter2 = filterHandler.getFilter(request, filterHash, 1);
@@ -231,7 +229,7 @@ public class FilterHandlerTest {
         final List<String> diagnoser = null;
         final List<String> enheter = Arrays.asList("E1", "E2", "E3");
         final List<Verksamhet> businesses = Arrays.asList(createVerksamhet("E1", vgid), createVerksamhet("E2", vgid),
-                createVerksamhet("E3", vgid));
+            createVerksamhet("E3", vgid));
         final ArrayList<LoginInfoVg> loginInfoVgs = Lists.newArrayList();
 
         setupMocks(fromDate, toDate, request, vgid, filterHash, diagnoser, enheter, null, false, businesses, null, loginInfoVgs);
@@ -242,7 +240,7 @@ public class FilterHandlerTest {
         // Then
         final String nowMonth = LocalDate.now().toString().substring(0, 7);
         assertEquals("Det finns ingen statistik innan 2013-10 och ingen efter " + nowMonth + ", visar "
-                + "statistik mellan 2013-10 och " + nowMonth + ".", filter1.getMessage().getMessage());
+            + "statistik mellan 2013-10 och " + nowMonth + ".", filter1.getMessage().getMessage());
     }
 
     @Test
@@ -258,7 +256,7 @@ public class FilterHandlerTest {
         final List<String> diagnoser = null;
         final List<String> enheter = Arrays.asList("E1", "E2", "E3");
         final List<Verksamhet> businesses = Arrays.asList(createVerksamhet("E1", vgid), createVerksamhet("E2", vgid),
-                createVerksamhet("E3", vgid));
+            createVerksamhet("E3", vgid));
         final ArrayList<LoginInfoVg> loginInfoVgs = Lists.newArrayList();
 
         setupMocks(fromDate, toDate, request, vgid, filterHash, diagnoser, enheter, null, false, businesses, null, loginInfoVgs);
@@ -283,7 +281,7 @@ public class FilterHandlerTest {
         final List<String> diagnoser = null;
         final List<String> enheter = Arrays.asList("E1", "E2", "E3");
         final List<Verksamhet> businesses = Arrays.asList(createVerksamhet("E1", vgid), createVerksamhet("E2", vgid),
-                createVerksamhet("E3", vgid));
+            createVerksamhet("E3", vgid));
         final ArrayList<LoginInfoVg> loginInfoVgs = Lists.newArrayList();
 
         setupMocks(fromDate, toDate, request, vgid, filterHash, diagnoser, enheter, null, false, businesses, null, loginInfoVgs);
@@ -296,15 +294,15 @@ public class FilterHandlerTest {
     }
 
     private void setupMocks(String fromDate, String toDate, HttpServletRequest request, HsaIdVardgivare vgid, String filterHash,
-            List<String> diagnoser, List<String> enheter, List<String> sjukskrivningslangd, boolean useDefaultPeriod,
-            List<Verksamhet> businesses, List<String> aldersgrupp, ArrayList<LoginInfoVg> loginInfoVgs) {
+        List<String> diagnoser, List<String> enheter, List<String> sjukskrivningslangd, boolean useDefaultPeriod,
+        List<Verksamhet> businesses, List<String> aldersgrupp, ArrayList<LoginInfoVg> loginInfoVgs) {
         setupFilterHashHandlerMock(fromDate, toDate, filterHash, diagnoser, enheter, sjukskrivningslangd, useDefaultPeriod, aldersgrupp);
         setupLoginServiceMock(request, vgid, businesses, loginInfoVgs);
         setupSjukfallUtilMock(filterHash);
     }
 
     private void setupLoginServiceMock(HttpServletRequest request, HsaIdVardgivare vgid, List<Verksamhet> businesses,
-            ArrayList<LoginInfoVg> loginInfoVgs) {
+        ArrayList<LoginInfoVg> loginInfoVgs) {
         LoginInfo loginInfo = new LoginInfo(new HsaIdUser(""), "", businesses, loginInfoVgs, new UserSettingsDTO(), "FAKE");
         Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(loginInfo);
         Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(request)).thenReturn(vgid);
@@ -312,13 +310,13 @@ public class FilterHandlerTest {
 
     private void setupSjukfallUtilMock(String filterHash) {
         Mockito.when(sjukfallUtil.createEnhetFilter(anyVararg()))
-                .thenReturn(new FilterPredicates(f -> true, s -> true, filterHash, false));
+            .thenReturn(new FilterPredicates(f -> true, s -> true, filterHash, false));
     }
 
     private void setupFilterHashHandlerMock(String fromDate, String toDate, String filterHash, List<String> diagnoser, List<String> enheter,
-            List<String> sjukskrivningslangd, boolean useDefaultPeriod, List<String> aldersgrupp) {
+        List<String> sjukskrivningslangd, boolean useDefaultPeriod, List<String> aldersgrupp) {
         FilterData filterData = new FilterData(diagnoser, enheter, sjukskrivningslangd, aldersgrupp, null, fromDate, toDate,
-                useDefaultPeriod);
+            useDefaultPeriod);
         Mockito.when(filterHashHandler.getFilterFromHash(filterHash)).thenReturn(filterData);
     }
 

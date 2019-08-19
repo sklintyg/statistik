@@ -20,10 +20,8 @@ package se.inera.statistics.service.processlog.intygsent;
 
 import java.util.List;
 import javax.persistence.TypedQuery;
-
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import se.inera.statistics.service.processlog.AbstractProcessLog;
 
 @Component

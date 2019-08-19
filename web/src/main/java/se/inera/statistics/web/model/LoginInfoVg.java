@@ -30,7 +30,7 @@ public class LoginInfoVg {
     private final UserAccessLevel userAccessLevel;
 
     public LoginInfoVg(HsaIdVardgivare hsaId, String name, RegionsVardgivareStatus regionsVardgivareStatus,
-            UserAccessLevel userAccessLevel) {
+        UserAccessLevel userAccessLevel) {
         this.hsaId = hsaId;
         this.name = name;
         this.regionsVardgivareStatus = regionsVardgivareStatus;
@@ -39,7 +39,7 @@ public class LoginInfoVg {
 
     public static LoginInfoVg empty() {
         return new LoginInfoVg(HsaIdVardgivare.empty(), "", RegionsVardgivareStatus.NO_REGIONSVARDGIVARE,
-                new UserAccessLevel(false, 0));
+            new UserAccessLevel(false, 0));
     }
 
     public HsaIdVardgivare getHsaId() {

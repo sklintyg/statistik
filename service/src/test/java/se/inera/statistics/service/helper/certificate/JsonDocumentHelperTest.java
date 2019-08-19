@@ -18,24 +18,20 @@
  */
 package se.inera.statistics.service.helper.certificate;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
 import com.fasterxml.jackson.databind.JsonNode;
+import java.time.LocalDate;
 import org.junit.Test;
 import se.inera.statistics.service.JSONSource;
 import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.helper.Patientdata;
-import se.inera.statistics.service.helper.certificate.JsonDocumentHelper;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.IntygType;
-
-import java.time.LocalDate;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class JsonDocumentHelperTest {
 

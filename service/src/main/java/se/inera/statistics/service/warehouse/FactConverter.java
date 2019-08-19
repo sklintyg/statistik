@@ -18,16 +18,14 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import com.google.common.base.Splitter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.google.common.base.Splitter;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.service.helper.ConversionHelper;
@@ -38,6 +36,7 @@ import se.inera.statistics.service.warehouse.query.LakarbefattningQuery;
 
 @Component
 class FactConverter {
+
     private static final Logger LOG = LoggerFactory.getLogger(FactConverter.class);
 
     @Autowired
@@ -63,15 +62,15 @@ class FactConverter {
         HsaIdLakare lakare = wideline.getLakareId();
 
         return new Fact(wideline.getId(), ConversionHelper.extractLan(lkf), ConversionHelper.extractKommun(lkf),
-                ConversionHelper.extractForsamling(lkf), enhet, intyg, patientid, startdatum, slutdatum, kon, alder,
-                extractKapitel(diagnoskapitel), extractAvsnitt(diagnosavsnitt), extractKategori(diagnoskategori),
-                extractKod(diagnoskod, diagnoskategori), sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattnings,
-                lakare);
+            ConversionHelper.extractForsamling(lkf), enhet, intyg, patientid, startdatum, slutdatum, kon, alder,
+            extractKapitel(diagnoskapitel), extractAvsnitt(diagnosavsnitt), extractKategori(diagnoskategori),
+            extractKod(diagnoskod, diagnoskategori), sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattnings,
+            lakare);
     }
 
     int[] parseBefattning(String lakarbefattningString, String correlationId) {
         if (lakarbefattningString == null || lakarbefattningString.isEmpty()) {
-            return new int[] {LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE};
+            return new int[]{LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE};
         }
         final List<String> befattningStrings = Splitter.on(',').splitToList(lakarbefattningString);
         final int[] befattnings = new int[befattningStrings.size()];
@@ -87,7 +86,7 @@ class FactConverter {
             }
         }
         if (parsedBefattningsAdded == 0) {
-            return new int[] {LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE};
+            return new int[]{LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE};
         }
         return Arrays.copyOfRange(befattnings, 0, parsedBefattningsAdded); //ArrayUtils.toPrimitive(befattnings.toArray(new Integer[0]));
     }
@@ -106,7 +105,7 @@ class FactConverter {
             Icd10.Kategori kategori = icd10.getKategori(diagnoskategori);
             final Optional<Icd10.Kod> unknownKodInKatergori = kategori != null ? kategori.getUnknownKod() : Optional.empty();
             return unknownKodInKatergori.map(Icd10.Kod::toInt)
-                    .orElseGet(() -> Icd10.icd10ToInt(Icd10.OTHER_KOD, Icd10RangeType.KOD));
+                .orElseGet(() -> Icd10.icd10ToInt(Icd10.OTHER_KOD, Icd10RangeType.KOD));
         }
         return kod.toInt();
     }

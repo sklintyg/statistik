@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import com.google.common.collect.Maps;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
@@ -27,8 +28,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import com.google.common.collect.Maps;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.region.persistance.regionenhet.RegionEnhet;
 import se.inera.statistics.service.report.model.Range;
@@ -78,7 +77,7 @@ public class SjukfallPerPatientsPerEnhetConverter {
         final Range range = filterSettings.getRange();
         final List<Message> combinedMessage = Converters.combineMessages(filterSettings.getMessage(), message);
         return new SimpleDetailsData(tableData, chartData, range.toString(), casesPerMonth.getAvailableFilters(),
-                filterResponse, combinedMessage);
+            filterResponse, combinedMessage);
     }
 
     private TableData convertToTableData(List<SimpleKonDataRow> list) {
@@ -99,14 +98,14 @@ public class SjukfallPerPatientsPerEnhetConverter {
                 final float thousand = 1000F;
                 final float sjukfallPerThousandListadePatienter = antalSjukfall / (listadePatienter / thousand);
                 final String sjukfallPerThousandListadePatienterRounded = roundToTwoDecimalsAndFormatToString(
-                        sjukfallPerThousandListadePatienter);
+                    sjukfallPerThousandListadePatienter);
                 data.add(new NamedData(row.getName(),
-                        Arrays.asList(antalSjukfall, listadePatienter, sjukfallPerThousandListadePatienterRounded), isMarked(row)));
+                    Arrays.asList(antalSjukfall, listadePatienter, sjukfallPerThousandListadePatienterRounded), isMarked(row)));
             }
         }
         return TableData.createWithSingleHeadersRow(data,
-                Arrays.asList(MessagesText.REPORT_VARDENHET, MessagesText.REPORT_ANTAL_SJUKFALL,
-                        MessagesText.REPORT_ANTAL_LISTNINGAR, MessagesText.REPORT_ANTAL_SJUKFALL_PER_1000_LISTNINGAR));
+            Arrays.asList(MessagesText.REPORT_VARDENHET, MessagesText.REPORT_ANTAL_SJUKFALL,
+                MessagesText.REPORT_ANTAL_LISTNINGAR, MessagesText.REPORT_ANTAL_SJUKFALL_PER_1000_LISTNINGAR));
     }
 
     static String roundToTwoDecimalsAndFormatToString(float number) {

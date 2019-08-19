@@ -30,7 +30,7 @@ public class OverviewChartRow {
     }
 
     public OverviewChartRow(String name, long quantity) {
-        this(name,  (int) quantity);
+        this(name, (int) quantity);
     }
 
     public String getName() {

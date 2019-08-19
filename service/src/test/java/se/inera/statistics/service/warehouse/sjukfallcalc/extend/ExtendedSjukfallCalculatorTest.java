@@ -18,14 +18,14 @@
  */
 package se.inera.statistics.service.warehouse.sjukfallcalc.extend;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+
+import java.util.ArrayList;
 import org.junit.Test;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.FactBuilder;
 import se.inera.statistics.service.warehouse.SjukfallExtended;
-
-import java.util.ArrayList;
-
-import static org.junit.Assert.*;
 
 public class ExtendedSjukfallCalculatorTest {
 
@@ -153,7 +153,7 @@ public class ExtendedSjukfallCalculatorTest {
     }
 
     private Fact createFact(int startdatum, int slutdatum, int patient) {
-        return FactBuilder.newFact(1L, 1,1,1,1,1, patient, startdatum, slutdatum,1,1,1,1,1,1,1,1,1, new int[0],1);
+        return FactBuilder.newFact(1L, 1, 1, 1, 1, 1, patient, startdatum, slutdatum, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
     }
 
 }

@@ -2,8 +2,8 @@
   'use strict';
 
   angular
-    .module('StatisticsApp')
-    .factory('ObjectHelper', objectHelper);
+  .module('StatisticsApp')
+  .factory('ObjectHelper', objectHelper);
 
   /** @ngInject */
   function objectHelper() {

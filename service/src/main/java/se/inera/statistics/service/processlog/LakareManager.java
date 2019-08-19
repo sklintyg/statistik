@@ -18,21 +18,17 @@
  */
 package se.inera.statistics.service.processlog;
 
+import com.google.common.collect.Collections2;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.google.common.collect.Collections2;
-
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.HSAServiceHelper;
@@ -41,6 +37,7 @@ import se.inera.statistics.service.warehouse.WidelineConverter;
 
 @Component
 public class LakareManager {
+
     private static final Logger LOG = LoggerFactory.getLogger(LakareManager.class);
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
@@ -97,7 +94,7 @@ public class LakareManager {
     @Transactional
     public List<Lakare> getLakares(HsaIdVardgivare vardgivare) {
         TypedQuery<Lakare> query = manager.createQuery("SELECT l FROM Lakare l WHERE l.vardgivareId = :vardgivareId", Lakare.class)
-                .setParameter("vardgivareId", vardgivare.getId());
+            .setParameter("vardgivareId", vardgivare.getId());
         return query.getResultList();
     }
 

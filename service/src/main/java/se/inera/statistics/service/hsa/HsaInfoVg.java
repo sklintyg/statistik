@@ -20,16 +20,20 @@ package se.inera.statistics.service.hsa;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
-
 import java.time.LocalDateTime;
 
 public class HsaInfoVg {
 
-    @JsonProperty("id") private String id;
-    @JsonProperty("orgnr") private String orgnr;
-    @JsonProperty("startdatum") private LocalDateTime startdatum;
-    @JsonProperty("slutdatum") private LocalDateTime slutdatum;
-    @JsonProperty("arkiverad") private Boolean arkiverad;
+    @JsonProperty("id")
+    private String id;
+    @JsonProperty("orgnr")
+    private String orgnr;
+    @JsonProperty("startdatum")
+    private LocalDateTime startdatum;
+    @JsonProperty("slutdatum")
+    private LocalDateTime slutdatum;
+    @JsonProperty("arkiverad")
+    private Boolean arkiverad;
 
     //Default constructor required by json mapper
     private HsaInfoVg() {
@@ -66,12 +70,12 @@ public class HsaInfoVg {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("orgnr", orgnr)
-                .add("startdatum", startdatum)
-                .add("slutdatum", slutdatum)
-                .add("arkiverad", arkiverad)
-                .toString();
+            .add("id", id)
+            .add("orgnr", orgnr)
+            .add("startdatum", startdatum)
+            .add("slutdatum", slutdatum)
+            .add("arkiverad", arkiverad)
+            .toString();
     }
 
 }

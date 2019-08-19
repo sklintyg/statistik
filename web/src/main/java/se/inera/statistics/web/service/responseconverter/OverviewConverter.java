@@ -18,6 +18,11 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewResponse;
@@ -29,29 +34,23 @@ import se.inera.statistics.web.model.overview.OverviewData;
 import se.inera.statistics.web.model.overview.SickLeaveLengthOverview;
 import se.inera.statistics.web.model.overview.SjukfallPerManadOverview;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
 public class OverviewConverter {
 
     public OverviewData convert(OverviewResponse resp, Range range) {
         final Range previousPeriod = ReportUtil.getPreviousOverviewPeriod(range);
         SjukfallPerManadOverview casesPerMonth = new SjukfallPerManadOverview(
-                resp.getCasesPerMonthSexProportion().getMaleProportion(), resp.getCasesPerMonthSexProportion().getFemaleProportion(),
-                resp.getCasesPerMonthAlteration(), previousPeriod.toString());
+            resp.getCasesPerMonthSexProportion().getMaleProportion(), resp.getCasesPerMonthSexProportion().getFemaleProportion(),
+            resp.getCasesPerMonthAlteration(), previousPeriod.toString());
 
         List<DonutChartData> diagnosisGroups = new DiagnosisGroupsConverter().convert(resp.getDiagnosisGroups()).stream()
-                .map(mapOverviewRowData()).collect(Collectors.toList());
+            .map(mapOverviewRowData()).collect(Collectors.toList());
 
         List<DonutChartData> ageGroups = new AldersGroupsConverter().convert(resp.getAgeGroups()).stream().map(mapOverviewRowData())
-                .collect(Collectors.toList());
+            .collect(Collectors.toList());
 
         List<DonutChartData> degreeOfSickLeaveGroups = resp.getDegreeOfSickLeaveGroups().stream()
-                .sorted((o1, o2) -> getNameAsNumber(o2) - getNameAsNumber(o1))
-                .map(mapOverviewRowData()).collect(Collectors.toList());
+            .sorted((o1, o2) -> getNameAsNumber(o2) - getNameAsNumber(o1))
+            .map(mapOverviewRowData()).collect(Collectors.toList());
 
         List<DonutChartData> perCounty = resp.getPerCounty().stream().map(mapRowDataMilli()).sorted(comp()).collect(Collectors.toList());
 
@@ -60,10 +59,10 @@ public class OverviewConverter {
             sickLeaveLengthData.add(new BarChartData(row.getName(), row.getQuantity()));
         }
         SickLeaveLengthOverview sickLeaveLength = new SickLeaveLengthOverview(sickLeaveLengthData, resp.getLongSickLeavesTotal(),
-                resp.getLongSickLeavesAlternation());
+            resp.getLongSickLeavesAlternation());
 
         return new OverviewData(range.toString(), casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLength,
-                perCounty);
+            perCounty);
     }
 
     static int getNameAsNumber(OverviewChartRowExtended row) {

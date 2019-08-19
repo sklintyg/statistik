@@ -27,34 +27,34 @@ var navmenu = pages.navmenu;
 
 describe('Nationell basic: ', function() {
 
-    beforeAll(function() {
-        browser.get('/');
+  beforeAll(function() {
+    browser.get('/');
+  });
+
+  describe('Visar rätt rapport', function() {
+    it('Overview', function() {
+      navmenu.navOverviewLink.click();
     });
 
-    describe('Visar rätt rapport', function() {
-        it('Overview', function() {
-            navmenu.navOverviewLink.click();
-        });
+    validateDetailReport('navCasesPerMonthLink', 1, 3, 19);
+    validateDetailReport('navDiagnosisGroupsLink', 2, 7, 20);
+    validateDetailReport('navDiagnosisSubGroupsLink', 2, 2, 20);
+    validateDetailReport('navAgeGroupsLink', 1, 3, 13);
+    validateDetailReport('navSickLeaveDegreeLink', 2, 4, 20);
+    validateDetailReport('navSickLeaveLengthLink', 1, 3, 9);
+    validateDetailReport('navCountyLink', 1, 3, 24);
+    validateDetailReport('navCasesPerSexLink', 1, 2, 24);
+    validateDetailReport('navIntygPerSjukfallLink', 1, 3, 12);
+  });
 
-        validateDetailReport('navCasesPerMonthLink', 1, 3, 19);
-        validateDetailReport('navDiagnosisGroupsLink', 2, 7, 20);
-        validateDetailReport('navDiagnosisSubGroupsLink', 2, 2, 20);
-        validateDetailReport('navAgeGroupsLink', 1, 3, 13);
-        validateDetailReport('navSickLeaveDegreeLink', 2, 4, 20);
-        validateDetailReport('navSickLeaveLengthLink', 1, 3, 9);
-        validateDetailReport('navCountyLink', 1, 3, 24);
-        validateDetailReport('navCasesPerSexLink', 1, 2, 24);
-        validateDetailReport('navIntygPerSjukfallLink', 1, 3, 12);
+  function validateDetailReport(menuId, expectedNumberOfCharts, expectedNumberOfLegends, expectedRowsInTable) {
+    it('Sida: ' + menuId, function() {
+      navmenu.clickOnMenu(menuId);
+      pages.report.isAtPage();
+
+      expect(pages.report.getNumberOfCharts()).toBe(expectedNumberOfCharts, 'Number of charts failed: ' + menuId);
+      expect(pages.report.getChartLegendLabels().count()).toBe(expectedNumberOfLegends, 'Number of legends failed: ' + menuId);
+      expect(pages.report.getTableRows().count()).toBe(expectedRowsInTable, 'Number of table rows failed: ' + menuId);
     });
-
-    function validateDetailReport(menuId, expectedNumberOfCharts, expectedNumberOfLegends, expectedRowsInTable) {
-        it('Sida: '+ menuId, function() {
-            navmenu.clickOnMenu(menuId);
-            pages.report.isAtPage();
-
-            expect(pages.report.getNumberOfCharts()).toBe(expectedNumberOfCharts, 'Number of charts failed: ' + menuId);
-            expect(pages.report.getChartLegendLabels().count()).toBe(expectedNumberOfLegends, 'Number of legends failed: ' + menuId);
-            expect(pages.report.getTableRows().count()).toBe(expectedRowsInTable, 'Number of table rows failed: ' + menuId);
-        });
-    }
+  }
 });

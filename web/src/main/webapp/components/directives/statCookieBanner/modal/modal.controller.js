@@ -19,17 +19,17 @@
 
 angular.module('StatisticsApp').controller('StatCookieBannerModalCtrl',
     function($scope, $uibModalInstance, $localStorage) {
-        'use strict';
+      'use strict';
 
-        $scope.cancel = function() {
-            $uibModalInstance.dismiss();
-        };
+      $scope.cancel = function() {
+        $uibModalInstance.dismiss();
+      };
 
-        $scope.onCookieConsentClick = function() {
-            $localStorage.cookieBannerShown = true;
-            $scope.$parent.isOpen = false;
-            $uibModalInstance.dismiss();
-        };
+      $scope.onCookieConsentClick = function() {
+        $localStorage.cookieBannerShown = true;
+        $scope.$parent.isOpen = false;
+        $uibModalInstance.dismiss();
+      };
 
     }
 );

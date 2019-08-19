@@ -37,12 +37,10 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-
 import se.inera.statistics.service.report.model.Icd;
 
 public class Icd10 {
@@ -63,9 +61,9 @@ public class Icd10 {
     public static final String OTHER_KOD = "Ö000";
     private static final int INTID_OTHER_KATEGORI = Icd10.icd10ToInt(Icd10.OTHER_KATEGORI, Icd10RangeType.KATEGORI);
     private static final List<Integer> INTERNAL_ICD10_INTIDS = Arrays.asList(icd10ToInt(OTHER_KAPITEL, Icd10RangeType.KAPITEL),
-            icd10ToInt(OTHER_AVSNITT, Icd10RangeType.AVSNITT),
-            INTID_OTHER_KATEGORI,
-            icd10ToInt(OTHER_KOD, Icd10RangeType.KOD));
+        icd10ToInt(OTHER_AVSNITT, Icd10RangeType.AVSNITT),
+        INTID_OTHER_KATEGORI,
+        icd10ToInt(OTHER_KOD, Icd10RangeType.KOD));
     public static final String UNKNOWN_CODE_NAME = "Utan giltig ICD-10 kod";
 
     @Autowired
@@ -136,9 +134,9 @@ public class Icd10 {
             kapitels = new ArrayList<>(idToKapitelMap.values());
             kapitels.sort(Comparator.comparing(Kapitel::getId));
             intIdMap = Stream
-                    .of(idToKategoriMap.values(), idToAvsnittMap.values(), idToKapitelMap.values(), idToKodMap.values(), internalIcd10)
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toMap(Id::toInt, java.util.function.Function.identity()));
+                .of(idToKategoriMap.values(), idToAvsnittMap.values(), idToKapitelMap.values(), idToKodMap.values(), internalIcd10)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toMap(Id::toInt, java.util.function.Function.identity()));
         } catch (IOException e) {
             LOG.error("Could not parse ICD10: " + e);
             throw new RuntimeException(e);
@@ -146,7 +144,7 @@ public class Icd10 {
     }
 
     private <T extends Id> void populateIdMap(Resource file, IdMap<T> idMapToPopulate, Function<String, T> parseToRangeFunction)
-            throws IOException {
+        throws IOException {
         try (LineReader lr = new LineReader(file)) {
             String line;
             while ((line = lr.next()) != null) {
@@ -176,8 +174,8 @@ public class Icd10 {
         final ArrayList<Kapitel> allKapitels = new ArrayList<>(kapitels);
         if (includeInternalKapitel) {
             final List<Kapitel> kapitels = internalIcd10.stream()
-                    .filter(id -> id instanceof Kapitel)
-                    .map(id -> (Kapitel) id).collect(Collectors.toList());
+                .filter(id -> id instanceof Kapitel)
+                .map(id -> (Kapitel) id).collect(Collectors.toList());
             allKapitels.addAll(kapitels);
         }
         return allKapitels;
@@ -201,7 +199,7 @@ public class Icd10 {
         List<Icd10.Kapitel> kapitel = getKapitel(false);
         final List<Icd> icds = kapitel.stream().map(id -> new Icd(id, Kod.class)).collect(Collectors.toList());
         final String info = "Innehåller sjukfall som inte har någon diagnoskod angiven eller där den "
-                + "angivna diagnoskoden inte finns i klassificeringssystemet för diagnoser, ICD-10-SE";
+            + "angivna diagnoskoden inte finns i klassificeringssystemet för diagnoser, ICD-10-SE";
         icds.add(new Icd("", "Utan giltig ICD-10 kod", INTID_OTHER_KATEGORI, info));
         return icds;
     }
@@ -246,18 +244,18 @@ public class Icd10 {
 
     public static List<Integer> getKapitelIntIds(String... icdIds) {
         return Arrays.stream(icdIds)
-                .map(icdId -> icd10ToInt(icdId, Icd10RangeType.KAPITEL))
-                .collect(Collectors.toList());
+            .map(icdId -> icd10ToInt(icdId, Icd10RangeType.KAPITEL))
+            .collect(Collectors.toList());
     }
 
     public Id findFromIcd10Code(String icd10) {
         final String normalized = icd10.toUpperCase(Locale.ENGLISH).replaceAll("[^A-Z0-9-]", "");
         return Stream
-                .of(idToKategoriMap, idToAvsnittMap, idToKapitelMap, idToKodMap, idToInternalMap)
-                .filter(idMap -> idMap.containsKey(normalized))
-                .findAny()
-                .map((java.util.function.Function<IdMap<? extends Id>, Id>) idMap -> idMap.get(normalized))
-                .orElseThrow((Supplier<RuntimeException>) () -> new Icd10NotFoundException("ICD10 with id could not be found: " + icd10));
+            .of(idToKategoriMap, idToAvsnittMap, idToKapitelMap, idToKodMap, idToInternalMap)
+            .filter(idMap -> idMap.containsKey(normalized))
+            .findAny()
+            .map((java.util.function.Function<IdMap<? extends Id>, Id>) idMap -> idMap.get(normalized))
+            .orElseThrow((Supplier<RuntimeException>) () -> new Icd10NotFoundException("ICD10 with id could not be found: " + icd10));
     }
 
     private static <T extends Range> T find(String id, Collection<T> ranges) {
@@ -270,6 +268,7 @@ public class Icd10 {
     }
 
     public static class IdMap<T extends Id> extends HashMap<String, T> {
+
         public void put(T id) {
             if (id != null) {
                 put(id.getId(), id);
@@ -278,6 +277,7 @@ public class Icd10 {
     }
 
     public abstract static class Id {
+
         private final String id;
         private final String name;
         private final String info;
@@ -337,6 +337,7 @@ public class Icd10 {
     }
 
     public abstract static class RangeType extends Range {
+
         private final String firstId;
         private final String lastId;
 
@@ -517,8 +518,8 @@ public class Icd10 {
 
         private Kod(String id, String name, Kategori kategori, boolean unknownKod) {
             super(id.toUpperCase(), name, unknownKod ? "Innehåller sjukfall med "
-                    + "diagnosen " + id.toUpperCase() + " där läkaren inte angett "
-                    + "en mer detaljerad diagnoskod" : null);
+                + "diagnosen " + id.toUpperCase() + " där läkaren inte angett "
+                + "en mer detaljerad diagnoskod" : null);
             this.kategori = kategori;
             this.unknown = unknownKod;
             kategori.kods.add(this);
@@ -586,6 +587,7 @@ public class Icd10 {
     }
 
     private static class LineReader implements Closeable {
+
         private final BufferedReader reader;
 
         LineReader(Resource resource) throws IOException {

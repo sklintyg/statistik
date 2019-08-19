@@ -17,39 +17,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 angular.module('StatisticsApp').factory('StaticDataService',
     /** @ngInject */
     function($http, $log, $q, StaticData, statisticsData) {
-        'use strict';
+      'use strict';
 
-        var promise = null;
+      var promise = null;
 
-        function _get() {
-            if (promise === null) {
-                promise = $q.defer();
+      function _get() {
+        if (promise === null) {
+          promise = $q.defer();
 
-                var successCallback = function(data) {
-                    StaticData.set(data);
-                    promise.resolve(data);
-                };
-                var failureCallback = function(data, status) {
-                    $log.error('error ' + status);
-                    // Let calling code handle the error of no data response
-                    if (data === null) {
-                        promise.reject({errorCode: data, message: 'no response'});
-                    } else {
-                        promise.reject(data);
-                    }
-                };
-                statisticsData.getStaticData(successCallback, failureCallback);
+          var successCallback = function(data) {
+            StaticData.set(data);
+            promise.resolve(data);
+          };
+          var failureCallback = function(data, status) {
+            $log.error('error ' + status);
+            // Let calling code handle the error of no data response
+            if (data === null) {
+              promise.reject({errorCode: data, message: 'no response'});
+            } else {
+              promise.reject(data);
             }
-
-            return promise.promise;
+          };
+          statisticsData.getStaticData(successCallback, failureCallback);
         }
 
-        return {
-            get: _get
-        };
+        return promise.promise;
+      }
+
+      return {
+        get: _get
+      };
     }
 );

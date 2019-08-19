@@ -18,26 +18,26 @@
  */
 
 angular.module('StatisticsApp')
-    .directive('filterMultiSelect', [function() {
-        'use strict';
-        return {
-            scope: {
-                label: '@',
-                isDisabled: '<',
-                icon: '@',
-                styleClass: '@',
-                model: '=',
-                options: '<'
-            },
-            restrict: 'E',
-            templateUrl: '/components/directives/filterMultiSelect/filterMultiSelect.html',
-            controllerAs: 'vm',
-            bindToController: true,
-            controller: function() {
-                var vm = this;
-                vm.data = {
-                    model: vm.model
-                };
-            }
-        };
-    }]);
+.directive('filterMultiSelect', [function() {
+  'use strict';
+  return {
+    scope: {
+      label: '@',
+      isDisabled: '<',
+      icon: '@',
+      styleClass: '@',
+      model: '=',
+      options: '<'
+    },
+    restrict: 'E',
+    templateUrl: '/components/directives/filterMultiSelect/filterMultiSelect.html',
+    controllerAs: 'vm',
+    bindToController: true,
+    controller: function() {
+      var vm = this;
+      vm.data = {
+        model: vm.model
+      };
+    }
+  };
+}]);

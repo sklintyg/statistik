@@ -18,9 +18,8 @@
  */
 package se.inera.testsupport.socialstyrelsenspecial;
 
-import se.inera.statistics.service.report.model.Lan;
-
 import java.util.Map;
+import se.inera.statistics.service.report.model.Lan;
 
 public class SosCalculatedRow {
 

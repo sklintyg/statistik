@@ -23,13 +23,12 @@ import java.time.MonthDay;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import se.inera.statistics.service.report.model.Kon;
 
 public final class ConversionHelper {
+
     private static final Logger LOG = LoggerFactory.getLogger(ConversionHelper.class);
 
     private static final int UNKNOWN = 0;
@@ -76,7 +75,7 @@ public final class ConversionHelper {
             return safePersonId;
         } else if (safePersonId.matches("[0-9]{12}")) {
             return safePersonId.substring(0, DATE_PART_OF_PERSON_ID) + "-"
-                    + safePersonId.substring(DATE_PART_OF_PERSON_ID);
+                + safePersonId.substring(DATE_PART_OF_PERSON_ID);
         } else {
             throw new PersonIdParseException("Failed to parse person id");
         }
@@ -110,7 +109,7 @@ public final class ConversionHelper {
 
             if (day > SAMORDNINGSNUMMER_DAY_CONSTANT) {
                 dateString = dateString.substring(0, MONTH_PART_OF_DATE_PART)
-                        + MONTHDAY_FORMATTER.format(MonthDay.of(month, day - SAMORDNINGSNUMMER_DAY_CONSTANT));
+                    + MONTHDAY_FORMATTER.format(MonthDay.of(month, day - SAMORDNINGSNUMMER_DAY_CONSTANT));
             }
             birthDate = LocalDate.from(DateTimeFormatter.BASIC_ISO_DATE.parse(dateString));
             LocalDate referenceDate = LocalDate.from(start);
@@ -119,7 +118,7 @@ public final class ConversionHelper {
         } catch (NumberFormatException | DateTimeParseException e) {
             LOG.debug("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help", e);
             throw new IllegalArgumentException(
-                    "Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: " + personId);
+                "Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: " + personId);
         }
         return age;
     }

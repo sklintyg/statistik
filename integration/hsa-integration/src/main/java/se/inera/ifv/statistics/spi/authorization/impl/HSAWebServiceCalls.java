@@ -18,6 +18,8 @@
  */
 package se.inera.ifv.statistics.spi.authorization.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,9 +50,6 @@ import se.inera.statistics.hsa.model.GetStatisticsPersonResponseDto;
 import se.inera.statistics.hsa.model.StatisticsHsaUnitDto;
 import se.inera.statistics.hsa.model.StatisticsNameInfoDto;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 /**
  * This class interfaces with the "old" Web Service-based HSA, e.g. NOT over NTjP. It is subject to be replaced by
  * NTjP-based HSA integration (INTYG-2226).
@@ -68,8 +67,7 @@ public class HSAWebServiceCalls {
     private AttributedURIType messageId = new AttributedURIType();
 
     /**
-     * @param hsaLogicalAddress
-     *            the hsaLogicalAddress to set
+     * @param hsaLogicalAddress the hsaLogicalAddress to set
      */
     public void setHsaLogicalAddress(String hsaLogicalAddress) {
         logicalAddressHeader.setValue(hsaLogicalAddress);
@@ -99,7 +97,7 @@ public class HSAWebServiceCalls {
         } catch (HsaWsFault hsaWsFault) {
             HsaWsFaultType faultInfo = hsaWsFault.getFaultInfo();
             LOG.error("Could not call getStatisticsCareGiver for {} hsaWsFault ({}, {}). {}", careGiverId, faultInfo.getCode(),
-                    faultInfo.getMessage(), hsaWsFault.getMessage());
+                faultInfo.getMessage(), hsaWsFault.getMessage());
             LOG.debug("getStatisticsCareGiver fault", hsaWsFault);
             return null;
         } catch (Exception ex) {
@@ -130,7 +128,7 @@ public class HSAWebServiceCalls {
         } catch (HsaWsFault hsaWsFault) {
             HsaWsFaultType faultInfo = hsaWsFault.getFaultInfo();
             LOG.error("Could not call getStatisticsHsaUnit for {} hsaWsFault ({}, {}). {}", unitId, faultInfo.getCode(),
-                    faultInfo.getMessage(), hsaWsFault.getMessage());
+                faultInfo.getMessage(), hsaWsFault.getMessage());
             LOG.debug("getStatisticsHsaUnit fault", hsaWsFault);
             return null;
         } catch (Exception ex) {
@@ -156,7 +154,7 @@ public class HSAWebServiceCalls {
         statisticsHsaUnitDto.setArchived(statisticsCareUnit.isIsArchived());
         if (statisticsCareUnit.getBusinessClassificationCodes() != null) {
             statisticsHsaUnitDto
-                    .setBusinessClassificationCodes(statisticsCareUnit.getBusinessClassificationCodes().getBusinessClassificationCode());
+                .setBusinessClassificationCodes(statisticsCareUnit.getBusinessClassificationCodes().getBusinessClassificationCode());
         }
         if (statisticsCareUnit.getBusinessTypes() != null) {
             statisticsHsaUnitDto.setBusinessTypes(statisticsCareUnit.getBusinessTypes().getBusinessType());
@@ -202,7 +200,7 @@ public class HSAWebServiceCalls {
         } catch (HsaWsFault hsaWsFault) {
             HsaWsFaultType faultInfo = hsaWsFault.getFaultInfo();
             LOG.error("Could not call getStatisticsPerson for {} hsaWsFault ({}, {}). {}", personId, faultInfo.getCode(),
-                    faultInfo.getMessage(), hsaWsFault.getMessage());
+                faultInfo.getMessage(), hsaWsFault.getMessage());
             LOG.debug("getStatisticsPerson fault", hsaWsFault);
             return null;
         } catch (Exception ex) {
@@ -242,7 +240,7 @@ public class HSAWebServiceCalls {
         } catch (HsaWsFault hsaWsFault) {
             HsaWsFaultType faultInfo = hsaWsFault.getFaultInfo();
             LOG.error("Could not call getStatisticsNames for {} hsaWsFault ({}, {}). {}", personId, faultInfo.getCode(),
-                    faultInfo.getMessage(), hsaWsFault.getMessage());
+                faultInfo.getMessage(), hsaWsFault.getMessage());
             LOG.debug("getStatisticsNames fault", hsaWsFault);
             return null;
         } catch (Exception ex) {
@@ -256,7 +254,7 @@ public class HSAWebServiceCalls {
         }
         final GetStatisticsNamesResponseDto getStatisticsNamesResponseDto = new GetStatisticsNamesResponseDto();
         final List<StatisticsNameInfoDto> statisticsNameInfo = statisticsNames.getStatisticsNameInfos().getStatisticsNameInfo().stream()
-                .map(this::toDto).collect(Collectors.toList());
+            .map(this::toDto).collect(Collectors.toList());
         getStatisticsNamesResponseDto.setStatisticsNameInfos(statisticsNameInfo);
         return getStatisticsNamesResponseDto;
     }

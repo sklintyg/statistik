@@ -17,34 +17,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 angular.module('StatisticsApp').factory('CoordinateService',
     /** @ngInject */
     function(COUNTY_COORDS, _) {
-        'use strict';
+      'use strict';
 
-        function _getCoordinates(perCountyObject) {
-            var name = perCountyObject.name.toLowerCase();
+      function _getCoordinates(perCountyObject) {
+        var name = perCountyObject.name.toLowerCase();
 
-            var result = _.find(COUNTY_COORDS, function(c) {
-                if (contains(name, c.name)) {
-                    return c;
-                }
-            });
+        var result = _.find(COUNTY_COORDS, function(c) {
+          if (contains(name, c.name)) {
+            return c;
+          }
+        });
 
-            if (!result) {
-               return null;
-            }
-
-            return result.xy;
+        if (!result) {
+          return null;
         }
 
-        function contains(master, substring) {
-            return master.indexOf(substring) !== -1;
-        }
+        return result.xy;
+      }
 
-        return {
-            getCoordinates: _getCoordinates
-        };
+      function contains(master, substring) {
+        return master.indexOf(substring) !== -1;
+      }
+
+      return {
+        getCoordinates: _getCoordinates
+      };
     }
 );

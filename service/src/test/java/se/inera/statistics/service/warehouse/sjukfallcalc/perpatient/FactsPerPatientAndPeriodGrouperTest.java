@@ -18,7 +18,12 @@
  */
 package se.inera.statistics.service.warehouse.sjukfallcalc.perpatient;
 
+import static org.junit.Assert.assertEquals;
+
 import com.google.common.collect.ArrayListMultimap;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.Test;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.warehouse.Fact;
@@ -26,19 +31,14 @@ import se.inera.statistics.service.warehouse.FactBuilder;
 import se.inera.statistics.service.warehouse.SjukfallIterator;
 import se.inera.statistics.service.warehouse.WidelineConverter;
 
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.Assert.*;
-
 public class FactsPerPatientAndPeriodGrouperTest {
 
     @Test
     public void testGetFactsPerPatientAndPeriod() throws Exception {
         //Given
         final long patient = 1;
-        final List<Fact> facts = Arrays.asList(createFact(patient, LocalDate.of(2015, 2, 20)), createFact(patient, LocalDate.of(2015, 3, 20)));
+        final List<Fact> facts = Arrays
+            .asList(createFact(patient, LocalDate.of(2015, 2, 20)), createFact(patient, LocalDate.of(2015, 3, 20)));
         final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 1, 1), 2, 1);
 
         //When
@@ -55,7 +55,8 @@ public class FactsPerPatientAndPeriodGrouperTest {
     public void testGetFactsPerPatientAndPeriod2() throws Exception {
         //Given
         final long patient = 1;
-        final List<Fact> facts = Arrays.asList(createFact(patient, LocalDate.of(2015, 2, 20)), createFact(patient, LocalDate.of(2015, 3, 20)));
+        final List<Fact> facts = Arrays
+            .asList(createFact(patient, LocalDate.of(2015, 2, 20)), createFact(patient, LocalDate.of(2015, 3, 20)));
         final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 2, 1), 2, 1);
 
         //When
@@ -72,7 +73,8 @@ public class FactsPerPatientAndPeriodGrouperTest {
     public void testGetFactsPerPatientAndPeriod3() throws Exception {
         //Given
         final long patient = 1;
-        final List<Fact> facts = Arrays.asList(createFact(patient, LocalDate.of(2015, 2, 20)), createFact(patient, LocalDate.of(2015, 3, 20)));
+        final List<Fact> facts = Arrays
+            .asList(createFact(patient, LocalDate.of(2015, 2, 20)), createFact(patient, LocalDate.of(2015, 3, 20)));
         final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 3, 1), 2, 1);
 
         //When
@@ -89,7 +91,8 @@ public class FactsPerPatientAndPeriodGrouperTest {
     public void testGetFactsPerPatientAndPeriod4() throws Exception {
         //Given
         final long patient = 1;
-        final List<Fact> facts = Arrays.asList(createFact(patient, LocalDate.of(2015, 2, 20)), createFact(patient, LocalDate.of(2015, 3, 20)));
+        final List<Fact> facts = Arrays
+            .asList(createFact(patient, LocalDate.of(2015, 2, 20)), createFact(patient, LocalDate.of(2015, 3, 20)));
         final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 4, 1), 2, 1);
 
         //When
@@ -106,7 +109,8 @@ public class FactsPerPatientAndPeriodGrouperTest {
     public void testGetFactsPerPatientAndPeriodFactJustOnRangeBorder() throws Exception {
         //Given
         final long patient = 1;
-        final List<Fact> facts = Arrays.asList(createFact(patient, LocalDate.of(2015, 2, 20)), createFact(patient, LocalDate.of(2015, 3, 31)));
+        final List<Fact> facts = Arrays
+            .asList(createFact(patient, LocalDate.of(2015, 2, 20)), createFact(patient, LocalDate.of(2015, 3, 31)));
         final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 4, 1), 2, 1);
 
         //When
@@ -121,7 +125,7 @@ public class FactsPerPatientAndPeriodGrouperTest {
 
     private Fact createFact(long patient, LocalDate startDatum) {
         final int start = WidelineConverter.toDay(startDatum);
-        return FactBuilder.newFact(1L, 1,1,1,1,1, patient, start,start,1,1,1,1,1,1,1,1,1,new int[0],1);
+        return FactBuilder.newFact(1L, 1, 1, 1, 1, 1, patient, start, start, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
     }
 
 }

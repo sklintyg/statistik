@@ -33,8 +33,8 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
 
     @Override
     public void logUserLogin(HsaIdUser hsaUser) {
-      String hsaUserId = hsaUser != null ? hsaUser.getId() : null;
-      logEvent(MonitoringEvent.USER_LOGIN, hsaUserId);
+        String hsaUserId = hsaUser != null ? hsaUser.getId() : null;
+        logEvent(MonitoringEvent.USER_LOGIN, hsaUserId);
     }
 
     @Override

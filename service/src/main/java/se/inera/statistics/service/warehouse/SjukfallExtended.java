@@ -27,7 +27,6 @@ import java.util.NavigableSet;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
-
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.service.report.model.Kon;
@@ -156,11 +155,11 @@ public class SjukfallExtended {
     @Override
     public String toString() {
         return "Sjukfall{"
-                + "start=" + WidelineConverter.toDate(start) + " (" + start + ")"
-                + ", end=" + WidelineConverter.toDate(end) + " (" + end + ")"
-                + ", realDays=" + getRealDays()
-                + ", factCount=" + getFactCount()
-                + '}';
+            + "start=" + WidelineConverter.toDate(start) + " (" + start + ")"
+            + ", end=" + WidelineConverter.toDate(end) + " (" + end + ")"
+            + ", realDays=" + getRealDays()
+            + ", factCount=" + getFactCount()
+            + '}';
     }
 
     public boolean in(int start, int end) {

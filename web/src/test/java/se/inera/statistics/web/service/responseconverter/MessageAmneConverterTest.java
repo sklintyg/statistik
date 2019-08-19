@@ -18,15 +18,15 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import static org.junit.Assert.assertEquals;
+
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.junit.Test;
-
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -36,8 +36,6 @@ import se.inera.statistics.service.warehouse.message.MsgAmne;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.service.Filter;
 import se.inera.statistics.web.service.FilterSettings;
-
-import static org.junit.Assert.assertEquals;
 
 public class MessageAmneConverterTest {
 

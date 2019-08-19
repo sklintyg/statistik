@@ -21,9 +21,7 @@ package se.inera.statistics.service.helper.certificate;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.stereotype.Component;
-
 import se.inera.statistics.service.helper.SjukskrivningsGrad;
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
 import se.inera.statistics.service.processlog.IntygDTO;

@@ -73,6 +73,7 @@ public class HealthMonitor extends Collector {
 
     @FunctionalInterface
     interface Tester {
+
         void run() throws Exception;
     }
 
@@ -113,8 +114,8 @@ public class HealthMonitor extends Collector {
 
     private Gauge register(String name, String help, String type) {
         return Gauge.build()
-                .name(PREFIX + name + type).help(help)
-                .register();
+            .name(PREFIX + name + type).help(help)
+            .register();
     }
 
     private boolean getOverviewStatus() {

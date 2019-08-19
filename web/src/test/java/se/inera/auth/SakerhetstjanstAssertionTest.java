@@ -18,6 +18,11 @@
  */
 package se.inera.auth;
 
+import static org.junit.Assert.assertEquals;
+
+import java.io.IOException;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opensaml.Configuration;
@@ -27,12 +32,6 @@ import org.opensaml.xml.ConfigurationException;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-
-import static org.junit.Assert.assertEquals;
 
 public class SakerhetstjanstAssertionTest {
 
@@ -54,9 +53,11 @@ public class SakerhetstjanstAssertionTest {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
 
-            Document document = documentBuilderFactory.newDocumentBuilder().parse(SakerhetstjanstAssertionTest.class.getResourceAsStream(ticketFile));
+            Document document = documentBuilderFactory.newDocumentBuilder()
+                .parse(SakerhetstjanstAssertionTest.class.getResourceAsStream(ticketFile));
 
-            return (Assertion) Configuration.getUnmarshallerFactory().getUnmarshaller(document.getDocumentElement()).unmarshall(document.getDocumentElement());
+            return (Assertion) Configuration.getUnmarshallerFactory().getUnmarshaller(document.getDocumentElement())
+                .unmarshall(document.getDocumentElement());
         } catch (ConfigurationException | SAXException | UnmarshallingException | ParserConfigurationException | IOException e) {
             throw new RuntimeException(e);
         }

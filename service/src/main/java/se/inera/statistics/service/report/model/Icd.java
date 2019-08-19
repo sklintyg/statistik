@@ -19,10 +19,9 @@
 package se.inera.statistics.service.report.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import se.inera.statistics.service.report.util.Icd10;
-
 import java.util.ArrayList;
 import java.util.List;
+import se.inera.statistics.service.report.util.Icd10;
 
 public class Icd implements Comparable<Icd> {
 
@@ -47,11 +46,9 @@ public class Icd implements Comparable<Icd> {
     /**
      * Create Icd from Icd10.Id source.
      *
-     * @param source
-     *            Id object to use as source
-     * @param includeAllDownToThisLevel
-     *            How deep to include subitems, e.g. Avsnitt class would include both kapitel and avsnitt but not
-     *            kategori or kod.
+     * @param source Id object to use as source
+     * @param includeAllDownToThisLevel How deep to include subitems, e.g. Avsnitt class would include both kapitel and avsnitt but not
+     * kategori or kod.
      */
     public Icd(Icd10.Id source, Class includeAllDownToThisLevel) {
         this(source.getVisibleId(), source.getName(), source.toInt(), source.getInfo());

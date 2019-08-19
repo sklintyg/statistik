@@ -19,32 +19,32 @@
 
 angular.module('StatisticsApp').directive('submenu',
     /** @ngInject */
-    function () {
-        'use strict';
+    function() {
+      'use strict';
 
-        return {
-            restrict: 'E',
-            scope: {
-                item: '=',
-                depth: '=',
-                maxDepth: '=',
-                hideClick: '&',
-                itemClick: '&'
-            },
-            templateUrl: '/components/directives/submenu/submenu.html',
-            link: function($scope) {
-                $scope.depthClass = 'depth' + $scope.depth;
-                $scope.subDepth = $scope.depth + 1;
-                $scope.maxDepthReached = $scope.maxDepth > 0 && $scope.maxDepth <= $scope.subDepth;
-                $scope.isLeaf = $scope.maxDepthReached || !($scope.item.visibleSubs && $scope.item.visibleSubs.length > 0);
+      return {
+        restrict: 'E',
+        scope: {
+          item: '=',
+          depth: '=',
+          maxDepth: '=',
+          hideClick: '&',
+          itemClick: '&'
+        },
+        templateUrl: '/components/directives/submenu/submenu.html',
+        link: function($scope) {
+          $scope.depthClass = 'depth' + $scope.depth;
+          $scope.subDepth = $scope.depth + 1;
+          $scope.maxDepthReached = $scope.maxDepth > 0 && $scope.maxDepth <= $scope.subDepth;
+          $scope.isLeaf = $scope.maxDepthReached || !($scope.item.visibleSubs && $scope.item.visibleSubs.length > 0);
 
-                $scope.subItemClick = function(node, event) {
-                    $scope.itemClick({node: node, event: event});
-                };
+          $scope.subItemClick = function(node, event) {
+            $scope.itemClick({node: node, event: event});
+          };
 
-                $scope.subHideClick = function(node, event) {
-                    $scope.hideClick({node: node, event: event});
-                };
-            }
-        };
-});
+          $scope.subHideClick = function(node, event) {
+            $scope.hideClick({node: node, event: event});
+          };
+        }
+      };
+    });

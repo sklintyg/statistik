@@ -28,7 +28,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import se.inera.statistics.service.processlog.message.MessageEventType;
 import se.inera.statistics.service.warehouse.IntygType;
 
@@ -69,9 +68,9 @@ public class MessageWideLine {
     // CHECKSTYLE:OFF ParameterNumber
     @SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public MessageWideLine(long id, long logId, String meddelandeId, String intygId, MessageEventType meddelandeTyp,
-                           String patientid, LocalDateTime skickatTidpunkt, String amneCode, int kon, int alder,
-                           String enhet, String vardgivareid, IntygType intygstyp, LocalDate intygSigneringsdatum,
-                           String intygLakareId, String intygDx, String svarIds) {
+        String patientid, LocalDateTime skickatTidpunkt, String amneCode, int kon, int alder,
+        String enhet, String vardgivareid, IntygType intygstyp, LocalDate intygSigneringsdatum,
+        String intygLakareId, String intygDx, String svarIds) {
         this.id = id;
         this.logId = logId;
         this.meddelandeId = meddelandeId;

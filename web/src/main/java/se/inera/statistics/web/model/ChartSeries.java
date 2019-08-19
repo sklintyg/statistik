@@ -18,10 +18,9 @@
  */
 package se.inera.statistics.web.model;
 
-import se.inera.statistics.service.report.model.Kon;
-
 import java.io.Serializable;
 import java.util.List;
+import se.inera.statistics.service.report.model.Kon;
 
 public class ChartSeries implements Serializable {
 

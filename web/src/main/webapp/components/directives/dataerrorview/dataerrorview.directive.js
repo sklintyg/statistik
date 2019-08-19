@@ -18,16 +18,16 @@
  */
 
 angular.module('StatisticsApp').directive('dataerrorview', function() {
-    'use strict';
+  'use strict';
 
-    return {
-        restrict : 'A',
-        transclude : true,
-        replace : true,
-        scope : {
-            errorPageUrl: '=',
-            showError: '='
-        },
-        templateUrl: '/components/directives/dataerrorview/dataerrorview.html'
-    };
+  return {
+    restrict: 'A',
+    transclude: true,
+    replace: true,
+    scope: {
+      errorPageUrl: '=',
+      showError: '='
+    },
+    templateUrl: '/components/directives/dataerrorview/dataerrorview.html'
+  };
 });

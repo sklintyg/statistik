@@ -18,15 +18,14 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import org.junit.Test;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.NoSuchElementException;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import org.junit.Test;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 public class SjukfallIteratorTest {
 
@@ -35,7 +34,8 @@ public class SjukfallIteratorTest {
         //Given
         final LocalDate fromDate = LocalDate.of(2015, 1, 1);
         final int periodSize = 1;
-        final SjukfallIterator sjukfallIterator = new SjukfallIterator(fromDate, 2, periodSize, new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), SjukfallUtil.ALL_ENHETER);
+        final SjukfallIterator sjukfallIterator = new SjukfallIterator(fromDate, 2, periodSize,
+            new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), SjukfallUtil.ALL_ENHETER);
 
         //When
         final SjukfallGroup group = sjukfallIterator.next();
@@ -63,7 +63,8 @@ public class SjukfallIteratorTest {
         //Given
         final LocalDate fromDate = LocalDate.of(2015, 1, 1);
         final int periodSize = 1;
-        final SjukfallIterator sjukfallIterator = new SjukfallIterator(fromDate, 2, periodSize, new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), SjukfallUtil.ALL_ENHETER);
+        final SjukfallIterator sjukfallIterator = new SjukfallIterator(fromDate, 2, periodSize,
+            new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), SjukfallUtil.ALL_ENHETER);
 
         //When and then
         try {

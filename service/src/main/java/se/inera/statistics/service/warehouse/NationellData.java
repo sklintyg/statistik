@@ -28,10 +28,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
@@ -59,6 +57,7 @@ import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
  */
 //CHECKSTYLE:OFF ParameterAssignment
 class NationellData {
+
     private static final Logger LOG = LoggerFactory.getLogger(NationellData.class);
 
     private Lan lans;
@@ -88,7 +87,7 @@ class NationellData {
     void updateAntalIntygResult(Aisle aisle, LocalDate start, int perioder, int periodlangd, List<SimpleKonDataRow> antalIntygResult) {
         int index = 0;
         for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle,
-                SjukfallUtil.ALL_ENHETER)) {
+            SjukfallUtil.ALL_ENHETER)) {
             int male = SjukfallQuery.countMale(sjukfallGroup.getSjukfall());
             int female = sjukfallGroup.getSjukfall().size() - male;
             String displayDate = ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom());
@@ -97,8 +96,8 @@ class NationellData {
             } else {
                 SimpleKonDataRow previous = antalIntygResult.get(index);
                 antalIntygResult.set(index, new SimpleKonDataRow(previous.getName(),
-                        filterCutoff(female, cutoff) + previous.getFemale(),
-                        filterCutoff(male, cutoff) + previous.getMale()));
+                    filterCutoff(female, cutoff) + previous.getFemale(),
+                    filterCutoff(male, cutoff) + previous.getMale()));
             }
             index++;
         }
@@ -106,7 +105,7 @@ class NationellData {
 
     SimpleKonResponse getAldersgrupper(Aisle aisle, Range range, SimpleKonResponse aldersgrupperResult, Ranges ranges) {
         SimpleKonResponse aldersgrupper = AldersgruppQuery.getAldersgrupper(aisle,
-                SjukfallUtil.ALL_ENHETER, range.getFrom(), 1, range.getNumberOfMonths(), sjukfallUtil, ranges);
+            SjukfallUtil.ALL_ENHETER, range.getFrom(), 1, range.getNumberOfMonths(), sjukfallUtil, ranges);
         if (aldersgrupperResult == null) {
             aldersgrupperResult = createEmptySimpleKonResponse(aldersgrupper);
         }
@@ -118,7 +117,7 @@ class NationellData {
             SimpleKonDataRow b = rowsOld.next();
 
             list.add(new SimpleKonDataRow(a.getName(), filterCutoff(a.getFemale(), cutoff) + b.getFemale(),
-                    filterCutoff(a.getMale(), cutoff) + b.getMale()));
+                filterCutoff(a.getMale(), cutoff) + b.getMale()));
         }
         return new SimpleKonResponse(AvailableFilters.getForNationell(), list);
     }
@@ -132,9 +131,9 @@ class NationellData {
     }
 
     private KonDataResponse getSjukskrivningsgrad(Aisle aisle, LocalDate start, int perioder, int periodlangd,
-                                          boolean all, KonDataResponse sjukskrivningsgradResult) {
+        boolean all, KonDataResponse sjukskrivningsgradResult) {
         KonDataResponse grader = SjukskrivningsgradQuery.getSjukskrivningsgrad(aisle,
-                SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd, sjukfallUtil, all);
+            SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd, sjukfallUtil, all);
         if (sjukskrivningsgradResult == null) {
             sjukskrivningsgradResult = ResponseUtil.createEmptyKonDataResponse(grader);
         }
@@ -146,7 +145,7 @@ class NationellData {
 
     SimpleKonResponse getSjukfallslangd(Aisle aisle, Range range, SimpleKonResponse sjukfallslangdResult) {
         SimpleKonResponse langder = SjukskrivningslangdQuery.getSjuksrivningslangd(
-                aisle, SjukfallUtil.ALL_ENHETER, range.getFrom(), 1, range.getNumberOfMonths(), sjukfallUtil);
+            aisle, SjukfallUtil.ALL_ENHETER, range.getFrom(), 1, range.getNumberOfMonths(), sjukfallUtil);
         if (sjukfallslangdResult == null) {
             sjukfallslangdResult = createEmptySimpleKonResponse(langder);
         }
@@ -172,7 +171,7 @@ class NationellData {
     }
 
     private DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, LocalDate start, int perioder, int periodlangd,
-                                           boolean all, DiagnosgruppResponse diagnosgrupperResult) {
+        boolean all, DiagnosgruppResponse diagnosgrupperResult) {
         final FilterPredicates filter = SjukfallUtil.ALL_ENHETER;
         DiagnosgruppResponse diagnosgrupper = query.getDiagnosgrupper(aisle, filter, start, perioder, periodlangd, all);
         if (diagnosgrupperResult == null) {
@@ -193,7 +192,7 @@ class NationellData {
             list.add(new KonDataRow(a.getName(), c));
         }
         final List<? extends Icd> icdTyps = diagnosgrupperResult.getIcdTyps().size() < diagnosgrupper.getIcdTyps().size()
-                ? diagnosgrupper.getIcdTyps() : diagnosgrupperResult.getIcdTyps();
+            ? diagnosgrupper.getIcdTyps() : diagnosgrupperResult.getIcdTyps();
         return new DiagnosgruppResponse(AvailableFilters.getForNationell(), icdTyps, list);
     }
 
@@ -210,7 +209,7 @@ class NationellData {
 
     void getDiagnosavsnitt(Aisle aisle, Range range, Icd10.Kapitel kapitel, Map<Icd10.Kapitel, DiagnosgruppResponse> diagnosavsnitts) {
         DiagnosgruppResponse diagnosgrupper = query.getDiagnosavsnitts(aisle, SjukfallUtil.ALL_ENHETER, range.getFrom(),
-                range.getNumberOfMonths(), 1, kapitel.getId());
+            range.getNumberOfMonths(), 1, kapitel.getId());
         if (!diagnosavsnitts.containsKey(kapitel)) {
             diagnosavsnitts.put(kapitel, ResponseUtil.createEmptyDiagnosgruppResponse(diagnosgrupper));
         }
@@ -231,7 +230,7 @@ class NationellData {
         }
 
         DiagnosgruppResponse response = new DiagnosgruppResponse(AvailableFilters.getForNationell(),
-                diagnosavsnitts.get(kapitel).getIcdTyps(), list);
+            diagnosavsnitts.get(kapitel).getIcdTyps(), list);
         diagnosavsnitts.put(kapitel, response);
     }
 
@@ -274,7 +273,7 @@ class NationellData {
 
     SimpleKonResponse getLangaSjukfall(Aisle aisle, Range range, SimpleKonResponse langaResult) {
         SimpleKonResponse langder = SjukskrivningslangdQuery.getLangaSjukfall(aisle,
-                SjukfallUtil.ALL_ENHETER, range.getFrom(), 1, range.getNumberOfMonths(), sjukfallUtil);
+            SjukfallUtil.ALL_ENHETER, range.getFrom(), 1, range.getNumberOfMonths(), sjukfallUtil);
         if (langaResult == null) {
             langaResult = createEmptySimpleKonResponse(langder);
         }
@@ -286,7 +285,7 @@ class NationellData {
             SimpleKonDataRow b = rowsOld.next();
 
             list.add(new SimpleKonDataRow(a.getName(), filterCutoff(a.getFemale(), cutoff) + b.getFemale(),
-                    filterCutoff(a.getMale(), cutoff) + b.getMale()));
+                filterCutoff(a.getMale(), cutoff) + b.getMale()));
         }
         return new SimpleKonResponse(AvailableFilters.getForNationell(), list);
     }
@@ -301,7 +300,7 @@ class NationellData {
 
     SimpleKonResponse getIntygPerSjukfall(Aisle aisle, Range range, SimpleKonResponse intygPerSjukfallResult) {
         SimpleKonResponse intygPerSjukfall = IntygPerSjukfallQuery.getIntygPerSjukfallTvarsnitt(aisle,
-                SjukfallUtil.ALL_ENHETER, range.getFrom(), 1, range.getNumberOfMonths(), sjukfallUtil);
+            SjukfallUtil.ALL_ENHETER, range.getFrom(), 1, range.getNumberOfMonths(), sjukfallUtil);
         if (intygPerSjukfallResult == null) {
             intygPerSjukfallResult = createEmptySimpleKonResponse(intygPerSjukfall);
         }
@@ -313,7 +312,7 @@ class NationellData {
             SimpleKonDataRow b = rowsOld.next();
 
             list.add(new SimpleKonDataRow(a.getName(), filterCutoff(a.getFemale(), cutoff) + b.getFemale(),
-                    filterCutoff(a.getMale(), cutoff) + b.getMale()));
+                filterCutoff(a.getMale(), cutoff) + b.getMale()));
         }
         return new SimpleKonResponse(AvailableFilters.getForNationell(), list);
     }

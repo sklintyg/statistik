@@ -17,31 +17,31 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 angular.module('StatisticsApp.treeMultiSelector.directive', [])
-    .directive('treeMultiSelector', function () {
-        'use strict';
+.directive('treeMultiSelector', function() {
+  'use strict';
 
-        return {
-            restrict: 'EA',
-            scope: {
-                menuOptions: '=', //Each item in the array has properties "name (for label) and "subs" (for sub items)
-                doneClicked: '=', //The function to call when the selection is accepted by the user
-                onOpen: '=',
-                textData: '=',
-                hideLabel: '=',
-                ignoreCharsInSearch: '@',
-                buttonIcon: '@',
-                selectAllTextKey: '@',
-                searchHintTextKey: '@',
-                maxDepth: '=',
-                sidebarMenuExpand: '@',
-                sidebarMenuCollapse: '@',
-                sidebarState: '=',
-                minSelections: '@',
-                maxSelections: '@',
-                runFilterMenuOnInit: '=',
-                verksamhetsTyper: '='
-            },
-            controller: 'treeMultiSelectorCtrl',
-            templateUrl: '/app/shared/treemultiselector/treeMultiSelectorView.html'
-        };
-    });
+  return {
+    restrict: 'EA',
+    scope: {
+      menuOptions: '=', //Each item in the array has properties "name (for label) and "subs" (for sub items)
+      doneClicked: '=', //The function to call when the selection is accepted by the user
+      onOpen: '=',
+      textData: '=',
+      hideLabel: '=',
+      ignoreCharsInSearch: '@',
+      buttonIcon: '@',
+      selectAllTextKey: '@',
+      searchHintTextKey: '@',
+      maxDepth: '=',
+      sidebarMenuExpand: '@',
+      sidebarMenuCollapse: '@',
+      sidebarState: '=',
+      minSelections: '@',
+      maxSelections: '@',
+      runFilterMenuOnInit: '=',
+      verksamhetsTyper: '='
+    },
+    controller: 'treeMultiSelectorCtrl',
+    templateUrl: '/app/shared/treemultiselector/treeMultiSelectorView.html'
+  };
+});

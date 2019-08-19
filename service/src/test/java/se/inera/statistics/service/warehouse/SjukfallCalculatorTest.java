@@ -18,20 +18,18 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import static org.junit.Assert.assertEquals;
+
+import java.lang.reflect.Field;
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Predicate;
 import org.junit.Test;
 import org.springframework.util.ReflectionUtils;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.warehouse.sjukfallcalc.SjukfallPerPeriodCalculator;
-
-import java.lang.reflect.Field;
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Predicate;
-
-import static org.junit.Assert.assertEquals;
 
 public class SjukfallCalculatorTest {
 
@@ -46,7 +44,8 @@ public class SjukfallCalculatorTest {
         final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(aisle, intygFilter, ranges);
 
         //Then
-        final SjukfallPerPeriodCalculator sjukfallPerPeriodCalculator = (SjukfallPerPeriodCalculator) getField("sjukfallPerPeriodCalculator", SjukfallCalculator.class, sjukfallCalculator);
+        final SjukfallPerPeriodCalculator sjukfallPerPeriodCalculator = (SjukfallPerPeriodCalculator) getField(
+            "sjukfallPerPeriodCalculator", SjukfallCalculator.class, sjukfallCalculator);
         final Boolean extendSjukfall = (Boolean) getField("extendSjukfall", SjukfallPerPeriodCalculator.class, sjukfallPerPeriodCalculator);
         assertEquals(false, extendSjukfall);
     }
@@ -64,10 +63,12 @@ public class SjukfallCalculatorTest {
         final Predicate<Fact> filter = fact -> true;
 
         //When
-        final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), filter, ranges);
+        final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(
+            new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), filter, ranges);
 
         //Then
-        final SjukfallPerPeriodCalculator sjukfallPerPeriodCalculator = (SjukfallPerPeriodCalculator) getField("sjukfallPerPeriodCalculator", SjukfallCalculator.class, sjukfallCalculator);
+        final SjukfallPerPeriodCalculator sjukfallPerPeriodCalculator = (SjukfallPerPeriodCalculator) getField(
+            "sjukfallPerPeriodCalculator", SjukfallCalculator.class, sjukfallCalculator);
         final Boolean extendSjukfall = (Boolean) getField("extendSjukfall", SjukfallPerPeriodCalculator.class, sjukfallPerPeriodCalculator);
         assertEquals(true, extendSjukfall);
     }

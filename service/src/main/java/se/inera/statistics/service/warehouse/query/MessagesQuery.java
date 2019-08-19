@@ -18,6 +18,8 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,14 +35,10 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import com.google.common.base.Splitter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.google.common.base.Strings;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -82,20 +80,20 @@ public class MessagesQuery {
     }
 
     public KonDataResponse getMeddelandenPerAmneOchEnhetAggregated(KonDataResponse resultToAggregateIn, MessagesFilter filter,
-                                                                   int cutoff, Map<HsaIdEnhet, String> idToNameMap) {
+        int cutoff, Map<HsaIdEnhet, String> idToNameMap) {
         final KonDataResponse messagesTvarsnittPerAmne = getMessagesTvarsnittPerAmnePerEnhet(filter, idToNameMap);
         return getKonDataResponseAggregated(resultToAggregateIn, filter, cutoff, messagesTvarsnittPerAmne);
     }
 
     public SimpleKonResponse getMessages(HsaIdVardgivare vardgivare, Collection<HsaIdEnhet> enheter, LocalDate start,
-                                         int perioder) {
+        int perioder) {
         LocalDate to = start.plusMonths(perioder);
         List<MessageWidelineLoader.CountDTO> rows = messageWidelineLoader.getAntalMeddelandenPerMonth(start, to, vardgivare, enheter);
         return convertToSimpleResponse(rows, start, perioder);
     }
 
     public SimpleKonResponse getMessagesTvarsnitt(HsaIdVardgivare vardgivare, Collection<HsaIdEnhet> enheter,
-                                                  LocalDate start, int perioder) {
+        LocalDate start, int perioder) {
         LocalDate to = start.plusMonths(perioder);
         List<MessageWidelineLoader.CountDTO> rows = messageWidelineLoader.getAntalMeddelandenPerMonth(start, to, vardgivare, enheter);
         return convertToSimpleResponseTvarsnitt(rows);
@@ -127,24 +125,24 @@ public class MessagesQuery {
     }
 
     public SimpleKonResponse getKompletteringarPerFragaTvarsnittAggregated(
-            SimpleKonResponse resultToAggregateIn, MessagesFilter filter, int cutoff) {
+        SimpleKonResponse resultToAggregateIn, MessagesFilter filter, int cutoff) {
         final SimpleKonResponse kompletteringar = getKompletteringarPerFragaTvarsnitt(filter, cutoff);
         AvailableFilters availableFilters = resultToAggregateIn != null
-                ? resultToAggregateIn.getAvailableFilters() : AvailableFilters.getForMeddelanden();
+            ? resultToAggregateIn.getAvailableFilters() : AvailableFilters.getForMeddelanden();
         final List<SimpleKonResponse> collect = Stream.of(resultToAggregateIn, kompletteringar)
-                .filter(Objects::nonNull).collect(Collectors.toList());
+            .filter(Objects::nonNull).collect(Collectors.toList());
         return SimpleKonResponse.merge(collect, true, availableFilters);
     }
 
     private KonDataResponse getKonDataResponseAggregated(KonDataResponse resultToAggregateIn, MessagesFilter filter,
-                                                         int cutoff, KonDataResponse andelKompletteringar) {
+        int cutoff, KonDataResponse andelKompletteringar) {
         final KonDataResponse resultToAggregate = resultToAggregateIn != null
-                ? resultToAggregateIn : ResponseUtil.createEmptyKonDataResponse(andelKompletteringar);
+            ? resultToAggregateIn : ResponseUtil.createEmptyKonDataResponse(andelKompletteringar);
         Iterator<KonDataRow> rowsNew = andelKompletteringar.getRows().iterator();
         Iterator<KonDataRow> rowsOld = resultToAggregate.getRows().iterator();
         List<KonDataRow> list = ResponseUtil.getKonDataRows(filter.getNumberOfMonths(), rowsNew, rowsOld, cutoff);
         AvailableFilters availableFilters = resultToAggregateIn != null
-                ? resultToAggregateIn.getAvailableFilters() : AvailableFilters.getForMeddelanden();
+            ? resultToAggregateIn.getAvailableFilters() : AvailableFilters.getForMeddelanden();
 
         return new KonDataResponse(availableFilters, andelKompletteringar.getGroups(), list);
     }
@@ -163,7 +161,7 @@ public class MessagesQuery {
     // on the report even though Lisjp is the only valid type.
     private MessagesFilter getMessagesFilterForKompletteringarPerFraga(MessagesFilter filter) {
         final MessagesFilter messageFilterForSjukpenning = getMessageFilterForSjukpenningWithRange(filter,
-                new Range(filter.getFrom(), filter.getTo()));
+            new Range(filter.getFrom(), filter.getTo()));
         return new MessagesFilter(messageFilterForSjukpenning, Collections.singletonList(MsgAmne.KOMPLT.name()));
     }
 
@@ -240,10 +238,10 @@ public class MessagesQuery {
     }
 
     private void addCountAndelKompletteringar(AndelKompletteringarCount male, AndelKompletteringarCount female,
-                                              List<CountDTOAmne> allDtos) {
+        List<CountDTOAmne> allDtos) {
         if (allDtos != null) {
             final Map<String, List<CountDTOAmne>> dtosPerIntygid = allDtos.stream()
-                    .collect(Collectors.groupingBy(CountDTOAmne::getIntygid));
+                .collect(Collectors.groupingBy(CountDTOAmne::getIntygid));
             for (List<CountDTOAmne> dtos : dtosPerIntygid.values()) {
                 final CountDTOAmne aDto = dtos.get(0);
                 final boolean isKomplt = dtos.stream().anyMatch(dto -> MsgAmne.KOMPLT.equals(dto.getAmne()));
@@ -260,6 +258,7 @@ public class MessagesQuery {
     }
 
     private static class AndelKompletteringarCount {
+
         int[] kompl, intyg;
 
         AndelKompletteringarCount(int size) {
@@ -269,6 +268,7 @@ public class MessagesQuery {
     }
 
     private static class FinalCountAndelKompletteringar {
+
         int kompl, intyg, andel;
     }
 
@@ -362,6 +362,7 @@ public class MessagesQuery {
     }
 
     private interface CountAdder {
+
         void addCount(int[] male, int[] female, List<CountDTOAmne> dtos);
     }
 
@@ -379,7 +380,7 @@ public class MessagesQuery {
     }
 
     private List<KonDataRow> getResult(LocalDate start, int perioder, int cutoff, Map<LocalDate, List<CountDTOAmne>> map,
-                                       int seriesLength, CountAdder countAdder) {
+        int seriesLength, CountAdder countAdder) {
         List<KonDataRow> result = new ArrayList<>();
         for (int i = 0; i < perioder; i++) {
             int[] maleIntyg = new int[seriesLength];
@@ -407,7 +408,7 @@ public class MessagesQuery {
 
     private void addCountOnFrageid(int[] maleIntyg, int[] femaleIntyg, List<CountDTOAmne> allDtos) {
         final Map<String, List<CountDTOAmne>> dtosPerIntygid = allDtos.stream()
-                .collect(Collectors.groupingBy(CountDTOAmne::getIntygid));
+            .collect(Collectors.groupingBy(CountDTOAmne::getIntygid));
         for (List<CountDTOAmne> dtos : dtosPerIntygid.values()) {
             for (CountDTOAmne aDto : dtos) {
                 final String svarIdsString = aDto.getSvarIds();
@@ -439,16 +440,16 @@ public class MessagesQuery {
     private Map<HsaIdLakare, String> getLakareNames(List<HsaIdLakare> lakares) {
         final List<Lakare> allLakareInResponse = lakareManager.getAllSpecifiedLakares(lakares);
         final List<String> allLakarNames = allLakareInResponse.stream()
-                .map(lakare -> getLakareName(lakare, false)).collect(Collectors.toList());
+            .map(lakare -> getLakareName(lakare, false)).collect(Collectors.toList());
         final Set<String> duplicateNames = findUpperCaseDuplicates(allLakarNames);
         final Map<HsaIdLakare, String> mappedLakarnames = allLakareInResponse.stream().collect(
-                Collectors.toMap(Lakare::getLakareId, lakare -> {
-                    final String lakareName = getLakareName(lakare, false);
-                    if (duplicateNames.contains(lakareName.toUpperCase())) {
-                        return getLakareName(lakare, true);
-                    }
-                    return lakareName;
-                }));
+            Collectors.toMap(Lakare::getLakareId, lakare -> {
+                final String lakareName = getLakareName(lakare, false);
+                if (duplicateNames.contains(lakareName.toUpperCase())) {
+                    return getLakareName(lakare, true);
+                }
+                return lakareName;
+            }));
         return includeMissingLakare(mappedLakarnames, lakares);
     }
 
@@ -485,18 +486,18 @@ public class MessagesQuery {
 
     private List<HsaIdLakare> getLakareFromRows(List<CountDTOAmne> rows) {
         return rows != null
-                ? rows.stream().map(CountDTOAmne::getLakareId).distinct().collect(Collectors.toList())
-                : Collections.emptyList();
+            ? rows.stream().map(CountDTOAmne::getLakareId).distinct().collect(Collectors.toList())
+            : Collections.emptyList();
     }
 
     private KonDataResponse convertToMessagesPerAmnePerEnhet(List<CountDTOAmne> rows, LocalDate start, int perioder,
-                                                             Map<HsaIdEnhet, String> idToNameMap) {
+        Map<HsaIdEnhet, String> idToNameMap) {
         final Function<String, String> idToNameFunction = enhet -> idToNameMap.get(new HsaIdEnhet(enhet));
         return convertToMessagesPerAmnePerType(rows, start, perioder, getEnhets(rows), CountDTOAmne::getEnhet, idToNameFunction);
     }
 
     private <T> KonDataResponse convertToMessagesPerAmnePerType(List<CountDTOAmne> rows, LocalDate start, int perioder, List<T> types,
-                                                                Function<CountDTOAmne, T> typeInDto, Function<T, String> typeToName) {
+        Function<CountDTOAmne, T> typeInDto, Function<T, String> typeToName) {
         Map<LocalDate, List<CountDTOAmne>> map = mapList(rows, CountDTOAmne::getDate);
         final MsgAmne[] msgAmnes = MsgAmne.values();
         final int seriesLength = msgAmnes.length;
@@ -529,12 +530,12 @@ public class MessagesQuery {
 
     private List<String> getEnhets(List<CountDTOAmne> rows) {
         return rows != null
-                ? rows.stream().map(CountDTOAmne::getEnhet).distinct().collect(Collectors.toList())
-                : Collections.emptyList();
+            ? rows.stream().map(CountDTOAmne::getEnhet).distinct().collect(Collectors.toList())
+            : Collections.emptyList();
     }
 
     private SimpleKonResponse convertToSimpleResponse(List<MessageWidelineLoader.CountDTO> rows, LocalDate start,
-                                                      int perioder) {
+        int perioder) {
         List<SimpleKonDataRow> result = new ArrayList<>();
         Map<LocalDate, List<MessageWidelineLoader.CountDTO>> map;
         if (rows != null) {
@@ -617,14 +618,13 @@ public class MessagesQuery {
     }
 
     private <T> KonDataResponse convertToSimpleResponseTvarsnittPerAmnePerType(List<CountDTOAmne> rows, List<T> types,
-                                                                               Function<CountDTOAmne, T> typeInDto,
-                                                                               Function<T, String> typeToName) {
+        Function<CountDTOAmne, T> typeInDto,
+        Function<T, String> typeToName) {
         final MsgAmne[] msgAmnes = MsgAmne.values();
         final int seriesLength = msgAmnes.length;
         List<KonDataRow> result = new ArrayList<>();
 
         final int typesSize = types.size();
-
 
         int[][][] series = getSeries(rows, types, typeInDto, seriesLength, typesSize);
 
@@ -640,7 +640,7 @@ public class MessagesQuery {
     }
 
     private <T> int[][][] getSeries(List<CountDTOAmne> rows, List<T> types, Function<CountDTOAmne, T> typeInDto,
-                                    int seriesLength, int typesSize) {
+        int seriesLength, int typesSize) {
         int[][][] series = new int[2][][]; //First order is gender, second is type and third is amne
         series[0] = new int[typesSize][];
         series[1] = new int[typesSize][];
@@ -658,7 +658,7 @@ public class MessagesQuery {
     }
 
     List<OverviewChartRowExtended> getOverviewKompletteringar(MessagesFilter messagesFilterWithoutRange,
-                                                              Range currentPeriod, Range previousPeriod) {
+        Range currentPeriod, Range previousPeriod) {
         MessagesFilter messageFilterCurrentRange = getMessageFilterForSjukpenningWithRange(messagesFilterWithoutRange, currentPeriod);
         MessagesFilter messageFilterPreviousRange = getMessageFilterForSjukpenningWithRange(messagesFilterWithoutRange, previousPeriod);
         final SimpleKonResponse andelKompletteringarCurrent = getAndelKompletteringarTvarsnitt(messageFilterCurrentRange);
@@ -668,25 +668,25 @@ public class MessagesQuery {
         List<OverviewChartRowExtended> resp = new ArrayList<>();
         final int alternation = current - previous;
         resp.add(new OverviewChartRowExtended("Sjukpenningintyg med komplettering", current, alternation,
-                ReportColor.ST_COLOR_01.getColor(), false));
+            ReportColor.ST_COLOR_01.getColor(), false));
         resp.add(new OverviewChartRowExtended("Sjukpenningintyg utan komplettering", MAX_PERCENTAGE - current, -1 * alternation,
-                ReportColor.ST_COLOR_02.getColor(), true));
+            ReportColor.ST_COLOR_02.getColor(), true));
         return resp;
     }
 
     private int getAndel(SimpleKonResponse andelKompletteringar) {
         final AndelExtras andelExtras = (AndelExtras) andelKompletteringar.getRows().stream()
-                .filter(p -> IntygType.parseString(p.getName()).isSjukpenningintyg()).findAny()
-                .orElse(new SimpleKonDataRow(null, 0, 0)).getExtras();
+            .filter(p -> IntygType.parseString(p.getName()).isSjukpenningintyg()).findAny()
+            .orElse(new SimpleKonDataRow(null, 0, 0)).getExtras();
         return andelExtras.getWhole() != 0 ? MAX_PERCENTAGE * andelExtras.getPart() / andelExtras.getWhole() : 0;
     }
 
     private MessagesFilter getMessageFilterForSjukpenningWithRange(MessagesFilter filter, Range range) {
         final Collection<String> intygstyper = filter.getIntygstyper() == null || filter.getIntygstyper().isEmpty()
-                ? Collections.singleton(IntygType.SJUKPENNING.getText())
-                : Stream.concat(
-                        filter.getIntygstyper().stream().filter(s -> IntygType.SJUKPENNING.getText().equals(s)),
-                        Stream.of("NoMatchingIntygTypeWithThisText")) //Make sure the filter is never empty (same as "all selected")
+            ? Collections.singleton(IntygType.SJUKPENNING.getText())
+            : Stream.concat(
+                filter.getIntygstyper().stream().filter(s -> IntygType.SJUKPENNING.getText().equals(s)),
+                Stream.of("NoMatchingIntygTypeWithThisText")) //Make sure the filter is never empty (same as "all selected")
                 .collect(Collectors.toSet());
         final HsaIdVardgivare vgid = filter.getVardgivarId();
         final LocalDate from = range.getFrom();

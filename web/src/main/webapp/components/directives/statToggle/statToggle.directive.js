@@ -17,20 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 angular
-    .module('StatisticsApp')
-    .directive('statToggle',
-        /** @ngInject */
-        function() {
-            'use strict';
+.module('StatisticsApp')
+.directive('statToggle',
+    /** @ngInject */
+    function() {
+      'use strict';
 
-            return {
-                restrict: 'E',
-                scope: {
-                    toggleId: '@',
-                    value: '=',
-                    label: '@',
-                    disable: '<'
-                },
-                templateUrl: '/components/directives/statToggle/statToggle.directive.html'
-            };
-});
+      return {
+        restrict: 'E',
+        scope: {
+          toggleId: '@',
+          value: '=',
+          label: '@',
+          disable: '<'
+        },
+        templateUrl: '/components/directives/statToggle/statToggle.directive.html'
+      };
+    });

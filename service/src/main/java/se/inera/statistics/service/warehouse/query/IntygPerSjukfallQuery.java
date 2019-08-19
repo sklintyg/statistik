@@ -18,29 +18,26 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import com.google.common.collect.Lists;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.google.common.collect.Lists;
-
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.IntygPerSjukfallGroupUtil;
 import se.inera.statistics.service.report.util.Ranges;
-import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.FilterPredicates;
-import se.inera.statistics.service.warehouse.SjukfallUtil;
-import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.ResponseUtil;
+import se.inera.statistics.service.warehouse.Sjukfall;
+import se.inera.statistics.service.warehouse.SjukfallGroup;
+import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 @Component
 public class IntygPerSjukfallQuery {
@@ -60,31 +57,31 @@ public class IntygPerSjukfallQuery {
     }
 
     private static SimpleKonResponse getIntygPerSjukfallTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
-                                                                  int periodLength, SjukfallUtil sjukfallUtil, int cutoff) {
+        int periodLength, SjukfallUtil sjukfallUtil, int cutoff) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
             Map<Ranges.Range, Counter<Ranges.Range>> counterMap = count(sjukfallGroup.getSjukfall(), RANGES);
             for (Ranges.Range i : RANGES) {
                 Counter<Ranges.Range> counter = counterMap.get(i);
                 rows.add(new SimpleKonDataRow(i.getName(), ResponseUtil.filterCutoff(counter.getCountFemale(), cutoff),
-                        ResponseUtil.filterCutoff(counter.getCountMale(), cutoff)));
+                    ResponseUtil.filterCutoff(counter.getCountMale(), cutoff)));
             }
         }
         return new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
     }
 
     public static SimpleKonResponse getIntygPerSjukfallTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
-                                                                 int periodLength, SjukfallUtil sjukfallUtil) {
+        int periodLength, SjukfallUtil sjukfallUtil) {
         return getIntygPerSjukfallTvarsnitt(aisle, filter, from, periods, periodLength, sjukfallUtil, 0);
     }
 
     public SimpleKonResponse getIntygPerSjukfallTvarsnittRegion(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
-                                                                int periodLength, SjukfallUtil sjukfallUtil) {
+        int periodLength, SjukfallUtil sjukfallUtil) {
         return getIntygPerSjukfallTvarsnitt(aisle, filter, from, periods, periodLength, sjukfallUtil, regionCutoff.getCutoff());
     }
 
     public static KonDataResponse getIntygPerSjukfallTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,
-                                                               int periodLength, SjukfallUtil sjukfallUtil) {
+        int periodLength, SjukfallUtil sjukfallUtil) {
         final Ranges ranges = RANGES;
         final ArrayList<Ranges.Range> rangesList = Lists.newArrayList(ranges);
         final List<String> names = Lists.transform(rangesList, Ranges.Range::getName);

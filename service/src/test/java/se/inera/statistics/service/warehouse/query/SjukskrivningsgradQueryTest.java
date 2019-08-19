@@ -21,23 +21,20 @@ package se.inera.statistics.service.warehouse.query;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.eq;
 
+import com.google.common.collect.HashMultiset;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.Arrays;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
 import se.inera.statistics.service.warehouse.Aisle;
-import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.FilterPredicates;
+import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
-
-import com.google.common.collect.HashMultiset;
 
 public class SjukskrivningsgradQueryTest {
 
@@ -60,10 +57,12 @@ public class SjukskrivningsgradQueryTest {
         final LocalDate start = LocalDate.now(clock);
         final int periods = 1;
         final int periodSize = 1;
-        Mockito.doReturn(null).when(sjukfallUtil).calculateKonDataResponse(eq(aisle), eq(filter), eq(start), eq(periods), eq(periodSize), eq(SjukskrivningsgradQuery.GRAD_LABEL), eq(SjukskrivningsgradQuery.GRAD), counterCaptor.capture());
+        Mockito.doReturn(null).when(sjukfallUtil)
+            .calculateKonDataResponse(eq(aisle), eq(filter), eq(start), eq(periods), eq(periodSize), eq(SjukskrivningsgradQuery.GRAD_LABEL),
+                eq(SjukskrivningsgradQuery.GRAD), counterCaptor.capture());
 
         final Sjukfall sjukfall = Mockito.mock(Sjukfall.class);
-        Mockito.when(sjukfall.getSjukskrivningsgrader()).thenReturn(Arrays.asList(1,2,3,2,1));
+        Mockito.when(sjukfall.getSjukskrivningsgrader()).thenReturn(Arrays.asList(1, 2, 3, 2, 1));
         Mockito.when(sjukfall.getSjukskrivningsgrad()).thenReturn(6);
         final HashMultiset<Integer> counter = HashMultiset.create();
 

@@ -18,25 +18,26 @@
  */
 package se.inera.ifv.statistics.spi.authorization.impl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.any;
+
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Captor;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.w3.wsaddressing10.AttributedURIType;
 import se.inera.ifv.hsaws.v3.HsaWsResponderInterface;
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsNamesResponseType;
-import org.w3.wsaddressing10.AttributedURIType;
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsNamesType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonType;
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonType;
 import se.inera.statistics.hsa.model.GetStatisticsNamesResponseDto;
 import se.inera.statistics.hsa.model.GetStatisticsPersonResponseDto;
-
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
 
 public class HSAWebServiceCallsTest {
 
@@ -62,14 +63,17 @@ public class HSAWebServiceCallsTest {
         //Given
         final GetStatisticsNamesResponseType respMock = Mockito.mock(GetStatisticsNamesResponseType.class);
         Mockito.when(respMock.getStatisticsNameInfos()).thenReturn(new GetStatisticsNamesResponseType.StatisticsNameInfos());
-        Mockito.when(serverInterface.getStatisticsNames(any(AttributedURIType.class), any(AttributedURIType.class), any(GetStatisticsNamesType.class))).thenReturn(respMock);
+        Mockito.when(serverInterface
+            .getStatisticsNames(any(AttributedURIType.class), any(AttributedURIType.class), any(GetStatisticsNamesType.class)))
+            .thenReturn(respMock);
 
         //When
         final GetStatisticsNamesResponseDto names = hsaWebServiceCalls.getStatisticsNames("testid");
 
         //Then
         assertEquals(respMock.getStatisticsNameInfos().getStatisticsNameInfo().size(), names.getStatisticsNameInfos().size());
-        Mockito.verify(serverInterface).getStatisticsNames(any(AttributedURIType.class), any(AttributedURIType.class), namesParameters.capture());
+        Mockito.verify(serverInterface)
+            .getStatisticsNames(any(AttributedURIType.class), any(AttributedURIType.class), namesParameters.capture());
         assertNotNull(namesParameters.getValue());
     }
 
@@ -78,14 +82,17 @@ public class HSAWebServiceCallsTest {
         //Given
         final GetStatisticsPersonResponseType respMock = Mockito.mock(GetStatisticsPersonResponseType.class);
         Mockito.when(respMock.getAge()).thenReturn("MyAge");
-        Mockito.when(serverInterface.getStatisticsPerson(any(AttributedURIType.class), any(AttributedURIType.class), any(GetStatisticsPersonType.class))).thenReturn(respMock);
+        Mockito.when(serverInterface
+            .getStatisticsPerson(any(AttributedURIType.class), any(AttributedURIType.class), any(GetStatisticsPersonType.class)))
+            .thenReturn(respMock);
 
         //When
         final GetStatisticsPersonResponseDto names = hsaWebServiceCalls.getStatisticsPerson("testid");
 
         //Then
         assertEquals(respMock.getAge(), names.getAge());
-        Mockito.verify(serverInterface).getStatisticsPerson(any(AttributedURIType.class), any(AttributedURIType.class), personParameters.capture());
+        Mockito.verify(serverInterface)
+            .getStatisticsPerson(any(AttributedURIType.class), any(AttributedURIType.class), personParameters.capture());
         assertNotNull(personParameters.getValue());
     }
 

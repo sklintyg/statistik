@@ -24,10 +24,8 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.region.RegionEnhetFileDataRow;
 
@@ -52,8 +50,8 @@ public class RegionEnhetManager {
     @Transactional
     public List<RegionEnhet> getByRegionId(Long regionId) {
         TypedQuery<RegionEnhet> query = manager
-                .createQuery("SELECT l FROM RegionEnhet l where l.regionId = :regionId", RegionEnhet.class)
-                .setParameter("regionId", regionId);
+            .createQuery("SELECT l FROM RegionEnhet l where l.regionId = :regionId", RegionEnhet.class)
+            .setParameter("regionId", regionId);
         return query.getResultList();
     }
 

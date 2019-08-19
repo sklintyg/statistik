@@ -20,7 +20,6 @@ package se.inera.statistics.service.region;
 
 import java.util.Collections;
 import java.util.List;
-
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
@@ -33,9 +32,9 @@ public class RegionEnhetFileData {
     private String fileName;
 
     public RegionEnhetFileData(HsaIdVardgivare vgId, List<RegionEnhetFileDataRow> rows, String userName, HsaIdUser userId,
-                               String fileName) {
+        String fileName) {
         this.vgId = vgId == null ? new HsaIdVardgivare("") : vgId;
-        this.rows = rows == null ? Collections.<RegionEnhetFileDataRow> emptyList() : Collections.unmodifiableList(rows);
+        this.rows = rows == null ? Collections.<RegionEnhetFileDataRow>emptyList() : Collections.unmodifiableList(rows);
         this.userName = userName;
         this.userId = userId;
         this.fileName = fileName;

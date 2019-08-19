@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.warehouse.message;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,13 +32,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -72,12 +70,12 @@ public class MessageWidelineLoader {
     }
 
     public List<CountDTO> getAntalMeddelandenPerMonth(LocalDate from, LocalDate to, HsaIdVardgivare vardgivare,
-            Collection<HsaIdEnhet> enheter) {
+        Collection<HsaIdEnhet> enheter) {
 
         boolean hasVardgivare = vardgivare != null;
         try (
-                Connection connection = dataSource.getConnection();
-                PreparedStatement stmt = prepareStatement(connection, hasVardgivare, enheter)) {
+            Connection connection = dataSource.getConnection();
+            PreparedStatement stmt = prepareStatement(connection, hasVardgivare, enheter)) {
             stmt.setString(COLUMN_FROM, from.format(FORMATTER));
             stmt.setString(COLUMN_TO, to.format(FORMATTER));
 
@@ -149,10 +147,10 @@ public class MessageWidelineLoader {
         final Collection<String> aldersgrupp = filter.getAldersgrupp();
         if (aldersgrupp != null && !aldersgrupp.isEmpty() && new HashSet<>(aldersgrupp).size() != AgeGroup.values().length) {
             final List<AgeGroup> ageGroups = aldersgrupp.stream()
-                    .map(AgeGroup::getByName)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .collect(Collectors.toList());
+                .map(AgeGroup::getByName)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
             return dtos.stream().filter(countDTOAmne -> {
                 final int patientAge = countDTOAmne.getPatientAge();
                 final Optional<AgeGroup> groupForAge = AgeGroup.getGroupForAge(patientAge);
@@ -228,13 +226,13 @@ public class MessageWidelineLoader {
     }
 
     @SuppressFBWarnings(value = "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
-            justification = "We know what we're doing. No user supplied data.")
+        justification = "We know what we're doing. No user supplied data.")
     private PreparedStatement prepareStatement(Connection connection, boolean vardgivare, Collection<HsaIdEnhet> enheter)
-            throws SQLException {
+        throws SQLException {
 
         String sql = "select count(*) as count, YEAR(skickatDate) as `year`, MONTH(skickatDate) as `month`, kon "
-                + " FROM messagewideline "
-                + " WHERE (skickatDate between ? AND ?)  ";
+            + " FROM messagewideline "
+            + " WHERE (skickatDate between ? AND ?)  ";
 
         if (vardgivare) {
             sql += " AND vardgivareid = ? ";
@@ -255,18 +253,18 @@ public class MessageWidelineLoader {
     }
 
     @SuppressFBWarnings(value = "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
-            justification = "We know what we're doing. No user supplied data.")
+        justification = "We know what we're doing. No user supplied data.")
     private PreparedStatement prepareStatementAmne(Connection connection, MessagesFilter filter)
-            throws SQLException {
+        throws SQLException {
 
         StringBuilder sql = new StringBuilder("SELECT "
-                + "mwl.intygid, mwl.amnecode, mwl.kon, mwl.amneCode, mwl.enhet AS enhet, mwl.alder, "
-                + "mwl.intygstyp, mwl.patientid, mwl.intygSigneringsdatum as signeringsdatum, mwl.intygDx as dx, "
-                + "mwl.intygLakareId as lakareId, mwl.svarIds "
-                + "FROM "
-                    + "messagewideline AS mwl "
-                + "WHERE "
-                    + "(mwl.intygSigneringsdatum between ? AND ?) ");
+            + "mwl.intygid, mwl.amnecode, mwl.kon, mwl.amneCode, mwl.enhet AS enhet, mwl.alder, "
+            + "mwl.intygstyp, mwl.patientid, mwl.intygSigneringsdatum as signeringsdatum, mwl.intygDx as dx, "
+            + "mwl.intygLakareId as lakareId, mwl.svarIds "
+            + "FROM "
+            + "messagewideline AS mwl "
+            + "WHERE "
+            + "(mwl.intygSigneringsdatum between ? AND ?) ");
 
         boolean hasVardgivare = filter.getVardgivarId() != null;
         if (hasVardgivare) {
@@ -282,9 +280,9 @@ public class MessageWidelineLoader {
         final Collection<String> intygstyper = filter.getIntygstyper();
         if (intygstyper != null && !intygstyper.isEmpty()) {
             List<IntygType> intygTypeFilter = filter.getIntygstyper().stream()
-                    .map(IntygType::getByName).filter(Optional::isPresent).map(Optional::get)
-                    .flatMap(intygType -> intygType.getUnmappedTypes().stream())
-                    .collect(Collectors.toList());
+                .map(IntygType::getByName).filter(Optional::isPresent).map(Optional::get)
+                .flatMap(intygType -> intygType.getUnmappedTypes().stream())
+                .collect(Collectors.toList());
             String intygstyperSql = intygTypeFilter.stream().map(Enum::name).collect(Collectors.joining("' , '"));
             sql.append(" AND `intygstyp` IN ('").append(intygstyperSql).append("')");
         }
@@ -305,17 +303,17 @@ public class MessageWidelineLoader {
     }
 
     @SuppressFBWarnings(value = "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
-            justification = "We know what we're doing. No user supplied data.")
+        justification = "We know what we're doing. No user supplied data.")
     private PreparedStatement prepareStatementKompletteringarPerIntyg(Connection connection, MessagesFilter filter)
-            throws SQLException {
+        throws SQLException {
 
         final StringBuilder sql = new StringBuilder("SELECT "
-                + "ic.intygid, ic.kon, ic.intygtyp as intygstyp, ic.patientid, ic.dx, ic.enhet, ic.signeringsdatum, ic.lakareId, "
-                + "mwl.amneCode, mwl.svarIds "
-                + "FROM intygcommon ic "
-                    + "LEFT JOIN messagewideline mwl ON ic.intygid = mwl.intygid "
-                + "WHERE (ic.signeringsdatum between ? AND ?) AND ic.sentToFk "
-                + "AND ic.eventType != " + EventType.REVOKED.ordinal());
+            + "ic.intygid, ic.kon, ic.intygtyp as intygstyp, ic.patientid, ic.dx, ic.enhet, ic.signeringsdatum, ic.lakareId, "
+            + "mwl.amneCode, mwl.svarIds "
+            + "FROM intygcommon ic "
+            + "LEFT JOIN messagewideline mwl ON ic.intygid = mwl.intygid "
+            + "WHERE (ic.signeringsdatum between ? AND ?) AND ic.sentToFk "
+            + "AND ic.eventType != " + EventType.REVOKED.ordinal());
 
         final boolean hasVardgivare = filter.getVardgivarId() != null;
         if (hasVardgivare) {
@@ -331,9 +329,9 @@ public class MessageWidelineLoader {
         final Collection<String> intygstyper = filter.getIntygstyper();
         if (intygstyper != null && !intygstyper.isEmpty()) {
             List<IntygType> intygTypeFilter = filter.getIntygstyper().stream()
-                    .map(IntygType::getByName).filter(Optional::isPresent).map(Optional::get)
-                    .flatMap(intygType -> intygType.getUnmappedTypes().stream())
-                    .collect(Collectors.toList());
+                .map(IntygType::getByName).filter(Optional::isPresent).map(Optional::get)
+                .flatMap(intygType -> intygType.getUnmappedTypes().stream())
+                .collect(Collectors.toList());
             String intygstyperSql = intygTypeFilter.stream().map(Enum::name).collect(Collectors.joining("' , '"));
             sql.append(" AND ic.intygtyp IN ('").append(intygstyperSql).append("')");
         }
@@ -345,7 +343,7 @@ public class MessageWidelineLoader {
         }
 
         sql.append(" GROUP BY ic.intygid, mwl.amneCode, ic.kon, ic.intygtyp, ")
-                .append("ic.patientid, ic.dx, ic.enhet, ic.signeringsdatum, ic.lakareId, mwl.svarIds");
+            .append("ic.patientid, ic.dx, ic.enhet, ic.signeringsdatum, ic.lakareId, mwl.svarIds");
 
         LOG.debug("sql: {}", sql);
 
@@ -363,16 +361,16 @@ public class MessageWidelineLoader {
     }
 
     @SuppressFBWarnings(value = "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
-            justification = "We know what we're doing. No user supplied data.")
+        justification = "We know what we're doing. No user supplied data.")
     private PreparedStatement prepareStatementKompletteringar(Connection connection, MessagesFilter filter)
-            throws SQLException {
+        throws SQLException {
 
         final StringBuilder sql = new StringBuilder("SELECT "
-                + "mwl.intygid, mwl.kon, mwl.intygstyp, mwl.patientid, mwl.intygdx as dx, mwl.enhet, "
-                + "mwl.intygsigneringsdatum as signeringsdatum, mwl.intyglakareId as lakareid, "
-                + "mwl.amneCode, mwl.svarIds "
-                + "FROM messagewideline mwl "
-                + "WHERE (mwl.intygsigneringsdatum between ? AND ?) ");
+            + "mwl.intygid, mwl.kon, mwl.intygstyp, mwl.patientid, mwl.intygdx as dx, mwl.enhet, "
+            + "mwl.intygsigneringsdatum as signeringsdatum, mwl.intyglakareId as lakareid, "
+            + "mwl.amneCode, mwl.svarIds "
+            + "FROM messagewideline mwl "
+            + "WHERE (mwl.intygsigneringsdatum between ? AND ?) ");
 
         final boolean hasVardgivare = filter.getVardgivarId() != null;
         if (hasVardgivare) {
@@ -388,9 +386,9 @@ public class MessageWidelineLoader {
         final Collection<String> intygstyper = filter.getIntygstyper();
         if (intygstyper != null && !intygstyper.isEmpty()) {
             List<IntygType> intygTypeFilter = filter.getIntygstyper().stream()
-                    .map(IntygType::getByName).filter(Optional::isPresent).map(Optional::get)
-                    .flatMap(intygType -> intygType.getUnmappedTypes().stream())
-                    .collect(Collectors.toList());
+                .map(IntygType::getByName).filter(Optional::isPresent).map(Optional::get)
+                .flatMap(intygType -> intygType.getUnmappedTypes().stream())
+                .collect(Collectors.toList());
             String intygstyperSql = intygTypeFilter.stream().map(Enum::name).collect(Collectors.joining("' , '"));
             sql.append(" AND mwl.intygstyp IN ('").append(intygstyperSql).append("')");
         }
@@ -417,6 +415,7 @@ public class MessageWidelineLoader {
     }
 
     public static class CountDTO {
+
         private int count;
         private LocalDate date;
         private Kon kon;

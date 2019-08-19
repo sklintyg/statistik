@@ -18,16 +18,15 @@
  */
 package se.inera.statistik.tools.anonymisering.base;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.Collections;
 import java.util.regex.Pattern;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class AnonymiseraPersonId {
 

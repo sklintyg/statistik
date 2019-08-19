@@ -18,22 +18,20 @@
  */
 package se.inera.statistics.web.logging;
 
-import java.io.InputStream;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
-
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.classic.util.ContextInitializer;
 import ch.qos.logback.core.joran.spi.JoranException;
 import ch.qos.logback.core.util.StatusPrinter;
 import com.google.common.base.Strings;
+import java.io.InputStream;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 
 public class LogbackConfiguratorContextListener implements ServletContextListener {
 
@@ -51,12 +49,12 @@ public class LogbackConfiguratorContextListener implements ServletContextListene
 
         if (!resource.exists()) {
             LOGGER.error("Can't read logback configuration from "
-                    + resource.getDescription() + " - Keep default configuration");
+                + resource.getDescription() + " - Keep default configuration");
             return;
         }
 
         LOGGER.info("Found logback configuration " + resource.getDescription()
-                + " - Overriding default configuration");
+            + " - Overriding default configuration");
         final LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
 
         try {
@@ -75,15 +73,15 @@ public class LogbackConfiguratorContextListener implements ServletContextListene
                 LOGGER.error("Can't fallback to default (auto) configuration", e);
             }
             LOGGER.error(
-                    "Can't configure logback from " + resource.getDescription()
-                            + " - Keep default configuration", ex);
+                "Can't configure logback from " + resource.getDescription()
+                    + " - Keep default configuration", ex);
         }
     }
 
     private Resource getConfigurationResource(final String uri) {
         return uri.startsWith(CLASSPATH)
-                ? new ClassPathResource(uri.substring(CLASSPATH.length()))
-                : new FileSystemResource(uri);
+            ? new ClassPathResource(uri.substring(CLASSPATH.length()))
+            : new FileSystemResource(uri);
     }
 
     private String getConfigurationUri(final ServletContextEvent ctx) {

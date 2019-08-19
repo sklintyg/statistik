@@ -18,14 +18,13 @@
  */
 package se.inera.statistics.service.warehouse.sjukfallcalc.extend;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
 import org.junit.Test;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.FactBuilder;
 import se.inera.statistics.service.warehouse.SjukfallExtended;
-
-import java.util.ArrayList;
-
-import static org.junit.Assert.*;
 
 public class SjukfallMergerTest {
 
@@ -52,8 +51,8 @@ public class SjukfallMergerTest {
         aisle.add(createFact(1, 9));
         final long patient = 1L;
         final ArrayList<SjukfallExtended> sjukfallsFromAvailableEnhetsForPatient = new ArrayList<>();
-        sjukfallsFromAvailableEnhetsForPatient.add(new SjukfallExtended(createFact(10,20)));
-        sjukfallsFromAvailableEnhetsForPatient.add(new SjukfallExtended(createFact(50,60)));
+        sjukfallsFromAvailableEnhetsForPatient.add(new SjukfallExtended(createFact(10, 20)));
+        sjukfallsFromAvailableEnhetsForPatient.add(new SjukfallExtended(createFact(50, 60)));
         final SjukfallExtended unchangedSjukfall = new SjukfallExtended(createFact(61, 70));
         sjukfallsFromAvailableEnhetsForPatient.add(unchangedSjukfall);
         final SjukfallExtended sjukfallFromAllVgForPatient = new SjukfallExtended(createFact(10, 60));
@@ -70,7 +69,7 @@ public class SjukfallMergerTest {
     }
 
     private Fact createFact(int startdatum, int slutdatum) {
-        return FactBuilder.newFact(1L, 1,1,1,1,1,1, startdatum, slutdatum,1,1,1,1,1,1,1,1,1, new int[0],1);
+        return FactBuilder.newFact(1L, 1, 1, 1, 1, 1, 1, startdatum, slutdatum, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
     }
 
 }

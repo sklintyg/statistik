@@ -18,29 +18,29 @@
  */
 
 (function() {
-    'use strict';
+  'use strict';
 
-    describe('service pdfFactory', function() {
-        var pdfFactory;
+  describe('service pdfFactory', function() {
+    var pdfFactory;
 
-        beforeEach(module('StatisticsApp', function($provide) {
-            $provide.value('ControllerCommons', {
-                getExportFileName: function(level) {
-                    return level;
-                }
-            });
-        }));
+    beforeEach(module('StatisticsApp', function($provide) {
+      $provide.value('ControllerCommons', {
+        getExportFileName: function(level) {
+          return level;
+        }
+      });
+    }));
 
-        // Initialize the controller and a mock scope
-        beforeEach(inject(function(_pdfFactory_) {
-            pdfFactory = _pdfFactory_;
-        }));
+    // Initialize the controller and a mock scope
+    beforeEach(inject(function(_pdfFactory_) {
+      pdfFactory = _pdfFactory_;
+    }));
 
-        it('getFileName', function() {
-            var result = pdfFactory.getFileName('level');
-            var expected = 'level.pdf';
+    it('getFileName', function() {
+      var result = pdfFactory.getFileName('level');
+      var expected = 'level.pdf';
 
-            expect(result).toEqual(expected);
-        });
+      expect(result).toEqual(expected);
     });
+  });
 })();

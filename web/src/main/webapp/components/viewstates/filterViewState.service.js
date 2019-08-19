@@ -20,50 +20,50 @@
 angular.module('StatisticsApp').factory('filterViewState',
     /** @ngInject */
     function($filter) {
-        'use strict';
+      'use strict';
 
-        var state = {
-            messages: []
-        };
+      var state = {
+        messages: []
+      };
 
-        function _reset() {
-            state.intygstyper = false;
-            state.sjukskrivningslangd = true;
-        }
+      function _reset() {
+        state.intygstyper = false;
+        state.sjukskrivningslangd = true;
+      }
 
-        function _get() {
-            return state;
-        }
+      function _get() {
+        return state;
+      }
 
-        function _set(newState) {
-            _reset();
-
-            if (!angular.isDefined(newState)) {
-                return;
-            }
-
-            if (angular.isDefined(newState.intygstyper)) {
-                state.intygstyper = newState.intygstyper;
-            }
-
-            if (angular.isDefined(newState.sjukskrivningslangd)) {
-                state.sjukskrivningslangd = newState.sjukskrivningslangd;
-            }
-        }
-
-        function _setMessages(messages) {
-            state.messages = $filter('filter')(messages, function(message) {
-                return message && message.type === 'FILTER';
-            });
-        }
-
+      function _set(newState) {
         _reset();
 
-        // Return public API for the service
-        return {
-            get: _get,
-            set: _set,
-            setMessages: _setMessages
-        };
+        if (!angular.isDefined(newState)) {
+          return;
+        }
+
+        if (angular.isDefined(newState.intygstyper)) {
+          state.intygstyper = newState.intygstyper;
+        }
+
+        if (angular.isDefined(newState.sjukskrivningslangd)) {
+          state.sjukskrivningslangd = newState.sjukskrivningslangd;
+        }
+      }
+
+      function _setMessages(messages) {
+        state.messages = $filter('filter')(messages, function(message) {
+          return message && message.type === 'FILTER';
+        });
+      }
+
+      _reset();
+
+      // Return public API for the service
+      return {
+        get: _get,
+        set: _set,
+        setMessages: _setMessages
+      };
     }
 );

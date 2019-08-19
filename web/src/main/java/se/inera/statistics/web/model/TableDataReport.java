@@ -19,17 +19,19 @@
 package se.inera.statistics.web.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import se.inera.statistics.web.service.FilterDataResponse;
-
 import java.util.List;
+import se.inera.statistics.web.service.FilterDataResponse;
 
 public abstract class TableDataReport implements FilteredDataReport {
 
     private static final double MAX_DIFF_FOR_EQUALITY = 0.00001D;
 
     public abstract TableData getTableData();
+
     public abstract String getPeriod();
-    @Override public abstract FilterDataResponse getFilter();
+
+    @Override
+    public abstract FilterDataResponse getFilter();
 
     @JsonIgnore
     public abstract List<ChartData> getChartDatas();

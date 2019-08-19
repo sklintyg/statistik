@@ -18,17 +18,17 @@
  */
 
 angular.module('StatisticsApp').directive('spinner', function() {
-    'use strict';
+  'use strict';
 
-    return {
-        restrict : 'A',
-        transclude : true,
-        replace : true,
-        scope : {
-            label: '@',
-            showSpinner: '=',
-            showContent: '='
-        },
-        templateUrl: '/components/directives/spinner/spinner.html'
-    };
+  return {
+    restrict: 'A',
+    transclude: true,
+    replace: true,
+    scope: {
+      label: '@',
+      showSpinner: '=',
+      showContent: '='
+    },
+    templateUrl: '/components/directives/spinner/spinner.html'
+  };
 });

@@ -18,6 +18,19 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.text.Collator;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -34,18 +47,6 @@ import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.warehouse.message.CountDTOAmne;
 import se.inera.statistics.service.warehouse.message.MessageWidelineLoader;
 import se.inera.statistics.service.warehouse.message.MsgAmne;
-
-import java.text.Collator;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
-
-import static org.junit.Assert.*;
 
 public class MessagesQueryTest {
 
@@ -118,7 +119,7 @@ public class MessagesQueryTest {
         countDTOAmne.setDate(LocalDate.now());
         Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter)).thenReturn(Collections.singletonList(countDTOAmne));
         Mockito.doReturn(Collections.singletonList(new Lakare(HsaIdVardgivare.empty(), lakare, null, null)))
-                .when(lakareManager).getAllSpecifiedLakares(Mockito.anyCollectionOf(HsaIdLakare.class));
+            .when(lakareManager).getAllSpecifiedLakares(Mockito.anyCollectionOf(HsaIdLakare.class));
 
         //When
         final KonDataResponse resp = messagesQuery.getMessagesPerAmnePerLakare(filter);
@@ -157,7 +158,7 @@ public class MessagesQueryTest {
         countDTOAmne.setDate(LocalDate.now());
         Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter)).thenReturn(Collections.singletonList(countDTOAmne));
         Mockito.doReturn(Collections.singletonList(new Lakare(HsaIdVardgivare.empty(), lakare, null, null)))
-                .when(lakareManager).getAllSpecifiedLakares(Mockito.anyCollectionOf(HsaIdLakare.class));
+            .when(lakareManager).getAllSpecifiedLakares(Mockito.anyCollectionOf(HsaIdLakare.class));
 
         //When
         final KonDataResponse resp = messagesQuery.getMessagesTvarsnittPerAmnePerLakare(filter);

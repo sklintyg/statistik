@@ -18,15 +18,13 @@
  */
 package se.inera.statistics.service.processlog;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.fasterxml.jackson.databind.JsonNode;
 import se.inera.ifv.statistics.spi.authorization.impl.HsaCommunicationException;
 import se.inera.intygstjanster.ts.services.RegisterTSBasResponder.v1.RegisterTSBasType;
 import se.inera.intygstjanster.ts.services.RegisterTSDiabetesResponder.v1.RegisterTSDiabetesType;
@@ -45,6 +43,7 @@ import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.Regi
 
 @Component
 public class LogConsumerImpl implements LogConsumer {
+
     private static final Logger LOG = LoggerFactory.getLogger(LogConsumerImpl.class);
     public static final int BATCH_SIZE = 100;
 
@@ -81,7 +80,7 @@ public class LogConsumerImpl implements LogConsumer {
                 return 0;
             }
             int processed = 0;
-            for (IntygEvent event: result) {
+            for (IntygEvent event : result) {
                 final IntygFormat format = event.getFormat();
                 try {
                     final boolean eventSuccessfullyHandled = handleEvent(event, format);

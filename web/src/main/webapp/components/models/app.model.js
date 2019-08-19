@@ -20,37 +20,37 @@
 angular.module('StatisticsApp').factory('AppModel',
     /** @ngInject */
     function() {
-        'use strict';
+      'use strict';
 
-        var data = {};
+      var data = {};
 
-        _reset();
+      _reset();
 
-        function _reset() {
-            data.isLoggedIn = false;
-            data.loginUrl = '';
-            data.loginVisible = false;
-            data.projectVersion = '';
-            data.driftbanners = null;
-            return data;
+      function _reset() {
+        data.isLoggedIn = false;
+        data.loginUrl = '';
+        data.loginVisible = false;
+        data.projectVersion = '';
+        data.driftbanners = null;
+        return data;
+      }
+
+      return {
+        reset: _reset,
+        init: function() {
+          return _reset();
+        },
+        set: function(app) {
+          _reset();
+          data.isLoggedIn = app.loggedIn;
+          data.loginUrl = app.loginUrl;
+          data.loginVisible = app.loginVisible;
+          data.projectVersion = app.projectVersion;
+          data.driftbanners = app.driftbanners;
+        },
+        get: function() {
+          return data;
         }
-
-        return {
-            reset: _reset,
-            init: function() {
-                return _reset();
-            },
-            set: function(app) {
-                _reset();
-                data.isLoggedIn = app.loggedIn;
-                data.loginUrl = app.loginUrl;
-                data.loginVisible = app.loginVisible;
-                data.projectVersion = app.projectVersion;
-                data.driftbanners = app.driftbanners;
-            },
-            get: function() {
-                return data;
-            }
-        };
+      };
     }
 );

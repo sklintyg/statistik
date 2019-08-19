@@ -19,29 +19,29 @@
 
 angular.module('StatisticsApp').controller('loginCtrl',
     /** @ngInject */
-    function ($scope, $rootScope, $uibModal, $location, $cookies) {
-        'use strict';
+    function($scope, $rootScope, $uibModal, $location, $cookies) {
+      'use strict';
 
-        $rootScope.hideNavigationTabs = true;
+      $rootScope.hideNavigationTabs = true;
 
-        $scope.isLoggedIn = $rootScope.isLoggedIn;
+      $scope.isLoggedIn = $rootScope.isLoggedIn;
 
-        $scope.open = function () {
-            $scope.modalInstance = $uibModal.open({
-                templateUrl: '/app/views/siths.help.html',
-                scope: $scope,
-                size: 'lg',
-                windowClass: 'login-modal'
-            });
-        };
+      $scope.open = function() {
+        $scope.modalInstance = $uibModal.open({
+          templateUrl: '/app/views/siths.help.html',
+          scope: $scope,
+          size: 'lg',
+          windowClass: 'login-modal'
+        });
+      };
 
-        $scope.ok = function () {
-            $scope.modalInstance.close();
-        };
+      $scope.ok = function() {
+        $scope.modalInstance.close();
+      };
 
-        $scope.errorUrlParam = $location.search().error;
-        $scope.hasActiveStatUrl = $cookies.get('statUrl');
+      $scope.errorUrlParam = $location.search().error;
+      $scope.hasActiveStatUrl = $cookies.get('statUrl');
 
-        $scope.defaultUrl = '/saml/login';
+      $scope.defaultUrl = '/saml/login';
     }
 );

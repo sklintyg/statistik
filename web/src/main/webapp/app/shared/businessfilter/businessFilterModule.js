@@ -17,8 +17,8 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 angular.module('StatisticsApp.businessFilter', [
-    'StatisticsApp.filter.directive',
-    'StatisticsApp.filterFactory.factory',
-    'underscore',
-    'StatisticsApp.treeMultiSelector'
+  'StatisticsApp.filter.directive',
+  'StatisticsApp.filterFactory.factory',
+  'underscore',
+  'StatisticsApp.treeMultiSelector'
 ]);

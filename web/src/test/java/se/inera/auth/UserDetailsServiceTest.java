@@ -18,6 +18,17 @@
  */
 package se.inera.auth;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import javax.xml.parsers.ParserConfigurationException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,22 +54,13 @@ import se.inera.statistics.hsa.services.UserAuthorization;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 import se.riv.infrastructure.directory.v1.PersonInformationType;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
-
 @RunWith(MockitoJUnitRunner.class)
 public class UserDetailsServiceTest {
-    private static final Vardenhet VE1_VG1 = new Vardenhet(new HsaIdEnhet("IFV1239877878-103F"), "Enhetsnamn", new HsaIdVardgivare("IFV1239877878-0001"));
-    private static final Vardenhet VE2_VG1 = new Vardenhet(new HsaIdEnhet("Vardenhet2"), "Enhetsnamn2", new HsaIdVardgivare("IFV1239877878-0001"));
+
+    private static final Vardenhet VE1_VG1 = new Vardenhet(new HsaIdEnhet("IFV1239877878-103F"), "Enhetsnamn",
+        new HsaIdVardgivare("IFV1239877878-0001"));
+    private static final Vardenhet VE2_VG1 = new Vardenhet(new HsaIdEnhet("Vardenhet2"), "Enhetsnamn2",
+        new HsaIdVardgivare("IFV1239877878-0001"));
     private static final Vardenhet VE3_VG2 = new Vardenhet(new HsaIdEnhet("Vardenhet3"), "Enhetsnamn3", new HsaIdVardgivare("VG2"));
     private static final Vardenhet VE4_VG2 = new Vardenhet(new HsaIdEnhet("Vardenhet4"), "Enhetsnamn4", new HsaIdVardgivare("VG2"));
 
@@ -95,7 +97,8 @@ public class UserDetailsServiceTest {
     @Test
     public void hasVgAccessByMultipleEnhets() throws Exception {
         newCredentials("/test-saml-biljett-uppdragslos.xml");
-        when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(any(HsaIdUser.class))).thenReturn(new UserAuthorization(Arrays.asList(VE1_VG1, VE2_VG1), Collections.emptyList()));
+        when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(any(HsaIdUser.class)))
+            .thenReturn(new UserAuthorization(Arrays.asList(VE1_VG1, VE2_VG1), Collections.emptyList()));
         User user = (User) service.loadUserBySAML(credential);
         assertTrue(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isDelprocessledare());
         assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isProcessledare());
@@ -125,9 +128,11 @@ public class UserDetailsServiceTest {
         credential = new SAMLCredential(nameID, assertion, "", "");
     }
 
-    private void auktoriseradeEnheter(Vardenhet...enheter) {
-        when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(any(HsaIdUser.class))).thenReturn(new UserAuthorization(Arrays.asList(enheter), Arrays.asList("INTYG;Statistik-IFV1239877878-0001")));
-        when(hsaOrganizationsService.getVardgivare(any(HsaIdVardgivare.class))).thenReturn(new Vardgivare("IFV1239877878-0001", "Vårdgivare 1"));
+    private void auktoriseradeEnheter(Vardenhet... enheter) {
+        when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(any(HsaIdUser.class)))
+            .thenReturn(new UserAuthorization(Arrays.asList(enheter), Arrays.asList("INTYG;Statistik-IFV1239877878-0001")));
+        when(hsaOrganizationsService.getVardgivare(any(HsaIdVardgivare.class)))
+            .thenReturn(new Vardgivare("IFV1239877878-0001", "Vårdgivare 1"));
     }
 
     private void setupHsaPersonService() {

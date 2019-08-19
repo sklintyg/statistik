@@ -18,18 +18,17 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
-
-import com.fasterxml.jackson.databind.JsonNode;
-
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 
 public class Fact implements Serializable {
+
     public static final String HEADING = "lan;kommun;forsamling;enhet;lakarintyg;patient;startdatum;kon;alder;diagnoskapitel;"
-            + "diagnosavsnitt;diagnoskategori;sjukskrivningsgrad;sjukskrivningslangd;lakarkon;lakaralder;lakarbefattning";
+        + "diagnosavsnitt;diagnoskategori;sjukskrivningsgrad;sjukskrivningslangd;lakarkon;lakaralder;lakarbefattning";
 
     static final Comparator<Fact> TIME_ORDER = Comparator.comparingInt(Fact::getStartdatum);
 
@@ -57,8 +56,8 @@ public class Fact implements Serializable {
     // CHECKSTYLE:OFF ParameterNumber
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public Fact(long id, int lan, int kommun, int forsamling, HsaIdEnhet enhet, long lakarintyg, long patient, int startdatum,
-                int slutdatum, int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod,
-                int sjukskrivningsgrad, int lakarkon, int lakaralder, int[] lakarbefattnings, HsaIdLakare lakarid) {
+        int slutdatum, int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod,
+        int sjukskrivningsgrad, int lakarkon, int lakaralder, int[] lakarbefattnings, HsaIdLakare lakarid) {
         this.id = id;
         this.lan = lan;
         this.kommun = kommun;
@@ -168,59 +167,57 @@ public class Fact implements Serializable {
     @Override
     public String toString() {
         return "Fact{"
-                + "lan=" + lan
-                + ", kommun=" + kommun
-                + ", forsamling=" + forsamling
-                + ", enhet=" + enhet
-                + ", lakarintyg=" + lakarintyg
-                + ", patient=" + patient
-                + ", startdatum=" + WidelineConverter.toDate(startdatum) + " (" + startdatum + ")"
-                + ", slutdatum=" + WidelineConverter.toDate(slutdatum) + " (" + slutdatum + ")"
-                + ", kon=" + kon
-                + ", alder=" + alder
-                + ", diagnoskapitel=" + diagnoskapitel
-                + ", diagnosavsnitt=" + diagnosavsnitt
-                + ", diagnoskategori=" + diagnoskategori
-                + ", sjukskrivningsgrad=" + sjukskrivningsgrad
-                + ", lakarkon=" + lakarkon
-                + ", lakaralder=" + lakaralder
-                + ", lakarbefattnings=" + Arrays.toString(lakarbefattnings)
-                + ", lakarid=" + lakarid
-                + '}';
+            + "lan=" + lan
+            + ", kommun=" + kommun
+            + ", forsamling=" + forsamling
+            + ", enhet=" + enhet
+            + ", lakarintyg=" + lakarintyg
+            + ", patient=" + patient
+            + ", startdatum=" + WidelineConverter.toDate(startdatum) + " (" + startdatum + ")"
+            + ", slutdatum=" + WidelineConverter.toDate(slutdatum) + " (" + slutdatum + ")"
+            + ", kon=" + kon
+            + ", alder=" + alder
+            + ", diagnoskapitel=" + diagnoskapitel
+            + ", diagnosavsnitt=" + diagnosavsnitt
+            + ", diagnoskategori=" + diagnoskategori
+            + ", sjukskrivningsgrad=" + sjukskrivningsgrad
+            + ", lakarkon=" + lakarkon
+            + ", lakaralder=" + lakaralder
+            + ", lakarbefattnings=" + Arrays.toString(lakarbefattnings)
+            + ", lakarid=" + lakarid
+            + '}';
     }
 
     /**
-     * @param c
-     *            delimiter
+     * @param c delimiter
      * @return CSV line including a terminating newline character
      */
     public String toCSVString(char c) {
         StringBuilder sb = new StringBuilder();
         sb.append(lan).append(c)
-                .append(kommun).append(c)
-                .append(forsamling).append(c)
-                .append(enhet).append(c)
-                .append(lakarintyg).append(c)
-                .append(patient).append(c)
-                .append(startdatum).append(c)
-                .append(slutdatum).append(c)
-                .append(alder).append(c)
-                .append(diagnoskapitel).append(c)
-                .append(diagnosavsnitt).append(c)
-                .append(diagnoskategori).append(c)
-                .append(diagnoskod).append(c)
-                .append(sjukskrivningsgrad).append(c)
-                .append(lakarkon).append(c)
-                .append(lakaralder).append(c)
-                .append(Arrays.toString(lakarbefattnings)).append(c)
-                .append(lakarid).append('\n');
+            .append(kommun).append(c)
+            .append(forsamling).append(c)
+            .append(enhet).append(c)
+            .append(lakarintyg).append(c)
+            .append(patient).append(c)
+            .append(startdatum).append(c)
+            .append(slutdatum).append(c)
+            .append(alder).append(c)
+            .append(diagnoskapitel).append(c)
+            .append(diagnosavsnitt).append(c)
+            .append(diagnoskategori).append(c)
+            .append(diagnoskod).append(c)
+            .append(sjukskrivningsgrad).append(c)
+            .append(lakarkon).append(c)
+            .append(lakaralder).append(c)
+            .append(Arrays.toString(lakarbefattnings)).append(c)
+            .append(lakarid).append('\n');
         return sb.toString();
     }
 
     public int getSjukskrivningslangd() {
         return slutdatum - startdatum + 1;
     }
-
 
 
 }

@@ -18,16 +18,15 @@
  */
 package se.inera.statistics.service.user;
 
-import javax.persistence.EntityManager;
+import static org.junit.Assert.assertNull;
 
+import javax.persistence.EntityManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.junit.Assert.assertNull;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserSettingsManagerTest {

@@ -21,7 +21,6 @@ package se.inera.statistics.service.report.util;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +38,7 @@ public enum SjukfallsLangdGroup {
     private static final Logger LOG = LoggerFactory.getLogger(SjukfallsLangdGroup.class);
 
     private static final List<SjukfallsLangdGroup> LONG_SJUKFALLS =
-            Arrays.asList(GROUP5_91TO180, GROUP6_181TO364, GROUP7_365TO730, GROUP8_731PLUS);
+        Arrays.asList(GROUP5_91TO180, GROUP6_181TO364, GROUP7_365TO730, GROUP8_731PLUS);
 
     private final String groupName;
     private final int from;

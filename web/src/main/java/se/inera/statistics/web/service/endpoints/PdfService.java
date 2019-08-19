@@ -24,10 +24,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.DatatypeConverter;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.statistics.web.model.LogData;
 
@@ -45,19 +43,19 @@ public class PdfService {
     @Path("create")
     @PrometheusTimeMethod(help = "API-tjänst för att skapa ett PDF dokument")
     public Response pdf(@FormParam("pdf") String pdf, @FormParam("name") String name,
-            @FormParam("url") String url) {
+        @FormParam("url") String url) {
 
         byte[] array = DatatypeConverter.parseBase64Binary(pdf);
 
         String cleanName = name.replaceAll("Å", "A").replaceAll("Ä", "A").replaceAll("Ö", "O")
-                .replaceAll("å", "a").replaceAll("ä", "a").replaceAll("ö", "o")
-                .replaceAll("[^A-Za-z0-9._]", "");
+            .replaceAll("å", "a").replaceAll("ä", "a").replaceAll("ö", "o")
+            .replaceAll("[^A-Za-z0-9._]", "");
 
         Response.ResponseBuilder response = Response.ok()
-                .entity(array)
-                .type(MediaType.APPLICATION_OCTET_STREAM_TYPE)
-                .header("Content-Length", array.length)
-                .header("Content-Disposition", "attachment; filename=" + cleanName);
+            .entity(array)
+            .type(MediaType.APPLICATION_OCTET_STREAM_TYPE)
+            .header("Content-Length", array.length)
+            .header("Content-Disposition", "attachment; filename=" + cleanName);
 
         LogData logData = new LogData("Printing pdf", url);
         loggingService.frontendLogging(logData);

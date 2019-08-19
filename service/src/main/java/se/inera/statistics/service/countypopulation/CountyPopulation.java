@@ -18,11 +18,10 @@
  */
 package se.inera.statistics.service.countypopulation;
 
-import se.inera.statistics.service.report.model.KonField;
-
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Map;
+import se.inera.statistics.service.report.model.KonField;
 
 public class CountyPopulation {
 

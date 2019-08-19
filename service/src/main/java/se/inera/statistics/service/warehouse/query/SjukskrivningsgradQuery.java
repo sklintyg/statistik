@@ -18,6 +18,13 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -27,15 +34,8 @@ import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-
 public final class SjukskrivningsgradQuery {
+
     static final List<String> GRAD_LABEL = Collections.unmodifiableList(SickLeaveDegree.getLabels());
     static final List<Integer> GRAD = Collections.unmodifiableList(SickLeaveDegree.getDegrees());
     private static final int PERCENT = 100;
@@ -44,7 +44,7 @@ public final class SjukskrivningsgradQuery {
     }
 
     static List<OverviewChartRowExtended> getOverviewSjukskrivningsgrad(Collection<Sjukfall> currentSjukfall,
-            Collection<Sjukfall> previousSjukfall) {
+        Collection<Sjukfall> previousSjukfall) {
         Map<Integer, Counter<Integer>> currentCount = count2(currentSjukfall);
         Map<Integer, Counter<Integer>> previousCount = count2(previousSjukfall);
 
@@ -72,12 +72,12 @@ public final class SjukskrivningsgradQuery {
     }
 
     public static KonDataResponse getSjukskrivningsgrad(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize,
-            SjukfallUtil sjukfallUtil) {
+        SjukfallUtil sjukfallUtil) {
         return getSjukskrivningsgrad(aisle, filter, start, periods, periodSize, sjukfallUtil, false);
     }
 
     public static KonDataResponse getSjukskrivningsgrad(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize,
-            SjukfallUtil sjukfallUtil, boolean all) {
+        SjukfallUtil sjukfallUtil, boolean all) {
         CounterFunction<Integer> toCount;
         if (all) {
             toCount = (sjukfall, counter) -> counter.addAll(new HashSet<>(sjukfall.getSjukskrivningsgrader()));
@@ -97,7 +97,7 @@ public final class SjukskrivningsgradQuery {
     }
 
     public static SimpleKonResponse getSjukskrivningsgradTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate from,
-            int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+        int periods, int periodLength, SjukfallUtil sjukfallUtil) {
         final CounterFunction<Integer> toCount = (sjukfall, counter) -> counter.addAll(new HashSet<>(sjukfall.getSjukskrivningsgrader()));
 
         return sjukfallUtil.calculateSimpleKonResponse(aisle, filter, from, periods, periodLength, toCount, GRAD);

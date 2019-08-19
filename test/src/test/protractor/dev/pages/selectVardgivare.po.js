@@ -22,17 +22,17 @@
 'use strict';
 
 var SelectVardivarePage = function() {
-    this.pageContainer = element(by.css('.valj-vg'));
-    this.container = element(by.css('.select-vardgivare'));
-    this.list = this.container.all(by.repeater('vgInfo in vardgivare'));
+  this.pageContainer = element(by.css('.valj-vg'));
+  this.container = element(by.css('.select-vardgivare'));
+  this.list = this.container.all(by.repeater('vgInfo in vardgivare'));
 
-    this.isAtPage = function() {
-        expect(this.pageContainer.isDisplayed()).toBeTruthy();
-    };
+  this.isAtPage = function() {
+    expect(this.pageContainer.isDisplayed()).toBeTruthy();
+  };
 
-    this.getVardgivareLink = function(number) {
-        return this.list.get(number).element(by.css('a'));
-    };
+  this.getVardgivareLink = function(number) {
+    return this.list.get(number).element(by.css('a'));
+  };
 };
 
 module.exports = new SelectVardivarePage();

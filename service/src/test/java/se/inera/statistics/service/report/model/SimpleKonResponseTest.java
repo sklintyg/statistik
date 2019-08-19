@@ -18,20 +18,20 @@
  */
 package se.inera.statistics.service.report.model;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class SimpleKonResponseTest {
 
     @Test
     public void testCreateWithEmptyInput() {
         //Given
-        final KonDataResponse diagnosgruppResponse = new KonDataResponse(AvailableFilters.getForSjukfall(), new ArrayList<>(), new ArrayList<>());
+        final KonDataResponse diagnosgruppResponse = new KonDataResponse(AvailableFilters.getForSjukfall(), new ArrayList<>(),
+            new ArrayList<>());
 
         //When
         final SimpleKonResponse result = SimpleKonResponse.create(diagnosgruppResponse);
@@ -45,7 +45,8 @@ public class SimpleKonResponseTest {
     public void testCreateGroupDataSummed() {
         //Given
         final List<String> groups = Arrays.asList("Group1");
-        final List<KonDataRow> rows = Arrays.asList(new KonDataRow("rowname1", Arrays.asList(new KonField(1, 2))), new KonDataRow("rowname2", Arrays.asList(new KonField(3, 4))));
+        final List<KonDataRow> rows = Arrays.asList(new KonDataRow("rowname1", Arrays.asList(new KonField(1, 2))),
+            new KonDataRow("rowname2", Arrays.asList(new KonField(3, 4))));
         final KonDataResponse diagnosgruppResponse = new KonDataResponse(AvailableFilters.getForSjukfall(), groups, rows);
 
         //When
@@ -56,8 +57,8 @@ public class SimpleKonResponseTest {
         assertEquals("Group1", result.getGroups().get(0));
         assertEquals(1, result.getRows().size());
         assertEquals("Group1", result.getRows().get(0).getName());
-        assertEquals(1+3, result.getRows().get(0).getData().getFemale());
-        assertEquals(2+4, result.getRows().get(0).getData().getMale());
+        assertEquals(1 + 3, result.getRows().get(0).getData().getFemale());
+        assertEquals(2 + 4, result.getRows().get(0).getData().getMale());
     }
 
     @Test

@@ -19,20 +19,6 @@
 package se.inera.statistics.fileservice;
 
 import com.google.common.io.ByteStreams;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.PoolingClientConnectionManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -49,6 +35,19 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.PoolingClientConnectionManager;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class HsaUnitSource {
 
@@ -63,7 +62,7 @@ public final class HsaUnitSource {
 
     public static InputStream getUnits(String certFileName, String certPass, String trustStoreName, String trustPass, String url) {
         try (InputStream keystoreInput = new BufferedInputStream(new FileInputStream(certFileName));
-                InputStream truststoreInput = new BufferedInputStream(new FileInputStream(trustStoreName))) {
+            InputStream truststoreInput = new BufferedInputStream(new FileInputStream(trustStoreName))) {
             final HttpParams httpParams = new BasicHttpParams();
 
             final KeyStore keystore = KeyStore.getInstance("pkcs12");
@@ -85,7 +84,7 @@ public final class HsaUnitSource {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 try (InputStream instream = entity.getContent();
-                     OutputStream receivedZipFile = new FileOutputStream(fetchedFile)) {
+                    OutputStream receivedZipFile = new FileOutputStream(fetchedFile)) {
                     byte[] buffer = new byte[BUFFER_SIZE];
 
                     int len;
@@ -100,7 +99,7 @@ public final class HsaUnitSource {
                     byte[] hsaUnitsBytes = ByteStreams.toByteArray(stream);
                     if (hsaUnitsBytes.length != len) {
                         throw new IOException(
-                                "Reported file length does not match actual read bytes." + len + " vs. " + hsaUnitsBytes.length);
+                            "Reported file length does not match actual read bytes." + len + " vs. " + hsaUnitsBytes.length);
                     } else {
                         return new ByteArrayInputStream(hsaUnitsBytes);
                     }
@@ -108,7 +107,7 @@ public final class HsaUnitSource {
             }
             throw new IOException("Response entity is null.");
         } catch (CertificateException | NoSuchAlgorithmException | IOException | UnrecoverableKeyException | KeyStoreException
-                | KeyManagementException e) {
+            | KeyManagementException e) {
             LOG.error("Failed to get units", e);
             e.printStackTrace();
         }

@@ -30,7 +30,7 @@ public enum IntygType {
 
     AF00213("AF00213", "af00213", "AF00213", "AF00213 Arbetsförmedlingens medicinska utlåtande", true),
     AF00251("AF00251", "af00251", "AF00251", "AF00251 Läkarintyg för deltagare i arbetsmarknadspolitiska program "
-            + "med aktivitetsstöd, utvecklingsersättning eller etableringsersättning", true),
+        + "med aktivitetsstöd, utvecklingsersättning eller etableringsersättning", true),
     DB("DB", "db", "Dödsbevis", "Dödsbevis", true),
     DOI("DOI", "doi", "Dödsorsaksintyg", "Dödsorsaksintyg", true),
     SJUKPENNING(null, null, "FK 7263/7804", "FK 7263/7804 Läkarintyg för sjukpenning", false),
@@ -52,7 +52,7 @@ public enum IntygType {
     private static final ImmutableSet<IntygType> IS_SJUKPENNING = ImmutableSet.of(LISJP, FK7263);
 
     private static final ImmutableList<IntygType> INCLUDED_IN_INTYG_TOTALT_REPORT = ImmutableList.of(
-            AF00213, AF00251, AG114, AG7804, DB, DOI, LISJP, LUSE, LUAE_NA, LUAE_FS, TSTRK1009, TSTRK1007, TSTRK1031, TSTRK1062);
+        AF00213, AF00251, AG114, AG7804, DB, DOI, LISJP, LUSE, LUAE_NA, LUAE_FS, TSTRK1009, TSTRK1007, TSTRK1031, TSTRK1062);
 
     private static final ImmutableList<IntygType> INCLUDED_IN_INTYG_FILTER = ImmutableList.of(SJUKPENNING, LUSE, LUAE_NA, LUAE_FS);
 

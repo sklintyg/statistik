@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
-
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.Kon;
@@ -68,7 +67,7 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter {
     private static Map<DiagnosisGroup, List<Integer>> createDiagnosisGroupsMap(boolean includeUnknownGroup) {
         final Map<DiagnosisGroup, List<Integer>> diagnosisGroups = new LinkedHashMap<>();
 
-        for (DiagnosisGroup group: DiagnosisGroup.values()) {
+        for (DiagnosisGroup group : DiagnosisGroup.values()) {
             diagnosisGroups.put(group, Icd10.getKapitelIntIds(group.getChapters()));
         }
 
@@ -81,10 +80,10 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter {
 
     static List<String> getDiagnosisChartGroupsAsList(boolean includeUnknownGroup) {
         return (includeUnknownGroup ? DIAGNOSIS_GROUPS_WITH_UNKNOWN : DIAGNOSIS_GROUPS_WITHOUT_UNKNOWN)
-                .keySet()
-                .stream()
-                .map(DiagnosisGroup::getName)
-                .collect(Collectors.toList());
+            .keySet()
+            .stream()
+            .map(DiagnosisGroup::getName)
+            .collect(Collectors.toList());
     }
 
     public DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, FilterSettings filterSettings) {
@@ -95,8 +94,8 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter {
         final FilterDataResponse filterResponse = new FilterDataResponse(filter);
         final Range range = filterSettings.getRange();
         return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(),
-                diagnosisGroups.getAvailableFilters(), filterResponse,
-                Converters.combineMessages(filterSettings.getMessage()));
+            diagnosisGroups.getAvailableFilters(), filterResponse,
+            Converters.combineMessages(filterSettings.getMessage()));
     }
 
     public List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> diagnosisGroups) {
@@ -126,7 +125,7 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter {
                 int alternation = mergedRow.getAlternation() + row.getAlternation();
 
                 OverviewChartRowExtended newRow = new OverviewChartRowExtended(mergedRow.getName(),
-                        quantity, alternation, mergedRow.getColor());
+                    quantity, alternation, mergedRow.getColor());
                 mergedGroups.put(newRow.getName(), newRow);
             }
         }

@@ -24,12 +24,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.web.model.LogData;
@@ -44,12 +42,13 @@ public class LoggingService {
     @Autowired
     private LoginServiceUtil loginServiceUtil;
 
-    public LoggingService() { }
+    public LoggingService() {
+    }
 
     @POST
     @Path("log")
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     @PrometheusTimeMethod(help = "API-tjänst för att logga från frontend app")
     public Response frontendLogging(LogData logData) {
         String user = loginServiceUtil.isLoggedIn() ? getHsaIdForLoggedInUser().getId() : "Anonymous";

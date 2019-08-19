@@ -21,7 +21,6 @@ package se.inera.statistics.web.service.responseconverter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
@@ -61,7 +60,7 @@ public class DiagnosisSubGroupsConverter {
         final Range range = filterSettings.getRange();
         final List<Message> combinedMessage = Converters.combineMessages(filterSettings.getMessage(), message);
         return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(),
-                diagnosisGroups.getAvailableFilters(), filterResponse, combinedMessage);
+            diagnosisGroups.getAvailableFilters(), filterResponse, combinedMessage);
     }
 
     private ChartData extractChartData(DiagnosgruppResponse data, List<Integer> topIndexes, Kon sex) {
@@ -91,7 +90,7 @@ public class DiagnosisSubGroupsConverter {
     private static List<Integer> createList(int size, int value) {
         ArrayList<Integer> list = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-             list.add(value);
+            list.add(value);
         }
         return list;
     }
@@ -136,9 +135,9 @@ public class DiagnosisSubGroupsConverter {
 
     private static List<Integer> getColumnIndexesSortedBySum(SimpleKonResponse simpleKonDataRowSimpleKonResponse) {
         return getIndexedSums(simpleKonDataRowSimpleKonResponse).stream()
-                .sorted((o1, o2) -> o2.getValue() - o1.getValue())
-                .map(Pair::getKey)
-                .collect(Collectors.toList());
+            .sorted((o1, o2) -> o2.getValue() - o1.getValue())
+            .map(Pair::getKey)
+            .collect(Collectors.toList());
     }
 
     private static List<Pair<Integer, Integer>> getIndexedSums(SimpleKonResponse simpleKonDataRowSimpleKonResponse) {

@@ -20,6 +20,15 @@ package se.inera.statistics.service.caching;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import net.javacrumbs.shedlock.core.SchedulerLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,22 +48,13 @@ import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallIterator;
 
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
 /**
  * This is a common cache used to get better performance in ST.
  * It is a shared cache to make it easier to maintain the memory footprint.
  */
 @Component
 public class Cache {
+
     private static final Logger LOG = LoggerFactory.getLogger(Cache.class);
     private static final String REDIS_KEY_PREFIX = "INTYGSSTATISTIK_";
     private static final String AISLE = REDIS_KEY_PREFIX + "AISLE_";
@@ -106,7 +106,7 @@ public class Cache {
 
     public List<SjukfallGroup> getSjukfallGroups(SjukfallGroupCacheKey key) {
         LOG.info("Getting sjukfallgroups: {}", key.getKey());
-        return lookup(SJUKFALLGROUP + key.getKey(), () ->  loadSjukfallgroups(key));
+        return lookup(SJUKFALLGROUP + key.getKey(), () -> loadSjukfallgroups(key));
     }
 
     public List<HsaIdEnhet> getVgEnhets(HsaIdVardgivare vardgivareId, Function<HsaIdVardgivare, List<Enhet>> loader) {
@@ -122,13 +122,13 @@ public class Cache {
     }
 
     public Collection<Enhet> getEnhetsWithHsaId(final Collection<HsaIdEnhet> enhetIds,
-                                                final Function<Collection<HsaIdEnhet>, Collection<Enhet>> loader) {
+        final Function<Collection<HsaIdEnhet>, Collection<Enhet>> loader) {
         final ValueOperations<Object, Object> ops = template.opsForValue();
         final List<Enhet> cachedEnhets = ops.multiGet(enhetIds.stream().map(v -> ENHET + v.getId()).collect(Collectors.toList()))
-                .stream()
-                .filter(Objects::nonNull)
-                .map(Enhet.class::cast)
-                .collect(Collectors.toList());
+            .stream()
+            .filter(Objects::nonNull)
+            .map(Enhet.class::cast)
+            .collect(Collectors.toList());
 
         if (cachedEnhets.size() == enhetIds.size()) {
             LOG.info("All enhets cached");
@@ -140,8 +140,8 @@ public class Cache {
         hsaIdEnhetsNotInCache.removeAll(hsaIdsInCache);
 
         final Set<Enhet> enhets = loader.apply(hsaIdEnhetsNotInCache).stream()
-                .peek(e -> ops.set(ENHET + e.getEnhetId().getId(), e))
-                .collect(Collectors.toSet());
+            .peek(e -> ops.set(ENHET + e.getEnhetId().getId(), e))
+            .collect(Collectors.toSet());
 
         enhets.addAll(cachedEnhets);
 
@@ -157,11 +157,11 @@ public class Cache {
         final Aisle aisle = key.getAisle();
         final FilterPredicates filter = key.getFilter();
         return Lists
-                .newArrayList(new SjukfallIterator(from, periods, periodSize, aisle, filter));
+            .newArrayList(new SjukfallIterator(from, periods, periodSize, aisle, filter));
     }
 
     // returns a typed object from cache, or loads a value if no such hashKey exists
-    private <T>  T lookup(final Object key, final Supplier<T> loader) {
+    private <T> T lookup(final Object key, final Supplier<T> loader) {
         final ValueOperations<Object, Object> ops = template.opsForValue();
         final Object value = ops.get(key);
         if (value != null) {
@@ -187,12 +187,12 @@ public class Cache {
         LOG.info("VgEnhets not cached: {}", vardgivareId);
         final ValueOperations<Object, Object> ops = template.opsForValue();
         return loader.apply(vardgivareId).stream()
-                .peek(e -> {
-                    final String key = ENHET + e.getEnhetId().getId();
-                    ops.set(key, e);
-                    template.expire(key, DEFAULT_TTL, TimeUnit.MILLISECONDS);
-                }).map(Enhet::getEnhetId)
-                .collect(Collectors.toList());
+            .peek(e -> {
+                final String key = ENHET + e.getEnhetId().getId();
+                ops.set(key, e);
+                template.expire(key, DEFAULT_TTL, TimeUnit.MILLISECONDS);
+            }).map(Enhet::getEnhetId)
+            .collect(Collectors.toList());
     }
 
     public <T> T getNationalData(Supplier<T> supplier) {

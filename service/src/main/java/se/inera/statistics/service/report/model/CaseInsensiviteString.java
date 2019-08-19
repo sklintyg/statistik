@@ -18,9 +18,8 @@
  */
 package se.inera.statistics.service.report.model;
 
-import java.util.Locale;
-
 import com.google.common.base.Objects;
+import java.util.Locale;
 
 public class CaseInsensiviteString {
 

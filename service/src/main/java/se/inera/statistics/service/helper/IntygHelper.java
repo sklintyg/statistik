@@ -23,10 +23,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.model.Kon;

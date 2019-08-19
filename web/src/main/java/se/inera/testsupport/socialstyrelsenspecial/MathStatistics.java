@@ -23,6 +23,7 @@ import java.util.List;
 
 // From http://stackoverflow.com/questions/7988486/how-do-you-calculate-the-variance-median-and-standard-deviation-in-c-or-java/7988556
 public class MathStatistics {
+
     private Double[] data;
     private int size;
 

@@ -19,11 +19,11 @@
 
 angular.module('StatisticsApp').controller('selectVgCtrl',
     /** @ngInject */
-    function ($scope, AppModel) {
-        'use strict';
+    function($scope, AppModel) {
+      'use strict';
 
-        if (!AppModel.get().isLoggedIn) {
-            $scope.loginClicked();
-        }
+      if (!AppModel.get().isLoggedIn) {
+        $scope.loginClicked();
+      }
     }
 );

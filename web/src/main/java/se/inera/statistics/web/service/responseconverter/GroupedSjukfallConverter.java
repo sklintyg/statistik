@@ -19,7 +19,6 @@
 package se.inera.statistics.web.service.responseconverter;
 
 import java.util.Collections;
-
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.error.Message;

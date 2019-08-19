@@ -19,17 +19,6 @@
 package se.inera.statistics.service.warehouse;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import se.inera.statistics.hsa.model.HsaIdAny;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdLakare;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.helper.ConversionHelper;
-
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,6 +28,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.sql.DataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import se.inera.statistics.hsa.model.HsaIdAny;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.helper.ConversionHelper;
 
 @Component
 public class WidelineLoader {
@@ -60,9 +59,9 @@ public class WidelineLoader {
             facts.put(vgid, new ArrayList<>());
         }
         try (
-                Connection connection = dataSource.getConnection();
-                PreparedStatement stmt = prepareStatementForVg(connection, vgids);
-                ResultSet resultSet = stmt.executeQuery()) {
+            Connection connection = dataSource.getConnection();
+            PreparedStatement stmt = prepareStatementForVg(connection, vgids);
+            ResultSet resultSet = stmt.executeQuery()) {
             while (resultSet.next()) {
                 String vardgivare = resultSet.getString("vardgivareid");
                 final Fact fact = toFact(resultSet);
@@ -96,12 +95,12 @@ public class WidelineLoader {
         String lakareId = resultSet.getString("lakareid");
 
         return new Fact(id, ConversionHelper.extractLan(lkf), ConversionHelper.extractKommun(lkf),
-                ConversionHelper.extractForsamling(lkf), new HsaIdEnhet(enhet), intyg,
-                ConversionHelper.patientIdToInt(patientid), startdatum, slutdatum, kon, alder,
-                factConverter.extractKapitel(diagnoskapitel), factConverter.extractAvsnitt(diagnosavsnitt),
-                factConverter.extractKategori(diagnoskategori), factConverter.extractKod(diagnoskod, diagnoskategori),
-                sjukskrivningsgrad, lakarkon, lakaralder, factConverter.parseBefattning(lakarbefattning, correlationId),
-                new HsaIdLakare(lakareId));
+            ConversionHelper.extractForsamling(lkf), new HsaIdEnhet(enhet), intyg,
+            ConversionHelper.patientIdToInt(patientid), startdatum, slutdatum, kon, alder,
+            factConverter.extractKapitel(diagnoskapitel), factConverter.extractAvsnitt(diagnosavsnitt),
+            factConverter.extractKategori(diagnoskategori), factConverter.extractKod(diagnoskod, diagnoskategori),
+            sjukskrivningsgrad, lakarkon, lakaralder, factConverter.parseBefattning(lakarbefattning, correlationId),
+            new HsaIdLakare(lakareId));
     }
 
     private List<Aisle> toAisles(Map<HsaIdVardgivare, List<Fact>> facts) {
@@ -114,12 +113,12 @@ public class WidelineLoader {
     }
 
     @SuppressFBWarnings(value = "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
-            justification = "We know what we're doing. No user supplied data.")
+        justification = "We know what we're doing. No user supplied data.")
     private PreparedStatement prepareStatementForVg(Connection connection, List<HsaIdVardgivare> vgids) throws SQLException {
         final String vgidsJoined = String.join("', '", vgids.stream().map(HsaIdAny::getId).collect(Collectors.toList()));
         String sql = "SELECT id, correlationid, lkf, enhet, lakarintyg, patientid, startdatum, slutdatum, kon, alder, diagnoskapitel, "
-                + "diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattning, vardgivareid, "
-                + "lakareid, active FROM wideline WHERE active AND vardgivareid IN ('" + vgidsJoined + "')";
+            + "diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattning, vardgivareid, "
+            + "lakareid, active FROM wideline WHERE active AND vardgivareid IN ('" + vgidsJoined + "')";
 
         int maxIntyg = Integer.parseInt(System.getProperty("statistics.test.max.fact", "0"));
         if (maxIntyg > 0) {
@@ -136,10 +135,10 @@ public class WidelineLoader {
         final ArrayList<VgNumber> vgs = new ArrayList<>();
 
         final String sql = "SELECT vardgivareid, count(vardgivareid) AS antal FROM intygcommon w1 "
-                + "GROUP BY vardgivareid ORDER BY antal ASC;";
+            + "GROUP BY vardgivareid ORDER BY antal ASC;";
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-             ResultSet resultSet = statement.executeQuery()) {
+            PreparedStatement statement = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+            ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 final String vardgivareid = resultSet.getString("vardgivareid");
                 final int antal = resultSet.getInt("antal");

@@ -18,10 +18,13 @@
  */
 package se.inera.statistics.service.queue;
 
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
+import java.io.IOException;
 import javax.jms.Message;
 import javax.jms.MessageNotWriteableException;
-import java.io.IOException;
-
 import org.apache.activemq.command.ActiveMQTextMessage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,17 +32,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-
 import se.inera.statistics.service.monitoring.MonitoringLogService;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.Receiver;
 import se.inera.statistics.service.processlog.intygsent.ProcessIntygsentLog;
 import se.inera.statistics.service.processlog.message.MessageEventType;
 import se.inera.statistics.service.processlog.message.ProcessMessageLog;
-
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JmsReceiverTest {
@@ -66,7 +64,7 @@ public class JmsReceiverTest {
         jmsReceiver.onMessage(rawMessage);
 
         verify(receiver, never())
-                .accept(Mockito.any(EventType.class), Mockito.anyString(), Mockito.anyString(), Mockito.anyLong());
+            .accept(Mockito.any(EventType.class), Mockito.anyString(), Mockito.anyString(), Mockito.anyLong());
     }
 
     @Test
@@ -80,7 +78,7 @@ public class JmsReceiverTest {
         jmsReceiver.onMessage(rawMessage);
 
         verify(receiver, times(1))
-                .accept(Mockito.any(EventType.class), Mockito.eq(intyg), Mockito.eq(correlationId), Mockito.anyLong());
+            .accept(Mockito.any(EventType.class), Mockito.eq(intyg), Mockito.eq(correlationId), Mockito.anyLong());
     }
 
     @Test
@@ -94,7 +92,7 @@ public class JmsReceiverTest {
         jmsReceiver.onMessage(rawMessage);
 
         verify(receiver, times(1))
-                .accept(Mockito.eq(EventType.CREATED), Mockito.eq(intyg), Mockito.eq(correlationId), Mockito.anyLong());
+            .accept(Mockito.eq(EventType.CREATED), Mockito.eq(intyg), Mockito.eq(correlationId), Mockito.anyLong());
     }
 
     @Test
@@ -108,7 +106,7 @@ public class JmsReceiverTest {
         jmsReceiver.onMessage(rawMessage);
 
         verify(receiver, times(1))
-                .accept(Mockito.eq(EventType.REVOKED), Mockito.eq(intyg), Mockito.eq(correlationId), Mockito.anyLong());
+            .accept(Mockito.eq(EventType.REVOKED), Mockito.eq(intyg), Mockito.eq(correlationId), Mockito.anyLong());
     }
 
     @Test
@@ -121,7 +119,7 @@ public class JmsReceiverTest {
         jmsReceiver.onMessage(rawMessage);
 
         verify(processIntygsentLog, times(1))
-                .store(Mockito.eq(correlationId), Mockito.eq(recipient), Mockito.anyLong());
+            .store(Mockito.eq(correlationId), Mockito.eq(recipient), Mockito.anyLong());
     }
 
     @Test
@@ -134,7 +132,7 @@ public class JmsReceiverTest {
         jmsReceiver.onMessage(rawMessage);
 
         verify(processMessageLog, times(1))
-                .store(Mockito.eq(MessageEventType.SENT), Mockito.eq(messageText), Mockito.eq(messageId), Mockito.anyLong());
+            .store(Mockito.eq(MessageEventType.SENT), Mockito.eq(messageText), Mockito.eq(messageId), Mockito.anyLong());
     }
 
     private Message getSentMessage(String messageText, String messageId) throws MessageNotWriteableException, IOException {
@@ -160,7 +158,8 @@ public class JmsReceiverTest {
         return message;
     }
 
-    private Message getIntygMessage(String intyg, String correlationId, String certificateType, String action) throws MessageNotWriteableException, IOException {
+    private Message getIntygMessage(String intyg, String correlationId, String certificateType, String action)
+        throws MessageNotWriteableException, IOException {
 
         ActiveMQTextMessage message = new ActiveMQTextMessage();
 

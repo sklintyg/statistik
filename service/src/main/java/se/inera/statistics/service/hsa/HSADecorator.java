@@ -18,19 +18,9 @@
  */
 package se.inera.statistics.service.hsa;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import static se.inera.statistics.service.helper.certificate.JsonDocumentHelper.getEnhetId;
+import static se.inera.statistics.service.helper.certificate.JsonDocumentHelper.getLakarId;
+import static se.inera.statistics.service.helper.certificate.JsonDocumentHelper.getVardgivareId;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -43,6 +33,18 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import se.inera.intygstjanster.ts.services.RegisterTSBasResponder.v1.RegisterTSBasType;
 import se.inera.intygstjanster.ts.services.RegisterTSDiabetesResponder.v1.RegisterTSDiabetesType;
 import se.inera.statistics.service.helper.RegisterCertificateResolver;
@@ -50,12 +52,9 @@ import se.inera.statistics.service.helper.certificate.TsBasHelper;
 import se.inera.statistics.service.helper.certificate.TsDiabetesHelper;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 
-import static se.inera.statistics.service.helper.certificate.JsonDocumentHelper.getEnhetId;
-import static se.inera.statistics.service.helper.certificate.JsonDocumentHelper.getLakarId;
-import static se.inera.statistics.service.helper.certificate.JsonDocumentHelper.getVardgivareId;
-
 @Component
 public class HSADecorator {
+
     private static final Logger LOG = LoggerFactory.getLogger(HSADecorator.class);
 
     private static ObjectMapper hsaInfoMapper = getHsaInfoMapper();
@@ -119,12 +118,12 @@ public class HSADecorator {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
-                .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
-                .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
-                .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
-                .withCreatorVisibility(JsonAutoDetect.Visibility.ANY));
+            .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
+            .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
+            .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
+            .withCreatorVisibility(JsonAutoDetect.Visibility.ANY));
         mapper.registerModule(new JavaTimeModule().addSerializer(LocalDateTime.class, new OurLocalDateTimeSerializer())
-                .addDeserializer(LocalDateTime.class, new OurLocalDateTimeDeserializer()));
+            .addDeserializer(LocalDateTime.class, new OurLocalDateTimeDeserializer()));
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return mapper;
     }
@@ -208,7 +207,7 @@ public class HSADecorator {
 
         @Override
         public void serialize(LocalDateTime localDateTime, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
-                throws IOException {
+            throws IOException {
             jsonGenerator.writeString(localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         }
 

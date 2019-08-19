@@ -18,9 +18,8 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import se.inera.statistics.hsa.model.HsaIdAny;
-
 import java.util.List;
+import se.inera.statistics.hsa.model.HsaIdAny;
 
 public abstract class AbstractWidlineConverter {
 

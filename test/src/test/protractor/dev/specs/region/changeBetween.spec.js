@@ -28,32 +28,30 @@ var navmenu = pages.navmenu;
 
 describe('Logga in med och utan regionsaccess ', function() {
 
-    beforeAll(function() {
-        browser.get('/');
-    });
+  beforeAll(function() {
+    browser.get('/');
+  });
 
+  it('Processledare', function() {
+    // Login as user without access
+    features.user.loginUser1(true);
 
-    it('Processledare', function() {
-        // Login as user without access
-        features.user.loginUser1(true);
+    navmenu.nationalTab.click();
+    navmenu.verksamhetTab.click();
 
-        navmenu.nationalTab.click();
-        navmenu.verksamhetTab.click();
+    pages.verksamhetOverview.isAtPage();
 
-        pages.verksamhetOverview.isAtPage();
+    // Logga ut
+    features.user.makeSureNotLoggedIn();
 
-        // Logga ut
-        features.user.makeSureNotLoggedIn();
+    // Loggain med region
+    features.user.loginUser3(false);
 
-        // Loggain med region
-        features.user.loginUser3(false);
+    navmenu.nationalTab.click();
+    navmenu.regionTab.click();
+  });
 
-        navmenu.nationalTab.click();
-        navmenu.regionTab.click();
-    });
-
-
-    afterAll(function() {
-        features.user.makeSureNotLoggedIn();
-    });
+  afterAll(function() {
+    features.user.makeSureNotLoggedIn();
+  });
 });

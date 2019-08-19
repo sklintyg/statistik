@@ -17,35 +17,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-describe('Model: AppModel', function () {
-    'use strict';
+describe('Model: AppModel', function() {
+  'use strict';
 
-    var AppModel;
+  var AppModel;
 
-    // load the controller's module
-    beforeEach(module('StatisticsApp'));
+  // load the controller's module
+  beforeEach(module('StatisticsApp'));
 
-    beforeEach(inject(function(_AppModel_) {
-        AppModel = _AppModel_;
-    }));
+  beforeEach(inject(function(_AppModel_) {
+    AppModel = _AppModel_;
+  }));
 
-    it('get default values', function() {
-        expect(AppModel.get().isLoggedIn).toBeFalsy();
-        expect(AppModel.get().loginUrl).toEqual('');
-        expect(AppModel.get().loginVisible).toBeFalsy();
+  it('get default values', function() {
+    expect(AppModel.get().isLoggedIn).toBeFalsy();
+    expect(AppModel.get().loginUrl).toEqual('');
+    expect(AppModel.get().loginVisible).toBeFalsy();
+  });
+
+  it('payload', function() {
+
+    AppModel.set({
+      loggedIn: true,
+      loginUrl: 'loginUrl',
+      loginVisible: true
     });
 
-    it('payload', function() {
-
-        AppModel.set({
-            loggedIn: true,
-            loginUrl: 'loginUrl',
-            loginVisible: true
-        });
-
-        expect(AppModel.get().isLoggedIn).toBeTruthy();
-        expect(AppModel.get().loginUrl).toEqual('loginUrl');
-        expect(AppModel.get().loginVisible).toBeTruthy();
-    });
+    expect(AppModel.get().isLoggedIn).toBeTruthy();
+    expect(AppModel.get().loginUrl).toEqual('loginUrl');
+    expect(AppModel.get().loginVisible).toBeTruthy();
+  });
 
 });

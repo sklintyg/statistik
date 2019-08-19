@@ -17,343 +17,344 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 /* globals Highcharts */
 angular.module('StatisticsApp').controller('singleLineChartCtrl',
     /** @ngInject */
-    function ($scope, $rootScope, $routeParams, $timeout, $window, $filter, statisticsData, config, $location,
+    function($scope, $rootScope, $routeParams, $timeout, $window, $filter, statisticsData, config, $location,
         messageService, chartFactory, pdfFactory, _, ControllerCommons, filterViewState, $route, UserModel) {
-        'use strict';
+      'use strict';
 
-        var chart;
+      var chart;
 
-        var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
-        var isRegion = ControllerCommons.isShowingRegion($location);
+      var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
+      var isRegion = ControllerCommons.isShowingRegion($location);
 
-        var defaultChartType = 'line';
-        var chartTypeInfo = ControllerCommons.getChartTypeInfo($routeParams, config, defaultChartType, isVerksamhet);
-        $scope.activeChartType = chartTypeInfo.activeChartType;
+      var defaultChartType = 'line';
+      var chartTypeInfo = ControllerCommons.getChartTypeInfo($routeParams, config, defaultChartType, isVerksamhet);
+      $scope.activeChartType = chartTypeInfo.activeChartType;
 
-        $scope.status = {
-            isTableOpen: true,
-            isChartCollapsed: false
+      $scope.status = {
+        isTableOpen: true,
+        isChartCollapsed: false
+      };
+
+      $scope.chartContainers = [
+        {id: 'chart1', name: 'diagram'}
+      ];
+
+      var paintChart = function(chartCategories, chartSeries, doneLoadingCallback) {
+        var yAxisTitleUnit = config.chartYAxisTitleUnit ? config.chartYAxisTitleUnit : 'sjukfall';
+        var chartConfigOptions = {
+          categories: chartCategories,
+          series: chartSeries,
+          type: chartTypeInfo.activeHighchartType,
+          doneLoadingCallback: doneLoadingCallback,
+          overview: false,
+          percentChart: chartTypeInfo.usePercentChart,
+          stacked: chartTypeInfo.stacked,
+          verticalLabel: false,
+          labelMaxLength: null,
+          unit: yAxisTitleUnit,
+          maxWidthPercentage: 80
         };
 
-        $scope.chartContainers = [
-            {id: 'chart1', name: 'diagram'}
-        ];
-
-        var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
-            var yAxisTitleUnit = config.chartYAxisTitleUnit ? config.chartYAxisTitleUnit : 'sjukfall';
-            var chartConfigOptions = {
-                categories: chartCategories,
-                series: chartSeries,
-                type: chartTypeInfo.activeHighchartType,
-                doneLoadingCallback: doneLoadingCallback,
-                overview: false,
-                percentChart: chartTypeInfo.usePercentChart,
-                stacked: chartTypeInfo.stacked,
-                verticalLabel: false,
-                labelMaxLength: null,
-                unit: yAxisTitleUnit,
-                maxWidthPercentage: 80
-            };
-
-            var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
-            chartOptions.legend.enabled = false;
-            if (config.chartYAxisTitle) {
-                chartOptions.subtitle.text = config.chartYAxisTitle;
-            }
-            chartOptions.text = '#008391';
-            chartOptions.tooltip.text = '#000';
-            return new Highcharts.Chart(chartOptions);
-        };
-
-        var updateChart = function (ajaxResult, doneLoadingCallback) {
-            $scope.series = chartFactory.addColor(ajaxResult.series);
-            chartFactory.setColorToTotalCasesSeries($scope.series);
-            destroyChart(chart);
-            chart = paintChart(ajaxResult.categories, $scope.series, doneLoadingCallback);
-
-            $scope.series = chart.series;
-        };
-
-        $scope.switchChartType = function (chartType) {
-            ControllerCommons.rerouteWhenNeededForChartTypeChange($scope.activeChartType, chartType, config.exchangeableViews, $location, $routeParams);
-        };
-
-        $scope.showInLegend = function(index) {
-            return chart && chartFactory.showInLegend(chart.series, index);
-        };
-
-        var populatePageWithDataSuccess = function (result) {
-            ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.filterhash,
-                result.filter.diagnoser, result.allAvailableDxsSelectedInFilter,
-                result.filteredEnhets, result.allAvailableEnhetsSelectedInFilter,
-                result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter,
-                result.filter.aldersgrupp, result.allAvailableAgeGroupsSelectedInFilter,
-                result.filter.intygstyper, result.allAvailableIntygTypesSelectedInFilter);
-
-            var messages = ControllerCommons.getResultMessageList(result, messageService);
-            $scope.resultMessageList = ControllerCommons.removeFilterMessages(messages);
-            filterViewState.setMessages(messages);
-
-            $scope.subTitle = angular.isFunction(config.suffixTitle) ? config.suffixTitle($routeParams.kapitelId) : config.title;
-            //Period should be on a separate row (INTYG-3288)
-            $scope.subTitlePeriod = result.period;
-            if (angular.isFunction(config.chartFootnotesExtra)) {
-                var footnotesExtra = config.chartFootnotesExtra(result, isVerksamhet, isRegion, $filter);
-                if (footnotesExtra) {
-                    $scope.chartFootnotes.push(footnotesExtra);
-                }
-            }
-            $timeout(function() {
-                ControllerCommons.updateDataTable($scope, result.tableData);
-                updateChart(result.chartData, function() {
-                    $scope.doneLoading = true;
-                });
-                $timeout(function() {
-                    $rootScope.$broadcast('pageDataPopulated');
-                });
-            }, 1);
-        };
-
-        var populatePageWithData = function (result) {
-            ControllerCommons.checkNationalResultAndEnableExport($scope, result, isVerksamhet, isRegion, populatePageWithDataSuccess);
-        };
-
-        $scope.toggleSeriesVisibility = function (index) {
-            chartFactory.toggleSeriesVisibility(chart.series[index]);
-        };
-
-
-        $scope.exportChart = function () {
-            chartFactory.exportChart(chart, $scope.viewHeader, $scope.subTitle + ' ' + $scope.subTitlePeriod);
-        };
-
-        $scope.reportActive = function() {
-            return ControllerCommons.reportActive(config.activeSettingProperty);
-        };
-
-        $scope.activateReport = function() {
-            $scope.saving = true;
-            ControllerCommons
-                .activateReport(config.activeSettingProperty)
-                .finally(function() {
-                    $scope.saving = false;
-                    $route.reload();
-                });
-        };
-
-        $scope.$watch(
-            function() { return UserModel.get().settings[config.activeSettingProperty]; },
-            function(newValue, oldValue) {
-                if (newValue !== oldValue) {
-                    $route.reload();
-                }
-            }
-        );
-
-        function refreshVerksamhet() {
-            statisticsData[config.dataFetcherVerksamhet](populatePageWithData, function () {
-                $scope.dataLoadingError = true;
-            });
+        var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
+        chartOptions.legend.enabled = false;
+        if (config.chartYAxisTitle) {
+          chartOptions.subtitle.text = config.chartYAxisTitle;
         }
+        chartOptions.text = '#008391';
+        chartOptions.tooltip.text = '#000';
+        return new Highcharts.Chart(chartOptions);
+      };
 
-        function refreshRegion() {
-            statisticsData[config.dataFetcherRegion](populatePageWithData, function () {
-                $scope.dataLoadingError = true;
-            });
+      var updateChart = function(ajaxResult, doneLoadingCallback) {
+        $scope.series = chartFactory.addColor(ajaxResult.series);
+        chartFactory.setColorToTotalCasesSeries($scope.series);
+        destroyChart(chart);
+        chart = paintChart(ajaxResult.categories, $scope.series, doneLoadingCallback);
+
+        $scope.series = chart.series;
+      };
+
+      $scope.switchChartType = function(chartType) {
+        ControllerCommons.rerouteWhenNeededForChartTypeChange($scope.activeChartType, chartType, config.exchangeableViews, $location,
+            $routeParams);
+      };
+
+      $scope.showInLegend = function(index) {
+        return chart && chartFactory.showInLegend(chart.series, index);
+      };
+
+      var populatePageWithDataSuccess = function(result) {
+        ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.filterhash,
+            result.filter.diagnoser, result.allAvailableDxsSelectedInFilter,
+            result.filteredEnhets, result.allAvailableEnhetsSelectedInFilter,
+            result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter,
+            result.filter.aldersgrupp, result.allAvailableAgeGroupsSelectedInFilter,
+            result.filter.intygstyper, result.allAvailableIntygTypesSelectedInFilter);
+
+        var messages = ControllerCommons.getResultMessageList(result, messageService);
+        $scope.resultMessageList = ControllerCommons.removeFilterMessages(messages);
+        filterViewState.setMessages(messages);
+
+        $scope.subTitle = angular.isFunction(config.suffixTitle) ? config.suffixTitle($routeParams.kapitelId) : config.title;
+        //Period should be on a separate row (INTYG-3288)
+        $scope.subTitlePeriod = result.period;
+        if (angular.isFunction(config.chartFootnotesExtra)) {
+          var footnotesExtra = config.chartFootnotesExtra(result, isVerksamhet, isRegion, $filter);
+          if (footnotesExtra) {
+            $scope.chartFootnotes.push(footnotesExtra);
+          }
         }
+        $timeout(function() {
+          ControllerCommons.updateDataTable($scope, result.tableData);
+          updateChart(result.chartData, function() {
+            $scope.doneLoading = true;
+          });
+          $timeout(function() {
+            $rootScope.$broadcast('pageDataPopulated');
+          });
+        }, 1);
+      };
 
-        if (isVerksamhet) {
-            $scope.exportTableUrl = config.exportTableUrlVerksamhet();
-            refreshVerksamhet();
-        } else if (isRegion) {
-            $scope.exportTableUrl = config.exportTableUrlRegion();
-            refreshRegion();
-        } else {
-            $scope.exportTableUrl = config.exportTableUrl;
-            statisticsData[config.dataFetcher](populatePageWithData, function () {
-                $scope.dataLoadingError = true;
-            });
-        }
-        $scope.exportTableUrl = ControllerCommons.combineUrl($scope.exportTableUrl, $scope.queryString);
+      var populatePageWithData = function(result) {
+        ControllerCommons.checkNationalResultAndEnableExport($scope, result, isVerksamhet, isRegion, populatePageWithDataSuccess);
+      };
 
-        $scope.subTitle = config.title;
-        $scope.chartFootnotes = angular.isFunction(config.chartFootnotes) ? config.chartFootnotes(isVerksamhet) : config.chartFootnotes;
-        $scope.chartFootnotes = Array.isArray($scope.chartFootnotes) ? $scope.chartFootnotes : [];
-        $scope.spinnerText = 'Laddar information...';
-        $scope.doneLoading = false;
-        $scope.dataLoadingError = false;
+      $scope.toggleSeriesVisibility = function(index) {
+        chartFactory.toggleSeriesVisibility(chart.series[index]);
+      };
 
-        $scope.printPdf = function () {
-            pdfFactory.print($scope, chart);
-        };
+      $scope.exportChart = function() {
+        chartFactory.exportChart(chart, $scope.viewHeader, $scope.subTitle + ' ' + $scope.subTitlePeriod);
+      };
 
-        function destroyChart(chartToDestroy) {
-            if (chartToDestroy && typeof chartToDestroy.destroy === 'function') {
-                chartToDestroy.destroy();
-            }
-        }
+      $scope.reportActive = function() {
+        return ControllerCommons.reportActive(config.activeSettingProperty);
+      };
 
-        $scope.$on('$destroy', function() {
-            destroyChart(chart);
+      $scope.activateReport = function() {
+        $scope.saving = true;
+        ControllerCommons
+        .activateReport(config.activeSettingProperty)
+        .finally(function() {
+          $scope.saving = false;
+          $route.reload();
         });
+      };
 
-        // Set filter state
-        filterViewState.set(config.filter);
+      $scope.$watch(
+          function() {
+            return UserModel.get().settings[config.activeSettingProperty];
+          },
+          function(newValue, oldValue) {
+            if (newValue !== oldValue) {
+              $route.reload();
+            }
+          }
+      );
+
+      function refreshVerksamhet() {
+        statisticsData[config.dataFetcherVerksamhet](populatePageWithData, function() {
+          $scope.dataLoadingError = true;
+        });
+      }
+
+      function refreshRegion() {
+        statisticsData[config.dataFetcherRegion](populatePageWithData, function() {
+          $scope.dataLoadingError = true;
+        });
+      }
+
+      if (isVerksamhet) {
+        $scope.exportTableUrl = config.exportTableUrlVerksamhet();
+        refreshVerksamhet();
+      } else if (isRegion) {
+        $scope.exportTableUrl = config.exportTableUrlRegion();
+        refreshRegion();
+      } else {
+        $scope.exportTableUrl = config.exportTableUrl;
+        statisticsData[config.dataFetcher](populatePageWithData, function() {
+          $scope.dataLoadingError = true;
+        });
+      }
+      $scope.exportTableUrl = ControllerCommons.combineUrl($scope.exportTableUrl, $scope.queryString);
+
+      $scope.subTitle = config.title;
+      $scope.chartFootnotes = angular.isFunction(config.chartFootnotes) ? config.chartFootnotes(isVerksamhet) : config.chartFootnotes;
+      $scope.chartFootnotes = Array.isArray($scope.chartFootnotes) ? $scope.chartFootnotes : [];
+      $scope.spinnerText = 'Laddar information...';
+      $scope.doneLoading = false;
+      $scope.dataLoadingError = false;
+
+      $scope.printPdf = function() {
+        pdfFactory.print($scope, chart);
+      };
+
+      function destroyChart(chartToDestroy) {
+        if (chartToDestroy && typeof chartToDestroy.destroy === 'function') {
+          chartToDestroy.destroy();
+        }
+      }
+
+      $scope.$on('$destroy', function() {
+        destroyChart(chart);
+      });
+
+      // Set filter state
+      filterViewState.set(config.filter);
     }
 );
 
 angular.module('StatisticsApp').casesPerMonthConfig =
     /** @ngInject */
-    function (messageService) {
-    'use strict';
+    function(messageService) {
+      'use strict';
 
-    var conf = {};
-    conf.dataFetcher = 'getNumberOfCasesPerMonth';
-    conf.dataFetcherVerksamhet = 'getNumberOfCasesPerMonthVerksamhet';
-    conf.dataFetcherRegion = 'getNumberOfCasesPerMonthRegion';
-    conf.exportTableUrl = 'api/getNumberOfCasesPerMonth?format=xlsx';
-    conf.exportTableUrlVerksamhet = function () {
+      var conf = {};
+      conf.dataFetcher = 'getNumberOfCasesPerMonth';
+      conf.dataFetcherVerksamhet = 'getNumberOfCasesPerMonthVerksamhet';
+      conf.dataFetcherRegion = 'getNumberOfCasesPerMonthRegion';
+      conf.exportTableUrl = 'api/getNumberOfCasesPerMonth?format=xlsx';
+      conf.exportTableUrlVerksamhet = function() {
         return 'api/verksamhet/getNumberOfCasesPerMonth?format=xlsx';
-    };
-    conf.exportTableUrlRegion = function () {
+      };
+      conf.exportTableUrlRegion = function() {
         return 'api/region/getNumberOfCasesPerMonthRegion?format=xlsx';
-    };
-    conf.title = messageService.getProperty('title.sickleave');
-    conf.chartFootnotesExtra = function(result, isVerksamhet, isRegion, $filter) {
+      };
+      conf.title = messageService.getProperty('title.sickleave');
+      conf.chartFootnotesExtra = function(result, isVerksamhet, isRegion, $filter) {
         if (isRegion) {
-            return $filter('messageFilter')('help.region.sjukfall-totalt', '', '', [result.fileUploadDate], '');
+          return $filter('messageFilter')('help.region.sjukfall-totalt', '', '', [result.fileUploadDate], '');
         }
-    };
+      };
 
-    conf.exchangeableViews = [
+      conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/sjukfallPerManad', active: true},
         {description: 'Tvärsnitt', state: '/verksamhet/sjukfallPerManadTvarsnitt', active: false}];
 
-    return conf;
-};
+      return conf;
+    };
 
 angular.module('StatisticsApp').longSickLeavesConfig =
     /** @ngInject */
-    function (messageService) {
-    'use strict';
+    function(messageService) {
+      'use strict';
 
-    var conf = {};
-    conf.dataFetcherVerksamhet = 'getLongSickLeavesDataVerksamhet';
-    conf.exportTableUrlVerksamhet = function () {
+      var conf = {};
+      conf.dataFetcherVerksamhet = 'getLongSickLeavesDataVerksamhet';
+      conf.exportTableUrlVerksamhet = function() {
         return 'api/verksamhet/getLongSickLeavesData?format=xlsx';
-    };
-    conf.title = messageService.getProperty('title.sickleavelength90');
+      };
+      conf.title = messageService.getProperty('title.sickleavelength90');
 
-    conf.exchangeableViews = [
+      conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/langasjukskrivningar', active: true},
         {description: 'Tvärsnitt', state: '/verksamhet/langasjukskrivningartvarsnitt', active: false}];
 
-    return conf;
-};
+      return conf;
+    };
 
 angular.module('StatisticsApp').meddelandenPerMonthConfig =
     /** @ngInject */
-        function (messageService) {
-        'use strict';
+    function(messageService) {
+      'use strict';
 
-        var conf = {};
-        conf.filter = {
-            intygstyper: true,
-            sjukskrivningslangd: false
-        };
-        conf.dataFetcher = 'getNumberOfMeddelandenPerMonth';
-        conf.dataFetcherVerksamhet = 'getNumberOfMeddelandenPerMonthVerksamhet';
-        conf.exportTableUrl = 'api/getNumberOfMeddelandenPerMonth?format=xlsx';
-        conf.chartYAxisTitle = 'Antal meddelanden';
-        conf.exportTableUrlVerksamhet = function () {
-            return 'api/verksamhet/getNumberOfMeddelandenPerMonth?format=xlsx';
-        };
-        conf.title = messageService.getProperty('title.meddelanden');
+      var conf = {};
+      conf.filter = {
+        intygstyper: true,
+        sjukskrivningslangd: false
+      };
+      conf.dataFetcher = 'getNumberOfMeddelandenPerMonth';
+      conf.dataFetcherVerksamhet = 'getNumberOfMeddelandenPerMonthVerksamhet';
+      conf.exportTableUrl = 'api/getNumberOfMeddelandenPerMonth?format=xlsx';
+      conf.chartYAxisTitle = 'Antal meddelanden';
+      conf.exportTableUrlVerksamhet = function() {
+        return 'api/verksamhet/getNumberOfMeddelandenPerMonth?format=xlsx';
+      };
+      conf.title = messageService.getProperty('title.meddelanden');
 
-        conf.exchangeableViews = [
-            {description: 'Tidsserie', state: '/verksamhet/meddelanden', active: true},
-            {description: 'Tvärsnitt', state: '/verksamhet/meddelandenTvarsnitt', active: false}];
+      conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '/verksamhet/meddelanden', active: true},
+        {description: 'Tvärsnitt', state: '/verksamhet/meddelandenTvarsnitt', active: false}];
 
-        return conf;
+      return conf;
     };
 
 angular.module('StatisticsApp').meddelandenPerAmneOchEnhetConfig =
     /** @ngInject */
-        function (messageService) {
-        'use strict';
+    function(messageService) {
+      'use strict';
 
-        var conf = {};
-        conf.filter = {
-            intygstyper: true,
-            sjukskrivningslangd: false
-        };
-        conf.dataFetcherVerksamhet = 'getMeddelandenPerAmneOchEnhetVerksamhet';
-        conf.chartYAxisTitle = 'Antal meddelanden';
-        conf.exportTableUrlVerksamhet = function () {
-            return 'api/verksamhet/getMeddelandenPerAmnePerEnhet?format=xlsx';
-        };
-        conf.title = messageService.getProperty('title.meddelandenperamneochenhet');
-        conf.chartFootnotes = ['help.verksamhet.meddelandenperamneochenhet'];
-        conf.chartYAxisTitleUnit = 'meddelanden';
+      var conf = {};
+      conf.filter = {
+        intygstyper: true,
+        sjukskrivningslangd: false
+      };
+      conf.dataFetcherVerksamhet = 'getMeddelandenPerAmneOchEnhetVerksamhet';
+      conf.chartYAxisTitle = 'Antal meddelanden';
+      conf.exportTableUrlVerksamhet = function() {
+        return 'api/verksamhet/getMeddelandenPerAmnePerEnhet?format=xlsx';
+      };
+      conf.title = messageService.getProperty('title.meddelandenperamneochenhet');
+      conf.chartFootnotes = ['help.verksamhet.meddelandenperamneochenhet'];
+      conf.chartYAxisTitleUnit = 'meddelanden';
 
-        conf.exchangeableViews = [
-            {description: 'Tidsserie', state: '/verksamhet/meddelandenPerAmneOchEnhet', active: true},
-            {description: 'Tvärsnitt', state: '/verksamhet/meddelandenPerAmneOchEnhetTvarsnitt', active: false}];
+      conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '/verksamhet/meddelandenPerAmneOchEnhet', active: true},
+        {description: 'Tvärsnitt', state: '/verksamhet/meddelandenPerAmneOchEnhetTvarsnitt', active: false}];
 
-        return conf;
+      return conf;
     };
 
 angular.module('StatisticsApp').meddelandenPerAmneOchLakareConfig =
     /** @ngInject */
-        function (messageService) {
-        'use strict';
+    function(messageService) {
+      'use strict';
 
-        var conf = {};
-        conf.filter = {
-            intygstyper: true,
-            sjukskrivningslangd: false
-        };
-        conf.activeSettingProperty = 'showMessagesPerLakare';
-        conf.dataFetcherVerksamhet = 'getMeddelandenPerAmneOchLakareVerksamhet';
-        conf.chartYAxisTitle = 'Antal meddelanden';
-        conf.exportTableUrlVerksamhet = function () {
-            return 'api/verksamhet/getMeddelandenPerAmnePerLakare?format=xlsx';
-        };
-        conf.title = messageService.getProperty('title.meddelandenperamneochlakare');
-        conf.chartFootnotes = ['help.verksamhet.meddelandenperamneochlakare'];
-        conf.chartYAxisTitleUnit = 'meddelanden';
+      var conf = {};
+      conf.filter = {
+        intygstyper: true,
+        sjukskrivningslangd: false
+      };
+      conf.activeSettingProperty = 'showMessagesPerLakare';
+      conf.dataFetcherVerksamhet = 'getMeddelandenPerAmneOchLakareVerksamhet';
+      conf.chartYAxisTitle = 'Antal meddelanden';
+      conf.exportTableUrlVerksamhet = function() {
+        return 'api/verksamhet/getMeddelandenPerAmnePerLakare?format=xlsx';
+      };
+      conf.title = messageService.getProperty('title.meddelandenperamneochlakare');
+      conf.chartFootnotes = ['help.verksamhet.meddelandenperamneochlakare'];
+      conf.chartYAxisTitleUnit = 'meddelanden';
 
-        conf.exchangeableViews = [
-            {description: 'Tidsserie', state: '/verksamhet/meddelandenPerAmneOchLakare', active: true},
-            {description: 'Tvärsnitt', state: '/verksamhet/meddelandenPerAmneOchLakareTvarsnitt', active: false}];
+      conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '/verksamhet/meddelandenPerAmneOchLakare', active: true},
+        {description: 'Tvärsnitt', state: '/verksamhet/meddelandenPerAmneOchLakareTvarsnitt', active: false}];
 
-        return conf;
+      return conf;
     };
 
 angular.module('StatisticsApp').intygPerMonthConfig =
     /** @ngInject */
-        function (messageService) {
-        'use strict';
+    function(messageService) {
+      'use strict';
 
-        var conf = {};
-        conf.filter = {
-            intygstyper: false,
-            sjukskrivningslangd: false
-        };
-        conf.dataFetcherVerksamhet = 'getNumberOfIntygPerMonthVerksamhet';
-        conf.chartYAxisTitle = 'Antal intyg';
-        conf.exportTableUrlVerksamhet = function () {
-            return 'api/verksamhet/getNumberOfIntygPerMonth?format=xlsx';
-        };
-        conf.title = messageService.getProperty('title.intyg');
+      var conf = {};
+      conf.filter = {
+        intygstyper: false,
+        sjukskrivningslangd: false
+      };
+      conf.dataFetcherVerksamhet = 'getNumberOfIntygPerMonthVerksamhet';
+      conf.chartYAxisTitle = 'Antal intyg';
+      conf.exportTableUrlVerksamhet = function() {
+        return 'api/verksamhet/getNumberOfIntygPerMonth?format=xlsx';
+      };
+      conf.title = messageService.getProperty('title.intyg');
 
-        conf.exchangeableViews = [
-            {description: 'Tidsserie', state: '/verksamhet/intyg', active: true},
-            {description: 'Tvärsnitt', state: '/verksamhet/intygTvarsnitt', active: false}];
+      conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '/verksamhet/intyg', active: true},
+        {description: 'Tvärsnitt', state: '/verksamhet/intygTvarsnitt', active: false}];
 
-        return conf;
+      return conf;
     };

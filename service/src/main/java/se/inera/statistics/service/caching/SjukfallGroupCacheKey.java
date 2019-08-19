@@ -20,7 +20,6 @@ package se.inera.statistics.service.caching;
 
 import java.time.LocalDate;
 import java.util.Date;
-
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.FilterPredicates;
@@ -41,7 +40,7 @@ public class SjukfallGroupCacheKey {
         this.aisle = aisle;
         this.filter = filter;
         this.key = getToTimeNullSafe(from) + "_" + periods + "_" + periodSize + "_" + getVardgivareIdNullSafe(aisle) + "_"
-                + getHashNullSafe(filter);
+            + getHashNullSafe(filter);
     }
 
     private String getHashNullSafe(FilterPredicates filter) {

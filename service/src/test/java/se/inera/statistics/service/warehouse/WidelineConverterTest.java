@@ -18,6 +18,10 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import static org.junit.Assert.assertEquals;
+
+import java.time.LocalDate;
+import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -32,19 +36,15 @@ import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:warehouse-integration-test.xml", "classpath:icd10.xml" })
+@ContextConfiguration(locations = {"classpath:warehouse-integration-test.xml", "classpath:icd10.xml"})
 @DirtiesContext
 public class WidelineConverterTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(WidelineConverterTest.class);
 
-    WideLine wideLine = new WideLine(1, "{id}", "256002", new HsaIdEnhet("enhet"), 1, EventType.CREATED, "19121212-1212", 4000, 4021, 0, 45, "A00", "A00-A09", "A00-B99", "A0000", 100, 0, 32, "201010", new HsaIdVardgivare("vardgivare"), new HsaIdLakare("lakare"), true);
+    WideLine wideLine = new WideLine(1, "{id}", "256002", new HsaIdEnhet("enhet"), 1, EventType.CREATED, "19121212-1212", 4000, 4021, 0, 45,
+        "A00", "A00-A09", "A00-B99", "A0000", 100, 0, 32, "201010", new HsaIdVardgivare("vardgivare"), new HsaIdLakare("lakare"), true);
     @Autowired
     private WidelineConverter converter;
 
@@ -114,7 +114,7 @@ public class WidelineConverterTest {
         List<String> errors = converter.validate(wideLine);
 
         LOG.error("Error message: {}", errors);
-        assertEquals("N:o of errors: " +  errors.size(), 1, errors.size());
+        assertEquals("N:o of errors: " + errors.size(), 1, errors.size());
     }
 
     @Test
@@ -124,7 +124,7 @@ public class WidelineConverterTest {
         List<String> errors = converter.validate(wideLine);
 
         LOG.error("Error message: {}", errors);
-        assertEquals("N:o of errors: " +  errors.size(), 1, errors.size());
+        assertEquals("N:o of errors: " + errors.size(), 1, errors.size());
     }
 
     @Test
@@ -133,7 +133,7 @@ public class WidelineConverterTest {
         List<String> errors = converter.validate(wideLine);
 
         LOG.error("Error message: {}", errors);
-        assertEquals("N:o of errors: " +  errors.size(), 1, errors.size());
+        assertEquals("N:o of errors: " + errors.size(), 1, errors.size());
     }
 
     @Test

@@ -29,24 +29,24 @@ var headerPage = pages.headerPo;
 
 describe('Grundläggande tester av intygsstatistik: ', function() {
 
-    beforeAll(function() {
-        browser.get('/');
-    });
+  beforeAll(function() {
+    browser.get('/');
+  });
 
-    it('Användaren routas till nationell översikt när man inte anger någon sökväg', function() {
-        pages.overview.isAtPage();
-    });
+  it('Användaren routas till nationell översikt när man inte anger någon sökväg', function() {
+    pages.overview.isAtPage();
+  });
 
-    it('Inloggning fungerar', function() {
-        features.user.makeSureNotLoggedIn();
+  it('Inloggning fungerar', function() {
+    features.user.makeSureNotLoggedIn();
 
-        headerPage.clickLogin();
-        fakeloginPage.isAtPage();
-        features.user.loginUser1(true);
+    headerPage.clickLogin();
+    fakeloginPage.isAtPage();
+    features.user.loginUser1(true);
 
-        pages.verksamhetOverview.isAtPage();
+    pages.verksamhetOverview.isAtPage();
 
-        features.user.makeSureNotLoggedIn();
-    });
+    features.user.makeSureNotLoggedIn();
+  });
 
 });

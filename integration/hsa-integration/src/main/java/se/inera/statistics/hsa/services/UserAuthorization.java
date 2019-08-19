@@ -18,9 +18,8 @@
  */
 package se.inera.statistics.hsa.services;
 
-import se.inera.statistics.hsa.model.Vardenhet;
-
 import java.util.List;
+import se.inera.statistics.hsa.model.Vardenhet;
 
 /**
  * Encapsulates data fetched from GetCredentialsForPersonIncludingProtectedPerson, e.g. a list of Vardenhet the

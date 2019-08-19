@@ -40,10 +40,10 @@ import org.springframework.transaction.annotation.TransactionManagementConfigure
 @EnableTransactionManagement
 @DependsOn("transactionManager")
 @PropertySources({
-        @PropertySource("classpath:default.properties"),
-        @PropertySource("file:${statistics.credentials.file}"),
-        @PropertySource("classpath:version.properties"),
-        @PropertySource("file:${statistics.config.file}"),
+    @PropertySource("classpath:default.properties"),
+    @PropertySource("file:${statistics.credentials.file}"),
+    @PropertySource("classpath:version.properties"),
+    @PropertySource("file:${statistics.config.file}"),
 })
 public class ApplicationConfig implements TransactionManagementConfigurer {
 

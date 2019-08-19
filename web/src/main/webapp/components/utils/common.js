@@ -17,357 +17,365 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 angular.module('StatisticsApp').factory('ControllerCommons',
     /** @ngInject */
     function(_, $cacheFactory, UserModel, UserService, $filter, $location, $route, StaticData, StaticDataService) {
-        'use strict';
+      'use strict';
 
-        var that = this;
+      var that = this;
 
-        this.updateDataTable = function (scope, tableData) {
-            scope.headerrows = tableData.headers;
-            if (scope.headerrows && scope.headerrows.length > 1) {
-                scope.headerrows[0].centerAlign = true;
-            }
-            scope.rows = tableData.rows;
-        };
+      this.updateDataTable = function(scope, tableData) {
+        scope.headerrows = tableData.headers;
+        if (scope.headerrows && scope.headerrows.length > 1) {
+          scope.headerrows[0].centerAlign = true;
+        }
+        scope.rows = tableData.rows;
+      };
 
-        this.htmlsafe = function(string) {
-            return string.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-        };
+      this.htmlsafe = function(string) {
+        return string.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+      };
 
-        this.isNumber = function(n) {
-            return !isNaN(parseFloat(n)) && isFinite(n);
-        };
+      this.isNumber = function(n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
+      };
 
-        this.makeThousandSeparated = function(input) {
-            if (that.isNumber(input)) {
-                var splittedOnDot = input.toString().split('\.');
-                var integerPartThousandSeparated = splittedOnDot[0].split('').reverse().join('')
-                                                    .match(/.{1,3}/g).join('\u00A0').split('').reverse().join('');
-                if (splittedOnDot.length === 1) {
-                    return integerPartThousandSeparated;
-                }
-                return integerPartThousandSeparated + ',' + splittedOnDot[1];
-            }
-            return input;
-        };
+      this.makeThousandSeparated = function(input) {
+        if (that.isNumber(input)) {
+          var splittedOnDot = input.toString().split('\.');
+          var integerPartThousandSeparated = splittedOnDot[0].split('').reverse().join('')
+          .match(/.{1,3}/g).join('\u00A0').split('').reverse().join('');
+          if (splittedOnDot.length === 1) {
+            return integerPartThousandSeparated;
+          }
+          return integerPartThousandSeparated + ',' + splittedOnDot[1];
+        }
+        return input;
+      };
 
-        this.populateActiveFilters = function(scope, statisticsData, filterHash, diagnosIds, isAllAvailableDxsSelectedInFilter,
-                                                filteredEnhets, isAllAvailableEnhetsSelectedInFilter, filteredSjukskrivningslangd, isAllAvailableSjukskrivningslangdsSelectedInFilter,
-                                                filteredAldersgrupp, isAllAvailableAgeGroupsSelectedInFilter, filteredIntygstyp, isAllAvailableIntygTypesSelectedInFilter) {
-            that.populateActiveDiagnosFilter(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter);
-            that.populateActiveEnhetsFilter(scope, filteredEnhets, isAllAvailableEnhetsSelectedInFilter);
-            that.populateActiveSjukskrivningslangdFilter(scope, filterHash, filteredSjukskrivningslangd, isAllAvailableSjukskrivningslangdsSelectedInFilter);
-            that.populateActiveAldersgruppFilter(scope, filterHash, filteredAldersgrupp, isAllAvailableAgeGroupsSelectedInFilter);
-            that.populateActiveIntygstypFilter(scope, filterHash, filteredIntygstyp, isAllAvailableIntygTypesSelectedInFilter);
-        };
+      this.populateActiveFilters = function(scope, statisticsData, filterHash, diagnosIds, isAllAvailableDxsSelectedInFilter,
+          filteredEnhets, isAllAvailableEnhetsSelectedInFilter, filteredSjukskrivningslangd,
+          isAllAvailableSjukskrivningslangdsSelectedInFilter,
+          filteredAldersgrupp, isAllAvailableAgeGroupsSelectedInFilter, filteredIntygstyp, isAllAvailableIntygTypesSelectedInFilter) {
+        that.populateActiveDiagnosFilter(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter);
+        that.populateActiveEnhetsFilter(scope, filteredEnhets, isAllAvailableEnhetsSelectedInFilter);
+        that.populateActiveSjukskrivningslangdFilter(scope, filterHash, filteredSjukskrivningslangd,
+            isAllAvailableSjukskrivningslangdsSelectedInFilter);
+        that.populateActiveAldersgruppFilter(scope, filterHash, filteredAldersgrupp, isAllAvailableAgeGroupsSelectedInFilter);
+        that.populateActiveIntygstypFilter(scope, filterHash, filteredIntygstyp, isAllAvailableIntygTypesSelectedInFilter);
+      };
 
-        this.populateActiveDiagnosFilter = function(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter) {
-            if (isAllAvailableDxsSelectedInFilter) {
-                return;
-            }
-            if (!diagnosIds) {
-                return;
-            }
-            if (diagnosIds.length === 0) {
-                scope.activeDiagnosFilters = null;
-                return;
-            }
-            StaticDataService.get().then(function() {
-                var dxsTexts = StaticData.getDiagnosFilterInformationText(diagnosIds);
-                var foundInfoTextForAllDxs = dxsTexts && diagnosIds && dxsTexts.length === diagnosIds.length;
-                scope.activeDiagnosFilters = foundInfoTextForAllDxs ? dxsTexts : diagnosIds;
-            });
-        };
+      this.populateActiveDiagnosFilter = function(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter) {
+        if (isAllAvailableDxsSelectedInFilter) {
+          return;
+        }
+        if (!diagnosIds) {
+          return;
+        }
+        if (diagnosIds.length === 0) {
+          scope.activeDiagnosFilters = null;
+          return;
+        }
+        StaticDataService.get().then(function() {
+          var dxsTexts = StaticData.getDiagnosFilterInformationText(diagnosIds);
+          var foundInfoTextForAllDxs = dxsTexts && diagnosIds && dxsTexts.length === diagnosIds.length;
+          scope.activeDiagnosFilters = foundInfoTextForAllDxs ? dxsTexts : diagnosIds;
+        });
+      };
 
-        this.populateActiveEnhetsFilter = function(scope, enhetNames, isAllAvailableEnhetsSelectedInFilter) {
-            if (UserModel.get().isProcessledare && isAllAvailableEnhetsSelectedInFilter && that.isShowingVerksamhet($location)) {
-                scope.activeEnhetsFilters = ['Samtliga enheter inom vårdgivaren ' + scope.vgName];
-            } else {
-                scope.activeEnhetsFilters = enhetNames;
-            }
+      this.populateActiveEnhetsFilter = function(scope, enhetNames, isAllAvailableEnhetsSelectedInFilter) {
+        if (UserModel.get().isProcessledare && isAllAvailableEnhetsSelectedInFilter && that.isShowingVerksamhet($location)) {
+          scope.activeEnhetsFilters = ['Samtliga enheter inom vårdgivaren ' + scope.vgName];
+        } else {
+          scope.activeEnhetsFilters = enhetNames;
+        }
 
-            scope.activeEnhetsFiltersAllSelected = isAllAvailableEnhetsSelectedInFilter;
-        };
+        scope.activeEnhetsFiltersAllSelected = isAllAvailableEnhetsSelectedInFilter;
+      };
 
-        this.populateActiveSjukskrivningslangdFilter = function(scope, filterHash, sjukskrivningslangds, isAllAvailableSjukskrivningslangdsSelectedInFilter) {
+      this.populateActiveSjukskrivningslangdFilter =
+          function(scope, filterHash, sjukskrivningslangds, isAllAvailableSjukskrivningslangdsSelectedInFilter) {
             scope.activeSjukskrivningslangdsFilters = null;
             if (isAllAvailableSjukskrivningslangdsSelectedInFilter) {
-                return;
+              return;
             }
             if (sjukskrivningslangds && sjukskrivningslangds.length > 0) {
-                scope.activeSjukskrivningslangdsFilters = sjukskrivningslangds;
+              scope.activeSjukskrivningslangdsFilters = sjukskrivningslangds;
             }
-        };
+          };
 
-        this.populateActiveAldersgruppFilter = function(scope, filterHash, aldersgrupp, isAllAvailableAgeGroupsSelectedInFilter) {
-            scope.activeAldersgruppFilters = null;
-            if (isAllAvailableAgeGroupsSelectedInFilter) {
-                return;
-            }
-            if (aldersgrupp && aldersgrupp.length > 0) {
-                scope.activeAldersgruppFilters = aldersgrupp;
-            }
-        };
+      this.populateActiveAldersgruppFilter = function(scope, filterHash, aldersgrupp, isAllAvailableAgeGroupsSelectedInFilter) {
+        scope.activeAldersgruppFilters = null;
+        if (isAllAvailableAgeGroupsSelectedInFilter) {
+          return;
+        }
+        if (aldersgrupp && aldersgrupp.length > 0) {
+          scope.activeAldersgruppFilters = aldersgrupp;
+        }
+      };
 
-        this.populateActiveIntygstypFilter = function(scope, filterHash, intygstyp, isAllAvailableIntygsTypesSelectedInFilter) {
-            scope.activeIntygstypFilters = null;
-            if (isAllAvailableIntygsTypesSelectedInFilter) {
-                return;
-            }
-            if (intygstyp && intygstyp.length > 0) {
-                scope.activeIntygstypFilters = intygstyp;
-            }
-        };
+      this.populateActiveIntygstypFilter = function(scope, filterHash, intygstyp, isAllAvailableIntygsTypesSelectedInFilter) {
+        scope.activeIntygstypFilters = null;
+        if (isAllAvailableIntygsTypesSelectedInFilter) {
+          return;
+        }
+        if (intygstyp && intygstyp.length > 0) {
+          scope.activeIntygstypFilters = intygstyp;
+        }
+      };
 
-        this.isShowingVerksamhet = function($location) {
-            return this.isShowing($location, 'verksamhet');
-        };
+      this.isShowingVerksamhet = function($location) {
+        return this.isShowing($location, 'verksamhet');
+      };
 
-        this.isShowingRegion = function($location) {
-            return this.isShowing($location, 'region');
-        };
+      this.isShowingRegion = function($location) {
+        return this.isShowing($location, 'region');
+      };
 
-        this.isShowingNationell = function($location) {
-            return this.isShowing($location, 'nationell');
-        };
+      this.isShowingNationell = function($location) {
+        return this.isShowing($location, 'nationell');
+      };
 
-        this.isShowing = function($location, prefix) {
-            return $location.path().indexOf('/' + prefix + '/') === 0;
-        };
+      this.isShowing = function($location, prefix) {
+        return $location.path().indexOf('/' + prefix + '/') === 0;
+      };
 
-        this.isShowingProtectedPage = function(location) {
-            return this.isShowingVerksamhet(location) || this.isShowingRegion(location);
-        };
+      this.isShowingProtectedPage = function(location) {
+        return this.isShowingVerksamhet(location) || this.isShowingRegion(location);
+      };
 
-        this.createQueryStringOfQueryParams = function (queryParams) {
-            return !_.isEmpty(queryParams) ? _.map(queryParams, function (value, key) {
-                return key + '=' + value;
-            }).join('&') : '';
-        };
+      this.createQueryStringOfQueryParams = function(queryParams) {
+        return !_.isEmpty(queryParams) ? _.map(queryParams, function(value, key) {
+          return key + '=' + value;
+        }).join('&') : '';
+      };
 
-        this.getExtraPathParam = function(routeParams) {
-            return routeParams.diagnosHash ? routeParams.diagnosHash : that.getMostSpecificGroupId(routeParams);
-        };
+      this.getExtraPathParam = function(routeParams) {
+        return routeParams.diagnosHash ? routeParams.diagnosHash : that.getMostSpecificGroupId(routeParams);
+      };
 
-        this.getMostSpecificGroupId = function(routeParams) {
-            return routeParams.kategoriId ? routeParams.kategoriId : (routeParams.avsnittId ? routeParams.avsnittId : routeParams.kapitelId);
-        };
+      this.getMostSpecificGroupId = function(routeParams) {
+        return routeParams.kategoriId ? routeParams.kategoriId : (routeParams.avsnittId ? routeParams.avsnittId : routeParams.kapitelId);
+      };
 
-        this.populateDetailsOptions = function (result, basePath, $scope, $routeParams, messageService, config) {
-            var kapitels = result.kapitels;
-            var avsnitts = result.avsnitts[$routeParams.kapitelId];
-            var kategoris = result.kategoris[$routeParams.avsnittId];
+      this.populateDetailsOptions = function(result, basePath, $scope, $routeParams, messageService, config) {
+        var kapitels = result.kapitels;
+        var avsnitts = result.avsnitts[$routeParams.kapitelId];
+        var kategoris = result.kategoris[$routeParams.avsnittId];
 
-            setSelectedOptions($scope, $routeParams, kapitels, avsnitts, kategoris);
+        setSelectedOptions($scope, $routeParams, kapitels, avsnitts, kategoris);
 
-            $scope.detailsOptions = _.map(kapitels, function (e) {
-                e.url = basePath + '/kapitel/' + e.id;
-                return e;
-            });
-            $scope.detailsOptions2 = _.map(avsnitts, function (e) {
-                e.url = basePath + '/kapitel/' + $routeParams.kapitelId + '/avsnitt/' + e.id;
-                return e;
-            });
-            $scope.detailsOptions3 = _.map(kategoris, function (e) {
-                e.url = basePath + '/kapitel/' + $routeParams.kapitelId + '/avsnitt/' + $routeParams.avsnittId + '/kategori/' + e.id;
-                return e;
-            });
+        $scope.detailsOptions = _.map(kapitels, function(e) {
+          e.url = basePath + '/kapitel/' + e.id;
+          return e;
+        });
+        $scope.detailsOptions2 = _.map(avsnitts, function(e) {
+          e.url = basePath + '/kapitel/' + $routeParams.kapitelId + '/avsnitt/' + e.id;
+          return e;
+        });
+        $scope.detailsOptions3 = _.map(kategoris, function(e) {
+          e.url = basePath + '/kapitel/' + $routeParams.kapitelId + '/avsnitt/' + $routeParams.avsnittId + '/kategori/' + e.id;
+          return e;
+        });
 
-            //Add default option for detailsOptions2
-            var defaultId = messageService.getProperty('lbl.valj-annat-diagnosavsnitt', null, '', null, true);
-            $scope.detailsOptions2.unshift({'id': defaultId, 'name':'', 'url':basePath + '/kapitel/' + $routeParams.kapitelId});
-            if (!$scope.selectedDetailsOption2) {
-                $scope.selectedDetailsOption2 = $scope.detailsOptions2[0];
-            }
-
-            if ($routeParams.avsnittId) {
-                //Add default option for detailsOptions3
-                var defaultIdKategori = messageService.getProperty('lbl.valj-annan-diagnoskategori', null, '', null, true);
-                $scope.detailsOptions3.unshift({
-                    'id': defaultIdKategori,
-                    'name': '',
-                    'url': basePath + '/kapitel/' + $routeParams.kapitelId + '/avsnitt/' + $routeParams.avsnittId
-                });
-                if (!$scope.selectedDetailsOption3) {
-                    $scope.selectedDetailsOption3 = $scope.detailsOptions3[0];
-                }
-            }
-
-            $scope.subTitle = getSubtitle($scope.selectedDetailsOption, $scope.selectedDetailsOption2,
-                                            $scope.selectedDetailsOption3, config);
-        };
-
-        function setSelectedOptions($scope, $routeParams, kapitels, avsnitts, kategoris) {
-            var i;
-            for (i = 0; i < kapitels.length; i++) {
-                if (kapitels[i].id === $routeParams.kapitelId) {
-                    $scope.selectedDetailsOption = kapitels[i];
-                    break;
-                }
-            }
-
-            for (i = 0; i < avsnitts.length; i++) {
-                if (avsnitts[i].id === $routeParams.avsnittId) {
-                    $scope.selectedDetailsOption2 = avsnitts[i];
-                    break;
-                }
-            }
-
-            if (kategoris) {
-                for (i = 0; i < kategoris.length; i++) {
-                    if (kategoris[i].id === $routeParams.kategoriId) {
-                        $scope.selectedDetailsOption3 = kategoris[i];
-                        break;
-                    }
-                }
-            }
+        //Add default option for detailsOptions2
+        var defaultId = messageService.getProperty('lbl.valj-annat-diagnosavsnitt', null, '', null, true);
+        $scope.detailsOptions2.unshift({'id': defaultId, 'name': '', 'url': basePath + '/kapitel/' + $routeParams.kapitelId});
+        if (!$scope.selectedDetailsOption2) {
+          $scope.selectedDetailsOption2 = $scope.detailsOptions2[0];
         }
 
-        function getDiagnosPathPart($routeParams) {
-            var path = '';
-            if ($routeParams.kapitelId) {
-                path += '/kapitel/' + $routeParams.kapitelId;
-
-                if ($routeParams.avsnittId) {
-                    path += '/avsnitt/' + $routeParams.avsnittId;
-
-                    if ($routeParams.kategoriId) {
-                        path += '/kategori/' + $routeParams.kategoriId;
-                    }
-                }
-            }
-
-            return path;
+        if ($routeParams.avsnittId) {
+          //Add default option for detailsOptions3
+          var defaultIdKategori = messageService.getProperty('lbl.valj-annan-diagnoskategori', null, '', null, true);
+          $scope.detailsOptions3.unshift({
+            'id': defaultIdKategori,
+            'name': '',
+            'url': basePath + '/kapitel/' + $routeParams.kapitelId + '/avsnitt/' + $routeParams.avsnittId
+          });
+          if (!$scope.selectedDetailsOption3) {
+            $scope.selectedDetailsOption3 = $scope.detailsOptions3[0];
+          }
         }
 
-        function getSubtitle(selectedOption1, selectedOption2, selectedOption3, config) {
-            if ((selectedOption3 && selectedOption3.name && selectedOption3.id)) {
-                return config.suffixTitle(selectedOption3.id + ' ' + selectedOption3.name);
-            }
-            if ((selectedOption2 && selectedOption2.name && selectedOption2.id)) {
-                return config.suffixTitle(selectedOption2.id + ' ' + selectedOption2.name);
-            }
-            if (selectedOption1 && selectedOption1.name && selectedOption1.id) {
-                return config.suffixTitle(selectedOption1.id + ' ' + selectedOption1.name);
-            }
-            return '';
+        $scope.subTitle = getSubtitle($scope.selectedDetailsOption, $scope.selectedDetailsOption2,
+            $scope.selectedDetailsOption3, config);
+      };
+
+      function setSelectedOptions($scope, $routeParams, kapitels, avsnitts, kategoris) {
+        var i;
+        for (i = 0; i < kapitels.length; i++) {
+          if (kapitels[i].id === $routeParams.kapitelId) {
+            $scope.selectedDetailsOption = kapitels[i];
+            break;
+          }
         }
 
-        this.createDiagnosHashPathOrAlternativePath = function($routeParams){
-            return ($routeParams.diagnosHash ? '/' + $routeParams.diagnosHash : getDiagnosPathPart($routeParams));
-        };
-
-        this.getResultMessageList = function(result, messageService) {
-            if (angular.isArray(result.messages) && result.messages.length > 0) {
-                return result.messages;
-            }
-
-            if (result.empty) {
-                return this.getEmptyResponseMessage(messageService, result);
-            }
-
-            return [];
-        };
-
-        this.getEmptyResponseMessage = function(messageService) {
-            return [ {type: 'UNSET', severity: 'WARN', message: messageService.getProperty('info.emptyresponse', null, '', null, true)} ];
-        };
-
-        this.removeFilterMessages = function(messages) {
-            return filterMessages(messages, 'FILTER');
-        };
-
-        this.removeChartMessages= function(messages) {
-            return filterMessages(messages, 'CHART');
-        };
-
-        function filterMessages(messages, type) {
-            return $filter('filter')(messages, function(message) {
-                return message && message.type !== type;
-            });
+        for (i = 0; i < avsnitts.length; i++) {
+          if (avsnitts[i].id === $routeParams.avsnittId) {
+            $scope.selectedDetailsOption2 = avsnitts[i];
+            break;
+          }
         }
 
-        this.formatOverViewTablePDF = function(thousandseparatedFilter, data, tableQuantityPostfix) {
-            var tableData = [];
-
-            _.each(data, function(row) {
-                tableData.push([row.color, row.name, thousandseparatedFilter(row.quantity) + (tableQuantityPostfix ? tableQuantityPostfix : ''), row.alternation + ' %']);
-            });
-
-            return tableData;
-        };
-
-        this.checkNationalResultAndEnableExport = function($scope, result, verksamhet, region, success) {
-            $scope.errorPageUrl = null;
-            if (result === '' && !verksamhet && !region) {
-                $scope.dataLoadingError = true;
-                $scope.errorPageUrl = '/app/views/error/statisticNotDone.html';
-
-                $cacheFactory.get('$http').removeAll();
-            } else {
-                $scope.exportEnabled = true;
-                success(result);
+        if (kategoris) {
+          for (i = 0; i < kategoris.length; i++) {
+            if (kategoris[i].id === $routeParams.kategoriId) {
+              $scope.selectedDetailsOption3 = kategoris[i];
+              break;
             }
-        };
+          }
+        }
+      }
 
-        function getStatisticsTypeForChartType(chartType) {
-            if (chartType === 'column' || chartType === 'stackedcolumn') {
-                return 'Tvärsnitt';
+      function getDiagnosPathPart($routeParams) {
+        var path = '';
+        if ($routeParams.kapitelId) {
+          path += '/kapitel/' + $routeParams.kapitelId;
+
+          if ($routeParams.avsnittId) {
+            path += '/avsnitt/' + $routeParams.avsnittId;
+
+            if ($routeParams.kategoriId) {
+              path += '/kategori/' + $routeParams.kategoriId;
             }
-            return 'Tidsserie';
+          }
         }
 
-        this.rerouteWhenNeededForChartTypeChange = function(currentChartType, chartType, exchangeableViews, location, routeParams) {
-            if (chartType !== currentChartType) {
-                var statisticsTypeForChartType = getStatisticsTypeForChartType(chartType);
-                var newStatisticsType = _.find(exchangeableViews, function(exchangeableView) {
-                    return exchangeableView.description === statisticsTypeForChartType;
-                });
-                var newPath = newStatisticsType.state + that.createDiagnosHashPathOrAlternativePath(routeParams);
-                location.search('chartType', chartType).path(newPath);
-            }
+        return path;
+      }
+
+      function getSubtitle(selectedOption1, selectedOption2, selectedOption3, config) {
+        if ((selectedOption3 && selectedOption3.name && selectedOption3.id)) {
+          return config.suffixTitle(selectedOption3.id + ' ' + selectedOption3.name);
+        }
+        if ((selectedOption2 && selectedOption2.name && selectedOption2.id)) {
+          return config.suffixTitle(selectedOption2.id + ' ' + selectedOption2.name);
+        }
+        if (selectedOption1 && selectedOption1.name && selectedOption1.id) {
+          return config.suffixTitle(selectedOption1.id + ' ' + selectedOption1.name);
+        }
+        return '';
+      }
+
+      this.createDiagnosHashPathOrAlternativePath = function($routeParams) {
+        return ($routeParams.diagnosHash ? '/' + $routeParams.diagnosHash : getDiagnosPathPart($routeParams));
+      };
+
+      this.getResultMessageList = function(result, messageService) {
+        if (angular.isArray(result.messages) && result.messages.length > 0) {
+          return result.messages;
+        }
+
+        if (result.empty) {
+          return this.getEmptyResponseMessage(messageService, result);
+        }
+
+        return [];
+      };
+
+      this.getEmptyResponseMessage = function(messageService) {
+        return [{type: 'UNSET', severity: 'WARN', message: messageService.getProperty('info.emptyresponse', null, '', null, true)}];
+      };
+
+      this.removeFilterMessages = function(messages) {
+        return filterMessages(messages, 'FILTER');
+      };
+
+      this.removeChartMessages = function(messages) {
+        return filterMessages(messages, 'CHART');
+      };
+
+      function filterMessages(messages, type) {
+        return $filter('filter')(messages, function(message) {
+          return message && message.type !== type;
+        });
+      }
+
+      this.formatOverViewTablePDF = function(thousandseparatedFilter, data, tableQuantityPostfix) {
+        var tableData = [];
+
+        _.each(data, function(row) {
+          tableData.push([row.color, row.name, thousandseparatedFilter(row.quantity) + (tableQuantityPostfix ? tableQuantityPostfix : ''),
+            row.alternation + ' %']);
+        });
+
+        return tableData;
+      };
+
+      this.checkNationalResultAndEnableExport = function($scope, result, verksamhet, region, success) {
+        $scope.errorPageUrl = null;
+        if (result === '' && !verksamhet && !region) {
+          $scope.dataLoadingError = true;
+          $scope.errorPageUrl = '/app/views/error/statisticNotDone.html';
+
+          $cacheFactory.get('$http').removeAll();
+        } else {
+          $scope.exportEnabled = true;
+          success(result);
+        }
+      };
+
+      function getStatisticsTypeForChartType(chartType) {
+        if (chartType === 'column' || chartType === 'stackedcolumn') {
+          return 'Tvärsnitt';
+        }
+        return 'Tidsserie';
+      }
+
+      this.rerouteWhenNeededForChartTypeChange = function(currentChartType, chartType, exchangeableViews, location, routeParams) {
+        if (chartType !== currentChartType) {
+          var statisticsTypeForChartType = getStatisticsTypeForChartType(chartType);
+          var newStatisticsType = _.find(exchangeableViews, function(exchangeableView) {
+            return exchangeableView.description === statisticsTypeForChartType;
+          });
+          var newPath = newStatisticsType.state + that.createDiagnosHashPathOrAlternativePath(routeParams);
+          location.search('chartType', chartType).path(newPath);
+        }
+      };
+
+      this.getChartTypeInfo = function($routeParams, config, defaultChartType, isVerksamhet) {
+        var activeChartType = (isVerksamhet && $routeParams.chartType) || config.defaultChartType || defaultChartType;
+        var usePercentChart = activeChartType === 'percentarea' || config.percentChart;
+        var activeHighchartType = config.highchartType ? config.highchartType : (usePercentChart ? 'area' : activeChartType);
+        var stacked = activeHighchartType === 'area' || activeChartType === 'stackedcolumn' || usePercentChart;
+        return {
+          activeChartType: activeChartType,
+          usePercentChart: usePercentChart,
+          activeHighchartType: activeHighchartType,
+          stacked: stacked
         };
+      };
 
-        this.getChartTypeInfo = function($routeParams, config, defaultChartType, isVerksamhet) {
-            var activeChartType = (isVerksamhet && $routeParams.chartType) || config.defaultChartType || defaultChartType;
-            var usePercentChart = activeChartType === 'percentarea' || config.percentChart;
-            var activeHighchartType = config.highchartType ? config.highchartType : (usePercentChart ? 'area' : activeChartType);
-            var stacked = activeHighchartType === 'area' || activeChartType === 'stackedcolumn' || usePercentChart;
-            return {activeChartType: activeChartType, usePercentChart: usePercentChart, activeHighchartType: activeHighchartType, stacked: stacked};
-        };
+      this.getExportFileName = function(statisticsLevel, gender) {
+        var reportName = $filter('messageFilter')($route.current.title, $route.current.title, undefined, undefined, undefined, true);
+        var genderString = gender ? gender + '_' : '';
+        var name = statisticsLevel + '_' + reportName + '_' + genderString + moment().format('YYMMDD_HHmmss');
+        return name.replace(/Å/g, 'A').replace(/Ä/g, 'A').replace(/Ö/g, 'O')
+        .replace(/å/g, 'a').replace(/ä/g, 'a').replace(/ö/g, 'o')
+        .replace(/[^A-Za-z0-9._]/g, '');
+      };
 
-        this.getExportFileName = function(statisticsLevel, gender) {
-            var reportName = $filter('messageFilter')($route.current.title, $route.current.title, undefined, undefined, undefined, true);
-            var genderString = gender ? gender + '_' : '';
-            var name = statisticsLevel + '_' + reportName + '_' + genderString + moment().format('YYMMDD_HHmmss');
-            return name.replace(/Å/g, 'A').replace(/Ä/g, 'A').replace(/Ö/g, 'O')
-                .replace(/å/g, 'a').replace(/ä/g, 'a').replace(/ö/g, 'o')
-                .replace(/[^A-Za-z0-9._]/g, '');
-        };
+      this.combineUrl = function(urlBase, queryString) {
+        //Make sure query params are not started twice with a '?'
+        var fixedQueryString = urlBase.indexOf('?') > 0 ? queryString.replace('?', '&') : queryString;
+        return urlBase + fixedQueryString;
+      };
 
-        this.combineUrl = function(urlBase, queryString) {
-            //Make sure query params are not started twice with a '?'
-            var fixedQueryString = urlBase.indexOf('?') > 0 ? queryString.replace('?', '&') : queryString;
-            return urlBase + fixedQueryString;
-        };
+      this.reportActive = function(activeSettingProperty) {
+        if (angular.isDefined(activeSettingProperty)) {
+          var reportIsActive = UserModel.get().settings[activeSettingProperty];
+          return !angular.isDefined(reportIsActive) || !!reportIsActive;
+        }
 
-        this.reportActive = function(activeSettingProperty) {
-            if (angular.isDefined(activeSettingProperty)) {
-                var reportIsActive = UserModel.get().settings[activeSettingProperty];
-                return !angular.isDefined(reportIsActive) || !!reportIsActive;
-            }
+        return true;
+      };
 
-            return true;
-        };
+      this.activateReport = function(activeSettingProperty) {
+        return UserService.updateOneSetting(activeSettingProperty, true);
+      };
 
-        this.activateReport = function(activeSettingProperty) {
-            return UserService.updateOneSetting(activeSettingProperty, true);
-        };
-
-        return this;
-});
+      return this;
+    });
 
 

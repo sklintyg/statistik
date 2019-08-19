@@ -18,6 +18,13 @@
  */
 package se.inera.statistics.hsa.services;
 
+import static java.util.stream.IntStream.range;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -32,14 +39,6 @@ import se.riv.infrastructure.directory.v1.CommissionType;
 import se.riv.infrastructure.directory.v1.CredentialInformationType;
 import se.riv.infrastructure.directory.v1.HsaSystemRoleType;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.util.stream.IntStream.range;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
-
 /**
  * Created by eriklupander on 2016-04-13.
  */
@@ -53,31 +52,35 @@ public class HsaOrganizationsServiceImplTest {
 
     @InjectMocks
     private HsaOrganizationsServiceImpl testee;
-    
+
     @Test
     public void testWithSingleMiuStatistik() throws HsaServiceCallException {
-        when(authorizationManagementService.getAuthorizationsForPerson(anyString(), anyString(), anyString())).thenReturn(buildCredzResponse(Medarbetaruppdrag.STATISTIK, 1, 1));
+        when(authorizationManagementService.getAuthorizationsForPerson(anyString(), anyString(), anyString()))
+            .thenReturn(buildCredzResponse(Medarbetaruppdrag.STATISTIK, 1, 1));
         List<Vardenhet> authorizedEnheter = testee.getAuthorizedEnheterForHosPerson(HSA_ID).getVardenhetList();
         assertEquals(1, authorizedEnheter.size());
     }
 
     @Test
     public void testWithSingleMiuVardOchBehandling() throws HsaServiceCallException {
-        when(authorizationManagementService.getAuthorizationsForPerson(anyString(), anyString(), anyString())).thenReturn(buildCredzResponse(Medarbetaruppdrag.VARD_OCH_BEHANDLING, 1, 1));
+        when(authorizationManagementService.getAuthorizationsForPerson(anyString(), anyString(), anyString()))
+            .thenReturn(buildCredzResponse(Medarbetaruppdrag.VARD_OCH_BEHANDLING, 1, 1));
         List<Vardenhet> authorizedEnheter = testee.getAuthorizedEnheterForHosPerson(HSA_ID).getVardenhetList();
         assertEquals(0, authorizedEnheter.size());
     }
 
     @Test
     public void testThatSingleAuthEnhetIsReturnedWhenHavingTwoMiuOnUnit() throws HsaServiceCallException {
-        when(authorizationManagementService.getAuthorizationsForPerson(anyString(), anyString(), anyString())).thenReturn(buildCredzResponse(Medarbetaruppdrag.STATISTIK, 2, 0));
+        when(authorizationManagementService.getAuthorizationsForPerson(anyString(), anyString(), anyString()))
+            .thenReturn(buildCredzResponse(Medarbetaruppdrag.STATISTIK, 2, 0));
         List<Vardenhet> authorizedEnheter = testee.getAuthorizedEnheterForHosPerson(HSA_ID).getVardenhetList();
         assertEquals(1, authorizedEnheter.size());
     }
 
     @Test
     public void testThatSystemRoleIsSet() throws HsaServiceCallException {
-        when(authorizationManagementService.getAuthorizationsForPerson(anyString(), anyString(), anyString())).thenReturn(buildCredzResponse(Medarbetaruppdrag.STATISTIK, 1, 1));
+        when(authorizationManagementService.getAuthorizationsForPerson(anyString(), anyString(), anyString()))
+            .thenReturn(buildCredzResponse(Medarbetaruppdrag.STATISTIK, 1, 1));
         UserAuthorization userAuthorization = testee.getAuthorizedEnheterForHosPerson(HSA_ID);
         assertEquals("Statistik;enhet-123", userAuthorization.getSystemRoles().get(0));
     }

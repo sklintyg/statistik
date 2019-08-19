@@ -30,26 +30,26 @@
  * }
  *
  * Usage: <span dynamiclink key="someLinkKey"/>
- * 
+ *
  * Produces: <a href="http://some.url" target="_blank" title="Some tooltip">Some text</a>
  */
 angular.module('StatisticsApp').factory('dynamicLinkService',
     function() {
-        'use strict';
-        
-        var _links = {};
+      'use strict';
 
-        function _getLink(key) {
-            return _links[key];
-        }
+      var _links = {};
 
-        function _addLinks(links) {
-            _links = links;
-        }
-        
-        return {
-            getLink: _getLink,
-            addLinks: _addLinks
-        };
+      function _getLink(key) {
+        return _links[key];
+      }
+
+      function _addLinks(links) {
+        _links = links;
+      }
+
+      return {
+        getLink: _getLink,
+        addLinks: _addLinks
+      };
     }
 );

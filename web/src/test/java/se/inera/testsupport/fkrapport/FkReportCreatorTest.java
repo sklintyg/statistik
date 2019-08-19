@@ -28,16 +28,12 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -45,7 +41,6 @@ import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
-import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 /**
  * Created by marced on 2016-11-08.
@@ -187,7 +182,8 @@ public class FkReportCreatorTest {
     }
 
     private Fact createFact(int startdatum, int slutdatum, int lakarintyg) {
-        return new Fact(1L, 1,1,1,new HsaIdEnhet("1"), lakarintyg,1, startdatum, slutdatum,1,1,1,1,1,1,1,1,1, new int[0],new HsaIdLakare("1"));
+        return new Fact(1L, 1, 1, 1, new HsaIdEnhet("1"), lakarintyg, 1, startdatum, slutdatum, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0],
+            new HsaIdLakare("1"));
     }
 
 }

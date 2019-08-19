@@ -18,8 +18,12 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
+import java.time.Clock;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.Test;
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
@@ -32,12 +36,6 @@ import se.inera.statistics.web.model.overview.VerksamhetNumberOfCasesPerMonthOve
 import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
 import se.inera.statistics.web.service.Filter;
 
-import java.time.Clock;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-
 public class VerksamhetOverviewConverterTest {
 
     private final Clock clock = Clock.systemDefaultZone();
@@ -49,7 +47,8 @@ public class VerksamhetOverviewConverterTest {
         //Given
         int casesPerMonthProportionMale = 0;
         int casesPerMonthProportionFemale = 1;
-        OverviewKonsfordelning overviewKonsfordelning = new OverviewKonsfordelning(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range(clock));
+        OverviewKonsfordelning overviewKonsfordelning = new OverviewKonsfordelning(casesPerMonthProportionMale,
+            casesPerMonthProportionFemale, new Range(clock));
         List<OverviewChartRowExtended> diagnosisGroups = new ArrayList<>();
         List<OverviewChartRowExtended> ageGroups = new ArrayList<>();
         List<OverviewChartRowExtended> degreeOfSickLeaveGroups = new ArrayList<>();
@@ -60,8 +59,9 @@ public class VerksamhetOverviewConverterTest {
         final int totalCases = 5;
 
         //When
-        VerksamhetOverviewResponse resp = new VerksamhetOverviewResponse(AvailableFilters.getForSjukfall(), totalCases, overviewKonsfordelning, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
-                sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation, kompletteringar);
+        VerksamhetOverviewResponse resp = new VerksamhetOverviewResponse(AvailableFilters.getForSjukfall(), totalCases,
+            overviewKonsfordelning, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
+            sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation, kompletteringar);
         VerksamhetOverviewData data = new VerksamhetOverviewConverter().convert(resp, new Range(clock), Filter.empty(), null);
 
         //Then
@@ -73,7 +73,8 @@ public class VerksamhetOverviewConverterTest {
         //Given
         int casesPerMonthProportionMaleNew = 0;
         int casesPerMonthProportionFemaleNew = 1;
-        OverviewKonsfordelning overviewKonsfordelning = new OverviewKonsfordelning(casesPerMonthProportionMaleNew, casesPerMonthProportionFemaleNew, new Range(clock));
+        OverviewKonsfordelning overviewKonsfordelning = new OverviewKonsfordelning(casesPerMonthProportionMaleNew,
+            casesPerMonthProportionFemaleNew, new Range(clock));
         List<OverviewChartRowExtended> diagnosisGroups = new ArrayList<>();
         diagnosisGroups.add(new OverviewChartRowExtended("diagName", 1, 2, null));
         List<OverviewChartRowExtended> ageGroups = new ArrayList<>();
@@ -91,8 +92,9 @@ public class VerksamhetOverviewConverterTest {
 
         int totalCases = 7;
         //When
-        VerksamhetOverviewResponse resp = new VerksamhetOverviewResponse(AvailableFilters.getForSjukfall(), totalCases, overviewKonsfordelning, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
-                sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation, kompletteringar);
+        VerksamhetOverviewResponse resp = new VerksamhetOverviewResponse(AvailableFilters.getForSjukfall(), totalCases,
+            overviewKonsfordelning, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
+            sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation, kompletteringar);
         VerksamhetOverviewData data = new VerksamhetOverviewConverter().convert(resp, new Range(clock), Filter.empty(), null);
 
         //Then

@@ -19,16 +19,16 @@
 
 angular.module('StatisticsApp').controller('SelectVardgivareModalCtrl',
     function($scope, $uibModalInstance, vardgivare) {
-        'use strict';
+      'use strict';
 
-        $scope.vardgivare = vardgivare;
+      $scope.vardgivare = vardgivare;
 
-        $scope.cancel = function() {
-            $uibModalInstance.dismiss();
-        };
+      $scope.cancel = function() {
+        $uibModalInstance.dismiss();
+      };
 
-        $scope.selectVardgivare = function(vgId) {
-            $uibModalInstance.close(vgId);
-        };
+      $scope.selectVardgivare = function(vgId) {
+        $uibModalInstance.close(vgId);
+      };
     }
 );

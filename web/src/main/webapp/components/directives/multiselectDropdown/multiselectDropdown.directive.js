@@ -20,41 +20,41 @@
 angular.module('StatisticsApp').directive('multiselectDropdown',
     /** @ngInject */
     function() {
-        'use strict';
+      'use strict';
 
-        return function(scope, element, attrs) {
-            var text = attrs.multiselectDropdown;
-            var icon = attrs.multiselectDropdownIcon;
-            element.multiselect({
-                buttonText: function() {
-                    return '<span class="fa ' + icon + '"></span> ' + text;
-                },
-                onChange: function(optionElement, checked) {
-                    if (optionElement) {
-                        optionElement.removeAttr('selected');
-                        if (checked) {
-                            optionElement.prop('selected', 'selected');
-                        }
-                    }
+      return function(scope, element, attrs) {
+        var text = attrs.multiselectDropdown;
+        var icon = attrs.multiselectDropdownIcon;
+        element.multiselect({
+          buttonText: function() {
+            return '<span class="fa ' + icon + '"></span> ' + text;
+          },
+          onChange: function(optionElement, checked) {
+            if (optionElement) {
+              optionElement.removeAttr('selected');
+              if (checked) {
+                optionElement.prop('selected', 'selected');
+              }
+            }
 
-                    element.change();
-                },
-                enableHTML: true,
-                includeSelectAllOption: true,
-                selectAllText: 'Markera alla',
-                nonSelectedText: ''
-            });
+            element.change();
+          },
+          enableHTML: true,
+          includeSelectAllOption: true,
+          selectAllText: 'Markera alla',
+          nonSelectedText: ''
+        });
 
-            // Watch for any changes to the length of our select element
-            scope.$watch(function() {
-                return element[0].length;
-            }, function() {
-                element.multiselect('rebuild');
-            });
+        // Watch for any changes to the length of our select element
+        scope.$watch(function() {
+          return element[0].length;
+        }, function() {
+          element.multiselect('rebuild');
+        });
 
-            // Watch for any changes from outside the directive and refresh
-            scope.$watchCollection(attrs.ngModel, function() {
-                element.multiselect('refresh');
-            });
-        };
+        // Watch for any changes from outside the directive and refresh
+        scope.$watchCollection(attrs.ngModel, function() {
+          element.multiselect('refresh');
+        });
+      };
     });

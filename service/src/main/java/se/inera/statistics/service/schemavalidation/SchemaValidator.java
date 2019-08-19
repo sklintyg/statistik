@@ -19,10 +19,8 @@
 package se.inera.statistics.service.schemavalidation;
 
 import javax.annotation.Nonnull;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import se.inera.statistics.service.warehouse.IntygType;
 
 @Component

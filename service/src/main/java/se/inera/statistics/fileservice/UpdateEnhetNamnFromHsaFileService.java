@@ -23,13 +23,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.xml.bind.JAXB;
-
+import net.javacrumbs.shedlock.core.SchedulerLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
-
-import net.javacrumbs.shedlock.core.SchedulerLock;
 import se.inera.ifv.hsawsresponder.v3.ListGetHsaUnitsResponseType;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 
@@ -63,7 +61,7 @@ public class UpdateEnhetNamnFromHsaFileService {
         final long start = System.currentTimeMillis();
         LOG.info("Fetching unit names from HSA fileservice");
         InputStream units = HsaUnitSource.getUnits(hsaCertificateFile, hsaCertificatePassword,
-                hsaTruststoreFile, hsaTruststorePassword, hsaunitsUrl);
+            hsaTruststoreFile, hsaTruststorePassword, hsaunitsUrl);
         doUpdateEnhetnamesFromHsaFileServiceInputstream(units);
         final long end = System.currentTimeMillis();
         LOG.info("Updated from fileservice in " + String.valueOf(end - start) + " milliseconds");

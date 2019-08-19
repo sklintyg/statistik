@@ -32,8 +32,8 @@ public class OverviewData implements Serializable {
     private final List<DonutChartData> perCounty;
 
     public OverviewData(String periodText, SjukfallPerManadOverview casesPerMonth, List<DonutChartData> diagnosisGroups,
-            List<DonutChartData> ageGroups, List<DonutChartData> degreeOfSickLeaveGroups,
-            SickLeaveLengthOverview sickLeaveLength, List<DonutChartData> perCounty) {
+        List<DonutChartData> ageGroups, List<DonutChartData> degreeOfSickLeaveGroups,
+        SickLeaveLengthOverview sickLeaveLength, List<DonutChartData> perCounty) {
         this.periodText = periodText;
         this.casesPerMonth = casesPerMonth;
         this.diagnosisGroups = diagnosisGroups;

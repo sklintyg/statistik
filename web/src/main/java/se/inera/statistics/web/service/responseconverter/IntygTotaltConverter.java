@@ -18,14 +18,13 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.service.FilterSettings;
-
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class IntygTotaltConverter extends MultiDualSexConverter {
 
@@ -35,8 +34,8 @@ public class IntygTotaltConverter extends MultiDualSexConverter {
 
     public DualSexStatisticsData convert(KonDataResponse data, FilterSettings filterSettings) {
         final List<IntygType> intygTypes = data.getGroups().stream()
-                .map(s -> IntygType.getByName(s).orElse(IntygType.UNKNOWN))
-                .collect(Collectors.toList());
+            .map(s -> IntygType.getByName(s).orElse(IntygType.UNKNOWN))
+            .collect(Collectors.toList());
         final Map<String, String> colorMap = AndelKompletteringarConverter.getColorMap(intygTypes);
         return super.convert(data, filterSettings, null, "%1$s", colorMap);
     }

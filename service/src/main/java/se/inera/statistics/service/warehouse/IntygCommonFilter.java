@@ -18,10 +18,9 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import java.util.Collection;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.report.model.Range;
-
-import java.util.Collection;
 
 public class IntygCommonFilter {
 
@@ -32,7 +31,7 @@ public class IntygCommonFilter {
     private final Collection<String> intygstyper;
 
     public IntygCommonFilter(Range range, Collection<HsaIdEnhet> enheter, Collection<String> diagnoser,
-                             Collection<String> aldersgrupp, Collection<String> intygstyper) {
+        Collection<String> aldersgrupp, Collection<String> intygstyper) {
         this.range = range;
         this.enheter = enheter;
         this.diagnoser = diagnoser;

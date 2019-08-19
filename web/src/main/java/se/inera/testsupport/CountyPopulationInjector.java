@@ -18,9 +18,8 @@
  */
 package se.inera.testsupport;
 
-import se.inera.statistics.service.report.model.KonField;
-
 import java.util.Map;
+import se.inera.statistics.service.report.model.KonField;
 
 public interface CountyPopulationInjector {
 

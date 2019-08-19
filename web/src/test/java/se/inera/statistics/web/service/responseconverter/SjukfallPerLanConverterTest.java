@@ -25,9 +25,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import org.junit.Test;
-
 import se.inera.statistics.service.countypopulation.CountyPopulation;
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.KonField;
@@ -71,7 +69,9 @@ public class SjukfallPerLanConverterTest {
 
         //Then
         TableData tableDataResult = result.getTableData();
-        assertEquals("[[;1, Antal sjukfall;3, Antal invånare;3, Antal sjukfall per 1000 invånare;3], [Län;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1]]", tableDataResult.getHeaders().toString());
+        assertEquals(
+            "[[;1, Antal sjukfall;3, Antal invånare;3, Antal sjukfall per 1000 invånare;3], [Län;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1]]",
+            tableDataResult.getHeaders().toString());
         List<NamedData> rows = tableDataResult.getRows();
         assertEquals(4, rows.size());
         assertEquals("Samtliga län", rows.get(0).getName());

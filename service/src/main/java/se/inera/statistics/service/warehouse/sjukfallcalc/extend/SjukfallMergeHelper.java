@@ -18,13 +18,12 @@
  */
 package se.inera.statistics.service.warehouse.sjukfallcalc.extend;
 
-import se.inera.statistics.service.warehouse.SjukfallExtended;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import se.inera.statistics.service.warehouse.SjukfallExtended;
 
 final class SjukfallMergeHelper {
 
@@ -50,8 +49,8 @@ final class SjukfallMergeHelper {
             return Collections.emptyList();
         }
         return sjukfalls.stream()
-                .filter(sjukfall -> sjukfall.getEnd() >= start && sjukfall.getStart() <= end)
-                .collect(Collectors.toList());
+            .filter(sjukfall -> sjukfall.getEnd() >= start && sjukfall.getStart() <= end)
+            .collect(Collectors.toList());
     }
 
 }

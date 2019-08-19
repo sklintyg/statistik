@@ -19,13 +19,13 @@
 
 angular.module('StatisticsApp').controller('FilterActiveSelectionModalCtrl',
     function($scope, $uibModalInstance, selections, filterViewState) {
-        'use strict';
+      'use strict';
 
-        $scope.selections = selections;
-        $scope.filterViewState = filterViewState.get();
+      $scope.selections = selections;
+      $scope.filterViewState = filterViewState.get();
 
-        $scope.cancel = function() {
-            $uibModalInstance.dismiss();
-        };
+      $scope.cancel = function() {
+        $uibModalInstance.dismiss();
+      };
     }
 );

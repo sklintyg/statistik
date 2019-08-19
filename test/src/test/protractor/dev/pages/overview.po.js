@@ -20,19 +20,19 @@
 'use strict';
 
 var OverviewPage = function() {
-    this.container = element(by.id('national-overview'));
+  this.container = element(by.id('national-overview'));
 
-    this.distributionPerSex = this.container.element(by.id('overview-distribution-per-sex-image'));
-    this.alterationChart = this.container.element(by.id('alterationChart'));
-    this.diagnosisChart = this.container.element(by.id('diagnosisChart'));
-    this.ageChart = this.container.element(by.id('ageChart'));
-    this.degreeOfSickLeaveChart = this.container.element(by.id('degreeOfSickLeaveChart'));
-    this.sicklengthChart = this.container.element(by.id('sickLeaveLengthChart'));
-    this.sickLeavePerCountyChart = this.container.element(by.id('sickLeavePerCountyChart'));
+  this.distributionPerSex = this.container.element(by.id('overview-distribution-per-sex-image'));
+  this.alterationChart = this.container.element(by.id('alterationChart'));
+  this.diagnosisChart = this.container.element(by.id('diagnosisChart'));
+  this.ageChart = this.container.element(by.id('ageChart'));
+  this.degreeOfSickLeaveChart = this.container.element(by.id('degreeOfSickLeaveChart'));
+  this.sicklengthChart = this.container.element(by.id('sickLeaveLengthChart'));
+  this.sickLeavePerCountyChart = this.container.element(by.id('sickLeavePerCountyChart'));
 
-    this.isAtPage = function() {
-        expect(this.container.isDisplayed()).toBeTruthy('Är inte på översikten');
-    };
+  this.isAtPage = function() {
+    expect(this.container.isDisplayed()).toBeTruthy('Är inte på översikten');
+  };
 };
 
 module.exports = new OverviewPage();

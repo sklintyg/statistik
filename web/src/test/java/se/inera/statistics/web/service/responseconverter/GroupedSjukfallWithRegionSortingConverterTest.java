@@ -18,13 +18,13 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import static org.junit.Assert.assertEquals;
+
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.junit.Test;
-
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Range;
@@ -38,21 +38,21 @@ import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.service.Filter;
 import se.inera.statistics.web.service.FilterSettings;
 
-import static org.junit.Assert.assertEquals;
-
 public class GroupedSjukfallWithRegionSortingConverterTest {
     // CHECKSTYLE:OFF MagicNumber
 
     @Test
     public void convertTest() {
         //Given
-        GroupedSjukfallWithRegionSortingConverter converter = new GroupedSjukfallWithRegionSortingConverter("Vårdenhet", Collections.<HsaIdEnhet>emptyList());
+        GroupedSjukfallWithRegionSortingConverter converter = new GroupedSjukfallWithRegionSortingConverter("Vårdenhet",
+            Collections.<HsaIdEnhet>emptyList());
         List<SimpleKonDataRow> businessRows = new ArrayList<>();
         businessRows.add(new SimpleKonDataRow("enhet1", 12, 13));
         businessRows.add(new SimpleKonDataRow("enhet2", 20, 30));
         businessRows.add(new SimpleKonDataRow("enhet3", 5, 25));
         SimpleKonResponse casesPerUnit = new SimpleKonResponse(AvailableFilters.getForSjukfall(), businessRows);
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.createForLastMonthsExcludingCurrent(1, Clock.systemDefaultZone()));
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(),
+            Range.createForLastMonthsExcludingCurrent(1, Clock.systemDefaultZone()));
 
         //When
         SimpleDetailsData result = converter.convert(casesPerUnit, filterSettings);
@@ -60,7 +60,8 @@ public class GroupedSjukfallWithRegionSortingConverterTest {
         //Then
         //STATISTIK-1034: Table sorted by name
         TableData tableData = result.getTableData();
-        assertEquals("[[Vårdenhet;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]", tableData.getHeaders().toString());
+        assertEquals("[[Vårdenhet;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]",
+            tableData.getHeaders().toString());
         List<NamedData> tableRows = tableData.getRows();
         assertEquals(3, tableRows.size());
         assertEquals("enhet1", tableRows.get(0).getName());

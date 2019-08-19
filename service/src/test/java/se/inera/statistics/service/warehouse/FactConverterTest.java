@@ -18,16 +18,14 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -35,9 +33,6 @@ import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 import se.inera.statistics.service.warehouse.query.LakarbefattningQuery;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
 
 public class FactConverterTest {
 
@@ -54,7 +49,9 @@ public class FactConverterTest {
 
     @Test
     public void toFactWithBasicWideline() {
-        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, "", new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"), true);
+        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212",
+            1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, "",
+            new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"), true);
 
         Fact fact = factConverter.toFact(wideLine);
 
@@ -64,7 +61,9 @@ public class FactConverterTest {
     @Test
     public void toFactWithDashBefattning() {
         final String lakarbefattning = "-";
-        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning, new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"), true);
+        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212",
+            1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning,
+            new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"), true);
 
         Fact fact = factConverter.toFact(wideLine);
 
@@ -75,7 +74,9 @@ public class FactConverterTest {
     @Test
     public void toFactWithEmptyBefattning() {
         final String lakarbefattning = "";
-        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning, new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"), true);
+        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212",
+            1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning,
+            new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"), true);
 
         Fact fact = factConverter.toFact(wideLine);
 
@@ -86,7 +87,9 @@ public class FactConverterTest {
     @Test
     public void toFactWithFaultyBefattning() {
         final String lakarbefattning = "xyz123";
-        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning, new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"), true);
+        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212",
+            1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning,
+            new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"), true);
 
         Fact fact = factConverter.toFact(wideLine);
 
@@ -97,7 +100,9 @@ public class FactConverterTest {
     @Test
     public void toFactWithFaultyAndCorrectBefattnings() {
         final String lakarbefattning = "123,-,456,abc123";
-        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning, new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"), true);
+        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212",
+            1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning,
+            new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"), true);
 
         Fact fact = factConverter.toFact(wideLine);
 

@@ -28,7 +28,7 @@ import se.inera.auth.model.User;
 public class AuthUtil {
 
     public static void setUserToSecurityContext(User user) {
-        Authentication auth = new UsernamePasswordAuthenticationToken(user,null);
+        Authentication auth = new UsernamePasswordAuthenticationToken(user, null);
         SecurityContext securityContext = Mockito.mock(SecurityContext.class);
         Mockito.when(securityContext.getAuthentication()).thenReturn(auth);
         SecurityContextHolder.setContext(securityContext);

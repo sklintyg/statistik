@@ -22,13 +22,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
-
 import org.apache.neethi.builders.converters.ConverterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
 import se.inera.statistics.service.helper.IntygHelper;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
@@ -93,12 +91,12 @@ public abstract class AbstractRegisterCertificateHelper extends IntygHelper<Regi
      */
     public static String convertToV3(String data) {
         return data.
-                replaceAll("urn:riv:clinicalprocess:healthcond:certificate:2",
-                        "urn:riv:clinicalprocess:healthcond:certificate:3").
-                replaceAll("urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:2",
-                        "urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:3").
-                replaceAll("urn:riv:clinicalprocess:healthcond:certificate:types:2",
-                        "urn:riv:clinicalprocess:healthcond:certificate:types:3");
+            replaceAll("urn:riv:clinicalprocess:healthcond:certificate:2",
+                "urn:riv:clinicalprocess:healthcond:certificate:3").
+            replaceAll("urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:2",
+                "urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:3").
+            replaceAll("urn:riv:clinicalprocess:healthcond:certificate:types:2",
+                "urn:riv:clinicalprocess:healthcond:certificate:types:3");
     }
 
     /**
@@ -106,7 +104,6 @@ public abstract class AbstractRegisterCertificateHelper extends IntygHelper<Regi
      *
      * @param delsvar The Delsvar to parse.
      * @return CVType
-     * @throws ConverterException
      */
     //This code is copied from intygsprojektet and is best to keep unchanged
     @SuppressWarnings({"squid:MethodCyclomaticComplexity", "squid:S134", "squid:UselessParenthesesCheck"})
@@ -160,9 +157,6 @@ public abstract class AbstractRegisterCertificateHelper extends IntygHelper<Regi
 
     /**
      * Attempt to parse a {@link DatePeriodType} from a {@link Svar.Delsvar}.
-     *
-     * @param delsvar
-     * @throws ConverterException
      */
     //This code is copied from intygsprojektet and is best to keep unchanged
     @SuppressWarnings({"squid:MethodCyclomaticComplexity", "squid:S134", "squid:UselessParenthesesCheck"})

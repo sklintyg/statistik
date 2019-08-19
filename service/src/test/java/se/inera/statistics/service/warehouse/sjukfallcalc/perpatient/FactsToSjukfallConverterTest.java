@@ -18,16 +18,16 @@
  */
 package se.inera.statistics.service.warehouse.sjukfallcalc.perpatient;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import com.google.common.collect.ArrayListMultimap;
+import java.util.ArrayList;
+import java.util.Arrays;
 import org.junit.Test;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.FactBuilder;
 import se.inera.statistics.service.warehouse.SjukfallExtended;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import static org.junit.Assert.*;
 
 public class FactsToSjukfallConverterTest {
 
@@ -104,7 +104,8 @@ public class FactsToSjukfallConverterTest {
 
         //When
         final FactsToSjukfallConverter factsToSjukfallConverter = new FactsToSjukfallConverter();
-        final ArrayListMultimap<Long, SjukfallExtended> result = factsToSjukfallConverter.getSjukfallsPerPatient(facts, Arrays.asList(1L, 3L));
+        final ArrayListMultimap<Long, SjukfallExtended> result = factsToSjukfallConverter
+            .getSjukfallsPerPatient(facts, Arrays.asList(1L, 3L));
 
         //Then
         assertEquals(2, result.size());
@@ -112,6 +113,6 @@ public class FactsToSjukfallConverterTest {
     }
 
     private Fact createFact(int startdatum, int slutdatum, int patient) {
-        return FactBuilder.newFact(1L, 1,1,1,1,1, patient, startdatum, slutdatum,1,1,1,1,1,1,1,1,1, new int[0],1);
+        return FactBuilder.newFact(1L, 1, 1, 1, 1, 1, patient, startdatum, slutdatum, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
     }
 }

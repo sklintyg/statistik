@@ -20,11 +20,11 @@
 'use strict';
 
 var RegionAboutPage = function() {
-    this.container = element(by.id('region-about-page'));
+  this.container = element(by.id('region-about-page'));
 
-    this.isAtPage = function() {
-        expect(this.container.isDisplayed()).toBeTruthy();
-    };
+  this.isAtPage = function() {
+    expect(this.container.isDisplayed()).toBeTruthy();
+  };
 };
 
 module.exports = new RegionAboutPage();

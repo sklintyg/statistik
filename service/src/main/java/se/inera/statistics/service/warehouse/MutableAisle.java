@@ -18,13 +18,13 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 public class MutableAisle {
+
     private final List<Fact> lines = new ArrayList<>();
     private final HsaIdVardgivare vardgivareId;
 

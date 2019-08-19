@@ -18,14 +18,14 @@
  */
 
 angular.module('StatisticsApp')
-    .directive('filterList', [function() {
-        'use strict';
-        return {
-            scope: {
-                filters: '=',
-                isCollapsed: '='
-            },
-            restrict: 'E',
-            templateUrl: '/components/directives/filterList/filterList.html'
-        };
-    }]);
+.directive('filterList', [function() {
+  'use strict';
+  return {
+    scope: {
+      filters: '=',
+      isCollapsed: '='
+    },
+    restrict: 'E',
+    templateUrl: '/components/directives/filterList/filterList.html'
+  };
+}]);

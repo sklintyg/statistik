@@ -18,30 +18,30 @@
  */
 
 angular.module('StatisticsApp')
-    .directive('diagnosSelection', [function() {
-        'use strict';
+.directive('diagnosSelection', [function() {
+  'use strict';
 
-        return {
-            scope: {
-                showDetailsOptions: '=',
-                showDetailsOptions2: '=',
-                showDetailsOptions3: '=',
-                detailsOptions: '=',
-                detailsOptions2: '=',
-                detailsOptions3: '=',
-                selectedDetailsOption: '=',
-                selectedDetailsOption2: '=',
-                selectedDetailsOption3: '=',
-                queryString: '='
-            },
-            restrict: 'E',
-            templateUrl: '/components/directives/diagnosSelection/diagnosSelection.html',
-            controller: function($scope) {
-                $scope.hideDiagnosCategorySelection = true;
+  return {
+    scope: {
+      showDetailsOptions: '=',
+      showDetailsOptions2: '=',
+      showDetailsOptions3: '=',
+      detailsOptions: '=',
+      detailsOptions2: '=',
+      detailsOptions3: '=',
+      selectedDetailsOption: '=',
+      selectedDetailsOption2: '=',
+      selectedDetailsOption3: '=',
+      queryString: '='
+    },
+    restrict: 'E',
+    templateUrl: '/components/directives/diagnosSelection/diagnosSelection.html',
+    controller: function($scope) {
+      $scope.hideDiagnosCategorySelection = true;
 
-                $scope.$watch('detailsOptions3.length', function(length) {
-                    $scope.hideDiagnosCategorySelection = length === 0;
-                });
-            }
-        };
-    }]);
+      $scope.$watch('detailsOptions3.length', function(length) {
+        $scope.hideDiagnosCategorySelection = length === 0;
+      });
+    }
+  };
+}]);

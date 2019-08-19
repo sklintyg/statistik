@@ -22,6 +22,11 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.classic.spi.LoggingEvent;
+import ch.qos.logback.core.Appender;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,25 +37,19 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.LoggerFactory;
 
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.Logger;
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.classic.spi.LoggingEvent;
-import ch.qos.logback.core.Appender;
-
 @RunWith(MockitoJUnitRunner.class)
 public class MonitoringLogServiceImplTest {
-    
+
     private static final int NBR_CERTIFICATES = 98;
 
     private static final String CERTIFICATE_ID = "CERTIFICATE_ID";
-    
+
     @Mock
     private Appender<ILoggingEvent> mockAppender;
 
     @Captor
     private ArgumentCaptor<LoggingEvent> captorLoggingEvent;
-    
+
     MonitoringLogService logService = new MonitoringLogServiceImpl();
 
     @Before
@@ -58,13 +57,13 @@ public class MonitoringLogServiceImplTest {
         final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
         logger.addAppender(mockAppender);
     }
-    
+
     @After
     public void teardown() {
         final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
         logger.detachAppender(mockAppender);
     }
-    
+
     @Test
     public void shouldLogInFromQueue() {
         logService.logInFromQueue(CERTIFICATE_ID);
@@ -84,7 +83,7 @@ public class MonitoringLogServiceImplTest {
 
         // Verify log
         assertThat(loggingEvent.getLevel(), equalTo(logLevel));
-        assertThat(loggingEvent.getFormattedMessage(), 
-                equalTo(logMessage));
+        assertThat(loggingEvent.getFormattedMessage(),
+            equalTo(logMessage));
     }
 }

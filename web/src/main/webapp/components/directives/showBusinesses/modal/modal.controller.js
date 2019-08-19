@@ -19,13 +19,13 @@
 
 angular.module('StatisticsApp').controller('ShowBusinessesModalCtrl',
     function($scope, $uibModalInstance, businesses, vgName) {
-        'use strict';
+      'use strict';
 
-        $scope.businesses = businesses;
-        $scope.vgName = vgName;
+      $scope.businesses = businesses;
+      $scope.vgName = vgName;
 
-        $scope.cancel = function() {
-            $uibModalInstance.dismiss();
-        };
+      $scope.cancel = function() {
+        $uibModalInstance.dismiss();
+      };
     }
 );

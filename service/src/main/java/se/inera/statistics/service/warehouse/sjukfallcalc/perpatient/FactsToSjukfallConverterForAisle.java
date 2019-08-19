@@ -19,12 +19,11 @@
 package se.inera.statistics.service.warehouse.sjukfallcalc.perpatient;
 
 import com.google.common.collect.ArrayListMultimap;
-import se.inera.statistics.service.warehouse.Fact;
-import se.inera.statistics.service.warehouse.SjukfallExtended;
-
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import se.inera.statistics.service.warehouse.Fact;
+import se.inera.statistics.service.warehouse.SjukfallExtended;
 
 public class FactsToSjukfallConverterForAisle {
 
@@ -43,8 +42,8 @@ public class FactsToSjukfallConverterForAisle {
             return sjukfallsPerPatientInAisle;
         }
         final List<Long> nonCachedPatients = patients.stream()
-                .filter(aLong -> !sjukfallsPerPatientInAisle.containsKey(aLong))
-                .collect(Collectors.toList());
+            .filter(aLong -> !sjukfallsPerPatientInAisle.containsKey(aLong))
+            .collect(Collectors.toList());
         if (!nonCachedPatients.isEmpty()) {
             sjukfallsPerPatientInAisle.putAll(factsToSjukfallConverter.getSjukfallsPerPatient(aisle, nonCachedPatients));
         }

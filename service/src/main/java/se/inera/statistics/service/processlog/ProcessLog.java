@@ -19,7 +19,6 @@
 package se.inera.statistics.service.processlog;
 
 import java.util.List;
-
 import org.springframework.stereotype.Component;
 
 @Component

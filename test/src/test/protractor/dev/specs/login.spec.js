@@ -27,57 +27,57 @@ var features = testfw.features;
 
 describe('Tester kring inloggning: ', function() {
 
+  beforeAll(function() {
+    browser.get('/');
+  });
+
+  it('INTYG-3074: Inloggning behålls efter sidomladdning på nationell nivå', function() {
+    features.user.makeSureNotLoggedIn();
+    features.user.loginUser1(true);
+    pages.navmenu.nationalTab.click();
+    pages.navmenu.navCasesPerMonthLink.click();
+    browser.refresh();
+    pages.navmenu.verksamhetTab.click();
+    pages.navmenu.navVerksamhetOversiktLink.click();
+    pages.verksamhetOverview.isAtPage();
+  });
+
+  describe('Flera vårdgivare', function() {
+
     beforeAll(function() {
-        browser.get('/');
+      features.user.makeSureNotLoggedIn();
+      features.user.loginUser5(true);
     });
 
-    it('INTYG-3074: Inloggning behålls efter sidomladdning på nationell nivå', function() {
-        features.user.makeSureNotLoggedIn();
-        features.user.loginUser1(true);
-        pages.navmenu.nationalTab.click();
-        pages.navmenu.navCasesPerMonthLink.click();
-        browser.refresh();
-        pages.navmenu.verksamhetTab.click();
-        pages.navmenu.navVerksamhetOversiktLink.click();
-        pages.verksamhetOverview.isAtPage();
+    it('Välj vårdgivare', function() {
+      pages.selectVardgivare.isAtPage();
+
+      expect(pages.selectVardgivare.list.count()).toBe(2);
+
+      var link = pages.selectVardgivare.getVardgivareLink(0);
+      var linkname = link.getText();
+
+      link.click();
+      pages.verksamhetOverview.isAtPage();
+
+      expect(pages.headerPo.verksamhetsNameLabel.getText()).toEqual(linkname);
     });
 
-    describe('Flera vårdgivare', function() {
+    it('Byt vårdgivare', function() {
+      pages.headerPo.changeVardgivareBtn.click();
 
-        beforeAll(function() {
-            features.user.makeSureNotLoggedIn();
-            features.user.loginUser5(true);
-        });
+      var link = pages.selectVardgivare.getVardgivareLink(1);
+      var linkname = link.getText();
 
-        it('Välj vårdgivare', function() {
-            pages.selectVardgivare.isAtPage();
+      link.click();
 
-            expect(pages.selectVardgivare.list.count()).toBe(2);
-
-            var link = pages.selectVardgivare.getVardgivareLink(0);
-            var linkname = link.getText();
-
-            link.click();
-            pages.verksamhetOverview.isAtPage();
-
-            expect(pages.headerPo.verksamhetsNameLabel.getText()).toEqual(linkname);
-        });
-
-        it('Byt vårdgivare', function() {
-            pages.headerPo.changeVardgivareBtn.click();
-
-            var link = pages.selectVardgivare.getVardgivareLink(1);
-            var linkname = link.getText();
-
-            link.click();
-
-            expect(pages.headerPo.verksamhetsNameLabel.getText()).toEqual(linkname);
-        });
-
+      expect(pages.headerPo.verksamhetsNameLabel.getText()).toEqual(linkname);
     });
 
-    afterAll(function() {
-        features.user.makeSureNotLoggedIn();
-    });
+  });
+
+  afterAll(function() {
+    features.user.makeSureNotLoggedIn();
+  });
 
 });

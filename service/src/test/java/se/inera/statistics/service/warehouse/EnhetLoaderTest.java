@@ -18,6 +18,15 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,27 +35,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.warehouse.EnhetLoader;
 import se.inera.statistics.service.processlog.Enhet;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:icd10.xml" })
+@ContextConfiguration(locations = {"classpath:process-log-impl-test.xml", "classpath:icd10.xml"})
 @DirtiesContext
 public class EnhetLoaderTest {
 
     @Autowired
     private EnhetLoader enhetLoader;
-    
+
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
 
@@ -61,7 +59,8 @@ public class EnhetLoaderTest {
         manager.persist(new Enhet(new HsaIdVardgivare("vg2"), new HsaIdEnhet("e5"), "5", "", "", ""));
 
         //When
-        final List<Enhet> enhetsWithHsaId = enhetLoader.getEnhets(Arrays.asList(new HsaIdEnhet("e1"), new HsaIdEnhet("e2"), new HsaIdEnhet("e4")));
+        final List<Enhet> enhetsWithHsaId = enhetLoader
+            .getEnhets(Arrays.asList(new HsaIdEnhet("e1"), new HsaIdEnhet("e2"), new HsaIdEnhet("e4")));
 
         //Then
         final List<String> enhetNames = enhetsWithHsaId.stream().map(Enhet::getNamn).collect(Collectors.toList());

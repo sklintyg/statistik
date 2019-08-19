@@ -18,10 +18,10 @@
  */
 package se.inera.statistics.service.processlog.message;
 
-import java.util.List;
-import javax.transaction.NotSupportedException;
-import javax.transaction.SystemException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.annotation.DirtiesContext;
@@ -29,12 +29,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:icd10.xml" })
+@ContextConfiguration(locations = {"classpath:process-log-impl-test.xml", "classpath:icd10.xml"})
 @Transactional
 @DirtiesContext
 public class ProcessMessageLogImplTest extends ProcessMessageLogImpl {
@@ -78,7 +74,6 @@ public class ProcessMessageLogImplTest extends ProcessMessageLogImpl {
         int pendingCountAfterAdd = pending.size();
 
         assertEquals(pendingCount + 1, pendingCountAfterAdd);
-
 
         // When
         setProcessed(id);

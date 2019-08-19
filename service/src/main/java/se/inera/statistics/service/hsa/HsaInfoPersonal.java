@@ -21,7 +21,6 @@ package se.inera.statistics.service.hsa;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -53,7 +52,7 @@ public class HsaInfoPersonal {
     // CHECKSTYLE:OFF ParameterNumberCheck
     @java.lang.SuppressWarnings("squid:S00107") // Parameter number check ignored in Sonar
     public HsaInfoPersonal(String id, String kon, String alder, List<String> befattning, List<String> specialitet, List<String> yrkesgrupp,
-            Boolean skyddad, String tilltalsnamn, String efternamn) {
+        Boolean skyddad, String tilltalsnamn, String efternamn) {
         this.id = id;
         this.kon = kon;
         this.alder = alder;
@@ -114,16 +113,16 @@ public class HsaInfoPersonal {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("kon", kon)
-                .add("alder", alder)
-                .add("befattning", befattning)
-                .add("specialitet", specialitet)
-                .add("yrkesgrupp", yrkesgrupp)
-                .add("skyddad", skyddad)
-                .add("tilltalsnamn", tilltalsnamn)
-                .add("efternamn", efternamn)
-                .toString();
+            .add("id", id)
+            .add("kon", kon)
+            .add("alder", alder)
+            .add("befattning", befattning)
+            .add("specialitet", specialitet)
+            .add("yrkesgrupp", yrkesgrupp)
+            .add("skyddad", skyddad)
+            .add("tilltalsnamn", tilltalsnamn)
+            .add("efternamn", efternamn)
+            .toString();
     }
 
 }

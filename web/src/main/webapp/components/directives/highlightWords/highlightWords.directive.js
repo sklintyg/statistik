@@ -24,44 +24,43 @@
 * filter and it must therefore be added from this directive instead.
 */
 angular.module('StatisticsApp')
-    .directive('highlightWords',
-        /** @ngInject */
-        function(_, PHRASES_TO_HIGHLIGHT) {
-        'use strict';
+.directive('highlightWords',
+    /** @ngInject */
+    function(_, PHRASES_TO_HIGHLIGHT) {
+      'use strict';
 
-        var hightlightWords = _.debounce(function() {
-            $('.highlight-this-content').each(function(index, element){
-                $(element).addClass('highlight-words');
-                element.setAttribute('data-toggle', 'tooltip');
-                element.setAttribute('data-placement', 'auto right');
-                element.setAttribute('data-original-title', PHRASES_TO_HIGHLIGHT[element.innerText]);
-            });
-            initToolTip();
-        }, 200);
+      var hightlightWords = _.debounce(function() {
+        $('.highlight-this-content').each(function(index, element) {
+          $(element).addClass('highlight-words');
+          element.setAttribute('data-toggle', 'tooltip');
+          element.setAttribute('data-placement', 'auto right');
+          element.setAttribute('data-original-title', PHRASES_TO_HIGHLIGHT[element.innerText]);
+        });
+        initToolTip();
+      }, 200);
 
-        return {
-            scope: {
-            },
-            restrict: 'E',
-            link: function($scope) {
-                $scope.hasRegistered = false;
-                $scope.$watch(function() {
-                    if ($scope.hasRegistered) {
-                        return;
-                    }
-                    $scope.hasRegistered = true;
-                    $scope.$$postDigest(function() {
-                        $scope.hasRegistered = false;
-                        hightlightWords();
-                    });
-                });
+      return {
+        scope: {},
+        restrict: 'E',
+        link: function($scope) {
+          $scope.hasRegistered = false;
+          $scope.$watch(function() {
+            if ($scope.hasRegistered) {
+              return;
             }
-        };
-
-        function initToolTip() {
-            $('[data-toggle="tooltip"]').tooltip({
-                container: '#view'
+            $scope.hasRegistered = true;
+            $scope.$$postDigest(function() {
+              $scope.hasRegistered = false;
+              hightlightWords();
             });
+          });
         }
+      };
+
+      function initToolTip() {
+        $('[data-toggle="tooltip"]').tooltip({
+          container: '#view'
+        });
+      }
 
     });

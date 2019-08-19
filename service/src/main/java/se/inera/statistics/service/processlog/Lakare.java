@@ -24,7 +24,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
@@ -109,9 +108,9 @@ public class Lakare {
         final Lakare other = (Lakare) o;
 
         return Objects.equals(this.vardgivareId, other.vardgivareId)
-                && Objects.equals(this.lakareId, other.lakareId)
-                && Objects.equals(this.tilltalsNamn, other.tilltalsNamn)
-                && Objects.equals(this.efterNamn, other.efterNamn);
+            && Objects.equals(this.lakareId, other.lakareId)
+            && Objects.equals(this.tilltalsNamn, other.tilltalsNamn)
+            && Objects.equals(this.efterNamn, other.efterNamn);
     }
 
     @Override

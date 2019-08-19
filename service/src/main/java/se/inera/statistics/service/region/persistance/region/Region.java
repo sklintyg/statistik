@@ -21,7 +21,6 @@ package se.inera.statistics.service.region.persistance.region;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 /**

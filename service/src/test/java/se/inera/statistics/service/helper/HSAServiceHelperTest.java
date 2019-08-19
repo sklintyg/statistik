@@ -20,7 +20,6 @@ package se.inera.statistics.service.helper;
 
 import org.junit.Assert;
 import org.junit.Test;
-
 import se.inera.statistics.service.JSONSource;
 import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.hsa.HsaInfo;

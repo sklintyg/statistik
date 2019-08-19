@@ -22,12 +22,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -62,7 +60,7 @@ public class RegionEnhetHandler {
         final long regionId = regionOptional.get().getId();
         regionEnhetManager.update(regionId, data.getRows());
         regionEnhetUpdateManager.update(regionId, data.getUserName(), data.getUserId(), removeInvalidChars(data.getFileName()),
-                RegionEnhetUpdateOperation.UPDATE);
+            RegionEnhetUpdateOperation.UPDATE);
     }
 
     public void clear(HsaIdVardgivare vgId, String username, HsaIdUser userId) throws NoRegionSetForVgException {

@@ -18,6 +18,19 @@
  */
 package se.inera.statistics.service.countypopulation;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.times;
+
+import java.sql.Date;
+import java.time.Clock;
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -28,23 +41,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import se.inera.statistics.service.SpyableClock;
 import se.inera.statistics.service.report.model.Range;
-
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
-
-import java.sql.Date;
-import java.time.Clock;
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.times;
 
 public class CountyPopulationManagerImplTest {
 
@@ -69,7 +65,8 @@ public class CountyPopulationManagerImplTest {
     public void testGetCountyPopulation() throws Exception {
         //Given
         final Query query = Mockito.mock(Query.class);
-        final CountyPopulationRow populationRow = new CountyPopulationRow("{\"01\": {\"male\": \"202\", \"female\": \"101\"}}", LocalDate.parse("2016-04-24"));
+        final CountyPopulationRow populationRow = new CountyPopulationRow("{\"01\": {\"male\": \"202\", \"female\": \"101\"}}",
+            LocalDate.parse("2016-04-24"));
         Mockito.when(query.getResultList()).thenReturn(Collections.singletonList(populationRow));
         Mockito.when(manager.createQuery(Mockito.anyString())).thenReturn(query);
         final Range range = Range.year(clock);
@@ -91,7 +88,8 @@ public class CountyPopulationManagerImplTest {
     public void testGetCountyPopulationFetcherIsNotInvokedWhenPopulationIsFoundInDb() throws Exception {
         //Given
         final Query query = Mockito.mock(Query.class);
-        final CountyPopulationRow populationRow = new CountyPopulationRow("{\"01\": {\"male\": \"202\", \"female\": \"101\"}}", LocalDate.parse("2016-04-24"));
+        final CountyPopulationRow populationRow = new CountyPopulationRow("{\"01\": {\"male\": \"202\", \"female\": \"101\"}}",
+            LocalDate.parse("2016-04-24"));
         Mockito.when(query.getResultList()).thenReturn(Collections.singletonList(populationRow));
         Mockito.when(manager.createQuery(Mockito.anyString())).thenReturn(query);
         final Range range = Range.year(clock);

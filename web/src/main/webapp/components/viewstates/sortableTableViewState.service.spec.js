@@ -18,53 +18,50 @@
  */
 
 describe('viewstate: sortableTableViewState', function() {
-    'use strict';
+  'use strict';
 
-    beforeEach(module('StatisticsApp'));
+  beforeEach(module('StatisticsApp'));
 
-    var sortableTableViewState;
+  var sortableTableViewState;
 
-    // Inject dependencies and mocks
-    beforeEach(inject(function(_sortableTableViewState_) {
-        sortableTableViewState = _sortableTableViewState_;
-    }));
+  // Inject dependencies and mocks
+  beforeEach(inject(function(_sortableTableViewState_) {
+    sortableTableViewState = _sortableTableViewState_;
+  }));
 
-    describe('updateSortIndex', function() {
-        it('set new index', function() {
-            sortableTableViewState.updateSortIndex(1);
+  describe('updateSortIndex', function() {
+    it('set new index', function() {
+      sortableTableViewState.updateSortIndex(1);
 
-            expect(sortableTableViewState.getSortIndex()).toEqual(1);
-            expect(sortableTableViewState.getSortReverse()).toBeTruthy();
-        });
-
-        it('set same index twice', function() {
-            sortableTableViewState.updateSortIndex(1);
-            expect(sortableTableViewState.getSortIndex()).toEqual(1);
-
-            sortableTableViewState.updateSortIndex(1);
-
-            expect(sortableTableViewState.getSortIndex()).toEqual(1);
-            expect(sortableTableViewState.getSortReverse()).toBeFalsy();
-        });
-
-        it('set same index three times', function() {
-            sortableTableViewState.updateSortIndex(1);
-            expect(sortableTableViewState.getSortIndex()).toEqual(1);
-            expect(sortableTableViewState.getSortReverse()).toBeTruthy();
-
-            sortableTableViewState.updateSortIndex(1);
-
-            expect(sortableTableViewState.getSortIndex()).toEqual(1);
-            expect(sortableTableViewState.getSortReverse()).toBeFalsy();
-
-
-            sortableTableViewState.updateSortIndex(1);
-            expect(sortableTableViewState.getSortIndex()).toEqual(-1);
-            expect(sortableTableViewState.getSortReverse()).toBeTruthy();
-        });
-
+      expect(sortableTableViewState.getSortIndex()).toEqual(1);
+      expect(sortableTableViewState.getSortReverse()).toBeTruthy();
     });
 
+    it('set same index twice', function() {
+      sortableTableViewState.updateSortIndex(1);
+      expect(sortableTableViewState.getSortIndex()).toEqual(1);
 
+      sortableTableViewState.updateSortIndex(1);
+
+      expect(sortableTableViewState.getSortIndex()).toEqual(1);
+      expect(sortableTableViewState.getSortReverse()).toBeFalsy();
+    });
+
+    it('set same index three times', function() {
+      sortableTableViewState.updateSortIndex(1);
+      expect(sortableTableViewState.getSortIndex()).toEqual(1);
+      expect(sortableTableViewState.getSortReverse()).toBeTruthy();
+
+      sortableTableViewState.updateSortIndex(1);
+
+      expect(sortableTableViewState.getSortIndex()).toEqual(1);
+      expect(sortableTableViewState.getSortReverse()).toBeFalsy();
+
+      sortableTableViewState.updateSortIndex(1);
+      expect(sortableTableViewState.getSortIndex()).toEqual(-1);
+      expect(sortableTableViewState.getSortReverse()).toBeTruthy();
+    });
+
+  });
 
 });

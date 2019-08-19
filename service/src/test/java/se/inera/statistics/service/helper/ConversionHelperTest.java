@@ -18,13 +18,10 @@
  */
 package se.inera.statistics.service.helper;
 
-import java.time.LocalDate;
-
-import org.junit.Test;
-
-import se.inera.statistics.service.helper.certificate.JsonDocumentHelper;
-
 import static org.junit.Assert.assertEquals;
+
+import java.time.LocalDate;
+import org.junit.Test;
 
 public class ConversionHelperTest {
 

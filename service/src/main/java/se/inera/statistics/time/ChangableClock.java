@@ -51,6 +51,7 @@ public final class ChangableClock extends Clock implements Serializable {
 
     /**
      * Change the underlying clock.
+     *
      * @param currentClock The new underlying clock
      */
     public void setCurrentClock(Clock currentClock) {

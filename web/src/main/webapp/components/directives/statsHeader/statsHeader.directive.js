@@ -18,49 +18,49 @@
  */
 
 angular.module('StatisticsApp')
-    .directive('statsHeader', [function() {
-        'use strict';
-        return {
-            scope: {
-                isLoggedIn: '=',
-                pageHeaderVerksamhetName: '=',
-                showBusinessesDetails: '=',
-                vgName: '=',
-                loginClicked: '&',
-                changeVg: '&'
-            },
-            restrict: 'E',
-            templateUrl: '/components/directives/statsHeader/statsHeader.html',
-            controller: function($window, $scope, AppModel, UserModel, $uibModal) {
-                $scope.AppModel = AppModel;
-                $scope.UserModel = UserModel;
+.directive('statsHeader', [function() {
+  'use strict';
+  return {
+    scope: {
+      isLoggedIn: '=',
+      pageHeaderVerksamhetName: '=',
+      showBusinessesDetails: '=',
+      vgName: '=',
+      loginClicked: '&',
+      changeVg: '&'
+    },
+    restrict: 'E',
+    templateUrl: '/components/directives/statsHeader/statsHeader.html',
+    controller: function($window, $scope, AppModel, UserModel, $uibModal) {
+      $scope.AppModel = AppModel;
+      $scope.UserModel = UserModel;
 
-                $scope.showSettings = function() {
-                    return !UserModel.get().isProcessledare;
-                };
+      $scope.showSettings = function() {
+        return !UserModel.get().isProcessledare;
+      };
 
-                $scope.changeVardgivare = function(vgId) {
-                    $scope.changeVg({vgId: vgId});
-                };
+      $scope.changeVardgivare = function(vgId) {
+        $scope.changeVg({vgId: vgId});
+      };
 
-                $scope.openSettings = function() {
-                    $uibModal.open({
-                        animation: true,
-                        templateUrl: '/components/directives/statSettings/statSettings.html',
-                        controller: 'StatSettingsCtrl',
-                        size: 'lg',
-                        backdrop: 'true'
-                    });
-                };
+      $scope.openSettings = function() {
+        $uibModal.open({
+          animation: true,
+          templateUrl: '/components/directives/statSettings/statSettings.html',
+          controller: 'StatSettingsCtrl',
+          size: 'lg',
+          backdrop: 'true'
+        });
+      };
 
-                $scope.onLogoutClick = function() {
-                    if (UserModel.get().authenticationMethod === 'FAKE') {
-                        $window.location = '/logout';
-                    } else {
-                        $window.location = '/saml/logout/';
-                    }
-                };
+      $scope.onLogoutClick = function() {
+        if (UserModel.get().authenticationMethod === 'FAKE') {
+          $window.location = '/logout';
+        } else {
+          $window.location = '/saml/logout/';
+        }
+      };
 
-            }
-        };
-    }]);
+    }
+  };
+}]);

@@ -19,25 +19,23 @@
 package se.inera.statistics.service.processlog;
 
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.helper.certificate.JsonDocumentHelper;
 import se.inera.statistics.service.helper.HSAServiceHelper;
+import se.inera.statistics.service.helper.certificate.JsonDocumentHelper;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.warehouse.WidelineConverter;
 
 @Component
 public class VardgivareManager {
+
     private static final Logger LOG = LoggerFactory.getLogger(VardgivareManager.class);
     public static final HsaIdEnhet UTAN_ENHETSID = new HsaIdEnhet(JsonDocumentHelper.UTANENHETSID);
 
@@ -62,9 +60,9 @@ public class VardgivareManager {
         if (validate(vardgivare, enhetNamn, lansId, kommunId, verksamhetsTyper, hsaInfo)) {
             // Must use 'LIKE' instead of '=' due to STATISTIK-1231
             TypedQuery<Enhet> vardgivareQuery = manager
-                    .createQuery("SELECT v FROM Enhet v WHERE v.enhetId LIKE :enhetId AND v.vardgivareId = :vardgivareId", Enhet.class);
+                .createQuery("SELECT v FROM Enhet v WHERE v.enhetId LIKE :enhetId AND v.vardgivareId = :vardgivareId", Enhet.class);
             List<Enhet> resultList = vardgivareQuery.setParameter("enhetId", enhet.getId()).setParameter("vardgivareId", vardgivare.getId())
-                    .getResultList();
+                .getResultList();
 
             if (resultList.isEmpty()) {
                 manager.persist(new Enhet(vardgivare, enhet, enhetNamn, lansId, kommunId, verksamhetsTyper));
@@ -81,7 +79,7 @@ public class VardgivareManager {
     @Transactional
     public List<Enhet> getEnhets(String vardgivare) {
         TypedQuery<Enhet> query = manager.createQuery("SELECT v FROM Enhet v WHERE v.vardgivareId = :vardgivareId", Enhet.class)
-                .setParameter("vardgivareId", vardgivare);
+            .setParameter("vardgivareId", vardgivare);
         return query.getResultList();
     }
 
@@ -92,7 +90,7 @@ public class VardgivareManager {
     }
 
     private boolean validate(HsaIdVardgivare vardgivare, String enhetNamn, String lansId, String kommunId, String verksamhetsTyper,
-            HsaInfo hsaInfo) {
+        HsaInfo hsaInfo) {
         // Utan vardgivare har vi inget uppdrag att behandla intyg, avbryt direkt
         if (vardgivare == null || vardgivare.isEmpty()) {
             LOG.error("Vardgivare saknas: " + hsaInfo);
@@ -106,7 +104,7 @@ public class VardgivareManager {
         result &= lansId != null && checkLength(lansId, "Lansid", WidelineConverter.MAX_LENGTH_LAN_ID, hsaInfo);
         result &= kommunId != null && checkLength(kommunId, "Kommunid", WidelineConverter.MAX_LENGTH_KOMMUN_ID, hsaInfo);
         result &= verksamhetsTyper != null
-                && checkLength(verksamhetsTyper, "Verksamhetstyper", WidelineConverter.MAX_LENGTH_VERKSAMHET_TYP, hsaInfo);
+            && checkLength(verksamhetsTyper, "Verksamhetstyper", WidelineConverter.MAX_LENGTH_VERKSAMHET_TYP, hsaInfo);
         return result;
     }
 

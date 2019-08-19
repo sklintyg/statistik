@@ -18,14 +18,14 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import static org.junit.Assert.assertEquals;
+
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 import org.junit.Test;
-
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.region.persistance.regionenhet.RegionEnhet;
 import se.inera.statistics.service.report.model.AvailableFilters;
@@ -43,8 +43,6 @@ import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.service.Filter;
 import se.inera.statistics.web.service.FilterSettings;
 
-import static org.junit.Assert.assertEquals;
-
 public class SjukfallPerPatientsPerEnhetConverterTest {
 
     private final Clock clock = Clock.systemDefaultZone();
@@ -53,14 +51,17 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     public void testConvertNullRegionsEnhetsInputGivesEmptyOutput() {
         //Given
         final List<RegionEnhet> regionEnhets = null;
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(regionEnhets, Collections.<HsaIdEnhet>emptyList());
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(
+            regionEnhets, Collections.<HsaIdEnhet>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
         simpleKonDataRows.add(new SimpleKonDataRow("ett", 1, 2));
         simpleKonDataRows.add(new SimpleKonDataRow("tva", 10, 20));
         final SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForSjukfall(), simpleKonDataRows);
-        final SimpleDetailsData result = sjukfallPerPatientsPerEnhetConverter.convert(casesPerMonth, new FilterSettings(Filter.empty(), Range.createForLastMonthsIncludingCurrent(12, clock)), createMessage());
+        final SimpleDetailsData result = sjukfallPerPatientsPerEnhetConverter
+            .convert(casesPerMonth, new FilterSettings(Filter.empty(), Range.createForLastMonthsIncludingCurrent(12, clock)),
+                createMessage());
 
         //Then
         assertEquals(0, result.getTableData().getRows().size());
@@ -70,14 +71,17 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     public void testConvertEmptyRegionsEnhetsInputGivesEmptyOutput() {
         //Given
         final List<RegionEnhet> regionEnhets = Collections.emptyList();
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(regionEnhets, Collections.<HsaIdEnhet>emptyList());
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(
+            regionEnhets, Collections.<HsaIdEnhet>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
         simpleKonDataRows.add(new SimpleKonDataRow("ett", 1, 2));
         simpleKonDataRows.add(new SimpleKonDataRow("tva", 10, 20));
         final SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForSjukfall(), simpleKonDataRows);
-        final SimpleDetailsData result = sjukfallPerPatientsPerEnhetConverter.convert(casesPerMonth, new FilterSettings(Filter.empty(), Range.createForLastMonthsIncludingCurrent(12, clock)), createMessage());
+        final SimpleDetailsData result = sjukfallPerPatientsPerEnhetConverter
+            .convert(casesPerMonth, new FilterSettings(Filter.empty(), Range.createForLastMonthsIncludingCurrent(12, clock)),
+                createMessage());
 
         //Then
         assertEquals(0, result.getTableData().getRows().size());
@@ -87,14 +91,17 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     public void testConvertNonRegionsEnhetsInputGivesNonEmptyOutputWhereEnhetsNotInListAreRemoved() {
         //Given
         final List<RegionEnhet> regionEnhets = Arrays.asList(new RegionEnhet(2L, new HsaIdEnhet("HSA2"), 2));
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(regionEnhets, Collections.<HsaIdEnhet>emptyList());
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(
+            regionEnhets, Collections.<HsaIdEnhet>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
         simpleKonDataRows.add(new SimpleKonDataRow("ett", 1, 2, new HsaIdEnhet("HSA1")));
         simpleKonDataRows.add(new SimpleKonDataRow("tva", 10, 20, new HsaIdEnhet("HSA2")));
         final SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForSjukfall(), simpleKonDataRows);
-        final SimpleDetailsData result = sjukfallPerPatientsPerEnhetConverter.convert(casesPerMonth, new FilterSettings(Filter.empty(), Range.createForLastMonthsIncludingCurrent(12, clock)), createMessage());
+        final SimpleDetailsData result = sjukfallPerPatientsPerEnhetConverter
+            .convert(casesPerMonth, new FilterSettings(Filter.empty(), Range.createForLastMonthsIncludingCurrent(12, clock)),
+                createMessage());
 
         //Then
         assertEquals(1, result.getTableData().getRows().size());
@@ -104,15 +111,19 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     @Test
     public void testConvertEnhetsWithZeroPatientsAreNotPartOfResult() {
         //Given
-        final List<RegionEnhet> regionEnhets = Arrays.asList(new RegionEnhet(1L, new HsaIdEnhet("HSA1"), 1), new RegionEnhet(2L, new HsaIdEnhet("HSA2"), 0));
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(regionEnhets, Collections.<HsaIdEnhet>emptyList());
+        final List<RegionEnhet> regionEnhets = Arrays
+            .asList(new RegionEnhet(1L, new HsaIdEnhet("HSA1"), 1), new RegionEnhet(2L, new HsaIdEnhet("HSA2"), 0));
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(
+            regionEnhets, Collections.<HsaIdEnhet>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
         simpleKonDataRows.add(new SimpleKonDataRow("ett", 1, 2, new HsaIdEnhet("HSA1")));
         simpleKonDataRows.add(new SimpleKonDataRow("tva", 10, 20, new HsaIdEnhet("HSA2")));
         final SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForSjukfall(), simpleKonDataRows);
-        final SimpleDetailsData result = sjukfallPerPatientsPerEnhetConverter.convert(casesPerMonth, new FilterSettings(Filter.empty(), Range.createForLastMonthsIncludingCurrent(12, clock)), createMessage());
+        final SimpleDetailsData result = sjukfallPerPatientsPerEnhetConverter
+            .convert(casesPerMonth, new FilterSettings(Filter.empty(), Range.createForLastMonthsIncludingCurrent(12, clock)),
+                createMessage());
 
         //Then
         assertEquals(1, result.getTableData().getRows().size());
@@ -122,15 +133,19 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     @Test
     public void testConvertEnhetsWithLessThanZeroPatientsAreNotPartOfResult() {
         //Given
-        final List<RegionEnhet> regionEnhets = Arrays.asList(new RegionEnhet(1L, new HsaIdEnhet("HSA1"), -1), new RegionEnhet(2L, new HsaIdEnhet("HSA2"), 3));
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(regionEnhets, Collections.<HsaIdEnhet>emptyList());
+        final List<RegionEnhet> regionEnhets = Arrays
+            .asList(new RegionEnhet(1L, new HsaIdEnhet("HSA1"), -1), new RegionEnhet(2L, new HsaIdEnhet("HSA2"), 3));
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(
+            regionEnhets, Collections.<HsaIdEnhet>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
         simpleKonDataRows.add(new SimpleKonDataRow("ett", 1, 2, new HsaIdEnhet("HSA1")));
         simpleKonDataRows.add(new SimpleKonDataRow("tva", 10, 20, new HsaIdEnhet("HSA2")));
         final SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForSjukfall(), simpleKonDataRows);
-        final SimpleDetailsData result = sjukfallPerPatientsPerEnhetConverter.convert(casesPerMonth, new FilterSettings(Filter.empty(), Range.createForLastMonthsIncludingCurrent(12, clock)), createMessage());
+        final SimpleDetailsData result = sjukfallPerPatientsPerEnhetConverter
+            .convert(casesPerMonth, new FilterSettings(Filter.empty(), Range.createForLastMonthsIncludingCurrent(12, clock)),
+                createMessage());
 
         //Then
         assertEquals(1, result.getTableData().getRows().size());
@@ -140,15 +155,19 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     @Test
     public void testConvertEnhetsWithUnsetNumberOfPatientsAreNotPartOfResult() {
         //Given
-        final List<RegionEnhet> regionEnhets = Arrays.asList(new RegionEnhet(1L, new HsaIdEnhet("HSA1"), null), new RegionEnhet(2L, new HsaIdEnhet("HSA2"), 3));
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(regionEnhets, Collections.<HsaIdEnhet>emptyList());
+        final List<RegionEnhet> regionEnhets = Arrays
+            .asList(new RegionEnhet(1L, new HsaIdEnhet("HSA1"), null), new RegionEnhet(2L, new HsaIdEnhet("HSA2"), 3));
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(
+            regionEnhets, Collections.<HsaIdEnhet>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
         simpleKonDataRows.add(new SimpleKonDataRow("ett", 1, 2, new HsaIdEnhet("HSA1")));
         simpleKonDataRows.add(new SimpleKonDataRow("tva", 10, 20, new HsaIdEnhet("HSA2")));
         final SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForSjukfall(), simpleKonDataRows);
-        final SimpleDetailsData result = sjukfallPerPatientsPerEnhetConverter.convert(casesPerMonth, new FilterSettings(Filter.empty(), Range.createForLastMonthsIncludingCurrent(12, clock)), createMessage());
+        final SimpleDetailsData result = sjukfallPerPatientsPerEnhetConverter
+            .convert(casesPerMonth, new FilterSettings(Filter.empty(), Range.createForLastMonthsIncludingCurrent(12, clock)),
+                createMessage());
 
         //Then
         assertEquals(1, result.getTableData().getRows().size());
@@ -159,19 +178,22 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     public void testConvertResultIsUsingTwoDecimalsForBothTableAndChart() {
         //Given
         final List<RegionEnhet> regionEnhets = Arrays.asList(new RegionEnhet(1L, new HsaIdEnhet("HSA1"), 3000));
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(regionEnhets, Collections.<HsaIdEnhet>emptyList());
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(
+            regionEnhets, Collections.<HsaIdEnhet>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
         simpleKonDataRows.add(new SimpleKonDataRow("ett", 0, 10, new HsaIdEnhet("HSA1")));
         final SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForSjukfall(), simpleKonDataRows);
-        final SimpleDetailsData result = sjukfallPerPatientsPerEnhetConverter.convert(casesPerMonth, new FilterSettings(Filter.empty(), Range.createForLastMonthsIncludingCurrent(12, clock)), createMessage());
+        final SimpleDetailsData result = sjukfallPerPatientsPerEnhetConverter
+            .convert(casesPerMonth, new FilterSettings(Filter.empty(), Range.createForLastMonthsIncludingCurrent(12, clock)),
+                createMessage());
 
         //Then
         assertEquals(1, result.getTableData().getRows().size());
         assertEquals(10, result.getTableData().getRows().get(0).getData().get(0));
         assertEquals(3000, result.getTableData().getRows().get(0).getData().get(1));
-        
+
         assertEquals("3,33", result.getTableData().getRows().get(0).getData().get(2));
         assertEquals(3.33, result.getChartData().getSeries().get(0).getData().get(0));
     }
@@ -179,8 +201,11 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     @Test
     public void testConvertEnhetsHasCorrectSortingSTATISTIK1034() {
         //Given
-        final List<RegionEnhet> regionEnhets = Arrays.asList(new RegionEnhet(1L, new HsaIdEnhet("HSA1"), 1000), new RegionEnhet(2L, new HsaIdEnhet("HSA2"), 1000), new RegionEnhet(3L, new HsaIdEnhet("HSA3"), 1000));
-        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(regionEnhets, Collections.<HsaIdEnhet>emptyList());
+        final List<RegionEnhet> regionEnhets = Arrays
+            .asList(new RegionEnhet(1L, new HsaIdEnhet("HSA1"), 1000), new RegionEnhet(2L, new HsaIdEnhet("HSA2"), 1000),
+                new RegionEnhet(3L, new HsaIdEnhet("HSA3"), 1000));
+        final SjukfallPerPatientsPerEnhetConverter sjukfallPerPatientsPerEnhetConverter = new SjukfallPerPatientsPerEnhetConverter(
+            regionEnhets, Collections.<HsaIdEnhet>emptyList());
 
         //When
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
@@ -188,7 +213,9 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
         simpleKonDataRows.add(new SimpleKonDataRow("tva", 5, 1, new HsaIdEnhet("HSA2")));
         simpleKonDataRows.add(new SimpleKonDataRow("tre", 10, 5, new HsaIdEnhet("HSA3")));
         final SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForSjukfall(), simpleKonDataRows);
-        final SimpleDetailsData result = sjukfallPerPatientsPerEnhetConverter.convert(casesPerMonth, new FilterSettings(Filter.empty(), Range.createForLastMonthsIncludingCurrent(12, clock)), createMessage());
+        final SimpleDetailsData result = sjukfallPerPatientsPerEnhetConverter
+            .convert(casesPerMonth, new FilterSettings(Filter.empty(), Range.createForLastMonthsIncludingCurrent(12, clock)),
+                createMessage());
 
         //Then
         //STATISTIK-1034: Table sorted by name

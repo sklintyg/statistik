@@ -18,11 +18,19 @@
  */
 package se.inera.statistics.service.region;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.times;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -30,7 +38,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -40,15 +47,6 @@ import se.inera.statistics.service.region.persistance.regionenhet.RegionEnhet;
 import se.inera.statistics.service.region.persistance.regionenhet.RegionEnhetManager;
 import se.inera.statistics.service.region.persistance.regionenhetupdate.RegionEnhetUpdateManager;
 import se.inera.statistics.service.region.persistance.regionenhetupdate.RegionEnhetUpdateOperation;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.times;
 
 public class RegionEnhetHandlerTest {
 
@@ -85,7 +83,8 @@ public class RegionEnhetHandlerTest {
 
         //Then
         Mockito.verify(regionEnhetManager, times(0)).update(anyLong(), anyListOf(RegionEnhetFileDataRow.class));
-        Mockito.verify(regionEnhetUpdateManager, times(0)).update(anyLong(), anyString(), any(HsaIdUser.class), anyString(), any(RegionEnhetUpdateOperation.class));
+        Mockito.verify(regionEnhetUpdateManager, times(0))
+            .update(anyLong(), anyString(), any(HsaIdUser.class), anyString(), any(RegionEnhetUpdateOperation.class));
     }
 
     @Test
@@ -106,7 +105,8 @@ public class RegionEnhetHandlerTest {
 
         //Then
         Mockito.verify(regionEnhetManager, times(1)).update(landtingsId, rows);
-        Mockito.verify(regionEnhetUpdateManager, times(1)).update(landtingsId, userName, userHsaId, fileName, RegionEnhetUpdateOperation.UPDATE);
+        Mockito.verify(regionEnhetUpdateManager, times(1))
+            .update(landtingsId, userName, userHsaId, fileName, RegionEnhetUpdateOperation.UPDATE);
     }
 
     @Test
@@ -148,7 +148,8 @@ public class RegionEnhetHandlerTest {
         regionEnhetHandler.update(data);
 
         //Then
-        Mockito.verify(regionEnhetUpdateManager, times(1)).update(anyLong(), anyString(), any(HsaIdUser.class), eq("TestFile_Name.xls"), any(RegionEnhetUpdateOperation.class));
+        Mockito.verify(regionEnhetUpdateManager, times(1))
+            .update(anyLong(), anyString(), any(HsaIdUser.class), eq("TestFile_Name.xls"), any(RegionEnhetUpdateOperation.class));
     }
 
     @Test

@@ -23,6 +23,7 @@ package se.inera.testsupport.fkrapport;
  * codes.
  */
 public class DiagnoseEntry {
+
     private final String diagnoseValue;
     private final String diagnoseMatcher;
 

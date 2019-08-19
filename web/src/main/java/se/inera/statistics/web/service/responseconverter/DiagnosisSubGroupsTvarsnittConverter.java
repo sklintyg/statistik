@@ -20,7 +20,6 @@ package se.inera.statistics.web.service.responseconverter;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;

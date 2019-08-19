@@ -21,13 +21,11 @@ package se.inera.statistics.service.warehouse.message;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.processlog.message.MessageEventType;
 import se.inera.statistics.service.processlog.message.ProcessMessageLog;
@@ -60,7 +58,7 @@ public class MessageWidelineManager {
             processMessageLog.increaseNumberOfTries(logId);
 
             StringBuilder errorString = new StringBuilder(
-                    "Faulty meddelande logid " + logId + " id " + meddelandeId + " error count " + errCount);
+                "Faulty meddelande logid " + logId + " id " + meddelandeId + " error count " + errCount);
 
             for (String error : errors) {
                 errorString.append("\n").append(error);

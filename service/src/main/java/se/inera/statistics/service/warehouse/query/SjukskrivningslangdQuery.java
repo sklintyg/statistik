@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import com.google.common.collect.Lists;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,8 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import com.google.common.collect.Lists;
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.OverviewChartRow;
@@ -43,6 +42,7 @@ import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 public final class SjukskrivningslangdQuery {
+
     private static Ranges ranges = SjukfallslangdUtil.RANGES;
     private static final int LONG_SJUKFALL = 90;
 
@@ -101,22 +101,22 @@ public final class SjukskrivningslangdQuery {
     }
 
     public static SimpleKonResponse getLangaSjukfall(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
-            int periodLength, SjukfallUtil sjukfallUtil) {
+        int periodLength, SjukfallUtil sjukfallUtil) {
         final Function<SjukfallGroup, String> rowNameFunction = sjukfallGroup -> ReportUtil.toPeriod(sjukfallGroup.getRange().getFrom());
         return getLangaSjukfall(aisle, filter, from, periods, periodLength, sjukfallUtil, rowNameFunction);
     }
 
     public static SimpleKonResponse getLangaSjukfallTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate from,
-            int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+        int periods, int periodLength, SjukfallUtil sjukfallUtil) {
         final Function<SjukfallGroup, String> rowNameFunction = sjukfallGroup -> "Mer än 90 dagar";
         return getLangaSjukfall(aisle, filter, from, periods, periodLength, sjukfallUtil, rowNameFunction);
     }
 
     private static SimpleKonResponse getLangaSjukfall(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
-            int periodLength, SjukfallUtil sjukfallUtil, Function<SjukfallGroup, String> rowNameFunction) {
+        int periodLength, SjukfallUtil sjukfallUtil, Function<SjukfallGroup, String> rowNameFunction) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle,
-                filter)) {
+            filter)) {
             Counter counter = new Counter<>("");
             for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
                 if (sjukfall.getRealDays() > LONG_SJUKFALL) {
@@ -130,10 +130,10 @@ public final class SjukskrivningslangdQuery {
     }
 
     public static SimpleKonResponse getSjuksrivningslangd(Aisle aisle, FilterPredicates filter, LocalDate from,
-            int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+        int periods, int periodLength, SjukfallUtil sjukfallUtil) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle,
-                filter)) {
+            filter)) {
             Map<Ranges.Range, Counter<Ranges.Range>> counterMap = SjukskrivningslangdQuery.count(sjukfallGroup.getSjukfall());
             for (Ranges.Range i : SjukfallslangdUtil.RANGES) {
                 Counter<Ranges.Range> counter = counterMap.get(i);
@@ -145,7 +145,7 @@ public final class SjukskrivningslangdQuery {
     }
 
     public static KonDataResponse getSjuksrivningslangdomTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,
-            int periodLength, SjukfallUtil sjukfallUtil) {
+        int periodLength, SjukfallUtil sjukfallUtil) {
         final Ranges ranges = SjukfallslangdUtil.RANGES;
         final ArrayList<Ranges.Range> rangesList = Lists.newArrayList(ranges);
         final List<String> names = rangesList.stream().map(Ranges.Range::getName).collect(Collectors.toList());

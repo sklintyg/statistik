@@ -18,10 +18,9 @@
  */
 package se.inera.statistics.hsa.services;
 
+import java.util.List;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
-
-import java.util.List;
 
 /**
  * @author andreaskaltenbach

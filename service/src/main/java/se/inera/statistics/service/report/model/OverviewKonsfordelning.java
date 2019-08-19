@@ -19,9 +19,7 @@
 package se.inera.statistics.service.report.model;
 
 /**
- *
  * Represents relative proportions of men and women.
- *
  */
 public class OverviewKonsfordelning {
 

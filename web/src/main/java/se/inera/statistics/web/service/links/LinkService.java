@@ -22,15 +22,14 @@ package se.inera.statistics.web.service.links;
  * Created by eriklupander on 2017-05-31.
  */
 
+import java.util.Map;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.intyg.infra.dynamiclink.model.DynamicLink;
 import se.inera.intyg.infra.dynamiclink.service.DynamicLinkService;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import java.util.Map;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 
 @Path("/links")
@@ -44,7 +43,7 @@ public class LinkService {
     @Path("/")
     @Produces("application/json;charset=UTF-8")
     @PrometheusTimeMethod(
-            help = "API-tjänst för åtkomst till dynamiska länkar")
+        help = "API-tjänst för åtkomst till dynamiska länkar")
     public Map<String, DynamicLink> getLinks() {
         return dynamicLinkService.getAllAsMap();
     }

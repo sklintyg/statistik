@@ -18,15 +18,15 @@
  */
 
 angular.module('StatisticsApp')
-    .directive('showHelpText',
-        /** @ngInject */
-        function() {
-        'use strict';
-        return {
-            scope: {
-                texts: '='
-            },
-            restrict: 'E',
-            templateUrl: '/components/directives/showHelpText/showHelpText.html'
-        };
+.directive('showHelpText',
+    /** @ngInject */
+    function() {
+      'use strict';
+      return {
+        scope: {
+          texts: '='
+        },
+        restrict: 'E',
+        templateUrl: '/components/directives/showHelpText/showHelpText.html'
+      };
     });

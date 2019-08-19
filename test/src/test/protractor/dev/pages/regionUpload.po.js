@@ -20,11 +20,11 @@
 'use strict';
 
 var RegionUploadPage = function() {
-    this.container = element(by.id('region-upload-page'));
+  this.container = element(by.id('region-upload-page'));
 
-    this.isAtPage = function() {
-        expect(this.container.isDisplayed()).toBeTruthy();
-    };
+  this.isAtPage = function() {
+    expect(this.container.isDisplayed()).toBeTruthy();
+  };
 };
 
 module.exports = new RegionUploadPage();

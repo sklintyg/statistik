@@ -23,32 +23,32 @@
 angular.module('StatisticsApp').filter('messageFilter',
     /** @ngInject */
     function($log, $rootScope, $filter, messageService) {
-        'use strict';
+      'use strict';
 
-        return function(interpolatedKey, fallback, fallbackDefaultLang, params, lang, disableHighlightWords) {
-            var result;
-            var normalizedKey = angular.lowercase(interpolatedKey);
-            var useLanguage;
-            if (typeof lang !== 'undefined') {
-                useLanguage = lang;
-            } else {
-                useLanguage = $rootScope.lang;
-            }
+      return function(interpolatedKey, fallback, fallbackDefaultLang, params, lang, disableHighlightWords) {
+        var result;
+        var normalizedKey = angular.lowercase(interpolatedKey);
+        var useLanguage;
+        if (typeof lang !== 'undefined') {
+          useLanguage = lang;
+        } else {
+          useLanguage = $rootScope.lang;
+        }
 
-            result = messageService.getProperty(normalizedKey, null, fallback, useLanguage,
-                (typeof fallbackDefaultLang !== 'undefined'));
+        result = messageService.getProperty(normalizedKey, null, fallback, useLanguage,
+            (typeof fallbackDefaultLang !== 'undefined'));
 
-            if (typeof params !== 'undefined') {
-                var myparams = params;
-                for (var i = 0; i < myparams.length; i++) {
-                    result = result.replace('%' + i, myparams[i]);
-                }
-            }
+        if (typeof params !== 'undefined') {
+          var myparams = params;
+          for (var i = 0; i < myparams.length; i++) {
+            result = result.replace('%' + i, myparams[i]);
+          }
+        }
 
-            if (disableHighlightWords) {
-                return result;
-            } else {
-                return $filter('highlightWords')(result);
-            }
-        };
+        if (disableHighlightWords) {
+          return result;
+        } else {
+          return $filter('highlightWords')(result);
+        }
+      };
     });

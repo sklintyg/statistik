@@ -18,11 +18,11 @@
  */
 
 angular.module('StatisticsApp').directive('intermediate', function() {
-    'use strict';
+  'use strict';
 
-    return function(scope, element, attrs) {
-        scope.$watch(attrs.intermediate, function (newVal) {
-            element[0].indeterminate = newVal;
-        });
-    };
+  return function(scope, element, attrs) {
+    scope.$watch(attrs.intermediate, function(newVal) {
+      element[0].indeterminate = newVal;
+    });
+  };
 });

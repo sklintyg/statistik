@@ -18,17 +18,15 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
-import org.junit.Test;
-import se.inera.statistics.service.report.model.KonDataRow;
-import se.inera.statistics.service.report.model.KonField;
-import se.inera.statistics.web.model.NamedData;
-import se.inera.statistics.web.service.responseconverter.ServiceUtil;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+import se.inera.statistics.service.report.model.KonDataRow;
+import se.inera.statistics.service.report.model.KonField;
+import se.inera.statistics.web.model.NamedData;
 
 public class ServiceUtilTest {
 

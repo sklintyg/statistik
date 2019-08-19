@@ -18,18 +18,17 @@
  */
 package se.inera.statistics.testsupport;
 
+import javax.annotation.PostConstruct;
+import javax.jms.ConnectionFactory;
+import javax.jms.TextMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.queue.JmsReceiver;
 
-import javax.annotation.PostConstruct;
-import javax.jms.ConnectionFactory;
-import javax.jms.Queue;
-import javax.jms.TextMessage;
-
 public class QueueSender {
+
     private JmsTemplate jmsTemplate;
 
     @Autowired

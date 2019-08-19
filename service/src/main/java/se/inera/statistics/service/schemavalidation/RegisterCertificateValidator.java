@@ -18,22 +18,20 @@
  */
 package se.inera.statistics.service.schemavalidation;
 
+import com.helger.schematron.svrl.SVRLFailedAssert;
+import com.helger.schematron.svrl.SVRLHelper;
+import com.helger.schematron.xslt.SchematronResourceSCH;
 import java.io.StringReader;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.annotation.Nonnull;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
-
 import org.oclc.purl.dsdl.svrl.SchematronOutputType;
 
-import com.helger.schematron.svrl.SVRLFailedAssert;
-import com.helger.schematron.svrl.SVRLHelper;
-import com.helger.schematron.xslt.SchematronResourceSCH;
-
 public abstract class RegisterCertificateValidator implements SchematronValidator {
+
     private SchematronResourceSCH schematronResource;
 
     RegisterCertificateValidator(@Nonnull final String location) {
@@ -54,9 +52,9 @@ public abstract class RegisterCertificateValidator implements SchematronValidato
             final List<SVRLFailedAssert> allFailedAssertions = SVRLHelper.getAllFailedAssertions(valResult);
             if (allFailedAssertions.size() > 0) {
                 final List<String> errorMsgs = allFailedAssertions.stream()
-                        .map(fa -> String.format("TEST: %s, MSG: %s, ROLE: %s, LOCATION: %s, ALL: %s", fa.getTest(), fa.getText(),
-                                fa.getRole(), fa.getLocation(), fa.toString()))
-                        .collect(Collectors.toList());
+                    .map(fa -> String.format("TEST: %s, MSG: %s, ROLE: %s, LOCATION: %s, ALL: %s", fa.getTest(), fa.getText(),
+                        fa.getRole(), fa.getLocation(), fa.toString()))
+                    .collect(Collectors.toList());
                 return new ValidateXmlResponse(errorMsgs);
             } else {
                 return ValidateXmlResponse.newValidResponse();

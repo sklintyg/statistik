@@ -21,7 +21,6 @@ package se.inera.statistics.config.jms;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.MessageListener;
-
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -36,13 +35,13 @@ import org.springframework.jms.connection.JmsTransactionManager;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.destination.DestinationResolver;
 import org.springframework.jms.support.destination.DynamicDestinationResolver;
-
 import se.inera.statistics.service.processlog.Receiver;
 import se.inera.statistics.service.queue.JmsReceiver;
 
 @Configuration
 @EnableJms
 public class JmsConfig implements JmsListenerConfigurer {
+
     @Value("${activemq.broker.url}")
     private String brokerUrl;
 

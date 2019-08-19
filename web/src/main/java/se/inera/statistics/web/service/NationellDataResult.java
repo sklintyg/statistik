@@ -21,7 +21,6 @@ package se.inera.statistics.web.service;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
 import se.inera.statistics.web.model.CasesPerCountyData;
 import se.inera.statistics.web.model.DiagnosisSubGroupStatisticsData;
 import se.inera.statistics.web.model.DualSexStatisticsData;

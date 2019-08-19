@@ -18,6 +18,11 @@
  */
 package se.inera.statistics.service.processlog;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,15 +32,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import se.inera.statistics.service.helper.certificate.JsonDocumentHelper;
 import se.inera.statistics.service.helper.JSONParser;
+import se.inera.statistics.service.helper.certificate.JsonDocumentHelper;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.IntygCommonManager;
 import se.inera.statistics.service.warehouse.WidelineManager;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProcessorTest {
@@ -63,7 +65,8 @@ public class ProcessorTest {
     public void processorCallsListener() {
         ArgumentCaptor<IntygDTO> intygDTOCaptor = ArgumentCaptor.forClass(IntygDTO.class);
         ArgumentCaptor<HsaInfo> hsaCaptor = ArgumentCaptor.forClass(HsaInfo.class);
-        Mockito.doNothing().when(widelineManager).accept(intygDTOCaptor.capture(), hsaCaptor.capture(), anyLong(), anyString(), any(EventType.class));
+        Mockito.doNothing().when(widelineManager)
+            .accept(intygDTOCaptor.capture(), hsaCaptor.capture(), anyLong(), anyString(), any(EventType.class));
         Mockito.doNothing().when(vardgivareManager).saveEnhet(any(HsaInfo.class), any(String.class));
 
         IntygDTO dto = JsonDocumentHelper.convertToDTO(utlatande);

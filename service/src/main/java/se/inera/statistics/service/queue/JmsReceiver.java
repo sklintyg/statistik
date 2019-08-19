@@ -18,6 +18,10 @@
  */
 package se.inera.statistics.service.queue;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.TextMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +34,8 @@ import se.inera.statistics.service.processlog.message.MessageEventType;
 import se.inera.statistics.service.processlog.message.ProcessMessageLog;
 import se.inera.statistics.service.warehouse.IntygType;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.TextMessage;
-
 public class JmsReceiver implements MessageListener {
+
     private static final Logger LOG = LoggerFactory.getLogger(JmsReceiver.class);
 
     public static final String CREATED = "created";
@@ -131,12 +131,12 @@ public class JmsReceiver implements MessageListener {
             return EventType.TEST;
         }
         switch (typeName.toLowerCase()) {
-        case CREATED:
-            return EventType.CREATED;
-        case REVOKED:
-            return EventType.REVOKED;
-        default:
-            return EventType.TEST;
+            case CREATED:
+                return EventType.CREATED;
+            case REVOKED:
+                return EventType.REVOKED;
+            default:
+                return EventType.TEST;
         }
     }
 

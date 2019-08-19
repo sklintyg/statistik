@@ -23,13 +23,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
@@ -51,6 +49,7 @@ import se.inera.statistics.service.warehouse.query.MessagesQuery;
  */
 @Component
 public class NationellDataInvoker {
+
     private static final Logger LOG = LoggerFactory.getLogger(NationellDataInvoker.class);
     private static final int DEFAULT_CUTOFF = 5;
     private static final int YEAR = 12;
@@ -122,7 +121,7 @@ public class NationellDataInvoker {
     private void calculateMsgPerAmne(HsaIdVardgivare vardgivareId, NationellDataInfo result) {
         final Range range = result.getMeddelandenPerAmneRange();
         final MessagesFilter messagesFilter = new MessagesFilter(vardgivareId, range.getFrom(),
-                range.getTo(), null, null, null, null);
+            range.getTo(), null, null, null, null);
         final KonDataResponse meddelandenPerAmne = result.getMeddelandenPerAmneResult();
         final KonDataResponse resp = messagesQuery.getMeddelandenPerAmneAggregated(meddelandenPerAmne, messagesFilter, cutoff);
         result.setMeddelandenPerAmneResult(resp);
@@ -145,7 +144,7 @@ public class NationellDataInvoker {
         final MessagesFilter messagesFilter = new MessagesFilter(vardgivareId, from, to, null, null, null, null);
         final SimpleKonResponse konDataResponse = result.getKompletteringarPerFragaResult();
         final SimpleKonResponse response = messagesQuery.getKompletteringarPerFragaTvarsnittAggregated(
-                konDataResponse, messagesFilter, cutoff);
+            konDataResponse, messagesFilter, cutoff);
         result.setKompletteringarPerFragaResult(response);
     }
 
@@ -154,7 +153,7 @@ public class NationellDataInvoker {
         final IntygCommonFilter intygCommonFilter = new IntygCommonFilter(range, null, null, null, null);
         final KonDataResponse konDataResponse = result.getIntygPerTypResult();
         final KonDataResponse response = intygCommonManager.getIntygPerTypeTidsserieAggregated(konDataResponse,
-                vardgivareId, intygCommonFilter, cutoff);
+            vardgivareId, intygCommonFilter, cutoff);
         result.setIntygPerTypResult(response);
     }
 
@@ -163,56 +162,56 @@ public class NationellDataInvoker {
         nationellData.updateAntalIntygResult(aisle, antalRange.getFrom(), antalRange.getNumberOfMonths(), 1, data.getAntalIntygResult());
 
         data.setDiagnosgrupperResult(
-                nationellData.getDiagnosgrupper(aisle, result.getDiagnosgrupperRange(), data.getDiagnosgrupperResult()));
+            nationellData.getDiagnosgrupper(aisle, result.getDiagnosgrupperRange(), data.getDiagnosgrupperResult()));
 
         for (Icd10.Kapitel kapitel : icd10.getKapitel(false)) {
             nationellData.getDiagnosavsnitt(aisle, result.getDiagnosavsnittRange(), kapitel, data.getDiagnosavsnittResult());
         }
 
         data.setAldersgrupperResult(nationellData.getAldersgrupper(aisle, result.getAldersgrupperRange(),
-                data.getAldersgrupperResult(), AldersgruppQuery.RANGES));
+            data.getAldersgrupperResult(), AldersgruppQuery.RANGES));
 
         data.setSjukskrivningsgradResult(nationellData.getSjukskrivningsgrad(aisle,
-                result.getSjukskrivningsgradRange(), data.getSjukskrivningsgradResult()));
+            result.getSjukskrivningsgradRange(), data.getSjukskrivningsgradResult()));
 
         data.setSjukfallslangdResult(nationellData.getSjukfallslangd(aisle, result.getSjukfallslangdRange(),
-                data.getSjukfallslangdResult()));
+            data.getSjukfallslangdResult()));
 
         nationellData.addSjukfallPerLanToResult(result.getLanRange(), data.getLanResult(), aisle);
 
         data.setIntygPerSjukfallResult(nationellData.getIntygPerSjukfall(aisle, result.getIntygPerSjukfallRange(),
-                data.getIntygPerSjukfallResult()));
+            data.getIntygPerSjukfallResult()));
 
         final Range overviewRange = result.getOverviewRange();
         final Range previousOverviewRange = ReportUtil.getPreviousOverviewPeriod(overviewRange);
         data.setOverviewForandringCurrentResult(
-                nationellData.getAntalIntygOverviewResult(aisle, overviewRange, data.getOverviewForandringCurrentResult()));
+            nationellData.getAntalIntygOverviewResult(aisle, overviewRange, data.getOverviewForandringCurrentResult()));
         data.setOverviewForandringPreviousResult(
-                nationellData.getAntalIntygOverviewResult(aisle, previousOverviewRange, data.getOverviewForandringPreviousResult()));
+            nationellData.getAntalIntygOverviewResult(aisle, previousOverviewRange, data.getOverviewForandringPreviousResult()));
         data.setOverviewDiagnosgrupperCurrentResult(
-                nationellData.getDiagnosgrupperOverview(aisle, overviewRange, data.getOverviewDiagnosgrupperCurrentResult()));
+            nationellData.getDiagnosgrupperOverview(aisle, overviewRange, data.getOverviewDiagnosgrupperCurrentResult()));
         data.setOverviewDiagnosgrupperPreviousResult(
-                nationellData.getDiagnosgrupperOverview(aisle, previousOverviewRange, data.getOverviewDiagnosgrupperPreviousResult()));
+            nationellData.getDiagnosgrupperOverview(aisle, previousOverviewRange, data.getOverviewDiagnosgrupperPreviousResult()));
 
         data.setOverviewPreviousAldersgrupperResult(nationellData.getAldersgrupper(aisle, previousOverviewRange,
-                data.getOverviewPreviousAldersgrupperResult(), AldersgruppQuery.OVERVIEW_RANGES));
+            data.getOverviewPreviousAldersgrupperResult(), AldersgruppQuery.OVERVIEW_RANGES));
         data.setOverviewCurrentAldersgrupperResult(nationellData.getAldersgrupper(aisle, overviewRange,
-                data.getOverviewCurrentAldersgrupperResult(), AldersgruppQuery.OVERVIEW_RANGES));
+            data.getOverviewCurrentAldersgrupperResult(), AldersgruppQuery.OVERVIEW_RANGES));
 
         data.setOverviewSjukskrivningsgradCurrentResult(nationellData.getSjukskrivningsgradOverview(aisle,
-                overviewRange, data.getOverviewSjukskrivningsgradCurrentResult()));
+            overviewRange, data.getOverviewSjukskrivningsgradCurrentResult()));
         data.setOverviewSjukskrivningsgradPreviousResult(nationellData.getSjukskrivningsgradOverview(aisle,
-                previousOverviewRange, data.getOverviewSjukskrivningsgradPreviousResult()));
+            previousOverviewRange, data.getOverviewSjukskrivningsgradPreviousResult()));
 
         data.setOverviewSjukfallslangdPreviousResult(
-                nationellData.getSjukfallslangd(aisle, previousOverviewRange, data.getOverviewSjukfallslangdPreviousResult()));
+            nationellData.getSjukfallslangd(aisle, previousOverviewRange, data.getOverviewSjukfallslangdPreviousResult()));
         data.setOverviewSjukfallslangdCurrentResult(
-                nationellData.getSjukfallslangd(aisle, overviewRange, data.getOverviewSjukfallslangdCurrentResult()));
+            nationellData.getSjukfallslangd(aisle, overviewRange, data.getOverviewSjukfallslangdCurrentResult()));
 
         data.setOverviewLangaSjukfallDiffPreviousResult(
-                nationellData.getLangaSjukfall(aisle, previousOverviewRange, data.getOverviewLangaSjukfallDiffPreviousResult()));
+            nationellData.getLangaSjukfall(aisle, previousOverviewRange, data.getOverviewLangaSjukfallDiffPreviousResult()));
         data.setOverviewLangaSjukfallDiffCurrentResult(
-                nationellData.getLangaSjukfall(aisle, overviewRange, data.getOverviewLangaSjukfallDiffCurrentResult()));
+            nationellData.getLangaSjukfall(aisle, overviewRange, data.getOverviewLangaSjukfallDiffCurrentResult()));
 
         nationellData.addSjukfallPerLanToResult(previousOverviewRange, data.getOverviewLanPreviousResult(), aisle);
         nationellData.addSjukfallPerLanToResult(overviewRange, data.getOverviewLanCurrentResult(), aisle);
@@ -252,14 +251,14 @@ public class NationellDataInvoker {
 
         if (data.getDiagnosgrupperResult() == null) {
             data.setDiagnosgrupperResult(
-                    new DiagnosgruppResponse(AvailableFilters.getForNationell(), new ArrayList<>(), new ArrayList<>()));
+                new DiagnosgruppResponse(AvailableFilters.getForNationell(), new ArrayList<>(), new ArrayList<>()));
         }
         result.setDiagnosgrupperResult(data.getDiagnosgrupperResult());
 
         for (Icd10.Kapitel kapitel : icd10.getKapitel(false)) {
             if (!data.getDiagnosavsnittResult().containsKey(kapitel)) {
                 DiagnosgruppResponse response = new DiagnosgruppResponse(AvailableFilters.getForNationell(),
-                        new ArrayList<>(), new ArrayList<>());
+                    new ArrayList<>(), new ArrayList<>());
                 data.getDiagnosavsnittResult().put(kapitel, response);
             }
         }
@@ -299,7 +298,7 @@ public class NationellDataInvoker {
 
         if (result.getMeddelandenPerAmneResult() == null) {
             result.setMeddelandenPerAmneResult(
-                    new KonDataResponse(AvailableFilters.getForNationell(), new ArrayList<>(), new ArrayList<>()));
+                new KonDataResponse(AvailableFilters.getForNationell(), new ArrayList<>(), new ArrayList<>()));
         }
 
         if (result.getIntygPerTypResult() == null) {
@@ -333,11 +332,11 @@ public class NationellDataInvoker {
             return 0;
         }
         return rows.stream()
-                .filter(Objects::nonNull)
-                .filter(r -> SjukfallsLangdGroup.getByName(r.getName())
-                        .map(SjukfallsLangdGroup::isLongSjukfallInOverview).orElse(false))
-                .map(r -> r.getFemale() + r.getMale())
-                .reduce(0, (i1, i2) -> i1 + i2);
+            .filter(Objects::nonNull)
+            .filter(r -> SjukfallsLangdGroup.getByName(r.getName())
+                .map(SjukfallsLangdGroup::isLongSjukfallInOverview).orElse(false))
+            .map(r -> r.getFemale() + r.getMale())
+            .reduce(0, (i1, i2) -> i1 + i2);
     }
 
     public void setCutoff(int cutoff) {

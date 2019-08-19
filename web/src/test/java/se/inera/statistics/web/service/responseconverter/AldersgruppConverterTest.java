@@ -23,9 +23,7 @@ import static org.junit.Assert.assertEquals;
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.Test;
-
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -59,7 +57,8 @@ public class AldersgruppConverterTest {
 
         //Then
         TableData tableDataResult = result.getTableData();
-        assertEquals("[[;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]", tableDataResult.getHeaders().toString());
+        assertEquals("[[;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]",
+            tableDataResult.getHeaders().toString());
         List<NamedData> rows = tableDataResult.getRows();
         assertEquals(3, rows.size());
         assertEquals("<20", rows.get(0).getName());

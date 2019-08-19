@@ -18,12 +18,13 @@
  */
 package se.inera.statistics.service.report.model;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class CaseInsensiviteStringTest {
 
@@ -45,7 +46,8 @@ public class CaseInsensiviteStringTest {
 
     @Test
     public void testContainsWorksAsExpected() throws Exception {
-        final List<CaseInsensiviteString> caseInsensiviteStrings = Arrays.asList(new CaseInsensiviteString("Abc1"), new CaseInsensiviteString("aBc2"), new CaseInsensiviteString("abC3"));
+        final List<CaseInsensiviteString> caseInsensiviteStrings = Arrays
+            .asList(new CaseInsensiviteString("Abc1"), new CaseInsensiviteString("aBc2"), new CaseInsensiviteString("abC3"));
         assertTrue(caseInsensiviteStrings.contains(new CaseInsensiviteString("abc1")));
         assertEquals("aBc2", caseInsensiviteStrings.get(caseInsensiviteStrings.indexOf(new CaseInsensiviteString("ABC2"))).getString());
     }

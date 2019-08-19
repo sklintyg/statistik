@@ -23,24 +23,24 @@ import se.inera.statistics.web.MessagesText;
 public final class MessagePeriodConverter extends SimpleDualSexConverter {
 
     private MessagePeriodConverter(String tableGroupTitle, String seriesNameTemplate, String totalColumnName,
-            String femaleColumnName, String maleColumnName) {
+        String femaleColumnName, String maleColumnName) {
         super(tableGroupTitle, seriesNameTemplate, totalColumnName, femaleColumnName, maleColumnName);
     }
 
     public static MessagePeriodConverter newTidsserie() {
         return new MessagePeriodConverter(MessagesText.REPORT_PERIOD,
-                "%1$s",
-                MessagesText.REPORT_ANTAL_MEDDELANDEN_TOTALT,
-                MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_FEMALE,
-                MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_MALE);
+            "%1$s",
+            MessagesText.REPORT_ANTAL_MEDDELANDEN_TOTALT,
+            MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_FEMALE,
+            MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_MALE);
     }
 
     public static MessagePeriodConverter newTvarsnitt() {
         return new MessagePeriodConverter("",
-                "%1$s",
-                MessagesText.REPORT_ANTAL_MEDDELANDEN_TOTALT,
-                MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_FEMALE,
-                MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_MALE);
+            "%1$s",
+            MessagesText.REPORT_ANTAL_MEDDELANDEN_TOTALT,
+            MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_FEMALE,
+            MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_MALE);
     }
 
 }

@@ -18,8 +18,13 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.time.Clock;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.Test;
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
@@ -32,13 +37,6 @@ import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.service.Filter;
 import se.inera.statistics.web.service.FilterSettings;
-
-import java.time.Clock;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class AvsnittConverterTest {
 
@@ -69,7 +67,8 @@ public class AvsnittConverterTest {
         TableData tableData = new DiagnosisGroupsConverter().convertTable(resp, "%1$s");
 
         //Then
-        assertEquals("[[;1, ;1, A01-B99 name1;3], [Period;1, Antal sjukfall totalt;1, Totalt;1, Kvinnor;1, Män;1]]", tableData.getHeaders().toString());
+        assertEquals("[[;1, ;1, A01-B99 name1;3], [Period;1, Antal sjukfall totalt;1, Totalt;1, Kvinnor;1, Män;1]]",
+            tableData.getHeaders().toString());
         assertEquals("[period1: [5, 5, 3, 2]]", tableData.getRows().toString());
     }
 
@@ -79,7 +78,9 @@ public class AvsnittConverterTest {
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range(clock));
         DualSexStatisticsData data = new DiagnosisGroupsConverter().convert(resp, filterSettings);
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
-        assertEquals("[A00-E90, G00-L99, N00-N99 Somatiska sjukdomar: [], F00-F99 Psykiska sjukdomar: [], M00-M99 Muskuloskeletala sjukdomar: [], O00-O99 Graviditet och förlossning: [], P00-P96, Q00-Q99, S00-Y98 Övrigt: [], R00-R99 Symtomdiagnoser: [], Z00-Z99 Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården: []]", data.getFemaleChart().getSeries().toString());
+        assertEquals(
+            "[A00-E90, G00-L99, N00-N99 Somatiska sjukdomar: [], F00-F99 Psykiska sjukdomar: [], M00-M99 Muskuloskeletala sjukdomar: [], O00-O99 Graviditet och förlossning: [], P00-P96, Q00-Q99, S00-Y98 Övrigt: [], R00-R99 Symtomdiagnoser: [], Z00-Z99 Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården: []]",
+            data.getFemaleChart().getSeries().toString());
     }
 
     @Test
@@ -102,12 +103,15 @@ public class AvsnittConverterTest {
 
         //Then
         assertEquals("[period1]", data.getFemaleChart().getCategories().toString());
-        assertTrue(data.getFemaleChart().getSeries().toString(), data.getFemaleChart().getSeries().toString().contains("A00-E90, G00-L99, N00-N99 Somatiska sjukdomar: [3]"));
+        assertTrue(data.getFemaleChart().getSeries().toString(),
+            data.getFemaleChart().getSeries().toString().contains("A00-E90, G00-L99, N00-N99 Somatiska sjukdomar: [3]"));
 
         assertEquals("[period1]", data.getMaleChart().getCategories().toString());
-        assertTrue(data.getMaleChart().getSeries().toString(), data.getMaleChart().getSeries().toString().contains("A00-E90, G00-L99, N00-N99 Somatiska sjukdomar: [2]"));
+        assertTrue(data.getMaleChart().getSeries().toString(),
+            data.getMaleChart().getSeries().toString().contains("A00-E90, G00-L99, N00-N99 Somatiska sjukdomar: [2]"));
 
-        assertEquals("[[;1, ;1, A00-B99 name1;3], [Period;1, Antal sjukfall totalt;1, Totalt;1, Kvinnor;1, Män;1]]", data.getTableData().getHeaders().toString());
+        assertEquals("[[;1, ;1, A00-B99 name1;3], [Period;1, Antal sjukfall totalt;1, Totalt;1, Kvinnor;1, Män;1]]",
+            data.getTableData().getHeaders().toString());
         assertEquals("[period1: [5, 5, 3, 2]]", data.getTableData().getRows().toString());
     }
 

@@ -19,7 +19,6 @@
 package se.inera.statistics.web.model.overview;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import java.io.Serializable;
 
 public class DonutChartData implements Serializable {

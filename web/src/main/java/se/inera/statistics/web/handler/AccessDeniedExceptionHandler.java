@@ -18,17 +18,16 @@
  */
 package se.inera.statistics.web.handler;
 
-import org.springframework.security.access.AccessDeniedException;
-
+import java.util.HashMap;
+import java.util.Map;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.security.access.AccessDeniedException;
 
 @Provider
 public final class AccessDeniedExceptionHandler implements
-        ExceptionMapper<AccessDeniedException> {
+    ExceptionMapper<AccessDeniedException> {
 
     @Override
     public Response toResponse(final AccessDeniedException exception) {
@@ -37,7 +36,7 @@ public final class AccessDeniedExceptionHandler implements
         mappedResult.put("error", exception.getMessage());
 
         return Response.status(Response.Status.FORBIDDEN)
-                .entity(mappedResult).build();
+            .entity(mappedResult).build();
     }
 
 }

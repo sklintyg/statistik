@@ -19,26 +19,26 @@
 
 angular.module('StatisticsApp').directive('selectVardgivare',
     /** @ngInject */
-    function ($location) {
-        'use strict';
+    function($location) {
+      'use strict';
 
-        return {
-            restrict: 'E',
-            scope: {
-                vardgivare: '=',
-                isLogin: '=',
-                selectVardgivare: '&'
-            },
-            templateUrl: '/components/directives/selectVardgivare/selectVardgivare.html',
-            controller: function($scope) {
-                $scope.isCollapsed = true;
-            },
-            link: function($scope) {
-                $scope.currentVgid = $location.search().vgid;
+      return {
+        restrict: 'E',
+        scope: {
+          vardgivare: '=',
+          isLogin: '=',
+          selectVardgivare: '&'
+        },
+        templateUrl: '/components/directives/selectVardgivare/selectVardgivare.html',
+        controller: function($scope) {
+          $scope.isCollapsed = true;
+        },
+        link: function($scope) {
+          $scope.currentVgid = $location.search().vgid;
 
-                $scope.setSelectedVardgivare = function(vgId) {
-                  $scope.selectVardgivare({vgId: vgId});
-                };
-            }
-        };
+          $scope.setSelectedVardgivare = function(vgId) {
+            $scope.selectVardgivare({vgId: vgId});
+          };
+        }
+      };
     });

@@ -21,6 +21,18 @@ package se.inera.statistics.web.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.processlog.Enhet;
@@ -39,19 +51,6 @@ import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableDataReport;
 
-import javax.ws.rs.core.Response;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 public class ResponseHandler {
 
     public static final int LIMIT_TOO_MUCH_DATA_MESSAGE_SINGLE_CHART = 100;
@@ -69,7 +68,7 @@ public class ResponseHandler {
     }
 
     public Response getResponse(TableDataReport result, String format, List<HsaIdEnhet> availableEnhetsForUser,
-                         ReportInfo report, Map<String, Object> extras) {
+        ReportInfo report, Map<String, Object> extras) {
         if ("xlsx".equalsIgnoreCase(format)) {
             return getXlsx(result, availableEnhetsForUser, report.getReport());
         }
@@ -81,18 +80,18 @@ public class ResponseHandler {
 
     public Response getXlsx(TableDataReport result, List<HsaIdEnhet> availableEnhetsForUser, Report report) {
         return new XlsxConverter(icd10).getXlsxResponse(result,
-                getFilename(report, "xlsx"),
-                getFilterSelections(result, availableEnhetsForUser), report);
+            getFilename(report, "xlsx"),
+            getFilterSelections(result, availableEnhetsForUser), report);
     }
 
     private String getFilename(Report report, String fileExtension) {
         final String filename = report.getStatisticsLevel().getText()
-                + "_"
-                + report.getShortName()
-                + "_"
-                + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMdd_HHmmss"))
-                + "."
-                + fileExtension;
+            + "_"
+            + report.getShortName()
+            + "_"
+            + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMdd_HHmmss"))
+            + "."
+            + fileExtension;
         return filename.replaceAll("\\s", "");
     }
 
@@ -101,14 +100,13 @@ public class ResponseHandler {
     }
 
     private Response getResponseForDataReport(FilteredDataReport result, List<HsaIdEnhet> availableEnhetsForUser,
-                                              Map<String, Object> extras, ReportInfo report) {
+        Map<String, Object> extras, ReportInfo report) {
         ObjectMapper mapper = new ObjectMapper();
         @SuppressWarnings("unchecked")
         Map<String, Object> mappedResult = result != null ? mapper.convertValue(result, Map.class) : Maps.newHashMap();
 
         FilterSelections filterSelections = getFilterSelections(result, availableEnhetsForUser);
-        @SuppressWarnings("unchecked")
-        final Map<String, Object> filterSelectionMap = mapper.convertValue(filterSelections, Map.class);
+        @SuppressWarnings("unchecked") final Map<String, Object> filterSelectionMap = mapper.convertValue(filterSelections, Map.class);
         mappedResult.putAll(filterSelectionMap);
 
         List<Message> oldMessages = result != null ? result.getMessages() : null;
@@ -147,23 +145,23 @@ public class ResponseHandler {
         final boolean allAvailableDxsSelectedInFilter = result == null || areAllAvailableDxsSelectedInFilter(result.getFilter());
 
         final boolean allAvailableEnhetsSelectedInFilter = result == null
-                || areAllAvailableEnhetsSelectedInFilter(result.getFilter(), availableEnhetsForUser);
+            || areAllAvailableEnhetsSelectedInFilter(result.getFilter(), availableEnhetsForUser);
 
         final boolean allAvailableSjukskrivningslangdsSelectedInFilter = result == null
-                || areAllAvailableSjukskrivningslangdsSelectedInFilter(result.getFilter());
+            || areAllAvailableSjukskrivningslangdsSelectedInFilter(result.getFilter());
 
         final boolean allAvailableAgeGroupsSelectedInFilter = result == null
-                || areAllAvailableAgeGroupsSelectedInFilter(result.getFilter());
+            || areAllAvailableAgeGroupsSelectedInFilter(result.getFilter());
 
         final boolean allAvailableIntygTypesSelectedInFilter = result == null
-                || areAllAvailableIntygTypesSelectedInFilter(result.getFilter());
+            || areAllAvailableIntygTypesSelectedInFilter(result.getFilter());
 
         final List<String> enhetNames = allAvailableEnhetsSelectedInFilter ? getEnhetNames(availableEnhetsForUser)
-                : getEnhetNamesFromFilter(result.getFilter());
+            : getEnhetNamesFromFilter(result.getFilter());
 
         return new FilterSelections(allAvailableDxsSelectedInFilter, allAvailableEnhetsSelectedInFilter,
-                allAvailableSjukskrivningslangdsSelectedInFilter, allAvailableAgeGroupsSelectedInFilter,
-                allAvailableIntygTypesSelectedInFilter, enhetNames);
+            allAvailableSjukskrivningslangdsSelectedInFilter, allAvailableAgeGroupsSelectedInFilter,
+            allAvailableIntygTypesSelectedInFilter, enhetNames);
     }
 
     private boolean filterActive(FilterDataResponse filter, FilterSelections filterSelections) {
@@ -176,9 +174,9 @@ public class ResponseHandler {
         boolean dxs = filterSelections.isAllAvailableDxsSelectedInFilter() || filter.getDiagnoser().isEmpty();
         boolean enhets = filterSelections.isAllAvailableEnhetsSelectedInFilter() || filter.getEnheter().isEmpty();
         boolean sjukskrivningslangd = filterSelections.isAllAvailableSjukskrivningslangdsSelectedInFilter()
-                || filter.getSjukskrivningslangd().isEmpty();
+            || filter.getSjukskrivningslangd().isEmpty();
         boolean intystyper = filterSelections.isAllAvailableIntygTypesSelectedInFilter()
-                || filter.getIntygstyper().isEmpty();
+            || filter.getIntygstyper().isEmpty();
 
         return !(useDefaultPeriod && aldersGrupp && dxs && enhets && sjukskrivningslangd && intystyper);
     }
@@ -271,7 +269,7 @@ public class ResponseHandler {
         }
         final List<String> dxFilter = Lists.newArrayList(diagnoser);
         final List<String> topLevelIcdCodes = Lists
-                .newArrayList(Lists.transform(icd10.getIcdStructure(), icd -> String.valueOf(icd.getNumericalId())));
+            .newArrayList(Lists.transform(icd10.getIcdStructure(), icd -> String.valueOf(icd.getNumericalId())));
         dxFilter.sort(String.CASE_INSENSITIVE_ORDER);
         topLevelIcdCodes.sort(String.CASE_INSENSITIVE_ORDER);
 
@@ -296,12 +294,11 @@ public class ResponseHandler {
         final Map<String, List<Enhet>> enhetsByName = enhets.stream().collect(Collectors.groupingBy(Enhet::getNamn));
 
         List<String> enhetNames = enhetsByName.entrySet().stream()
-                .map(entry -> entry.getValue().size() > 1
-                        ? entry.getValue().stream().map(e2 -> e2.getNamn() + " " + e2.getEnhetId()).collect(Collectors.toList())
-                        : Collections.singletonList(entry.getKey()))
-                .flatMap(List::stream)
-                .collect(Collectors.toList());
-
+            .map(entry -> entry.getValue().size() > 1
+                ? entry.getValue().stream().map(e2 -> e2.getNamn() + " " + e2.getEnhetId()).collect(Collectors.toList())
+                : Collections.singletonList(entry.getKey()))
+            .flatMap(List::stream)
+            .collect(Collectors.toList());
 
         // Add enheter without name
         Set<HsaIdEnhet> foundEnhetsIds = enhets.stream().map(Enhet::getEnhetId).collect(Collectors.toSet());
@@ -309,11 +306,11 @@ public class ResponseHandler {
         noNameFound.removeAll(foundEnhetsIds);
 
         return Stream.concat(
-                    enhetNames.stream(),
-                    noNameFound.stream().map(HsaIdEnhet::getId)
-                )
-                .sorted()
-                .collect(Collectors.toList());
+            enhetNames.stream(),
+            noNameFound.stream().map(HsaIdEnhet::getId)
+        )
+            .sorted()
+            .collect(Collectors.toList());
     }
 
 }

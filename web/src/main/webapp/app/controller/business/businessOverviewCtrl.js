@@ -21,14 +21,14 @@
 angular.module('StatisticsApp').controller('businessOverviewCtrl',
 
     /** @ngInject */
-function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, chartFactory,
-    messageService, pdfOverviewFactory, thousandseparatedFilter, ControllerCommons, _, COLORS, filterViewState) {
-    'use strict';
+    function($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, chartFactory,
+        messageService, pdfOverviewFactory, thousandseparatedFilter, ControllerCommons, _, COLORS, filterViewState) {
+      'use strict';
 
-    var sickLeaveLengthChart = {};
-    $scope.baseUrl = '#/verksamhet';
+      var sickLeaveLengthChart = {};
+      $scope.baseUrl = '#/verksamhet';
 
-    var dataReceived = function (result) {
+      var dataReceived = function(result) {
         var popoverPreviousMonths = ' jämfört med samma tremånadersperiod föregående år.';
         var popoverTextChangeCurrentVSPrevious = '<br><br>Spalten förändring visar skillnaden i antal sjukfall mellan perioden ' +
             result.periodText + popoverPreviousMonths;
@@ -36,17 +36,23 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         $scope.subTitlePeriod = result.periodText;
         $scope.popoverTextAmount = 'Totala antalet sjukfall under perioden ' + result.periodText + '.';
         $scope.popoverTextChangeProcentage = 'Procentsatsen visar förändringen av antalet sjukfall under perioden ' + result.periodText;
-        $scope.popoverTextSexDistribution = 'Andel kvinnor och andel män av det totala antalet sjukfall under perioden ' + result.periodText + popoverPreviousMonths;
+        $scope.popoverTextSexDistribution =
+            'Andel kvinnor och andel män av det totala antalet sjukfall under perioden ' + result.periodText + popoverPreviousMonths;
         $scope.popoverTextDiagnosisGroups = 'Diagrammet visar antal sjukfall inom olika diagnosgrupper under ' +
-                                                result.periodText + '.' + popoverTextChangeCurrentVSPrevious;
+            result.periodText + '.' + popoverTextChangeCurrentVSPrevious;
         $scope.popoverTextAgeGroups = 'Diagrammet visar antal sjukfall inom olika åldersgrupper under ' + result.periodText + '.' +
             popoverTextChangeCurrentVSPrevious;
-        $scope.popoverTextSickLeaveLength = 'Diagrammet visar antal sjukfall per sjukskrivningslängd under perioden ' + result.periodText + '.' +
-                '<br><br>Ställ markören i respektive stapel för att se antalet sjukfall.';
-        $scope.popoverTextDegreeOfSickLeave = 'Diagrammet visar antalet sjukfall per sjukskrivningsgrad under perioden  ' + result.periodText + '.' +
+        $scope.popoverTextSickLeaveLength =
+            'Diagrammet visar antal sjukfall per sjukskrivningslängd under perioden ' + result.periodText + '.' +
+            '<br><br>Ställ markören i respektive stapel för att se antalet sjukfall.';
+        $scope.popoverTextDegreeOfSickLeave =
+            'Diagrammet visar antalet sjukfall per sjukskrivningsgrad under perioden  ' + result.periodText + '.' +
             popoverTextChangeCurrentVSPrevious;
-        $scope.popoverTextKompletteringar = 'Diagrammet visar hur stor andel läkarintyg för sjukpenning (FK 7804), av alla sjukpenningintyg som skickats till Försäkringskassan, som har fått minst en komplettering tillbaka under perioden ' + result.periodText + '.' +
-            '<br><br>Spalten förändring visar skillnaden i procentenheter för andel sjukpenningintyg med komplettering mellan perioden ' + result.periodText + ' jämfört med samma tremånadersperiod föregående år.';
+        $scope.popoverTextKompletteringar =
+            'Diagrammet visar hur stor andel läkarintyg för sjukpenning (FK 7804), av alla sjukpenningintyg som skickats till Försäkringskassan, som har fått minst en komplettering tillbaka under perioden ' + result.periodText + '.' +
+            '<br><br>' +
+            'Spalten förändring visar skillnaden i procentenheter för andel sjukpenningintyg med komplettering mellan perioden ' +
+            result.periodText + ' jämfört med samma tremånadersperiod föregående år.';
         $scope.popoverTextPeriod = result.periodText;
         $scope.doneLoading = true;
 
@@ -55,32 +61,32 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         filterViewState.setMessages(messages);
 
         if (result.empty) {
-            $scope.showEmptyDataView = true;
+          $scope.showEmptyDataView = true;
         } else {
-            $scope.showEmptyDataView = false;
-            $timeout(function () {
-                populatePageWithData(result);
-            }, 1);
+          $scope.showEmptyDataView = false;
+          $timeout(function() {
+            populatePageWithData(result);
+          }, 1);
         }
-    };
+      };
 
-    var paintPerMonthAlternationChart = function (alteration) {
+      var paintPerMonthAlternationChart = function(alteration) {
         var color = COLORS.overview;
 
         var chartSeries = [
-            {
-                data: [
-                    [1]
-                ]
-            }
+          {
+            data: [
+              [1]
+            ]
+          }
         ];
 
         var chartConfigOptions = {
-            categories: [],
-            series: chartSeries,
-            type: 'pie',
-            overview: true,
-            unit: 'sjukfall'
+          categories: [],
+          series: chartSeries,
+          type: 'pie',
+          overview: true,
+          unit: 'sjukfall'
         };
 
         var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
@@ -92,42 +98,42 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         chartOptions.chart.plotBorderWidth = 0;
         chartOptions.subtitle = null;
         chartOptions.title = {
-            verticalAlign: 'middle',
-            floating: true,
-            align: 'center',
-            y: 15,
-            text: alteration,
-            style: {
-                fontFamily: 'Helvetica, Arial, sans-serif',
-                color: '#FFFFFF',
-                fontSize: '2em',
-                fontWeight: 'bold',
-                textAlign: 'center'
-            }
+          verticalAlign: 'middle',
+          floating: true,
+          align: 'center',
+          y: 15,
+          text: alteration,
+          style: {
+            fontFamily: 'Helvetica, Arial, sans-serif',
+            color: '#FFFFFF',
+            fontSize: '2em',
+            fontWeight: 'bold',
+            textAlign: 'center'
+          }
         };
         chartOptions.tooltip = {enabled: false};
         chartOptions.plotOptions.pie = {
-            colors: [color],
-            animation: false,
-            borderWidth: 0,
-            dataLabels: {enabled: false},
-            states: {hover: {enabled: false}}
+          colors: [color],
+          animation: false,
+          borderWidth: 0,
+          dataLabels: {enabled: false},
+          states: {hover: {enabled: false}}
         };
 
         return {
-            options: chartOptions
+          options: chartOptions
         };
-    };
+      };
 
-    var paintDonutChart = function(chartData, dataUnit) {
+      var paintDonutChart = function(chartData, dataUnit) {
 
         var chartConfigOptions = {
-            categories: [],
-            series: [],
-            type: 'pie',
-            overview: true,
-            unit: dataUnit ? dataUnit : 'sjukfall',
-            maxWidthPercentage: 120
+          categories: [],
+          series: [],
+          type: 'pie',
+          overview: true,
+          unit: dataUnit ? dataUnit : 'sjukfall',
+          maxWidthPercentage: 120
         };
 
         var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
@@ -137,24 +143,24 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         chartOptions.subtitle = null;
         chartOptions.plotOptions.pie.showInLegend = false;
         chartOptions.series = [
-            {
-                name: 'Antal',
-                data: chartData,
-                innerSize: '40%',
-                dataLabels: {
-                    formatter: function () {
-                        return null;
-                    }
-                }
+          {
+            name: 'Antal',
+            data: chartData,
+            innerSize: '40%',
+            dataLabels: {
+              formatter: function() {
+                return null;
+              }
             }
+          }
         ];
 
         return {
-            options: chartOptions
+          options: chartOptions
         };
-    };
+      };
 
-    var updateCharts = function (result) {
+      var updateCharts = function(result) {
 
         $scope.casesPerMonthMaleProportion = result.casesPerMonth.proportionMale;
         $scope.casesPerMonthFemaleProportion = result.casesPerMonth.proportionFemale;
@@ -187,9 +193,9 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
 
         $scope.longSickLeavesTotal = result.sickLeaveLength.longSickLeavesTotal;
         $scope.longSickLeavesAlteration = result.sickLeaveLength.longSickLeavesAlternation;
-    };
+      };
 
-    function populatePageWithData(result) {
+      function populatePageWithData(result) {
         ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.filterhash,
             result.filter.diagnoser, result.allAvailableDxsSelectedInFilter,
             result.filteredEnhets, result.allAvailableEnhetsSelectedInFilter,
@@ -197,74 +203,74 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
             result.filter.aldersgrupp, result.allAvailableAgeGroupsSelectedInFilter,
             result.filter.intygstyper, result.allAvailableIntygTypesSelectedInFilter);
 
-        $timeout(function () {
-            updateCharts(result);
+        $timeout(function() {
+          updateCharts(result);
         }, 1);
-    }
+      }
 
-    function paintBarChart(containerId, chartData) {
+      function paintBarChart(containerId, chartData) {
         var color = COLORS.overview, chartOptions;
 
         var series = [
-            {
-                name: 'Antal',
-                data: _.map(chartData, function (e) {
-                    return e.quantity;
-                }),
-                color: color
-            }
+          {
+            name: 'Antal',
+            data: _.map(chartData, function(e) {
+              return e.quantity;
+            }),
+            color: color
+          }
         ];
 
-        var categories = _.map(chartData, function (e) {
-            return {name: e.name};
+        var categories = _.map(chartData, function(e) {
+          return {name: e.name};
         });
 
         var chartConfigOptions = {
-            categories: categories,
-            series: series,
-            type: 'column',
-            overview: true,
-            renderTo: containerId,
-            unit: 'sjukfall',
-            maxWidthPercentage: 80
+          categories: categories,
+          series: series,
+          type: 'column',
+          overview: true,
+          renderTo: containerId,
+          unit: 'sjukfall',
+          maxWidthPercentage: 80
         };
 
         chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
         chartOptions.chart.height = 240;
         chartOptions.xAxis.labels.format = '{value}';
         chartOptions.subtitle.text = null;
-        chartOptions.yAxis.title = { text: 'Antal', style : chartOptions.subtitle.style  };
+        chartOptions.yAxis.title = {text: 'Antal', style: chartOptions.subtitle.style};
         chartOptions.yAxis.tickPixelInterval = 30;
         chartOptions.legend.enabled = false;
         return new Highcharts.Chart(chartOptions);
-    }
+      }
 
-    function extractDonutData(rawData) {
+      function extractDonutData(rawData) {
         return _.map(rawData, function(data) {
-            return {
-                name: ControllerCommons.htmlsafe(data.name),
-                y: data.quantity,
-                color: data.color
-            };
+          return {
+            name: ControllerCommons.htmlsafe(data.name),
+            y: data.quantity,
+            color: data.color
+          };
         });
-    }
+      }
 
-    function refresh() {
-        statisticsData.getBusinessOverview(dataReceived, function () {
-            $scope.dataLoadingError = true;
+      function refresh() {
+        statisticsData.getBusinessOverview(dataReceived, function() {
+          $scope.dataLoadingError = true;
         });
-    }
+      }
 
-    refresh();
-    $scope.subTitle = 'Sjukfallsutvecklingen för verksamheten de senaste tre månaderna, ';
-    $scope.spinnerText = 'Laddar information...';
-    $scope.doneLoading = false;
-    $scope.dataLoadingError = false;
+      refresh();
+      $scope.subTitle = 'Sjukfallsutvecklingen för verksamheten de senaste tre månaderna, ';
+      $scope.spinnerText = 'Laddar information...';
+      $scope.doneLoading = false;
+      $scope.dataLoadingError = false;
 
-    // Set filter state
-    filterViewState.set();
+      // Set filter state
+      filterViewState.set();
 
-    $scope.printPdf = function () {
+      $scope.printPdf = function() {
         var charts = [];
 
         var diagnosisDonutChart = $('#diagnosisChart').highcharts();
@@ -274,109 +280,109 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         var kompletteringarChart = $('#kompletteringarChart').highcharts();
 
         charts.push([
-            {
-                title: messageService.getProperty('business.widget.header.konsfordelning-sjukfall'),
-                male: $scope.casesPerMonthMaleProportion + ' %',
-                female: $scope.casesPerMonthFemaleProportion + ' %',
-                genderImage: true
-            },
-            {
-                chart: perMonthAlterationChart,
-                title: messageService.getProperty('business.widget.header.total-antal'),
-                width: 300,
-                height: 300,
-                displayWidth: 150
-            }
+          {
+            title: messageService.getProperty('business.widget.header.konsfordelning-sjukfall'),
+            male: $scope.casesPerMonthMaleProportion + ' %',
+            female: $scope.casesPerMonthFemaleProportion + ' %',
+            genderImage: true
+          },
+          {
+            chart: perMonthAlterationChart,
+            title: messageService.getProperty('business.widget.header.total-antal'),
+            width: 300,
+            height: 300,
+            displayWidth: 150
+          }
         ]);
 
         charts.push({
-            chart: diagnosisDonutChart,
-            title: messageService.getProperty('business.widget.header.fordelning-diagnosgrupper'),
-            width: 300,
-            height: 300,
-            displayWidth: 150,
-            table: {
-                header: ['',
-                    messageService.getProperty('overview.widget.table.column.diagnosgrupp'),
-                    messageService.getProperty('overview.widget.table.column.antal'),
-                    messageService.getProperty('overview.widget.table.column.forandring')
-                ],
-                data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.diagnosisGroups)
-            }
+          chart: diagnosisDonutChart,
+          title: messageService.getProperty('business.widget.header.fordelning-diagnosgrupper'),
+          width: 300,
+          height: 300,
+          displayWidth: 150,
+          table: {
+            header: ['',
+              messageService.getProperty('overview.widget.table.column.diagnosgrupp'),
+              messageService.getProperty('overview.widget.table.column.antal'),
+              messageService.getProperty('overview.widget.table.column.forandring')
+            ],
+            data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.diagnosisGroups)
+          }
         });
 
         charts.push({
-            chart: ageDonutChart,
-            title: messageService.getProperty('business.widget.header.fordelning-aldersgrupper'),
-            width: 300,
-            height: 300,
-            displayWidth: 150,
-            table: {
-                header: ['',
-                    messageService.getProperty('overview.widget.table.column.aldersgrupp'),
-                    messageService.getProperty('overview.widget.table.column.antal'),
-                    messageService.getProperty('overview.widget.table.column.forandring')
-                ],
-                data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.ageGroups)
-            }
+          chart: ageDonutChart,
+          title: messageService.getProperty('business.widget.header.fordelning-aldersgrupper'),
+          width: 300,
+          height: 300,
+          displayWidth: 150,
+          table: {
+            header: ['',
+              messageService.getProperty('overview.widget.table.column.aldersgrupp'),
+              messageService.getProperty('overview.widget.table.column.antal'),
+              messageService.getProperty('overview.widget.table.column.forandring')
+            ],
+            data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.ageGroups)
+          }
         });
 
         charts.push({
-            chart: degreeOfSickLeaveChart,
-            title: messageService.getProperty('business.widget.header.fordelning-sjukskrivningsgrad'),
-            width: 300,
-            height: 300,
-            displayWidth: 150,
-            table: {
-                header: ['',
-                    messageService.getProperty('overview.widget.table.column.sjukskrivningsgrad'),
-                    messageService.getProperty('overview.widget.table.column.antal'),
-                    messageService.getProperty('overview.widget.table.column.forandring')
-                ],
-                data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.degreeOfSickLeaveGroups)
-            }
+          chart: degreeOfSickLeaveChart,
+          title: messageService.getProperty('business.widget.header.fordelning-sjukskrivningsgrad'),
+          width: 300,
+          height: 300,
+          displayWidth: 150,
+          table: {
+            header: ['',
+              messageService.getProperty('overview.widget.table.column.sjukskrivningsgrad'),
+              messageService.getProperty('overview.widget.table.column.antal'),
+              messageService.getProperty('overview.widget.table.column.forandring')
+            ],
+            data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.degreeOfSickLeaveGroups)
+          }
         });
 
         charts.push({
-            chart: sickLeaveLengthChart,
-            title: messageService.getProperty('business.widget.header.fordelning-sjukskrivningslangd'),
-            width: 680,
-            height: 300,
-            displayWidth: 510,
-            chartDescription: [
-                {
-                    header: thousandseparatedFilter($scope.longSickLeavesTotal),
-                    text: messageService.getProperty('overview.widget.fordelning-sjukskrivningslangd.overgar-90')
-                },
-                {
-                    header: $scope.longSickLeavesAlteration + ' %',
-                    text: messageService.getProperty('overview.widget.fordelning-sjukskrivningslangd.overgar-90-3-manader')
-                }
-            ]
+          chart: sickLeaveLengthChart,
+          title: messageService.getProperty('business.widget.header.fordelning-sjukskrivningslangd'),
+          width: 680,
+          height: 300,
+          displayWidth: 510,
+          chartDescription: [
+            {
+              header: thousandseparatedFilter($scope.longSickLeavesTotal),
+              text: messageService.getProperty('overview.widget.fordelning-sjukskrivningslangd.overgar-90')
+            },
+            {
+              header: $scope.longSickLeavesAlteration + ' %',
+              text: messageService.getProperty('overview.widget.fordelning-sjukskrivningslangd.overgar-90-3-manader')
+            }
+          ]
         });
 
         charts.push({
-            chart: kompletteringarChart,
-            title: messageService.getProperty('business.widget.header.kompletteringar'),
-            width: 300,
-            height: 300,
-            displayWidth: 150,
-            table: {
-                header: ['',
-                    messageService.getProperty('overview.widget.table.column.kompletteringar'),
-                    messageService.getProperty('overview.widget.table.column.andel'),
-                    messageService.getProperty('overview.widget.table.column.forandring')
-                ],
-                data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.kompletteringar, ' %')
-            }
+          chart: kompletteringarChart,
+          title: messageService.getProperty('business.widget.header.kompletteringar'),
+          width: 300,
+          height: 300,
+          displayWidth: 150,
+          table: {
+            header: ['',
+              messageService.getProperty('overview.widget.table.column.kompletteringar'),
+              messageService.getProperty('overview.widget.table.column.andel'),
+              messageService.getProperty('overview.widget.table.column.forandring')
+            ],
+            data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.kompletteringar, ' %')
+          }
         });
 
         pdfOverviewFactory.printOverview($scope, charts);
-    };
+      };
 
-    $scope.$on('$destroy', function() {
-        if(sickLeaveLengthChart && typeof sickLeaveLengthChart.destroy === 'function') {
-            sickLeaveLengthChart.destroy();
+      $scope.$on('$destroy', function() {
+        if (sickLeaveLengthChart && typeof sickLeaveLengthChart.destroy === 'function') {
+          sickLeaveLengthChart.destroy();
         }
+      });
     });
-});

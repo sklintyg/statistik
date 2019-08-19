@@ -20,37 +20,37 @@
 angular.module('StatisticsApp').factory('navigationViewState',
     /** @ngInject */
     function() {
-        'use strict';
+      'use strict';
 
-        var ids = {
-            nationell: 'nationell',
-            verksamhet: 'verksamhet',
-            region: 'region'
-        };
+      var ids = {
+        nationell: 'nationell',
+        verksamhet: 'verksamhet',
+        region: 'region'
+      };
 
-        var state = {};
+      var state = {};
 
-        function _reset() {
-            state.active = 'nationell';
-        }
+      function _reset() {
+        state.active = 'nationell';
+      }
 
-        function _get() {
-            return state;
-        }
+      function _get() {
+        return state;
+      }
 
-        function _set(newState) {
-            _reset();
-
-            state.active = newState.active;
-        }
-
+      function _set(newState) {
         _reset();
 
-        // Return public API for the service
-        return {
-            get: _get,
-            set: _set,
-            ids: ids
-        };
+        state.active = newState.active;
+      }
+
+      _reset();
+
+      // Return public API for the service
+      return {
+        get: _get,
+        set: _set,
+        ids: ids
+      };
     }
 );

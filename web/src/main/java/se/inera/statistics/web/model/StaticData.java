@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import se.inera.statistics.service.report.model.Icd;
 
 public class StaticData {
@@ -34,7 +33,7 @@ public class StaticData {
     private final List<Icd> dxs;
 
     public StaticData(Map<String, String> sjukskrivningLengths, Map<String, String> ageGroups,
-                      Map<String, String> intygTypes, Map<String, String> intygTooltip, List<Icd> dxs) {
+        Map<String, String> intygTypes, Map<String, String> intygTooltip, List<Icd> dxs) {
         this.sjukskrivningLengths = new HashMap<>(sjukskrivningLengths);
         this.ageGroups = new HashMap<>(ageGroups);
         this.intygTypes = new HashMap<>(intygTypes);

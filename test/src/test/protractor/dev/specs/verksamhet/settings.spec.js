@@ -29,57 +29,55 @@ var overview = pages.verksamhetOverview;
 
 describe('Inställningar: ', function() {
 
-
-    describe('processledare', function() {
-        beforeAll(function() {
-            browser.get('/');
-            features.user.loginUser1(true);
-            overview.isAtPage();
-        });
-
-        it('Knappen ska inte synas', function() {
-            expect(header.settingsLink.isPresent()).toBeFalsy();
-        });
-
-        afterAll(function() {
-            features.user.makeSureNotLoggedIn();
-        });
+  describe('processledare', function() {
+    beforeAll(function() {
+      browser.get('/');
+      features.user.loginUser1(true);
+      overview.isAtPage();
     });
 
-    describe('ej processledare', function() {
-        beforeAll(function() {
-            browser.get('/');
-            features.user.loginUser1(false);
-            overview.isAtPage();
-        });
-
-        it('Öppna och stäng inställningar', function() {
-            expect(header.settingsLink.isDisplayed()).toBeTruthy();
-
-            header.settingsLink.click();
-
-            header.settingsCloseBtn.click();
-        });
-
-
-        it('Öppna och spara inställningar', function() {
-            header.settingsLink.click();
-
-            header.changeSetting('showMessagesPerLakare');
-
-            header.settingsSaveBtn.click();
-        });
-
-        it('Återställ tidigare inställning', function() {
-            header.settingsLink.click();
-
-            header.changeSetting('showMessagesPerLakare');
-
-            header.settingsSaveBtn.click();
-        });
-
-        afterAll(function() {
-            features.user.makeSureNotLoggedIn();
-        });
+    it('Knappen ska inte synas', function() {
+      expect(header.settingsLink.isPresent()).toBeFalsy();
     });
+
+    afterAll(function() {
+      features.user.makeSureNotLoggedIn();
+    });
+  });
+
+  describe('ej processledare', function() {
+    beforeAll(function() {
+      browser.get('/');
+      features.user.loginUser1(false);
+      overview.isAtPage();
+    });
+
+    it('Öppna och stäng inställningar', function() {
+      expect(header.settingsLink.isDisplayed()).toBeTruthy();
+
+      header.settingsLink.click();
+
+      header.settingsCloseBtn.click();
+    });
+
+    it('Öppna och spara inställningar', function() {
+      header.settingsLink.click();
+
+      header.changeSetting('showMessagesPerLakare');
+
+      header.settingsSaveBtn.click();
+    });
+
+    it('Återställ tidigare inställning', function() {
+      header.settingsLink.click();
+
+      header.changeSetting('showMessagesPerLakare');
+
+      header.settingsSaveBtn.click();
+    });
+
+    afterAll(function() {
+      features.user.makeSureNotLoggedIn();
+    });
+  });
 });

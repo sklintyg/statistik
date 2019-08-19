@@ -22,31 +22,31 @@
 var restClient = require('./restclient.util.js');
 
 module.exports = {
-    createBanners: function(message, prio) {
-        var toDate = new Date();
-        toDate.setFullYear(toDate.getFullYear() + 1);
+  createBanners: function(message, prio) {
+    var toDate = new Date();
+    toDate.setFullYear(toDate.getFullYear() + 1);
 
-        var banner = {
-            message: message,
-            priority: prio,
-            application: 'INTYGSSTATISTIK',
-            createdAt: new Date().toISOString().substring(0, 19),
-            displayFrom: new Date().toISOString().substring(0, 19),
-            displayTo: toDate.toISOString().substring(0, 19)
-        };
+    var banner = {
+      message: message,
+      priority: prio,
+      application: 'INTYGSSTATISTIK',
+      createdAt: new Date().toISOString().substring(0, 19),
+      displayFrom: new Date().toISOString().substring(0, 19),
+      displayTo: toDate.toISOString().substring(0, 19)
+    };
 
-        var options = {
-            url: 'services/api/ia-api/banner',
-            method: 'PUT',
-            body: banner
-        };
-        return restClient.run(options, 'json');
-    },
-    clearBanners: function() {
-        var options = {
-            url: 'services/api/ia-api/cache',
-            method: 'DELETE'
-        };
-        return restClient.run(options, 'json');
-    }
+    var options = {
+      url: 'services/api/ia-api/banner',
+      method: 'PUT',
+      body: banner
+    };
+    return restClient.run(options, 'json');
+  },
+  clearBanners: function() {
+    var options = {
+      url: 'services/api/ia-api/cache',
+      method: 'DELETE'
+    };
+    return restClient.run(options, 'json');
+  }
 };

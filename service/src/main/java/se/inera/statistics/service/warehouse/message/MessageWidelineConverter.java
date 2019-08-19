@@ -22,10 +22,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.SendMessageToCareHelper;
 import se.inera.statistics.service.processlog.message.MessageEventType;
@@ -60,7 +58,7 @@ public class MessageWidelineConverter extends AbstractWidlineConverter {
     }
 
     public MessageWideLine toWideline(SendMessageToCareType meddelande, Patientdata patientdata, long logId, String meddelandeId,
-            MessageEventType type) {
+        MessageEventType type) {
         MessageWideLine line = new MessageWideLine();
 
         line.setMeddelandeId(meddelandeId);

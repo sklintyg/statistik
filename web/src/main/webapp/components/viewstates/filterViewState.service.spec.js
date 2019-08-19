@@ -18,165 +18,163 @@
  */
 
 describe('viewstate: FilterViewState', function() {
-    'use strict';
+  'use strict';
 
-    beforeEach(module('StatisticsApp'));
+  beforeEach(module('StatisticsApp'));
 
-    var filterViewState;
-    var _;
+  var filterViewState;
+  var _;
 
-    // Inject dependencies and mocks
-    beforeEach(inject(function(_filterViewState_, ___) {
-        filterViewState = _filterViewState_;
-        _ = ___;
-    }));
+  // Inject dependencies and mocks
+  beforeEach(inject(function(_filterViewState_, ___) {
+    filterViewState = _filterViewState_;
+    _ = ___;
+  }));
 
-    describe('set state', function() {
-        it('undefined', function() {
+  describe('set state', function() {
+    it('undefined', function() {
 
-            var oldState = _.cloneDeep(filterViewState.get());
+      var oldState = _.cloneDeep(filterViewState.get());
 
-            filterViewState.set(undefined);
+      filterViewState.set(undefined);
 
-            var state = filterViewState.get();
+      var state = filterViewState.get();
 
-            expect(state).toEqual(oldState);
-        });
-
-        it('empty', function() {
-            var oldState = _.cloneDeep(filterViewState.get());
-            var newState = {};
-
-            filterViewState.set(newState);
-
-            var state = filterViewState.get();
-
-            expect(state).toEqual(oldState);
-        });
-
-        it('only intygstyper', function() {
-            var newState = {
-                intygstyper: true
-            };
-
-            filterViewState.set(newState);
-
-            var state = filterViewState.get();
-
-            expect(state).toEqual({
-                intygstyper: true,
-                sjukskrivningslangd: true,
-                messages: []
-            });
-        });
-
-        it('only sjukskrivningslangd', function() {
-            var newState = {
-                sjukskrivningslangd: false
-            };
-
-            filterViewState.set(newState);
-
-            var state = filterViewState.get();
-
-            expect(state).toEqual({
-                intygstyper: false,
-                sjukskrivningslangd: false,
-                messages: []
-            });
-        });
-
-        it('both', function() {
-            var newState = {
-                sjukskrivningslangd: false,
-                intygstyper: true
-            };
-
-            filterViewState.set(newState);
-
-            var state = filterViewState.get();
-
-            expect(state).toEqual({
-                intygstyper: true,
-                sjukskrivningslangd: false,
-                messages: []
-            });
-        });
-
-        it('dont change messages', function() {
-            filterViewState.setMessages([{
-                type: 'FILTER',
-                text: 'test'
-            }]);
-
-            var newState = {
-                sjukskrivningslangd: false,
-                intygstyper: true
-            };
-
-            filterViewState.set(newState);
-
-            var state = filterViewState.get();
-
-            expect(state).toEqual({
-                intygstyper: true,
-                sjukskrivningslangd: false,
-                messages: [{
-                    type: 'FILTER',
-                    text: 'test'
-                }]
-            });
-        });
+      expect(state).toEqual(oldState);
     });
 
-    describe('setMessages', function() {
-        it('normal', function() {
-            filterViewState.setMessages([{
-                type: 'FILTER',
-                text: 'test'
-            }]);
+    it('empty', function() {
+      var oldState = _.cloneDeep(filterViewState.get());
+      var newState = {};
 
-            var state = filterViewState.get();
+      filterViewState.set(newState);
 
-            expect(state).toEqual({
-                intygstyper: false,
-                sjukskrivningslangd: true,
-                messages: [{
-                    type: 'FILTER',
-                    text: 'test'
-                }]
-            });
-        });
+      var state = filterViewState.get();
 
-        it('no filter message', function() {
-            filterViewState.setMessages([{
-                type: 'UNSET',
-                text: 'test'
-            }]);
-
-            var state = filterViewState.get();
-
-            expect(state.messages).toEqual([]);
-        });
-
-        it('both', function() {
-            filterViewState.setMessages([{
-                type: 'UNSET',
-                text: 'test'
-            },{
-                type: 'FILTER',
-                text: 'filter'
-            }]);
-
-            var state = filterViewState.get();
-
-            expect(state.messages).toEqual([{
-                type: 'FILTER',
-                text: 'filter'
-            }]);
-        });
+      expect(state).toEqual(oldState);
     });
 
+    it('only intygstyper', function() {
+      var newState = {
+        intygstyper: true
+      };
 
+      filterViewState.set(newState);
+
+      var state = filterViewState.get();
+
+      expect(state).toEqual({
+        intygstyper: true,
+        sjukskrivningslangd: true,
+        messages: []
+      });
+    });
+
+    it('only sjukskrivningslangd', function() {
+      var newState = {
+        sjukskrivningslangd: false
+      };
+
+      filterViewState.set(newState);
+
+      var state = filterViewState.get();
+
+      expect(state).toEqual({
+        intygstyper: false,
+        sjukskrivningslangd: false,
+        messages: []
+      });
+    });
+
+    it('both', function() {
+      var newState = {
+        sjukskrivningslangd: false,
+        intygstyper: true
+      };
+
+      filterViewState.set(newState);
+
+      var state = filterViewState.get();
+
+      expect(state).toEqual({
+        intygstyper: true,
+        sjukskrivningslangd: false,
+        messages: []
+      });
+    });
+
+    it('dont change messages', function() {
+      filterViewState.setMessages([{
+        type: 'FILTER',
+        text: 'test'
+      }]);
+
+      var newState = {
+        sjukskrivningslangd: false,
+        intygstyper: true
+      };
+
+      filterViewState.set(newState);
+
+      var state = filterViewState.get();
+
+      expect(state).toEqual({
+        intygstyper: true,
+        sjukskrivningslangd: false,
+        messages: [{
+          type: 'FILTER',
+          text: 'test'
+        }]
+      });
+    });
+  });
+
+  describe('setMessages', function() {
+    it('normal', function() {
+      filterViewState.setMessages([{
+        type: 'FILTER',
+        text: 'test'
+      }]);
+
+      var state = filterViewState.get();
+
+      expect(state).toEqual({
+        intygstyper: false,
+        sjukskrivningslangd: true,
+        messages: [{
+          type: 'FILTER',
+          text: 'test'
+        }]
+      });
+    });
+
+    it('no filter message', function() {
+      filterViewState.setMessages([{
+        type: 'UNSET',
+        text: 'test'
+      }]);
+
+      var state = filterViewState.get();
+
+      expect(state.messages).toEqual([]);
+    });
+
+    it('both', function() {
+      filterViewState.setMessages([{
+        type: 'UNSET',
+        text: 'test'
+      }, {
+        type: 'FILTER',
+        text: 'filter'
+      }]);
+
+      var state = filterViewState.get();
+
+      expect(state.messages).toEqual([{
+        type: 'FILTER',
+        text: 'filter'
+      }]);
+    });
+  });
 
 });
