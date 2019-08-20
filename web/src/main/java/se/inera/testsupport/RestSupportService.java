@@ -57,6 +57,7 @@ import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.scheduler.active.LogJob;
 import se.inera.statistics.service.caching.Cache;
 import se.inera.statistics.service.countypopulation.CountyPopulationManagerForTest;
 import se.inera.statistics.service.hsa.HSAKey;
@@ -66,7 +67,6 @@ import se.inera.statistics.service.hsa.HsaWsResponderMock;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.IntygEvent;
 import se.inera.statistics.service.processlog.Lakare;
-import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.processlog.Receiver;
 import se.inera.statistics.service.processlog.intygsent.IntygSentEvent;
 import se.inera.statistics.service.processlog.intygsent.IntygsentLogConsumer;
@@ -144,9 +144,6 @@ public class RestSupportService {
     private EntityManager manager;
 
     @Autowired
-    private LogConsumer consumer;
-
-    @Autowired
     private NationellDataInvoker nationellData;
 
     @Autowired(required = false)
@@ -188,6 +185,9 @@ public class RestSupportService {
 
     @Autowired
     private CalcCoordinator calcCoordinator;
+
+    @Autowired
+    private LogJob logJob;
 
     private IntygCommonSosManager intygCommonSosManager;
 
@@ -329,17 +329,7 @@ public class RestSupportService {
     @Path("processIntyg")
     @Produces({MediaType.APPLICATION_JSON})
     public Response processIntyg() {
-        LOG.debug("Log Job");
-        int count;
-        do {
-            count = consumer.processBatch();
-            LOG.info("Processed batch with {} entries", count);
-        } while (count > 0);
-
-        do {
-            count = intygsentLogConsumer.processBatch();
-            LOG.info("Processed batch with {} entries", count);
-        } while (count > 0);
+        logJob.process();
 
         clearCaches();
 

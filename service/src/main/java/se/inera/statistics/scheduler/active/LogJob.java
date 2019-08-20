@@ -54,30 +54,32 @@ public class LogJob {
     @SchedulerLock(name = JOB_NAME)
     @PrometheusTimeMethod(help = "Jobb för att hantera inkomna intyg och meddelanden från kön")
     public void run() {
-        logMDCHelper.run(() -> {
-            LOG.info(JOB_NAME);
-            int count;
-            do {
-                count = consumer.processBatch();
-                LOG.info("Processed batch with {} entries", count);
-                if (count > 0) {
-                    monitoringLogService.logInFromTable(count);
-                }
-            } while (count > 0);
+        logMDCHelper.run(this::process);
+    }
 
-            do {
-                count = intygsentLogConsumer.processBatch();
-                LOG.info("Processed sent batch with {} entries", count);
-            } while (count > 0);
+    public void process() {
+        LOG.info(JOB_NAME);
+        int count;
+        do {
+            count = consumer.processBatch();
+            LOG.info("Processed batch with {} entries", count);
+            if (count > 0) {
+                monitoringLogService.logInFromTable(count);
+            }
+        } while (count > 0);
 
-            // Process messages after intyg
-            long startId;
-            long latestHandledId = 0;
-            do {
-                startId = latestHandledId;
-                latestHandledId = messageLogConsumer.processBatch(startId);
-                LOG.info("Processed message batch from id {} to {}", startId, latestHandledId);
-            } while (startId != latestHandledId);
-        });
+        do {
+            count = intygsentLogConsumer.processBatch();
+            LOG.info("Processed sent batch with {} entries", count);
+        } while (count > 0);
+
+        // Process messages after intyg
+        long startId;
+        long latestHandledId = 0;
+        do {
+            startId = latestHandledId;
+            latestHandledId = messageLogConsumer.processBatch(startId);
+            LOG.info("Processed message batch from id {} to {}", startId, latestHandledId);
+        } while (startId != latestHandledId);
     }
 }
