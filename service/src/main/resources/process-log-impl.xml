@@ -36,8 +36,6 @@
     <bean class="se.inera.statistics.service.helper.certificate.RegisterCertificateHelper" depends-on="dbUpdate"/>
 
     <context:component-scan base-package="se.inera.statistics.service" />
-    <beans profile="!noprocessing">
-        <context:component-scan base-package="se.inera.statistics.scheduler.active" />
-    </beans>
+    <context:component-scan base-package="se.inera.statistics.scheduler.active" />
 
 </beans>
