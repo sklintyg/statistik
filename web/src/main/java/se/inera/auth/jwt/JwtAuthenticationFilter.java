@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.web.auth.oidc.jwt;
+package se.inera.auth.jwt;
 
 import com.google.common.base.Strings;
 import io.jsonwebtoken.Claims;

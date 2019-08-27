@@ -183,7 +183,7 @@
             </security:filter-chain-map>
         </bean>
 
-        <bean id="jwtAuthFilter" class="se.inera.statistics.web.auth.oidc.jwt.JwtAuthenticationFilter">
+        <bean id="jwtAuthFilter" class="se.inera.auth.jwt.JwtAuthenticationFilter">
             <constructor-arg index="0" ref="saveRequestMatcher" />
             <property name="authenticationManager" ref="authenticationManager"/>
             <property name="sessionAuthenticationStrategy" ref="registerSessionAuthenticationStrategy"/>
@@ -191,9 +191,9 @@
             <property name="authenticationFailureHandler" ref="failureHandler"/>
         </bean>
         <bean id="jwtSuccessHandler"
-            class="se.inera.statistics.web.auth.oidc.jwt.JwtAuthenticationSuccessHandler">
+            class="se.inera.auth.jwt.JwtAuthenticationSuccessHandler">
         </bean>
-        <bean id="jwtAuthenticationProvider" class="se.inera.statistics.web.auth.oidc.jwt.JwtAuthenticationProvider">
+        <bean id="jwtAuthenticationProvider" class="se.inera.auth.jwt.JwtAuthenticationProvider">
             <property name="userDetailsService" ref="userDetailsService"/>
         </bean>
         <bean id="jswtValidationService" class="se.inera.statistics.web.service.jwt.JwtValidationServiceImpl"/>

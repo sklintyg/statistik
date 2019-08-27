@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.web.auth.oidc.jwt;
+package se.inera.auth.jwt;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -26,7 +26,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import se.inera.auth.model.User;
@@ -62,7 +61,7 @@ public class JwtAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucc
 
         String requestURI = request.getRequestURI();
 
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User) authentication.getPrincipal();
 
         if (user == null) {
             // Should never happen...
