@@ -36,6 +36,8 @@ ext {
     javaxWsRsApiVersion = "2.0.1"
     jaxb2Version = "1.11.1"
     jmsVersion = "1.1.1"
+    jsonwebtokenVersion = "0.10.7"
+    auth0JwksVersion = "0.8.3"
     liquibaseVersion = "2.0.5"
     logbackVersion = "1.2.3"
     mysqlConnectorVersion = "5.1.46"

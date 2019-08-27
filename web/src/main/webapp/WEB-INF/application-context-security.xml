@@ -91,6 +91,15 @@
     <!-- Test and QA profile support both Säkerhetstjänst and Fake login -->
     <!-- =============================================================== -->
     <beans profile="security-both">
+        <!-- JWT based OAuth authentication -->
+        <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="(\/oauth\/token\/.*)" request-matcher="regex">
+            <security:csrf disabled="true"/>
+            <security:logout logout-url="/logout" logout-success-url="/" invalidate-session="true"/>
+            <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
+            <security:custom-filter position="PRE_AUTH_FILTER" ref="jwtAuthFilter"/>
+            <security:session-management session-authentication-strategy-ref="registerSessionAuthenticationStrategy"/>
+        </security:http>
+
         <security:http create-session="always" use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint"
                        pattern="(\/api\/verksamhet\/.*)|(\/api\/region\/.*)|(\/logout)" request-matcher="regex">
             <security:csrf disabled="true"/>
@@ -107,6 +116,7 @@
         </security:http>
         <security:authentication-manager alias="authenticationManager">
             <security:authentication-provider ref="samlAuthenticationProvider"/>
+            <security:authentication-provider ref="jwtAuthenticationProvider" />
             <security:authentication-provider ref="fakeAuthenticationProvider"/>
         </security:authentication-manager>
     </beans>
@@ -115,6 +125,14 @@
     <!-- Prod profile only supports Säkerhetstjänst login                -->
     <!-- =============================================================== -->
     <beans profile="security-saml">
+        <!-- JWT based OAuth authentication -->
+        <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="(\/oauth\/token\/.*)" request-matcher="regex">
+            <security:csrf disabled="true"/>
+            <security:logout logout-url="/logout" logout-success-url="/" invalidate-session="true"/>
+            <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
+            <security:custom-filter position="PRE_AUTH_FILTER" ref="jwtAuthFilter"/>
+            <security:session-management session-authentication-strategy-ref="registerSessionAuthenticationStrategy"/>
+        </security:http>
 
         <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint"
                        pattern="(\/api\/verksamhet\/.*)|(\/api\/region\/.*)" request-matcher="regex">
@@ -133,6 +151,7 @@
         </security:http>
         <security:authentication-manager alias="authenticationManager">
             <security:authentication-provider ref="samlAuthenticationProvider"/>
+            <security:authentication-provider ref="jwtAuthenticationProvider" />
         </security:authentication-manager>
     </beans>
 
@@ -162,6 +181,29 @@
                 <security:filter-chain pattern="/saml/SingleLogout/**" filters="samlLogoutProcessingFilter"/>
                 <security:filter-chain pattern="/saml/metadata/**" filters="metadataDisplayFilter"/>
             </security:filter-chain-map>
+        </bean>
+
+        <bean id="jwtAuthFilter" class="se.inera.statistics.web.auth.oidc.jwt.JwtAuthenticationFilter">
+            <constructor-arg index="0" ref="saveRequestMatcher" />
+            <property name="authenticationManager" ref="authenticationManager"/>
+            <property name="sessionAuthenticationStrategy" ref="registerSessionAuthenticationStrategy"/>
+            <property name="authenticationSuccessHandler" ref="jwtSuccessHandler"/>
+            <property name="authenticationFailureHandler" ref="failureHandler"/>
+        </bean>
+        <bean id="jwtSuccessHandler"
+            class="se.inera.statistics.web.auth.oidc.jwt.JwtAuthenticationSuccessHandler">
+        </bean>
+        <bean id="jwtAuthenticationProvider" class="se.inera.statistics.web.auth.oidc.jwt.JwtAuthenticationProvider">
+            <property name="userDetailsService" ref="userDetailsService"/>
+        </bean>
+        <bean id="jswtValidationService" class="se.inera.statistics.web.service.jwt.JwtValidationServiceImpl"/>
+
+        <!-- Decide which requests should be saved for redirection after successful login.
+         Triggers on: /oauth/token/*
+         -->
+        <bean id="saveRequestMatcher" class="org.springframework.security.web.util.matcher.RegexRequestMatcher">
+            <constructor-arg index="0" value="\/oauth/token\/.*"/>
+            <constructor-arg index="1"><null/></constructor-arg>
         </bean>
 
         <bean id="metadataDisplayFilter" class="org.springframework.security.saml.metadata.MetadataDisplayFilter"/>
