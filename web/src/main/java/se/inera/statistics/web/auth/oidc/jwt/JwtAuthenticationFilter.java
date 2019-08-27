@@ -52,12 +52,6 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-
-        // TODO: Toggle feature?
-        //if (!featuresHelper.isFeatureActive(AuthoritiesConstants.FEATURE_OAUTH_AUTHENTICATION)) {
-        //    throw new AuthenticationServiceException("OAuth authentication is not enabled");
-        //}
-
         // Use previous authentication if one exists
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {

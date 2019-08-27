@@ -129,7 +129,7 @@ module.exports = function(grunt) {
           '<%= config.client %>/assets/images/{,*//*}*.{png,jpg,jpeg,gif,webp,svg}'
         ],
         options: {
-          livereload: true
+          livereload: 35730
         }
       }
     },

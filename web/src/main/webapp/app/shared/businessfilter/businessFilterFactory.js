@@ -156,17 +156,22 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
 
   function setPreselectedFilter(filterData) {
     if (businessFilter.icd10.subs.length > 0) {
-      businessFilter.diagnoserSaved = _.cloneDeep(filterData.diagnoser);
-      businessFilter.selectDiagnoses(filterData.diagnoser);
+      var diagnoser = filterData.diagnoser ? filterData.diagnoser : [];
+
+      businessFilter.diagnoserSaved = _.cloneDeep(diagnoser);
+      businessFilter.selectDiagnoses(diagnoser);
     }
-    businessFilter.selectedSjukskrivningslangdIds = filterData.sjukskrivningslangd;
-    businessFilter.sjukskrivningslangdSaved = _.cloneDeep(filterData.sjukskrivningslangd);
-    businessFilter.selectedIntygstyperIds = filterData.intygstyper;
-    businessFilter.intygstyperSaved = _.cloneDeep(filterData.intygstyper);
-    businessFilter.selectedAldersgruppIds = filterData.aldersgrupp;
-    businessFilter.aldersgruppSaved = _.cloneDeep(filterData.aldersgrupp);
-    businessFilter.geographyBusinessIdsSaved = _.cloneDeep(filterData.enheter);
-    businessFilter.selectGeographyBusiness(filterData.enheter);
+
+    businessFilter.selectedSjukskrivningslangdIds = filterData.sjukskrivningslangd ? filterData.sjukskrivningslangd : [];
+    businessFilter.sjukskrivningslangdSaved = _.cloneDeep(businessFilter.selectedSjukskrivningslangdIds);
+    businessFilter.selectedIntygstyperIds = filterData.sjukskrivningslangd ? filterData.intygstyper : [];
+    businessFilter.intygstyperSaved = _.cloneDeep(businessFilter.selectedIntygstyperIds);
+    businessFilter.selectedAldersgruppIds =  filterData.aldersgrupp ? filterData.aldersgrupp : [];
+    businessFilter.aldersgruppSaved =_.cloneDeep(businessFilter.selectedAldersgruppIds);
+
+    var enheter = filterData.enheter ? filterData.enheter : [];
+    businessFilter.geographyBusinessIdsSaved = _.cloneDeep(enheter);
+    businessFilter.selectGeographyBusiness(enheter);
     businessFilter.toDate = filterData.toDate ? moment(filterData.toDate).utc().toDate() : null;
     businessFilter.toDateSaved = businessFilter.toDate;
     businessFilter.fromDate = filterData.fromDate ? moment(filterData.fromDate).utc().toDate() : null;

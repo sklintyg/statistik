@@ -94,9 +94,7 @@ public class JwtAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucc
                     LOG.info("Not possible to create filter", e);
                 }
 
-                // TODO: Göra en bättre url till frontend
-
-                redirectUrl += "#/verksamhet/oversikt/?vgid=" + vgId + "&filter=" + filterHash;
+                redirectUrl += "#/sso?vgid=" + vgId + "&filter=" + filterHash;
             } else {
                 LOG.info("User don't have access to requested unit.");
             }

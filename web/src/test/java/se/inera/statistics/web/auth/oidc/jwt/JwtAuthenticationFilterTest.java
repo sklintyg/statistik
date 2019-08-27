@@ -139,15 +139,6 @@ public class JwtAuthenticationFilterTest {
         testee.attemptAuthentication(req, resp);
     }
 
-    //TODO: Remove or fix if we should have feature toggling
-    /*
-    @Test(expected = AuthenticationServiceException.class)
-    public void testThrowsExceptionIfFeatureNotActive() {
-
-        //when(featuresHelper.isFeatureActive(anyString())).thenReturn(false);
-        testee.attemptAuthentication(req, resp);
-    }*/
-
     @Test(expected = AuthenticationServiceException.class)
     public void testThrowsExceptionIfUnsupportedMethod() {
         when(req.getMethod()).thenReturn("GET");
