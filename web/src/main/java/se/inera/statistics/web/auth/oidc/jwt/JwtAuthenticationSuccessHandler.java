@@ -38,7 +38,6 @@ import se.inera.statistics.web.service.FilterHashHandler;
  * Custom Spring Security {@link AuthenticationSuccessHandler} that post-authorization can augment the created
  * session redirect the user to the originally requested resource given a enhet parameter.
  *
- *
  */
 public class JwtAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
@@ -72,20 +71,20 @@ public class JwtAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucc
 
         String enhet = request.getParameter("enhet");
 
-        Optional<Vardenhet> vardenhetOptional = user.getVardenhetList().stream()
-            .filter(v -> v.getId().getId().equalsIgnoreCase(enhet))
-            .findAny();
-
         String redirectUrl = "/";
 
         if (requestURI.endsWith("view")) {
+            // Try to find requested unit
+            Optional<Vardenhet> vardenhetOptional = user.getVardenhetList().stream()
+                .filter(v -> v.getId().getId().equalsIgnoreCase(enhet))
+                .findAny();
 
             if (vardenhetOptional.isPresent()) {
                 Vardenhet vardenhet = vardenhetOptional.get();
                 String vgId = vardenhet.getVardgivarId().getId();
                 String enhetId = vardenhet.getId().getId();
 
-                // Create filter with selected unit
+                // Create filter with requested unit
                 String filterData = "{\"enheter\": [\"" + enhetId + "\"]}";
                 String filterHash = "";
                 try {
@@ -94,9 +93,15 @@ public class JwtAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucc
                     LOG.info("Not possible to create filter", e);
                 }
 
+                // Select caretaker and use filter with unit
                 redirectUrl += "#/sso?vgid=" + vgId + "&filter=" + filterHash;
             } else {
                 LOG.info("User don't have access to requested unit.");
+
+                // Logout user if is doesn't have access to any unit in statistik
+                if (user.getVardenhetList().isEmpty()) {
+                    redirectUrl = "/logout";
+                }
             }
 
         } else {
