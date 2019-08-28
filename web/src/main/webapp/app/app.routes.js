@@ -495,6 +495,8 @@ var app = angular.module('StatisticsApp')
         templateUrl: '/app/views/about/contact.html',
         controllerAs: 'AboutContactCtrl',
         title: 'Kontakt till Inera Support'
+      }).when('/sso', {
+        redirectTo: '/verksamhet/oversikt'
       }).when('/', {
         redirectTo: '/nationell/oversikt'
       }).when('/nationell', {

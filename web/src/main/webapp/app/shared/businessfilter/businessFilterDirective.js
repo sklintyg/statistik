@@ -236,11 +236,11 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
         scope.isFilterCollapsed = !scope.isFilterCollapsed;
         scope.loadingFilter = false;
 
-        scope.businessFilter.aldersgruppSaved = _.cloneDeep(params.aldersgrupp);
-        scope.businessFilter.sjukskrivningslangdSaved = _.cloneDeep(params.sjukskrivningslangd);
-        scope.businessFilter.intygstyperSaved = _.cloneDeep(params.intygstyper);
-        scope.businessFilter.diagnoserSaved = _.cloneDeep(params.diagnoser);
-        scope.businessFilter.geographyBusinessIdsSaved = _.cloneDeep(params.enheter);
+        scope.businessFilter.aldersgruppSaved = params.aldersgrupp ? _.cloneDeep(params.aldersgrupp) : [];
+        scope.businessFilter.sjukskrivningslangdSaved = params.sjukskrivningslangd ? _.cloneDeep(params.sjukskrivningslangd) : [];
+        scope.businessFilter.intygstyperSaved = params.intygstyper ? _.cloneDeep(params.intygstyper) : [];
+        scope.businessFilter.diagnoserSaved = params.diagnoser ? _.cloneDeep(params.diagnoser) : [];
+        scope.businessFilter.geographyBusinessIdsSaved = params.enheter ? _.cloneDeep(params.enheter) : [];
         scope.businessFilter.fromDateSaved = scope.businessFilter.fromDate;
         scope.businessFilter.toDateSaved = scope.businessFilter.toDate;
 
