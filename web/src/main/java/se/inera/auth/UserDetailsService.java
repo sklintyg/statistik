@@ -57,7 +57,16 @@ public class UserDetailsService implements SAMLUserDetailsService {
         LOG.info("User authentication was successful. SAML credential is " + credential);
         SakerhetstjanstAssertion assertion = getSakerhetstjanstAssertion(credential);
 
-        final HsaIdUser hsaId = new HsaIdUser(assertion.getHsaId());
+        return buildUserPrincipal(assertion.getHsaId());
+    }
+
+    public User loadUserByHsaId(String hsaId) {
+        LOG.info("User authentication was successful. loading user by hsaId {}", hsaId);
+        return buildUserPrincipal(hsaId);
+    }
+
+    private User buildUserPrincipal(String employeeHsaId) {
+        final HsaIdUser hsaId = new HsaIdUser(employeeHsaId);
         List<PersonInformationType> hsaPersonInfo = hsaPersonService.getHsaPersonInfo(hsaId.getId());
         UserAuthorization userAuthorization = hsaOrganizationsService.getAuthorizedEnheterForHosPerson(hsaId);
         final List<Vardgivare> vardgivareWithProcessledarStatusList = getVgsWithProcessledarStatus(userAuthorization.getSystemRoles())
