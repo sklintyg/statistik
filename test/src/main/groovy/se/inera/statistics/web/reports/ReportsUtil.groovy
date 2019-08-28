@@ -641,5 +641,9 @@ class ReportsUtil {
         return get("/api/testsupport/getSpecialLengthReport")
     }
 
+    def getSpecialReportSkane() {
+        return get("/api/testsupport/getSpecialReportSkane", FilterData.empty(), "enhet=ENHET1&enhet=ENHET2&enhet=ENHET3&enhet=ENHET4")
+    }
+
 }
 
