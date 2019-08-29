@@ -65,6 +65,22 @@
         <bean id="http403ForbiddenEntryPoint"
               class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint"/>
         <security:global-method-security pre-post-annotations="enabled"/>
+
+        <bean id="jwtSuccessHandler"
+            class="se.inera.auth.jwt.JwtAuthenticationSuccessHandler">
+        </bean>
+        <bean id="jwtAuthenticationProvider" class="se.inera.auth.jwt.JwtAuthenticationProvider">
+            <property name="userDetailsService" ref="userDetailsService"/>
+        </bean>
+        <bean id="jswtValidationService" class="se.inera.statistics.web.service.jwt.JwtValidationServiceImpl"/>
+
+        <!-- Decide which requests should be saved for redirection after successful login.
+         Triggers on: /oauth/token/*
+         -->
+        <bean id="saveRequestMatcher" class="org.springframework.security.web.util.matcher.RegexRequestMatcher">
+            <constructor-arg index="0" value="\/oauth/token\/.*"/>
+            <constructor-arg index="1"><null/></constructor-arg>
+        </bean>
     </beans>
     <!-- =============================================================== -->
     <!-- Dev profile only supports Fake login                            -->
@@ -153,6 +169,14 @@
             <security:authentication-provider ref="samlAuthenticationProvider"/>
             <security:authentication-provider ref="jwtAuthenticationProvider" />
         </security:authentication-manager>
+
+        <bean id="jwtAuthFilter" class="se.inera.auth.jwt.JwtAuthenticationFilter">
+            <constructor-arg index="0" ref="saveRequestMatcher" />
+            <property name="authenticationManager" ref="authenticationManager"/>
+            <property name="sessionAuthenticationStrategy" ref="registerSessionAuthenticationStrategy"/>
+            <property name="authenticationSuccessHandler" ref="jwtSuccessHandler"/>
+            <property name="authenticationFailureHandler" ref="failureHandler"/>
+        </bean>
     </beans>
 
     <beans profile="security-fake,security-both">
@@ -170,6 +194,14 @@
               class="se.inera.auth.FakeAuthenticationProvider">
             <property name="userDetails" ref="userDetailsService"/>
         </bean>
+
+        <bean id="jwtAuthFilter" class="se.inera.auth.jwt.FakeJwtAuthenticationFilter">
+            <constructor-arg index="0" ref="saveRequestMatcher" />
+            <property name="authenticationManager" ref="authenticationManager"/>
+            <property name="sessionAuthenticationStrategy" ref="registerSessionAuthenticationStrategy"/>
+            <property name="authenticationSuccessHandler" ref="jwtSuccessHandler"/>
+            <property name="authenticationFailureHandler" ref="failureHandler"/>
+        </bean>
     </beans>
 
     <beans profile="security-saml,security-both">
@@ -181,29 +213,6 @@
                 <security:filter-chain pattern="/saml/SingleLogout/**" filters="samlLogoutProcessingFilter"/>
                 <security:filter-chain pattern="/saml/metadata/**" filters="metadataDisplayFilter"/>
             </security:filter-chain-map>
-        </bean>
-
-        <bean id="jwtAuthFilter" class="se.inera.auth.jwt.JwtAuthenticationFilter">
-            <constructor-arg index="0" ref="saveRequestMatcher" />
-            <property name="authenticationManager" ref="authenticationManager"/>
-            <property name="sessionAuthenticationStrategy" ref="registerSessionAuthenticationStrategy"/>
-            <property name="authenticationSuccessHandler" ref="jwtSuccessHandler"/>
-            <property name="authenticationFailureHandler" ref="failureHandler"/>
-        </bean>
-        <bean id="jwtSuccessHandler"
-            class="se.inera.auth.jwt.JwtAuthenticationSuccessHandler">
-        </bean>
-        <bean id="jwtAuthenticationProvider" class="se.inera.auth.jwt.JwtAuthenticationProvider">
-            <property name="userDetailsService" ref="userDetailsService"/>
-        </bean>
-        <bean id="jswtValidationService" class="se.inera.statistics.web.service.jwt.JwtValidationServiceImpl"/>
-
-        <!-- Decide which requests should be saved for redirection after successful login.
-         Triggers on: /oauth/token/*
-         -->
-        <bean id="saveRequestMatcher" class="org.springframework.security.web.util.matcher.RegexRequestMatcher">
-            <constructor-arg index="0" value="\/oauth/token\/.*"/>
-            <constructor-arg index="1"><null/></constructor-arg>
         </bean>
 
         <bean id="metadataDisplayFilter" class="org.springframework.security.saml.metadata.MetadataDisplayFilter"/>
