@@ -1,47 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" ID="https___localhost_8080" entityID="http://localhost:8080">
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns="http://www.w3.org/2000/09/xmldsig#"
+    ID="https___verifiering_statistik_intygstjanster_se"
+    entityID="https://verifiering.statistik.intygstjanster.se">
   <md:SPSSODescriptor AuthnRequestsSigned="false" WantAssertionsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
     <md:KeyDescriptor>
-      <dsig:KeyInfo>
-        <dsig:X509Data>
-          <dsig:X509Certificate>MIID7DCCAdQCCQCimXki+vmkATANBgkqhkiG9w0BAQ0FADA8MQswCQYDVQQGEwJT
-            RTEVMBMGA1UECgwMU29wcmEgU3RlcmlhMRYwFAYDVQQDDA0yUyBSb290IENBIHYx
-            MB4XDTE5MDQwMTA3MTEyMVoXDTM5MDMyNzA3MTEyMVowNDELMAkGA1UEBhMCU0Ux
-            ETAPBgNVBAoMCEluZXJhIEFCMRIwEAYDVQQDDAlsb2NhbGhvc3QwggEiMA0GCSqG
-            SIb3DQEBAQUAA4IBDwAwggEKAoIBAQDGBMQ5mjhU2rctIH0dxwm4qT6CJJglb5HD
-            tC5UzvKkm4RGLDJKyru9nYcC/VPETNG1T7nVy86jXlNf6LKDiX+kJ+R/3Fh1hnPT
-            gdszOFHqzf0s5YRz2owBN0fj7S1Dbqxnj1n16Ex+05W8U88yXEZ6HTUbsYjIBUUU
-            rX6wm3+th/hfj3BnvvpPifS6qrwvhxBA44wTKVvX3nNr1k+refsRYMu9UMCuQ7Ut
-            GjWvrWBUBJ3aQ3rrYUI0AOsqr2qF/yfPmscW2ILwLwR+a++oUl0h52pj6Y0xCFuB
-            OQ/J59aIxQ7d4u6uSyvoNLJtXD6OgXbrFd8K6qMaVf2+Fh/M6AvpAgMBAAEwDQYJ
-            KoZIhvcNAQENBQADggIBACW9EHq7MOnGYxMMFZG4zdwpVVuJpFzXRIJYbIphOrXB
-            e+bJz0bpetWDiDgeWqEEmk+kB4JH5v2QhfE3HLerW2X5qsxDcSzRAcN+ykzHPaUI
-            Hvw7dZnk8cUb3i7kdpmIlb0QRNz7knc9ROt8abxn+KQLPw4Je5WAp4cVyTZKDIn/
-            ju4JY0Mt5Ep3koWbmf2DVktkUc+q+kC3U/YTzFRgJymQD5UjQYOYJTzg8aOE1Rji
-            3SSBhdz7wM1paGlLp8NFNXaGY1dClYiDaNGygktSVKkEeJm+iOiyzNvUQAFJkGbI
-            BAxFqPR/euyMTKYs4JrplzJ55Rgi2oRKiIvQpLHqdK5fnnqyW069ftbvBUnwEF4n
-            MxSqXrGCc0/oqgWBik7+CFL8SRQfGGfpMjmgAt/dQM9vH/GB9gimyBm+GYZB47sB
-            RdSYsD+OxKqFNV69JQN2iWdRhIxlPXNyROzU4muDVsg4y9um360YKUmh3Lb3o7ys
-            4kO5b4fQpfmpe5hcpjOxKnXS1a1sW3J1ujwW9VDJ7bgOPDyyaXhgP+9CODTY3YHm
-            d4ChaOTiG+4i0bdmJVuUowWD81IeSg9rPVS4T4BZuCKh4yMVn0hSJha2qLODWzZ0
-            YH8OX56t7EzjlMtcMXfXPluLAd4PF2PDWEmiY09S9a3K1IS9X4zzaLXs7w//WUmE
-          </dsig:X509Certificate>
-        </dsig:X509Data>
-      </dsig:KeyInfo>
+      <KeyInfo>
+        <X509Data>
+          <X509Certificate>MIIHsTCCBZmgAwIBAgIPAWreur8RkNIZ52cnhggAMA0GCSqGSIb3DQEBDQUAMEAx
+            CzAJBgNVBAYTAlNFMREwDwYDVQQKDAhJbmVyYSBBQjEeMBwGA1UEAwwVU0lUSFMg
+            VHlwZSAzIENBIHYxIFBQMB4XDTE5MDUyMjA4NDkwMVoXDTIxMDUyMjIxNTgwMFow
+            gYkxCzAJBgNVBAYTAlNFMRIwEAYDVQQHDAlTdG9ja2hvbG0xETAPBgNVBAoMCElu
+            ZXJhIEFCMTgwNgYDVQQDDC92ZXJpZmllcmluZy5zdGF0aXN0aWsuaW50eWdzdGph
+            bnN0ZXIuc2p1bmV0Lm9yZzEZMBcGA1UEBRMQU0U1NTY1NTk0MjMwLUI1SDCCAiIw
+            DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBANJHNO9LEtOvrH/fHyuWh4gLeSSS
+            XvIbUzwoQF97IW5Ttdra6Gc2ccvdytYAN2a5Q+TpG7jb8/Gt0Ny60dknLvgOd/g6
+            KIOIP6aSOZC7he3JmA2ROASBck0T4FkkRCM5lpZPjH9IvxUKpzBoqyfkVS23P+HV
+            JmXDq7Cf20cqvlU98+qkZvokV17Mx+jPRuCRoH6uA8+Q3dtU2GaCvdV6Clukno6y
+            rTMFwG1aAzFrf00U80NJB4+KQPyUdfo7m4abvenwq2zUk1n/oKkzQu47sgHobMGH
+            G8WcrZ9fAhJKobC52sz/Izj6Li9qHvWvIF9dggW8IddyD8YOfpzQz3WFH6SMFF1z
+            tytifg8itozpEIqBJTfLuldLE0P4Oy8hELrSfklOgCE52DgjINdZ/ESFQNmzLxZz
+            faa8fhK7hULU4f9csMjsDrmyRkuQS56awc6BpDyiRZ1fApIbfiEF58Ok8cHG6DgI
+            Fc+3286zGBhXR6PsmD5Y0fROKGHzugOSx3i+AA17i7pMoXNzfH5zFybyMRjl9Np7
+            gzCqCmt7GdaNFrDkA+F9lKLRlbNJDEm0zxFh0DRQXGrSVa7GEoqbpyOd3YNGvc5V
+            nOCvsiGQvvLpzUEPx6wKfAWQBdpG91PznUkZhpl6VNJqtAe15NDs20z9MyOO45Vi
+            2DIMUwX/zHYnltnBAgMBAAGjggJcMIICWDAfBgNVHSMEGDAWgBRRHKa4ZlbRnuTS
+            kKKFw5DLIZufxjAdBgNVHQ4EFgQUzRebuyLr9BUon8jwKud7k3BesP4wDgYDVR0P
+            AQH/BAQDAgWgMFUGA1UdIAROMEwwQAYHKoVwI2MCAjA1MDMGCCsGAQUFBwIBFido
+            dHRwOi8vcnBhcHAuc2l0aHMuc2Uvc2l0aHNycGF2MXBwLmh0bWwwCAYGZ4EMAQIC
+            MDoGA1UdEQQzMDGCL3ZlcmlmaWVyaW5nLnN0YXRpc3Rpay5pbnR5Z3N0amFuc3Rl
+            ci5zanVuZXQub3JnMHcGA1UdHwRwMG4wMaAvoC2GK2h0dHA6Ly9jcmwxcHAuc2l0
+            aHMuc2Uvc2l0aHN0eXBlM2NhdjFwcC5jcmwwOaA3oDWGM2h0dHA6Ly9jcmwycHAu
+            c2l0aHMuc2p1bmV0Lm9yZy9zaXRoc3R5cGUzY2F2MXBwLmNybDAdBgNVHSUEFjAU
+            BggrBgEFBQcDAQYIKwYBBQUHAwIwgdoGCCsGAQUFBwEBBIHNMIHKMCMGCCsGAQUF
+            BzABhhdodHRwOi8vb2NzcDFwcC5zaXRocy5zZTArBggrBgEFBQcwAYYfaHR0cDov
+            L29jc3AycHAuc2l0aHMuc2p1bmV0Lm9yZzA2BggrBgEFBQcwAoYqaHR0cDovL2Fp
+            YXBwLnNpdGhzLnNlL3NpdGhzdHlwZTNjYXYxcHAuY2VyMD4GCCsGAQUFBzAChjJo
+            dHRwOi8vYWlhcHAuc2l0aHMuc2p1bmV0Lm9yZy9zaXRoc3R5cGUzY2F2MXBwLmNl
+            cjANBgkqhkiG9w0BAQ0FAAOCAgEAYldS6g5GBLp0H8L5SKGVShWxL3wqt4nxfPBO
+            pcVispjjbpsHekO/74sn4df5eKEulrsNu5hE5n0KptoeN6a2cv1FA/M4HLwdRWsp
+            MdrqnHsfUBdfFlJvc3x3812uLwtVOMgxuJZoOtqWlOAvaQ1nhdiYutye7N3n7sM6
+            h3NnUmAzGDW5vCPk9bUvCtl7oy3VHQSi9PpaYS/vszL0o3dwcJ2fQ5bVuBqYxoT0
+            U9mEELrjBgEciQJnSMQqVenYNWpM2lL3SkPJWUkAnlXDFd9C0AZ2/Ry9jbNuB5+Y
+            dmeIzrbQkcw3VHWp7PfLhzlBdU3meVKb8b9bqO8cs7BYx+cnCswgi4tXcC8agC2h
+            aYUECKrDGR6Uit9WL+BripKqn+F5k1kwOqV46MJk4tquvJanXN1lixwtES36eZsg
+            Dz5KM2rGMBZI8UrsXHD49pM85fTChRiQ3Aj/8zafqRnZWw6I2pkB9BKCMlSezP/j
+            fb6Qof0l0WIAhwP7pUyKYT5s7VPQwbxSi+O6xpyp2np+J3j56A5kq/IlduA93MBJ
+            mlmo+8SbS9k64/wygbf6zc7GaMCT8yeYiLubMwhlf3vCj1zb1t3zJNWXsO3Rh+DP
+            WZZsEjX3O64ROQRtOybIwIAgSp8fBgrmrm9dIjwkvy4XXNe3hdUDeznj0QkBkMbH
+            eppjqEw=</X509Certificate>
+        </X509Data>
+      </KeyInfo>
     </md:KeyDescriptor>
-    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://localhost:8080/saml/SingleLogout/alias/defaultAlias"/>
-    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://localhost:8080/saml/SingleLogout/alias/defaultAlias"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://verifiering.statistik.intygstjanster.se/saml/SingleLogout/alias/defaultAlias"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://verifiering.statistik.intygstjanster.se/saml/SingleLogout/alias/defaultAlias"/>
     <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
-    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://localhost:8080/saml/SSO/alias/defaultAlias" index="0" isDefault="true"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://verifiering.statistik.intygstjanster.se/saml/SSO/alias/defaultAlias" index="0" isDefault="true"/>
     <md:AttributeConsumingService index="1">
-      <md:ServiceName xml:lang="sv">Statistik uppdragslöst</md:ServiceName>
+      <md:ServiceName xml:lang="sv">Intyg Statistik uppdragslöst</md:ServiceName>
       <md:RequestedAttribute Name="http://sambi.se/attributes/1/employeeHsaId" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="employeeHsaId" isRequired="true"/>
       <md:RequestedAttribute Name="urn:sambi:names:attribute:authnMethod" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="authnMethod" isRequired="true"/>
     </md:AttributeConsumingService>
   </md:SPSSODescriptor>
   <md:Organization>
     <md:OrganizationName xml:lang="sv">Inera AB</md:OrganizationName>
-    <md:OrganizationDisplayName xml:lang="sv">Statistik DEV</md:OrganizationDisplayName>
+    <md:OrganizationDisplayName xml:lang="sv">Intyg Statistik STAGE</md:OrganizationDisplayName>
     <md:OrganizationURL xml:lang="sv">https://inera.se</md:OrganizationURL>
   </md:Organization>
   <md:ContactPerson xml:lang="sv" contactType="technical">

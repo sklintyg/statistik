@@ -32,36 +32,32 @@ import org.springframework.security.saml.websso.WebSSOProfileOptions;
 public class StatistikWebSSOProfileImpl extends org.springframework.security.saml.websso.WebSSOProfileImpl {
 
     private static final String HTTP_ID_SAMBI_SE_LOA_LOA3 = "http://id.sambi.se/loa/loa3";
+    private static final String URN_OASIS_NAMES_TC_SAML_2_0_AC_CLASSES_TLS_CLIENT = "urn:oasis:names:tc:SAML:2.0:ac:classes:TLSClient";
 
     /**
-     * Returns AuthnRequest SAML message to be used to demand authentication from an IDP described using
-     * idpEntityDescriptor, with an expected response to the assertionConsumer address.
+     * Returns AuthnRequest SAML message to be used to demand authentication from an IDP described using idpEntityDescriptor, with an
+     * expected response to the assertionConsumer address.
      *
      * This overridden version explicitly sets the attributeConsumingServiceIndex for better control over IdP behaviour.
      *
-     * @param context
-     *            message context
-     * @param options
-     *            preferences of message creation
-     * @param assertionConsumer
-     *            assertion consumer where the IDP should respond
-     * @param bindingService
-     *            service used to deliver the request
+     * @param context message context
+     * @param options preferences of message creation
+     * @param assertionConsumer assertion consumer where the IDP should respond
+     * @param bindingService service used to deliver the request
      * @return authnRequest ready to be sent to IDP
-     * @throws org.opensaml.common.SAMLException
-     *             error creating the message
-     * @throws org.opensaml.saml2.metadata.provider.MetadataProviderException
-     *             error retreiving metadata
+     * @throws org.opensaml.common.SAMLException error creating the message
+     * @throws org.opensaml.saml2.metadata.provider.MetadataProviderException error retreiving metadata
      */
     @Override
     protected AuthnRequest getAuthnRequest(SAMLMessageContext context, WebSSOProfileOptions options,
-            AssertionConsumerService assertionConsumer,
-            SingleSignOnService bindingService) throws SAMLException, MetadataProviderException {
+        AssertionConsumerService assertionConsumer,
+        SingleSignOnService bindingService) throws SAMLException, MetadataProviderException {
 
         AuthnRequest authnRequest = super.getAuthnRequest(context, options, assertionConsumer, bindingService);
 
         // Only specify attributeConsumingServiceIndex for SITHS-based authentications.
-        if (options.getAuthnContexts().contains(HTTP_ID_SAMBI_SE_LOA_LOA3)) {
+        if (options.getAuthnContexts().contains(HTTP_ID_SAMBI_SE_LOA_LOA3) || options.getAuthnContexts()
+            .contains(URN_OASIS_NAMES_TC_SAML_2_0_AC_CLASSES_TLS_CLIENT)) {
             authnRequest.setAttributeConsumingServiceIndex(1);
         }
         return authnRequest;

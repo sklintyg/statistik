@@ -198,7 +198,7 @@
                     <property name="forceAuthN" value="true"/>
                     <property name="authnContexts">
                         <list>
-                            <value>http://id.sambi.se/loa/loa3</value>
+                            <value>urn:oasis:names:tc:SAML:2.0:ac:classes:TLSClient</value>
                         </list>
                     </property>
                 </bean>
@@ -222,7 +222,7 @@
                                 <property name="parserPool" ref="parserPool"/>
                             </bean>
                         </constructor-arg>
-                        <property name="metadataTrustCheck" value="true"/>
+                        <property name="metadataTrustCheck" value="false"/>
 
                         <constructor-arg>
                             <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
@@ -358,11 +358,21 @@
         </bean>
 
         <!-- Provider of default SAML Context -->
-        <bean id="contextProvider" class="org.springframework.security.saml.context.SAMLContextProviderImpl">
+        <bean id="contextProvider" class="org.springframework.security.saml.context.SAMLContextProviderLB">
             <property name="storageFactory">
                 <bean class="org.springframework.security.saml.storage.EmptyStorageFactory"/>
             </property>
+            <property name="scheme" value="https"/>
+            <property name="serverName" value="verifiering.statistik.intygstjanster.se"/>
+            <property name="serverPort" value="443"/>
+            <property name="includeServerPortInRequestURL" value="false"/>
+            <property name="contextPath" value="/"/>
         </bean>
+<!--        <bean id="contextProvider" class="org.springframework.security.saml.context.SAMLContextProviderImpl">-->
+<!--            <property name="storageFactory">-->
+<!--                <bean class="org.springframework.security.saml.storage.EmptyStorageFactory"/>-->
+<!--            </property>-->
+<!--        </bean>-->
 
         <!-- Logout handler terminating local session -->
         <bean id="logoutHandler"
