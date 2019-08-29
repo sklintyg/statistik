@@ -37,6 +37,7 @@ public class FakeAuthenticationFilter extends AbstractAuthenticationProcessingFi
 
     protected FakeAuthenticationFilter() {
         super("/fake");
+        LOG.error("---- FakeAuthentication enabled. DO NOT USE IN PRODUCTION!!! ----");
     }
 
     @Override
