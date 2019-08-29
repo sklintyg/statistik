@@ -34,14 +34,17 @@ public class SpecialSkaneComputeRow {
     private Kon kon;
     private int sjukskrivningsgrad;
     private Sjukfall sjukfall;
+    private long patient;
 
-    public SpecialSkaneComputeRow(String dx, HsaIdEnhet enhet, LocalDate range, Kon kon, int sjukskrivningsgrad, Sjukfall sjukfall) {
+    public SpecialSkaneComputeRow(String dx, HsaIdEnhet enhet, LocalDate range, Kon kon,
+                                  int sjukskrivningsgrad, Sjukfall sjukfall, long patient) {
         this.dx = dx;
         this.enhet = enhet;
         this.range = range;
         this.kon = kon;
         this.sjukskrivningsgrad = sjukskrivningsgrad;
         this.sjukfall = sjukfall;
+        this.patient = patient;
     }
 
     public String getDx() {
@@ -66,6 +69,10 @@ public class SpecialSkaneComputeRow {
 
     public int getSjukskrivningsgrad() {
         return sjukskrivningsgrad;
+    }
+
+    public long getPatient() {
+        return patient;
     }
 
     public String getFormattedDate() {

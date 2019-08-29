@@ -18,6 +18,8 @@
  */
 package se.inera.testsupport.specialrapport.regionskane;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
@@ -43,8 +45,11 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class SpecialReportSkaneCreator {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SpecialReportSkaneCreator.class);
 
     private final Iterator<Aisle> aisles;
     private final SjukfallUtil sjukfallUtil;
@@ -93,7 +98,8 @@ public class SpecialReportSkaneCreator {
                 "SE162321000255-O16291", "SE162321000255-O11188", "SE162321000255-O11129", "SE162321000255-O11100", "SE162321000255-O11105",
                 "SE162321000255-O11143", "SE162321000255-O11098", "SE162321000255-O16289", "SE162321000255-O11156", "SE162321000255-O16287",
                 "SE162321000255-O11180", "SE162321000255-O11122", "SE162321000255-O11096", "SE162321000255-O11160");
-        return enhetsIn == null || enhetsIn.isEmpty() ? defaultEnhetStringIds : enhetsIn;
+        return enhetsIn == null || enhetsIn.isEmpty() ? defaultEnhetStringIds :
+                enhetsIn.stream().map(String::toUpperCase).collect(Collectors.toList());
     }
 
     public List<SpecialSkaneRow> getReport(boolean includeOngoingSjukfall, List<String> enhetsIn) {
@@ -107,8 +113,9 @@ public class SpecialReportSkaneCreator {
             final LocalDate toDate = LocalDate.of(2018, 12, 31);
             final int startDay = WidelineConverter.toDay(fromDate);
             final Predicate<Fact> intygFilter = in -> enhetStringIds.contains(in.getEnhet().getId());
-            final Predicate<Sjukfall> sjukfallPredicate = s -> s.getStart() >= startDay;
-            final FilterPredicates filter = new FilterPredicates(intygFilter, sjukfallPredicate, "SpecialSkane2019", true);
+            final Predicate<Sjukfall> sjukfallPredicate = s -> includeOngoingSjukfall || s.getStart() >= startDay;
+            final FilterPredicates filter = new FilterPredicates(intygFilter, sjukfallPredicate,
+                    "SpecialSkane2019" + includeOngoingSjukfall, true);
 
             final Range range = new Range(fromDate, toDate);
 
@@ -122,6 +129,14 @@ public class SpecialReportSkaneCreator {
                 final int startDayOfMonth = WidelineConverter.toDay(startDateMonth);
                 for (Sjukfall sjukfall : sjukfalls) {
                     if (includeOngoingSjukfall || sjukfall.getStart() >= startDayOfMonth) {
+                        final long intygId = sjukfall.getFirstIntygId();
+                        final Optional<Fact> fact = StreamSupport.stream(aisle.spliterator(), false)
+                                .filter(f -> f.getLakarintyg() == intygId).findAny();
+                        if (!fact.isPresent()) {
+                            LOG.warn("Fact from sjukfall not found..");
+                            continue;
+                        }
+
                         final int kat = sjukfall.getDiagnoskategori();
                         final Icd10.Id icd10FromNumericId = icd10.findIcd10FromNumericId(kat);
                         final String dx = icd10FromNumericId.getId().substring(0, 1);
@@ -130,7 +145,7 @@ public class SpecialReportSkaneCreator {
                         final Optional<HsaIdEnhet> enhet = enhetsInSjukfall.stream().filter(enhets::contains).findAny();
                         if (enhet.isPresent()) {
                             final SpecialSkaneComputeRow sosRow = new SpecialSkaneComputeRow(dx, enhet.get(),
-                                    startDateMonth, sjukfall.getKon(), sjukskrivningsgrad, sjukfall);
+                                    startDateMonth, sjukfall.getKon(), sjukskrivningsgrad, sjukfall, fact.get().getPatient());
                             rows.add(sosRow);
                         }
                     }
@@ -198,6 +213,13 @@ public class SpecialReportSkaneCreator {
                         + getGenderName(o.getKon()) + " " + o.getFormattedDate()));
 
         if (includeOngoingSjukfall) {
+            //Antal unika individer i pågående sjukfall
+            results.addAll(resultadderWithCounter(rows,
+                    r -> r.getEnhet() + r.getRange().format(DateTimeFormatter.ISO_DATE),
+                    x -> true,
+                    o -> "Antal unika individer i pågående sjukfall " + o.getFormattedDate(),
+                    e -> e.getValue().stream().map(SpecialSkaneComputeRow::getPatient).distinct().count()));
+
             // Antal sjukfall den 25e totalt
             final List<SpecialSkaneComputeRow> rowsTouchingDate25 = rows.stream().filter(specialSkaneComputeRow -> {
                 final LocalDate date25 = specialSkaneComputeRow.getRange().withDayOfMonth(25);
@@ -286,16 +308,25 @@ public class SpecialReportSkaneCreator {
         }
     }
 
-    private List<SpecialSkaneRow> resultadder(List<SpecialSkaneComputeRow> rows, Function<SpecialSkaneComputeRow,
-            String> groupByFunction, Predicate<Map.Entry<String, List<SpecialSkaneComputeRow>>> streamFilter,
+    private List<SpecialSkaneRow> resultadder(List<SpecialSkaneComputeRow> rows,
+                                              Function<SpecialSkaneComputeRow, String> groupByFunction,
+                                              Predicate<Map.Entry<String, List<SpecialSkaneComputeRow>>> streamFilter,
                                               Function<SpecialSkaneComputeRow, String> rowName) {
+        return resultadderWithCounter(rows, groupByFunction, streamFilter, rowName, entry -> entry.getValue().size());
+    }
+
+    private List<SpecialSkaneRow> resultadderWithCounter(List<SpecialSkaneComputeRow> rows,
+                                              Function<SpecialSkaneComputeRow, String> groupByFunction,
+                                              Predicate<Map.Entry<String,  List<SpecialSkaneComputeRow>>> streamFilter,
+                                              Function<SpecialSkaneComputeRow, String> rowName,
+                                              Function<Map.Entry<String, List<SpecialSkaneComputeRow>>, Number> counter) {
         final List<SpecialSkaneRow> results = new ArrayList<>();
         final Map<String, List<SpecialSkaneComputeRow>> rowsGroupedByFunc = rows.stream().collect(Collectors.groupingBy(groupByFunction));
         final Set<Map.Entry<String, List<SpecialSkaneComputeRow>>> entries = rowsGroupedByFunc.entrySet().stream()
                 .filter(streamFilter).collect(Collectors.toSet());
         for (Map.Entry<String, List<SpecialSkaneComputeRow>> entry : entries) {
             final SpecialSkaneComputeRow firstRow = entry.getValue().get(0);
-            results.add(new SpecialSkaneRow(rowName.apply(firstRow), firstRow.getEnhet().getId(), entry.getValue().size()));
+            results.add(new SpecialSkaneRow(rowName.apply(firstRow), firstRow.getEnhet().getId(), counter.apply(entry)));
         }
         return results;
     }
