@@ -31,7 +31,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import se.inera.statistics.web.service.jwt.JwtValidationService;
@@ -44,7 +43,7 @@ import se.inera.statistics.web.service.jwt.JwtValidationService;
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     @Autowired
-    private JwtValidationService jwtValidationService;
+    protected JwtValidationService jwtValidationService;
 
     protected JwtAuthenticationFilter(RequestMatcher requestMatcher) {
         super(requestMatcher);
@@ -52,17 +51,11 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        // Use previous authentication if one exists
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            return authentication;
-        }
-
         String jwsToken = extractAccessToken(request);
         return authenticate(jwsToken);
     }
 
-    private Authentication authenticate(String jwsToken) {
+    protected Authentication authenticate(String jwsToken) {
         // Validate JWS token signature
         Jws<Claims> jwt = jwtValidationService.validateJwsToken(jwsToken);
 
@@ -95,7 +88,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         return getAuthenticationManager().authenticate(new JwtAuthenticationToken(employeeHsaId));
     }
 
-    private String extractAccessToken(HttpServletRequest request) {
+    protected String extractAccessToken(HttpServletRequest request) {
 
         if (!request.getMethod().equalsIgnoreCase(HttpMethod.POST.name())) {
             throw new AuthenticationServiceException("Only HTTP POST is supported.");
