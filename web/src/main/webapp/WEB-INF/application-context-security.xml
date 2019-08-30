@@ -358,21 +358,21 @@
         </bean>
 
         <!-- Provider of default SAML Context -->
-        <bean id="contextProvider" class="org.springframework.security.saml.context.SAMLContextProviderLB">
-            <property name="storageFactory">
-                <bean class="org.springframework.security.saml.storage.EmptyStorageFactory"/>
-            </property>
-            <property name="scheme" value="https"/>
-            <property name="serverName" value="verifiering.statistik.intygstjanster.se"/>
-            <property name="serverPort" value="443"/>
-            <property name="includeServerPortInRequestURL" value="false"/>
-            <property name="contextPath" value="/"/>
-        </bean>
-<!--        <bean id="contextProvider" class="org.springframework.security.saml.context.SAMLContextProviderImpl">-->
+<!--        <bean id="contextProvider" class="org.springframework.security.saml.context.SAMLContextProviderLB">-->
 <!--            <property name="storageFactory">-->
 <!--                <bean class="org.springframework.security.saml.storage.EmptyStorageFactory"/>-->
 <!--            </property>-->
+<!--            <property name="scheme" value="https"/>-->
+<!--            <property name="serverName" value="verifiering.statistik.intygstjanster.se"/>-->
+<!--            <property name="serverPort" value="443"/>-->
+<!--            <property name="includeServerPortInRequestURL" value="false"/>-->
+<!--            <property name="contextPath" value="/"/>-->
 <!--        </bean>-->
+        <bean id="contextProvider" class="org.springframework.security.saml.context.SAMLContextProviderImpl">
+            <property name="storageFactory">
+                <bean class="org.springframework.security.saml.storage.EmptyStorageFactory"/>
+            </property>
+        </bean>
 
         <!-- Logout handler terminating local session -->
         <bean id="logoutHandler"
