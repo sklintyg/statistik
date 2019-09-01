@@ -109,6 +109,9 @@ import se.inera.testsupport.socialstyrelsenspecial.SosReportCreator;
 import se.inera.testsupport.socialstyrelsenspecial.SosRow;
 import se.inera.testsupport.specialrapport.SjukfallLengthSpecialReportCreator;
 import se.inera.testsupport.specialrapport.SjukfallLengthSpecialRow;
+import se.inera.testsupport.specialrapport.regionskane.SpecialReportSkaneCreator;
+import se.inera.testsupport.specialrapport.regionskane.SpecialReportSkaneAgeCreator;
+import se.inera.testsupport.specialrapport.regionskane.SpecialSkaneRow;
 
 @Service("restSupportService")
 public class RestSupportService {
@@ -635,6 +638,25 @@ public class RestSupportService {
         final List<SjukfallLengthSpecialRow> sosReport = new SjukfallLengthSpecialReportCreator(aisles, sjukfallUtil, icd10)
             .getReport(year);
         return Response.ok(sosReport).build();
+    }
+
+    /**
+     * Special report for Region Skane requested in INTYGFV-12015.
+     */
+    @GET
+    @Path("getSpecialReportSkane")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    public Response getSpecialReportSkane(@QueryParam("enhet") List<String> enhets) {
+        final List<SpecialSkaneRow> report = new SpecialReportSkaneCreator(warehouse.iterator(), sjukfallUtil, icd10)
+                .getReport(false, enhets);
+        report.addAll(new SpecialReportSkaneAgeCreator(warehouse.iterator(), sjukfallUtil)
+                .getReport(false, enhets));
+        report.addAll(new SpecialReportSkaneCreator(warehouse.iterator(), sjukfallUtil, icd10)
+                .getReport(true, enhets));
+        report.addAll(new SpecialReportSkaneAgeCreator(warehouse.iterator(), sjukfallUtil)
+                .getReport(true, enhets));
+        return Response.ok(report).build();
     }
 
 }
