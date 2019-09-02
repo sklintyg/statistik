@@ -98,62 +98,14 @@ public class SpecialReportSkaneCreator {
                 "SE162321000255-O16291", "SE162321000255-O11188", "SE162321000255-O11129", "SE162321000255-O11100", "SE162321000255-O11105",
                 "SE162321000255-O11143", "SE162321000255-O11098", "SE162321000255-O16289", "SE162321000255-O11156", "SE162321000255-O16287",
                 "SE162321000255-O11180", "SE162321000255-O11122", "SE162321000255-O11096", "SE162321000255-O11160");
-        return enhetsIn == null || enhetsIn.isEmpty() ? defaultEnhetStringIds :
-                enhetsIn.stream().map(String::toUpperCase).collect(Collectors.toList());
+        return enhetsIn == null || enhetsIn.isEmpty() ? defaultEnhetStringIds
+                : enhetsIn.stream().map(String::toUpperCase).collect(Collectors.toList());
     }
 
     public List<SpecialSkaneRow> getReport(boolean includeOngoingSjukfall, List<String> enhetsIn) {
         final List<String> enhetStringIds = getEnhetStrings(enhetsIn);
         final List<HsaIdEnhet> enhets = enhetStringIds.stream().map(HsaIdEnhet::new).collect(Collectors.toList());
-        final List<SpecialSkaneComputeRow> rows = new ArrayList<>();
-
-        for (Iterator<Aisle> it = aisles; it.hasNext();) {
-            Aisle aisle = it.next();
-            final LocalDate fromDate = LocalDate.of(2016, 9, 1);
-            final LocalDate toDate = LocalDate.of(2018, 12, 31);
-            final int startDay = WidelineConverter.toDay(fromDate);
-            final Predicate<Fact> intygFilter = in -> enhetStringIds.contains(in.getEnhet().getId());
-            final Predicate<Sjukfall> sjukfallPredicate = s -> includeOngoingSjukfall || s.getStart() >= startDay;
-            final FilterPredicates filter = new FilterPredicates(intygFilter, sjukfallPredicate,
-                    "SpecialSkane2019" + includeOngoingSjukfall, true);
-
-            final Range range = new Range(fromDate, toDate);
-
-            final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(range.getFrom(), range.getNumberOfMonths(),
-                    1, aisle, filter);
-
-            for (SjukfallGroup sjukfallGroup : sjukfallGroups) {
-                final Collection<Sjukfall> sjukfalls = sjukfallGroup.getSjukfall();
-                final Range currentRange = sjukfallGroup.getRange();
-                final LocalDate startDateMonth = currentRange.getFrom();
-                final int startDayOfMonth = WidelineConverter.toDay(startDateMonth);
-                for (Sjukfall sjukfall : sjukfalls) {
-                    if (includeOngoingSjukfall || sjukfall.getStart() >= startDayOfMonth) {
-                        final long intygId = sjukfall.getFirstIntygId();
-                        final Optional<Fact> fact = StreamSupport.stream(aisle.spliterator(), false)
-                                .filter(f -> f.getLakarintyg() == intygId).findAny();
-                        if (!fact.isPresent()) {
-                            LOG.warn("Fact from sjukfall not found..");
-                            continue;
-                        }
-
-                        final int kat = sjukfall.getDiagnoskategori();
-                        final Icd10.Id icd10FromNumericId = icd10.findIcd10FromNumericId(kat);
-                        final String dx = icd10FromNumericId.getId().substring(0, 1);
-                        final int sjukskrivningsgrad = sjukfall.getSjukskrivningsgrad();
-                        final Collection<HsaIdEnhet> enhetsInSjukfall = sjukfall.getEnhets();
-                        final Optional<HsaIdEnhet> enhet = enhetsInSjukfall.stream().filter(enhets::contains).findAny();
-                        if (enhet.isPresent()) {
-                            final SpecialSkaneComputeRow sosRow = new SpecialSkaneComputeRow(dx, enhet.get(),
-                                    startDateMonth, sjukfall.getKon(), sjukskrivningsgrad, sjukfall, fact.get().getPatient());
-                            rows.add(sosRow);
-                        }
-                    }
-                }
-            }
-        }
-
-
+        final List<SpecialSkaneComputeRow> rows = getRows(includeOngoingSjukfall, enhetStringIds, enhets);
         final List<SpecialSkaneRow> results = new ArrayList<>();
 
         // Antal nya sjukfall tot
@@ -271,6 +223,57 @@ public class SpecialReportSkaneCreator {
         return results;
     }
 
+    private List<SpecialSkaneComputeRow> getRows(boolean includeOngoingSjukfall, List<String> enhetStringIds, List<HsaIdEnhet> enhets) {
+        final List<SpecialSkaneComputeRow> rows = new ArrayList<>();
+
+        for (Iterator<Aisle> it = aisles; it.hasNext();) {
+            Aisle aisle = it.next();
+            final LocalDate fromDate = LocalDate.of(2016, 9, 1);
+            final LocalDate toDate = LocalDate.of(2018, 12, 31);
+            final int startDay = WidelineConverter.toDay(fromDate);
+            final Predicate<Fact> intygFilter = in -> enhetStringIds.contains(in.getEnhet().getId());
+            final Predicate<Sjukfall> sjukfallPredicate = s -> includeOngoingSjukfall || s.getStart() >= startDay;
+            final FilterPredicates filter = new FilterPredicates(intygFilter, sjukfallPredicate,
+                    "SpecialSkane2019" + includeOngoingSjukfall, true);
+
+            final Range range = new Range(fromDate, toDate);
+
+            final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(range.getFrom(), range.getNumberOfMonths(),
+                    1, aisle, filter);
+
+            for (SjukfallGroup sjukfallGroup : sjukfallGroups) {
+                final Collection<Sjukfall> sjukfalls = sjukfallGroup.getSjukfall();
+                final Range currentRange = sjukfallGroup.getRange();
+                final LocalDate startDateMonth = currentRange.getFrom();
+                final int startDayOfMonth = WidelineConverter.toDay(startDateMonth);
+                for (Sjukfall sjukfall : sjukfalls) {
+                    if (includeOngoingSjukfall || sjukfall.getStart() >= startDayOfMonth) {
+                        final long intygId = sjukfall.getFirstIntygId();
+                        final Optional<Fact> fact = StreamSupport.stream(aisle.spliterator(), false)
+                                .filter(f -> f.getLakarintyg() == intygId).findAny();
+                        if (!fact.isPresent()) {
+                            LOG.warn("Fact from sjukfall not found..");
+                            continue;
+                        }
+
+                        final int kat = sjukfall.getDiagnoskategori();
+                        final Icd10.Id icd10FromNumericId = icd10.findIcd10FromNumericId(kat);
+                        final String dx = icd10FromNumericId.getId().substring(0, 1);
+                        final int sjukskrivningsgrad = sjukfall.getSjukskrivningsgrad();
+                        final Collection<HsaIdEnhet> enhetsInSjukfall = sjukfall.getEnhets();
+                        final Optional<HsaIdEnhet> enhet = enhetsInSjukfall.stream().filter(enhets::contains).findAny();
+                        if (enhet.isPresent()) {
+                            final SpecialSkaneComputeRow sosRow = new SpecialSkaneComputeRow(dx, enhet.get(),
+                                    startDateMonth, sjukfall.getKon(), sjukskrivningsgrad, sjukfall, fact.get().getPatient());
+                            rows.add(sosRow);
+                        }
+                    }
+                }
+            }
+        }
+        return rows;
+    }
+
     static String getGenderName(Kon kon) {
         switch (kon) {
             case MALE: return "män";
@@ -285,7 +288,7 @@ public class SpecialReportSkaneCreator {
         GRUPP_180TO365("180-365 dagar"),
         GRUPP_MORETHAN365("365< dagar");
 
-        private String text;
+        private final String text;
 
         LengthGroup(String text) {
             this.text = text;
@@ -297,11 +300,14 @@ public class SpecialReportSkaneCreator {
         final LocalDate date25 = r.getRange().withDayOfMonth(25);
         final int day25 = WidelineConverter.toDay(date25);
         final int days = day25 - r.getSjukfall().getStart();
-        if (days <= 90) {
+        final int day90 = 90;
+        final int day180 = 180;
+        final int day365 = 365;
+        if (days <= day90) {
             return LengthGroup.GRUPP_1TO90;
-        } else if (days <= 180) {
+        } else if (days <= day180) {
             return LengthGroup.GRUPP_91TO180;
-        } else if (days <= 365) {
+        } else if (days <= day365) {
             return LengthGroup.GRUPP_180TO365;
         } else {
             return LengthGroup.GRUPP_MORETHAN365;

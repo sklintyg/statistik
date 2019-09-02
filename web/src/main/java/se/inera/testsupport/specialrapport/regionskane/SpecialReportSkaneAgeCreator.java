@@ -95,9 +95,9 @@ public class SpecialReportSkaneAgeCreator {
                                 LOG.warn("Fact from sjukfall not found..");
                                 continue;
                             }
-                            final int AgeDay = includeOngoingSjukfall ?
-                                    Math.min(sjukfall.getEnd(), WidelineConverter.toDay(currentRange.getTo())) : sjukfall.getStart();
-                            final int age = getAge(fact.get().getPatient(), WidelineConverter.toDate(AgeDay));
+                            final int ageDay = includeOngoingSjukfall
+                                    ? Math.min(sjukfall.getEnd(), WidelineConverter.toDay(currentRange.getTo())) : sjukfall.getStart();
+                            final int age = getAge(fact.get().getPatient(), WidelineConverter.toDate(ageDay));
                             final Collection<HsaIdEnhet> enhetsInSjukfall = sjukfall.getEnhets();
                             final Optional<HsaIdEnhet> enhet = enhetsInSjukfall.stream().filter(s -> enhets.contains(s)).findAny();
                             if (enhet.isPresent()) {
@@ -146,8 +146,9 @@ public class SpecialReportSkaneAgeCreator {
                 .collect(Collectors.groupingBy(groupByFunction));
         for (Map.Entry<String, List<SpecialSkaneAgeComputeRow>> entry : rowsGroupedByFunction.entrySet()) {
             final SpecialSkaneAgeComputeRow firstRow = entry.getValue().get(0);
+            final int missingAge = -2;
             results.add(new SpecialSkaneRow(rowName.apply(firstRow), firstRow.getEnhet().getId(),
-                    entry.getValue().stream().mapToInt(SpecialSkaneAgeComputeRow::getAge).average().orElse(-2)));
+                    entry.getValue().stream().mapToInt(SpecialSkaneAgeComputeRow::getAge).average().orElse(missingAge)));
         }
         return results;
     }
