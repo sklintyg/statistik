@@ -200,6 +200,10 @@ public class Cache {
         return lookup(NATIONAL_DATA + "VALUES", supplier);
     }
 
+    /**
+     * @param isOngoing true if calculation should be started or false if calculation is done
+     * @return true if National data calculation was already ongoing, otherwise false
+     */
     public synchronized boolean getAndSetNationaldataCalculationOngoing(boolean isOngoing) {
         LOG.info("Getting and setting ongoing national data calculation");
 
@@ -208,11 +212,11 @@ public class Cache {
         final String key = NATIONAL_DATA + "ONGOING_CALCULATION";
         if (!isOngoing) {
             template.delete(key);
-            return false;
+            return true;
         }
 
-        final Object existingValue = ops.getAndSet(key, isOngoing);
-        if (existingValue == null) {
+        final Boolean didWriteNewValue = ops.setIfAbsent(key, true);
+        if (didWriteNewValue) {
             template.expire(key, ONE_HOUR_IN_MILLIS, TimeUnit.MILLISECONDS);
             return false;
         }
