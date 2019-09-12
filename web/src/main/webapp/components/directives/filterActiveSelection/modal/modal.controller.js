@@ -18,11 +18,69 @@
  */
 
 angular.module('StatisticsApp').controller('FilterActiveSelectionModalCtrl',
-    function($scope, $uibModalInstance, selections, filterViewState) {
+    function($scope, $uibModalInstance, selections, filterViewState, _) {
       'use strict';
 
       $scope.selections = selections;
       $scope.filterViewState = filterViewState.get();
+
+      var filters = [ {
+        id: 'filter-active-intervall',
+        list: 'date',
+        name: 'Valt tidsintervall',
+        icon: 'fa-clock-o',
+        disabled: function() {
+          return false;
+        }
+      }, {
+        id: 'filter-active-enheter',
+        list: 'enheter',
+        name: 'Valda enheter',
+        icon: 'fa-building-o',
+        disabled: function() {
+          return false;
+        }
+      }, {
+        id: 'filter-active-dignoser',
+        list: 'diagnos',
+        name: 'Valda diagnoser',
+        icon: 'fa-stethoscope',
+        disabled: function() {
+          return false;
+        }
+      }, {
+        id: 'filter-active-aldersgrupper',
+        list: 'aldersgrupp',
+        name: 'Valda åldersgrupper',
+        icon: 'fa-users',
+        disabled: function() {
+          return false;
+        }
+      }, {
+        id: 'filter-active-sjukskrivningslangd',
+        list: 'sjukskrivningslangd',
+        name: 'Valda sjukskrivningslängder',
+        icon: 'fa-calendar',
+        disabled: function() {
+          return !filterViewState.sjukskrivningslangd;
+        }
+      }, {
+        id: 'filter-active-intygstyper',
+        list: 'intygstyper',
+        name: 'Valda intygstyper',
+        icon: 'fa-file-text-o',
+        disabled: function() {
+          return !filterViewState.intygstyper;
+        }
+      }];
+
+      $scope.filters = _.filter(filters, function(filter) {
+        if ($scope.selections[filter.list].length > 0) {
+          return true;
+        }
+      });
+
+      $scope.visibleFilterClass = 'number-of-active-filters-' + $scope.filters.length;
 
       $scope.cancel = function() {
         $uibModalInstance.dismiss();
