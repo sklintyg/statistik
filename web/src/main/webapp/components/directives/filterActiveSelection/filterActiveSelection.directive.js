@@ -42,11 +42,20 @@ angular.module('StatisticsApp')
           $scope.showAll = function() {
             createSelections();
 
+            var activeFilters = 0;
+
+            _.each($scope.selections, function(list) {
+              if (list.length > 0) {
+                activeFilters++;
+              }
+            });
+
             $uibModal.open({
               animation: true,
               templateUrl: '/components/directives/filterActiveSelection/modal/modal.html',
               controller: 'FilterActiveSelectionModalCtrl',
               size: 'lg',
+              windowClass: 'modal-width-90 modal-visible-filters-' + activeFilters,
               resolve: {
                 selections: function() {
                   return $scope.selections;
