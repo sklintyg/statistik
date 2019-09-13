@@ -1,47 +1,19 @@
-<div class="modal-header"  id="filterActiveModel">
+<div class="modal-header" id="filterActiveModel">
   <button class="close" data-dismiss="modal" data-ng-click="cancel()">×</button>
   <h4 class="modal-title" message key="lbl.filter.modal.title"></h4>
 </div>
 
-<div class="modal-body selected-filters">
-  <filter-selection-list
-      id="filter-active-intervall"
-      title="Valt tidsintervall"
-      icon="fa-clock-o"
-      list="selections.date"></filter-selection-list>
+<div class="modal-body selected-filters {{::visibleFilterClass}}">
 
   <filter-selection-list
-      id="filter-active-enheter"
-    title="Valda enheter"
-    icon="fa-building-o"
-      list="selections.enheter"></filter-selection-list>
+      ng-repeat="filter in filters"
+      id="{{::filter.id}}"
+      title="{{::filter.name}}"
+      icon="{{::filter.icon}}"
+      list="selections[filter.list]"
+      type-disabled="filter.disabled()"></filter-selection-list>
+</div>
 
-  <filter-selection-list
-      id="filter-active-dignoser"
-      title="Valda diagnoser"
-      icon="fa-stethoscope"
-      list="selections.diagnos"></filter-selection-list>
-
-  <filter-selection-list
-      id="filter-active-aldersgrupper"
-      title="Valda åldersgrupper"
-      icon="fa-users"
-      list="selections.aldersgrupp"
-      ></filter-selection-list>
-
-  <filter-selection-list
-      id="filter-active-sjukskrivningslangd"
-      title="Valda sjukskrivningslängder"
-      icon="fa-calendar"
-      list="selections.sjukskrivningslangd"
-      type-disabled="!filterViewState.sjukskrivningslangd"
-  ></filter-selection-list>
-
-  <filter-selection-list
-      id="filter-active-intygstyper"
-      title="Valda intygstyper"
-      icon="fa-file-text-o"
-      list="selections.intygstyper"
-      type-disabled="!filterViewState.intygstyper"
-  ></filter-selection-list>
+<div class="modal-footer">
+  <button class="btn btn-default" id="settings-close-btn" data-dismiss="modal" data-ng-click="cancel()">Stäng</button>
 </div>

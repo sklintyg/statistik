@@ -1,6 +1,63 @@
+$filterWidth: 300px;
+$paddingWidth: 32px;
+
 filter-active-selection {
   .show-all-filter {
     padding-left: 0;
     vertical-align: top;
+  }
+}
+
+.selected-filters {
+  filter-selection-list:last-of-type {
+    margin-right: 0;
+  }
+}
+
+@mixin break-filter($number) {
+  .modal-visible-filters-#{$number} {
+    .modal-dialog {
+      max-width: $filterWidth * $number + $paddingWidth;
+    }
+  }
+
+  @media (max-width: $filterWidth * $number + $paddingWidth) {
+    .number-of-active-filters-#{$number} {
+      filter-selection-list {
+        display: block;
+
+        ul {
+          width: 100%;
+        }
+      }
+    }
+
+    .modal-visible-filters-#{$number} {
+      .modal-dialog {
+        max-width: $filterWidth * 2 + $paddingWidth;
+      }
+    }
+  }
+}
+
+  @include break-filter(2)
+  @include break-filter(3)
+  @include break-filter(4)
+  @include break-filter(5)
+  @include break-filter(6)
+
+.modal-width-90 {
+  .modal-body {
+    max-height: 50vh;
+    overflow: auto;
+  }
+}
+
+@media (min-width: $screen-sm-min) {
+  .modal-width-90 {
+    .modal-dialog {
+      width: 100%;
+      padding: 0 10px;
+    }
   }
 }

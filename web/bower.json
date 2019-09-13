@@ -2,7 +2,7 @@
   "name": "statistik",
   "version": "0.0.0",
   "dependencies": {
-    "jquery": "3.4.0",
+    "jquery": "3.4.1",
     "angular": "1.6.10",
     "angular-route": "1.6.10",
     "angular-cookies": "1.6.10",
@@ -14,7 +14,7 @@
     "angular-bootstrap": "2.5.0",
     "bootstrap-multiselect": "0.9.15",
     "outdated-browser": "1.1.5",
-    "lodash": "4.17.11",
+    "lodash": "4.17.15",
     "stackblur-canvas": "1.4.1",
     "rgb-color": "v1.2.3",
     "canvg-canvg": "v1.5.3",
@@ -23,7 +23,7 @@
     "ngstorage": "0.3.11",
     "highcharts": "6.0.7",
     "font-awesome": "fontawesome#^4.7.0",
-    "pdfmake": "0.1.54"
+    "pdfmake": "0.1.59"
   },
   "devDependencies": {
     "angular-mocks": "1.6.10",
