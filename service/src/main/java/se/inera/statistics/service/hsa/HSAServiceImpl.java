@@ -37,8 +37,8 @@ import se.inera.statistics.hsa.model.StatisticsHsaUnitDto;
 public class HSAServiceImpl implements HSAService {
 
     private static final Logger LOG = LoggerFactory.getLogger(HSAServiceImpl.class);
-    private static final String SKYDDAD_IDENTITET_FORNAMN = "Sekretessmarkerad";
-    private static final String SKYDDAD_IDENTITET_EFTERNAMN = "läkare";
+    private static final String SKYDDAD_IDENTITET_FORNAMN = "Läkare med skyddad";
+    private static final String SKYDDAD_IDENTITET_EFTERNAMN = "personuppgift";
 
     @Autowired
     private HsaWebService service;
