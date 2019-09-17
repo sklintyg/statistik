@@ -33,11 +33,11 @@ Två intyg för samma patient, utfärdade av olika läkare på samma enhet.
 !3 Då gäller:
 Inloggad:
 
-|Meddelanden i rapporten meddelanden per lakare som tvarsnitt                             |
-|inloggad som|vårdgivarnivå|läkare                  |grupp          |totalt?|män?|kvinnor?|
-|user1       |false        |Anna Andersson          |Avstämningsmöte|-1     |-1  |-1      |
-|user1       |false        |Anna Andersson          |Komplettering  |-1     |-1  |-1      |
-|user1       |false        |Sekretessmarkerad läkare|Avstämning     |2      |0   |0       |
-|user1       |false        |Sekretessmarkerad läkare|Komplettering  |2      |2   |0       |
-|user1       |false        |Bo Bengtsson            |Avstämningsmöte|3      |0   |2       |
-|user1       |false        |Bo Bengtsson            |Komplettering  |3      |0   |1       |
+|Meddelanden i rapporten meddelanden per lakare som tvarsnitt                                     |
+|inloggad som|vårdgivarnivå|läkare                          |grupp          |totalt?|män?|kvinnor?|
+|user1       |false        |Anna Andersson                  |Avstämningsmöte|-1     |-1  |-1      |
+|user1       |false        |Anna Andersson                  |Komplettering  |-1     |-1  |-1      |
+|user1       |false        |Läkare med skyddad personuppgift|Avstämning     |2      |0   |0       |
+|user1       |false        |Läkare med skyddad personuppgift|Komplettering  |2      |2   |0       |
+|user1       |false        |Bo Bengtsson                    |Avstämningsmöte|3      |0   |2       |
+|user1       |false        |Bo Bengtsson                    |Komplettering  |3      |0   |1       |
