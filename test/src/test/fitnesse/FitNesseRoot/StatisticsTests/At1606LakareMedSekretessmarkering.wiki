@@ -22,8 +22,8 @@ Verifierar INTYG-4262
 
 
 !3 Då gäller:
-|Sjukfall i rapporten sjukfall per lakare           |
-|inloggad som|läkare                  |män?|kvinnor?|
-|user2       |Anna Andersson          |-1  |-1      |
-|user2       |Sekretessmarkerad läkare|0   |1       |
-|user2       |Bo Bengtsson            |1   |0       |
+|Sjukfall i rapporten sjukfall per lakare                      |
+|inloggad som|läkare                          |män? |kvinnor?  |
+|user2       |Anna Andersson                  |-1   |-1        |
+|user2       |Läkare med skyddad personuppgift|0    |1         |
+|user2       |Bo Bengtsson                    |1    |0         |
