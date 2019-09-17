@@ -154,7 +154,7 @@ public class LoginServiceUtilTest {
     }
 
     private Enhet newEnhet(HsaIdVardgivare vg) {
-        return new Enhet(vg, new HsaIdEnhet(String.valueOf(rand.nextInt())), "", "", "", "");
+        return new Enhet(vg, new HsaIdEnhet(String.valueOf(rand.nextInt())), "", "", "", "", "veid");
     }
 
     private Vardenhet newVardenhet(String enhetId, String vgId) {

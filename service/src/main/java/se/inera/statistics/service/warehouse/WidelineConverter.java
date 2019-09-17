@@ -70,7 +70,8 @@ public class WidelineConverter extends AbstractWidlineConverter {
     public List<WideLine> toWideline(IntygDTO dto, HsaInfo hsa, long logId, String correlationId, EventType type) {
         String lkf = getLkf(hsa);
 
-        String enhet = HSAServiceHelper.getEnhetId(hsa);
+        String enhet = HSAServiceHelper.getHuvudEnhetId(hsa);
+        String underenhet = HSAServiceHelper.getUnderenhetId(hsa);
         HsaIdVardgivare vardgivare = HSAServiceHelper.getVardgivarId(hsa);
 
         if (enhet == null) {
@@ -94,7 +95,7 @@ public class WidelineConverter extends AbstractWidlineConverter {
 
         List<WideLine> lines = new ArrayList<>();
         for (Arbetsnedsattning arbetsnedsattning : dto.getArbetsnedsattnings()) {
-            WideLine line = createWideLine(logId, correlationId, type, lkf, enhet, vardgivare, patient, kon, alder, dx,
+            WideLine line = createWideLine(logId, correlationId, type, lkf, enhet, underenhet, vardgivare, patient, kon, alder, dx,
                 lakarkon, lakaralder, lakarbefattning, lakareid, arbetsnedsattning, active);
             lines.add(line);
         }
@@ -103,9 +104,10 @@ public class WidelineConverter extends AbstractWidlineConverter {
 
     // CHECKSTYLE:OFF ParameterNumberCheck
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
-    private WideLine createWideLine(long logId, String correlationId, EventType type, String lkf, String enhet, HsaIdVardgivare vardgivare,
-        String patient, int kon, int alder, Diagnos dx, int lakarkon, int lakaralder, String lakarbefattning,
-        HsaIdLakare lakareid, Arbetsnedsattning arbetsnedsattning, boolean active) {
+    private WideLine createWideLine(long logId, String correlationId, EventType type, String lkf, String vardenhet,
+                                    String enhet, HsaIdVardgivare vardgivare, String patient, int kon,
+                                    int alder, Diagnos dx, int lakarkon, int lakaralder, String lakarbefattning,
+                                    HsaIdLakare lakareid, Arbetsnedsattning arbetsnedsattning, boolean active) {
         WideLine line = new WideLine();
 
         int sjukskrivningsgrad = arbetsnedsattning.getNedsattning();
@@ -119,6 +121,7 @@ public class WidelineConverter extends AbstractWidlineConverter {
         line.setActive(active);
         line.setLkf(lkf);
         line.setEnhet(new HsaIdEnhet(enhet));
+        line.setVardenhet(new HsaIdEnhet(vardenhet));
         line.setVardgivareId(vardgivare);
 
         line.setStartdatum(toDay(kalenderStart));

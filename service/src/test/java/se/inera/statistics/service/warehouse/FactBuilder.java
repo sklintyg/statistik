@@ -29,6 +29,7 @@ public class FactBuilder {
     private int kommun = -1;
     private int forsamling = -1;
     private HsaIdEnhet enhet = null;
+    private HsaIdEnhet underenhet = null;
     private long lakarintyg = -1;
     private int patient = -1;
     private int startdatum = -1;
@@ -59,7 +60,7 @@ public class FactBuilder {
             || lakaralder == -1 || lakarbefattnings == null || lakarid == null || enkelt == null) {
             throw new UninitializedValuesException("unintialized values");
         }
-        return new Fact(id, lan, kommun, forsamling, enhet, lakarintyg, patient, startdatum, slutdatum, kon, alder, diagnoskapitel,
+        return new Fact(id, lan, kommun, forsamling, enhet, underenhet, lakarintyg, patient, startdatum, slutdatum, kon, alder, diagnoskapitel,
             diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon,
             lakaralder, lakarbefattnings, lakarid);
     }
@@ -86,6 +87,11 @@ public class FactBuilder {
 
     public FactBuilder withEnhet(int enhet) {
         this.enhet = new HsaIdEnhet(String.valueOf(enhet));
+        return this;
+    }
+
+    public FactBuilder withUnderenhet(int underenhet) {
+        this.underenhet = new HsaIdEnhet(String.valueOf(underenhet));
         return this;
     }
 
@@ -169,13 +175,13 @@ public class FactBuilder {
         return this;
     }
 
-    public static Fact newFact(long id, int lan, int kommun, int forsamling, int enhet, long lakarintyg, long patient, int startdatum,
+    public static Fact newFact(long id, int lan, int kommun, int forsamling, int enhet, int underenhet, long lakarintyg, long patient, int startdatum,
         int slutdatum,
         int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod, int sjukskrivningsgrad,
         int lakarkon, int lakaralder, int[] lakarbefattnings, int lakarid) {
-        return new Fact(id, lan, kommun, forsamling, new HsaIdEnhet(String.valueOf(enhet)), lakarintyg, patient, startdatum, slutdatum, kon,
-            alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattnings,
-            new HsaIdLakare(String.valueOf(lakarid)));
+        return new Fact(id, lan, kommun, forsamling, new HsaIdEnhet(String.valueOf(enhet)), new HsaIdEnhet(String.valueOf(underenhet)),
+                lakarintyg, patient, startdatum, slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod,
+                sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattnings, new HsaIdLakare(String.valueOf(lakarid)));
     }
 
     private static class UninitializedValuesException extends RuntimeException {

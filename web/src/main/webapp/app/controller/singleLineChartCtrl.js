@@ -188,6 +188,17 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
       $scope.doneLoading = false;
       $scope.dataLoadingError = false;
 
+      $scope.showEnhetDepthOptions = config.showEnhetDepthOptions;
+      $scope.vardenhetDepthOptionVardenhetSelected = $routeParams.vardenhetdepth !== 'true';
+
+      $scope.enhetDepthOptionChange = function() {
+        if ($scope.vardenhetDepthOptionVardenhetSelected) {
+          $location.search('vardenhetdepth', 'true');
+        } else {
+          $location.search('vardenhetdepth', 'false');
+        }
+      };
+
       $scope.printPdf = function() {
         pdfFactory.print($scope, chart);
       };
@@ -304,6 +315,8 @@ angular.module('StatisticsApp').meddelandenPerAmneOchEnhetConfig =
       conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/meddelandenPerAmneOchEnhet', active: true},
         {description: 'Tvärsnitt', state: '/verksamhet/meddelandenPerAmneOchEnhetTvarsnitt', active: false}];
+
+      conf.showEnhetDepthOptions = true;
 
       return conf;
     };

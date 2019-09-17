@@ -82,5 +82,6 @@
     <include file="changelog/db.changelog-v54.0_add_column_to_meddelandehandelse.xml" />
     <include file="changelog/db.changelog-v55.0_add_columns_to_messeagewideline.xml" />
     <include file="changelog/db.changelog-v56.0_add_frageids_column_to_messeagewideline.xml" />
+    <include file="changelog/db.changelog-v57.0_add_vardenhet.xml" />
 
 </databaseChangeLog>

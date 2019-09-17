@@ -58,10 +58,10 @@ public class RegionFileWriterTest {
     public void testGenerateExcelFileRowsAreCorrectlyAdded() throws Exception {
         //Given
         final ArrayList<Enhet> enhets = new ArrayList<>();
-        enhets.add(new Enhet(new HsaIdVardgivare(""), new HsaIdEnhet("id1"), "name1", "", "", ""));
-        enhets.add(new Enhet(new HsaIdVardgivare(""), new HsaIdEnhet("id43"), "name fdsa wqer5", "", "", ""));
-        enhets.add(new Enhet(new HsaIdVardgivare(""), new HsaIdEnhet("id6"), "farsrG", "", "", ""));
-        enhets.add(new Enhet(new HsaIdVardgivare(""), new HsaIdEnhet("id123445"), "VrVRwr", "", "", ""));
+        enhets.add(new Enhet(new HsaIdVardgivare(""), new HsaIdEnhet("id1"), "name1", "", "", "", "veid1"));
+        enhets.add(new Enhet(new HsaIdVardgivare(""), new HsaIdEnhet("id43"), "name fdsa wqer5", "", "", "", "veid2"));
+        enhets.add(new Enhet(new HsaIdVardgivare(""), new HsaIdEnhet("id6"), "farsrG", "", "", "", "veid3"));
+        enhets.add(new Enhet(new HsaIdVardgivare(""), new HsaIdEnhet("id123445"), "VrVRwr", "", "", "", "veid4"));
 
         //When
         final ByteArrayOutputStream outputStream = new RegionFileWriter().generateExcelFile(enhets);

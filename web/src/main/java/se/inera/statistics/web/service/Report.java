@@ -44,7 +44,7 @@ public enum Report {
     V_ANDELKOMPLETTERINGAR(StatisticsLevel.VERKSAMHET, "Kompletteringandelintyg",
         "Andel utfärdade intyg som fått en kompletteringsbegäran"),
     V_KOMPLETTERINGARPERFRAGA(StatisticsLevel.VERKSAMHET, "Kompletteringarperfraga", "Antal kompletteringar per fråga"),
-    V_VARDENHET(StatisticsLevel.VERKSAMHET, "Vardenhet", "Antal sjukfall fördelat på vårdenhet"),
+    V_VARDENHET(StatisticsLevel.VERKSAMHET, "Vardenhet", "Antal sjukfall fördelat på vårdenhet eller enhet"),
     V_SJUKFALLPERLAKARE(StatisticsLevel.VERKSAMHET, "SjukfallPerLakare", "Antal sjukfall fördelat på läkare"),
     V_DIAGNOSGRUPP(StatisticsLevel.VERKSAMHET, "Diagnosgrupp", "Antal sjukfall fördelat på diagnosgrupp"),
     V_DIAGNOSGRUPPENSKILTDIAGNOSKAPITEL(StatisticsLevel.VERKSAMHET,

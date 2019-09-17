@@ -58,17 +58,21 @@ public class Enhet implements Serializable {
 
     private String verksamhetsTyper;
 
+    private String vardenhetId;
+
     Enhet() {
         //Not sure why/if this is needed
     }
 
-    public Enhet(HsaIdVardgivare vardgivareId, HsaIdEnhet enhetId, String namn, String lansId, String kommunId, String verksamhetsTyper) {
+    public Enhet(HsaIdVardgivare vardgivareId, HsaIdEnhet enhetId, String namn, String lansId,
+                 String kommunId, String verksamhetsTyper, String vardenhetId) {
         setVardgivareId(vardgivareId);
         setEnhetId(enhetId);
         this.namn = namn;
         this.lansId = lansId;
         this.kommunId = kommunId;
         this.verksamhetsTyper = verksamhetsTyper;
+        this.vardenhetId = vardenhetId;
     }
 
     public long getId() {
@@ -115,8 +119,16 @@ public class Enhet implements Serializable {
         return kommunId.substring(length - 2, length);
     }
 
+    public String getVardenhetId() {
+        return vardenhetId;
+    }
+
     public void setKommunId(String kommunId) {
         this.kommunId = kommunId;
+    }
+
+    public void setVardenhetId(String vardenhetId) {
+        this.vardenhetId = vardenhetId;
     }
 
     public String getVerksamhetsTyper() {
@@ -132,6 +144,10 @@ public class Enhet implements Serializable {
 
     public static Comparator<Enhet> byEnhetId() {
         return (enhet1, enhet2) -> enhet1.enhetId.compareTo(enhet2.enhetId);
+    }
+
+    public boolean isVardenhet() {
+        return enhetId.equals(vardenhetId);
     }
 
 }

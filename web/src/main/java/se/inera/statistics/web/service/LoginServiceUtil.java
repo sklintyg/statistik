@@ -230,7 +230,7 @@ public class LoginServiceUtil {
     public Verksamhet enhetToVerksamhet(Enhet enhet) {
         return new Verksamhet(enhet.getEnhetId(), enhet.getNamn(), enhet.getVardgivareId(), null, enhet.getLansId(),
             lan.getNamn(enhet.getLansId()), enhet.getKommunId(), kommun.getNamn(enhet.getLansId() + enhet.getKommunId()),
-            getVerksamhetsTyper(enhet.getVerksamhetsTyper()));
+            getVerksamhetsTyper(enhet.getVerksamhetsTyper()), enhet.getVardenhetId());
     }
 
     private Verksamhet vardenhetToVerksamhet(final Vardenhet vardEnhet, Collection<Enhet> enhetsList) {
@@ -238,6 +238,7 @@ public class LoginServiceUtil {
             .filter(enhet -> enhet.getEnhetId().equals(vardEnhet.getId()))
             .findAny();
 
+        String vardenhetId = enhetOpt.map(Enhet::getVardenhetId).orElse(null);
         String lansId = enhetOpt.map(Enhet::getLansId).orElse(Lan.OVRIGT_ID);
         String lansNamn = lan.getNamn(lansId);
         String kommunId = enhetOpt.map(enhet -> lansId + enhet.getKommunId()).orElse(Kommun.OVRIGT_ID);
@@ -248,7 +249,7 @@ public class LoginServiceUtil {
 
         return new Verksamhet(vardEnhet.getId(), vardEnhet.getNamn(), vardEnhet.getVardgivarId(), vardEnhet.getVardgivarNamn(), lansId,
             lansNamn, kommunId,
-            kommunNamn, verksamhetsTyper);
+            kommunNamn, verksamhetsTyper, vardenhetId);
     }
 
     private Set<Verksamhet.VerksamhetsTyp> getVerksamhetsTyper(String verksamhetsTyper) {

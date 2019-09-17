@@ -231,7 +231,7 @@ public class SpecialReportSkaneCreator {
             final LocalDate fromDate = LocalDate.of(2016, 9, 1);
             final LocalDate toDate = LocalDate.of(2018, 12, 31);
             final int startDay = WidelineConverter.toDay(fromDate);
-            final Predicate<Fact> intygFilter = in -> enhetStringIds.contains(in.getEnhet().getId());
+            final Predicate<Fact> intygFilter = in -> enhetStringIds.contains(in.getVardenhet().getId());
             final Predicate<Sjukfall> sjukfallPredicate = s -> includeOngoingSjukfall || s.getStart() >= startDay;
             final FilterPredicates filter = new FilterPredicates(intygFilter, sjukfallPredicate,
                     "SpecialSkane2019" + includeOngoingSjukfall, true);

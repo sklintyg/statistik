@@ -81,9 +81,9 @@ abstract class SimpleDetailsReport extends Rapport {
         throw new RuntimeException("Report -Långa sjukfall- is not available on national level");
     }
 
-    def getReportSjukfallPerEnhet() {
+    def getReportSjukfallPerEnhet(vardenhetdepth) {
         if (inloggad) {
-            return reportsUtil.getReportSjukfallPerEnhet(vg, filter);
+            return reportsUtil.getReportSjukfallPerEnhet(vg, filter, vardenhetdepth);
         }
         throw new RuntimeException("Report -Sjukfall per enhet- is not available on national level");
     }

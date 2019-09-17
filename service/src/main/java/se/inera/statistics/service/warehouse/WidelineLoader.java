@@ -93,9 +93,10 @@ public class WidelineLoader {
         int lakaralder = resultSet.getInt("lakaralder");
         String lakarbefattning = resultSet.getString("lakarbefattning");
         String lakareId = resultSet.getString("lakareid");
+        String vardenhet = resultSet.getString("vardenhet");
 
         return new Fact(id, ConversionHelper.extractLan(lkf), ConversionHelper.extractKommun(lkf),
-            ConversionHelper.extractForsamling(lkf), new HsaIdEnhet(enhet), intyg,
+            ConversionHelper.extractForsamling(lkf), new HsaIdEnhet(vardenhet), new HsaIdEnhet(enhet), intyg,
             ConversionHelper.patientIdToInt(patientid), startdatum, slutdatum, kon, alder,
             factConverter.extractKapitel(diagnoskapitel), factConverter.extractAvsnitt(diagnosavsnitt),
             factConverter.extractKategori(diagnoskategori), factConverter.extractKod(diagnoskod, diagnoskategori),
@@ -116,9 +117,9 @@ public class WidelineLoader {
         justification = "We know what we're doing. No user supplied data.")
     private PreparedStatement prepareStatementForVg(Connection connection, List<HsaIdVardgivare> vgids) throws SQLException {
         final String vgidsJoined = String.join("', '", vgids.stream().map(HsaIdAny::getId).collect(Collectors.toList()));
-        String sql = "SELECT id, correlationid, lkf, enhet, lakarintyg, patientid, startdatum, slutdatum, kon, alder, diagnoskapitel, "
-            + "diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattning, vardgivareid, "
-            + "lakareid, active FROM wideline WHERE active AND vardgivareid IN ('" + vgidsJoined + "')";
+        String sql = "SELECT id, correlationid, lkf, enhet, vardenhet, lakarintyg, patientid, startdatum, slutdatum, kon, alder,"
+                + " diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon, lakaralder, "
+                + "lakarbefattning, vardgivareid, lakareid, active FROM wideline WHERE active AND vardgivareid IN ('" + vgidsJoined + "')";
 
         int maxIntyg = Integer.parseInt(System.getProperty("statistics.test.max.fact", "0"));
         if (maxIntyg > 0) {

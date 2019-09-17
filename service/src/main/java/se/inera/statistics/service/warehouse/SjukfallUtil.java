@@ -28,6 +28,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -49,6 +50,8 @@ public class SjukfallUtil {
 
     public static final FilterPredicates ALL_ENHETER = new FilterPredicates(fact -> true, sjukfall -> true,
         FilterPredicates.HASH_EMPTY_FILTER, false);
+    public static final FilterPredicates ALL_VARDENHETER = new FilterPredicates(fact -> fact.getUnderenhet() == null, sjukfall -> true,
+        FilterPredicates.HASH_EMPTY_FILTER, false);
 
     @Autowired
     private Cache cache;
@@ -56,7 +59,9 @@ public class SjukfallUtil {
     public FilterPredicates createEnhetFilter(HsaIdEnhet... enhetIds) {
         final Set<HsaIdEnhet> availableEnhets = Arrays.stream(enhetIds).collect(Collectors.toSet());
         final String hashValue = FilterPredicates.getHashValueForEnhets(availableEnhets);
-        return new FilterPredicates(fact -> fact != null && availableEnhets.contains(fact.getEnhet()), sjukfall -> true, hashValue, false);
+        final Predicate<Fact> factPredicate = fact ->
+                fact != null && (availableEnhets.contains(fact.getVardenhet()) || availableEnhets.contains(fact.getUnderenhet()));
+        return new FilterPredicates(factPredicate, sjukfall -> true, hashValue, false);
     }
 
     public List<SjukfallGroup> sjukfallGrupper(LocalDate from, int periods, int periodSize, Aisle aisle, FilterPredicates sjukfallFilter) {

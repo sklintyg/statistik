@@ -45,7 +45,9 @@ public class VardgivareManager {
     @Transactional
     public void saveEnhet(HsaInfo hsaInfo, String enhetIdFromIntyg) {
         boolean hsaEnhet = true;
-        String enhetIdString = HSAServiceHelper.getEnhetId(hsaInfo);
+        String huvudenhetIdString = HSAServiceHelper.getHuvudEnhetId(hsaInfo);
+        String underenhetIdString = HSAServiceHelper.getUnderenhetId(hsaInfo);
+        String enhetIdString = underenhetIdString != null ? underenhetIdString : huvudenhetIdString;
         if (enhetIdString == null) {
             hsaEnhet = false;
             enhetIdString = enhetIdFromIntyg;
@@ -65,12 +67,13 @@ public class VardgivareManager {
                 .getResultList();
 
             if (resultList.isEmpty()) {
-                manager.persist(new Enhet(vardgivare, enhet, enhetNamn, lansId, kommunId, verksamhetsTyper));
+                manager.persist(new Enhet(vardgivare, enhet, enhetNamn, lansId, kommunId, verksamhetsTyper, huvudenhetIdString));
             } else if (hsaEnhet) {
                 Enhet updatedEnhet = resultList.get(0);
                 updatedEnhet.setLansId(lansId);
                 updatedEnhet.setKommunId(kommunId);
                 updatedEnhet.setVerksamhetsTyper(verksamhetsTyper);
+                updatedEnhet.setVardenhetId(huvudenhetIdString);
                 manager.merge(updatedEnhet);
             }
         }

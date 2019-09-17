@@ -56,6 +56,12 @@
                          query-string="queryString">
       </diagnos-selection>
 
+      <div ng-if="showEnhetDepthOptions">
+        <br>
+        <div message key="enhet-depth-option.title"></div>
+        <input type="radio" ng-model="vardenhetDepthOptionVardenhetSelected" ng-value="false"  ng-checked="!vardenhetDepthOptionVardenhetSelected" ng-change="enhetDepthOptionChange()"> Vårdenhet<br>
+        <input type="radio" ng-model="vardenhetDepthOptionVardenhetSelected" ng-value="true" ng-checked="vardenhetDepthOptionVardenhetSelected" ng-change="enhetDepthOptionChange()"> Enhet<br>
+      </div>
 
       <div class="row">
         <div class="col-md-12 col-lg-9" ng-repeat="resultMessage in resultMessageList">

@@ -115,9 +115,9 @@ abstract class DualSexTimeSeriesReport extends Rapport {
         return reportsUtil.getReportSjukskrivningsgrad();
     }
 
-    def getReportSjukfallPerEnhetSomTidsserie() {
+    def getReportSjukfallPerEnhetSomTidsserie(vardenhetdepth) {
         if (inloggad) {
-            return reportsUtil.getReportSjukfallPerEnhetSomTidsserieInloggad(vg, filter);
+            return reportsUtil.getReportSjukfallPerEnhetSomTidsserieInloggad(vg, filter, vardenhetdepth);
         }
         throw new RuntimeException("Report -Sjukfall per enhet som tidsserie- is not available on national level");
     }
@@ -179,9 +179,9 @@ abstract class DualSexTimeSeriesReport extends Rapport {
         throw new RuntimeException("Report -Meddelanden per ämne region- is not available on national level");
     }
 
-    def getReportMeddelandenVardenhet() {
+    def getReportMeddelandenVardenhet(vardenhetdepth) {
         if (inloggad) {
-            return reportsUtil.getReportAntalMeddelandenVardenhetInloggad(vg, filter)
+            return reportsUtil.getReportAntalMeddelandenVardenhetInloggad(vg, filter, vardenhetdepth)
         }
         return reportsUtil.getReportAntalMeddelanden()
     }
@@ -200,9 +200,9 @@ abstract class DualSexTimeSeriesReport extends Rapport {
         throw new RuntimeException("Report -Meddelanden per ämne region- is not available on national level");
     }
 
-    def getReportMeddelandenVardenhetTvarsnitt() {
+    def getReportMeddelandenVardenhetTvarsnitt(vardenhetdepth) {
         if (inloggad) {
-            return reportsUtil.getReportAntalMeddelandenVardenhetTvarsnittInloggad(vg, filter)
+            return reportsUtil.getReportAntalMeddelandenVardenhetTvarsnittInloggad(vg, filter, vardenhetdepth)
         }
         return new RuntimeException("Report -Meddelanden per ämne per enhet som tvärsnitt- is not available on national level");
     }

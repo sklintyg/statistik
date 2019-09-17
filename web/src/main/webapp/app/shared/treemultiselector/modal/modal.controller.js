@@ -252,6 +252,9 @@ angular.module('StatisticsApp.treeMultiSelector.modal', ['ui.bootstrap', 'unders
 
       //The actual update without the delay. Extracted from 'updateCounters' for testing.
       $scope.updateCountersNow = function() {
+        if (directiveScope.hideDepthCounters) {
+            return;
+        }
         var levelCount = $scope.countSelectedByLevel();
         $scope.selectedPrimaryCounter = valueOr(levelCount[1], 0);
         $scope.selectedSecondaryCounter = valueOr(levelCount[2], 0);

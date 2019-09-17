@@ -46,15 +46,22 @@ public final class HSAServiceHelper {
     private HSAServiceHelper() {
     }
 
-    public static String getEnhetId(HsaInfo hsaData) {
+    public static String getHuvudEnhetId(HsaInfo hsaData) {
+        if (hsaData == null) {
+            return null;
+        }
+        return getEnhetId(hsaData.getHuvudenhet());
+    }
+
+    public static String getUnderenhetId(HsaInfo hsaData) {
         if (hsaData == null) {
             return null;
         }
         String result = getEnhetId(hsaData.getHuvudenhet());
-        if (result == null) {
-            result = getEnhetId(hsaData.getEnhet());
+        if (result != null) {
+            return getEnhetId(hsaData.getEnhet());
         }
-        return result;
+        return null;
     }
 
     public static HsaIdVardgivare getVardgivarId(HsaInfo hsaData) {

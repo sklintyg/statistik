@@ -100,7 +100,7 @@ public class CounterTest {
 
     private Sjukfall createSjukfall(Kon kon) {
         final SjukfallExtended sjukfall = new SjukfallExtended(
-            FactBuilder.newFact(1L, 1, 1, 1, 1, 1, 1, 1, 1, kon.getNumberRepresentation(), 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1));
+            FactBuilder.newFact(1L, 1, 1, 1, 1, 1,  1, 1, 1, 1, kon.getNumberRepresentation(), 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1));
         return Sjukfall.create(sjukfall);
     }
 }

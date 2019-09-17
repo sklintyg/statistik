@@ -20,9 +20,11 @@ package se.inera.statistics.spec
 
 class MeddelandenIRapportenMeddelandenVardenhetSomTidsserie extends DualSexTimeSeriesReport {
 
+    String vårdenhetdjup
+
     @Override
     public void doExecute() {
-        def report = getReportMeddelandenVardenhet()
+        def report = getReportMeddelandenVardenhet(vårdenhetdjup)
         executeTabell(report)
     }
 

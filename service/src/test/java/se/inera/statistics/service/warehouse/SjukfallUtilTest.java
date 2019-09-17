@@ -241,14 +241,14 @@ public class SjukfallUtilTest {
 
     private Sjukfall createSjukfall(Kon kon) {
         return Sjukfall.create(new SjukfallExtended(
-            FactBuilder.newFact(1L, 0, 1, 2, 3, 4, 1, 6, 15, kon.getNumberRepresentation(), 30, 0, 0, 0, 0, 100, 1, 30, new int[0], 0)));
+            FactBuilder.newFact(1L, 0, 1, 2, 3, 5,  4, 1, 6, 15, kon.getNumberRepresentation(), 30, 0, 0, 0, 0, 100, 1, 30, new int[0], 0)));
     }
 
     public static FilterPredicates createEnhetFilterFromInternalIntValues(Integer... enhetIds) {
         final Set<HsaIdEnhet> availableEnhets = Arrays.stream(enhetIds)
             .map(integer -> new HsaIdEnhet(String.valueOf(integer))).collect(Collectors.toSet());
         final String hashValue = FilterPredicates.getHashValueForEnhets(availableEnhets);
-        return new FilterPredicates(fact -> availableEnhets.contains(fact.getEnhet()), sjukfall -> true, hashValue, false);
+        return new FilterPredicates(fact -> availableEnhets.contains(fact.getVardenhet()), sjukfall -> true, hashValue, false);
     }
 
     private Collection<Sjukfall> calculateSjukfallsHelper() {

@@ -65,7 +65,7 @@
 </div>
 
 <div class="modal-footer">
-  <div class="col-sm-2 label-text">
+  <div class="col-sm-2 label-text" ng-if="!directiveScope.hideDepthCounters">
     <span ng-hide="directiveScope.maxDepth > 0 && directiveScope.maxDepth < 1">{{directiveScope.textData.firstLevelLabelText}}: {{selectedPrimaryCounter}}</span><br>
     <span ng-hide="directiveScope.maxDepth > 0 && directiveScope.maxDepth < 2">{{directiveScope.textData.secondLevelLabelText}}: {{selectedSecondaryCounter}}</span><br>
     <span ng-hide="directiveScope.maxDepth > 0 && directiveScope.maxDepth < 3">{{directiveScope.textData.thirdLevelLabelText}}: {{selectedTertiaryCounter}}</span><br>

@@ -99,19 +99,21 @@ public class SjukfallQuery {
         return new SimpleKonResponse(AvailableFilters.getForSjukfall(), result);
     }
 
+    // CHECKSTYLE:OFF ParameterNumberCheck
     public SimpleKonResponse getSjukfallPerEnhet(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
-        int periodLength, Map<HsaIdEnhet, String> idsToNames, CutoffUsage cutoffUsage) {
+        int periodLength, Map<HsaIdEnhet, String> idsToNames, CutoffUsage cutoffUsage, boolean vardenhetdepth) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
-            rows.addAll(getSjukfallForGroup(idsToNames, cutoffUsage, sjukfallGroup));
+            rows.addAll(getSjukfallForGroup(idsToNames, cutoffUsage, sjukfallGroup, vardenhetdepth));
         }
         return new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
     }
+    // CHECKSTYLE:ON ParameterNumberCheck
 
     private List<SimpleKonDataRow> getSjukfallForGroup(Map<HsaIdEnhet, String> idsToNames, CutoffUsage cutoffUsage,
-        SjukfallGroup sjukfallGroup) {
+        SjukfallGroup sjukfallGroup, boolean vardenhetdepth) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
-        SjukfallPerGender sjukfallPerGenderPerEnhet = getSjukfallPerGenderPerEnhet(sjukfallGroup);
+        SjukfallPerGender sjukfallPerGenderPerEnhet = getSjukfallPerGenderPerEnhet(sjukfallGroup, vardenhetdepth);
         for (Map.Entry<HsaIdEnhet, String> enhetIdAndName : idsToNames.entrySet()) {
             final Optional<SimpleKonDataRow> dataForEnhet = getDataForEnhet(cutoffUsage, sjukfallPerGenderPerEnhet, enhetIdAndName);
             dataForEnhet.ifPresent(rows::add);
@@ -142,8 +144,8 @@ public class SjukfallQuery {
         return Optional.empty();
     }
 
-    private SjukfallPerGender getSjukfallPerGenderPerEnhet(SjukfallGroup sjukfallGroup) {
-        final SjukfallPerGender sjukfallPerGenderPerEnhet = new SjukfallPerGender();
+    private SjukfallPerGender getSjukfallPerGenderPerEnhet(SjukfallGroup sjukfallGroup, boolean vardenhetdepth) {
+        final SjukfallPerGender sjukfallPerGenderPerEnhet = new SjukfallPerGender(vardenhetdepth);
         for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
             sjukfallPerGenderPerEnhet.add(sjukfall);
         }
@@ -201,11 +203,12 @@ public class SjukfallQuery {
     }
 
     public KonDataResponse getSjukfallPerEnhetSeries(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize,
-        Map<HsaIdEnhet, String> idsToNames) {
+        Map<HsaIdEnhet, String> idsToNames, boolean vardenhetdepth) {
         final ArrayList<Map.Entry<HsaIdEnhet, String>> groupEntries = new ArrayList<>(idsToNames.entrySet());
         final List<String> names = groupEntries.stream().map(entry -> entry.getKey().getId()).collect(Collectors.toList());
         final List<HsaIdEnhet> ids = groupEntries.stream().map(Map.Entry::getKey).collect(Collectors.toList());
-        final CounterFunction<HsaIdEnhet> counterFunction = (sjukfall, counter) -> counter.add(sjukfall.getLastEnhet());
+        final CounterFunction<HsaIdEnhet> counterFunction =
+                (sjukfall, counter) -> counter.add(vardenhetdepth ? sjukfall.getLastVardEnhet() : sjukfall.getLastEnhet());
         final KonDataResponse response = sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodSize, names, ids,
             counterFunction);
         return KonDataResponses.changeIdGroupsToNamesAndAddIdsToDuplicates(response, idsToNames);
@@ -255,10 +258,15 @@ public class SjukfallQuery {
 
         private Multiset<HsaIdEnhet> femalePerEnhet = HashMultiset.create();
         private Multiset<HsaIdEnhet> malePerEnhet = HashMultiset.create();
+        private boolean vardenhetdepth;
+
+        SjukfallPerGender(boolean vardenhetdepth) {
+            this.vardenhetdepth = vardenhetdepth;
+        }
 
         void add(Sjukfall sjukfall) {
             final Multiset<HsaIdEnhet> sjukfallPerEnhet = sjukfall.getKon() == Kon.FEMALE ? femalePerEnhet : malePerEnhet;
-            sjukfallPerEnhet.addAll(sjukfall.getEnhets());
+            sjukfallPerEnhet.addAll(vardenhetdepth ? sjukfall.getVardenhets() : sjukfall.getEnhets());
         }
     }
 

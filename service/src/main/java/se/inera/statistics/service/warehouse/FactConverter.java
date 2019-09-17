@@ -44,6 +44,7 @@ class FactConverter {
 
     Fact toFact(WideLine wideline) {
         String lkf = wideline.getLkf();
+        HsaIdEnhet vardenhet = wideline.getVardenhet();
         HsaIdEnhet enhet = wideline.getEnhet();
         long intyg = wideline.getLakarintyg();
         long patientid = ConversionHelper.patientIdToInt(wideline.getPatientid());
@@ -62,7 +63,7 @@ class FactConverter {
         HsaIdLakare lakare = wideline.getLakareId();
 
         return new Fact(wideline.getId(), ConversionHelper.extractLan(lkf), ConversionHelper.extractKommun(lkf),
-            ConversionHelper.extractForsamling(lkf), enhet, intyg, patientid, startdatum, slutdatum, kon, alder,
+            ConversionHelper.extractForsamling(lkf), vardenhet, enhet, intyg, patientid, startdatum, slutdatum, kon, alder,
             extractKapitel(diagnoskapitel), extractAvsnitt(diagnosavsnitt), extractKategori(diagnoskategori),
             extractKod(diagnoskod, diagnoskategori), sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattnings,
             lakare);

@@ -193,7 +193,7 @@ public class SjukfallMergeHelperTest {
     }
 
     private Fact createFact(int startdatum, int slutdatum) {
-        return FactBuilder.newFact(1L, 1, 1, 1, 1, 1, 1, startdatum, slutdatum, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
+        return FactBuilder.newFact(1L, 1, 1, 1, 1, 1,  1, 1, startdatum, slutdatum, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
     }
 
 }

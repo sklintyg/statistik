@@ -274,7 +274,7 @@ public class SjukfallQueryTest {
 
         //When
         final Aisle currentAisle = aisle.createAisle();
-        sjukfallQuery.getSjukfallPerEnhetSeries(currentAisle, filter, start, periods, periodSize, idsToNames);
+        sjukfallQuery.getSjukfallPerEnhetSeries(currentAisle, filter, start, periods, periodSize, idsToNames, false);
 
         //Then
         Mockito.verify(sjukfallUtilMock)
@@ -303,7 +303,7 @@ public class SjukfallQueryTest {
 
         //When
         final KonDataResponse result = sjukfallQuery
-            .getSjukfallPerEnhetSeries(aisle.createAisle(), enhetFilterFromInternalIntValues, LocalDate.now(clock), 1, 2, idsToNames);
+            .getSjukfallPerEnhetSeries(aisle.createAisle(), enhetFilterFromInternalIntValues, LocalDate.now(clock), 1, 2, idsToNames, false);
 
         //Then
         assertEquals(3, result.getGroups().size());

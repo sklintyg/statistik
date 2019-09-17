@@ -73,7 +73,7 @@ public class SpecialReportSkaneAgeCreator {
             for (Range period : periods) {
                 final LocalDate fromDate = period.getFrom();
                 final int startDay = WidelineConverter.toDay(fromDate);
-                final Predicate<Fact> intygFilter = in -> enhetStringIds.contains(in.getEnhet().getId());
+                final Predicate<Fact> intygFilter = in -> enhetStringIds.contains(in.getVardenhet().getId());
                 final Predicate<Sjukfall> sjukfallPredicate = s -> includeOngoingSjukfall || s.getStart() >= startDay;
                 final FilterPredicates filter = new FilterPredicates(intygFilter, sjukfallPredicate,
                         "SpecialSkane2019" + includeOngoingSjukfall, true);

@@ -41,6 +41,7 @@ public class IntygCommon {
 
     private String intygid;
     private String enhet;
+    private String vardenhet;
     private String patientid;
     private LocalDate signeringsdatum;
     @Enumerated(EnumType.STRING)
@@ -54,14 +55,15 @@ public class IntygCommon {
     private boolean active;
 
     // CHECKSTYLE:OFF ParameterNumber
-    public IntygCommon(String intygid, String patientid, LocalDate signeringsdatum, IntygType intygtyp, String enhet, String vardgivareId,
-        int kon, EventType eventType, String dx, boolean sentToFk, String lakareId) {
+    public IntygCommon(String intygid, String patientid, LocalDate signeringsdatum, IntygType intygtyp, String enhet, String vardenhet,
+                       String vardgivareId, int kon, EventType eventType, String dx, boolean sentToFk, String lakareId) {
         this.intygid = intygid;
         this.patientid = patientid;
         this.kon = kon;
         this.signeringsdatum = signeringsdatum;
         this.intygtyp = intygtyp;
         this.enhet = enhet;
+        this.vardenhet = vardenhet;
         this.vardgivareId = vardgivareId;
         this.eventType = eventType;
         this.dx = dx;
@@ -97,6 +99,10 @@ public class IntygCommon {
 
     public String getEnhet() {
         return enhet;
+    }
+
+    public String getVardenhet() {
+        return vardenhet;
     }
 
     public String getVardgivareId() {

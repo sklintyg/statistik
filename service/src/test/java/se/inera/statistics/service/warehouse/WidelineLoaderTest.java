@@ -139,6 +139,7 @@ public class WidelineLoaderTest {
         line1.setDiagnosavsnitt("A15-A19");
         line1.setDiagnoskategori("A16");
         line1.setEnhet(new HsaIdEnhet("e1"));
+        line1.setVardenhet(new HsaIdEnhet("e1"));
         line1.setKon(1);
         line1.setLkf("078002");
         line1.setLakaralder(33);
@@ -156,7 +157,7 @@ public class WidelineLoaderTest {
         line1.setCorrelationId(correlationId);
         widelineManager.saveWideline(line1);
         final IntygCommon line = new IntygCommon(correlationId, patientId, LocalDate.now(),
-            IntygType.LISJP, line1.getEnhet().getId(), vg.getId(), line1.getKon(), event,
+            IntygType.LISJP, line1.getEnhet().getId(), line1.getVardenhet().getId(), vg.getId(), line1.getKon(), event,
             line1.getDiagnoskod(), true, line1.getLakareId().getId());
         intygCommonManager.persistIfValid(1L, "1", line);
     }

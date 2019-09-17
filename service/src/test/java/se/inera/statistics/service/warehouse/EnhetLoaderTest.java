@@ -52,11 +52,11 @@ public class EnhetLoaderTest {
     @Transactional
     public void testGetEnhets() throws Exception {
         //Given
-        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e1"), "1", "", "", ""));
-        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e2"), "2", "", "", ""));
-        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e3"), "3", "", "", ""));
-        manager.persist(new Enhet(new HsaIdVardgivare("vg2"), new HsaIdEnhet("e4"), "4", "", "", ""));
-        manager.persist(new Enhet(new HsaIdVardgivare("vg2"), new HsaIdEnhet("e5"), "5", "", "", ""));
+        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e1"), "1", "", "", "", "ve1"));
+        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e2"), "2", "", "", "", "ve2"));
+        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e3"), "3", "", "", "", "ve3"));
+        manager.persist(new Enhet(new HsaIdVardgivare("vg2"), new HsaIdEnhet("e4"), "4", "", "", "", "ve4"));
+        manager.persist(new Enhet(new HsaIdVardgivare("vg2"), new HsaIdEnhet("e5"), "5", "", "", "", "ve5"));
 
         //When
         final List<Enhet> enhetsWithHsaId = enhetLoader
@@ -74,11 +74,11 @@ public class EnhetLoaderTest {
     @Transactional
     public void testGetAllEnhetsForVg() throws Exception {
         //Given
-        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e1"), "1", "", "", ""));
-        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e2"), "2", "", "", ""));
-        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e3"), "3", "", "", ""));
-        manager.persist(new Enhet(new HsaIdVardgivare("vg2"), new HsaIdEnhet("e4"), "4", "", "", ""));
-        manager.persist(new Enhet(new HsaIdVardgivare("vg2"), new HsaIdEnhet("e5"), "5", "", "", ""));
+        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e1"), "1", "", "", "", "ve1"));
+        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e2"), "2", "", "", "", "ve2"));
+        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e3"), "3", "", "", "", "ve3"));
+        manager.persist(new Enhet(new HsaIdVardgivare("vg2"), new HsaIdEnhet("e4"), "4", "", "", "", "ve4"));
+        manager.persist(new Enhet(new HsaIdVardgivare("vg2"), new HsaIdEnhet("e5"), "5", "", "", "", "ve5"));
 
         //When
         final List<Enhet> enhetsWithHsaId = enhetLoader.getAllEnhetsForVg(new HsaIdVardgivare("VG2"));

@@ -125,7 +125,7 @@ public class FactsPerPatientAndPeriodGrouperTest {
 
     private Fact createFact(long patient, LocalDate startDatum) {
         final int start = WidelineConverter.toDay(startDatum);
-        return FactBuilder.newFact(1L, 1, 1, 1, 1, 1, patient, start, start, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
+        return FactBuilder.newFact(1L, 1, 1, 1, 1, 1,  1, patient, start, start, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
     }
 
 }
