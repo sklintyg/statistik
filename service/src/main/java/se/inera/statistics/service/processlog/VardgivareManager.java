@@ -54,12 +54,16 @@ public class VardgivareManager {
         }
         final HsaIdEnhet enhet = new HsaIdEnhet(enhetIdString);
         final HsaIdVardgivare vardgivare = HSAServiceHelper.getVardgivarId(hsaInfo);
-        String enhetNamn = UTAN_ENHETSID.equals(enhet) ? "Utan enhets-id" : enhet.getId();
+        String enhetNamn = getEnhetNamn(enhet);
         String lansId = HSAServiceHelper.getLan(hsaInfo);
         String kommunId = HSAServiceHelper.getKommun(hsaInfo);
-        String verksamhetsTyper = HSAServiceHelper.getVerksamhetsTyper(hsaInfo);
+        String verksamhetsTyper = HSAServiceHelper.getVerksamhetsTyper(hsaInfo, false);
 
         if (validate(vardgivare, enhetNamn, lansId, kommunId, verksamhetsTyper, hsaInfo)) {
+            if (huvudenhetIdString != null) {
+                persistVardenhet(hsaInfo, huvudenhetIdString, vardgivare, lansId, kommunId);
+            }
+
             // Must use 'LIKE' instead of '=' due to STATISTIK-1231
             TypedQuery<Enhet> vardgivareQuery = manager
                 .createQuery("SELECT v FROM Enhet v WHERE v.enhetId LIKE :enhetId AND v.vardgivareId = :vardgivareId", Enhet.class);
@@ -77,6 +81,27 @@ public class VardgivareManager {
                 manager.merge(updatedEnhet);
             }
         }
+    }
+
+    private void persistVardenhet(HsaInfo hsaInfo, String huvudenhetIdString, HsaIdVardgivare vardgivare, String lansId, String kommunId) {
+        // Must use 'LIKE' instead of '=' due to STATISTIK-1231
+        TypedQuery<Enhet> vardenhetQuery = manager
+                .createQuery("SELECT v FROM Enhet v WHERE v.enhetId LIKE :enhetId AND v.vardgivareId = :vardgivareId", Enhet.class);
+        final HsaIdEnhet hsaIdVardenhet = new HsaIdEnhet(huvudenhetIdString);
+        List<Enhet> resultListVe = vardenhetQuery
+                .setParameter("enhetId", hsaIdVardenhet.getId())
+                .setParameter("vardgivareId", vardgivare.getId())
+                .getResultList();
+
+        if (resultListVe.isEmpty()) {
+            final String veVerksamheter = HSAServiceHelper.getVerksamhetsTyper(hsaInfo, true);
+            final String veName = getEnhetNamn(hsaIdVardenhet);
+            manager.persist(new Enhet(vardgivare, hsaIdVardenhet, veName, lansId, kommunId, veVerksamheter, null));
+        }
+    }
+
+    private String getEnhetNamn(HsaIdEnhet enhet) {
+        return UTAN_ENHETSID.equals(enhet) ? "Utan enhets-id" : enhet.getId();
     }
 
     @Transactional

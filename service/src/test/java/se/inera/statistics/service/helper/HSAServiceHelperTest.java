@@ -57,7 +57,7 @@ public class HSAServiceHelperTest {
 
     @Test
     public void getVerksamhetTyperTest() {
-        String verksamhetsTyper = HSAServiceHelper.getVerksamhetsTyper(HSA_INFO);
+        String verksamhetsTyper = HSAServiceHelper.getVerksamhetsTyper(HSA_INFO, false);
         Assert.assertEquals("1217,1218,1219,02", verksamhetsTyper);
     }
 
