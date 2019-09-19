@@ -66,7 +66,10 @@ angular.module('StatisticsApp').controller('regionFileUploadCtrl',
                   $scope.uploadSuccess = true;
                   updateStatus(response);
                   updateLastUpdateMessage();
-                  $window.location.reload();
+                  $location.search('fileUploadSuccess', true);
+                  $timeout(function() {
+                    $window.location.reload();
+                  }, 1);
                 }
             );
           },
@@ -77,6 +80,7 @@ angular.module('StatisticsApp').controller('regionFileUploadCtrl',
               }
               $scope.uploadSuccess = false;
               updateStatus(response);
+              $location.search('fileUploadSuccess', null);
             });
           },
           'dragover': function() {
@@ -136,13 +140,19 @@ angular.module('StatisticsApp').controller('regionFileUploadCtrl',
         }, 1);
       };
 
-      $scope.fileUploadAgreementAccepted = false;
+      $scope.fileUploadAgreementAccepted = !!($location.search().fileUploadAgreementAccepted);
       $scope.agreementAcceptedChecked = false;
       $scope.acceptFileUploadAgreement = function() {
         statisticsData.acceptFileUploadAgreement(function() {
           $scope.fileUploadAgreementAccepted = true;
+          $location.search('fileUploadAgreementAccepted', true);
         });
       };
+
+      if ($location.search().fileUploadSuccess) {
+        $scope.uploadCompleted = true;
+        $scope.uploadSuccess = true;
+      }
 
       updateLastUpdateMessage();
 
