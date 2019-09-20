@@ -432,7 +432,8 @@ var app = angular.module('StatisticsApp')
         templateUrl: '/app/views/region/fileupload.html',
         controller: 'regionFileUploadCtrl',
         controllerAs: 'RegionFileUploadCtrl',
-        title: 'Filuppladdning'
+        title: 'Filuppladdning',
+        reloadOnSearch: false
       }).when('/region/sjukfallPerManad', {
         templateUrl: '/app/views/detailsView.html',
         controller: 'singleLineChartCtrl',
