@@ -6,7 +6,7 @@ plugins {
 }
 
 ext {
-    infraVersion = System.properties['infraVersion'] ?: '3.11.0.+'
+    infraVersion = System.properties['infraVersion'] ?: '0-SNAPSHOT'//'3.11.0.+'
     refDataVersion = System.properties['refDataVersion'] ?: '1.0-SNAPSHOT'
 
     intygSchematronVersion = "1.0.47"
