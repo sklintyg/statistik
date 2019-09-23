@@ -94,6 +94,12 @@ public class MonitoringLogServiceImplTest {
         verifyLog(Level.INFO, "TRACK_ACCESS_ANONYMOUS_CHART_DATA Accessed uri 'URI'");
     }
 
+    @Test
+    public void shouldLogBrowserInfo() {
+        logService.logBrowserInfo("BROWSERNAME", "VERSION","OS", "OS-VERSION", "WIDTH", "HEIGHT");
+        verifyLog(Level.INFO, "BROWSER_INFO Name 'BROWSERNAME' Version 'VERSION' OSFamily 'OS' OSVersion 'OS-VERSION' Width 'WIDTH' Height 'HEIGHT'");
+    }
+
     private void verifyLog(Level logLevel, String logMessage) {
         // Verify and capture logging interaction
         verify(mockAppender).doAppend(captorLoggingEvent.capture());

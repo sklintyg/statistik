@@ -33,4 +33,6 @@ public interface MonitoringLogService {
     void logTrackAccessProtectedChartData(HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, String uri);
 
     void logTrackAccessAnonymousChartData(String uri);
+
+    void logBrowserInfo(String browserName, String browserVersion, String osFamily, String osVersion, String width, String height);
 }

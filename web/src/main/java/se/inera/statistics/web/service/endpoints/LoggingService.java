@@ -18,10 +18,16 @@
  */
 package se.inera.statistics.web.service.endpoints;
 
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.status;
+
 import javax.ws.rs.Consumes;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
@@ -29,9 +35,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
+import se.inera.intyg.infra.monitoring.logging.UserAgentInfo;
+import se.inera.intyg.infra.monitoring.logging.UserAgentParser;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.web.model.LogData;
 import se.inera.statistics.web.service.LoginServiceUtil;
+import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
 @Service("loggingService")
 @Path("/logging")
@@ -41,6 +50,12 @@ public class LoggingService {
 
     @Autowired
     private LoginServiceUtil loginServiceUtil;
+
+    @Autowired
+    private MonitoringLogService monitoringService;
+
+    @Autowired
+    private UserAgentParser userAgentParser;
 
     public LoggingService() {
     }
@@ -60,4 +75,30 @@ public class LoggingService {
         return loginServiceUtil.getLoginInfo().getHsaId();
     }
 
+    @POST
+    @Path("monitorlog")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    @PrometheusTimeMethod(help = "API-tjänst för att monitoreringslogga från frontend app")
+    public Response monitoring(MonitoringRequest request, @HeaderParam(HttpHeaders.USER_AGENT) String userAgent) {
+        if (request == null || !request.isValid()) {
+            return status(BAD_REQUEST).build();
+        }
+
+        switch (request.getEvent()) {
+            case SCREEN_RESOLUTION:
+                final UserAgentInfo userAgentInfo = userAgentParser.parse(userAgent);
+                monitoringService
+                    .logBrowserInfo(userAgentInfo.getBrowserName(),
+                        userAgentInfo.getBrowserVersion(),
+                        userAgentInfo.getOsFamily(),
+                        userAgentInfo.getOsVersion(),
+                        request.getInfo().get(MonitoringRequest.WIDTH),
+                        request.getInfo().get(MonitoringRequest.HEIGHT));
+                break;
+            default:
+                return status(BAD_REQUEST).build();
+        }
+        return ok().build();
+    }
 }
