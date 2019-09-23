@@ -20,7 +20,7 @@
 /* globals Highcharts */
 angular.module('StatisticsApp').run(
     /** @ngInject */
-    function($rootScope, $route, $http, messageService, dynamicLinkService) {
+    function($rootScope, $route, $http, $window, monitoringLogService, messageService, dynamicLinkService) {
       'use strict';
 
       Highcharts.seriesTypes.line.prototype.drawLegendSymbol = Highcharts.seriesTypes.area.prototype.drawLegendSymbol;
@@ -40,6 +40,9 @@ angular.module('StatisticsApp').run(
 
       $rootScope.pageTitle = 'Intygsstatistik';
       $rootScope.pageName = '';
+
+      //Log startup screen resolution (server also uses userAgent header to extract browser and OS info)
+      monitoringLogService.screenResolution($window.innerWidth, $window.innerHeight);
 
       $rootScope.$on('$routeChangeSuccess', function(e, current) {
         function addToQueryString(name, value) {

@@ -90,6 +90,7 @@ dependencies {
     compile "se.inera.intyg.infra:dynamiclink:${infraVersion}"
     compile "se.inera.intyg.infra:security-filter:${infraVersion}"
     compile "se.inera.intyg.infra:ia-integration:${infraVersion}"
+    compile "se.inera.intyg.infra:monitoring:${infraVersion}"
 
     compile "org.springframework.security.extensions:spring-security-saml2-core:${springSecuritySamlVersion}"
     compile "xml-apis:xml-apis:${xmlApisVersion}"

@@ -58,6 +58,11 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
         logEvent(MonitoringEvent.TRACK_ACCESS_ANONYMOUS_CHART_DATA, uri);
     }
 
+    @Override
+    public void logBrowserInfo(String browserName, String browserVersion, String osFamily, String osVersion, String width, String height) {
+        logEvent(MonitoringEvent.BROWSER_INFO, browserName, browserVersion, osFamily, osVersion, width, height);
+    }
+
     private void logEvent(MonitoringEvent logEvent, Object... logMsgArgs) {
         LOG.info(MarkerFilter.MONITORING, buildMessage(logEvent), logMsgArgs);
     }
@@ -72,7 +77,8 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
         USER_LOGIN("Login user hsaId '{}'"),
         FILE_UPLOAD("User hsaId '{}', vardgivarId '{}' uploaded file '{}' with '{}' rows"),
         TRACK_ACCESS_PROTECTED_CHART_DATA("User hsaId '{}', vardgivarId '{}' accessed uri '{}'"),
-        TRACK_ACCESS_ANONYMOUS_CHART_DATA("Accessed uri '{}'");
+        TRACK_ACCESS_ANONYMOUS_CHART_DATA("Accessed uri '{}'"),
+        BROWSER_INFO("Name '{}' Version '{}' OSFamily '{}' OSVersion '{}' Width '{}' Height '{}'");
 
         private final String message;
 

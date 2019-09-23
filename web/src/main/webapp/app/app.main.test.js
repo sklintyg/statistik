@@ -35,4 +35,5 @@ angular.module('StatisticsApp',
       'use strict';
       $httpBackend.whenGET(/^\/api\/links/).respond(200);
       $httpBackend.whenGET(/^.+\.html/).passThrough();
+      $httpBackend.whenPOST(/^\/api\/logging\/monitorlog/).respond(200);
     });
