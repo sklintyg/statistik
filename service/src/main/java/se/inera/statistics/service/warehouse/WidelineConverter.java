@@ -70,12 +70,14 @@ public class WidelineConverter extends AbstractWidlineConverter {
     public List<WideLine> toWideline(IntygDTO dto, HsaInfo hsa, long logId, String correlationId, EventType type) {
         String lkf = getLkf(hsa);
 
-        String enhet = HSAServiceHelper.getHuvudEnhetId(hsa);
+        String huvudenhet = HSAServiceHelper.getHuvudEnhetId(hsa);
         String underenhet = HSAServiceHelper.getUnderenhetId(hsa);
+        String vardenhet = huvudenhet != null ? huvudenhet : underenhet;
+        String enhet = huvudenhet != null ? underenhet : null;
         HsaIdVardgivare vardgivare = HSAServiceHelper.getVardgivarId(hsa);
 
-        if (enhet == null) {
-            enhet = dto.getEnhet();
+        if (vardenhet == null) {
+            vardenhet = dto.getEnhet();
         }
 
         String patient = dto.getPatientid();
@@ -95,7 +97,7 @@ public class WidelineConverter extends AbstractWidlineConverter {
 
         List<WideLine> lines = new ArrayList<>();
         for (Arbetsnedsattning arbetsnedsattning : dto.getArbetsnedsattnings()) {
-            WideLine line = createWideLine(logId, correlationId, type, lkf, enhet, underenhet, vardgivare, patient, kon, alder, dx,
+            WideLine line = createWideLine(logId, correlationId, type, lkf, vardenhet, enhet, vardgivare, patient, kon, alder, dx,
                 lakarkon, lakaralder, lakarbefattning, lakareid, arbetsnedsattning, active);
             lines.add(line);
         }
@@ -207,7 +209,7 @@ public class WidelineConverter extends AbstractWidlineConverter {
         List<String> errors = new ArrayList<>();
         checkField(errors, line.getLkf(), "LKF");
         checkField(errors, line.getVardgivareId(), "Vårdgivare", MAX_LENGTH_VGID);
-        checkField(errors, line.getEnhet(), "Enhet");
+        checkField(errors, line.getVardenhet(), "Vardenhet");
         checkField(errors, line.getPatientid(), "Patient");
         checkAge(errors, line.getAlder());
         checkField(errors, line.getCorrelationId(), "CorrelationId", MAX_LENGTH_CORRELATION_ID);

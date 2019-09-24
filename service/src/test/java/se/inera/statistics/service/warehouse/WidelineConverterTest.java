@@ -75,7 +75,7 @@ public class WidelineConverterTest {
 
     @Test
     public void errorOnMissingEnhet() throws Exception {
-        wideLine.setEnhet(null);
+        wideLine.setVardenhet(null);
         List<String> errors = converter.validate(wideLine);
 
         LOG.error("Error message: {}", errors);

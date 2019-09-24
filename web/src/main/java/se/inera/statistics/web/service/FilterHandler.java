@@ -175,7 +175,7 @@ public class FilterHandler {
         Set<HsaIdEnhet> enheter = getEnhetNameMap(request, enhetsInFilter, veDepth).keySet();
         final Predicate<Fact> enhetFilter = sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaIdEnhet[enheter.size()]))
             .getIntygFilter();
-        return getFilterSettings(filterHash, defaultRangeValue, inFilter, enheter, enhetFilter);
+        return getFilterSettings(filterHash, defaultRangeValue, inFilter, enheter, enhetFilter, veDepth);
     }
 
     private FilterSettings getFilterSettingsRegion(HttpServletRequest request, String filterHash, int defaultRangeValue,
@@ -184,11 +184,11 @@ public class FilterHandler {
         Set<HsaIdEnhet> enheter = getEnhetNameMapRegion(request, enhetsInFilter).keySet();
         final Predicate<Fact> enhetFilter = sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaIdEnhet[enheter.size()]))
             .getIntygFilter();
-        return getFilterSettings(filterHash, defaultRangeValue, inFilter, enheter, enhetFilter);
+        return getFilterSettings(filterHash, defaultRangeValue, inFilter, enheter, enhetFilter, true);
     }
 
     private FilterSettings getFilterSettings(String filterHash, int defaultRangeValue, FilterData inFilter,
-        Collection<HsaIdEnhet> enhetsIDs, Predicate<Fact> enhetFilter)
+        Collection<HsaIdEnhet> enhetsIDs, Predicate<Fact> enhetFilter, boolean veDepth)
         throws FilterException, TooEarlyEndDateException, TooLateStartDateException {
         final List<String> diagnoser = inFilter.getDiagnoser();
         final Predicate<Fact> diagnosFilter = getDiagnosFilter(diagnoser);
@@ -196,7 +196,7 @@ public class FilterHandler {
         final Predicate<Fact> aldersgruppFilter = getAldersgruppFilter(aldersgrupp);
         final List<String> sjukskrivningslangds = inFilter.getSjukskrivningslangd();
         final Predicate<Sjukfall> sjukfallLengthFilter = getSjukfallLengthFilter(sjukskrivningslangds);
-        final String hash = getHash(filterHash, enhetsIDs);
+        final String hash = getHash(filterHash, enhetsIDs) + veDepth;
         final Predicate<Fact> predicate = enhetFilter.and(diagnosFilter).and(aldersgruppFilter);
         final boolean sjukfallangdfilterActive = !sjukskrivningslangds.isEmpty();
         final FilterPredicates sjukfallFilter = new FilterPredicates(predicate, sjukfallLengthFilter, hash, sjukfallangdfilterActive);
@@ -330,9 +330,10 @@ public class FilterHandler {
     }
 
     private Filter getFilterForEnhets(@Nonnull List<HsaIdEnhet> enhetsAsHsaIds, boolean vardenhetsdepth) {
-        final String hashValue = FilterPredicates.getHashValueForEnhets(enhetsAsHsaIds);
-        final FilterPredicates predicate = new FilterPredicates(fact -> enhetsAsHsaIds.contains(fact.getUnderenhet())
-                && (!vardenhetsdepth || enhetsAsHsaIds.contains(fact.getVardenhet())), sjukfall -> true, hashValue, false);
+        final String hashValue = FilterPredicates.getHashValueForEnhets(enhetsAsHsaIds) + vardenhetsdepth;
+        final FilterPredicates predicate = new FilterPredicates(fact ->
+                enhetsAsHsaIds.contains(vardenhetsdepth ? fact.getVardenhet() : fact.getUnderenhet()),
+                sjukfall -> true, hashValue, false);
         final List<String> sjukskrivningslangd = toReadableSjukskrivningslangdName(null);
         final List<String> aldersgrupp = toReadableAgeGroupNames(null);
         final List<String> intygstyper = toReadableIntygTypeName(null);
@@ -345,7 +346,7 @@ public class FilterHandler {
         if (info.getLoginInfoForVg(vgId).map(LoginInfoVg::isProcessledare).orElse(false)) {
             final FilterPredicates filter = SjukfallUtil.ALL_ENHETER;
             return new Filter(filter, null, null, toReadableSjukskrivningslangdName(null), toReadableAgeGroupNames(null),
-                FilterPredicates.HASH_EMPTY_FILTER, toReadableIntygTypeName(null), true);
+                FilterPredicates.HASH_EMPTY_FILTER + vardenhetsdepth, toReadableIntygTypeName(null), true);
         }
         List<HsaIdEnhet> hsaIds = info.getBusinessesForVg(vgId).stream()
                 .map(Verksamhet::getId)
@@ -450,7 +451,7 @@ public class FilterHandler {
         LoginInfo info = loginServiceUtil.getLoginInfo();
         Map<HsaIdEnhet, String> enheter = new HashMap<>();
         for (Verksamhet userVerksamhet : info.getBusinessesForVg(vgid)) {
-            if (enhetsIDs != null && enhetsIDs.contains(userVerksamhet.getId()) && (!vardenhetsdepth || userVerksamhet.isVardenhet())) {
+            if (enhetsIDs != null && enhetsIDs.contains(userVerksamhet.getId())) {
                 enheter.put(userVerksamhet.getId(), userVerksamhet.getName());
             }
         }

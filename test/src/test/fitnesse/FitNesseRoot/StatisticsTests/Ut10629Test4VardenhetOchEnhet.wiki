@@ -11,33 +11,28 @@ Test
 
 |Enbart foljande intyg finns                                    |
 |personnr     |diagnoskod|start     |slut      |enhet |huvudenhet|kommentar|
-|19800820-9275|G01       |2013-02-05|2013-02-06|enhet1||         |
-|19680524-9288|G01       |2013-02-05|2013-02-06|enhet2|enhet1|         |
+|19800820-9275|G01       |2013-02-05|2013-02-06|      |ENHET1|         |
+|19680524-9288|G01       |2013-02-05|2013-02-06|enhet2|ENHET1|         |
 
 !3 Då gäller:
 
-En användare med behörighet till bara enhet1 ser inte enhet2 och dess sjukfall. En användare med behörighet till båda enheterna eller med vårdgivarbehörighet ser båda enheterna och dess sjukfall.
-
 Inloggad:
-|Sjukfall i rapporten sjukfall per enhet                   |
-|inloggad som|vårdenhet|vårdgivarnivå|vårdenhetdjup|totalt?|män?|kvinnor?|
-|user2       |enhet1   |true         |true|2      |1   |1       |
 
 |Sjukfall i rapporten sjukfall per enhet                   |
 |inloggad som|vårdenhet|vårdgivarnivå|vårdenhetdjup|totalt?|män?|kvinnor?|
-|user1       |enhet1   |false        |false|1      |1   |0       |
+|user1       |ENHET1   |false        |false|-1      |-1   |-1       |
 |user1       |enhet2   |false        |false|-1     |-1  |-1      |
-|user1       |enhet1   |true         |false|1      |1   |0       |
+|user1       |ENHET1   |true         |false|-1      |-1   |-1       |
 |user1       |enhet2   |true         |false|1      |0   |1       |
-|user2       |enhet1   |false        |false|1      |1   |0       |
+|user2       |ENHET1   |false        |false|-1      |-1   |-1       |
 |user2       |enhet2   |false        |false|1      |0   |1       |
-|user2       |enhet1   |true         |false|1      |1   |0       |
+|user2       |ENHET1   |true         |false|-1      |-1   |-1       |
 |user2       |enhet2   |true         |false|1      |0   |1       |
-|user1       |enhet1   |false        |true|1      |1   |0       |
+|user1       |ENHET1   |false        |true|-1      |-1   |-1       |
 |user1       |enhet2   |false        |true|-1     |-1  |-1      |
-|user1       |enhet1   |true         |true|2      |1   |1       |
+|user1       |ENHET1   |true         |true|2      |1   |1       |
 |user1       |enhet2   |true         |true|-1      |-1   |-1       |
-|user2       |enhet1   |false        |true|2      |1   |1       |
+|user2       |ENHET1   |false        |true|-1      |-1   |-1       |
 |user2       |enhet2   |false        |true|-1      |-1   |-1       |
-|user2       |enhet1   |true         |true|2      |1   |1       |
+|user2       |ENHET1   |true         |true|2      |1   |1       |
 |user2       |enhet2   |true         |true|-1      |-1   |-1       |
