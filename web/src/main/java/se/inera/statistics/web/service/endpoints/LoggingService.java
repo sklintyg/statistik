@@ -96,8 +96,6 @@ public class LoggingService {
                         request.getInfo().get(MonitoringRequest.WIDTH),
                         request.getInfo().get(MonitoringRequest.HEIGHT));
                 break;
-            default:
-                return status(BAD_REQUEST).build();
         }
         return ok().build();
     }
