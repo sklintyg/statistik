@@ -115,13 +115,13 @@ public class FilterHandler {
         } catch (TooEarlyEndDateException e) {
             LOG.warn("End date too early. Falling back to default filter. Msg: " + e.getMessage());
             LOG.debug("End date too early. Falling back to default filter.", e);
-            return new FilterSettings(getFilterForAllAvailableEnhets(request, false),
+            return new FilterSettings(getFilterForAllAvailableEnhets(request, true),
                 Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock),
                 Message.create(ErrorType.FILTER, ErrorSeverity.WARN, Messages.ST_F_FI_004));
         } catch (TooLateStartDateException e) {
             LOG.warn("Start date too late. Falling back to default filter. Msg: " + e.getMessage());
             LOG.debug("Start date too late. Falling back to default filter.", e);
-            return new FilterSettings(getFilterForAllAvailableEnhets(request, false),
+            return new FilterSettings(getFilterForAllAvailableEnhets(request, true),
                 Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock),
                 Message.create(ErrorType.FILTER, ErrorSeverity.WARN, Messages.ST_F_FI_009));
         }
@@ -136,7 +136,7 @@ public class FilterHandler {
 
 
     public FilterSettings getFilter(HttpServletRequest request, String filterHash, int defaultNumberOfMonthsInRange) {
-        return getFilter(request, filterHash, defaultNumberOfMonthsInRange, false);
+        return getFilter(request, filterHash, defaultNumberOfMonthsInRange, true);
     }
 
     public FilterSettings getFilter(HttpServletRequest request, String filterHash,
@@ -326,7 +326,7 @@ public class FilterHandler {
     private Filter getFilterForAllAvailableEnhetsRegion(HttpServletRequest request) {
         final HsaIdVardgivare vardgivarId = getSelectedVgIdForLoggedInUser(request);
         final List<HsaIdEnhet> enhets = regionEnhetHandler.getAllEnhetsForVardgivare(vardgivarId);
-        return getFilterForEnhets(enhets, false);
+        return getFilterForEnhets(enhets, true);
     }
 
     private Filter getFilterForEnhets(@Nonnull List<HsaIdEnhet> enhetsAsHsaIds, boolean vardenhetsdepth) {
