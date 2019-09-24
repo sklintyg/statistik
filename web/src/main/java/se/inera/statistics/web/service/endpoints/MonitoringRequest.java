@@ -52,9 +52,8 @@ public class MonitoringRequest {
         switch (event) {
             case SCREEN_RESOLUTION:
                 return info != null && info.get(WIDTH) != null && info.get(HEIGHT) != null;
-            default:
-                return false;
         }
+        return false;
     }
 
     public enum MonitoringRequestEvent {

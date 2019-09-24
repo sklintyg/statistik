@@ -55,7 +55,7 @@ public class WidelineToWarehouseIT {
         line1.setDiagnoskapitel("A00-B99");
         line1.setDiagnosavsnitt("A15-A19");
         line1.setDiagnoskategori("A16");
-        line1.setEnhet(enhet);
+        line1.setVardenhet(enhet);
         line1.setKon(1);
         line1.setLkf("078002");
         line1.setLakareId(new HsaIdLakare("lid"));
