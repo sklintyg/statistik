@@ -152,6 +152,10 @@ var stMessages = {
     'alert.diagnosgrupp.information': 'För en given månad kan samma sjukfall visas fler än en gång i graf och tabell. Om ett sjukfall innehåller flera intyg under samma månad så hämtas diagnos från varje intyg. Om intygen har olika diagnosgrupper kommer sjukfallet finnas med en gång för varje diagnosgrupp för respektive månad. Exempel: Om ett sjukfall innehåller två intyg för maj månad, där intyg ett sätter diagnosen M54 och intyg två efter vidare utredning sätter diagnosen F32, så kommer sjukfallet både räknas med i gruppen för Muskuloskeleta sjukdomar (M00-M99) och i gruppen för Psykiska sjukdomar (F00-F99) i graf och tabell för maj månad.',
     'alert.dxs.max.selected': 'Du har valt fler än %0 %1 vilket gör att diagrammet inte kommer kunna visas. Överväg att filtrera ytterligare eller gå vidare för att se statistiken i tabellformat utan diagram.',
 
+    'enhet-depth-option.title': 'Välj om du vill visa statistiken uppdelad på vårdenheter eller enheter:',
+    'enhet-depth-option.vardenhet': 'Vårdenhet',
+    'enhet-depth-option.underenhet': 'Enhet',
+
     'comparediagnoses.choose-level': 'Välj indelning:',
     'comparediagnoses.level.section': 'Diagnosavsnitt',
     'comparediagnoses.level.chapter': 'Diagnoskapitel',
@@ -165,7 +169,8 @@ var stMessages = {
     // Titles
     'title.lan': 'Antal sjukfall per 1000 invånare fördelat på län',
     'title.lan.gender': 'Andel sjukfall per kön fördelat på län',
-    'title.vardenhet': 'Antal sjukfall fördelat på vårdenhet',
+    'title.vardenhet.region': 'Antal sjukfall fördelat på vårdenhet',
+    'title.vardenhet': 'Antal sjukfall fördelat på vårdenhet eller enhet',
     'title.sickleave': 'Antal sjukfall',
     'title.diagnosisgroup': 'Antal sjukfall fördelat på diagnosgrupp',
     'title.diagnosgroup': 'Antal sjukfall för',
@@ -201,7 +206,7 @@ var stMessages = {
     'help.nationell.komplettering': 'Denna rapport visar statistik över andelen intyg av de som skickas till Försäkringskassan som får ett meddelande med ämnet Komplettering.',
     'help.nationell.kompletteringarperfraga': 'Denna rapport visar statistik över antal kompletteringsbegäranden fördelat på fråga i FK 7804 Läkarintyg för sjukpenning. Observera att denna statistik inte räknar antal meddelanden med ämnet komplettering. Här räknas varje kompletteringsbegäran och ett meddelande kan innehålla en eller flera kompletteringsbegäranden som rör olika frågor.',
 
-    'help.verksamhet.vardenhet': 'Denna rapport visar statistik för de vårdenheter som du har behörighet till och som utfärdar läkarintyg. Vårdenheternas namn hämtas från HSA-katalogen.',
+    'help.verksamhet.vardenhet': 'Denna rapport visar statistik för de vårdenheter som du har behörighet till och som utfärdar läkarintyg. Namn på vårdenheter och enheter hämtas från HSA-katalogen.',
     'help.verksamhet.diagnosgroup': 'I denna rapport kan du själv välja vilken typ av diagnoser du vill se statistik för. Klassificeringssystemet ICD-10-SE delar in alla diagnoser i 22 diagnoskapitel. Varje diagnoskapitel innehåller flera diagnosavsnitt som i sin tur omfattar än mer detaljerade diagnoskategorier.',
     'help.verksamhet.sickleavelength': 'Om ett sjukfall startat på en annan vårdenhet inom samma vårdgivare räknas den totala sjukskrivningslängden ihop.',
     'help.verksamhet.lakare': '	Denna rapport visar statistik för enskilda intygsskrivande läkare. Namn hämtas från HSA-katalogen. Om läkaren inte går att slå upp i HSA-katalogen eller om läkaren inte har något namn angivet så visas istället läkarens HSA-id.',

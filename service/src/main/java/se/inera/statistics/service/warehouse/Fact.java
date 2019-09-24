@@ -36,6 +36,7 @@ public class Fact implements Serializable {
     private int lan;
     private int kommun;
     private int forsamling;
+    private HsaIdEnhet vardenhet;
     private HsaIdEnhet enhet;
     private long lakarintyg;
     private long patient;
@@ -55,13 +56,14 @@ public class Fact implements Serializable {
 
     // CHECKSTYLE:OFF ParameterNumber
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
-    public Fact(long id, int lan, int kommun, int forsamling, HsaIdEnhet enhet, long lakarintyg, long patient, int startdatum,
-        int slutdatum, int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod,
-        int sjukskrivningsgrad, int lakarkon, int lakaralder, int[] lakarbefattnings, HsaIdLakare lakarid) {
+    public Fact(long id, int lan, int kommun, int forsamling, HsaIdEnhet vardenhet, HsaIdEnhet enhet, long lakarintyg, long patient,
+                int startdatum, int slutdatum, int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori,
+                int diagnoskod, int sjukskrivningsgrad, int lakarkon, int lakaralder, int[] lakarbefattnings, HsaIdLakare lakarid) {
         this.id = id;
         this.lan = lan;
         this.kommun = kommun;
         this.forsamling = forsamling;
+        this.vardenhet = vardenhet;
         this.enhet = enhet;
         this.lakarintyg = lakarintyg;
         this.patient = patient;
@@ -108,7 +110,11 @@ public class Fact implements Serializable {
         return sjukskrivningsgrad;
     }
 
-    public HsaIdEnhet getEnhet() {
+    public HsaIdEnhet getVardenhet() {
+        return vardenhet;
+    }
+
+    public HsaIdEnhet getUnderenhet() {
         return enhet;
     }
 
@@ -170,7 +176,7 @@ public class Fact implements Serializable {
             + "lan=" + lan
             + ", kommun=" + kommun
             + ", forsamling=" + forsamling
-            + ", enhet=" + enhet
+            + ", enhet=" + vardenhet
             + ", lakarintyg=" + lakarintyg
             + ", patient=" + patient
             + ", startdatum=" + WidelineConverter.toDate(startdatum) + " (" + startdatum + ")"
@@ -197,7 +203,7 @@ public class Fact implements Serializable {
         sb.append(lan).append(c)
             .append(kommun).append(c)
             .append(forsamling).append(c)
-            .append(enhet).append(c)
+            .append(vardenhet).append(c)
             .append(lakarintyg).append(c)
             .append(patient).append(c)
             .append(startdatum).append(c)

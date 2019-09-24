@@ -39,7 +39,8 @@ angular.module('StatisticsApp.treeMultiSelector.directive', [])
       minSelections: '@',
       maxSelections: '@',
       runFilterMenuOnInit: '=',
-      verksamhetsTyper: '='
+      verksamhetsTyper: '=',
+      hideDepthCounters: '@'
     },
     controller: 'treeMultiSelectorCtrl',
     templateUrl: '/app/shared/treemultiselector/treeMultiSelectorView.html'

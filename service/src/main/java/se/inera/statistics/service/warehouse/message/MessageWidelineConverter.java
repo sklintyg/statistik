@@ -78,6 +78,7 @@ public class MessageWidelineConverter extends AbstractWidlineConverter {
 
         if (intygCommon != null) {
             line.setEnhet(intygCommon.getEnhet());
+            line.setVardenhet(intygCommon.getVardenhet());
             line.setVardgivareid(intygCommon.getVardgivareId());
             line.setIntygstyp(intygCommon.getIntygtyp());
             line.setIntygSigneringsdatum(intygCommon.getSigneringsdatum());

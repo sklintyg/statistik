@@ -284,7 +284,30 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
 
       business.numericalId = business.id;
       business.visibleName = business.name;
-      munip.subs.push(business);
+
+      var vardenhet = _.find(munip.subs, {id: business.vardenhetId});
+      if (!vardenhet) {
+        var isVardenhet = business.vardenhetId === business.id;
+        vardenhet = isVardenhet ? {
+          id: business.id,
+          numericalId: business.vardenhetId + 'vardenhet',
+          name: business.name,
+          visibleName: business.visibleName,
+          subs: []
+        } : {
+          id: business.vardenhetId,
+          numericalId: business.vardenhetId + 'vardenhet',
+          name: business.vardenhetId,
+          visibleName: business.vardenhetId,
+          subs: []
+        };
+        munip.subs.push(vardenhet);
+
+        vardenhet.subs.push(business);
+      } else {
+        vardenhet.subs.push(business);
+      }
+
     });
     businessFilter.geography.subs = ArrayHelper.sortSwedish(businessFilter.geography.subs, 'name', 'Okän');
     _.each(businessFilter.geography.subs, function(county) {

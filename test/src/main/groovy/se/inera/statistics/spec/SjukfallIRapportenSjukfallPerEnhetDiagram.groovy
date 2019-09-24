@@ -21,10 +21,11 @@ package se.inera.statistics.spec
 class SjukfallIRapportenSjukfallPerEnhetDiagram extends SimpleDetailsReport {
 
     String vårdenhet
+    String vårdenhetdjup
 
     @Override
     public void doExecute() {
-        def report = getReportSjukfallPerEnhet()
+        def report = getReportSjukfallPerEnhet(vårdenhetdjup)
         executeDiagram(report)
     }
 

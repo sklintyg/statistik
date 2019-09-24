@@ -46,10 +46,12 @@ public class IntygCommonConverter {
     private Icd10 icd10;
 
     IntygCommon toIntygCommon(IntygDTO dto, HsaInfo hsa, String correlationId, EventType eventType, boolean sentToFk) {
-        String enhet = HSAServiceHelper.getEnhetId(hsa);
+        String vardenhet = HSAServiceHelper.getHuvudEnhetId(hsa);
+        String underenhet = HSAServiceHelper.getUnderenhetId(hsa);
         HsaIdVardgivare vardgivare = HSAServiceHelper.getVardgivarId(hsa);
-        if (enhet == null) {
-            enhet = dto.getEnhet();
+        if (vardenhet == null && underenhet == null) {
+            vardenhet = dto.getEnhet();
+            underenhet = dto.getEnhet();
         }
         String patient = dto.getPatientid();
         Patientdata patientData = dto.getPatientData();
@@ -60,8 +62,8 @@ public class IntygCommonConverter {
         final String lakareId = dto.getLakareId();
 
         final String vgid = vardgivare.getId();
-        return new IntygCommon(correlationId, patient, signeringsDatum, intygTyp, enhet,
-            vgid, kon, eventType, diagnoskod, sentToFk, lakareId);
+        return new IntygCommon(correlationId, patient, signeringsDatum, intygTyp, underenhet, vardenhet,
+                vgid, kon, eventType, diagnoskod, sentToFk, lakareId);
     }
 
     String parseDiagnos(String diagnoskod) {

@@ -99,22 +99,22 @@ public class MessageWidelineLoader {
         return null;
     }
 
-    public List<CountDTOAmne> getAntalMeddelandenPerAmne(MessagesFilter filter) {
+    public List<CountDTOAmne> getAntalMeddelandenPerAmne(MessagesFilter filter, boolean vardenhetdepth) {
         try (
             Connection connection = dataSource.getConnection();
-            PreparedStatement stmt = prepareStatementAmne(connection, filter)) {
-            return getCountDTOAmnes(filter, stmt);
+            PreparedStatement stmt = prepareStatementAmne(connection, filter, vardenhetdepth)) {
+            return getCountDTOAmnes(filter, stmt, vardenhetdepth);
         } catch (SQLException e) {
             LOG.error("Could not populate warehouse", e);
         }
         return null;
     }
 
-    private List<CountDTOAmne> getCountDTOAmnes(MessagesFilter filter, PreparedStatement stmt) throws SQLException {
+    private List<CountDTOAmne> getCountDTOAmnes(MessagesFilter filter, PreparedStatement stmt, boolean vardenhetdepth) throws SQLException {
         ResultSet resultSet = stmt.executeQuery();
         List<CountDTOAmne> dtos = new ArrayList<>();
         while (resultSet.next()) {
-            dtos.add(toCountAmne(resultSet));
+            dtos.add(toCountAmne(resultSet, vardenhetdepth));
         }
         dtos = applyAgeGroupFilter(filter, dtos);
         dtos = applyDxFilter(filter, dtos);
@@ -125,7 +125,7 @@ public class MessageWidelineLoader {
         try (
             Connection connection = dataSource.getConnection();
             PreparedStatement stmt = prepareStatementKompletteringarPerIntyg(connection, filter)) {
-            return getCountDTOAmnes(filter, stmt);
+            return getCountDTOAmnes(filter, stmt, false);
         } catch (SQLException e) {
             LOG.error("Could not populate warehouse", e);
         }
@@ -136,7 +136,7 @@ public class MessageWidelineLoader {
         try (
             Connection connection = dataSource.getConnection();
             PreparedStatement stmt = prepareStatementKompletteringar(connection, filter)) {
-            return getCountDTOAmnes(filter, stmt);
+            return getCountDTOAmnes(filter, stmt, false);
         } catch (SQLException e) {
             LOG.error("Could not populate warehouse", e);
         }
@@ -189,7 +189,7 @@ public class MessageWidelineLoader {
         return false;
     }
 
-    private CountDTOAmne toCountAmne(ResultSet resultSet) throws SQLException {
+    private CountDTOAmne toCountAmne(ResultSet resultSet, boolean vardenhetdepth) throws SQLException {
         CountDTOAmne dto = new CountDTOAmne();
 
         final String signeringsdatumStr = resultSet.getString("signeringsdatum");
@@ -199,7 +199,7 @@ public class MessageWidelineLoader {
         dto.setKon(Kon.byNumberRepresentation(resultSet.getInt("kon")));
         final String amneCode = resultSet.getString("amneCode");
         dto.setAmne(amneCode != null ? MsgAmne.parse(amneCode) : null);
-        dto.setEnhet(resultSet.getString("enhet"));
+        dto.setEnhet(resultSet.getString(vardenhetdepth ? "vardenhet" : "enhet"));
         final String patientid = resultSet.getString("patientid");
         final int alder = ConversionHelper.extractAlderSafe(patientid, signDate);
         dto.setPatientAge(alder);
@@ -254,11 +254,11 @@ public class MessageWidelineLoader {
 
     @SuppressFBWarnings(value = "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
         justification = "We know what we're doing. No user supplied data.")
-    private PreparedStatement prepareStatementAmne(Connection connection, MessagesFilter filter)
+    private PreparedStatement prepareStatementAmne(Connection connection, MessagesFilter filter, boolean vardenhetdepth)
         throws SQLException {
 
         StringBuilder sql = new StringBuilder("SELECT "
-            + "mwl.intygid, mwl.amnecode, mwl.kon, mwl.amneCode, mwl.enhet AS enhet, mwl.alder, "
+            + "mwl.intygid, mwl.amnecode, mwl.kon, mwl.amneCode, mwl.enhet AS enhet, mwl.vardenhet AS vardenhet, mwl.alder, "
             + "mwl.intygstyp, mwl.patientid, mwl.intygSigneringsdatum as signeringsdatum, mwl.intygDx as dx, "
             + "mwl.intygLakareId as lakareId, mwl.svarIds "
             + "FROM "
@@ -273,9 +273,19 @@ public class MessageWidelineLoader {
 
         final Collection<HsaIdEnhet> enheter = filter.getEnheter();
         if (enheter != null && !enheter.isEmpty()) {
+            if (vardenhetdepth) {
+                String enhetSql = enheter.stream().map(HsaIdEnhet::getId).collect(Collectors.joining("' , '"));
+                sql.append(" AND mwl.vardenhet IN ('").append(enhetSql).append("')");
+            }
             String enhetSql = enheter.stream().map(HsaIdEnhet::getId).collect(Collectors.joining("' , '"));
             sql.append(" AND mwl.enhet IN ('").append(enhetSql).append("')");
         }
+
+//        final Collection<HsaIdEnhet> enheter = filter.getEnheter();
+//        if (enheter != null && !enheter.isEmpty()) {
+//            String enhetSql = enheter.stream().map(HsaIdEnhet::getId).collect(Collectors.joining("' , '"));
+//            sql.append(" AND mwl.enhet IN ('").append(enhetSql).append("')");
+//        }
 
         final Collection<String> intygstyper = filter.getIntygstyper();
         if (intygstyper != null && !intygstyper.isEmpty()) {

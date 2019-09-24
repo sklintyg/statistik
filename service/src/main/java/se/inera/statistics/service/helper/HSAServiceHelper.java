@@ -46,15 +46,22 @@ public final class HSAServiceHelper {
     private HSAServiceHelper() {
     }
 
-    public static String getEnhetId(HsaInfo hsaData) {
+    public static String getHuvudEnhetId(HsaInfo hsaData) {
+        if (hsaData == null) {
+            return null;
+        }
+        return getEnhetId(hsaData.getHuvudenhet());
+    }
+
+    public static String getUnderenhetId(HsaInfo hsaData) {
         if (hsaData == null) {
             return null;
         }
         String result = getEnhetId(hsaData.getHuvudenhet());
-        if (result == null) {
-            result = getEnhetId(hsaData.getEnhet());
+        if (result != null) {
+            return getEnhetId(hsaData.getEnhet());
         }
-        return result;
+        return null;
     }
 
     public static HsaIdVardgivare getVardgivarId(HsaInfo hsaData) {
@@ -164,15 +171,15 @@ public final class HSAServiceHelper {
         return hsaData.getPersonal();
     }
 
-    public static String getVerksamhetsTyper(HsaInfo hsaData) {
+    public static String getVerksamhetsTyper(HsaInfo hsaData, boolean forceHuvudenhet) {
         if (hsaData == null) {
             return VerksamhetsTyp.OVRIGT_ID;
         }
         String result = getVerksamhetsTyper(hsaData.getEnhet());
-        if (result == null) {
+        if (forceHuvudenhet || result == null) {
             result = getVerksamhetsTyper(hsaData.getHuvudenhet());
         }
-        final boolean isVardcentral = isVardcentral(hsaData.getEnhet()) || isVardcentral(hsaData.getHuvudenhet());
+        final boolean isVardcentral = (!forceHuvudenhet && isVardcentral(hsaData.getEnhet())) || isVardcentral(hsaData.getHuvudenhet());
         result = isVardcentral ? (result != null && !result.isEmpty() ? result + "," : "") + VerksamhetsTyp.VARDCENTRAL_ID : result;
         return result != null && !result.isEmpty() ? result : VerksamhetsTyp.OVRIGT_ID;
     }

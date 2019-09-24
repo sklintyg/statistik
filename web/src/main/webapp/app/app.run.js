@@ -67,6 +67,7 @@ angular.module('StatisticsApp').run(
           addToQueryString('filter', current.params.filter);
           addToQueryString('regionfilter', current.params.regionfilter);
           addToQueryString('codelevel', current.params.codelevel);
+          addToQueryString('vardenhetdepth', current.params.vardenhetdepth);
 
           $rootScope.verksamhetViewShowing = current.$$route.originalPath.indexOf('/verksamhet') === 0;
         }

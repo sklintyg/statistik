@@ -321,7 +321,7 @@ public class FilterHandlerTest {
     }
 
     private Verksamhet createVerksamhet(String hsaId, HsaIdVardgivare vgid) {
-        return new Verksamhet(new HsaIdEnhet(hsaId), hsaId, vgid, "", "", "", "", "", Collections.EMPTY_SET);
+        return new Verksamhet(new HsaIdEnhet(hsaId), hsaId, vgid, "", "", "", "", "", Collections.EMPTY_SET, "ve" + hsaId);
     }
 
 }

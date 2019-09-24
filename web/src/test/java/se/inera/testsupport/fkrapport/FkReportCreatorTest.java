@@ -182,7 +182,7 @@ public class FkReportCreatorTest {
     }
 
     private Fact createFact(int startdatum, int slutdatum, int lakarintyg) {
-        return new Fact(1L, 1, 1, 1, new HsaIdEnhet("1"), lakarintyg, 1, startdatum, slutdatum, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0],
+        return new Fact(1L, 1, 1, 1, new HsaIdEnhet("1"), new HsaIdEnhet("1"), lakarintyg, 1, startdatum, slutdatum, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0],
             new HsaIdLakare("1"));
     }
 

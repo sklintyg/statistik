@@ -22,10 +22,11 @@ class MeddelandenIRapportenMeddelandenVardenhetSomTvarsnitt extends DualSexTimeS
 
     def ämne
     def vårdenhet
+    String vårdenhetdjup
 
     @Override
     public void doExecute() {
-        def report = getReportMeddelandenVardenhetTvarsnitt()
+        def report = getReportMeddelandenVardenhetTvarsnitt(vårdenhetdjup)
         executeTabell(report)
     }
 

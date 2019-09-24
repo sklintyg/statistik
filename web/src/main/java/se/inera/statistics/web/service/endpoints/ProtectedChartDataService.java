@@ -352,12 +352,12 @@ public class ProtectedChartDataService {
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till meddelanden per ämne och enhet")
     public Response getMeddelandenPerAmnePerEnhet(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
-        @QueryParam("format") String format) {
-        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
+        @QueryParam("format") String format, @QueryParam("vardenhetdepth") boolean vardenhetdepth) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18, vardenhetdepth);
         final List<HsaIdEnhet> enhetsFilterIds = filterHandler.getEnhetsFilterIds(filterSettings.getFilter().getEnheter(), request);
-        Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMap(request, enhetsFilterIds);
+        Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMap(request, enhetsFilterIds, vardenhetdepth);
         KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerEnhet(filterSettings.getFilter(),
-            filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request), idToNameMap);
+            filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request), idToNameMap, vardenhetdepth);
         SimpleDetailsData result = new MessageAmnePerEnhetConverter().convert(casesPerMonth, filterSettings);
         return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNEPERENHET, ReportType.TIDSSERIE);
     }
@@ -371,14 +371,14 @@ public class ProtectedChartDataService {
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till tvärsnittet av meddelanden per ämne och enhet")
     public Response getMeddelandenPerAmnePerEnhetTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
-        @QueryParam("format") String format) {
-        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
+        @QueryParam("format") String format, @QueryParam("vardenhetdepth") boolean vardenhetdepth) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12, vardenhetdepth);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
         final List<HsaIdEnhet> enhetsFilterIds = filterHandler.getEnhetsFilterIds(filterSettings.getFilter().getEnheter(), request);
-        Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMap(request, enhetsFilterIds);
+        Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMap(request, enhetsFilterIds, vardenhetdepth);
         KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerEnhetTvarsnitt(filter, range,
-            loginServiceUtil.getSelectedVgIdForLoggedInUser(request), idToNameMap);
+            loginServiceUtil.getSelectedVgIdForLoggedInUser(request), idToNameMap, vardenhetdepth);
         SimpleDetailsData result = new MessageAmnePerEnhetTvarsnittConverter().convert(casesPerMonth, filterSettings);
         return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNEPERENHET, ReportType.TVARSNITT);
     }
@@ -542,14 +542,14 @@ public class ProtectedChartDataService {
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till antal sjukfall per enhet")
     public Response getNumberOfCasesPerEnhet(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
-        @QueryParam("format") String format) {
-        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
+        @QueryParam("format") String format, @QueryParam("vardenhetdepth") boolean vardenhetdepth) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12, vardenhetdepth);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
         final List<HsaIdEnhet> enhetsFilterIds = filterHandler.getEnhetsFilterIds(filter.getEnheter(), request);
-        Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMap(request, enhetsFilterIds);
+        Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMap(request, enhetsFilterIds, vardenhetdepth);
         SimpleKonResponse casesPerEnhet = warehouse.getCasesPerEnhet(filter.getPredicate(), idToNameMap, range,
-            loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+            loginServiceUtil.getSelectedVgIdForLoggedInUser(request), vardenhetdepth);
         SimpleDetailsData result = new GroupedSjukfallConverter("").convert(casesPerEnhet, filterSettings);
         return getResponse(result, format, request, Report.V_VARDENHET, ReportType.TVARSNITT);
     }
@@ -566,14 +566,14 @@ public class ProtectedChartDataService {
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till en tidsserie med antal sjukfall per enhet")
     public Response getNumberOfCasesPerEnhetTimeSeries(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
-        @QueryParam("format") String format) {
-        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
+        @QueryParam("format") String format, @QueryParam("vardenhetdepth") boolean vardenhetdepth) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18, vardenhetdepth);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
         final List<HsaIdEnhet> enhetsFilterIds = filterHandler.getEnhetsFilterIds(filter.getEnheter(), request);
-        Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMap(request, enhetsFilterIds);
+        Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMap(request, enhetsFilterIds, vardenhetdepth);
         KonDataResponse casesPerEnhet = warehouse.getCasesPerEnhetTimeSeries(filter.getPredicate(), idToNameMap, range,
-            loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+            loginServiceUtil.getSelectedVgIdForLoggedInUser(request), vardenhetdepth);
         DualSexStatisticsData result = new SimpleMultiDualSexConverter().convert(casesPerEnhet, filterSettings);
         return getResponse(result, format, request, Report.V_VARDENHET, ReportType.TIDSSERIE);
     }

@@ -224,16 +224,16 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getIntygPerTypeTvarsnitt", filter, "vgid=" + vgid)
     }
 
-    def getReportAntalMeddelandenVardenhetInloggad(String vgid, filter) {
-        return get(getVerksamhetUrlPrefix() + "/getMeddelandenPerAmnePerEnhet", filter, "vgid=" + vgid)
+    def getReportAntalMeddelandenVardenhetInloggad(String vgid, filter, vardenhetdepth) {
+        return get(getVerksamhetUrlPrefix() + "/getMeddelandenPerAmnePerEnhet", filter, "vgid=" + vgid +  "&vardenhetdepth=" + vardenhetdepth)
     }
 
     def getReportAntalMeddelandenLakareInloggad(String vgid, filter) {
         return get(getVerksamhetUrlPrefix() + "/getMeddelandenPerAmnePerLakare", filter, "vgid=" + vgid)
     }
 
-    def getReportAntalMeddelandenVardenhetTvarsnittInloggad(String vgid, filter) {
-        return get(getVerksamhetUrlPrefix() + "/getMeddelandenPerAmnePerEnhetTvarsnitt", filter, "vgid=" + vgid)
+    def getReportAntalMeddelandenVardenhetTvarsnittInloggad(String vgid, filter, vardenhetdepth) {
+        return get(getVerksamhetUrlPrefix() + "/getMeddelandenPerAmnePerEnhetTvarsnitt", filter, "vgid=" + vgid +  "&vardenhetdepth=" + vardenhetdepth)
     }
 
     def getReportAntalMeddelandenLakareTvarsnittInloggad(String vgid, filter) {
@@ -268,8 +268,8 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getLongSickLeavesTvarsnitt", filter, "vgid=" + vgid)
     }
 
-    def getReportSjukfallPerEnhet(String vgid, filter) {
-        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerEnhet", filter, "vgid=" + vgid)
+    def getReportSjukfallPerEnhet(String vgid, filter, vardenhetdepth) {
+        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerEnhet", filter, "vgid=" + vgid + "&vardenhetdepth=" + vardenhetdepth)
     }
 
     def getReportEnskiltDiagnoskapitel(String kapitel) {
@@ -524,8 +524,8 @@ class ReportsUtil {
         return get("/api/getOverview")
     }
 
-    def getReportSjukfallPerEnhetSomTidsserieInloggad(String vgid, FilterData filter) {
-        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerEnhetTimeSeries", filter, "vgid=" + vgid)
+    def getReportSjukfallPerEnhetSomTidsserieInloggad(String vgid, FilterData filter, vardenhetdepth) {
+        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerEnhetTimeSeries", filter, "vgid=" + vgid + "&vardenhetdepth=" + vardenhetdepth)
     }
 
     def getReportJamforDiagnoserSomTidsserieInloggad(String vgid, FilterData filterData, String diagnosHash) {

@@ -1,0 +1,61 @@
+---
+Test
+---
+!3 Givet att:
+
+| script | dagens datum | 2014-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| intygid | personnr | signeringstid | diagnoskod | intygformat | enhet | huvudenhet |
+| 1001 | 19790717-9191 | 2014-04-05T10:00:00 | G01 | LUSE | enhet1 | |
+| 1002 | 19550717-9111 | 2014-06-03T10:00:00 | G01 | LUSE | enhet2 | enhet1 |
+
+| Foljande meddelanden finns |
+| personnr | skickat | intygsid | ämne |
+| 19790717-9191 | 2014-04-05T10:00:00 | 1001 | KOMPLT |
+| 19790717-9191 | 2014-06-03T10:00:00 | 1001 | AVSTMN |
+| 19550717-9111 | 2014-06-03T10:00:00 | 1002 | KOMPLT |
+
+!3 Då gäller:
+
+Inloggad:
+
+| Meddelanden i rapporten meddelanden vardenhet som tvarsnitt |
+| inloggad som | vårdenhet | vårdenhetdjup | grupp | totalt? | män? | kvinnor? |
+| user2 | Enhet enhet1 | true | Komplettering | 3 | 2 | 0 |
+| user2 | Enhet enhet1 | true | Avstämningsmöte | 3 | 1 | 0 |
+| user2 | Enhet enhet2 | true | Komplettering | -1 | -1 | -1 |
+| user2 | Enhet enhet2 | true | Avstämningsmöte | -1 | -1 | -1 |
+| user2 | Enhet enhet1 | false | Komplettering | 2 | 1 | 0 |
+| user2 | Enhet enhet1 | false | Avstämningsmöte | 2 | 1 | 0 |
+| user2 | Enhet enhet2 | false | Komplettering | 1 | 1 | 0 |
+| user2 | Enhet enhet2 | false | Avstämningsmöte | 1 | 0 | 0 |
+
+| Meddelanden i rapporten meddelanden vardenhet som tidsserie |
+| inloggad som | år | månad | vårdenhetdjup | grupp | män? | kvinnor? |
+| user2 | 2014 | apr | true | Enhet enhet1 : Komplettering | 1 | 0 |
+| user2 | 2014 | apr | true | Enhet enhet1 : Avstämningsmöte | 1 | 0 |
+| user2 | 2014 | apr | true | Enhet enhet2 : Komplettering | -1 | -1 |
+| user2 | 2014 | apr | true | Enhet enhet2 : Avstämningsmöte | -1 | -1 |
+| user2 | 2014 | maj | true | Enhet enhet1 : Komplettering | 0 | 0 |
+| user2 | 2014 | maj | true | Enhet enhet1 : Avstämningsmöte | 0 | 0 |
+| user2 | 2014 | maj | true | Enhet enhet2 : Komplettering | -1 | -1 |
+| user2 | 2014 | maj | true | Enhet enhet2 : Avstämningsmöte | -1 | -1 |
+| user2 | 2014 | jun | true | Enhet enhet1 : Komplettering | 1 | 0 |
+| user2 | 2014 | jun | true | Enhet enhet1 : Avstämningsmöte | 0 | 0 |
+| user2 | 2014 | jun | true | Enhet enhet2 : Komplettering | -1 | -1 |
+| user2 | 2014 | jun | true | Enhet enhet2 : Avstämningsmöte | -1 | -1 |
+| user2 | 2014 | apr | false | Enhet enhet1 : Komplettering | 1 | 0 |
+| user2 | 2014 | apr | false | Enhet enhet1 : Avstämningsmöte | 1 | 0 |
+| user2 | 2014 | apr | false | Enhet enhet2 : Komplettering | 0 | 0 |
+| user2 | 2014 | apr | false | Enhet enhet2 : Avstämningsmöte | 0 | 0 |
+| user2 | 2014 | maj | false | Enhet enhet1 : Komplettering | 0 | 0 |
+| user2 | 2014 | maj | false | Enhet enhet1 : Avstämningsmöte | 0 | 0 |
+| user2 | 2014 | maj | false | Enhet enhet2 : Komplettering | 0 | 0 |
+| user2 | 2014 | maj | false | Enhet enhet2 : Avstämningsmöte | 0 | 0 |
+| user2 | 2014 | jun | false | Enhet enhet1 : Komplettering | 0 | 0 |
+| user2 | 2014 | jun | false | Enhet enhet1 : Avstämningsmöte | 0 | 0 |
+| user2 | 2014 | jun | false | Enhet enhet2 : Komplettering | 1 | 0 |
+| user2 | 2014 | jun | false | Enhet enhet2 : Avstämningsmöte | 0 | 0 |

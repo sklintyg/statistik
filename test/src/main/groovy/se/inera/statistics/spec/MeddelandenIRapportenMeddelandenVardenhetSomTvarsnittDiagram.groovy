@@ -22,10 +22,11 @@ class MeddelandenIRapportenMeddelandenVardenhetSomTvarsnittDiagram extends Rappo
 
     def ämne
     def vårdenhet
+    def vårdenhetdjup
 
     @Override
     public void doExecute() {
-        def report = getReportMeddelandenVardenhetTvarsnitt()
+        def report = getReportMeddelandenVardenhetTvarsnitt(vårdenhetdjup)
         executeDiagram(report)
     }
 
@@ -46,9 +47,9 @@ class MeddelandenIRapportenMeddelandenVardenhetSomTvarsnittDiagram extends Rappo
         färg = total == null ? null : total.color
     }
 
-    def getReportMeddelandenVardenhetTvarsnitt() {
+    def getReportMeddelandenVardenhetTvarsnitt(vardenhetdepth) {
         if (inloggad) {
-            return reportsUtil.getReportAntalMeddelandenVardenhetTvarsnittInloggad(vg, filter)
+            return reportsUtil.getReportAntalMeddelandenVardenhetTvarsnittInloggad(vg, filter, vardenhetdepth)
         }
         return new RuntimeException("Report -Meddelanden per ämne per enhet- is not available on national level");
     }

@@ -186,9 +186,10 @@ public class TestIntygInjector {
         final long timestamp = System.currentTimeMillis();
         final String vgId = vardgivare.getId();
         final String enhetId = vardenhet.getId();
+        final String huvudenhetId = start.getDayOfYear() % 2 > 0 ? random(Lists.newArrayList(VARDGIVARE.get(vardgivare))).getId() : null;
         final String lakareId = lakare.getId();
         final String enhetName = "Enheten " + enhetId;
-        final Intyg intyg = new Intyg(type, data.toString(), id, timestamp, null, null, null, enhetName, vgId, enhetId, lakareId);
+        final Intyg intyg = new Intyg(type, data.toString(), id, timestamp, null, null, huvudenhetId, enhetName, vgId, enhetId, lakareId);
         restSupportService.insertIntygWithoutLogging(intyg);
 
         return id;

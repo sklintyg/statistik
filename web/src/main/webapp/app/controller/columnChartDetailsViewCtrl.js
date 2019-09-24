@@ -238,6 +238,17 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
       $scope.showDetailsOptions2 = config.showDetailsOptions2 && isVerksamhet;
       $scope.showDetailsOptions3 = config.showDetailsOptions3 && isVerksamhet;
 
+      $scope.showEnhetDepthOptions = config.showEnhetDepthOptions;
+      $scope.vardenhetDepthOptionVardenhetSelected = $routeParams.vardenhetdepth !== 'true';
+
+      $scope.enhetDepthOptionChange = function() {
+        if ($scope.vardenhetDepthOptionVardenhetSelected) {
+          $location.search('vardenhetdepth', 'true');
+        } else {
+          $location.search('vardenhetdepth', 'false');
+        }
+      };
+
       $scope.showDiagnosisSelector = config.showDiagnosisSelector;
 
       $scope.useSpecialPrintTable = !!config.useSpecialPrintTable;
@@ -359,6 +370,7 @@ angular.module('StatisticsApp').casesPerBusinessConfig =
         {description: 'Tidsserie', state: '/verksamhet/sjukfallperenhettidsserie', active: false},
         {description: 'Tvärsnitt', state: '/verksamhet/sjukfallperenhet', active: true}];
 
+      conf.showEnhetDepthOptions = true;
       return conf;
     };
 
@@ -743,6 +755,8 @@ angular.module('StatisticsApp').meddelandenPerAmneOchEnhetTvarsnittConfig =
         {description: 'Tidsserie', state: '/verksamhet/meddelandenPerAmneOchEnhet', active: false},
         {description: 'Tvärsnitt', state: '/verksamhet/meddelandenPerAmneOchEnhetTvarsnitt', active: true}];
       conf.useSpecialPrintTable = true;
+
+      conf.showEnhetDepthOptions = true;
 
       return conf;
     };

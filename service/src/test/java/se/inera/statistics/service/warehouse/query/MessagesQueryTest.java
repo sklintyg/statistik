@@ -72,7 +72,7 @@ public class MessagesQueryTest {
         coll.setStrength(Collator.PRIMARY);
 
         //When
-        final KonDataResponse response = messagesQuery.getMessagesTvarsnittPerAmnePerEnhet(null, new HashMap<>());
+        final KonDataResponse response = messagesQuery.getMessagesTvarsnittPerAmnePerEnhet(null, new HashMap<>(), false);
         final List<String> groups = response.getGroups().stream().map(a -> MsgAmne.parse(a).getText()).collect(Collectors.toList());
         final List<String> sortedGroups = new ArrayList<>(groups);
         sortedGroups.sort(coll);
@@ -88,13 +88,13 @@ public class MessagesQueryTest {
         final MessagesFilter filter = null;
         final String enhetsidtest = "enhetsidtest";
         final CountDTOAmne countDTOAmne = createCountDTOAmne(enhetsidtest);
-        Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter)).thenReturn(Arrays.asList(countDTOAmne));
+        Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter, false)).thenReturn(Arrays.asList(countDTOAmne));
         final HashMap<HsaIdEnhet, String> idToNameMap = new HashMap<>();
         final String testenhetsnamn = "testenhetsnamn";
         idToNameMap.put(new HsaIdEnhet(enhetsidtest), testenhetsnamn);
 
         //When
-        final KonDataResponse resp = messagesQuery.getMessagesTvarsnittPerAmnePerEnhet(filter, idToNameMap);
+        final KonDataResponse resp = messagesQuery.getMessagesTvarsnittPerAmnePerEnhet(filter, idToNameMap, false);
 
         //Then
         assertEquals(1, resp.getRows().size());
@@ -117,7 +117,7 @@ public class MessagesQueryTest {
         final HsaIdLakare lakare = new HsaIdLakare("lakareid");
         countDTOAmne.setLakareId(lakare);
         countDTOAmne.setDate(LocalDate.now());
-        Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter)).thenReturn(Collections.singletonList(countDTOAmne));
+        Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter, false)).thenReturn(Collections.singletonList(countDTOAmne));
         Mockito.doReturn(Collections.singletonList(new Lakare(HsaIdVardgivare.empty(), lakare, null, null)))
             .when(lakareManager).getAllSpecifiedLakares(Mockito.anyCollectionOf(HsaIdLakare.class));
 
@@ -136,7 +136,7 @@ public class MessagesQueryTest {
         final HsaIdLakare lakare = new HsaIdLakare("lakareid");
         countDTOAmne.setLakareId(lakare);
         countDTOAmne.setDate(LocalDate.now());
-        Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter)).thenReturn(Collections.singletonList(countDTOAmne));
+        Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter, false)).thenReturn(Collections.singletonList(countDTOAmne));
         Mockito.doReturn(Collections.emptyList()).when(lakareManager).getAllSpecifiedLakares(Mockito.anyCollectionOf(HsaIdLakare.class));
 
         //When
@@ -156,7 +156,7 @@ public class MessagesQueryTest {
         countDTOAmne.setKon(Kon.FEMALE);
         countDTOAmne.setAmne(MsgAmne.KOMPLT);
         countDTOAmne.setDate(LocalDate.now());
-        Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter)).thenReturn(Collections.singletonList(countDTOAmne));
+        Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter, false)).thenReturn(Collections.singletonList(countDTOAmne));
         Mockito.doReturn(Collections.singletonList(new Lakare(HsaIdVardgivare.empty(), lakare, null, null)))
             .when(lakareManager).getAllSpecifiedLakares(Mockito.anyCollectionOf(HsaIdLakare.class));
 
@@ -178,7 +178,7 @@ public class MessagesQueryTest {
         countDTOAmne.setKon(Kon.FEMALE);
         countDTOAmne.setAmne(MsgAmne.KOMPLT);
         countDTOAmne.setDate(LocalDate.now());
-        Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter)).thenReturn(Collections.singletonList(countDTOAmne));
+        Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter, false)).thenReturn(Collections.singletonList(countDTOAmne));
         Mockito.doReturn(Collections.emptyList()).when(lakareManager).getAllSpecifiedLakares(Mockito.anyCollectionOf(HsaIdLakare.class));
 
         //When

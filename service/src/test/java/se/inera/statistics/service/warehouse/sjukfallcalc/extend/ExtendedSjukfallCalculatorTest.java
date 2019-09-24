@@ -153,7 +153,7 @@ public class ExtendedSjukfallCalculatorTest {
     }
 
     private Fact createFact(int startdatum, int slutdatum, int patient) {
-        return FactBuilder.newFact(1L, 1, 1, 1, 1, 1, patient, startdatum, slutdatum, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
+        return FactBuilder.newFact(1L, 1, 1, 1, 1, 1,  1, patient, startdatum, slutdatum, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
     }
 
 }

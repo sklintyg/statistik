@@ -111,6 +111,6 @@ public class LoginInfoTest {
     }
 
     private Verksamhet createVerksamhet(String enhetId, String vgId) {
-        return new Verksamhet(new HsaIdEnhet(enhetId), "", new HsaIdVardgivare(vgId), "", "", "", "", "", null);
+        return new Verksamhet(new HsaIdEnhet(enhetId), "", new HsaIdVardgivare(vgId), "", "", "", "", "", null, "ve" + enhetId);
     }
 }

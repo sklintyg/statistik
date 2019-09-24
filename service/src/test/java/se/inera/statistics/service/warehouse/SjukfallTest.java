@@ -34,7 +34,7 @@ public class SjukfallTest {
     public void testConstructorNewSjukfall() throws Exception {
         //When
         SjukfallExtended result = new SjukfallExtended(
-            FactBuilder.newFact(1L, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[]{1}, 1));
+            FactBuilder.newFact(1L, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[]{1}, 1));
 
         //Then
         assertEquals(1, result.getAlder());
@@ -57,11 +57,11 @@ public class SjukfallTest {
     public void testConstructorExtendSjukfall() throws Exception {
         //Given
         SjukfallExtended sjukfall = new SjukfallExtended(
-            FactBuilder.newFact(1L, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[]{1}, 1));
+            FactBuilder.newFact(1L, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[]{1}, 1));
 
         //When
         SjukfallExtended result = new SjukfallExtended(sjukfall,
-            FactBuilder.newFact(2L, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, new int[]{2}, 2));
+            FactBuilder.newFact(2L, 2, 2, 2, 2, 2,  2, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, new int[]{2}, 2));
 
         //Then
         assertEquals(2, result.getAlder());
@@ -91,8 +91,8 @@ public class SjukfallTest {
         final int orgSlut = 10;
         final int newStart = orgSlut + gap + 1;
         final SjukfallExtended orgSjukfall = new SjukfallExtended(
-            FactBuilder.newFact(1L, 0, 0, 0, 0, 0, 0, orgStart, orgSlut, 0, 0, 0, 0, 0, 0, 0, 0, 0, new int[0], 0));
-        final Fact fact = FactBuilder.newFact(1L, 0, 0, 0, 0, 0, 0, newStart, newStart, 0, 0, 0, 0, 0, 0, 1, 0, 0, new int[0], 0);
+            FactBuilder.newFact(1L, 0, 0, 0, 0, 0,  0, 0, orgStart, orgSlut, 0, 0, 0, 0, 0, 0, 0, 0, 0, new int[0], 0));
+        final Fact fact = FactBuilder.newFact(1L, 0, 0, 0, 0, 0,  0, 0, newStart, newStart, 0, 0, 0, 0, 0, 0, 1, 0, 0, new int[0], 0);
 
         //When
         final SjukfallExtended newSjukfall = orgSjukfall.join(fact);
@@ -109,8 +109,8 @@ public class SjukfallTest {
         final int orgSlut = 10;
         final int newStart = orgSlut + gap + 1;
         final SjukfallExtended orgSjukfall = new SjukfallExtended(
-            FactBuilder.newFact(1L, 0, 0, 0, 0, 0, 0, orgStart, orgSlut, 0, 0, 0, 0, 0, 0, 0, 0, 0, new int[0], 0));
-        final Fact fact = FactBuilder.newFact(1L, 0, 0, 0, 0, 0, 0, newStart, newStart, 0, 0, 0, 0, 0, 0, 1, 0, 0, new int[0], 0);
+            FactBuilder.newFact(1L, 0, 0, 0, 0, 0,  0, 0, orgStart, orgSlut, 0, 0, 0, 0, 0, 0, 0, 0, 0, new int[0], 0));
+        final Fact fact = FactBuilder.newFact(1L, 0, 0, 0, 0, 0,  0, 0, newStart, newStart, 0, 0, 0, 0, 0, 0, 1, 0, 0, new int[0], 0);
 
         //When
         final SjukfallExtended newSjukfall = orgSjukfall.join(fact);
@@ -318,18 +318,18 @@ public class SjukfallTest {
 
     private Fact createFact(int startdatum, int sjukskrivningslangd) {
         return FactBuilder
-            .newFact(1L, 1, 1, 1, 1, 1, 1, startdatum, startdatum + sjukskrivningslangd - 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
+            .newFact(1L, 1, 1, 1, 1, 1,  1, 1, startdatum, startdatum + sjukskrivningslangd - 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
     }
 
     private Fact createFact(int startdatum, int sjukskrivningslangd, int diagnoskapitel) {
         return FactBuilder
-            .newFact(1L, 1, 1, 1, 1, 1, 1, startdatum, startdatum + sjukskrivningslangd - 1, 1, 1, diagnoskapitel, 1, 1, 1, 1, 1, 1,
+            .newFact(1L, 1, 1, 1, 1, 1,  1, 1, startdatum, startdatum + sjukskrivningslangd - 1, 1, 1, diagnoskapitel, 1, 1, 1, 1, 1, 1,
                 new int[0], 1);
     }
 
     private Fact createFact(int startdatum, int sjukskrivningslangd, long intygsid) {
         return FactBuilder
-            .newFact(1L, 1, 1, 1, 1, intygsid, 1, startdatum, startdatum + sjukskrivningslangd - 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0],
+            .newFact(1L, 1, 1, 1, 1, 1,  intygsid, 1, startdatum, startdatum + sjukskrivningslangd - 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0],
                 1);
     }
 
@@ -374,7 +374,7 @@ public class SjukfallTest {
         //When
         final int firstIntygId = 17;
         final SjukfallExtended sjukfall1 = new SjukfallExtended(
-            FactBuilder.newFact(1L, 1, 1, 1, 1, firstIntygId, 1, 2, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1));
+            FactBuilder.newFact(1L, 1, 1, 1, 1, 1,  firstIntygId, 1, 2, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1));
         final SjukfallExtended sjukfall2 = new SjukfallExtended(sjukfall1, new SjukfallExtended(createFact(10, 4)));
         final SjukfallExtended sjukfall3 = new SjukfallExtended(sjukfall2, new SjukfallExtended(createFact(6, 4)));
 
@@ -389,11 +389,11 @@ public class SjukfallTest {
         final SjukfallExtended sjukfall1 = new SjukfallExtended(createFact(2, 4));
 
         //Add a sjukfall which originates from a second intyg - 11 days - has the LOWEST startdate
-        Fact factForSecondIntygsId = FactBuilder.newFact(1L, 1, 1, 1, 1, 2, 1, 1, 11, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
+        Fact factForSecondIntygsId = FactBuilder.newFact(1L, 1, 1, 1, 1, 1,  2, 1, 1, 11, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
         final SjukfallExtended sjukfall2 = sjukfall1.extendSjukfall(new SjukfallExtended(factForSecondIntygsId));
 
         //Add another sjukfall which originates from a third intyg - 20 days
-        Fact factForThirdIntygsId = FactBuilder.newFact(1L, 1, 1, 1, 1, 3, 1, 2, 21, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
+        Fact factForThirdIntygsId = FactBuilder.newFact(1L, 1, 1, 1, 1, 1,  3, 1, 2, 21, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
         final SjukfallExtended sjukfall3 = sjukfall2.extendSjukfall(new SjukfallExtended(factForThirdIntygsId));
 
         //Then
@@ -403,7 +403,7 @@ public class SjukfallTest {
 
     private Fact createFact(int lakarintyg, int startdatum, int diagnosavsnitt, int sjukskrivningsgrad) {
         return FactBuilder
-            .newFact(1L, 1, 1, 1, 1, lakarintyg, 1, startdatum, 1, 1, 1, 1, diagnosavsnitt, 1, 1, sjukskrivningsgrad, 1, 1, new int[0], 1);
+            .newFact(1L, 1, 1, 1, 1, 1,  lakarintyg, 1, startdatum, 1, 1, 1, 1, diagnosavsnitt, 1, 1, sjukskrivningsgrad, 1, 1, new int[0], 1);
     }
 
     @Test
@@ -418,7 +418,7 @@ public class SjukfallTest {
 
     private Fact createFactDxOrder(int lakarintyg, int startdatum, int slutdatum, int diagnosavsnitt) {
         return FactBuilder
-            .newFact(1L, 1, 1, 1, 1, lakarintyg, 1, startdatum, slutdatum, 1, 1, 1, diagnosavsnitt, 1, 1, 1, 1, 1, new int[0], 1);
+            .newFact(1L, 1, 1, 1, 1, 1,  lakarintyg, 1, startdatum, slutdatum, 1, 1, 1, diagnosavsnitt, 1, 1, 1, 1, 1, new int[0], 1);
     }
 
 }

@@ -45,12 +45,14 @@ public class Sjukfall implements Serializable {
     private Set<Lakare> lakare = new HashSet<>();
     private Lakare lastLakare;
     private Collection<HsaIdEnhet> enhets;
+    private Collection<HsaIdEnhet> vardenhets;
     private int realDays;
     private long firstIntygId;
     private int intygCountIncludingBeforeCurrentPeriod;
     private List<Diagnos> diagnoses = new ArrayList<>();
     private Diagnos diagnos;
     private HsaIdEnhet lastEnhet;
+    private HsaIdEnhet lastVardEnhet;
 
     private Sjukfall() {
     }
@@ -69,8 +71,10 @@ public class Sjukfall implements Serializable {
         sjukfall.lan = extendedSjukfall.getLan();
         sjukfall.lakare = extendedSjukfall.getLakare();
         sjukfall.lastLakare = extendedSjukfall.getLastLakare();
+        sjukfall.vardenhets = extendedSjukfall.getVardenhets();
         sjukfall.enhets = extendedSjukfall.getEnhets();
         sjukfall.lastEnhet = extendedSjukfall.getLastEnhet();
+        sjukfall.lastVardEnhet = extendedSjukfall.getLastVardenhet();
         sjukfall.firstIntygId = extendedSjukfall.getFirstIntygId();
         sjukfall.intygCountIncludingBeforeCurrentPeriod = extendedSjukfall.getIntygCountIncludingBeforeCurrentPeriod();
         return sjukfall;
@@ -199,8 +203,16 @@ public class Sjukfall implements Serializable {
         return enhets;
     }
 
+    public Collection<HsaIdEnhet> getVardenhets() {
+        return vardenhets;
+    }
+
     public HsaIdEnhet getLastEnhet() {
         return lastEnhet;
+    }
+
+    public HsaIdEnhet getLastVardEnhet() {
+        return lastVardEnhet;
     }
 
     public long getFirstIntygId() {

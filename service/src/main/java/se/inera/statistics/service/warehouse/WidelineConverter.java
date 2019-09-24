@@ -70,11 +70,14 @@ public class WidelineConverter extends AbstractWidlineConverter {
     public List<WideLine> toWideline(IntygDTO dto, HsaInfo hsa, long logId, String correlationId, EventType type) {
         String lkf = getLkf(hsa);
 
-        String enhet = HSAServiceHelper.getEnhetId(hsa);
+        String huvudenhet = HSAServiceHelper.getHuvudEnhetId(hsa);
+        String underenhet = HSAServiceHelper.getUnderenhetId(hsa);
+        String vardenhet = huvudenhet != null ? huvudenhet : underenhet;
+        String enhet = huvudenhet != null ? underenhet : null;
         HsaIdVardgivare vardgivare = HSAServiceHelper.getVardgivarId(hsa);
 
-        if (enhet == null) {
-            enhet = dto.getEnhet();
+        if (vardenhet == null) {
+            vardenhet = dto.getEnhet();
         }
 
         String patient = dto.getPatientid();
@@ -94,7 +97,7 @@ public class WidelineConverter extends AbstractWidlineConverter {
 
         List<WideLine> lines = new ArrayList<>();
         for (Arbetsnedsattning arbetsnedsattning : dto.getArbetsnedsattnings()) {
-            WideLine line = createWideLine(logId, correlationId, type, lkf, enhet, vardgivare, patient, kon, alder, dx,
+            WideLine line = createWideLine(logId, correlationId, type, lkf, vardenhet, enhet, vardgivare, patient, kon, alder, dx,
                 lakarkon, lakaralder, lakarbefattning, lakareid, arbetsnedsattning, active);
             lines.add(line);
         }
@@ -103,9 +106,10 @@ public class WidelineConverter extends AbstractWidlineConverter {
 
     // CHECKSTYLE:OFF ParameterNumberCheck
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
-    private WideLine createWideLine(long logId, String correlationId, EventType type, String lkf, String enhet, HsaIdVardgivare vardgivare,
-        String patient, int kon, int alder, Diagnos dx, int lakarkon, int lakaralder, String lakarbefattning,
-        HsaIdLakare lakareid, Arbetsnedsattning arbetsnedsattning, boolean active) {
+    private WideLine createWideLine(long logId, String correlationId, EventType type, String lkf, String vardenhet,
+                                    String enhet, HsaIdVardgivare vardgivare, String patient, int kon,
+                                    int alder, Diagnos dx, int lakarkon, int lakaralder, String lakarbefattning,
+                                    HsaIdLakare lakareid, Arbetsnedsattning arbetsnedsattning, boolean active) {
         WideLine line = new WideLine();
 
         int sjukskrivningsgrad = arbetsnedsattning.getNedsattning();
@@ -119,6 +123,7 @@ public class WidelineConverter extends AbstractWidlineConverter {
         line.setActive(active);
         line.setLkf(lkf);
         line.setEnhet(new HsaIdEnhet(enhet));
+        line.setVardenhet(new HsaIdEnhet(vardenhet));
         line.setVardgivareId(vardgivare);
 
         line.setStartdatum(toDay(kalenderStart));
@@ -204,7 +209,7 @@ public class WidelineConverter extends AbstractWidlineConverter {
         List<String> errors = new ArrayList<>();
         checkField(errors, line.getLkf(), "LKF");
         checkField(errors, line.getVardgivareId(), "Vårdgivare", MAX_LENGTH_VGID);
-        checkField(errors, line.getEnhet(), "Enhet");
+        checkField(errors, line.getVardenhet(), "Vardenhet");
         checkField(errors, line.getPatientid(), "Patient");
         checkAge(errors, line.getAlder());
         checkField(errors, line.getCorrelationId(), "CorrelationId", MAX_LENGTH_CORRELATION_ID);

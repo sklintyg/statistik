@@ -247,11 +247,19 @@ public class SjukfallExtended {
     }
 
     public Set<HsaIdEnhet> getEnhets() {
-        return facts.stream().map(Fact::getEnhet).collect(Collectors.toSet());
+        return facts.stream().map(Fact::getUnderenhet).collect(Collectors.toSet());
+    }
+
+    public Set<HsaIdEnhet> getVardenhets() {
+        return facts.stream().map(Fact::getVardenhet).collect(Collectors.toSet());
     }
 
     HsaIdEnhet getLastEnhet() {
-        return getLastFact().getEnhet();
+        return getLastFact().getUnderenhet();
+    }
+
+    HsaIdEnhet getLastVardenhet() {
+        return getLastFact().getVardenhet();
     }
 
     public SjukfallExtended extendWithRealDaysWithinPeriod(SjukfallExtended previous) {

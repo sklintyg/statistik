@@ -63,7 +63,7 @@ public class LoginInfoServiceIT {
         AuthUtil.setUserToSecurityContext(user);
 
         manager.persist(new Enhet(new HsaIdVardgivare("VG2"), new HsaIdEnhet("ENHETID"), "EnhetNamn", Lan.OVRIGT_ID, Kommun.OVRIGT_ID,
-            VerksamhetsTyp.OVRIGT_ID));
+            VerksamhetsTyp.OVRIGT_ID, "VEID"));
 
         //When
         final LoginInfo loginInfo = loginInfoService.getLoginInfo();

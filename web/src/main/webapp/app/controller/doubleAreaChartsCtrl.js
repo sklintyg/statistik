@@ -231,7 +231,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
       }
 
       $scope.routeParams = $routeParams;
-      $scope.subTitle = config.title;
+      $scope.subTitle = angular.isFunction(config.title) ? config.title(isRegion) : config.title;
       $scope.chartFootnotes = angular.isFunction(config.chartFootnotes) ? config.chartFootnotes(isVerksamhet) : config.chartFootnotes;
       $scope.chartFootnotes = Array.isArray($scope.chartFootnotes) ? $scope.chartFootnotes : [];
       $scope.showDiagnosisSelector = config.showDiagnosisSelector;
@@ -239,7 +239,18 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
       $scope.showDetailsOptions2 = config.showDetailsOptions2 && isVerksamhet;
       $scope.showDetailsOptions3 = config.showDetailsOptions3 && isVerksamhet;
 
-      $scope.useSpecialPrintTable = true;
+      $scope.showEnhetDepthOptions = config.showEnhetDepthOptions;
+      $scope.vardenhetDepthOptionVardenhetSelected = $routeParams.vardenhetdepth !== 'true';
+
+      $scope.enhetDepthOptionChange = function() {
+        if ($scope.vardenhetDepthOptionVardenhetSelected) {
+            $location.search('vardenhetdepth', 'true');
+        } else {
+            $location.search('vardenhetdepth', 'false');
+        }
+      };
+
+        $scope.useSpecialPrintTable = true;
 
       $scope.exportChart = function(chartName, gender) {
         chartFactory.exportChart(that[chartName], $scope.viewHeader, $scope.subTitle + ' ' + $scope.subTitlePeriod, gender);
@@ -366,10 +377,9 @@ angular.module('StatisticsApp').casesPerBusinessTimeSeriesConfig =
       conf.exportTableUrlVerksamhet = function() {
         return 'api/verksamhet/getNumberOfCasesPerEnhetTimeSeries?format=xlsx';
       };
-      conf.suffixTitle = function(suffix) {
-        return this.title + ' ' + (suffix || '');
+      conf.title = function(isRegion) {
+        messageService.getProperty(isRegion ? 'title.vardenhet.region' : 'title.vardenhet');
       };
-      conf.title = messageService.getProperty('title.vardenhet');
       conf.chartFootnotes = function(isVerksamhet, isRegion) {
         if (isRegion) {
           return ['help.region.vardenhet'];
@@ -382,6 +392,7 @@ angular.module('StatisticsApp').casesPerBusinessTimeSeriesConfig =
         {description: 'Tidsserie', state: '/verksamhet/sjukfallperenhettidsserie', active: true},
         {description: 'Tvärsnitt', state: '/verksamhet/sjukfallperenhet', active: false}];
 
+      conf.showEnhetDepthOptions = true;
       return conf;
     };
 

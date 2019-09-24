@@ -46,6 +46,7 @@ public class Verksamhet implements Serializable {
     private final String kommunId;
     private final String kommunName;
     private final Set<VerksamhetsTyp> verksamhetsTyper;
+    private final String vardenhetId;
 
     private static final CharSequenceTranslator ESCAPER = UnicodeEscaper.below('-').with(excludeBetween('-', '0'), excludeBetween('9', 'A'),
         excludeBetween('Z', 'a'), above('z'));
@@ -53,7 +54,7 @@ public class Verksamhet implements Serializable {
     // CHECKSTYLE:OFF ParameterNumber
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public Verksamhet(HsaIdEnhet id, String name, HsaIdVardgivare vardgivarId, String vardgivarName, String lansId, String lansName,
-        String kommunId, String kommunName, Set<VerksamhetsTyp> verksamhetsTyper) {
+        String kommunId, String kommunName, Set<VerksamhetsTyp> verksamhetsTyper, String vardenhetId) {
         this.id = id.getId();
         this.name = name;
         this.vardgivarId = vardgivarId.getId();
@@ -63,6 +64,7 @@ public class Verksamhet implements Serializable {
         this.kommunId = kommunId;
         this.kommunName = kommunName;
         this.verksamhetsTyper = verksamhetsTyper;
+        this.vardenhetId = vardenhetId;
     }
     // CHECKSTYLE:ON ParameterNumber
 
@@ -107,6 +109,10 @@ public class Verksamhet implements Serializable {
         return kommunName;
     }
 
+    public String getVardenhetId() {
+        return vardenhetId;
+    }
+
     public Set<VerksamhetsTyp> getVerksamhetsTyper() {
         return verksamhetsTyper;
     }
@@ -117,6 +123,10 @@ public class Verksamhet implements Serializable {
 
     public static String decodeId(String encodedId) {
         return new UnicodeUnescaper().translate(encodedId.replace('_', '\\'));
+    }
+
+    public boolean isVardenhet() {
+        return id.equalsIgnoreCase(vardenhetId);
     }
 
     public static final class VerksamhetsTyp implements Serializable {
@@ -170,6 +180,7 @@ public class Verksamhet implements Serializable {
         public String toString() {
             return id;
         }
+
     }
 
 }

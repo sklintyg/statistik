@@ -53,6 +53,7 @@ public class MessageWideLine {
     private int kon;
     private int alder;
     private String enhet;
+    private String vardenhet;
     private String vardgivareid;
     @Enumerated(EnumType.STRING)
     private IntygType intygstyp;
@@ -186,6 +187,14 @@ public class MessageWideLine {
 
     public void setEnhet(String enhet) {
         this.enhet = enhet;
+    }
+
+    public String getVardenhet() {
+        return vardenhet;
+    }
+
+    public void setVardenhet(String vardenhet) {
+        this.vardenhet = vardenhet;
     }
 
     public String getVardgivareid() {

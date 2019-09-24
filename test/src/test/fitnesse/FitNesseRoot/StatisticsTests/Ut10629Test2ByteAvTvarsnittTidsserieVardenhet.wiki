@@ -1,0 +1,98 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+Gäller STATISTIK-935, 942.
+
+!3 Givet att:
+
+| script | dagens datum | 2014-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | huvudenhet |
+| 19790219-9285 | G01 | 2014-06-01 | 2014-06-30 | 0             |        | ENHET1 |
+| 19790717-9191 | G02 | 2014-07-01 | 2014-10-30 | 50            | enhet2 | ENHET1 |
+
+
+!3 Då gäller:
+
+| Sjukfall i rapporten sjukfall per enhet |
+| inloggad som | vårdenhet | vårdenhetdjup | vårdgivarnivå | totalt? | män? | kvinnor? |
+| user2        | ENHET1    | true          | true          | 2       | 1    | 1        |
+| user2        | ENHET1    | false         | true          | -1       | -1    | -1        |
+| user2        | enhet2    | true          | true          | -1       | -1    | -1        |
+| user2        | enhet2    | false         | true          | 1       | 1    | 0        |
+
+| Sjukfall i rapporten sjukfall per enhet som tidsserie |
+| inloggad som | år   | månad | vårdenhet | vårdenhetdjup | män? | kvinnor? |
+| user2        | 2013 | jun   | enhet1 | true | 0    | 0        |
+| user2        | 2013 | jul   | enhet1 | true | 0    | 0        |
+| user2        | 2013 | aug   | enhet1 | true | 0    | 0        |
+| user2        | 2013 | sep   | enhet1 | true | 0    | 0        |
+| user2        | 2013 | okt   | enhet1 | true | 0    | 0        |
+| user2        | 2013 | nov   | enhet1 | true | 0    | 0        |
+| user2        | 2013 | dec   | enhet1 | true | 0    | 0        |
+| user2        | 2014 | jan   | enhet1 | true | 0    | 0        |
+| user2        | 2014 | feb   | enhet1 | true | 0    | 0        |
+| user2        | 2014 | mar   | enhet1 | true | 0    | 0        |
+| user2        | 2014 | apr   | enhet1 | true | 0    | 0        |
+| user2        | 2014 | maj   | enhet1 | true | 0    | 0        |
+| user2        | 2014 | jun   | enhet1 | true | 0    | 1        |
+| user2        | 2014 | jul   | enhet1 | true | 1    | 0        |
+| user2        | 2014 | aug   | enhet1 | true | 1    | 0        |
+| user2        | 2014 | sep   | enhet1 | true | 1    | 0        |
+| user2        | 2014 | okt   | enhet1 | true | 1    | 0        |
+| user2        | 2013 | jun   | enhet2 | true  | 0    | 0        |
+| user2        | 2013 | jul   | enhet2 | true  | 0    | 0        |
+| user2        | 2013 | aug   | enhet2 | true  | 0    | 0        |
+| user2        | 2013 | sep   | enhet2 | true  | 0    | 0        |
+| user2        | 2013 | okt   | enhet2 | true  | 0    | 0        |
+| user2        | 2013 | nov   | enhet2 | true  | 0    | 0        |
+| user2        | 2013 | dec   | enhet2 | true  | 0    | 0        |
+| user2        | 2014 | jan   | enhet2 | true  | 0    | 0        |
+| user2        | 2014 | feb   | enhet2 | true  | 0    | 0        |
+| user2        | 2014 | mar   | enhet2 | true  | 0    | 0        |
+| user2        | 2014 | apr   | enhet2 | true  | 0    | 0        |
+| user2        | 2014 | maj   | enhet2 | true  | 0    | 0        |
+| user2        | 2014 | jun   | enhet2 | true  | 0    | 0        |
+| user2        | 2014 | jul   | enhet2 | true  | 0    | 0        |
+| user2        | 2014 | aug   | enhet2 | true  | 0    | 0        |
+| user2        | 2014 | sep   | enhet2 | true  | 0    | 0        |
+| user2        | 2014 | okt   | enhet2 | true  | 0    | 0        |
+| user2        | 2013 | jun   | enhet1 | false | 0    | 0        |
+| user2        | 2013 | jul   | enhet1 | false | 0    | 0        |
+| user2        | 2013 | aug   | enhet1 | false | 0    | 0        |
+| user2        | 2013 | sep   | enhet1 | false | 0    | 0        |
+| user2        | 2013 | okt   | enhet1 | false | 0    | 0        |
+| user2        | 2013 | nov   | enhet1 | false | 0    | 0        |
+| user2        | 2013 | dec   | enhet1 | false | 0    | 0        |
+| user2        | 2014 | jan   | enhet1 | false | 0    | 0        |
+| user2        | 2014 | feb   | enhet1 | false | 0    | 0        |
+| user2        | 2014 | mar   | enhet1 | false | 0    | 0        |
+| user2        | 2014 | apr   | enhet1 | false | 0    | 0        |
+| user2        | 2014 | maj   | enhet1 | false | 0    | 0        |
+| user2        | 2014 | jun   | enhet1 | false | 0    | 0        |
+| user2        | 2014 | jul   | enhet1 | false | 0    | 0        |
+| user2        | 2014 | aug   | enhet1 | false | 0    | 0        |
+| user2        | 2014 | sep   | enhet1 | false | 0    | 0        |
+| user2        | 2014 | okt   | enhet1 | false | 0    | 0        |
+| user2        | 2013 | jun   | enhet2 | false | 0    | 0        |
+| user2        | 2013 | jul   | enhet2 | false | 0    | 0        |
+| user2        | 2013 | aug   | enhet2 | false | 0    | 0        |
+| user2        | 2013 | sep   | enhet2 | false | 0    | 0        |
+| user2        | 2013 | okt   | enhet2 | false | 0    | 0        |
+| user2        | 2013 | nov   | enhet2 | false | 0    | 0        |
+| user2        | 2013 | dec   | enhet2 | false | 0    | 0        |
+| user2        | 2014 | jan   | enhet2 | false | 0    | 0        |
+| user2        | 2014 | feb   | enhet2 | false | 0    | 0        |
+| user2        | 2014 | mar   | enhet2 | false | 0    | 0        |
+| user2        | 2014 | apr   | enhet2 | false | 0    | 0        |
+| user2        | 2014 | maj   | enhet2 | false | 0    | 0        |
+| user2        | 2014 | jun   | enhet2 | false | 0    | 0        |
+| user2        | 2014 | jul   | enhet2 | false | 1    | 0        |
+| user2        | 2014 | aug   | enhet2 | false | 1    | 0        |
+| user2        | 2014 | sep   | enhet2 | false | 1    | 0        |
+| user2        | 2014 | okt   | enhet2 | false | 1    | 0        |

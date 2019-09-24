@@ -115,13 +115,13 @@ public class FilterHandler {
         } catch (TooEarlyEndDateException e) {
             LOG.warn("End date too early. Falling back to default filter. Msg: " + e.getMessage());
             LOG.debug("End date too early. Falling back to default filter.", e);
-            return new FilterSettings(getFilterForAllAvailableEnhets(request),
+            return new FilterSettings(getFilterForAllAvailableEnhets(request, true),
                 Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock),
                 Message.create(ErrorType.FILTER, ErrorSeverity.WARN, Messages.ST_F_FI_004));
         } catch (TooLateStartDateException e) {
             LOG.warn("Start date too late. Falling back to default filter. Msg: " + e.getMessage());
             LOG.debug("Start date too late. Falling back to default filter.", e);
-            return new FilterSettings(getFilterForAllAvailableEnhets(request),
+            return new FilterSettings(getFilterForAllAvailableEnhets(request, true),
                 Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock),
                 Message.create(ErrorType.FILTER, ErrorSeverity.WARN, Messages.ST_F_FI_009));
         }
@@ -134,42 +134,48 @@ public class FilterHandler {
         return enhets.stream().map(enhet -> loginServiceUtil.enhetToVerksamhet(enhet)).collect(Collectors.toList());
     }
 
+
     public FilterSettings getFilter(HttpServletRequest request, String filterHash, int defaultNumberOfMonthsInRange) {
+        return getFilter(request, filterHash, defaultNumberOfMonthsInRange, true);
+    }
+
+    public FilterSettings getFilter(HttpServletRequest request, String filterHash,
+                                    int defaultNumberOfMonthsInRange, boolean vardenhetsdepth) {
         try {
             if (filterHash == null || filterHash.isEmpty()) {
-                return new FilterSettings(getFilterForAllAvailableEnhets(request),
+                return new FilterSettings(getFilterForAllAvailableEnhets(request, vardenhetsdepth),
                     Range.createForLastMonthsIncludingCurrent(defaultNumberOfMonthsInRange, clock));
             }
             final FilterData inFilter = filterHashHandler.getFilterFromHash(filterHash);
             final List<HsaIdEnhet> enhetsIDs = getEnhetsFiltered(request, inFilter);
-            return getFilterSettings(request, filterHash, defaultNumberOfMonthsInRange, inFilter, enhetsIDs);
+            return getFilterSettings(request, filterHash, defaultNumberOfMonthsInRange, inFilter, enhetsIDs, vardenhetsdepth);
         } catch (FilterException | FilterHashException e) {
             LOG.warn("Could not use selected filter. Falling back to default filter. Msg: " + e.getMessage());
             LOG.debug("Could not use selected filter. Falling back to default filter.", e);
-            return new FilterSettings(getFilterForAllAvailableEnhets(request),
+            return new FilterSettings(getFilterForAllAvailableEnhets(request, vardenhetsdepth),
                 Range.createForLastMonthsIncludingCurrent(defaultNumberOfMonthsInRange, clock),
                 Message.create(ErrorType.FILTER, ErrorSeverity.WARN, Messages.ST_F_FI_013));
         } catch (TooEarlyEndDateException e) {
             LOG.warn("End date too early. Falling back to default filter. Msg: " + e.getMessage());
             LOG.debug("End date too early. Falling back to default filter.", e);
-            return new FilterSettings(getFilterForAllAvailableEnhets(request),
+            return new FilterSettings(getFilterForAllAvailableEnhets(request, vardenhetsdepth),
                 Range.createForLastMonthsIncludingCurrent(defaultNumberOfMonthsInRange, clock),
                 Message.create(ErrorType.FILTER, ErrorSeverity.WARN, Messages.ST_F_FI_004));
         } catch (TooLateStartDateException e) {
             LOG.warn("Start date too late. Falling back to default filter. Msg: " + e.getMessage());
             LOG.debug("Start date too late. Falling back to default filter.", e);
-            return new FilterSettings(getFilterForAllAvailableEnhets(request),
+            return new FilterSettings(getFilterForAllAvailableEnhets(request, vardenhetsdepth),
                 Range.createForLastMonthsIncludingCurrent(defaultNumberOfMonthsInRange, clock),
                 Message.create(ErrorType.FILTER, ErrorSeverity.WARN, Messages.ST_F_FI_009));
         }
     }
 
     private FilterSettings getFilterSettings(HttpServletRequest request, String filterHash, int defaultRangeValue, FilterData inFilter,
-        List<HsaIdEnhet> enhetsInFilter) throws FilterException, TooEarlyEndDateException, TooLateStartDateException {
-        Set<HsaIdEnhet> enheter = getEnhetNameMap(request, enhetsInFilter).keySet();
+        List<HsaIdEnhet> enhetsInFilter, boolean veDepth) throws FilterException, TooEarlyEndDateException, TooLateStartDateException {
+        Set<HsaIdEnhet> enheter = getEnhetNameMap(request, enhetsInFilter, veDepth).keySet();
         final Predicate<Fact> enhetFilter = sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaIdEnhet[enheter.size()]))
             .getIntygFilter();
-        return getFilterSettings(filterHash, defaultRangeValue, inFilter, enheter, enhetFilter);
+        return getFilterSettings(filterHash, defaultRangeValue, inFilter, enheter, enhetFilter, veDepth);
     }
 
     private FilterSettings getFilterSettingsRegion(HttpServletRequest request, String filterHash, int defaultRangeValue,
@@ -178,11 +184,11 @@ public class FilterHandler {
         Set<HsaIdEnhet> enheter = getEnhetNameMapRegion(request, enhetsInFilter).keySet();
         final Predicate<Fact> enhetFilter = sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaIdEnhet[enheter.size()]))
             .getIntygFilter();
-        return getFilterSettings(filterHash, defaultRangeValue, inFilter, enheter, enhetFilter);
+        return getFilterSettings(filterHash, defaultRangeValue, inFilter, enheter, enhetFilter, true);
     }
 
     private FilterSettings getFilterSettings(String filterHash, int defaultRangeValue, FilterData inFilter,
-        Collection<HsaIdEnhet> enhetsIDs, Predicate<Fact> enhetFilter)
+        Collection<HsaIdEnhet> enhetsIDs, Predicate<Fact> enhetFilter, boolean veDepth)
         throws FilterException, TooEarlyEndDateException, TooLateStartDateException {
         final List<String> diagnoser = inFilter.getDiagnoser();
         final Predicate<Fact> diagnosFilter = getDiagnosFilter(diagnoser);
@@ -190,7 +196,7 @@ public class FilterHandler {
         final Predicate<Fact> aldersgruppFilter = getAldersgruppFilter(aldersgrupp);
         final List<String> sjukskrivningslangds = inFilter.getSjukskrivningslangd();
         final Predicate<Sjukfall> sjukfallLengthFilter = getSjukfallLengthFilter(sjukskrivningslangds);
-        final String hash = getHash(filterHash, enhetsIDs);
+        final String hash = getHash(filterHash, enhetsIDs) + veDepth;
         final Predicate<Fact> predicate = enhetFilter.and(diagnosFilter).and(aldersgruppFilter);
         final boolean sjukfallangdfilterActive = !sjukskrivningslangds.isEmpty();
         final FilterPredicates sjukfallFilter = new FilterPredicates(predicate, sjukfallLengthFilter, hash, sjukfallangdfilterActive);
@@ -320,28 +326,32 @@ public class FilterHandler {
     private Filter getFilterForAllAvailableEnhetsRegion(HttpServletRequest request) {
         final HsaIdVardgivare vardgivarId = getSelectedVgIdForLoggedInUser(request);
         final List<HsaIdEnhet> enhets = regionEnhetHandler.getAllEnhetsForVardgivare(vardgivarId);
-        return getFilterForEnhets(enhets);
+        return getFilterForEnhets(enhets, true);
     }
 
-    private Filter getFilterForEnhets(@Nonnull List<HsaIdEnhet> enhetsAsHsaIds) {
-        final String hashValue = FilterPredicates.getHashValueForEnhets(enhetsAsHsaIds);
-        final FilterPredicates predicate = new FilterPredicates(fact -> enhetsAsHsaIds.contains(fact.getEnhet()), sjukfall -> true,
-            hashValue, false);
+    private Filter getFilterForEnhets(@Nonnull List<HsaIdEnhet> enhetsAsHsaIds, boolean vardenhetsdepth) {
+        final String hashValue = FilterPredicates.getHashValueForEnhets(enhetsAsHsaIds) + vardenhetsdepth;
+        final FilterPredicates predicate = new FilterPredicates(fact ->
+                enhetsAsHsaIds.contains(vardenhetsdepth ? fact.getVardenhet() : fact.getUnderenhet()),
+                sjukfall -> true, hashValue, false);
         final List<String> sjukskrivningslangd = toReadableSjukskrivningslangdName(null);
         final List<String> aldersgrupp = toReadableAgeGroupNames(null);
         final List<String> intygstyper = toReadableIntygTypeName(null);
         return new Filter(predicate, enhetsAsHsaIds, null, sjukskrivningslangd, aldersgrupp, hashValue, intygstyper, true);
     }
 
-    private Filter getFilterForAllAvailableEnhets(HttpServletRequest request) {
+    private Filter getFilterForAllAvailableEnhets(HttpServletRequest request, boolean vardenhetsdepth) {
         LoginInfo info = loginServiceUtil.getLoginInfo();
         final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         if (info.getLoginInfoForVg(vgId).map(LoginInfoVg::isProcessledare).orElse(false)) {
-            return new Filter(SjukfallUtil.ALL_ENHETER, null, null, toReadableSjukskrivningslangdName(null), toReadableAgeGroupNames(null),
-                FilterPredicates.HASH_EMPTY_FILTER, toReadableIntygTypeName(null), true);
+            final FilterPredicates filter = SjukfallUtil.ALL_ENHETER;
+            return new Filter(filter, null, null, toReadableSjukskrivningslangdName(null), toReadableAgeGroupNames(null),
+                FilterPredicates.HASH_EMPTY_FILTER + vardenhetsdepth, toReadableIntygTypeName(null), true);
         }
-        List<HsaIdEnhet> hsaIds = info.getBusinessesForVg(vgId).stream().map(Verksamhet::getId).collect(Collectors.toList());
-        return getFilterForEnhets(hsaIds);
+        List<HsaIdEnhet> hsaIds = info.getBusinessesForVg(vgId).stream()
+                .map(Verksamhet::getId)
+                .collect(Collectors.toList());
+        return getFilterForEnhets(hsaIds, vardenhetsdepth);
     }
 
     private ArrayList<HsaIdEnhet> getEnhetsFilteredRegion(HttpServletRequest request, FilterData inFilter) {
@@ -436,7 +446,7 @@ public class FilterHandler {
         };
     }
 
-    public Map<HsaIdEnhet, String> getEnhetNameMap(HttpServletRequest request, Collection<HsaIdEnhet> enhetsIDs) {
+    public Map<HsaIdEnhet, String> getEnhetNameMap(HttpServletRequest request, Collection<HsaIdEnhet> enhetsIDs, boolean vardenhetsdepth) {
         final HsaIdVardgivare vgid = getSelectedVgIdForLoggedInUser(request);
         LoginInfo info = loginServiceUtil.getLoginInfo();
         Map<HsaIdEnhet, String> enheter = new HashMap<>();
