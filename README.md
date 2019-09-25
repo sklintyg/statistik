@@ -25,9 +25,14 @@ Vi använder Gradle för att bygga applikationerna.
 
 Börja med att skapa en lokal klon av källkodsrepositoryt:
 
-    git clone git@github.com:sklintyg/statistik.git
+    git clone https://github.com/sklintyg/statistik.git
 
-Efter att man har klonat repository navigera till den klonade katalogen och kör följande kommando:
+Efter att man har klonat repository navigera till den klonade katalogen och kör följande 
+kommando för att kontrollera att develop-branchen används:
+
+    git checkout develop
+
+Kör sedan kommandot:
 
     ./gradlew clean build
 
