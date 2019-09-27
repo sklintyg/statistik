@@ -91,6 +91,7 @@ allprojects {
         compile "ch.qos.logback:logback-classic:${logbackVersion}"
         compile "com.google.guava:guava:${googleGuavaVersion}"
 
+	compile "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7.1"
         testCompile "junit:junit:${junitVersion}"
         testCompile "org.springframework:spring-test:${springTestVersion}"
         testCompile "org.mockito:mockito-core:${mockitoVersion}"
