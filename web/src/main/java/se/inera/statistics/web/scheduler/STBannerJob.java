@@ -18,30 +18,17 @@
  */
 package se.inera.statistics.web.scheduler;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import se.inera.intyg.infra.integration.ia.services.IABannerService;
-import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
+import org.springframework.stereotype.Component;
+import se.inera.intyg.infra.driftbannerdto.Application;
+import se.inera.intyg.infra.integration.ia.jobs.BannerJob;
 
-/**
- * Jobs depends on external redis for locking, and the same instance as for caching (see infra) is used.
- */
-@Profile("caching-enabled")
-@Configuration
 @EnableScheduling
-public class BannerJobConfiguration {
+@Component
+public class STBannerJob extends BannerJob {
 
-    @Autowired
-    private IABannerService iaBannerService;
-
-    @Autowired
-    private LogMDCHelper logMDCHelper;
-
-    @Bean
-    public BannerJob bannerJob() {
-        return new BannerJob(iaBannerService, logMDCHelper);
+    @Override
+    protected Application getApplication() {
+        return Application.INTYGSSTATISTIK;
     }
 }
