@@ -182,7 +182,7 @@ angular.module('StatisticsApp').controller('fakeLoginCtrl',
 
         banner: {
           message: '',
-          priority: 'HIGH',
+          priority: 'HOG',
           application: 'INTYGSSTATISTIK',
           createdAt: moment().format(iAdateFormat),
           displayFrom: moment().subtract(1, 'days').format(iAdateFormat),

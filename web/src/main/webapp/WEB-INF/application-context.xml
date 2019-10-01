@@ -80,7 +80,7 @@
         <bean id="dynamicLinkRepository" class="se.inera.intyg.infra.dynamiclink.repository.DynamicLinkRepositoryImpl" />
         <bean id="dynamicLinkService" class="se.inera.intyg.infra.dynamiclink.service.DynamicLinkServiceImpl"/>
         <bean id="linkService" class="se.inera.statistics.web.service.links.LinkService"/>
-        <bean class="se.inera.statistics.web.scheduler.BannerJobConfiguration"/>
+        <bean class="se.inera.statistics.web.scheduler.STBannerJob"/>
 
         <import resource="classpath*:hsa-services-config.xml"/>
         <import resource="classpath*:hsaws-services-config.xml"/>
