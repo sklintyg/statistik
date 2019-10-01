@@ -19,6 +19,7 @@
 package se.inera.statistics.service.processlog;
 
 import java.util.List;
+import java.util.Locale;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -50,7 +51,7 @@ public class VardgivareManager {
         String enhetIdString = underenhetIdString != null ? underenhetIdString : huvudenhetIdString;
         if (enhetIdString == null) {
             hsaEnhet = false;
-            enhetIdString = enhetIdFromIntyg;
+            enhetIdString = enhetIdFromIntyg != null ? enhetIdFromIntyg.toUpperCase(Locale.ENGLISH) : null;
         }
         final HsaIdEnhet enhet = new HsaIdEnhet(enhetIdString);
         final HsaIdVardgivare vardgivare = HSAServiceHelper.getVardgivarId(hsaInfo);
@@ -70,14 +71,15 @@ public class VardgivareManager {
             List<Enhet> resultList = vardgivareQuery.setParameter("enhetId", enhet.getId()).setParameter("vardgivareId", vardgivare.getId())
                 .getResultList();
 
+            final String huvudenhetId = huvudenhetIdString != null ? huvudenhetIdString.toUpperCase(Locale.ENGLISH) : null;
             if (resultList.isEmpty()) {
-                manager.persist(new Enhet(vardgivare, enhet, enhetNamn, lansId, kommunId, verksamhetsTyper, huvudenhetIdString));
+                manager.persist(new Enhet(vardgivare, enhet, enhetNamn, lansId, kommunId, verksamhetsTyper, huvudenhetId));
             } else if (hsaEnhet) {
                 Enhet updatedEnhet = resultList.get(0);
                 updatedEnhet.setLansId(lansId);
                 updatedEnhet.setKommunId(kommunId);
                 updatedEnhet.setVerksamhetsTyper(verksamhetsTyper);
-                updatedEnhet.setVardenhetId(huvudenhetIdString);
+                updatedEnhet.setVardenhetId(huvudenhetId);
                 manager.merge(updatedEnhet);
             }
         }

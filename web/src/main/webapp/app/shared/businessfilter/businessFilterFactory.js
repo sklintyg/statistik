@@ -285,27 +285,29 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
       business.numericalId = business.id;
       business.visibleName = business.name;
 
-      var vardenhet = _.find(munip.subs, {id: business.vardenhetId});
-      if (!vardenhet) {
-        var isVardenhet = business.vardenhetId === business.id;
-        vardenhet = isVardenhet ? {
+      var existingVardenhetInFilter = _.find(munip.subs, {id: business.vardenhet ? business.id : business.vardenhetId});
+
+      if (business.vardenhet && !existingVardenhetInFilter) {
+        munip.subs.push({
           id: business.id,
-          numericalId: business.vardenhetId + 'vardenhet',
+          numericalId: business.id + 'vardenhet',
           name: business.name,
           visibleName: business.visibleName,
           subs: []
-        } : {
+        });
+      } else if (business.vardenhet && existingVardenhetInFilter) {
+        existingVardenhetInFilter.name = business.name;
+        existingVardenhetInFilter.visibleName = business.visibleName;
+      } else if (!business.vardenhet && existingVardenhetInFilter) {
+        existingVardenhetInFilter.subs.push(business);
+      } else {
+        munip.subs.push({
           id: business.vardenhetId,
           numericalId: business.vardenhetId + 'vardenhet',
           name: business.vardenhetId,
           visibleName: business.vardenhetId,
-          subs: []
-        };
-        munip.subs.push(vardenhet);
-
-        vardenhet.subs.push(business);
-      } else {
-        vardenhet.subs.push(business);
+          subs: [business]
+        });
       }
 
     });

@@ -126,7 +126,7 @@ public class Verksamhet implements Serializable {
     }
 
     public boolean isVardenhet() {
-        return id.equalsIgnoreCase(vardenhetId);
+        return vardenhetId == null || id.equalsIgnoreCase(vardenhetId);
     }
 
     public static final class VerksamhetsTyp implements Serializable {
