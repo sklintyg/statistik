@@ -397,7 +397,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
       if (node.allSelected || node.someSelected) {
         return _.reduce(node.subs, function(acc, item) {
           return acc.concat(businessFilter.collectGeographyIds(item));
-        }, []);
+        }, node.allSelected ? [node.id] : []);
       } else {
         return [];
       }
