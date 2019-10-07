@@ -88,7 +88,7 @@
             <ns3:delsvar id="2.2">
                 <ns5:cv>
                     <ns5:code>DELTID</ns5:code>
-                    <ns5:codeSystem>kv-omfattning-arbetsmarknadspolitiskt-program</ns5:codeSystem>
+                    <ns5:codeSystem>1.2.752.129.5.1.2</ns5:codeSystem>
                     <ns5:displayName>Deltid</ns5:displayName>
                 </ns5:cv>
             </ns3:delsvar>
@@ -176,7 +176,7 @@
             <ns3:delsvar id="8.1">
                 <ns5:cv>
                     <ns5:code>ATERGA_MED_ANPASSNING</ns5:code>
-                    <ns5:codeSystem>kv-prognos-återgång-arbetsmarknadspolitiskt-program</ns5:codeSystem>
+                    <ns5:codeSystem>1.2.752.129.5.1.3</ns5:codeSystem>
                     <ns5:displayName>Patienten kan återgå med anpassning</ns5:displayName>
                 </ns5:cv>
             </ns3:delsvar>
