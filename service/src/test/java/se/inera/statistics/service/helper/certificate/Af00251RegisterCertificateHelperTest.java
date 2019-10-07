@@ -123,7 +123,7 @@ public class Af00251RegisterCertificateHelperTest {
         "            <ns3:delsvar id=\"2.2\">\n" +
         "                <ns5:cv>\n" +
         "                    <ns5:code>DELTID</ns5:code>\n" +
-        "                    <ns5:codeSystem>kv-omfattning-arbetsmarknadspolitiskt-program</ns5:codeSystem>\n" +
+        "                    <ns5:codeSystem>1.2.752.129.5.1.2</ns5:codeSystem>\n" +
         "                    <ns5:displayName>Deltid</ns5:displayName>\n" +
         "                </ns5:cv>\n" +
         "            </ns3:delsvar>\n" +
@@ -186,7 +186,7 @@ public class Af00251RegisterCertificateHelperTest {
         "            <ns3:delsvar id=\"8.1\">\n" +
         "                <ns5:cv>\n" +
         "                    <ns5:code>ATERGA_MED_ANPASSNING</ns5:code>\n" +
-        "                    <ns5:codeSystem>kv-prognos-återgång-arbetsmarknadspolitiskt-program</ns5:codeSystem>\n" +
+        "                    <ns5:codeSystem>1.2.752.129.5.1.3</ns5:codeSystem>\n" +
         "                    <ns5:displayName>Patienten kan återgå med anpassning</ns5:displayName>\n" +
         "                </ns5:cv>\n" +
         "            </ns3:delsvar>\n" +
