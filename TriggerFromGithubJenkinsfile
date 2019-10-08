@@ -1,7 +1,0 @@
-#!groovy
-
-stage('propagate') {
-    node {
-        build job: "intyg-statistik", wait: false
-    }
-}
