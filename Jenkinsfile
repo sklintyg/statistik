@@ -1,10 +1,9 @@
 #!groovy
 
-def buildVersion = "7.4.0.${BUILD_NUMBER}"
+def buildVersion = "7.4.0.${BUILD_NUMBER}-nightly"
 def infraVersion = "3.11.0.+"
-def refDataVersion = "1.0-SNAPSHOT"
 
-def versionFlags = "-DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion} -DrefDataVersion=${refDataVersion}"
+def versionFlags = "-DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
 
 stage('checkout') {
     node {
@@ -13,55 +12,19 @@ stage('checkout') {
     }
 }
 
-stage('build') {
+stage('owasp') {
     node {
         try {
-            shgradle "--refresh-dependencies clean build testReport sonarqube -PcodeQuality -PcodeCoverage -DgruntColors=false -PuseMinifiedJavaScript \
-                  ${versionFlags}"
+            shgradle "clean dependencyCheckAggregate ${versionFlags}"
         } finally {
-            publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'build/reports/allTests',   \
-                  reportFiles: 'index.html', reportName: 'JUnit results'
-
+            publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'build/reports', \
+                reportFiles: 'dependency-check-report.html', reportName: 'OWASP dependency-check'
         }
     }
 }
 
-// Right now these tests must run in its own stage, b/c gretty and jacoco don't work together
-stage('integrationTest') {
+stage('sonarqube') {
     node {
-        try {
-            shgradle "integrationTest testReport ${versionFlags}"
-        } finally {
-            publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'service/build/reports/tests/integrationTest',   \
-                  reportFiles: 'index.html', reportName: 'Integration test results'
-
-        }
+        shgradle "sonarqube ${versionFlags}"
     }
 }
-
-stage('tag and upload') {
-    node {
-        shgradle "uploadArchives tagRelease ${versionFlags} -PuseMinifiedJavaScript"
-    }
-}
-
-stage('notify') {
-    node {
-        util.notifySuccess()
-    }
-}
-
-stage('propagate') {
-    node {
-        gitRef = "v${buildVersion}"
-        releaseFlag = "${!GIT_BRANCH.startsWith("develop")}"
-        build job: "statistik-dintyg-build", wait: false, parameters: [
-                [$class: 'StringParameterValue', name: 'STATISTIK_BUILD_VERSION', value: buildVersion],
-                [$class: 'StringParameterValue', name: 'INFRA_VERSION', value: infraVersion],
-                [$class: 'StringParameterValue', name: 'REF_DATA_VERSION', value: refDataVersion],
-                [$class: 'StringParameterValue', name: 'GIT_REF', value: gitRef],
-                [$class: 'StringParameterValue', name: 'RELEASE_FLAG', value: releaseFlag]
-        ]
-    }
-}
-
