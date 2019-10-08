@@ -42,6 +42,7 @@ ext.nexusUsername = System.properties['nexusUsername']
 ext.nexusPassword = System.properties['nexusPassword']
 
 uploadArchives {
+    enabled = true
     repositories {
         mavenDeployer {
             configuration = configurations.deployerJars
