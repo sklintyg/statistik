@@ -42,9 +42,9 @@ gretty {
     def baseUrl = 'http://localhost:8080'
     def jvmArgSpringProfiles = '-Dspring.profiles.active=dev,caching-enabled,testapi,embedded,hsa-stub,wc-hsa-stub,security-both,noprocessing,ia-stub'
 
-    servletContainer = 'jetty9'
+    servletContainer = 'tomcat9'
     contextPath = '/'
-    contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
+
 
     if (project.hasProperty('runWithIntyg')) {
         httpPort = 9101
@@ -63,6 +63,7 @@ gretty {
 
     jvmArgs = [
             jvmArgSpringProfiles,
+            "-Dcatalina.base=${buildDir}/catalina.base",
             '-Dsaml.resource.dir=' + projectDir + '/../devops/dev',
             '-DbaseUrl=' + baseUrl,
             '-Dstatistics.test.max.intyg=200',
@@ -103,6 +104,6 @@ dependencies {
 
     compileOnly "javax.servlet:javax.servlet-api:${javaxServletVersion}"
 
-    gretty "org.apache.tomcat:tomcat-catalina:${tomcatVersion}"
+    gretty "jstl:jstl:${jstlVersion}"
     gretty "se.inera.intyg.refdata:refdata:${refDataVersion}"
 }
