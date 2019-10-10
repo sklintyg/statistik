@@ -4,8 +4,8 @@
 </div>
 
 <div class="modal-body">
-  <p>Inom vårdgivaren <b>{{vgName}}</b> har du behörighet att se statistik för följande vårdenheter:</p>
+  <p>Inom vårdgivaren <b>{{vgName}}</b> har du behörighet att se statistik för följande vårdenheter med tillhörande enheter (enheter ej listade här):</p>
   <ul>
-    <li data-ng-repeat="business in businesses | orderBy:'name'">{{::business.name}}</li>
+    <li data-ng-repeat="business in businesses | filter:{vardenhet: true} | orderBy:'name'">{{::business.name}}</li>
   </ul>
 </div>
