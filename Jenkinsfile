@@ -19,7 +19,7 @@ node {
 
     stage('owasp') {
         try {
-            shgradle "--refresh-dependencies clean dependencyCheckAggregate ${versionFlags}"
+            shgradle "--refresh-dependencies clean dependencyCheckAggregate -Danalyzer.bundle.audit.enabled=false ${versionFlags}"
         } finally {
             publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'build/reports', \
                 reportFiles: 'dependency-check-report.html', reportName: 'OWASP dependency-check'
