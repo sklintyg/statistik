@@ -62,7 +62,7 @@ angular.module('StatisticsApp').controller('FilterActiveSelectionModalCtrl',
         name: 'Valda sjukskrivningslängder',
         icon: 'fa-calendar',
         disabled: function() {
-          return !filterViewState.sjukskrivningslangd;
+          return !$scope.filterViewState.sjukskrivningslangd;
         }
       }, {
         id: 'filter-active-intygstyper',
@@ -70,7 +70,7 @@ angular.module('StatisticsApp').controller('FilterActiveSelectionModalCtrl',
         name: 'Valda intygstyper',
         icon: 'fa-file-text-o',
         disabled: function() {
-          return !filterViewState.intygstyper;
+          return !$scope.filterViewState.intygstyper;
         }
       }];
 
