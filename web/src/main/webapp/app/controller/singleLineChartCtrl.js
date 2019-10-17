@@ -308,8 +308,8 @@ angular.module('StatisticsApp').meddelandenPerAmneOchEnhetConfig =
       conf.exportTableUrlVerksamhet = function() {
         return 'api/verksamhet/getMeddelandenPerAmnePerEnhet?format=xlsx';
       };
-      conf.title = messageService.getProperty('title.meddelandenperamneochenhet');
-      conf.chartFootnotes = ['help.verksamhet.meddelandenperamneochenhet'];
+      conf.title = messageService.getProperty('title.meddelandenperamneochenhetverksamhet');
+      conf.chartFootnotes = ['help.verksamhet.meddelandenperamneochenhetverksamhet'];
       conf.chartYAxisTitleUnit = 'meddelanden';
 
       conf.exchangeableViews = [

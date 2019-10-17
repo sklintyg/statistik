@@ -187,6 +187,7 @@ var stMessages = {
     'title.meddelanden': 'Antal inkomna meddelanden',
     'title.meddelandenperamne': 'Antal inkomna meddelanden fördelat på ämne',
     'title.meddelandenperamneochenhet': 'Antal inkomna meddelanden fördelat på vårdenhet',
+    'title.meddelandenperamneochenhetverksamhet': 'Antal inkomna meddelanden fördelat på vårdenhet eller enhet',
     'title.meddelandenperamneochlakare': 'Antal inkomna meddelanden fördelat på läkare',
     'title.intyg': 'Antal intyg',
     'title.intygstyp': 'Antal utfärdade intyg fördelat på intygstyp',
@@ -213,6 +214,7 @@ var stMessages = {
     'help.verksamhet.lakaregender': 'Denna rapport visar statistik uppdelad i olika läkargrupper utifrån den intygsskrivande läkarens ålder och kön. Information om ålder och kön hämtas från HSA-katalogen.',
     'help.verksamhet.lakare-befattning': 'Denna rapport visar statistik fördelad på befattning hos den intygsskrivande läkaren. Information om befattning hämtas från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade av Intygsstatistik och information kan saknas då det inte är obligatoriskt för vårdenheten att ange befattning. Om en läkare har flera olika läkarbefattningar räknas sjukfallet med i statistiken för var och en av de befattningarna.',
     'help.verksamhet.meddelandenperamneochenhet': 'Denna rapport visar statistik för de vårdenheter som du har behörighet till och som utfärdar läkarintyg och läkarutlåtanden. Vårdenheternas namn hämtas från HSA-katalogen. Observera att statistiken i denna rapport endast innefattar de meddelanden som tillhör Försäkringskassans intyg (med undantag för FK 7263).',
+    'help.verksamhet.meddelandenperamneochenhetverksamhet': 'Denna rapport visar statistik för de vårdenheter som du har behörighet till och som utfärdar läkarintyg. Namn på vårdenheter och enheter hämtas från HSA-katalogen. Observera att statistiken i denna rapport endast innefattar de meddelanden som tillhör Försäkringskassans intyg (med undantag för FK 7263).',
     'help.verksamhet.meddelandenperamneochlakare': 'Denna rapport visar statistik för enskilda intygsskrivande läkare. Namn hämtas från HSA-katalogen. Om läkaren inte går att slå upp i HSA-katalogen eller om läkaren inte har något namn angivet så visas istället läkarens HSA-id. Observera att statistiken i denna rapport endast innefattar de meddelanden som tillhör Försäkringskassans intyg (med undantag för FK 7263).',
     'help.verksamhet.kompletteringarperfraga': 'Denna rapport visar statistik över antal kompletteringsbegäranden fördelat på fråga i FK 7804 Läkarintyg för sjukpenning. Observera att denna statistik inte räknar antal meddelanden med ämnet komplettering. Här räknas varje kompletteringsbegäran och ett meddelande kan innehålla en eller flera kompletteringsbegäranden som rör olika frågor.',
 

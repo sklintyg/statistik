@@ -146,7 +146,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
       };
 
       var populatePageWithDataSuccess = function(result) {
-        $scope.subTitle = angular.isFunction(config.suffixTitle) ? config.suffixTitle($routeParams.kapitelId) : config.title;
+        $scope.subTitle = angular.isFunction(config.suffixTitle) ? config.suffixTitle($routeParams.kapitelId) : (angular.isFunction(config.title) ? config.title(isVerksamhet) : config.title);
         //Period should be on a separate row (INTYG-3288)
         $scope.subTitlePeriod = result.period;
         if (angular.isFunction(config.chartFootnotesExtra)) {
@@ -230,7 +230,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
       }
 
       $scope.routeParams = $routeParams;
-      $scope.subTitle = config.title;
+      $scope.subTitle = angular.isFunction(config.title) ? config.title(isVerksamhet) : config.title;
       $scope.chartFootnotes =
           angular.isFunction(config.chartFootnotes) ? config.chartFootnotes(isVerksamhet, isRegion) : config.chartFootnotes;
       $scope.chartFootnotes = Array.isArray($scope.chartFootnotes) ? $scope.chartFootnotes : [];
@@ -238,7 +238,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
       $scope.showDetailsOptions2 = config.showDetailsOptions2 && isVerksamhet;
       $scope.showDetailsOptions3 = config.showDetailsOptions3 && isVerksamhet;
 
-      $scope.showEnhetDepthOptions = config.showEnhetDepthOptions;
+      $scope.showEnhetDepthOptions = angular.isFunction(config.showEnhetDepthOptions) ? config.showEnhetDepthOptions(isVerksamhet) : false;
       $scope.vardenhetDepthOptionVardenhetSelected = $routeParams.vardenhetdepth !== 'true';
 
       $scope.enhetDepthOptionChange = function() {
@@ -355,7 +355,9 @@ angular.module('StatisticsApp').casesPerBusinessConfig =
       conf.exportTableUrlRegion = function() {
         return 'api/region/getNumberOfCasesPerEnhetRegion?format=xlsx';
       };
-      conf.title = messageService.getProperty('title.vardenhet');
+      conf.title = function(isVerksamhet) {
+        return isVerksamhet ? messageService.getProperty('title.vardenhet') : messageService.getProperty('title.vardenhet.region');
+      };
       conf.chartVerticalLabel = true;
       conf.chartLabelLength = 40;
       conf.chartFootnotesExtra = function(result, isVerksamhet, isRegion, $filter) {
@@ -370,7 +372,9 @@ angular.module('StatisticsApp').casesPerBusinessConfig =
         {description: 'Tidsserie', state: '/verksamhet/sjukfallperenhettidsserie', active: false},
         {description: 'Tvärsnitt', state: '/verksamhet/sjukfallperenhet', active: true}];
 
-      conf.showEnhetDepthOptions = true;
+      conf.showEnhetDepthOptions = function(isVerksamhet) {
+        return !!isVerksamhet;
+      };
       return conf;
     };
 
@@ -748,15 +752,21 @@ angular.module('StatisticsApp').meddelandenPerAmneOchEnhetTvarsnittConfig =
       conf.exportTableUrlVerksamhet = function() {
         return 'api/verksamhet/getMeddelandenPerAmnePerEnhetTvarsnitt?format=xlsx';
       };
-      conf.title = messageService.getProperty('title.meddelandenperamneochenhet');
-      conf.chartFootnotes = ['help.verksamhet.meddelandenperamneochenhet'];
+      conf.title = function(isVerksamhet) {
+        return isVerksamhet ? messageService.getProperty('title.meddelandenperamneochenhetverksamhet') : messageService.getProperty('title.meddelandenperamneochenhet');
+      };
+      conf.chartFootnotes = function(isVerksamhet) {
+        return isVerksamhet ? ['help.verksamhet.meddelandenperamneochenhetverksamhet'] : ['help.verksamhet.meddelandenperamneochenhet'];
+      };
 
       conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/meddelandenPerAmneOchEnhet', active: false},
         {description: 'Tvärsnitt', state: '/verksamhet/meddelandenPerAmneOchEnhetTvarsnitt', active: true}];
       conf.useSpecialPrintTable = true;
 
-      conf.showEnhetDepthOptions = true;
+      conf.showEnhetDepthOptions = function(isVerksamhet) {
+        return !!isVerksamhet;
+      };
 
       return conf;
     };
