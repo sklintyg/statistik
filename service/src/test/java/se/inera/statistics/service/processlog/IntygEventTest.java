@@ -74,6 +74,18 @@ public class IntygEventTest {
     }
 
     @Test
+    public void testGetIntygFormatTsDiabetesWithExtraNS_INTYGFV12378() {
+        //Given
+        String data = IntygCreatorHelper.getTsDiabetesWithExtraNS();
+
+        //When
+        final IntygFormat intygFormat = IntygEvent.getIntygFormat(data);
+
+        //Then
+        assertEquals(IntygFormat.REGISTER_TS_DIABETES, intygFormat);
+    }
+
+    @Test
     public void testGetIntygFormatTsBas() {
         //Given
         String data = IntygCreatorHelper.getTsBas();
