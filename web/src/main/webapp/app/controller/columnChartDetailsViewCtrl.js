@@ -239,14 +239,13 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
       $scope.showDetailsOptions3 = config.showDetailsOptions3 && isVerksamhet;
 
       $scope.showEnhetDepthOptions = angular.isFunction(config.showEnhetDepthOptions) ? config.showEnhetDepthOptions(isVerksamhet) : false;
-      $scope.vardenhetDepthOptionVardenhetSelected = $routeParams.vardenhetdepth !== 'true';
+      $scope.vardenhetDepthOptionVardenhetSelected = $routeParams.vardenhetdepth !== 'false';
+      if ($scope.showEnhetDepthOptions && $routeParams.vardenhetdepth === undefined) {
+        $location.search('vardenhetdepth', 'true');
+      }
 
       $scope.enhetDepthOptionChange = function() {
-        if ($scope.vardenhetDepthOptionVardenhetSelected) {
-          $location.search('vardenhetdepth', 'true');
-        } else {
-          $location.search('vardenhetdepth', 'false');
-        }
+        $location.search('vardenhetdepth', !!$scope.vardenhetDepthOptionVardenhetSelected ? 'false' : 'true');
       };
 
       $scope.showDiagnosisSelector = config.showDiagnosisSelector;
