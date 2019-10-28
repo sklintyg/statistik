@@ -81,7 +81,7 @@ public class MessagesQuery {
 
     public KonDataResponse getMeddelandenPerAmneOchEnhetAggregated(KonDataResponse resultToAggregateIn, MessagesFilter filter,
         int cutoff, Map<HsaIdEnhet, String> idToNameMap) {
-        final KonDataResponse messagesTvarsnittPerAmne = getMessagesTvarsnittPerAmnePerEnhet(filter, idToNameMap, false);
+        final KonDataResponse messagesTvarsnittPerAmne = getMessagesTvarsnittPerAmnePerEnhet(filter, idToNameMap, true);
         return getKonDataResponseAggregated(resultToAggregateIn, filter, cutoff, messagesTvarsnittPerAmne);
     }
 
@@ -100,12 +100,12 @@ public class MessagesQuery {
     }
 
     public KonDataResponse getMessagesPerAmne(MessagesFilter filter) {
-        List<CountDTOAmne> rows = messageWidelineLoader.getAntalMeddelandenPerAmne(filter, false);
+        List<CountDTOAmne> rows = messageWidelineLoader.getAntalMeddelandenPerAmne(filter, true);
         return convertToMessagesPerAmne(rows, filter.getFrom(), filter.getNumberOfMonths());
     }
 
     public SimpleKonResponse getMessagesTvarsnittPerAmne(MessagesFilter filter) {
-        List<CountDTOAmne> rows = messageWidelineLoader.getAntalMeddelandenPerAmne(filter, false);
+        List<CountDTOAmne> rows = messageWidelineLoader.getAntalMeddelandenPerAmne(filter, true);
         return convertToSimpleResponseTvarsnittPerAmne(rows);
     }
 
@@ -177,12 +177,12 @@ public class MessagesQuery {
     }
 
     public KonDataResponse getMessagesPerAmnePerLakare(MessagesFilter filter) {
-        List<CountDTOAmne> rows = messageWidelineLoader.getAntalMeddelandenPerAmne(filter, false);
+        List<CountDTOAmne> rows = messageWidelineLoader.getAntalMeddelandenPerAmne(filter, true);
         return convertToMessagesPerAmnePerLakare(rows, filter.getFrom(), filter.getNumberOfMonths());
     }
 
     public KonDataResponse getMessagesTvarsnittPerAmnePerLakare(MessagesFilter filter) {
-        List<CountDTOAmne> rows = messageWidelineLoader.getAntalMeddelandenPerAmne(filter, false);
+        List<CountDTOAmne> rows = messageWidelineLoader.getAntalMeddelandenPerAmne(filter, true);
         return convertToSimpleResponseTvarsnittPerAmnePerLakare(rows);
     }
 

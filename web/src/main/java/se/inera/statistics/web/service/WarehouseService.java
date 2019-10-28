@@ -389,11 +389,11 @@ public class WarehouseService {
             entry -> {
                 final HashMap<HsaIdEnhet, String> idsToNames = Maps.newHashMapWithExpectedSize(entry.getValue().size());
                 for (Enhet enhet : entry.getValue()) {
-                    idsToNames.put(enhet.getEnhetId(), enhet.getNamn());
+                    idsToNames.put(new HsaIdEnhet(enhet.getVardenhetId()), enhet.getNamn());
                 }
                 final Aisle aisle = warehouse.get(entry.getKey());
                 return sjukfallQuery.getSjukfallPerEnhet(aisle, filterSettings.getFilter().getPredicate(), range.getFrom(), 1,
-                    range.getNumberOfMonths(), idsToNames, cutoffUsage, false);
+                    range.getNumberOfMonths(), idsToNames, cutoffUsage, true);
             });
         final SimpleKonResponse merged = SimpleKonResponse.merge(results, false, AvailableFilters.getForSjukfall());
         return SimpleKonResponses.addExtrasToNameDuplicates(merged);
