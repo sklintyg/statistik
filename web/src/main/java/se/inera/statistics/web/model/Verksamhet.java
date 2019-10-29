@@ -29,6 +29,7 @@ import org.apache.commons.text.translate.UnicodeEscaper;
 import org.apache.commons.text.translate.UnicodeUnescaper;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.processlog.Enhet;
 
 @JsonAutoDetect(
     fieldVisibility = JsonAutoDetect.Visibility.ANY,
@@ -126,7 +127,7 @@ public class Verksamhet implements Serializable {
     }
 
     public boolean isVardenhet() {
-        return vardenhetId == null || id.equalsIgnoreCase(vardenhetId);
+        return Enhet.isVardenhet(id, vardenhetId);
     }
 
     public static final class VerksamhetsTyp implements Serializable {

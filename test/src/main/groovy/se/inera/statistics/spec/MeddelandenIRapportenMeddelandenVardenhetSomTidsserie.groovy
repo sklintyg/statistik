@@ -20,7 +20,7 @@ package se.inera.statistics.spec
 
 class MeddelandenIRapportenMeddelandenVardenhetSomTidsserie extends DualSexTimeSeriesReport {
 
-    String vårdenhetdjup
+    String vårdenhetdjup = true
 
     @Override
     public void doExecute() {

@@ -147,7 +147,11 @@ public class Enhet implements Serializable {
     }
 
     public boolean isVardenhet() {
-        return enhetId.equals(vardenhetId);
+        return isVardenhet(enhetId, vardenhetId);
+    }
+
+    public static boolean isVardenhet(String enhetId, String vardenhetId) {
+        return enhetId == null || vardenhetId == null || enhetId.equalsIgnoreCase(vardenhetId);
     }
 
 }

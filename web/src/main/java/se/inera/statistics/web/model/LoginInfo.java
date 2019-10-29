@@ -77,6 +77,7 @@ public class LoginInfo {
     public List<Verksamhet> getBusinessesForVg(HsaIdVardgivare vgId) {
         return businesses.stream()
             .filter(verksamhet -> verksamhet.getVardgivarId().equals(vgId))
+            .filter(verksamhet -> !verksamhet.getId().isEmpty())
             .collect(Collectors.toList());
     }
 

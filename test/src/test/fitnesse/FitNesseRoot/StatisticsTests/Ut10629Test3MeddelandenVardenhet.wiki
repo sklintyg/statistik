@@ -30,9 +30,9 @@ Inloggad:
 |user2       | Enhet enhet2 |Komplettering  |true|-1      |-1   |-1       |
 |user2       | Enhet enhet2 |Avstämningsmöte|true|-1      |-1   |-1       |
 |user2       | Enhet enhet2 |Övrigt         |true|-1      |-1   |-1       |
-|user2       | Enhet enhet1 |Komplettering  |false|1      |1   |0       |
-|user2       | Enhet enhet1 |Avstämningsmöte|false|1      |1   |0       |
-|user2       | Enhet enhet1 |Övrigt         |false|0      |0   |0       |
+|user2       | Enhet enhet1 |Komplettering  |false|-1      |-1   |-1       |
+|user2       | Enhet enhet1 |Avstämningsmöte|false|-1      |-1   |-1       |
+|user2       | Enhet enhet1 |Övrigt         |false|-1      |-1   |-1       |
 |user2       | Enhet enhet2 |Komplettering  |false|1      |0   |1       |
 |user2       | Enhet enhet2 |Avstämningsmöte|false|0      |0   |0       |
 |user2       | Enhet enhet2 |Övrigt         |false|0      |0   |0       |
@@ -46,9 +46,9 @@ Inloggad:
 |user2        | Enhet enhet2 | Komplettering   |true| -1       |
 |user2        | Enhet enhet2 | Avstämningsmöte |true| -1       |
 |user2        | Enhet enhet2 | Övrigt          |true| -1       |
-|user2        | Enhet enhet1 | Komplettering   |false| 1       |
-|user2        | Enhet enhet1 | Avstämningsmöte |false| 1       |
-|user2        | Enhet enhet1 | Övrigt          |false| 0       |
+|user2        | Enhet enhet1 | Komplettering   |false| -1       |
+|user2        | Enhet enhet1 | Avstämningsmöte |false| -1       |
+|user2        | Enhet enhet1 | Övrigt          |false| -1       |
 |user2        | Enhet enhet2 | Komplettering   |false| 1       |
 |user2        | Enhet enhet2 | Avstämningsmöte |false| 0       |
 |user2        | Enhet enhet2 | Övrigt          |false| 0       |

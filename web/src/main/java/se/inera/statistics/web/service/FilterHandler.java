@@ -451,7 +451,7 @@ public class FilterHandler {
         LoginInfo info = loginServiceUtil.getLoginInfo();
         Map<HsaIdEnhet, String> enheter = new HashMap<>();
         for (Verksamhet userVerksamhet : info.getBusinessesForVg(vgid)) {
-            if (enhetsIDs != null && enhetsIDs.contains(userVerksamhet.getId())) {
+            if (enhetsIDs != null && enhetsIDs.contains(userVerksamhet.getId()) && userVerksamhet.isVardenhet() == vardenhetsdepth) {
                 enheter.put(userVerksamhet.getId(), userVerksamhet.getName());
             }
         }

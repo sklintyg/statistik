@@ -22,7 +22,7 @@ class MeddelandenIRapportenMeddelandenVardenhetSomTvarsnitt extends DualSexTimeS
 
     def ämne
     def vårdenhet
-    String vårdenhetdjup
+    String vårdenhetdjup = true
 
     @Override
     public void doExecute() {

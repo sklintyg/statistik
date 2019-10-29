@@ -276,9 +276,10 @@ public class MessageWidelineLoader {
             if (vardenhetdepth) {
                 String enhetSql = enheter.stream().map(HsaIdEnhet::getId).collect(Collectors.joining("' , '"));
                 sql.append(" AND mwl.vardenhet IN ('").append(enhetSql).append("')");
+            } else {
+                String enhetSql = enheter.stream().map(HsaIdEnhet::getId).collect(Collectors.joining("' , '"));
+                sql.append(" AND mwl.enhet IN ('").append(enhetSql).append("')");
             }
-            String enhetSql = enheter.stream().map(HsaIdEnhet::getId).collect(Collectors.joining("' , '"));
-            sql.append(" AND mwl.enhet IN ('").append(enhetSql).append("')");
         }
 
 //        final Collection<HsaIdEnhet> enheter = filter.getEnheter();
