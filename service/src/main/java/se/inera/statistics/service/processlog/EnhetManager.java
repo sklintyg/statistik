@@ -51,7 +51,7 @@ public class EnhetManager {
         return getEnhetsFromResultList(resultList);
     }
 
-    public List<Enhet> getAllEnhetsForVardgivareId(HsaIdVardgivare vgId) {
+    public List<Enhet> getAllVardenhetsForVardgivareId(HsaIdVardgivare vgId) {
         final Query query = manager.createQuery("SELECT e FROM Enhet e WHERE e.vardgivareId = :vgId");
         query.setParameter("vgId", vgId.getId());
         final List resultList = query.getResultList();
@@ -65,7 +65,10 @@ public class EnhetManager {
         final List<Enhet> enhets = new ArrayList<>();
         for (Object o : resultList) {
             if (o instanceof Enhet) {
-                enhets.add((Enhet) o);
+                final Enhet enhet = (Enhet) o;
+                if (enhet.isVardenhet()) {
+                    enhets.add(enhet);
+                }
             } else {
                 LOG.error("Wrong enhet type found");
             }
