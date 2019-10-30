@@ -236,7 +236,7 @@ public class ProtectedRegionServiceTest {
         Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vgid);
 
         final ArrayList<Enhet> enhets = new ArrayList<>();
-        Mockito.when(enhetManager.getAllEnhetsForVardgivareId(vgid)).thenReturn(enhets);
+        Mockito.when(enhetManager.getAllVardenhetsForVardgivareId(vgid)).thenReturn(enhets);
 
         final ByteArrayOutputStream outputStream = Mockito.mock(ByteArrayOutputStream.class);
         Mockito.when(regionFileWriter.generateExcelFile(enhets)).thenReturn(outputStream);
@@ -263,7 +263,7 @@ public class ProtectedRegionServiceTest {
         Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vgid);
 
         final ArrayList<Enhet> enhets = new ArrayList<>();
-        Mockito.when(enhetManager.getAllEnhetsForVardgivareId(vgid)).thenReturn(enhets);
+        Mockito.when(enhetManager.getAllVardenhetsForVardgivareId(vgid)).thenReturn(enhets);
 
         Mockito.when(regionFileWriter.generateExcelFile(enhets)).thenThrow(new RegionFileGenerationException());
 

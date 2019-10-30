@@ -205,7 +205,7 @@ public class ProtectedRegionService {
         help = "API-tjänst för skyddad åtkomst till excel fil med regionsdata.")
     public Response getPrepopulatedRegionFile(@Context HttpServletRequest request) {
         final HsaIdVardgivare vardgivarId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        final List<Enhet> enhets = enhetManager.getAllEnhetsForVardgivareId(vardgivarId);
+        final List<Enhet> enhets = enhetManager.getAllVardenhetsForVardgivareId(vardgivarId);
         try {
             final ByteArrayOutputStream generatedFile = regionFileWriter.generateExcelFile(enhets);
             return Response.ok(generatedFile.toByteArray(), MediaType.APPLICATION_OCTET_STREAM)
