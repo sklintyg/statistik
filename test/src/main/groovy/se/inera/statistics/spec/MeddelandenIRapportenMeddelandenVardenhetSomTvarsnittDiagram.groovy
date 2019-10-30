@@ -22,7 +22,7 @@ class MeddelandenIRapportenMeddelandenVardenhetSomTvarsnittDiagram extends Rappo
 
     def ämne
     def vårdenhet
-    def vårdenhetdjup
+    def vårdenhetdjup = true
 
     @Override
     public void doExecute() {

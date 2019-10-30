@@ -389,7 +389,7 @@ public class WarehouseService {
             entry -> {
                 final HashMap<HsaIdEnhet, String> idsToNames = Maps.newHashMapWithExpectedSize(entry.getValue().size());
                 for (Enhet enhet : entry.getValue()) {
-                    idsToNames.put(new HsaIdEnhet(enhet.getVardenhetId()), enhet.getNamn());
+                    idsToNames.put(enhet.getEnhetId(), enhet.getNamn());
                 }
                 final Aisle aisle = warehouse.get(entry.getKey());
                 return sjukfallQuery.getSjukfallPerEnhet(aisle, filterSettings.getFilter().getPredicate(), range.getFrom(), 1,

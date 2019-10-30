@@ -21,7 +21,7 @@ package se.inera.statistics.spec
 class SjukfallIRapportenSjukfallPerEnhet extends SimpleDetailsReport {
 
     String vårdenhet
-    String vårdenhetdjup
+    String vårdenhetdjup = true
 
     @Override
     public void doExecute() {

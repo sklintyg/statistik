@@ -20,7 +20,7 @@ package se.inera.statistics.spec
 
 class SjukfallIRapportenSjukfallPerEnhetSomTidsserie extends DualSexTimeSeriesReport {
 
-    String vårdenhetdjup
+    String vårdenhetdjup = true
 
     public void doExecute() {
         def report = getReportSjukfallPerEnhetSomTidsserie(vårdenhetdjup)

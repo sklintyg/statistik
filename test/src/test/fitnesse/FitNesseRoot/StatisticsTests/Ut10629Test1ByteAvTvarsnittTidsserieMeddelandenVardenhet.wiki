@@ -28,8 +28,8 @@ Inloggad:
 | user2 | Enhet enhet1 | true | Avstämningsmöte | 3 | 1 | 0 |
 | user2 | Enhet enhet2 | true | Komplettering | -1 | -1 | -1 |
 | user2 | Enhet enhet2 | true | Avstämningsmöte | -1 | -1 | -1 |
-| user2 | Enhet enhet1 | false | Komplettering | 2 | 1 | 0 |
-| user2 | Enhet enhet1 | false | Avstämningsmöte | 2 | 1 | 0 |
+| user2 | Enhet enhet1 | false | Komplettering | -1 | -1 | -1 |
+| user2 | Enhet enhet1 | false | Avstämningsmöte | -1 | -1 | -1 |
 | user2 | Enhet enhet2 | false | Komplettering | 1 | 1 | 0 |
 | user2 | Enhet enhet2 | false | Avstämningsmöte | 1 | 0 | 0 |
 
@@ -47,15 +47,15 @@ Inloggad:
 | user2 | 2014 | jun | true | Enhet enhet1 : Avstämningsmöte | 0 | 0 |
 | user2 | 2014 | jun | true | Enhet enhet2 : Komplettering | -1 | -1 |
 | user2 | 2014 | jun | true | Enhet enhet2 : Avstämningsmöte | -1 | -1 |
-| user2 | 2014 | apr | false | Enhet enhet1 : Komplettering | 1 | 0 |
-| user2 | 2014 | apr | false | Enhet enhet1 : Avstämningsmöte | 1 | 0 |
+| user2 | 2014 | apr | false | Enhet enhet1 : Komplettering | -1 | -1 |
+| user2 | 2014 | apr | false | Enhet enhet1 : Avstämningsmöte | -1 | -1 |
 | user2 | 2014 | apr | false | Enhet enhet2 : Komplettering | 0 | 0 |
 | user2 | 2014 | apr | false | Enhet enhet2 : Avstämningsmöte | 0 | 0 |
-| user2 | 2014 | maj | false | Enhet enhet1 : Komplettering | 0 | 0 |
-| user2 | 2014 | maj | false | Enhet enhet1 : Avstämningsmöte | 0 | 0 |
+| user2 | 2014 | maj | false | Enhet enhet1 : Komplettering | -1 | -1 |
+| user2 | 2014 | maj | false | Enhet enhet1 : Avstämningsmöte | -1 | -1 |
 | user2 | 2014 | maj | false | Enhet enhet2 : Komplettering | 0 | 0 |
 | user2 | 2014 | maj | false | Enhet enhet2 : Avstämningsmöte | 0 | 0 |
-| user2 | 2014 | jun | false | Enhet enhet1 : Komplettering | 0 | 0 |
-| user2 | 2014 | jun | false | Enhet enhet1 : Avstämningsmöte | 0 | 0 |
+| user2 | 2014 | jun | false | Enhet enhet1 : Komplettering | -1 | -1 |
+| user2 | 2014 | jun | false | Enhet enhet1 : Avstämningsmöte | -1 | -1 |
 | user2 | 2014 | jun | false | Enhet enhet2 : Komplettering | 1 | 0 |
 | user2 | 2014 | jun | false | Enhet enhet2 : Avstämningsmöte | 0 | 0 |

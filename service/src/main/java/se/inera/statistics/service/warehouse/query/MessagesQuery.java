@@ -39,6 +39,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -494,7 +495,9 @@ public class MessagesQuery {
     private KonDataResponse convertToMessagesPerAmnePerEnhet(List<CountDTOAmne> rows, LocalDate start, int perioder,
         Map<HsaIdEnhet, String> idToNameMap) {
         final Function<String, String> idToNameFunction = enhet -> idToNameMap.get(new HsaIdEnhet(enhet));
-        return convertToMessagesPerAmnePerType(rows, start, perioder, getEnhets(rows), CountDTOAmne::getEnhet, idToNameFunction);
+        final List<String> hsaIdEnhets = idToNameMap.keySet().stream().map(HsaIdAny::getId).collect(Collectors.toList());
+        final Function<CountDTOAmne, String> typeInDto = dtoAmne -> new HsaIdEnhet(dtoAmne.getEnhet()).getId();
+        return convertToMessagesPerAmnePerType(rows, start, perioder, hsaIdEnhets, typeInDto, idToNameFunction);
     }
 
     private <T> KonDataResponse convertToMessagesPerAmnePerType(List<CountDTOAmne> rows, LocalDate start, int perioder, List<T> types,
@@ -634,7 +637,10 @@ public class MessagesQuery {
             for (int j = 0; j < seriesLength; j++) {
                 data.add(new KonField(series[0][k][j], series[1][k][j]));
             }
-            result.add(new KonDataRow(typeToName.apply(types.get(k)), data));
+            final String name = typeToName.apply(types.get(k));
+            if (name != null) {
+                result.add(new KonDataRow(name, data));
+            }
         }
 
         return getKonDataResponse(result, msgAmnes);
@@ -652,7 +658,9 @@ public class MessagesQuery {
         if (rows != null) {
             for (CountDTOAmne dto : rows) {
                 final int index = types.indexOf(typeInDto.apply(dto));
-                series[dto.getKon().equals(Kon.FEMALE) ? 0 : 1][index][dto.getAmne().ordinal()] += dto.getCount();
+                if (index > -1) {
+                    series[dto.getKon().equals(Kon.FEMALE) ? 0 : 1][index][dto.getAmne().ordinal()] += dto.getCount();
+                }
             }
         }
         return series;
