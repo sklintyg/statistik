@@ -679,7 +679,7 @@ public class MessagesQuery {
         resp.add(new OverviewChartRowExtended("Sjukpenningintyg med komplettering", current, alternation,
             ReportColor.ST_COLOR_01.getColor(), false));
         resp.add(new OverviewChartRowExtended("Sjukpenningintyg utan komplettering", MAX_PERCENTAGE - current, -1 * alternation,
-            ReportColor.ST_COLOR_02.getColor(), true));
+            ReportColor.ST_COLOR_02.getColor(), false));
         return resp;
     }
 
