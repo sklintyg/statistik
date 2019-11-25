@@ -28,6 +28,8 @@
     border-color: $st-color-33;
     border-width: 1px;
     color: $st-color-17;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);;
+    font-size: 14px;
     &:focus {
       background-image: none;
       background-color: $st-color-32;
