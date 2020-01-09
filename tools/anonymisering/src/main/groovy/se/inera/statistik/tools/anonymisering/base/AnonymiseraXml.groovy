@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ * Copyright (C) 2020 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -40,9 +40,9 @@ class AnonymiseraXml {
         slurper.keepIgnorableWhitespace = true
         def intyg = slurper.parseText(s)
         intyg.declareNamespace(
-            p3: 'urn:riv:clinicalprocess:healthcond:certificate:types:2',
-            p2: 'urn:riv:clinicalprocess:healthcond:certificate:2',
-            p1: 'urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:2')
+                p3: 'urn:riv:clinicalprocess:healthcond:certificate:types:2',
+                p2: 'urn:riv:clinicalprocess:healthcond:certificate:2',
+                p1: 'urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:2')
 
         anonymizeCertificateXml(intyg)
         return buildOutput(s, intyg)
@@ -63,18 +63,18 @@ class AnonymiseraXml {
         outputBuilder.encoding = 'UTF-8'
 
         return (
-            s.startsWith('<?xml') ? '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' : "") +
-            outputBuilder.bind {
-                mkp.yield document
-            }
+                s.startsWith('<?xml') ? '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' : "") +
+                outputBuilder.bind {
+                    mkp.yield document
+                }
     }
 
     private GPathResult declareNamespaces(GPathResult document, String type) {
         switch (type) {
             case "SENT":
                 document.declareNamespace(
-                    p1: 'urn:riv:clinicalprocess:healthcond:certificate:SendMessageToCareResponder:2',
-                    p2: 'urn:riv:clinicalprocess:healthcond:certificate:types:3');
+                        p1: 'urn:riv:clinicalprocess:healthcond:certificate:SendMessageToCareResponder:2',
+                        p2: 'urn:riv:clinicalprocess:healthcond:certificate:types:3');
                 break;
             default:
                 break;
@@ -95,37 +95,37 @@ class AnonymiseraXml {
         anonymizeNode intyg.intyg.skapadAv.fullstandigtNamn
         anonymizeNode intyg.intyg.skapadAv.forskrivarkod
 
-        def allDelsvars = intyg.intyg.svar.delsvar.collect{ it.@id }
+        def allDelsvars = intyg.intyg.svar.delsvar.collect { it.@id }
         def dateDelsvars = []
         def delsvarsNotToAnonymize = []
 
         def fkIntyg = ['fk7263', 'luse', 'lisjp', 'luae_fs', 'luae_na']
 
         if (fkIntyg.contains(intyg.intyg.typ.code.toString().toLowerCase())) {
-            dateDelsvars = [ "1.2", "2.1", "4.2"]
+            dateDelsvars = ["1.2", "2.1", "4.2"]
             delsvarsNotToAnonymize = ["1.1",
-                                          "3.1",
-                                          "4.1",
-                                          "6.2", "6.3", "6.4",
-                                          "26.1",
-                                          "27.1",
-                                          "28.1",
-                                          "32.1", "32.2",
-                                          "33.1",
-                                          "34.1",
-                                          "40.1",
-                                          "45.1"]
+                                      "3.1",
+                                      "4.1",
+                                      "6.2", "6.3", "6.4",
+                                      "26.1",
+                                      "27.1",
+                                      "28.1",
+                                      "32.1", "32.2",
+                                      "33.1",
+                                      "34.1",
+                                      "40.1",
+                                      "45.1"]
         }
 
         def delsvarsToAnonymize = allDelsvars.minus(dateDelsvars).minus(delsvarsNotToAnonymize)
 
         dateDelsvars.each { delsvarid ->
-            intyg.intyg.svar.delsvar.findAll{ it.@id == delsvarid }.each { node ->
+            intyg.intyg.svar.delsvar.findAll { it.@id == delsvarid }.each { node ->
                 anonymizeDateNode node
             }
         }
         delsvarsToAnonymize.each { delsvarid ->
-            intyg.intyg.svar.delsvar.findAll{ it.@id == delsvarid }.each { node ->
+            intyg.intyg.svar.delsvar.findAll { it.@id == delsvarid }.each { node ->
                 anonymizeNode node
             }
         }

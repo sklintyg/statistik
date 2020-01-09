@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ * Copyright (C) 2020 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -30,27 +30,26 @@ class AnonymiseraJson {
     AnonymiseraPersonId anonymiseraPersonId;
 
     static {
-        LazyMap.metaClass.anonymize = {key->
+        LazyMap.metaClass.anonymize = { key ->
             anonymizeField(delegate, key)
         }
     }
 
     private static anonymizeField(Map delegate, String key) {
-            def value = delegate[key]
-            if (value != null) {
-                if (value instanceof List) {
-                    delegate[key] = value.collect {AnonymizeString.anonymize(it)}
-                } else if (value instanceof Map) {
-                    value.each {k, v ->
-                        anonymizeField(value, k)
-                    }
-                } else if (value instanceof Boolean) {
-                    //Do nothing
+        def value = delegate[key]
+        if (value != null) {
+            if (value instanceof List) {
+                delegate[key] = value.collect { AnonymizeString.anonymize(it) }
+            } else if (value instanceof Map) {
+                value.each { k, v ->
+                    anonymizeField(value, k)
                 }
-                else {
-                    delegate[key] = AnonymizeString.anonymize(value)
-                }
+            } else if (value instanceof Boolean) {
+                //Do nothing
+            } else {
+                delegate[key] = AnonymizeString.anonymize(value)
             }
+        }
     }
 
     AnonymiseraJson(AnonymiseraHsaId anonymiseraHsaId, AnonymiseraDatum anonymiseraDatum) {
@@ -71,7 +70,7 @@ class AnonymiseraJson {
     String anonymiseraIntygsJson(String s, String personId) {
         def intyg = new JsonSlurper().parseText(s)
         anonymizeJson(intyg, personId)
-        JsonBuilder builder = new JsonBuilder( intyg )
+        JsonBuilder builder = new JsonBuilder(intyg)
         return builder.toString()
     }
 

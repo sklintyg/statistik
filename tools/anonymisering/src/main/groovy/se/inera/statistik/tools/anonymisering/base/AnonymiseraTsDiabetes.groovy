@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ * Copyright (C) 2020 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -40,9 +40,9 @@ class AnonymiseraTsDiabetes {
         slurper.keepIgnorableWhitespace = true
         def intyg = slurper.parseText(s)
         intyg.declareNamespace(
-            p3: 'urn:local:se:intygstjanster:services:1',
-            p2: 'urn:local:se:intygstjanster:services:types:1',
-            p1: 'urn:local:se:intygstjanster:services:RegisterTSDiabetesResponder:1')
+                p3: 'urn:local:se:intygstjanster:services:1',
+                p2: 'urn:local:se:intygstjanster:services:types:1',
+                p1: 'urn:local:se:intygstjanster:services:RegisterTSDiabetesResponder:1')
 
         anonymizeCertificateXml(intyg)
         return buildOutput(s, intyg)
@@ -53,10 +53,10 @@ class AnonymiseraTsDiabetes {
         outputBuilder.encoding = 'UTF-8'
 
         return (
-            s.startsWith('<?xml') ? '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' : "") +
-            outputBuilder.bind {
-                mkp.yield document
-            }
+                s.startsWith('<?xml') ? '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' : "") +
+                outputBuilder.bind {
+                    mkp.yield document
+                }
     }
 
     private void anonymizeCertificateXml(def intyg) {

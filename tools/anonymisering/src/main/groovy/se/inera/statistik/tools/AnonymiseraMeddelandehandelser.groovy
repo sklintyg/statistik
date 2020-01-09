@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ * Copyright (C) 2020 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -61,14 +61,14 @@ class AnonymiseraMeddelandehandelser {
                 def sql = new Sql(dataSource)
                 def identity = it.id
                 try {
-                    def meddelande = sql.firstRow("SELECT type, data FROM meddelandehandelse WHERE id = :id" , [id : identity])
+                    def meddelande = sql.firstRow("SELECT type, data FROM meddelandehandelse WHERE id = :id", [id: identity])
 
                     try {
                         String xmlDoc = meddelande?.data
                         String anonymiseradXml = xmlDoc ? anonymiseraXml.anonymiseraMeddelandeXml(xmlDoc, meddelande?.type) : null
                         if (anonymiseradXml) {
                             sql.executeUpdate("UPDATE meddelandehandelse SET data = :document WHERE id = :id",
-                                [document: anonymiseradXml, id: identity])
+                                    [document: anonymiseradXml, id: identity])
                         }
                     } catch (Exception ignore) {
                         println "Failed to parse meddelande ${identity}"
@@ -76,7 +76,7 @@ class AnonymiseraMeddelandehandelser {
 
                     int current = count.addAndGet(1)
                     if (current % 10000 == 0) {
-                        println "${current} meddelanden anonymized in ${(int)((System.currentTimeMillis()-start) / 1000)} seconds"
+                        println "${current} meddelanden anonymized in ${(int) ((System.currentTimeMillis() - start) / 1000)} seconds"
                     }
                 } catch (Throwable t) {
                     t.printStackTrace()
@@ -91,11 +91,11 @@ class AnonymiseraMeddelandehandelser {
         }
 
         long end = System.currentTimeMillis()
-        output.each {line ->
+        output.each { line ->
             if (line) println line
         }
 
-        println "Done! ${count} meddelanden anonymized with ${errorCount} errors in ${(int)((end-start) / 1000)} seconds"
+        println "Done! ${count} meddelanden anonymized with ${errorCount} errors in ${(int) ((end - start) / 1000)} seconds"
     }
 
 }

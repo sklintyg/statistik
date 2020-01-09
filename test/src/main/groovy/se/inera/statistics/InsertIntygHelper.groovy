@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ * Copyright (C) 2020 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -30,7 +30,7 @@ class InsertIntygHelper {
         new DagensDatum("2016-11-01"); //Will set the date "fitnesse-style"
         new TroskelVarde(5); //Will set the troskelvarde "fitnesse-style"
 
-        def filnamn =  "vg3lista1.xlsx";
+        def filnamn = "vg3lista1.xlsx";
 
         ReportsUtil util = new ReportsUtil();
 
@@ -48,7 +48,7 @@ class InsertIntygHelper {
 
         def fitnessIntygInjector = new EnbartFoljandeIntygFinns();
         fitnessIntygInjector.beginTable();
-        for (IntygData intygData : intygs ) {
+        for (IntygData intygData : intygs) {
             fitnessIntygInjector.reset();
             fitnessIntygInjector.setPersonnr(intygData.pnr);
             fitnessIntygInjector.setStart(intygData.start);

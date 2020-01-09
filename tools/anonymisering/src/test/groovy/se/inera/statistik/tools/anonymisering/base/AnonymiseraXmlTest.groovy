@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ * Copyright (C) 2020 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -30,15 +30,15 @@ class AnonymiseraXmlTest {
     AnonymiseraDatum anonymiseraDatum = new AnonymiseraDatum()
 
     AnonymiseraXmlTest() {
-        anonymiseraDatum.random = [nextInt: {(AnonymiseraDatum.DATE_RANGE/2)+1}] as Random
+        anonymiseraDatum.random = [nextInt: { (AnonymiseraDatum.DATE_RANGE / 2) + 1 }] as Random
     }
 
     @Test
     void testaAnonymiseringAvFk7263sit() {
         //Given
-        AnonymiseraHsaId anonymiseraHsaId = [anonymisera:{"SE833377567"}] as AnonymiseraHsaId
-        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum:{"2015-11-28"}] as AnonymiseraDatum
-        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19680418-1749"}] as AnonymiseraPersonId
+        AnonymiseraHsaId anonymiseraHsaId = [anonymisera: { "SE833377567" }] as AnonymiseraHsaId
+        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum: { "2015-11-28" }] as AnonymiseraDatum
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera: { "19680418-1749" }] as AnonymiseraPersonId
         AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
 
         String expected = FileUtils.readFileToString(new ClassPathResource("/fk7263sit_anonymized.xml").getFile(), "UTF-8")
@@ -54,9 +54,9 @@ class AnonymiseraXmlTest {
     @Test
     void testaAnonymiseringAvLisjp() {
         //Given
-        AnonymiseraHsaId anonymiseraHsaId = [anonymisera:{"SE833377567"}] as AnonymiseraHsaId
-        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum:{"2015-11-28"}] as AnonymiseraDatum
-        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19670827-2041"}] as AnonymiseraPersonId
+        AnonymiseraHsaId anonymiseraHsaId = [anonymisera: { "SE833377567" }] as AnonymiseraHsaId
+        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum: { "2015-11-28" }] as AnonymiseraDatum
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera: { "19670827-2041" }] as AnonymiseraPersonId
         AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
 
         String expected = FileUtils.readFileToString(new ClassPathResource("/lisjp_anonymized.xml").getFile(), "UTF-8")
@@ -72,9 +72,9 @@ class AnonymiseraXmlTest {
     @Test
     void testaAnonymiseringAvLuaeFs() {
         //Given
-        AnonymiseraHsaId anonymiseraHsaId = [anonymisera:{"SE833377567"}] as AnonymiseraHsaId
-        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum:{"2015-11-28"}] as AnonymiseraDatum
-        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19680803-3000"}] as AnonymiseraPersonId
+        AnonymiseraHsaId anonymiseraHsaId = [anonymisera: { "SE833377567" }] as AnonymiseraHsaId
+        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum: { "2015-11-28" }] as AnonymiseraDatum
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera: { "19680803-3000" }] as AnonymiseraPersonId
         AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
 
         String expected = FileUtils.readFileToString(new ClassPathResource("/luae_fs_anonymized.xml").getFile(), "UTF-8")
@@ -90,9 +90,9 @@ class AnonymiseraXmlTest {
     @Test
     void testaAnonymiseringAvLuaeNa() {
         //Given
-        AnonymiseraHsaId anonymiseraHsaId = [anonymisera:{"SE833377567"}] as AnonymiseraHsaId
-        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum:{"2015-11-28"}] as AnonymiseraDatum
-        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19690316-5565"}] as AnonymiseraPersonId
+        AnonymiseraHsaId anonymiseraHsaId = [anonymisera: { "SE833377567" }] as AnonymiseraHsaId
+        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum: { "2015-11-28" }] as AnonymiseraDatum
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera: { "19690316-5565" }] as AnonymiseraPersonId
         AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
 
         String expected = FileUtils.readFileToString(new ClassPathResource("/luae_na_anonymized.xml").getFile(), "UTF-8")
@@ -108,9 +108,9 @@ class AnonymiseraXmlTest {
     @Test
     void testaAnonymiseringAvLuse() {
         //Given
-        AnonymiseraHsaId anonymiseraHsaId = [anonymisera:{"SE833377567"}] as AnonymiseraHsaId
-        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum:{"2015-11-28"}] as AnonymiseraDatum
-        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19680725-8820"}] as AnonymiseraPersonId
+        AnonymiseraHsaId anonymiseraHsaId = [anonymisera: { "SE833377567" }] as AnonymiseraHsaId
+        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum: { "2015-11-28" }] as AnonymiseraDatum
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera: { "19680725-8820" }] as AnonymiseraPersonId
         AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
 
         String expected = FileUtils.readFileToString(new ClassPathResource("/luse_anonymized.xml").getFile(), "UTF-8")
@@ -126,9 +126,9 @@ class AnonymiseraXmlTest {
     @Test
     void testaAnonymiseringAvDb() {
         //Given
-        AnonymiseraHsaId anonymiseraHsaId = [anonymisera:{"SE833377567"}] as AnonymiseraHsaId
-        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum:{"2015-11-28"}] as AnonymiseraDatum
-        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19680725-8820"}] as AnonymiseraPersonId
+        AnonymiseraHsaId anonymiseraHsaId = [anonymisera: { "SE833377567" }] as AnonymiseraHsaId
+        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum: { "2015-11-28" }] as AnonymiseraDatum
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera: { "19680725-8820" }] as AnonymiseraPersonId
         AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
 
         String expected = FileUtils.readFileToString(new ClassPathResource("/db_anonymized.xml").getFile(), "UTF-8")
@@ -144,9 +144,9 @@ class AnonymiseraXmlTest {
     @Test
     void testaAnonymiseringAvDoi() {
         //Given
-        AnonymiseraHsaId anonymiseraHsaId = [anonymisera:{"SE833377567"}] as AnonymiseraHsaId
-        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum:{"2015-11-28"}] as AnonymiseraDatum
-        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19680725-8820"}] as AnonymiseraPersonId
+        AnonymiseraHsaId anonymiseraHsaId = [anonymisera: { "SE833377567" }] as AnonymiseraHsaId
+        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum: { "2015-11-28" }] as AnonymiseraDatum
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera: { "19680725-8820" }] as AnonymiseraPersonId
         AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
 
         String expected = FileUtils.readFileToString(new ClassPathResource("/doi_anonymized.xml").getFile(), "UTF-8")
@@ -162,9 +162,9 @@ class AnonymiseraXmlTest {
     @Test
     void testaAnonymiseringAvAf00213() {
         //Given
-        AnonymiseraHsaId anonymiseraHsaId = [anonymisera:{"SE833377567"}] as AnonymiseraHsaId
-        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum:{"2015-11-28"}] as AnonymiseraDatum
-        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19680725-8820"}] as AnonymiseraPersonId
+        AnonymiseraHsaId anonymiseraHsaId = [anonymisera: { "SE833377567" }] as AnonymiseraHsaId
+        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum: { "2015-11-28" }] as AnonymiseraDatum
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera: { "19680725-8820" }] as AnonymiseraPersonId
         AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
 
         String expected = FileUtils.readFileToString(new ClassPathResource("/af00213_anonymized.xml").getFile(), "UTF-8")
@@ -180,9 +180,9 @@ class AnonymiseraXmlTest {
     @Test
     void testaAnonymiseringAvTstrk1007() {
         //Given
-        AnonymiseraHsaId anonymiseraHsaId = [anonymisera:{"SE833377567"}] as AnonymiseraHsaId
-        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum:{"2015-11-28"}] as AnonymiseraDatum
-        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19680725-8820"}] as AnonymiseraPersonId
+        AnonymiseraHsaId anonymiseraHsaId = [anonymisera: { "SE833377567" }] as AnonymiseraHsaId
+        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum: { "2015-11-28" }] as AnonymiseraDatum
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera: { "19680725-8820" }] as AnonymiseraPersonId
         AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
 
         String expected = FileUtils.readFileToString(new ClassPathResource("/tstrk1007_anonymized.xml").getFile(), "UTF-8")
@@ -198,7 +198,7 @@ class AnonymiseraXmlTest {
     @Test
     void testaAnonymiseringAvSendMessageToCare() {
         //Given
-        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19810803-3022"}] as AnonymiseraPersonId
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera: { "19810803-3022" }] as AnonymiseraPersonId
         AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, null, null)
 
         String expected = FileUtils.readFileToString(new ClassPathResource("/sendmessagetocare_anonymized.xml").getFile(), "UTF-8")
@@ -214,7 +214,7 @@ class AnonymiseraXmlTest {
     @Test
     void testaAnonymiseringAvSendMessageToCare2() {
         //Given
-        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19121212-1212"}] as AnonymiseraPersonId
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera: { "19121212-1212" }] as AnonymiseraPersonId
         AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, null, null)
 
         String expected = FileUtils.readFileToString(new ClassPathResource("/sendmessagetocare_anonymized2.xml").getFile(), "UTF-8")

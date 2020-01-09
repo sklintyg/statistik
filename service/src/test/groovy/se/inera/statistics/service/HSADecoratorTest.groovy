@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ * Copyright (C) 2020 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -21,11 +21,7 @@ package se.inera.statistics.service
 import org.junit.Before
 import org.junit.Test
 import se.inera.statistics.service.helper.JSONParser
-import se.inera.statistics.service.hsa.HSADecorator
-import se.inera.statistics.service.hsa.HSAKey
-import se.inera.statistics.service.hsa.HSAService
-import se.inera.statistics.service.hsa.HsaInfo
-import se.inera.statistics.service.hsa.HsaInfoVg
+import se.inera.statistics.service.hsa.*
 
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNotNull
@@ -37,9 +33,9 @@ class HSADecoratorTest {
     @Before
     void setup() {
         hsaService = [
-            getHSAInfo : { HSAKey that ->
-                new HsaInfo(null, null, new HsaInfoVg("län för " + that.vardgivareId + "," + that.enhetId + "," + that.lakareId, "", null, null, false), null);
-            }
+                getHSAInfo: { HSAKey that ->
+                    new HsaInfo(null, null, new HsaInfoVg("län för " + that.vardgivareId + "," + that.enhetId + "," + that.lakareId, "", null, null, false), null);
+                }
         ] as HSAService
     }
 
