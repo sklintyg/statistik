@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ * Copyright (C) 2020 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -56,17 +56,17 @@ class AnonymiseraLakare {
 
             def id = it.id
             try {
-                def lakare = sql.firstRow('SELECT lakareid, tilltalsnamn, efternamn FROM lakare WHERE id = :id' , [id : id])
+                def lakare = sql.firstRow('SELECT lakareid, tilltalsnamn, efternamn FROM lakare WHERE id = :id', [id: id])
                 def lakareid = anonymiseraHsaId.anonymisera(lakare.lakareid)
                 def tilltalsnamn = AnonymizeString.anonymize(lakare.tilltalsnamn)
                 def efternamn = AnonymizeString.anonymize(lakare.efternamn)
 
                 sql.executeUpdate('UPDATE lakare SET lakareid = :lakareid, tilltalsnamn = :tilltalsnamn, efternamn = :efternamn WHERE id = :id',
-                    [lakareid: lakareid, tilltalsnamn: tilltalsnamn, efternamn: efternamn, id: id])
+                        [lakareid: lakareid, tilltalsnamn: tilltalsnamn, efternamn: efternamn, id: id])
 
                 int current = count.addAndGet(1)
                 if (current % 10000 == 0) {
-                    println "${current} lakare anonymized in ${(int)((System.currentTimeMillis()-start) / 1000)} seconds"
+                    println "${current} lakare anonymized in ${(int) ((System.currentTimeMillis() - start) / 1000)} seconds"
                 }
             } catch (Throwable t) {
                 t.printStackTrace()
@@ -80,11 +80,11 @@ class AnonymiseraLakare {
         }
 
         long end = System.currentTimeMillis()
-        output.each {line ->
+        output.each { line ->
             if (line) println line
         }
 
-        println "Done! ${count} lakare anonymized with ${errorCount} errors in ${(int)((end-start) / 1000)} seconds"
+        println "Done! ${count} lakare anonymized with ${errorCount} errors in ${(int) ((end - start) / 1000)} seconds"
     }
 
 }

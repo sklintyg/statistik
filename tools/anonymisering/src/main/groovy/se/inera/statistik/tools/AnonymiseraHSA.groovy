@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ * Copyright (C) 2020 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -57,16 +57,16 @@ class AnonymiseraHSA {
             sql = new Sql(dataSource)
 
             try {
-                def intyg = sql.firstRow('SELECT * FROM hsa WHERE indexid = :id' , [id : it.indexid])
+                def intyg = sql.firstRow('SELECT * FROM hsa WHERE indexid = :id', [id: it.indexid])
                 String id = intyg.id
                 String jsonDoc = intyg.data
                 String anonymiseradJson = anonymizeHsaJson(jsonDoc, anonymiseraHsaId)
                 sql.executeUpdate('UPDATE hsa SET data = :document WHERE indexid = :id',
-                    [document: anonymiseradJson, id: it.indexid])
+                        [document: anonymiseradJson, id: it.indexid])
 
                 int current = count.addAndGet(1)
                 if (current % 10000 == 0) {
-                    println "${current} HSA anonymized in ${(int)((System.currentTimeMillis()-start) / 1000)} seconds"
+                    println "${current} HSA anonymized in ${(int) ((System.currentTimeMillis() - start) / 1000)} seconds"
                 }
             } catch (Throwable t) {
                 t.printStackTrace()
@@ -80,11 +80,11 @@ class AnonymiseraHSA {
         }
 
         long end = System.currentTimeMillis()
-        output.each {line ->
+        output.each { line ->
             if (line) println line
         }
 
-        println "Done! ${count} HSA personnel anonymized with ${errorCount} errors in ${(int)((end-start) / 1000)} seconds"
+        println "Done! ${count} HSA personnel anonymized with ${errorCount} errors in ${(int) ((end - start) / 1000)} seconds"
     }
 
     static String anonymizeHsaJson(def s, def anonymiseraHsaId) {

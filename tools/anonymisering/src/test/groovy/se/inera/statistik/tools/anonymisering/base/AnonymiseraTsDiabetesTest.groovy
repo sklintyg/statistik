@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ * Copyright (C) 2020 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -30,15 +30,15 @@ class AnonymiseraTsDiabetesTest {
     AnonymiseraDatum anonymiseraDatum = new AnonymiseraDatum()
 
     AnonymiseraTsDiabetesTest() {
-        anonymiseraDatum.random = [nextInt: {(AnonymiseraDatum.DATE_RANGE/2)+1}] as Random
+        anonymiseraDatum.random = [nextInt: { (AnonymiseraDatum.DATE_RANGE / 2) + 1 }] as Random
     }
 
     @Test
     void testaAnonymiseringAvTsDiabetes() {
         //Given
-        AnonymiseraHsaId anonymiseraHsaId = [anonymisera:{"SE833377567"}] as AnonymiseraHsaId
-        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum:{"2015-11-28"}] as AnonymiseraDatum
-        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19680725-8820"}] as AnonymiseraPersonId
+        AnonymiseraHsaId anonymiseraHsaId = [anonymisera: { "SE833377567" }] as AnonymiseraHsaId
+        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum: { "2015-11-28" }] as AnonymiseraDatum
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera: { "19680725-8820" }] as AnonymiseraPersonId
         AnonymiseraTsDiabetes anonymiseraTsDiabetes = new AnonymiseraTsDiabetes(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
 
         String expected = FileUtils.readFileToString(new ClassPathResource("/ts-diabetes_anonymized.xml").getFile(), "UTF-8")

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ * Copyright (C) 2020 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,13 +22,7 @@ import org.apache.commons.io.FileUtils
 import org.junit.Test
 import org.skyscreamer.jsonassert.JSONAssert
 import org.springframework.core.io.ClassPathResource
-import se.inera.statistik.tools.anonymisering.base.AnonymiseraDatum
-import se.inera.statistik.tools.anonymisering.base.AnonymiseraHsaId
-import se.inera.statistik.tools.anonymisering.base.AnonymiseraJson
-import se.inera.statistik.tools.anonymisering.base.AnonymiseraPersonId
-import se.inera.statistik.tools.anonymisering.base.AnonymiseraTsBas
-import se.inera.statistik.tools.anonymisering.base.AnonymiseraTsDiabetes
-import se.inera.statistik.tools.anonymisering.base.AnonymiseraXml
+import se.inera.statistik.tools.anonymisering.base.*
 
 import static groovy.util.GroovyTestCase.assertEquals
 
@@ -37,14 +31,14 @@ class AnonymiseraIntygTest {
     private AnonymiseraIntyg anonymiseraIntyg;
 
     AnonymiseraIntygTest() {
-        AnonymiseraHsaId anonymiseraHsaId = [anonymisera:{"SE833377567"}] as AnonymiseraHsaId
-        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum:{"2015-11-28"}] as AnonymiseraDatum
-        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19680725-8820"}] as AnonymiseraPersonId
+        AnonymiseraHsaId anonymiseraHsaId = [anonymisera: { "SE833377567" }] as AnonymiseraHsaId
+        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum: { "2015-11-28" }] as AnonymiseraDatum
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera: { "19680725-8820" }] as AnonymiseraPersonId
 
-        AnonymiseraHsaId anonymiseraHsaIdJson = [anonymisera:{"SE1010"}] as AnonymiseraHsaId
+        AnonymiseraHsaId anonymiseraHsaIdJson = [anonymisera: { "SE1010" }] as AnonymiseraHsaId
         AnonymiseraDatum anonymiseraDatumJson = new AnonymiseraDatum()
-        anonymiseraDatumJson.random = [nextInt: {(AnonymiseraDatum.DATE_RANGE/2)+1}] as Random
-        AnonymiseraPersonId anonymiseraPersonIdJson = [anonymisera:{"10101010-2010"}] as AnonymiseraPersonId
+        anonymiseraDatumJson.random = [nextInt: { (AnonymiseraDatum.DATE_RANGE / 2) + 1 }] as Random
+        AnonymiseraPersonId anonymiseraPersonIdJson = [anonymisera: { "10101010-2010" }] as AnonymiseraPersonId
 
         AnonymiseraJson anonymiseraJson = new AnonymiseraJson(anonymiseraHsaIdJson, anonymiseraDatumJson, anonymiseraPersonIdJson)
         AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)

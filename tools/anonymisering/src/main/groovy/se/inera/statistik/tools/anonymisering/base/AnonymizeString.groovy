@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ * Copyright (C) 2020 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,6 +22,6 @@ package se.inera.statistik.tools.anonymisering.base
 class AnonymizeString {
 
     static String anonymize(String s) {
-        s.replaceAll('[^\'"()\\{\\}\\[\\]\\s0-9]','x').replaceAll('[0-9]','9')
+        s.replaceAll('[^\'"()\\{\\}\\[\\]\\s0-9]', 'x').replaceAll('[0-9]', '9')
     }
 }

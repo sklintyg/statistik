@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ * Copyright (C) 2020 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -74,7 +74,7 @@ class AnonymiseraIntyg {
                 def id = it.id
                 println "id: $id"
                 try {
-                    def intyg = sql.firstRow('SELECT data FROM intyghandelse WHERE id = :id' , [id : id])
+                    def intyg = sql.firstRow('SELECT data FROM intyghandelse WHERE id = :id', [id: id])
 
                     try {
                         String intygData = intyg?.data
@@ -89,7 +89,7 @@ class AnonymiseraIntyg {
 
                     int current = count.addAndGet(1)
                     if (current % 10000 == 0) {
-                        println "${current} intyg anonymized in ${(int)((System.currentTimeMillis()-start) / 1000)} seconds"
+                        println "${current} intyg anonymized in ${(int) ((System.currentTimeMillis() - start) / 1000)} seconds"
                     }
                 } catch (Throwable t) {
                     t.printStackTrace()
@@ -104,11 +104,11 @@ class AnonymiseraIntyg {
         }
 
         long end = System.currentTimeMillis()
-        output.each {line ->
+        output.each { line ->
             if (line) println line
         }
 
-        println "Done! ${count} intyg anonymized with ${errorCount} errors in ${(int)((end-start) / 1000)} seconds"
+        println "Done! ${count} intyg anonymized with ${errorCount} errors in ${(int) ((end - start) / 1000)} seconds"
     }
 
     String anonymizeIntyg(String intygData) {

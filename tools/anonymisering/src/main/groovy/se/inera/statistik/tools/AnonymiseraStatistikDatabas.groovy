@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Inera AB (http://www.inera.se)
+ * Copyright (C) 2020 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -41,14 +41,14 @@ class AnonymiseraStatistikDatabas {
 
         def props = new Properties()
         new File("dataSource.properties").withInputStream {
-          stream -> props.load(stream)
+            stream -> props.load(stream)
         }
         def config = new ConfigSlurper().parse(props)
 
         BasicDataSource dataSource =
-            new BasicDataSource(driverClassName: config.dataSource.driver, url: config.dataSource.url,
-                username: config.dataSource.username, password: config.dataSource.password,
-                initialSize: numberOfThreads, maxTotal: numberOfThreads)
+                new BasicDataSource(driverClassName: config.dataSource.driver, url: config.dataSource.url,
+                        username: config.dataSource.username, password: config.dataSource.password,
+                        initialSize: numberOfThreads, maxTotal: numberOfThreads)
 
         // Anonymisera Intyg
         AnonymiseraIntyg anonymiseraIntyg = new AnonymiseraIntyg(dataSource, anonymiseraJson, anonymiseraXml, anonymiseraTsBas, anonymiseraTsDiabetes)
@@ -140,7 +140,7 @@ class AnonymiseraStatistikDatabas {
         AnonymiseraMeddelandehandelser anonymiseraMeddelanden = new AnonymiseraMeddelandehandelser(dataSource);
         anonymiseraMeddelanden.anonymize(numberOfThreads, anonymiseraXml);
 
-        println "...ending anonymization after ${(int)((System.currentTimeMillis()-start) / 1000)} seconds"
+        println "...ending anonymization after ${(int) ((System.currentTimeMillis() - start) / 1000)} seconds"
         println "<<<<"
     }
 
