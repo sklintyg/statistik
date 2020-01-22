@@ -30,7 +30,7 @@
         </bean>
 
         <!-- Logger for SAML messages and events -->
-        <bean id="samlLogger" class="org.springframework.security.saml.log.SAMLDefaultLogger"/>
+        <bean id="samlLogger" class="se.inera.auth.SAMLStatusLogger"/>
 
         <bean id="userDetailsService" class="se.inera.auth.UserDetailsService"/>
 
