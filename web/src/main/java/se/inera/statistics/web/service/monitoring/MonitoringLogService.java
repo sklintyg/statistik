@@ -35,4 +35,7 @@ public interface MonitoringLogService {
     void logTrackAccessAnonymousChartData(String uri);
 
     void logBrowserInfo(String browserName, String browserVersion, String osFamily, String osVersion, String width, String height);
+
+    // Saml
+    void logSamlStatusForFailedLogin(String issuer, String samlStatus);
 }

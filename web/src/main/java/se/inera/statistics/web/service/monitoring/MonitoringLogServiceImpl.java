@@ -63,6 +63,11 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
         logEvent(MonitoringEvent.BROWSER_INFO, browserName, browserVersion, osFamily, osVersion, width, height);
     }
 
+    @Override
+    public void logSamlStatusForFailedLogin(String issuer, String samlStatus) {
+        logEvent(MonitoringEvent.SAML_STATUS_LOGIN_FAIL, issuer, samlStatus);
+    }
+
     private void logEvent(MonitoringEvent logEvent, Object... logMsgArgs) {
         LOG.info(MarkerFilter.MONITORING, buildMessage(logEvent), logMsgArgs);
     }
@@ -78,7 +83,9 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
         FILE_UPLOAD("User hsaId '{}', vardgivarId '{}' uploaded file '{}' with '{}' rows"),
         TRACK_ACCESS_PROTECTED_CHART_DATA("User hsaId '{}', vardgivarId '{}' accessed uri '{}'"),
         TRACK_ACCESS_ANONYMOUS_CHART_DATA("Accessed uri '{}'"),
-        BROWSER_INFO("Name '{}' Version '{}' OSFamily '{}' OSVersion '{}' Width '{}' Height '{}'");
+        BROWSER_INFO("Name '{}' Version '{}' OSFamily '{}' OSVersion '{}' Width '{}' Height '{}'"),
+
+        SAML_STATUS_LOGIN_FAIL("Login failed at IDP '{}' with status message '{}'");
 
         private final String message;
 
