@@ -39,7 +39,7 @@ public final class CalcCoordinator {
     private int maxConcurrentTasks;
     @Value("${calcCoordinator.maxWaitingTasks:4}")
     private int maxWaitingTasks;
-    @Value("${calcCoordinator.waitTimeoutMillis:10000}")
+    @Value("${calcCoordinator.waitTimeoutMillis:15000}")
     private int maxWait;
 
     private AtomicInteger tasks = new AtomicInteger();
@@ -61,7 +61,7 @@ public final class CalcCoordinator {
             throw new CalcException("No available executors, denyAll active");
         }
 
-        for (int n = 0; n < maxWait;) {
+        for (int n = 0; n < maxWait; ) {
             try {
                 if (tasks.incrementAndGet() < maxConcurrentTasks) {
                     return task.call();
