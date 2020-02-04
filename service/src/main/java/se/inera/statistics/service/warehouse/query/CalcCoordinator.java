@@ -61,7 +61,7 @@ public final class CalcCoordinator {
             throw new CalcException("No available executors, denyAll active");
         }
 
-        for (int n = 0; n < maxWait; ) {
+        for (int n = 0; n < maxWait;) {
             try {
                 if (tasks.incrementAndGet() < maxConcurrentTasks) {
                     return task.call();
