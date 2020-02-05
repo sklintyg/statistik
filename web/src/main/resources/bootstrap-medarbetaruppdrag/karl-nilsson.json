@@ -1,0 +1,25 @@
+{
+  "hsaId": "TSTNMT2321000156-10KK",
+  "uppdrag": [
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-1"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-2"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-3"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-4"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-5"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-6"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-7"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-8"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-9"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-10"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-11"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-12"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-13"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-14"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-15"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-16"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-17"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-18"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-19"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-20"}
+  ]
+}

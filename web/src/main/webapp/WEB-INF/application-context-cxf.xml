@@ -27,6 +27,7 @@
                 <ref bean="loginInfoService"/>
                 <ref bean="loggingService"/>
                 <ref bean="linkService"/>
+                <ref bean="sessionStatusService"/>
             </jaxrs:serviceBeans>
             <jaxrs:providers>
                 <ref bean="jacksonJsonProvider"/>
