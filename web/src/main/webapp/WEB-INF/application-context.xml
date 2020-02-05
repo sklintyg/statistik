@@ -77,6 +77,7 @@
         <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
         <bean id="loginInfoService" class="se.inera.statistics.web.service.endpoints.LoginInfoService"/>
         <bean id="loggingService" class="se.inera.statistics.web.service.endpoints.LoggingService"/>
+        <bean id="sessionStatusService" class="se.inera.statistics.web.service.endpoints.SessionStatusService"/>
         <bean id="dynamicLinkRepository" class="se.inera.intyg.infra.dynamiclink.repository.DynamicLinkRepositoryImpl" />
         <bean id="dynamicLinkService" class="se.inera.intyg.infra.dynamiclink.service.DynamicLinkServiceImpl"/>
         <bean id="linkService" class="se.inera.statistics.web.service.links.LinkService"/>

@@ -20,11 +20,12 @@
 angular.module('StatisticsApp').controller('pageCtrl',
     /** @ngInject */
     function($scope, $rootScope, $window, $location, statisticsData, businessFilterFactory, regionFilterFactory,
-        _, ControllerCommons, AppModel, UserModel, filterViewState) {
+        _, ControllerCommons, AppModel, UserModel, filterViewState, sessionCheckService) {
       'use strict';
 
       $scope.AppModel = AppModel;
       $scope.UserModel = UserModel;
+      $scope.sessionCheckService = sessionCheckService;
 
       $rootScope.$on('$routeChangeSuccess', function() {
         filterViewState.setMessages([]);
@@ -117,6 +118,9 @@ angular.module('StatisticsApp').controller('pageCtrl',
 
       $scope.$watch('AppModel.get().isLoggedIn', function(value) {
         if (value) {
+          // Start session polling
+          $scope.sessionCheckService.startPolling();
+
           if (!$scope.isLoginInfoFetched) {
             statisticsData.getLoginInfo(function(loginInfo) {
               UserModel.setLoginInfo(loginInfo);
