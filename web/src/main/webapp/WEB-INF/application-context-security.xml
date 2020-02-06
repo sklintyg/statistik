@@ -437,9 +437,12 @@
 
         <!-- Handler for successful logout -->
         <bean id="successLogoutHandler"
-              class="org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler">
+              class="se.inera.auth.StatistikLogoutSuccessHandler">
             <property name="defaultTargetUrl" value="/"/>
             <property name="targetUrlParameter" value="RelayState"/>
+            <property name="timeoutTargetUrlParameterValue" value="timeout"/>
+            <property name="timeoutLoggedOutUrl" value="/#/login?error=timeout"/>
+
         </bean>
     </beans>
 </beans>

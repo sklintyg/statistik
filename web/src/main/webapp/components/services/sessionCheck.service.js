@@ -96,7 +96,7 @@ angular.module('StatisticsApp').factory('sessionCheckService',
           // The RelayState is a mechanism to preserve the desired location after
           // SAML redirects/POSTs has occured
           $log.debug('SAML inactive logout');
-          $window.location = '/saml/logout?RelayState=/#/login?error=timeout';
+          $window.location = '/saml/logout?RelayState=timeout';
         }
       }
 
