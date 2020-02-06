@@ -90,14 +90,13 @@ angular.module('StatisticsApp').factory('sessionCheckService',
       }
 
       function _logout() {
-        if (UserModel.get().authenticationMethod === 'FAKE') {
-          $log.debug('FAKE inactive logout');
-          $window.location = '/logout';
-        } else {
+        if (UserModel.get().authenticationMethod !== 'FAKE') {
+          // FAKE logouts will be handled upon next request
+
           // The RelayState is a mechanism to preserve the desired location after
           // SAML redirects/POSTs has occured
           $log.debug('SAML inactive logout');
-          $window.location = '/saml/logout';
+          $window.location = '/saml/logout?RelayState=/#/login?error=timeout';
         }
       }
 
