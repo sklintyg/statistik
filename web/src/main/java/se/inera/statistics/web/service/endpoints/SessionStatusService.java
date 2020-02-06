@@ -65,7 +65,7 @@ public class SessionStatusService {
         Long secondsLeft = (Long) request.getAttribute(SessionTimeoutFilter.SECONDS_UNTIL_SESSIONEXPIRE_ATTRIBUTE_KEY);
 
         return new SessionStatusResponse(session != null, hasAuthenticatedPrincipalSession(session),
-            secondsLeft == null ? 0 : secondsLeft);
+            secondsLeft == null ? 0 : secondsLeft - 1700);
     }
 
     private boolean hasAuthenticatedPrincipalSession(HttpSession session) {
