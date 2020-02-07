@@ -440,8 +440,8 @@
               class="se.inera.auth.StatistikLogoutSuccessHandler">
             <property name="defaultTargetUrl" value="/"/>
             <property name="targetUrlParameter" value="RelayState"/>
-            <property name="timeoutTargetUrlParameterValue" value="timeout"/>
-            <property name="timeoutLoggedOutUrl" value="/#/login?error=timeout"/>
+            <property name="keywordTargetUrlParameterValue" value="timeout"/>
+            <property name="keywordLoggedOutUrl" value="/#/login?error=timeout"/>
 
         </bean>
     </beans>

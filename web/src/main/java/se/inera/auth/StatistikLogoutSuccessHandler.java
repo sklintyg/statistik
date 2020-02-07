@@ -42,12 +42,12 @@ public class StatistikLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler
     /**
      * The keyword used in the targetUrlParameter and should trigger the special handling.
      */
-    private String timeoutTargetUrlParameterValue = "timeout";
+    private String keywordTargetUrlParameterValue = "timeout";
 
     /**
-     * The redirect URL to be used when the specified value from targetUrlParameter matches timeoutTargetUrlParameterValue.
+     * The redirect URL to be used when the specified value from targetUrlParameter matches keywordTargetUrlParameterValue.
      */
-    private String timeoutLoggedOutUrl;
+    private String keywordLoggedOutUrl;
 
 
     @Override
@@ -58,7 +58,7 @@ public class StatistikLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler
         if (targetUrlParameter != null) {
             String targetUrlParameterValue = request.getParameter(targetUrlParameter);
 
-            if (StringUtils.hasText(targetUrlParameterValue) && timeoutTargetUrlParameterValue.equals(targetUrlParameterValue)) {
+            if (StringUtils.hasText(targetUrlParameterValue) && keywordTargetUrlParameterValue.equals(targetUrlParameterValue)) {
                 // Timeout logout performed. Create url for correct logout page
                 if (response.isCommitted()) {
                     logger.debug("Response has already been committed. Unable to redirect to "
@@ -66,7 +66,7 @@ public class StatistikLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler
                     return;
                 }
 
-                getRedirectStrategy().sendRedirect(request, response, timeoutLoggedOutUrl);
+                getRedirectStrategy().sendRedirect(request, response, keywordLoggedOutUrl);
             } else {
                 super.handle(request, response, authentication);
             }
@@ -77,11 +77,11 @@ public class StatistikLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler
 
     }
 
-    public void setTimeoutTargetUrlParameterValue(String timeoutTargetUrlParameterValue) {
-        this.timeoutTargetUrlParameterValue = timeoutTargetUrlParameterValue;
+    public void setKeywordTargetUrlParameterValue(String keywordTargetUrlParameterValue) {
+        this.keywordTargetUrlParameterValue = keywordTargetUrlParameterValue;
     }
 
-    public void setTimeoutLoggedOutUrl(String timeoutLoggedOutUrl) {
-        this.timeoutLoggedOutUrl = timeoutLoggedOutUrl;
+    public void setKeywordLoggedOutUrl(String keywordLoggedOutUrl) {
+        this.keywordLoggedOutUrl = keywordLoggedOutUrl;
     }
 }
