@@ -422,7 +422,7 @@
         </bean>
 
         <!-- Override default logout processing filter with the one processing SAML messages -->
-        <bean id="samlLogoutFilter" class="org.springframework.security.saml.SAMLLogoutFilter">
+        <bean id="samlLogoutFilter" class="se.inera.auth.StatistikSAMLLogoutFilter">
             <constructor-arg ref="successLogoutHandler"/>
             <constructor-arg ref="logoutHandler"/>
             <constructor-arg ref="logoutHandler"/>
@@ -437,8 +437,12 @@
 
         <!-- Handler for successful logout -->
         <bean id="successLogoutHandler"
-              class="org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler">
+              class="se.inera.auth.StatistikLogoutSuccessHandler">
             <property name="defaultTargetUrl" value="/"/>
+            <property name="targetUrlParameter" value="RelayState"/>
+            <property name="keywordTargetUrlParameterValue" value="timeout"/>
+            <property name="keywordLoggedOutUrl" value="/#/login?error=timeout"/>
+
         </bean>
     </beans>
 </beans>

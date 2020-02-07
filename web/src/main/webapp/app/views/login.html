@@ -2,7 +2,7 @@
   <div data-ng-if="loggedInWithoutStatistikuppdrag" class="alert alert-danger">
     <strong message key="login.alert-info.behorighet.title"></strong> <span message key="login.alert-info.behorighet.body"></span>
   </div>
-  <div data-ng-if="loginTimedOut && !loggedInWithoutStatistikuppdrag" class="alert alert-info">
+  <div data-ng-if="(loginTimedOut && !loggedInWithoutStatistikuppdrag) || (errorUrlParam == 'timeout')" class="alert alert-info">
     <strong message key="login.alert-inaktivitet.title"></strong> <span message key="login.alert-inaktivitet.body"></span>
   </div>
   <div data-ng-if="(errorUrlParam == 'loginfailed')" class="alert alert-danger">
