@@ -10,7 +10,7 @@ ext {
     refDataVersion = System.properties['refDataVersion'] ?: '1.0-SNAPSHOT'
 
     intygSchematronVersion = "1.0.48"
-    rivtaClinicalprocessSchemasVersion = "4.0.3"
+    rivtaClinicalprocessSchemasVersion = "4.0.5"
     internalMonitoringSchemaVersion = "1.0.4"
     intygTransportstyrelsenSchemasVersion = "1.0.5"
 
@@ -92,7 +92,7 @@ allprojects {
         compile "ch.qos.logback:logback-classic:${logbackVersion}"
         compile "com.google.guava:guava:${googleGuavaVersion}"
 
-	compile "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7.1"
+        compile "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7.1"
         testCompile "junit:junit:${junitVersion}"
         testCompile "org.springframework:spring-test:${springTestVersion}"
         testCompile "org.mockito:mockito-core:${mockitoVersion}"
@@ -124,7 +124,7 @@ allprojects {
     }
 
     [install.repositories.mavenInstaller, uploadArchives.repositories.mavenDeployer]*.pom*.whenConfigured { pom ->
-        pom.dependencies.findAll {dep -> dep.groupId == 'se.inera.intyg.infra'}.each {
+        pom.dependencies.findAll { dep -> dep.groupId == 'se.inera.intyg.infra' }.each {
             it.version = se.inera.intyg.IntygPluginKt.findResolvedVersion(project, 'se.inera.intyg.infra')
         }
     }
