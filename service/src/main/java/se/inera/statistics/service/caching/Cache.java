@@ -61,7 +61,6 @@ public class Cache {
     private static final String VGENHET = REDIS_KEY_PREFIX + "VGENHET_";
     private static final String ENHET = REDIS_KEY_PREFIX + "ENHET_";
     private static final String EXISTING_INTYGTYPES = REDIS_KEY_PREFIX + "EXISTING_INTYGTYPES_";
-    //private static final String JOB_NAME = "Cache.clearCaches";
     private static final int MILLIS_PER_SEC = 1000;
     private static final int SECS_PER_MIN = 60;
     private static final int MIN_PER_HOUR = 60;
@@ -92,8 +91,6 @@ public class Cache {
         this.template = template;
     }
 
-    //@Scheduled(cron = "${scheduler.factReloadJob.cron}")
-    //@SchedulerLock(name = JOB_NAME)
     public void clearCaches() {
         logMDCHelper.run(() -> {
             LOG.info("Clear Redis Cache Keys");
