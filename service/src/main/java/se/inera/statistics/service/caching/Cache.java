@@ -29,14 +29,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import net.javacrumbs.shedlock.core.SchedulerLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
@@ -63,7 +61,6 @@ public class Cache {
     private static final String VGENHET = REDIS_KEY_PREFIX + "VGENHET_";
     private static final String ENHET = REDIS_KEY_PREFIX + "ENHET_";
     private static final String EXISTING_INTYGTYPES = REDIS_KEY_PREFIX + "EXISTING_INTYGTYPES_";
-    private static final String JOB_NAME = "Cache.clearCaches";
     private static final int MILLIS_PER_SEC = 1000;
     private static final int SECS_PER_MIN = 60;
     private static final int MIN_PER_HOUR = 60;
@@ -94,8 +91,6 @@ public class Cache {
         this.template = template;
     }
 
-    @Scheduled(cron = "${scheduler.factReloadJob.cron}")
-    @SchedulerLock(name = JOB_NAME)
     public void clearCaches() {
         logMDCHelper.run(() -> {
             LOG.info("Clear Redis Cache Keys");

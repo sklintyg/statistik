@@ -32,6 +32,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import net.javacrumbs.shedlock.core.SchedulerLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +70,7 @@ public class ChartDataService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ChartDataService.class);
     public static final String TEXT_CP1252 = "text/plain; charset=cp1252";
+    private static final String JOB_NAME = "ChartDataService.reloadJob";
 
     @Autowired
     private Icd10 icd10;
@@ -103,6 +105,12 @@ public class ChartDataService {
     }
 
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
+    @SchedulerLock(name = JOB_NAME)
+    public void reloadJob() {
+        cache.clearCaches();
+        buildNationalDataCache();
+    }
+
     @PrometheusTimeMethod(help = "Jobb för att uppdatera information i cache")
     public NationellDataResult buildNationalDataCache() {
         final List<NationellDataResult> nationalData = new ArrayList<>();
