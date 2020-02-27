@@ -355,7 +355,7 @@ public class ProtectedChartDataService {
         @QueryParam("format") String format, @QueryParam("vardenhetdepth") boolean vardenhetdepth) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18, vardenhetdepth);
         final List<HsaIdEnhet> enhetsFilterIds = filterHandler.getEnhetsFilterIds(filterSettings.getFilter().getEnheter(), request);
-        Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMap(request, enhetsFilterIds, vardenhetdepth);
+        Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMapExclusive(request, enhetsFilterIds, vardenhetdepth);
         KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerEnhet(filterSettings.getFilter(),
             filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request), idToNameMap, vardenhetdepth);
         SimpleDetailsData result = new MessageAmnePerEnhetConverter().convert(casesPerMonth, filterSettings);
@@ -376,7 +376,7 @@ public class ProtectedChartDataService {
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
         final List<HsaIdEnhet> enhetsFilterIds = filterHandler.getEnhetsFilterIds(filterSettings.getFilter().getEnheter(), request);
-        Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMap(request, enhetsFilterIds, vardenhetdepth);
+        Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMapExclusive(request, enhetsFilterIds, vardenhetdepth);
         KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerEnhetTvarsnitt(filter, range,
             loginServiceUtil.getSelectedVgIdForLoggedInUser(request), idToNameMap, vardenhetdepth);
         SimpleDetailsData result = new MessageAmnePerEnhetTvarsnittConverter().convert(casesPerMonth, filterSettings);
@@ -547,7 +547,7 @@ public class ProtectedChartDataService {
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
         final List<HsaIdEnhet> enhetsFilterIds = filterHandler.getEnhetsFilterIds(filter.getEnheter(), request);
-        Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMap(request, enhetsFilterIds, vardenhetdepth);
+        Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMapExclusive(request, enhetsFilterIds, vardenhetdepth);
         SimpleKonResponse casesPerEnhet = warehouse.getCasesPerEnhet(filter.getPredicate(), idToNameMap, range,
             loginServiceUtil.getSelectedVgIdForLoggedInUser(request), vardenhetdepth);
         SimpleDetailsData result = new GroupedSjukfallConverter("").convert(casesPerEnhet, filterSettings);
@@ -571,7 +571,7 @@ public class ProtectedChartDataService {
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
         final List<HsaIdEnhet> enhetsFilterIds = filterHandler.getEnhetsFilterIds(filter.getEnheter(), request);
-        Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMap(request, enhetsFilterIds, vardenhetdepth);
+        Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMapExclusive(request, enhetsFilterIds, vardenhetdepth);
         KonDataResponse casesPerEnhet = warehouse.getCasesPerEnhetTimeSeries(filter.getPredicate(), idToNameMap, range,
             loginServiceUtil.getSelectedVgIdForLoggedInUser(request), vardenhetdepth);
         DualSexStatisticsData result = new SimpleMultiDualSexConverter().convert(casesPerEnhet, filterSettings);

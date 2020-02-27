@@ -140,7 +140,7 @@ public class FilterHandler {
     }
 
     public FilterSettings getFilter(HttpServletRequest request, String filterHash,
-                                    int defaultNumberOfMonthsInRange, boolean vardenhetsdepth) {
+        int defaultNumberOfMonthsInRange, boolean vardenhetsdepth) {
         try {
             if (filterHash == null || filterHash.isEmpty()) {
                 return new FilterSettings(getFilterForAllAvailableEnhets(request, vardenhetsdepth),
@@ -172,7 +172,7 @@ public class FilterHandler {
 
     private FilterSettings getFilterSettings(HttpServletRequest request, String filterHash, int defaultRangeValue, FilterData inFilter,
         List<HsaIdEnhet> enhetsInFilter, boolean veDepth) throws FilterException, TooEarlyEndDateException, TooLateStartDateException {
-        Set<HsaIdEnhet> enheter = getEnhetNameMap(request, enhetsInFilter, veDepth).keySet();
+        Set<HsaIdEnhet> enheter = getEnhetNameMapInclusive(request, enhetsInFilter, veDepth).keySet();
         final Predicate<Fact> enhetFilter = sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaIdEnhet[enheter.size()]))
             .getIntygFilter();
         return getFilterSettings(filterHash, defaultRangeValue, inFilter, enheter, enhetFilter, veDepth);
@@ -332,8 +332,8 @@ public class FilterHandler {
     private Filter getFilterForEnhets(@Nonnull List<HsaIdEnhet> enhetsAsHsaIds, boolean vardenhetsdepth) {
         final String hashValue = FilterPredicates.getHashValueForEnhets(enhetsAsHsaIds) + vardenhetsdepth;
         final FilterPredicates predicate = new FilterPredicates(fact ->
-                enhetsAsHsaIds.contains(vardenhetsdepth ? fact.getVardenhet() : fact.getUnderenhet()),
-                sjukfall -> true, hashValue, false);
+            enhetsAsHsaIds.contains(vardenhetsdepth ? fact.getVardenhet() : fact.getUnderenhet()),
+            sjukfall -> true, hashValue, false);
         final List<String> sjukskrivningslangd = toReadableSjukskrivningslangdName(null);
         final List<String> aldersgrupp = toReadableAgeGroupNames(null);
         final List<String> intygstyper = toReadableIntygTypeName(null);
@@ -349,8 +349,8 @@ public class FilterHandler {
                 FilterPredicates.HASH_EMPTY_FILTER + vardenhetsdepth, toReadableIntygTypeName(null), true);
         }
         List<HsaIdEnhet> hsaIds = info.getBusinessesForVg(vgId).stream()
-                .map(Verksamhet::getId)
-                .collect(Collectors.toList());
+            .map(Verksamhet::getId)
+            .collect(Collectors.toList());
         return getFilterForEnhets(hsaIds, vardenhetsdepth);
     }
 
@@ -446,12 +446,28 @@ public class FilterHandler {
         };
     }
 
-    public Map<HsaIdEnhet, String> getEnhetNameMap(HttpServletRequest request, Collection<HsaIdEnhet> enhetsIDs, boolean vardenhetsdepth) {
+    // When editing this make sure to also update getEnhetNameMapInclusive
+    public Map<HsaIdEnhet, String> getEnhetNameMapExclusive(HttpServletRequest request, Collection<HsaIdEnhet> enhetsIDs,
+        boolean vardenhetsdepth) {
         final HsaIdVardgivare vgid = getSelectedVgIdForLoggedInUser(request);
         LoginInfo info = loginServiceUtil.getLoginInfo();
         Map<HsaIdEnhet, String> enheter = new HashMap<>();
         for (Verksamhet userVerksamhet : info.getBusinessesForVg(vgid)) {
             if (enhetsIDs != null && enhetsIDs.contains(userVerksamhet.getId()) && userVerksamhet.isVardenhet() == vardenhetsdepth) {
+                enheter.put(userVerksamhet.getId(), userVerksamhet.getName());
+            }
+        }
+        return enheter;
+    }
+
+    // When editing this make sure to also update getEnhetNameMapExclusive
+    public Map<HsaIdEnhet, String> getEnhetNameMapInclusive(HttpServletRequest request, Collection<HsaIdEnhet> enhetsIDs,
+        boolean vardenhetsdepth) {
+        final HsaIdVardgivare vgid = getSelectedVgIdForLoggedInUser(request);
+        LoginInfo info = loginServiceUtil.getLoginInfo();
+        Map<HsaIdEnhet, String> enheter = new HashMap<>();
+        for (Verksamhet userVerksamhet : info.getBusinessesForVg(vgid)) {
+            if (enhetsIDs != null && enhetsIDs.contains(userVerksamhet.getId()) && (vardenhetsdepth || !userVerksamhet.isVardenhet())) {
                 enheter.put(userVerksamhet.getId(), userVerksamhet.getName());
             }
         }
