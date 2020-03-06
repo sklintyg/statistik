@@ -1,7 +1,6 @@
 {
-  "appVersion": "7.5.0",
-  "infraVersion": "3.12.0.+",
+  "appVersion": "7.6.0",
+  "infraVersion": "3.13.0.+",
   "buildArgs": "--refresh-dependencies clean build testReport -PcodeQuality -DgruntColors=false -PuseMinifiedJavaScript",
-  "tests": [ "integrationTest", "fitnesseTest", "protractorTest" ],
-  "uploadArchives": true
+  "tests": [ "integrationTest", "fitnesseTest", "protractorTest" ]
 }
