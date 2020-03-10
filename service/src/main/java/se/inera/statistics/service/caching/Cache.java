@@ -59,6 +59,7 @@ public class Cache {
     private static final String NATIONAL_DATA = REDIS_KEY_PREFIX + "NATIONAL_DATA_";
     private static final String SJUKFALLGROUP = REDIS_KEY_PREFIX + "SJUKFALLGROUP_";
     private static final String VGENHET = REDIS_KEY_PREFIX + "VGENHET_";
+    private static final String VARDENHETENHET = REDIS_KEY_PREFIX + "VARDENHETENHETS_";
     private static final String ENHET = REDIS_KEY_PREFIX + "ENHET_";
     private static final String EXISTING_INTYGTYPES = REDIS_KEY_PREFIX + "EXISTING_INTYGTYPES_";
     private static final int MILLIS_PER_SEC = 1000;
@@ -142,6 +143,23 @@ public class Cache {
 
         LOG.info("All enhets not cached");
         return enhets;
+    }
+
+    public List<HsaIdEnhet> getEnhetWithVardenhetsId(HsaIdEnhet vardenhetId, Function<HsaIdEnhet, List<Enhet>> loader) {
+        LOG.info("Getting VardenhetEnhets: {}", vardenhetId);
+        return lookup(VARDENHETENHET + vardenhetId.getId(), () -> loadEnhetWithVardenhetsId(vardenhetId, loader));
+    }
+
+    private List<HsaIdEnhet> loadEnhetWithVardenhetsId(HsaIdEnhet vardenhetId, Function<HsaIdEnhet, List<Enhet>> loader) {
+        LOG.info("VardenhetEnhets not cached: {}", vardenhetId);
+        final ValueOperations<Object, Object> ops = template.opsForValue();
+        return loader.apply(vardenhetId).stream()
+            .peek(e -> {
+                final String key = ENHET + e.getEnhetId().getId();
+                ops.set(key, e);
+                template.expire(key, DEFAULT_TTL, TimeUnit.MILLISECONDS);
+            }).map(Enhet::getEnhetId)
+            .collect(Collectors.toList());
     }
 
     private List<SjukfallGroup> loadSjukfallgroups(SjukfallGroupCacheKey key) {

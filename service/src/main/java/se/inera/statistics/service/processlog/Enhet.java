@@ -36,6 +36,7 @@ import se.inera.statistics.service.report.model.VerksamhetsTyp;
 @Table(name = Enhet.TABLE)
 @NamedQueries({
     @NamedQuery(name = "Enhet.getByVg", query = "SELECT e FROM Enhet e WHERE e.vardgivareId = :vgid"),
+    @NamedQuery(name = "Enhet.getByVardenhetid", query = "SELECT e FROM Enhet e WHERE e.vardenhetId = :veid"),
     @NamedQuery(name = "Enhet.getByEnhetids", query = "SELECT e FROM Enhet e WHERE e.enhetId IN :enhetids")
 })
 public class Enhet implements Serializable {
@@ -65,7 +66,7 @@ public class Enhet implements Serializable {
     }
 
     public Enhet(HsaIdVardgivare vardgivareId, HsaIdEnhet enhetId, String namn, String lansId,
-                 String kommunId, String verksamhetsTyper, String vardenhetId) {
+        String kommunId, String verksamhetsTyper, String vardenhetId) {
         setVardgivareId(vardgivareId);
         setEnhetId(enhetId);
         this.namn = namn;
@@ -121,6 +122,10 @@ public class Enhet implements Serializable {
 
     public String getVardenhetId() {
         return vardenhetId;
+    }
+
+    public HsaIdEnhet getVardenhetIdAsHsaId() {
+        return new HsaIdEnhet(vardenhetId);
     }
 
     public void setKommunId(String kommunId) {
