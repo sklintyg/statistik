@@ -314,7 +314,7 @@ public class IntygCommonManager {
         return Stream.concat(enheter.stream(),
             warehouse.getEnhetsWithHsaId(enheter).stream()
                 .filter(Enhet::isVardenhet)
-                .flatMap(enhet -> warehouse.getEnhetsOfVardenhet(enhet.getVardenhetIdAsHsaId()).stream())
+                .flatMap(enhet -> warehouse.getEnhetsOfVardenhet(enhet.getEnhetId()).stream())
                 .map(Enhet::getEnhetId))
             .collect(Collectors.toSet());
     }
