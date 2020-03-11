@@ -90,4 +90,24 @@ public class EnhetLoaderTest {
         assertTrue(enhetNames.contains("5"));
     }
 
+    @Test
+    @Transactional
+    public void getAllEnhetsForVardenhet() throws Exception {
+        //Given
+        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e1"), "1", "", "", "", "e1"));
+        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e2"), "2", "", "", "", "e1"));
+        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e3"), "3", "", "", "", "e3"));
+        manager.persist(new Enhet(new HsaIdVardgivare("vg2"), new HsaIdEnhet("e4"), "4", "", "", "", "e4"));
+        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e5"), "5", "", "", "", "e1"));
+
+        //When
+        final List<Enhet> enhetsWithHsaId = enhetLoader.getAllEnhetsForVardenhet(new HsaIdEnhet("e1"));
+
+        //Then
+        final List<String> enhetNames = enhetsWithHsaId.stream().map(Enhet::getNamn).collect(Collectors.toList());
+        assertEquals(3, enhetNames.size());
+        assertTrue(enhetNames.contains("1"));
+        assertTrue(enhetNames.contains("2"));
+        assertTrue(enhetNames.contains("5"));
+    }
 }

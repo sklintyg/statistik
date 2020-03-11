@@ -59,6 +59,11 @@ public class Warehouse implements Iterable<Aisle> {
         return getEnhetsWithHsaId(enhetIds);
     }
 
+    public Collection<Enhet> getEnhetsOfVardenhet(HsaIdEnhet vardenhetId) {
+        final List<HsaIdEnhet> enhetIds = cache.getEnhetWithVardenhetsId(vardenhetId, veid -> enhetLoader.getAllEnhetsForVardenhet(veid));
+        return getEnhetsWithHsaId(enhetIds);
+    }
+
     public Collection<Enhet> getEnhetsWithHsaId(Collection<HsaIdEnhet> enhetIds) {
         return cache.getEnhetsWithHsaId(enhetIds, ids -> enhetLoader.getEnhets(ids));
     }
