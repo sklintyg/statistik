@@ -48,6 +48,13 @@ public class EnhetLoader {
         return query.getResultList();
     }
 
+    List<Enhet> getAllEnhetsForVardenhet(HsaIdEnhet vardenhet) {
+        LOG.info("Getting enhets for vardenhet: " + vardenhet);
+        final TypedQuery<Enhet> query = manager.createNamedQuery("Enhet.getByVardenhetid", Enhet.class);
+        query.setParameter("veid", vardenhet.getId());
+        return query.getResultList();
+    }
+
     List<Enhet> getEnhets(Collection<HsaIdEnhet> enhetIds) {
         if (enhetIds == null || enhetIds.isEmpty()) {
             return Collections.emptyList();
