@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -47,7 +46,6 @@ import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.hsa.HsaInfo;
-import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.processlog.intygsent.IntygSentEvent;
@@ -275,7 +273,7 @@ public class IntygCommonManager {
         ql.append("AND r.signeringsdatum <= :toDate ");
         ql.append("AND r.active = true ");
 
-        final Collection<HsaIdEnhet> enheter = getAllEnheterInVardenheter(intygFilter.getEnheter());
+        final Collection<HsaIdEnhet> enheter = EnhetUtil.getAllEnheterInVardenheter(intygFilter.getEnheter(), warehouse);
         if (enheter != null) {
             ql.append(" AND r.enhet IN :enhetIds");
         }
@@ -304,19 +302,6 @@ public class IntygCommonManager {
         resultList = applyDxFilter(intygFilter.getDiagnoser(), resultList, icd10);
 
         return new IntygCommonGroup(range, resultList);
-    }
-
-    private Collection<HsaIdEnhet> getAllEnheterInVardenheter(Collection<HsaIdEnhet> enheter) {
-        if (enheter == null || enheter.isEmpty()) {
-            return enheter;
-        }
-
-        return Stream.concat(enheter.stream(),
-            warehouse.getEnhetsWithHsaId(enheter).stream()
-                .filter(Enhet::isVardenhet)
-                .flatMap(enhet -> warehouse.getEnhetsOfVardenhet(enhet.getEnhetId()).stream())
-                .map(Enhet::getEnhetId))
-            .collect(Collectors.toSet());
     }
 
     public static List<IntygCommon> applyDxFilter(Collection<String> dxFilter, List<IntygCommon> dtos, Icd10 icd10) {
