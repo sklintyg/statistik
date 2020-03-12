@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,11 +41,13 @@ import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.ConversionHelper;
+import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.IntygType;
+import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.WidelineLoader;
 import se.inera.statistics.service.warehouse.query.MessagesFilter;
 
@@ -64,6 +67,9 @@ public class MessageWidelineLoader {
 
     @Autowired
     private Icd10 icd10;
+
+    @Autowired
+    private Warehouse warehouse;
 
     public List<CountDTO> getAntalMeddelandenPerMonth(LocalDate from, LocalDate to) {
         return getAntalMeddelandenPerMonth(from, to, null, null);
@@ -239,7 +245,7 @@ public class MessageWidelineLoader {
         }
 
         if (enheter != null && !enheter.isEmpty()) {
-            String enhetSql = enheter.stream().map(HsaIdEnhet::getId).collect(Collectors.joining("' , '"));
+            String enhetSql = getAllEnheterInVardenheter(enheter).stream().map(HsaIdEnhet::getId).collect(Collectors.joining("' , '"));
             sql += " AND `enhet` IN ('" + enhetSql + "')";
         }
 
@@ -271,7 +277,7 @@ public class MessageWidelineLoader {
             sql.append(" AND mwl.vardgivareid = ? ");
         }
 
-        final Collection<HsaIdEnhet> enheter = filter.getEnheter();
+        final Collection<HsaIdEnhet> enheter = getAllEnheterInVardenheter(filter.getEnheter());
         if (enheter != null && !enheter.isEmpty()) {
             if (vardenhetdepth) {
                 String enhetSql = enheter.stream().map(HsaIdEnhet::getId).collect(Collectors.joining("' , '"));
@@ -281,12 +287,6 @@ public class MessageWidelineLoader {
                 sql.append(" AND mwl.enhet IN ('").append(enhetSql).append("')");
             }
         }
-
-//        final Collection<HsaIdEnhet> enheter = filter.getEnheter();
-//        if (enheter != null && !enheter.isEmpty()) {
-//            String enhetSql = enheter.stream().map(HsaIdEnhet::getId).collect(Collectors.joining("' , '"));
-//            sql.append(" AND mwl.enhet IN ('").append(enhetSql).append("')");
-//        }
 
         final Collection<String> intygstyper = filter.getIntygstyper();
         if (intygstyper != null && !intygstyper.isEmpty()) {
@@ -331,7 +331,7 @@ public class MessageWidelineLoader {
             sql.append(" AND ic.vardgivareid = ? ");
         }
 
-        final Collection<HsaIdEnhet> enheter = filter.getEnheter();
+        final Collection<HsaIdEnhet> enheter = getAllEnheterInVardenheter(filter.getEnheter());
         if (enheter != null && !enheter.isEmpty()) {
             String enhetSql = enheter.stream().map(HsaIdEnhet::getId).collect(Collectors.joining("' , '"));
             sql.append(" AND ic.enhet IN ('").append(enhetSql).append("')");
@@ -388,7 +388,7 @@ public class MessageWidelineLoader {
             sql.append(" AND mwl.vardgivareid = ? ");
         }
 
-        final Collection<HsaIdEnhet> enheter = filter.getEnheter();
+        final Collection<HsaIdEnhet> enheter = getAllEnheterInVardenheter(filter.getEnheter());
         if (enheter != null && !enheter.isEmpty()) {
             String enhetSql = enheter.stream().map(HsaIdEnhet::getId).collect(Collectors.joining("' , '"));
             sql.append(" AND mwl.enhet IN ('").append(enhetSql).append("')");
@@ -423,6 +423,19 @@ public class MessageWidelineLoader {
         }
 
         return stmt;
+    }
+
+    private Collection<HsaIdEnhet> getAllEnheterInVardenheter(Collection<HsaIdEnhet> enheter) {
+        if (enheter == null || enheter.isEmpty()) {
+            return enheter;
+        }
+
+        return Stream.concat(enheter.stream(),
+            warehouse.getEnhetsWithHsaId(enheter).stream()
+                .filter(Enhet::isVardenhet)
+                .flatMap(enhet -> warehouse.getEnhetsOfVardenhet(enhet.getEnhetId()).stream())
+                .map(Enhet::getEnhetId))
+            .collect(Collectors.toSet());
     }
 
     public static class CountDTO {
