@@ -31,7 +31,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,11 +40,11 @@ import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.ConversionHelper;
-import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.warehouse.EnhetUtil;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.WidelineLoader;
@@ -426,16 +425,7 @@ public class MessageWidelineLoader {
     }
 
     private Collection<HsaIdEnhet> getAllEnheterInVardenheter(Collection<HsaIdEnhet> enheter) {
-        if (enheter == null || enheter.isEmpty()) {
-            return enheter;
-        }
-
-        return Stream.concat(enheter.stream(),
-            warehouse.getEnhetsWithHsaId(enheter).stream()
-                .filter(Enhet::isVardenhet)
-                .flatMap(enhet -> warehouse.getEnhetsOfVardenhet(enhet.getEnhetId()).stream())
-                .map(Enhet::getEnhetId))
-            .collect(Collectors.toSet());
+        return EnhetUtil.getAllEnheterInVardenheter(enheter, warehouse);
     }
 
     public static class CountDTO {

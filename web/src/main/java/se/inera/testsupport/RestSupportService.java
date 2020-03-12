@@ -109,8 +109,8 @@ import se.inera.testsupport.socialstyrelsenspecial.SosReportCreator;
 import se.inera.testsupport.socialstyrelsenspecial.SosRow;
 import se.inera.testsupport.specialrapport.SjukfallLengthSpecialReportCreator;
 import se.inera.testsupport.specialrapport.SjukfallLengthSpecialRow;
-import se.inera.testsupport.specialrapport.regionskane.SpecialReportSkaneCreator;
 import se.inera.testsupport.specialrapport.regionskane.SpecialReportSkaneAgeCreator;
+import se.inera.testsupport.specialrapport.regionskane.SpecialReportSkaneCreator;
 import se.inera.testsupport.specialrapport.regionskane.SpecialSkaneRow;
 
 @Service("restSupportService")
@@ -196,7 +196,7 @@ public class RestSupportService {
 
     @PostConstruct
     public void setup() {
-        intygCommonSosManager = new IntygCommonSosManager(icd10, manager);
+        intygCommonSosManager = new IntygCommonSosManager(icd10, manager, warehouse);
     }
 
     /**
@@ -308,7 +308,7 @@ public class RestSupportService {
         int executeUpdate = query.executeUpdate();
         if (executeUpdate < 1) {
             Enhet enhet = new Enhet(new HsaIdVardgivare(intyg.getVardgivareId()), new HsaIdEnhet(intyg.getEnhetId()),
-                    name, "", "", "", intyg.getHuvudenhetId());
+                name, "", "", "", intyg.getHuvudenhetId());
             manager.persist(enhet);
         }
     }
@@ -646,17 +646,17 @@ public class RestSupportService {
      */
     @GET
     @Path("getSpecialReportSkane")
-    @Produces({ MediaType.APPLICATION_JSON })
-    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
     public Response getSpecialReportSkane(@QueryParam("enhet") List<String> enhets) {
         final List<SpecialSkaneRow> report = new SpecialReportSkaneCreator(warehouse.iterator(), sjukfallUtil, icd10)
-                .getReport(false, enhets);
+            .getReport(false, enhets);
         report.addAll(new SpecialReportSkaneAgeCreator(warehouse.iterator(), sjukfallUtil)
-                .getReport(false, enhets));
+            .getReport(false, enhets));
         report.addAll(new SpecialReportSkaneCreator(warehouse.iterator(), sjukfallUtil, icd10)
-                .getReport(true, enhets));
+            .getReport(true, enhets));
         report.addAll(new SpecialReportSkaneAgeCreator(warehouse.iterator(), sjukfallUtil)
-                .getReport(true, enhets));
+            .getReport(true, enhets));
         return Response.ok(report).build();
     }
 
