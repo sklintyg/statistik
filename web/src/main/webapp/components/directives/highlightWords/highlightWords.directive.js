@@ -59,7 +59,7 @@ angular.module('StatisticsApp')
 
       function initToolTip() {
         $('[data-toggle="tooltip"]').tooltip({
-          container: '#view'
+          container: 'body'
         });
       }
 
