@@ -44,11 +44,13 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.warehouse.EnhetUtil;
 import se.inera.statistics.service.warehouse.IntygCommonFilter;
 import se.inera.statistics.service.warehouse.IntygCommonGroup;
 import se.inera.statistics.service.warehouse.IntygCommonManager;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.ResponseUtil;
+import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.WidelineConverter;
 import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 import se.inera.statistics.service.warehouse.query.CounterFunctionIntyg;
@@ -64,9 +66,12 @@ public class IntygCommonSosManager {
 
     private EntityManager manager;
 
-    public IntygCommonSosManager(Icd10 icd10, EntityManager manager) {
+    private Warehouse warehouse;
+
+    public IntygCommonSosManager(Icd10 icd10, EntityManager manager, Warehouse warehouse) {
         this.icd10 = icd10;
         this.manager = manager;
+        this.warehouse = warehouse;
     }
 
     private KonDataResponse getIntygPerAgeGroupSoc(HsaIdVardgivare vardgivarId, int year) {
@@ -172,7 +177,7 @@ public class IntygCommonSosManager {
         ql.append("AND w.slutdatum > :toDate)) ");
         ql.append("AND w.active = TRUE ");
 
-        final Collection<HsaIdEnhet> enheter = intygFilter.getEnheter();
+        final Collection<HsaIdEnhet> enheter = getAllEnheterInVardenheter(intygFilter.getEnheter());
         if (enheter != null) {
             ql.append(" AND r.enhet IN :enhetIds");
         }
@@ -201,6 +206,10 @@ public class IntygCommonSosManager {
         resultList = applyDxFilter(intygFilter.getDiagnoser(), resultList);
 
         return new IntygCommonGroup(range, resultList);
+    }
+
+    private Collection<HsaIdEnhet> getAllEnheterInVardenheter(Collection<HsaIdEnhet> enheter) {
+        return EnhetUtil.getAllEnheterInVardenheter(enheter, warehouse);
     }
 
     private List<IntygCommon> applyDxFilter(Collection<String> dxFilter, List<IntygCommon> dtos) {
