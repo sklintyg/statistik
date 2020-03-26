@@ -444,7 +444,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
           table: {
             header: ['',
               messageService.getProperty('overview.widget.table.column.lan'),
-              messageService.getProperty('overview.widget.table.column.antal'),
+              messageService.getProperty('overview.widget.table.column.antal-per-1000'),
               messageService.getProperty('overview.widget.table.column.forandring')
             ],
             data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.sickLeavePerCountyGroups)
