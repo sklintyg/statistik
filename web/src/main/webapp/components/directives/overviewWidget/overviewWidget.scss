@@ -39,6 +39,10 @@ overview-widget {
     .col-xs-12 {
       padding: 0;
     }
+
+    .overview-table-head {
+      white-space: nowrap;
+    }
   }
 
   &:hover {

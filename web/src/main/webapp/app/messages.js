@@ -153,6 +153,7 @@ var stMessages = {
     'overview.widget.table.column.kompletteringar': 'Kompletteringar',
     'overview.widget.table.column.lan': 'Län',
     'overview.widget.table.column.antal': 'Antal',
+    'overview.widget.table.column.antal-per-1000': 'Antal/1000 inv.',
     'overview.widget.table.column.andel': 'Andel',
     'overview.widget.table.column.forandring': 'Förändring',
     'overview.widget.fordelning-sjukskrivningslangd.overgar-90': 'Antal sjukfall som är 91 dagar eller längre.',
