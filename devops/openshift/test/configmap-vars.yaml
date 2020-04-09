@@ -1,8 +1,0 @@
-apiVersion: v1
-data:
-  NTJP_WS_CERTIFICATE_TYPE: JKS
-  SCHEDULER_LOGJOB_CRON: "0 0 3 29 2 ?"
-kind: ConfigMap
-metadata:
-  name: statistik-test-configmap-envvar
-type: Opaque
