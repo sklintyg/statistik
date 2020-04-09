@@ -220,7 +220,7 @@ public class LoginServiceUtil {
                     return allEnhetsForVg.stream().map(this::enhetToVerksamhet);
                 } else {
                     final List<Vardenhet> vardenhetsForVg = realUser.getVardenhetsForVg(hsaIdVardgivare);
-                    return vardenhetsForVg.stream().flatMap(vardEnhet -> vardenhetToVerksamheter(vardEnhet, allEnhetsForVg));
+                    return vardenhetsForVg.stream().map(vardEnhet -> vardenhetToVerksamhet(vardEnhet, allEnhetsForVg));
                 }
             })
             .flatMap(i -> i)
@@ -233,31 +233,23 @@ public class LoginServiceUtil {
             getVerksamhetsTyper(enhet.getVerksamhetsTyper()), enhet.getVardenhetId());
     }
 
-    private Stream<Verksamhet> vardenhetToVerksamheter(final Vardenhet vardEnhet, Collection<Enhet> enhetsList) {
+    private Verksamhet vardenhetToVerksamhet(final Vardenhet vardEnhet, Collection<Enhet> enhetsList) {
         Optional<Enhet> enhetOpt = enhetsList.stream()
             .filter(enhet -> enhet.getEnhetId().equals(vardEnhet.getId()))
             .findAny();
 
-        return enhetOpt
-            .map(vardenhet -> Stream.concat(warehouse.getEnhetsOfVardenhet(vardenhet.getEnhetId()).stream(), Stream.of(vardenhet))
-                .map(enhet -> {
-                    String lansId = enhet.getLansId();
-                    String lansNamn = lan.getNamn(lansId);
-                    String kommunId = lansId + enhet.getKommunId();
-                    String kommunNamn = kommun.getNamn(kommunId);
-                    Set<Verksamhet.VerksamhetsTyp> verksamhetsTyper = (
-                        enhet.getVerksamhetsTyper() == null || enhet.getVerksamhetsTyper().isEmpty()
-                            ? Collections.singleton(new Verksamhet.VerksamhetsTyp(VerksamhetsTyp.OVRIGT_ID, VerksamhetsTyp.OVRIGT))
-                            : getVerksamhetsTyper(enhet.getVerksamhetsTyper()));
+        String vardenhetId = enhetOpt.map(Enhet::getVardenhetId).orElse(null);
+        String lansId = enhetOpt.map(Enhet::getLansId).orElse(Lan.OVRIGT_ID);
+        String lansNamn = lan.getNamn(lansId);
+        String kommunId = enhetOpt.map(enhet -> lansId + enhet.getKommunId()).orElse(Kommun.OVRIGT_ID);
+        String kommunNamn = kommun.getNamn(kommunId);
+        Set<Verksamhet.VerksamhetsTyp> verksamhetsTyper = enhetOpt
+            .map(enhet -> getVerksamhetsTyper(enhet.getVerksamhetsTyper()))
+            .orElseGet(() -> Collections.singleton(new Verksamhet.VerksamhetsTyp(VerksamhetsTyp.OVRIGT_ID, VerksamhetsTyp.OVRIGT)));
 
-                    return new Verksamhet(enhet.getEnhetId(), enhet.getNamn(), vardEnhet.getVardgivarId(), vardEnhet.getVardgivarNamn(),
-                        lansId,
-                        lansNamn, kommunId,
-                        kommunNamn, verksamhetsTyper, enhet.getVardenhetId());
-                })).orElseGet(() -> Stream
-                .of(new Verksamhet(vardEnhet.getId(), vardEnhet.getNamn(), vardEnhet.getVardgivarId(), vardEnhet.getVardgivarNamn(),
-                    Lan.OVRIGT_ID, Lan.OVRIGT, Kommun.OVRIGT_ID, Kommun.OVRIGT,
-                    Collections.singleton(new Verksamhet.VerksamhetsTyp(VerksamhetsTyp.OVRIGT_ID, VerksamhetsTyp.OVRIGT)), null)));
+        return new Verksamhet(vardEnhet.getId(), vardEnhet.getNamn(), vardEnhet.getVardgivarId(), vardEnhet.getVardgivarNamn(), lansId,
+            lansNamn, kommunId,
+            kommunNamn, verksamhetsTyper, vardenhetId);
     }
 
     private Set<Verksamhet.VerksamhetsTyp> getVerksamhetsTyper(String verksamhetsTyper) {
