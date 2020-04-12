@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import org.springframework.data.redis.connection.BitFieldSubCommands;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -46,11 +47,13 @@ public class NoOpRedisTemplate extends RedisTemplate<Object, Object> {
     }
 
     @Override
-    public void delete(Object key) {
+    public Boolean delete(Object key) {
+        return null;
     }
 
     @Override
-    public void delete(Collection<Object> keys) {
+    public Long delete(Collection<Object> keys) {
+        return null;
     }
 
     @Override
@@ -74,6 +77,21 @@ public class NoOpRedisTemplate extends RedisTemplate<Object, Object> {
             @Override
             public Boolean setIfAbsent(Object key, Object value) {
                 return false;
+            }
+
+            @Override
+            public Boolean setIfAbsent(Object key, Object value, long timeout, TimeUnit unit) {
+                return null;
+            }
+
+            @Override
+            public Boolean setIfPresent(Object key, Object value) {
+                return null;
+            }
+
+            @Override
+            public Boolean setIfPresent(Object key, Object value, long timeout, TimeUnit unit) {
+                return null;
             }
 
             @Override
@@ -101,12 +119,27 @@ public class NoOpRedisTemplate extends RedisTemplate<Object, Object> {
             }
 
             @Override
+            public Long increment(Object key) {
+                return null;
+            }
+
+            @Override
             public Long increment(Object key, long delta) {
                 return null;
             }
 
             @Override
             public Double increment(Object key, double delta) {
+                return null;
+            }
+
+            @Override
+            public Long decrement(Object key) {
+                return null;
+            }
+
+            @Override
+            public Long decrement(Object key, long delta) {
                 return null;
             }
 
@@ -136,6 +169,11 @@ public class NoOpRedisTemplate extends RedisTemplate<Object, Object> {
 
             @Override
             public Boolean getBit(Object key, long offset) {
+                return null;
+            }
+
+            @Override
+            public List<Long> bitField(Object key, BitFieldSubCommands subCommands) {
                 return null;
             }
 

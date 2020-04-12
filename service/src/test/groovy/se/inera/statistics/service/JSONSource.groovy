@@ -27,7 +27,7 @@ package se.inera.statistics.service
 class JSONSource {
 
     static String readTemplateAsString() {
-        def doc = new InputStreamReader(this.getClass().getResourceAsStream("/json/maximalt-fk7263-internal.json"))
+        def doc = new InputStreamReader(this.getResourceAsStream("/json/maximalt-fk7263-internal.json"))
         doc.text
     }
 
@@ -36,7 +36,7 @@ class JSONSource {
     }
 
     static String readHSASample(name) {
-        def doc = new InputStreamReader(this.getClass().getResourceAsStream("/json/${name}.json"))
+        def doc = new InputStreamReader(this.getResourceAsStream("/json/${name}.json"))
         doc.text
     }
 }

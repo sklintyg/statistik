@@ -23,12 +23,12 @@ configurations {
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.3.6'
-    compile 'org.apache.commons:commons-dbcp2:2.0'
-    compile 'org.codehaus.gpars:gpars:1.1.0'
-    compile 'mysql:mysql-connector-java:5.1.32'
+    compile "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
+    compile "org.apache.commons:commons-dbcp2"
+    compile "org.codehaus.gpars:gpars:${gparsVersion}"
+    compile "mysql:mysql-connector-java"
 
-    deployerJars "org.apache.maven.wagon:wagon-webdav:1.0-beta-2"
+    deployerJars "org.apache.maven.wagon:wagon-webdav-jackrabbit:${wagonVersion}"
 }
 
 ext.nexusUsername = System.properties['nexusUsername']

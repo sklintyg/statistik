@@ -18,13 +18,10 @@
  */
 package se.inera.statistics.scheduler.active;
 
-import java.time.Duration;
 import net.javacrumbs.shedlock.core.LockProvider;
 import net.javacrumbs.shedlock.provider.redis.spring.RedisLockProvider;
-import net.javacrumbs.shedlock.spring.ScheduledLockConfiguration;
-import net.javacrumbs.shedlock.spring.ScheduledLockConfigurationBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -44,11 +41,8 @@ import se.inera.statistics.service.processlog.message.MessageLogConsumer;
 @Profile("caching-enabled")
 @Configuration
 @EnableScheduling
+@EnableSchedulerLock(defaultLockAtMostFor = "PT20M")
 public class JobConfiguration {
-
-    private static final Logger LOG = LoggerFactory.getLogger(JobConfiguration.class);
-    private static final int POOL_SIZE = 5;
-    private static final int LOCK_AT_MOST_MINUTES = 20;
 
     @Autowired
     private JedisConnectionFactory jedisConnectionFactory;
@@ -68,16 +62,6 @@ public class JobConfiguration {
     @Autowired
     @Qualifier("serviceMonitoringLogService")
     private MonitoringLogService monitoringLogService;
-
-    @Bean
-    public ScheduledLockConfiguration taskScheduler(final LockProvider lockProvider) {
-        LOG.info("Profile caching-enabled: creating scheduled lock configuration");
-        return ScheduledLockConfigurationBuilder
-            .withLockProvider(lockProvider)
-            .withPoolSize(POOL_SIZE)
-            .withDefaultLockAtMostFor(Duration.ofMinutes(LOCK_AT_MOST_MINUTES))
-            .build();
-    }
 
     @Bean
     public LockProvider lockProvider() {

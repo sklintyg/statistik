@@ -20,6 +20,7 @@ package se.inera.statistics.service.schemavalidation;
 
 import com.helger.schematron.svrl.SVRLFailedAssert;
 import com.helger.schematron.svrl.SVRLHelper;
+import com.helger.schematron.svrl.jaxb.SchematronOutputType;
 import com.helger.schematron.xslt.SchematronResourceSCH;
 import java.io.StringReader;
 import java.util.Collections;
@@ -28,7 +29,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
-import org.oclc.purl.dsdl.svrl.SchematronOutputType;
 
 public abstract class RegisterCertificateValidator implements SchematronValidator {
 

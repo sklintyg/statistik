@@ -22,7 +22,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -44,8 +44,8 @@ public class RegionFileWriter {
             for (int i = 0; i < enhets.size(); i++) {
                 final Enhet enhet = enhets.get(i);
                 final Row row = sheet.createRow(i + startRow);
-                row.createCell(0, Cell.CELL_TYPE_STRING).setCellValue(enhet.getNamn());
-                row.createCell(1, Cell.CELL_TYPE_STRING).setCellValue(enhet.getEnhetId().getId());
+                row.createCell(0, CellType.STRING).setCellValue(enhet.getNamn());
+                row.createCell(1, CellType.STRING).setCellValue(enhet.getEnhetId().getId());
             }
             final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             workbook.write(outputStream);

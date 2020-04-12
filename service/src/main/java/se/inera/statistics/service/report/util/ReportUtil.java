@@ -26,7 +26,7 @@ import se.inera.statistics.service.report.model.Range;
 
 public final class ReportUtil {
 
-    private static final Locale SWEDEN = new Locale("SV", "se");
+    private static final Locale SWEDEN = new Locale("sv", "SE");
     private static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormatter.ofPattern("MMM yyyy").withLocale(SWEDEN);
 
     private ReportUtil() {
@@ -48,9 +48,12 @@ public final class ReportUtil {
         return OUTPUT_FORMATTER.format(date);
     }
 
+    // CHECKSTYLE:OFF MagicNumber
     public static String toDiagramPeriod(LocalDate currentPeriod) {
-        return OUTPUT_FORMATTER.format(currentPeriod);
+        String out = OUTPUT_FORMATTER.format(currentPeriod);
+        return out.substring(0, 3) + out.substring(out.indexOf(" "));
     }
+    // CHECKSTYLE:ON MagicNumber
 
     static Range getNextPeriod(Range range) {
         return new Range(range.getFrom().plusMonths(range.getNumberOfMonths()), range.getTo().plusMonths(range.getNumberOfMonths()));

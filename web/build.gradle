@@ -84,26 +84,28 @@ dependencies {
 
     compile "org.springframework.security.extensions:spring-security-saml2-core:${springSecuritySamlVersion}"
     compile "xml-apis:xml-apis:${xmlApisVersion}"
-    compile "org.springframework:spring-webmvc:${springContextVersion}"
-    compile "org.apache.commons:commons-lang3:${commonsLang3Version}"
+    compile "org.springframework:spring-webmvc"
+    compile "org.apache.commons:commons-lang3"
     compile "org.apache.commons:commons-text:${commonsTextVersion}"
-    compile "org.springframework.security:spring-security-config:${springSecurityVersion}"
-    compile "org.springframework.security:spring-security-taglibs:${springSecurityVersion}"
+    compile "org.springframework.security:spring-security-config"
+    compile "org.springframework.security:spring-security-taglibs"
     compile "org.apache.poi:poi:${poiVersion}"
     compile "org.apache.poi:poi-ooxml:${poiVersion}"
     compile "xalan:xalan:${xalanVersion}"
     compile "com.github.ziplet:ziplet:${zipletVersion}"
-    compile "org.springframework.session:spring-session:${springSessionVersion}"
-    compile "org.apache.activemq:activemq-spring:${activeMqVersion}"
-    compile "org.springframework:spring-jms:${springContextVersion}"
-    compile "mysql:mysql-connector-java:${mysqlConnectorVersion}"
+    compile "org.springframework.session:spring-session-data-redis"
+    compile "org.apache.activemq:activemq-spring"
+    compile "org.springframework:spring-jms"
+    compile "mysql:mysql-connector-java"
 
     compile "io.jsonwebtoken:jjwt-impl:${jsonwebtokenVersion}"
     compile "io.jsonwebtoken:jjwt-jackson:${jsonwebtokenVersion}"
     compile "com.auth0:jwks-rsa:${auth0JwksVersion}"
 
-    compileOnly "javax.servlet:javax.servlet-api:${javaxServletVersion}"
+    compileOnly "javax.servlet:javax.servlet-api"
 
-    gretty "jstl:jstl:${jstlVersion}"
+    testCompile "org.liquibase:liquibase-core:${liquibaseVersion}"
+
+    gretty "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api"
     gretty "se.inera.intyg.refdata:refdata:${refDataVersion}"
 }

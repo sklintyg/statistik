@@ -20,9 +20,10 @@ package se.inera.statistics.web.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyVararg;
+import static org.mockito.ArgumentMatchers.any;
 
 import com.google.common.collect.Lists;
 import java.time.LocalDate;
@@ -213,7 +214,7 @@ public class FilterHandlerTest {
         // Then
         final String hash1 = filter1.getFilter().getPredicate().getHash();
         final String hash2 = filter2.getFilter().getPredicate().getHash();
-        assertFalse(hash1.equals(hash2));
+        assertNotEquals(hash1, hash2);
     }
 
     @Test
@@ -309,7 +310,7 @@ public class FilterHandlerTest {
     }
 
     private void setupSjukfallUtilMock(String filterHash) {
-        Mockito.when(sjukfallUtil.createEnhetFilter(anyVararg()))
+        Mockito.when(sjukfallUtil.createEnhetFilter(any()))
             .thenReturn(new FilterPredicates(f -> true, s -> true, filterHash, false));
     }
 

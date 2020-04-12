@@ -47,9 +47,21 @@ public class RangeTest {
     }
 
     @Test
+    public void testToStringAbbreviatedWithToAndFromOnSameYearMarchMay() {
+        final Range range = new Range(LocalDate.of(2013, 3, 01), LocalDate.of(2013, 5, 01));
+        assertEquals("mar\u2013maj 2013", range.toStringAbbreviated());
+    }
+
+    @Test
     public void testToStringAbbreviatedWithToAndFromOnDifferentYears() {
         final Range range = new Range(LocalDate.of(2013, 10, 01), LocalDate.of(2014, 12, 01));
         assertEquals("okt 2013\u2013dec 2014", range.toStringAbbreviated());
+    }
+
+    @Test
+    public void testToStringAbbreviatedWithToAndFromOnDifferentYearsMarchMay() {
+        final Range range = new Range(LocalDate.of(2013, 5, 01), LocalDate.of(2014, 3, 01));
+        assertEquals("maj 2013\u2013mar 2014", range.toStringAbbreviated());
     }
 
     // CHECKSTYLE:OFF MagicNumber

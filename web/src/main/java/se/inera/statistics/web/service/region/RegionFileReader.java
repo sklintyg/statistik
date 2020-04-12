@@ -28,6 +28,7 @@ import java.util.List;
 import javax.activation.DataSource;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -90,7 +91,7 @@ public class RegionFileReader {
         Cell cellPatients = row.getCell(2);
         if (cellPatients != null) {
             switch (cellPatients.getCellType()) {
-                case Cell.CELL_TYPE_NUMERIC:
+                case NUMERIC:
                     double patientsDouble = cellPatients.getNumericCellValue();
                     if (DoubleMath.isMathematicalInteger(patientsDouble)) {
                         patients = (int) patientsDouble;
@@ -99,7 +100,7 @@ public class RegionFileReader {
                             messagePrefix + "Kolumn “Antal listade patienter” innehåller inte ett heltal: " + patientsDouble);
                     }
                     break;
-                case Cell.CELL_TYPE_STRING:
+                case STRING:
                     final String patientsString = cellPatients.getStringCellValue();
                     try {
                         patients = Integer.parseInt(patientsString);
@@ -119,7 +120,7 @@ public class RegionFileReader {
     private HsaIdEnhet getEnhetHsaId(Row row) {
         Cell cellHsaId = row.getCell(1);
         if (cellHsaId != null) {
-            if (Cell.CELL_TYPE_STRING == cellHsaId.getCellType()) {
+            if (CellType.STRING == cellHsaId.getCellType()) {
                 final String cellValue = cellHsaId.getStringCellValue().trim();
                 return new HsaIdEnhet(cellValue);
             }

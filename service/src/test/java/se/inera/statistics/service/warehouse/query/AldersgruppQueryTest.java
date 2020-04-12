@@ -19,7 +19,7 @@
 package se.inera.statistics.service.warehouse.query;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static se.inera.statistics.service.warehouse.FactBuilder.aFact;
 
 import java.time.LocalDate;

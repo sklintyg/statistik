@@ -49,9 +49,9 @@ public class RegionFileWriterTest {
         Workbook workbook = new XSSFWorkbook(is);
         final Sheet sheet = workbook.getSheetAt(0);
         final Row row = sheet.getRow(1);
-        assertNull(row.getCell(0, Row.RETURN_BLANK_AS_NULL));
-        assertNull(row.getCell(1, Row.RETURN_BLANK_AS_NULL));
-        assertNull(row.getCell(2, Row.RETURN_BLANK_AS_NULL));
+        assertNull(row.getCell(0, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL));
+        assertNull(row.getCell(1, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL));
+        assertNull(row.getCell(2, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL));
     }
 
     @Test
@@ -74,9 +74,9 @@ public class RegionFileWriterTest {
         for (int i = 0; i < enhets.size(); i++) {
             final Enhet enhet = enhets.get(i);
             final Row row = sheet.getRow(i + 1);
-            assertEquals(enhet.getNamn(), row.getCell(0, Row.RETURN_BLANK_AS_NULL).getStringCellValue());
-            assertEquals(enhet.getEnhetId().getId(), row.getCell(1, Row.RETURN_BLANK_AS_NULL).getStringCellValue());
-            assertNull(row.getCell(2, Row.RETURN_BLANK_AS_NULL));
+            assertEquals(enhet.getNamn(), row.getCell(0, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue());
+            assertEquals(enhet.getEnhetId().getId(), row.getCell(1, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue());
+            assertNull(row.getCell(2, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL));
         }
     }
 

@@ -19,9 +19,10 @@
 package se.inera.statistics.service.hsa;
 
 import static junit.framework.TestCase.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -37,7 +38,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import se.inera.statistics.service.JSONSource;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -60,7 +61,7 @@ public class HSADecoratorTest {
 
         hsaDecorator.decorate(doc, "aaa");
 
-        verify(hsaService).getHSAInfo(any(HSAKey.class), any(HsaInfo.class));
+        verify(hsaService).getHSAInfo(any(HSAKey.class), nullable(HsaInfo.class));
     }
 
     @Test
@@ -75,8 +76,8 @@ public class HSADecoratorTest {
         hsaDecoratorSpy.decorate(doc, "aaa");
 
         //Then
-        verify(hsaService, times(1)).getHSAInfo(any(HSAKey.class), any(HsaInfo.class));
-        verify(hsaDecoratorSpy, times(1)).storeHSAInfo(eq("aaa"), any(HsaInfo.class));
+        verify(hsaService, times(1)).getHSAInfo(any(HSAKey.class), nullable(HsaInfo.class));
+        verify(hsaDecoratorSpy, times(1)).storeHSAInfo(eq("aaa"), nullable(HsaInfo.class));
     }
 
     private HsaInfo getFullJsonNode() {
@@ -107,7 +108,7 @@ public class HSADecoratorTest {
 
         //Then
         verify(hsaService, times(1)).getHSAInfo(any(HSAKey.class), any(HsaInfo.class));
-        verify(hsaDecoratorSpy, times(1)).storeHSAInfo(eq("aaa"), any(HsaInfo.class));
+        verify(hsaDecoratorSpy, times(1)).storeHSAInfo(eq("aaa"), nullable(HsaInfo.class));
     }
 
     @Test
@@ -125,7 +126,7 @@ public class HSADecoratorTest {
 
         //Then
         verify(hsaService, times(1)).getHSAInfo(any(HSAKey.class), any(HsaInfo.class));
-        verify(hsaDecoratorSpy, times(1)).storeHSAInfo(eq("aaa"), any(HsaInfo.class));
+        verify(hsaDecoratorSpy, times(1)).storeHSAInfo(eq("aaa"), nullable(HsaInfo.class));
     }
 
     @Test
@@ -143,7 +144,7 @@ public class HSADecoratorTest {
 
         //Then
         verify(hsaService, times(1)).getHSAInfo(any(HSAKey.class), any(HsaInfo.class));
-        verify(hsaDecoratorSpy, times(1)).storeHSAInfo(eq("aaa"), any(HsaInfo.class));
+        verify(hsaDecoratorSpy, times(1)).storeHSAInfo(eq("aaa"), nullable(HsaInfo.class));
     }
 
     @Test
@@ -161,7 +162,7 @@ public class HSADecoratorTest {
 
         //Then
         verify(hsaService, times(1)).getHSAInfo(any(HSAKey.class), any(HsaInfo.class));
-        verify(hsaDecoratorSpy, times(1)).storeHSAInfo(eq("aaa"), any(HsaInfo.class));
+        verify(hsaDecoratorSpy, times(1)).storeHSAInfo(eq("aaa"), nullable(HsaInfo.class));
     }
 
     @Test

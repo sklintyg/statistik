@@ -19,8 +19,9 @@
 package se.inera.statistics.service.processlog;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Test;
@@ -28,7 +29,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import se.inera.intygstjanster.ts.services.RegisterTSBasResponder.v1.RegisterTSBasType;
 import se.inera.intygstjanster.ts.services.RegisterTSDiabetesResponder.v1.RegisterTSDiabetesType;
 import se.inera.statistics.service.IntygCreatorHelper;
@@ -70,7 +71,7 @@ public class ReceiverTest {
         receiver.accept(EventType.CREATED, intyg, documentId, timestamp);
 
         assertEquals(accepted + 1, receiver.getAccepted());
-        verify(hsaDecorator, times(0)).populateHsaData(Mockito.any(RegisterTSBasType.class), Mockito.anyString());
+        Mockito.verify(hsaDecorator, times(0)).populateHsaData(Mockito.any(RegisterTSBasType.class), Mockito.anyString());
     }
 
     @Test
@@ -85,7 +86,7 @@ public class ReceiverTest {
 
         assertEquals(accepted + 1, receiver.getAccepted());
 
-        verify(hsaDecorator, times(1)).populateHsaData(Mockito.any(RegisterTSBasType.class), Mockito.eq(documentId));
+        Mockito.verify(hsaDecorator, times(1)).populateHsaData(nullable(RegisterTSBasType.class), eq(documentId));
     }
 
     @Test
@@ -100,7 +101,7 @@ public class ReceiverTest {
 
         assertEquals(accepted + 1, receiver.getAccepted());
 
-        verify(hsaDecorator, times(1)).populateHsaData(Mockito.any(RegisterTSDiabetesType.class), Mockito.eq(documentId));
+        Mockito.verify(hsaDecorator, times(1)).populateHsaData(nullable(RegisterTSDiabetesType.class), eq(documentId));
     }
 
     @Test
@@ -115,7 +116,7 @@ public class ReceiverTest {
 
         assertEquals(accepted + 1, receiver.getAccepted());
 
-        verify(hsaDecorator, times(1)).decorate(Mockito.any(JsonNode.class), Mockito.eq(documentId));
+        Mockito.verify(hsaDecorator, times(1)).decorate(Mockito.any(JsonNode.class), eq(documentId));
     }
 
     @Test
@@ -130,6 +131,6 @@ public class ReceiverTest {
 
         assertEquals(accepted + 1, receiver.getAccepted());
 
-        verify(hsaDecorator, times(1)).populateHsaData(Mockito.any(RegisterCertificateType.class), Mockito.eq(documentId));
+        Mockito.verify(hsaDecorator, times(1)).populateHsaData(nullable(RegisterCertificateType.class), eq(documentId));
     }
 }

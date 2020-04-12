@@ -31,7 +31,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import se.inera.statistics.service.monitoring.MonitoringLogService;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.Receiver;

@@ -19,6 +19,8 @@
 package se.inera.statistics.service.warehouse;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.nullable;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -27,9 +29,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Matchers;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import se.inera.statistics.service.countypopulation.CountyPopulation;
 import se.inera.statistics.service.countypopulation.CountyPopulationManager;
@@ -59,7 +59,7 @@ public class NationellOverviewDataTest {
     public void getOverviewUnknownDxGroupIncludedInCurrentButNotInPreviousShouldBeHandledCorrectly() {
         //Set up environment
         final CountyPopulation countyPopulation = new CountyPopulation(Collections.emptyMap(), LocalDate.now());
-        Mockito.when(countyPopulationManager.getCountyPopulation(Matchers.any(Range.class))).thenReturn(countyPopulation);
+        when(countyPopulationManager.getCountyPopulation(nullable(Range.class))).thenReturn(countyPopulation);
         final NationellDataInfo data = new NationellDataInfo();
         data.setOverviewGenderResult(new SimpleKonResponse(null, Collections.emptyList()));
         data.setOverviewForandringResult(new SimpleKonResponse(null, Collections.emptyList()));

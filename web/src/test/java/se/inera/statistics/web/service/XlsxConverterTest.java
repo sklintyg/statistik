@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.List;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -113,7 +114,7 @@ public class XlsxConverterTest {
         final Row row = Mockito.mock(Row.class);
         Mockito.when(row.getSheet()).thenReturn(sheet);
         final Cell cell = Mockito.mock(Cell.class);
-        Mockito.when(row.createCell(Mockito.anyInt(), Mockito.anyInt())).thenReturn(cell);
+        Mockito.when(row.createCell(Mockito.anyInt(), Mockito.any(CellType.class))).thenReturn(cell);
         final Answer addCellText = invocationOnMock -> {
             final Object[] arguments = invocationOnMock.getArguments();
             for (Object argument : arguments) {

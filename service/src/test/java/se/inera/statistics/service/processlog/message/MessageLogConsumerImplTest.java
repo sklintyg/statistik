@@ -19,9 +19,9 @@
 package se.inera.statistics.service.processlog.message;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -33,7 +33,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import se.inera.statistics.service.helper.SendMessageToCareHelper;
 import se.inera.statistics.service.processlog.Processor;
@@ -82,7 +82,7 @@ public class MessageLogConsumerImplTest {
         // Then
         assertEquals(1, count);
         verify(processLog).getPending(100, 0, 3);
-        verify(processor).accept(any(SendMessageToCareType.class), Mockito.anyLong(), anyString(), any(MessageEventType.class));
+        verify(processor).accept(nullable(SendMessageToCareType.class), Mockito.anyLong(), anyString(), any(MessageEventType.class));
     }
 
     @Test
@@ -91,8 +91,6 @@ public class MessageLogConsumerImplTest {
         MessageEvent event = new MessageEvent(MessageEventType.SENT, "{}", "correlationId", 1);
         event.setId(1);
         when(processLog.getPending(100, 0, 3)).thenReturn(Collections.singletonList(event));
-        doThrow(new IllegalArgumentException("Invalid meddelande")).when(processor)
-            .accept(any(SendMessageToCareType.class), Mockito.anyLong(), anyString(), any(MessageEventType.class));
 
         // When
         long count = consumer.processBatch(0);

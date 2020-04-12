@@ -19,7 +19,7 @@
 package se.inera.statistics.service.warehouse.query;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.eq;
 
 import com.google.common.collect.HashMultiset;
 import java.time.Clock;
