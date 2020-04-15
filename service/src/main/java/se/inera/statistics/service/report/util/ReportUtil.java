@@ -44,11 +44,12 @@ public final class ReportUtil {
         return new Range(range.getFrom().minusYears(1), range.getTo().minusYears(1));
     }
 
+    // CHECKSTYLE:OFF MagicNumber
     public static String toPeriod(LocalDate date) {
-        return OUTPUT_FORMATTER.format(date);
+        String out = OUTPUT_FORMATTER.format(date);
+        return out.substring(0, 3) + out.substring(out.indexOf(" "));
     }
 
-    // CHECKSTYLE:OFF MagicNumber
     public static String toDiagramPeriod(LocalDate currentPeriod) {
         String out = OUTPUT_FORMATTER.format(currentPeriod);
         return out.substring(0, 3) + out.substring(out.indexOf(" "));

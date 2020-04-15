@@ -101,6 +101,9 @@ dependencies {
     compile "io.jsonwebtoken:jjwt-impl:${jsonwebtokenVersion}"
     compile "io.jsonwebtoken:jjwt-jackson:${jsonwebtokenVersion}"
     compile "com.auth0:jwks-rsa:${auth0JwksVersion}"
+    compile "com.sun.activation:jakarta.activation"
+    //compile "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api"
+    compile "javax.servlet:jstl"
 
     compileOnly "javax.servlet:javax.servlet-api"
 

@@ -135,11 +135,10 @@ dependencies {
     fitnesse "com.google.guava:guava:${googleGuavaVersion}"
     fitnesse "org.springframework:spring-core"
     fitnesse "org.springframework:spring-context"
-    //fitnesse "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:${hibernateJpaVersion}"
     fitnesse ("org.springframework.data:spring-data-jpa") {
         exclude group: "org.hibernate", module: "hibernate-core"
     }
-    compile "org.hibernate:hibernate-core:${hibernateVersion}"
+    fitnesse "org.hibernate:hibernate-core:${hibernateVersion}"
     fitnesse "org.slf4j:slf4j-api"
     //fitnesse "javax.ws.rs:javax.ws.rs-api:${javaxWsRsApiVersion}"
     fitnesse "jakarta.ws.rs:jakarta.ws.rs-api"

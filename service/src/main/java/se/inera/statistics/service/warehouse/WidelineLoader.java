@@ -58,10 +58,9 @@ public class WidelineLoader {
         for (HsaIdVardgivare vgid : vgids) {
             facts.put(vgid, new ArrayList<>());
         }
-        try (
-            Connection connection = dataSource.getConnection();
+        try (Connection connection = dataSource.getConnection()) {
             PreparedStatement stmt = prepareStatementForVg(connection, vgids);
-            ResultSet resultSet = stmt.executeQuery()) {
+            ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()) {
                 String vardgivare = resultSet.getString("vardgivareid");
                 final Fact fact = toFact(resultSet);
@@ -138,8 +137,8 @@ public class WidelineLoader {
         final String sql = "SELECT vardgivareid, count(vardgivareid) AS antal FROM intygcommon w1 "
             + "GROUP BY vardgivareid ORDER BY antal ASC;";
         try (Connection connection = dataSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-            ResultSet resultSet = statement.executeQuery()) {
+            PreparedStatement statement = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)) {
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 final String vardgivareid = resultSet.getString("vardgivareid");
                 final int antal = resultSet.getInt("antal");
