@@ -75,8 +75,11 @@ public class SpecialSkaneComputeRow {
         return patient;
     }
 
+    // CHECKSTYLE:OFF MagicNumber
     public String getFormattedDate() {
-        return range.format(DateTimeFormatter.ofPattern("MMM yyyy", new Locale("sv")));
+        String out = range.format(DateTimeFormatter.ofPattern("MMM yyyy", new Locale("sv")));
+        return out.substring(0, 3) + out.substring(out.indexOf(" "));
     }
+    // CHECKSTYLE:ON MagicNumber
 
 }
