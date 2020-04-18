@@ -223,7 +223,7 @@ public class HSAServiceImplTest {
         HsaInfo result = serviceImpl.getHSAInfo(new HSAKey("a", enhetId, "c"), baseHsaInfo);
 
         //Then
-        assertEquals(null, result.getEnhet().getVgid());
+        assertNull(result.getEnhet().getVgid());
         assertEquals("vgId", result.getHuvudenhet().getVgid());
         Mockito.verify(wsCalls, times(1)).getStatisticsHsaUnit(enhetId.toUpperCase());
         Mockito.verify(wsCalls, times(1)).getStatisticsCareGiver("vgId".toUpperCase());

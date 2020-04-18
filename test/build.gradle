@@ -127,7 +127,9 @@ dependencies {
     fitnesse(project(":statistik-service")) { transitive = false }
     fitnesse(project(":statistik-test")) { transitive = false }
 
-    fitnesse "org.fitnesse:fitnesse:${fitnesseVersion}"
+    fitnesse ("org.fitnesse:fitnesse:${fitnesseVersion}") {
+        exclude group: "org.slf4j", module: "slf4j-jdk14"
+    }
     fitnesse "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
     fitnesse "org.codehaus.groovy.modules.http-builder:http-builder:${groovyHttpVersion}"
     fitnesse "org.apache.httpcomponents:httpmime"
@@ -140,6 +142,5 @@ dependencies {
     }
     fitnesse "org.hibernate:hibernate-core:${hibernateVersion}"
     fitnesse "org.slf4j:slf4j-api"
-    //fitnesse "javax.ws.rs:javax.ws.rs-api:${javaxWsRsApiVersion}"
     fitnesse "jakarta.ws.rs:jakarta.ws.rs-api"
 }

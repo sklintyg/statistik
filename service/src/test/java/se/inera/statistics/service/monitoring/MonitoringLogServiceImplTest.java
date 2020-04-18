@@ -19,7 +19,7 @@
 package se.inera.statistics.service.monitoring;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.verify;
 
 import ch.qos.logback.classic.Level;

@@ -62,8 +62,6 @@ Test
 | diagnos | totalt? | kvinnor? | män? | lan01? | lan06? |
 | F32     | 18.5    | 19.5     | 17.0   | 11.0   | 21.0   |
 | F33     | 28.0    | 28.0     | 28.5   | 30.0   | 28.0   |
-!!| F32     | 18.5    | 19.5     | 17   | 11     | 21     |
-!!| F33     | 28      | 28       | 28.5 | 30     | 28     |
 
 | Sjukfall i rapporten socialstyrelsen som standardavvikelse |
 | diagnos | totalt? | kvinnor? | män?   | lan01?   | lan06?   |

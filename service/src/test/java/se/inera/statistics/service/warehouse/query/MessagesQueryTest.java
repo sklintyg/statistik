@@ -119,7 +119,7 @@ public class MessagesQueryTest {
         countDTOAmne.setDate(LocalDate.now());
         Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter, true)).thenReturn(Collections.singletonList(countDTOAmne));
         Mockito.doReturn(Collections.singletonList(new Lakare(HsaIdVardgivare.empty(), lakare, null, null)))
-            .when(lakareManager).getAllSpecifiedLakares(Mockito.anyCollectionOf(HsaIdLakare.class));
+            .when(lakareManager).getAllSpecifiedLakares(Mockito.anyCollection());
 
         //When
         final KonDataResponse resp = messagesQuery.getMessagesPerAmnePerLakare(filter);
@@ -137,7 +137,7 @@ public class MessagesQueryTest {
         countDTOAmne.setLakareId(lakare);
         countDTOAmne.setDate(LocalDate.now());
         Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter, true)).thenReturn(Collections.singletonList(countDTOAmne));
-        Mockito.doReturn(Collections.emptyList()).when(lakareManager).getAllSpecifiedLakares(Mockito.anyCollectionOf(HsaIdLakare.class));
+        Mockito.doReturn(Collections.emptyList()).when(lakareManager).getAllSpecifiedLakares(Mockito.anyCollection());
 
         //When
         final KonDataResponse resp = messagesQuery.getMessagesPerAmnePerLakare(filter);
@@ -158,7 +158,7 @@ public class MessagesQueryTest {
         countDTOAmne.setDate(LocalDate.now());
         Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter, true)).thenReturn(Collections.singletonList(countDTOAmne));
         Mockito.doReturn(Collections.singletonList(new Lakare(HsaIdVardgivare.empty(), lakare, null, null)))
-            .when(lakareManager).getAllSpecifiedLakares(Mockito.anyCollectionOf(HsaIdLakare.class));
+            .when(lakareManager).getAllSpecifiedLakares(Mockito.anyCollection());
 
         //When
         final KonDataResponse resp = messagesQuery.getMessagesTvarsnittPerAmnePerLakare(filter);
@@ -179,7 +179,7 @@ public class MessagesQueryTest {
         countDTOAmne.setAmne(MsgAmne.KOMPLT);
         countDTOAmne.setDate(LocalDate.now());
         Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter, true)).thenReturn(Collections.singletonList(countDTOAmne));
-        Mockito.doReturn(Collections.emptyList()).when(lakareManager).getAllSpecifiedLakares(Mockito.anyCollectionOf(HsaIdLakare.class));
+        Mockito.doReturn(Collections.emptyList()).when(lakareManager).getAllSpecifiedLakares(Mockito.anyCollection());
 
         //When
         final KonDataResponse resp = messagesQuery.getMessagesTvarsnittPerAmnePerLakare(filter);

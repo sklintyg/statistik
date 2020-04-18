@@ -124,7 +124,7 @@ public class CountyPopulationFetcherTest {
         final Optional<CountyPopulation> countyPopulation = countyPopulationFetcher.getPopulationFor(2013);
 
         //Then
-        assertEquals(false, countyPopulation.isPresent());
+        assertFalse(countyPopulation.isPresent());
     }
 
     @Test
@@ -136,7 +136,7 @@ public class CountyPopulationFetcherTest {
         final Optional<CountyPopulation> countyPopulation = countyPopulationFetcher.getPopulationFor(2013);
 
         //Then
-        assertEquals(false, countyPopulation.isPresent());
+        assertFalse(countyPopulation.isPresent());
     }
 
     @Test
@@ -148,7 +148,7 @@ public class CountyPopulationFetcherTest {
         final Optional<CountyPopulation> countyPopulation = countyPopulationFetcher.getPopulationFor(2012);
 
         //Then
-        assertEquals(false, countyPopulation.isPresent());
+        assertFalse(countyPopulation.isPresent());
     }
 
     @Test
@@ -161,7 +161,7 @@ public class CountyPopulationFetcherTest {
         final Optional<CountyPopulation> countyPopulation = countyPopulationFetcher.getPopulationFor(2013);
 
         //Then
-        assertEquals(false, countyPopulation.isPresent());
+        assertFalse(countyPopulation.isPresent());
     }
 
     @Test
@@ -173,7 +173,7 @@ public class CountyPopulationFetcherTest {
         final Optional<CountyPopulation> countyPopulation = countyPopulationFetcher.getPopulationFor(2013);
 
         //Then
-        assertEquals(false, countyPopulation.isPresent());
+        assertFalse(countyPopulation.isPresent());
     }
 
     @Test

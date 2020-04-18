@@ -86,6 +86,9 @@ dependencies {
     compile "xml-apis:xml-apis:${xmlApisVersion}"
     compile "org.springframework:spring-webmvc"
     compile "org.apache.commons:commons-lang3"
+
+    compile "org.apache.cxf:cxf-rt-features-logging:${cxfVersion}"
+
     compile "org.apache.commons:commons-text:${commonsTextVersion}"
     compile "org.springframework.security:spring-security-config"
     compile "org.springframework.security:spring-security-taglibs"
@@ -102,8 +105,7 @@ dependencies {
     compile "io.jsonwebtoken:jjwt-jackson:${jsonwebtokenVersion}"
     compile "com.auth0:jwks-rsa:${auth0JwksVersion}"
     compile "com.sun.activation:jakarta.activation"
-    //compile "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api"
-    compile "javax.servlet:jstl"
+    compile "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api"
 
     compileOnly "javax.servlet:javax.servlet-api"
 

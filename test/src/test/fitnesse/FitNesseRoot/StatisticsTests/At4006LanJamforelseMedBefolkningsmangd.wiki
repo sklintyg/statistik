@@ -81,11 +81,6 @@ Antal sjukfall per 1000 invånare för Samtliga län beräknas: Antal sjukfall f
 | Örebro län        | 0.0      | 0.0  | Saknar intyg, men har invånarantal |
 | Östergötlands län | 0.0      | 0.0  | Saknar invånarantal, men har intyg |
 | Okänt län         | -1       | -1   |                                    |
-!!| Samtliga län      | 0.1      | 0.4  |                                    |
-| Stockholms län    | 0        | 2    |                                    |
-| Örebro län        | 0        | 0    | Saknar intyg, men har invånarantal |
-| Östergötlands län | 0        | 0    | Saknar invånarantal, men har intyg |
-| Okänt län         | -1       | -1   |                                    |!!
 
 
 TEST#2
@@ -106,7 +101,6 @@ Det inte finns några intyg på "okänt län"
 | Sjukfall i rapporten lan diagram |
 | län            | kvinnor? | män? |
 | Okänt län      | -1       | -1   |
-
 
 
 TEST#3

@@ -41,15 +41,14 @@ dependencies {
     compile "org.apache.cxf:cxf-rt-frontend-jaxws:${cxfVersion}"
     compile "org.springframework:spring-context"
     compile "org.springframework.security:spring-security-web"
-    compile "jakarta.jws:jakarta.jws-api:${jwsApiVersion}"
 
     wsdlgen "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:${cxfVersion}"
     wsdlgen "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:${cxfVersion}"
     wsdlgen "org.jvnet.jaxb2_commons:jaxb2-basics:${jaxb2Version}"
 
-    wsdlgen "com.sun.xml.bind:jaxb-xjc:2.3.2"
-    wsdlgen "com.sun.xml.bind:jaxb-core:2.3.0.1"
-    wsdlgen "com.sun.xml.bind:jaxb-impl:2.3.2"
+    wsdlgen "com.sun.xml.bind:jaxb-xjc:${jaxbXjcVersion}"
+    wsdlgen "com.sun.xml.bind:jaxb-core:${jaxbCoreVersion}"
+    wsdlgen "com.sun.xml.bind:jaxb-impl:${jaxbImplVersion}"
     wsdlgen "jakarta.xml.ws:jakarta.xml.ws-api"
 
     wsdlgen "jakarta.annotation:jakarta.annotation-api"

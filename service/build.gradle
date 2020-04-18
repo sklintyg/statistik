@@ -52,5 +52,4 @@ dependencies {
     testCompile "org.aspectj:aspectjrt"
     testCompile "org.aspectj:aspectjweaver"
     testCompile "org.eclipse.jetty:jetty-server"
-
 }

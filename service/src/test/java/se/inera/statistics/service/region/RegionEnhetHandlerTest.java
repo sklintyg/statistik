@@ -21,7 +21,7 @@ package se.inera.statistics.service.region;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyListOf;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -82,7 +82,7 @@ public class RegionEnhetHandlerTest {
         }
 
         //Then
-        Mockito.verify(regionEnhetManager, times(0)).update(anyLong(), anyListOf(RegionEnhetFileDataRow.class));
+        Mockito.verify(regionEnhetManager, times(0)).update(anyLong(), anyList());
         Mockito.verify(regionEnhetUpdateManager, times(0))
             .update(anyLong(), anyString(), any(HsaIdUser.class), anyString(), any(RegionEnhetUpdateOperation.class));
     }

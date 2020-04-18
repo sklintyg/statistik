@@ -19,6 +19,7 @@
 package se.inera.statistics.service.warehouse.sjukfallcalc.extend;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 
 import java.util.ArrayList;
@@ -112,7 +113,7 @@ public class SjukfallMergeHelperTest {
         final Optional<SjukfallExtended> result = SjukfallMergeHelper.getFirstSjukfall(sjukfalls);
 
         //Then
-        assertEquals(false, result.isPresent());
+        assertFalse(result.isPresent());
     }
 
     @Test
@@ -124,7 +125,7 @@ public class SjukfallMergeHelperTest {
         final Optional<SjukfallExtended> result = SjukfallMergeHelper.getFirstSjukfall(sjukfalls);
 
         //Then
-        assertEquals(false, result.isPresent());
+        assertFalse(result.isPresent());
     }
 
     @Test

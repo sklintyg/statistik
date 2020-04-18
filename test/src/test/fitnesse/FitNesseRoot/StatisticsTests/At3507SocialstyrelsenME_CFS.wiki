@@ -25,11 +25,6 @@ Endast sjukfall som har G93.3 som sista diagnos i sjukfallet tas med. Sjukskrivn
 | FEMALE | 41-50       | 1      | 43.0   | 43.0      | 43.0  |
 | null   | Andel sjukfall med mer än 1 diagnos: 1.0 | 0 | 0.0 | 0.0 | 0.0 |
 | null   | Vanligaste annan diagnos #1 är F32 med 1 förekomster | 0 | 0.0 | 0.0 | 0.0 |
-!!
-!!| FEMALE | 41-50       | 1      | 43   | 43      | 43  |
-!!| null   | Andel sjukfall med mer än 1 diagnos: 1.0 | 0 | 0 | 0 | 0 |
-!!| null   | Vanligaste annan diagnos #1 är F32 med 1 förekomster | 0 | 0 | 0 | 0 |
-!!
 
 !3 TEST#2 - Ett sjukfall innehåller G93.3 men det är inte det sista intyget i sjukfallet
 !3 Givet att:
@@ -54,8 +49,3 @@ Sjukallet tas inte med eftersom det inte har G93.3 som slutdiagnos.
 | FEMALE | 31-40       | -1     | -1    | -1    | -1    |
 | MALE   | 31-40       | 1      | 10.0  | 10.0  | 10.0  |
 | null   | Andel sjukfall med mer än 1 diagnos: 0.0 | 0 | 0.0 | 0.0 | 0.0 |
-!!
-!!| FEMALE | 31-40       | -1     | -1   | -1   | -1   |
-!!| MALE   | 31-40       | 1      | 10   | 10   | 10   |
-!!| null   | Andel sjukfall med mer än 1 diagnos: 0.0 | 0 | 0 | 0 | 0 |
-!!
