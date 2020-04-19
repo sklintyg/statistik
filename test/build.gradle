@@ -130,6 +130,23 @@ dependencies {
     fitnesse ("org.fitnesse:fitnesse:${fitnesseVersion}") {
         exclude group: "org.slf4j", module: "slf4j-jdk14"
     }
+    // Exclude and import of non-BOM version of Hibernate due to
+    // bug in BOM-version 5.4.12.
+    fitnesse("org.hibernate:hibernate-core") {
+        version {
+            strictly "${hibernateVersion}"
+        }
+    }
+    fitnesse("org.hibernate:hibernate-hikaricp") {
+        version {
+            strictly "${hibernateVersion}"
+        }
+    }
+    fitnesse("org.hibernate:hibernate-entitymanager") {
+        version {
+            strictly "${hibernateVersion}"
+        }
+    }
     fitnesse "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
     fitnesse "org.codehaus.groovy.modules.http-builder:http-builder:${groovyHttpVersion}"
     fitnesse "org.apache.httpcomponents:httpmime"
@@ -137,10 +154,7 @@ dependencies {
     fitnesse "com.google.guava:guava:${googleGuavaVersion}"
     fitnesse "org.springframework:spring-core"
     fitnesse "org.springframework:spring-context"
-    fitnesse ("org.springframework.data:spring-data-jpa") {
-        exclude group: "org.hibernate", module: "hibernate-core"
-    }
-    fitnesse "org.hibernate:hibernate-core:${hibernateVersion}"
+    fitnesse "org.springframework.data:spring-data-jpa"
     fitnesse "org.slf4j:slf4j-api"
     fitnesse "jakarta.ws.rs:jakarta.ws.rs-api"
 }
