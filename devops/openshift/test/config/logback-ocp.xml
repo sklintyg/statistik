@@ -98,7 +98,9 @@
         <appender-ref ref="CONSOLE" />
     </logger>
 
-    <root level="DEBUG">
+    <logger name="liquibase" level="info" />
+
+    <root level="INFO">
         <appender-ref ref="CONSOLE"/>
     </root>
 
