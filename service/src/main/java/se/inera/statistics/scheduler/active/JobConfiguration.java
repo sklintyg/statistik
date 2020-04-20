@@ -33,7 +33,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
+import se.inera.statistics.fileservice.UpdateEnhetNamnFromHsaFileService;
 import se.inera.statistics.service.monitoring.MonitoringLogService;
+import se.inera.statistics.service.processlog.EnhetManager;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.processlog.intygsent.IntygsentLogConsumer;
 import se.inera.statistics.service.processlog.message.MessageLogConsumer;
@@ -69,6 +71,9 @@ public class JobConfiguration {
     @Qualifier("serviceMonitoringLogService")
     private MonitoringLogService monitoringLogService;
 
+    @Autowired
+    private EnhetManager enhetManager;
+
     @Bean
     public ScheduledLockConfiguration taskScheduler(final LockProvider lockProvider) {
         LOG.info("Profile caching-enabled: creating scheduled lock configuration");
@@ -87,5 +92,10 @@ public class JobConfiguration {
     @Bean
     public LogJob logJob() {
         return new LogJob(monitoringLogService, consumer, intygsentLogConsumer, messageLogConsumer, logMDCHelper);
+    }
+
+    @Bean
+    public UpdateEnhetNamnFromHsaFileService updateEnhetNamnFromHsaFileService() {
+        return new UpdateEnhetNamnFromHsaFileService(enhetManager);
     }
 }

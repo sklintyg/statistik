@@ -22,7 +22,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayInputStream;
 import org.junit.Test;
-import se.inera.ifv.hsawsresponder.v3.ListGetHsaUnitsResponseType;
+import se.inera.ifv.hsawsresponder.v3._31._1.ListGetHsaUnitsResponseType;
 
 public class UpdateEnhetNamnFromHsaFileServiceSimpleTest {
 
