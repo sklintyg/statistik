@@ -27,6 +27,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -59,6 +60,7 @@ public class EnhetManager {
         return getEnhetsFromResultList(resultList);
     }
 
+    @Transactional
     public int updateName(ListGetHsaUnitsResponseType.HsaUnits hsaUnits) {
         return hsaUnits.getHsaUnit().stream().reduce(0, (integer, hsaUnit) -> {
             final Query q = manager.createNativeQuery("UPDATE enhet SET namn = :namn WHERE enhetId = :id AND namn <> :namn");
