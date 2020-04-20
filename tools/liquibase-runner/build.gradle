@@ -40,6 +40,6 @@ sonarqube {
 dependencies {
     runtime project(":statistik-service")
 
-    runtime "org.liquibase:liquibase-core:${liquibaseVersion}"
+    runtime "org.liquibase:liquibase-core"
     runtime "mysql:mysql-connector-java"
 }

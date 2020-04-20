@@ -28,7 +28,7 @@ dependencies {
     compile "org.springframework:spring-orm"
     compile "org.springframework:spring-jms"
     compile "com.h2database:h2"
-    compile "org.liquibase:liquibase-core:${liquibaseVersion}"
+    compile "org.liquibase:liquibase-core"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
     compile ("com.helger:ph-schematron:${schematronVersion}") {
         exclude group: "com.helger", module: "ph-jaxb-pom"
@@ -48,4 +48,8 @@ dependencies {
     testCompile "org.aspectj:aspectjrt"
     testCompile "org.aspectj:aspectjweaver"
     testCompile "org.eclipse.jetty:jetty-server"
+
+    // This will make sure we use the liquibase patch in the web module.
+    // It needs to be in this module to make sure it ends up before the jar version on the classpath in Tomcat
+    testCompile files(project(':statistik-web').sourceSets.main.output)
 }

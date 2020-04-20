@@ -107,7 +107,7 @@ dependencies {
     compile "com.sun.activation:jakarta.activation"
     compile "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api"
 
-    compile "org.liquibase:liquibase-core:${liquibaseVersion}"
+    compile "org.liquibase:liquibase-core"
 
     compileOnly "javax.servlet:javax.servlet-api"
 
