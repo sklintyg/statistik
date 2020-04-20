@@ -30,6 +30,7 @@ import javax.persistence.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import se.inera.ifv.hsawsresponder.v3._31._1.ListGetHsaUnitsResponseType;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
@@ -56,6 +57,22 @@ public class EnhetManager {
         query.setParameter("vgId", vgId.getId());
         final List resultList = query.getResultList();
         return getEnhetsFromResultList(resultList);
+    }
+
+    public int updateName(ListGetHsaUnitsResponseType.HsaUnits hsaUnits) {
+        return hsaUnits.getHsaUnit().stream().reduce(0, (integer, hsaUnit) -> {
+            final Query q = manager.createNativeQuery("UPDATE enhet SET namn = :namn WHERE enhetId = :id AND namn <> :namn");
+            final String name = hsaUnit.getName();
+            q.setParameter("namn", name);
+            final String hsaid = hsaUnit.getHsaIdentity();
+            q.setParameter("id", hsaid);
+            final int updated = q.executeUpdate();
+            if (updated > 0) {
+                LOG.info(String.format("Id: %s, Namn: %s", hsaid, name));
+            }
+            return updated;
+
+        }, Integer::sum);
     }
 
     private List<Enhet> getEnhetsFromResultList(List resultList) {
