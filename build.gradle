@@ -99,11 +99,13 @@ allprojects {
                 strictly "${hibernateVersion}"
             }
         }
-        compile("org.liquibase:liquibase-core") {
-            version {
-                strictly "${liquibaseVersion}"
-            }
-        }
+        //compile("org.liquibase:liquibase-core") {
+        //    version {
+        //        strictly "${liquibaseVersion}"
+        //    }
+        //}
+
+        compile "org.liquibase:liquibase-core"
 
         compile "ch.qos.logback:logback-classic"
         compile "com.google.guava:guava:${googleGuavaVersion}"
