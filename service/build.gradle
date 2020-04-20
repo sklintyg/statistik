@@ -28,7 +28,6 @@ dependencies {
     compile "org.springframework:spring-orm"
     compile "org.springframework:spring-jms"
     compile "com.h2database:h2"
-    compile "org.liquibase:liquibase-core:${liquibaseVersion}"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
     compile ("com.helger:ph-schematron:${schematronVersion}") {
         exclude group: "com.helger", module: "ph-jaxb-pom"
