@@ -118,6 +118,7 @@ dependencies {
     compile "org.codehaus.groovy.modules.http-builder:http-builder:${groovyHttpVersion}"
     compile "org.apache.httpcomponents:httpmime"
     compile "org.apache.httpcomponents:httpcore"
+    compile "org.liquibase:liquibase-core:${liquibaseVersion}"
 
     // The reason why these dependencies are specified with "transitive = false" is that some obsolete
     // platforms (e.g. Windows) cannot handle a very long command line, and the full, transitive
@@ -147,6 +148,8 @@ dependencies {
             strictly "${hibernateVersion}"
         }
     }
+
+    fitnesse "org.liquibase:liquibase-core:${liquibaseVersion}"
     fitnesse "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
     fitnesse "org.codehaus.groovy.modules.http-builder:http-builder:${groovyHttpVersion}"
     fitnesse "org.apache.httpcomponents:httpmime"
