@@ -38,69 +38,9 @@
         </encoder>
     </appender>
 
+    <logger name="se.inera.statistics.service.warehouse.NationellDataInvoker" level="DEBUG"/>
 
-    <logger name="org.apache.camel" level="WARN"/>
-    <logger name="org.apache.activemq" level="WARN"/>
-
-<!--    <logger name="org.springframework" level="WARN"/>-->
-<!--    <logger name="org.springframework.security" level="WARN"/>-->
-<!--    <logger name="org.springframework.core.env.PropertySourcesPropertyResolver" level="WARN"/>-->
-<!--    <logger name="org.springframework.web" level="WARN"/>-->
-<!--    <logger name="org.springframework.http" level="WARN"/>-->
-
-    <logger name="se.inera.certificate.web" level="WARN"/>
-
-    <logger name="org.springframework.security.saml.log" level="INFO" />
-    <logger name="org.opensaml" level="INFO" />
-
-    <!-- Enable logging of frontend activities -->
-    <logger name="se.inera.statistics.web.service.endpoints.LoggingService" level="INFO">
-        <appender-ref ref="FRONTEND" />
-    </logger>
-
-    <!-- Enable logging of processing status -->
-    <logger name="se.inera.statistics.service.processlog.LogConsumerImpl" level="INFO" additivity="false">
-        <appender-ref ref="PROCESS" />
-    </logger>
-    <logger name="se.inera.statistics.service.processlog.message.MessageLogConsumerImpl" level="INFO" additivity="false">
-        <appender-ref ref="PROCESS" />
-    </logger>
-    <logger name="se.inera.statistics.service.hsa.HSAServiceImpl" level="INFO" additivity="false">
-        <appender-ref ref="PROCESS"/>
-    </logger>
-    <logger name="se.inera.statistics.service.helper.certificate.JsonDocumentHelper" level="INFO" additivity="false">
-        <appender-ref ref="PROCESS"/>
-    </logger>
-    <logger name="se.inera.statistics.scheduler.active.LogJob" level="INFO"  additivity="false">
-        <appender-ref ref="PROCESS"/>
-    </logger>
-    <logger name="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls" level="INFO"  additivity="false">
-        <appender-ref ref="PROCESS"/>
-    </logger>
-    <logger name="se.inera.statistics.web.service.endpoints.ChartDataService" level="INFO"  additivity="false">
-        <appender-ref ref="PROCESS"/>
-    </logger>
-
-    <!-- Enable logging of access status -->
-    <logger name="se.inera.statistics.web.service.endpoints.ProtectedChartDataService" level="INFO" additivity="false">
-        <appender-ref ref="ACCESS" />
-    </logger>
-    <logger name="se.inera.statistics.web.service.endpoints.ProtectedRegionService" level="INFO" additivity="false">
-        <appender-ref ref="ACCESS" />
-    </logger>
-
-    <!-- Enable monitoring logging -->
-    <logger name="se.inera.statistics.web.service.monitoring" level="INFO" additivity="false">
-        <appender-ref ref="ST_MONITORING" />
-    </logger>
-
-    <logger name="se.inera.statistics" level="INFO" additivity="false">
-        <appender-ref ref="CONSOLE" />
-    </logger>
-
-    <logger name="liquibase" level="info" />
-
-    <root level="INFO">
+    <root level="WARN">
         <appender-ref ref="CONSOLE"/>
     </root>
 

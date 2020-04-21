@@ -109,6 +109,13 @@ public class NationellDataInvoker {
             calculateMeddelandenPerVg(aisle.getVardgivareId(), result);
             calculateIntygPerVg(aisle.getVardgivareId(), result);
         }
+
+        Range intygPerTypeRange = result.getIntygPerTypeRange();
+        LOG.debug(
+            "getIntygPerTypeRange: " + intygPerTypeRange.getFrom() + " - " + intygPerTypeRange.getTo() + ", nrOfMonths " + intygPerTypeRange
+                .getNumberOfMonths());
+        LOG.debug("getIntygPerTypResult: " + result.getIntygPerTypResult());
+
         return populateResults(result, data);
     }
 
@@ -229,6 +236,8 @@ public class NationellDataInvoker {
         final Range longRange = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS, clock);
         Range yearRange = Range.createForLastMonthsExcludingCurrent(YEAR, clock);
         Range quarterRange = Range.quarter(clock);
+
+        LOG.debug("populateRanges: LR=" + longRange + ", YR=" + yearRange + ", QR=" + quarterRange);
 
         result.setAntalIntygRange(longRange);
         result.setDiagnosgrupperRange(longRange);
