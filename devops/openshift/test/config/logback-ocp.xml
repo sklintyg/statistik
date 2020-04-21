@@ -39,6 +39,8 @@
     </appender>
 
     <logger name="se.inera.statistics.service.warehouse.NationellDataInvoker" level="DEBUG"/>
+    <logger name="se.inera.statistics.config.ApplicationConfig" level="INFO"/>
+    <logger name="se.inera.testsupport.RestSupportService" level="INFO"/>
 
     <root level="WARN">
         <appender-ref ref="CONSOLE"/>
