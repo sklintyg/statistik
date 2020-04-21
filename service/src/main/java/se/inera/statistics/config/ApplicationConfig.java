@@ -76,9 +76,6 @@ public class ApplicationConfig implements TransactionManagementConfigurer {
 
     private void logSystemInfo() {
         Locale locale = Locale.getDefault();
-        String lang = locale.getDisplayLanguage();
-        String country = locale.getDisplayCountry();
-
         LOG.info(
             "defaultLang: " + locale.getDisplayLanguage() + ", defaultContry: " + locale.getDisplayCountry() + ", defaultVariant: " + locale
                 .getDisplayVariant() + ", defaultScript: " + locale.getDisplayScript() + ", defaultName: " + locale.getDisplayName());
