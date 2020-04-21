@@ -28,7 +28,7 @@ import java.util.Locale;
 
 public final class Range implements Serializable {
 
-    private static final String RANGE_SEPARATOR = "–"; // = "\u2013"
+    private static final String RANGE_SEPARATOR = "\u2013";
     private static final int DEFAULT_PERIOD = 18;
     private static final int YEAR_PERIOD = 12;
     private static final int QUARTER_PERIOD = 3;
