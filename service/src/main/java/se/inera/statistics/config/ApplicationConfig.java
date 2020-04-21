@@ -22,6 +22,7 @@ package se.inera.statistics.config;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.TimeZone;
 import javax.annotation.PostConstruct;
 import org.apache.cxf.Bus;
 import org.apache.cxf.ext.logging.LoggingFeature;
@@ -76,6 +77,7 @@ public class ApplicationConfig implements TransactionManagementConfigurer {
 
     private void logSystemInfo() {
         Locale locale = Locale.getDefault();
+        LOG.info("DefaultTimeZone: " + TimeZone.getDefault().getDisplayName());
         LOG.info(
             "defaultLang: " + locale.getDisplayLanguage() + ", defaultContry: " + locale.getDisplayCountry() + ", defaultVariant: " + locale
                 .getDisplayVariant() + ", defaultScript: " + locale.getDisplayScript() + ", defaultName: " + locale.getDisplayName());
