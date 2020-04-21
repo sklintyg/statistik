@@ -19,6 +19,7 @@
 package se.inera.statistics.config;
 
 
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
@@ -77,7 +78,7 @@ public class ApplicationConfig implements TransactionManagementConfigurer {
 
     private void logSystemInfo() {
         Locale locale = Locale.getDefault();
-        LOG.info("DefaultTimeZone: " + TimeZone.getDefault().getDisplayName());
+        LOG.info("DefaultTimeZone: " + TimeZone.getDefault().getDisplayName() + ", DefaultZoneId: " + ZoneId.systemDefault().getId());
         LOG.info(
             "defaultLang: " + locale.getDisplayLanguage() + ", defaultContry: " + locale.getDisplayCountry() + ", defaultVariant: " + locale
                 .getDisplayVariant() + ", defaultScript: " + locale.getDisplayScript() + ", defaultName: " + locale.getDisplayName());
