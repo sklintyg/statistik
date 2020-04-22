@@ -46,7 +46,6 @@ public class DbChecker {
             Liquibase liquibase = new Liquibase(script, new ClassLoaderResourceAccessor(), database);
             LOG.info(database.getConnection().getURL());
             List<ChangeSet> changeSets = liquibase.listUnrunChangeSets(new Contexts(), new LabelExpression());
-//            List<ChangeSet> changeSets = liquibase.listUnrunChangeSets("none");
             if (!changeSets.isEmpty()) {
                 StringBuilder errors = new StringBuilder();
                 for (ChangeSet changeSet : changeSets) {

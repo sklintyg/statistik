@@ -280,12 +280,7 @@ public class RestSupportService {
     @Produces({MediaType.APPLICATION_JSON})
     @Transactional
     public Response insertIntyg(Intyg intyg) {
-//        LOG.info("Insert intyg. id: " + intyg.getDocumentId() + ", data: " + intyg.getData());
-        String documentId = intyg.getDocumentId();
-        if (documentId != null && documentId.startsWith("333333")) {
-            LOG.info("Insert intyg. id: " + intyg.getDocumentId() + ", data: " + intyg.getData());
-        }
-
+        LOG.info("Insert intyg. id: " + intyg.getDocumentId() + ", data: " + intyg.getData());
         insertIntygWithoutLogging(intyg);
         return Response.ok().build();
     }
