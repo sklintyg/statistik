@@ -19,22 +19,21 @@
 package se.inera.statistics.fileservice;
 
 import java.io.InputStream;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.xml.bind.JAXB;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
-import se.inera.ifv.hsawsresponder.v3.ListGetHsaUnitsResponseType;
+import se.inera.ifv.hsawsresponder.v3._31._1.ListGetHsaUnitsResponseType;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
+import se.inera.statistics.service.processlog.EnhetManager;
 
 public class UpdateEnhetNamnFromHsaFileService {
 
-    @PersistenceContext(unitName = "IneraStatisticsLog")
-    private EntityManager manager;
+    private static final Logger LOG = LoggerFactory.getLogger(UpdateEnhetNamnFromHsaFileService.class);
+
+    private static final String JOB_NAME = "FileserviceJob.run";
 
     @Value("${hsa.ws.certificate.file}")
     private String hsaCertificateFile;
@@ -51,7 +50,11 @@ public class UpdateEnhetNamnFromHsaFileService {
     @Value("${hsaunits.url}")
     private String hsaunitsUrl;
 
-    private static final String JOB_NAME = "FileserviceJob.run";
+    private final EnhetManager enhetManager;
+
+    public UpdateEnhetNamnFromHsaFileService(EnhetManager enhetManager) {
+        this.enhetManager = enhetManager;
+    }
 
     @Scheduled(cron = "${scheduler.fileservice.cron}")
     @SchedulerLock(name = JOB_NAME)
@@ -72,19 +75,7 @@ public class UpdateEnhetNamnFromHsaFileService {
         final ListGetHsaUnitsResponseType resp = unmarshalXml(inputStream);
 
         LOG.info("Updating enhet names");
-        final Integer updateCount = resp.getHsaUnits().getHsaUnit().stream().reduce(0, (integer, hsaUnit) -> {
-            final Query q = manager.createNativeQuery("update enhet set namn = :namn where enhetId = :id and namn <> :namn");
-            final String name = hsaUnit.getName();
-            q.setParameter("namn", name);
-            final String hsaid = hsaUnit.getHsaIdentity();
-            q.setParameter("id", hsaid);
-            final int updated = q.executeUpdate();
-            if (updated > 0) {
-                LOG.info("Id: " + hsaid + ", Namn: " + name);
-            }
-            return updated;
-
-        }, (integer, integer2) -> integer + integer2);
+        int updateCount = enhetManager.updateName(resp.getHsaUnits());
 
         final int enheterCount = resp.getHsaUnits().getHsaUnit().size();
         final long end = System.currentTimeMillis();
@@ -96,5 +87,4 @@ public class UpdateEnhetNamnFromHsaFileService {
         return JAXB.unmarshal(inputStream, ListGetHsaUnitsResponseType.class);
     }
 
-    private static final Logger LOG = LoggerFactory.getLogger(UpdateEnhetNamnFromHsaFileService.class);
 }

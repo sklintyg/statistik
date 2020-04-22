@@ -1,0 +1,1250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+xmlns:tns="urn:riv:hsa:HsaWsResponder:3" 
+xmlns:xmime="http://www.w3.org/2005/05/xmlmime" 
+targetNamespace="urn:riv:hsa:HsaWsResponder:3" elementFormDefault="qualified">
+	<xsd:element name="HsawsSimpleLookup" type="tns:HsawsSimpleLookupType"/>
+	<xsd:element name="HsawsSimpleLookupResponse" type="tns:HsawsSimpleLookupResponseType"/>
+	<xsd:element name="GetHsaUnit" type="tns:LookupHsaObjectType"/>
+	<xsd:element name="GetHsaUnitResponse" type="tns:GetHsaUnitResponseType"/>
+	<xsd:element name="GetCareUnit" type="tns:LookupHsaObjectType"/>
+	<xsd:element name="GetCareUnitResponse" type="tns:GetCareUnitResponseType"/>
+	<xsd:element name="GetMiuForPerson" type="tns:GetMiuForPersonType"/>
+	<xsd:element name="GetMiuForPersonResponse" type="tns:GetMiuForPersonResponseType"/>
+	<xsd:element name="GetHospPerson" type="tns:GetHospPersonType"/>
+	<xsd:element name="GetHospPersonResponse" type="tns:GetHospPersonResponseType"/>
+	<xsd:element name="Ping" type="tns:PingType"/>
+	<xsd:element name="PingResponse" type="tns:PingResponseType"/>
+	<xsd:element name="HsaWsFault" type="tns:HsaWsFaultType"/>
+	<xsd:element name="VpwGetPublicUnits" type="tns:VpwGetPublicUnitsType"/>
+	<xsd:element name="VpwGetPublicUnitsResponse" type="tns:VpwGetPublicUnitsResponseType"/>
+	<xsd:element name="VpwGetPublicPersonsResponse" type="tns:VpwGetPublicPersonsResponseType"/>
+	<xsd:element name="FileGetHsaUnitsResponse" type="tns:ListGetHsaUnitsResponseType"/>
+	<xsd:element name="IsAuthorizedToSystem" type="tns:IsAuthorizedToSystemType"/>
+	<xsd:element name="IsAuthorizedToSystemResponse" type="tns:IsAuthorizedToSystemResponseType"/>
+	<xsd:element name="GetInformationList" type="tns:GetInformationListType"/>
+	<xsd:element name="GetInformationListResponse" type="tns:GetInformationListResponseType"/>
+	<xsd:element name="GetCareUnitList" type="tns:LookupHsaObjectType"/>
+	<xsd:element name="GetCareUnitListResponse" type="tns:GetCareUnitListResponseType"/>
+	<xsd:element name="GetCareUnitMembers" type="tns:LookupHsaObjectType"/>
+	<xsd:element name="GetCareUnitMembersResponse" type="tns:GetCareUnitMembersResponseType"/>
+	<xsd:element name="GetHsaPerson" type="tns:GetHsaPersonType"/>
+	<xsd:element name="GetHsaPersonResponse" type="tns:GetHsaPersonResponseType"/>
+	<xsd:element name="GetHospLastUpdate" type="tns:GetHospLastUpdateType"/>
+	<xsd:element name="GetHospLastUpdateResponse" type="tns:GetHospLastUpdateResponseType"/>
+	<xsd:element name="HandleCertifier" type="tns:HandleCertifierType"/>
+	<xsd:element name="HandleCertifierResponse" type="tns:HandleCertifierResponseType"/>
+	<xsd:element name="GetStatisticsCareGiver" type="tns:GetStatisticsCareGiverType"/>
+	<xsd:element name="GetStatisticsCareGiverResponse" type="tns:GetStatisticsCareGiverResponseType"/>
+	<xsd:element name="GetStatisticsHsaUnit" type="tns:GetStatisticsHsaUnitType"/>
+	<xsd:element name="GetStatisticsHsaUnitResponse" type="tns:GetStatisticsHsaUnitResponseType"/>
+	<xsd:element name="GetStatisticsPerson" type="tns:GetStatisticsPersonType"/>
+	<xsd:element name="GetStatisticsPersonResponse" type="tns:GetStatisticsPersonResponseType"/>
+	<xsd:element name="GetStatisticsNames" type="tns:GetStatisticsNamesType"/>
+	<xsd:element name="GetStatisticsNamesResponse" type="tns:GetStatisticsNamesResponseType"/>
+	
+	<xsd:complexType name="PingType" />
+
+	<xsd:complexType name="PingResponseType">
+		<xsd:sequence>
+			<xsd:element name="message" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="responseTime" type="xsd:integer" minOccurs="0"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="HsaWsFaultType">
+		<xsd:sequence>
+			<xsd:element name="code" type="xsd:string"/>
+			<xsd:element name="message" type="xsd:string"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="HsawsSimpleLookupType">
+		<xsd:sequence>
+			<xsd:choice>
+				<xsd:element name="Search" type="tns:searchType"/>
+				<xsd:element name="Lookup" type="tns:exactType"/>
+			</xsd:choice>
+			<xsd:element name="searchBase" type="tns:searchBaseType" minOccurs="0"/>
+			<xsd:element name="attributes" type="tns:attributeListType" minOccurs="0"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="searchType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="searchAttribute" type="tns:searchAttributeEnum" use="optional" default="SimpleSearch"/>
+				<xsd:attribute name="searchOperator" type="tns:searchOperatorEnum" use="required"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="exactType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="searchAttribute" type="xsd:string" use="optional" default="hsaIdentity"/>
+				<xsd:attribute name="searchOperator" type="tns:searchOperatorExact" use="optional" default="EXACT"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	
+	<xsd:simpleType name="searchAttributeEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="SimpleSearch"/>
+			<xsd:enumeration value="cn"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="searchOperatorEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="STARTS_WITH"/>
+			<xsd:enumeration value="ENDS_WITH"/>
+			<xsd:enumeration value="CONTAINS"/>
+			<xsd:enumeration value="EXACT"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="searchOperatorExact">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="EXACT"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:complexType name="HsawsSimpleLookupResponseType">
+		<xsd:sequence>
+			<!--Tjänsten returnerar en träfflista för varje objekt som sökningen matchar. Om exempelvis en person är verksam
+            i flera roller så returneras en träfflista per unik roll.-->
+			<xsd:element name="responseValues" type="tns:attributeValueListType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="attributeListType">
+		<xsd:sequence>
+			<xsd:element name="attribute" type="tns:attributeDataType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="attributeValueListType">
+		<xsd:sequence>
+			<!--DN visar resultatets position i organisationsträdet. Om flera träfflistor returneras kan dn användas för att identifiera den mest relevanta.-->
+			<xsd:element name="DN" type="xsd:string"/>
+			<!--Attributlista. Listan innehåller en post per eftersökt attribut som är tillgängligt i katalogen. -->
+			<xsd:element name="response" type="tns:attributeValuePairType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="feignedObject" type="xsd:boolean" minOccurs="0" />			
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="attributeValuePairType">
+		<xsd:sequence>
+			<!--Namnet på det eftersökta attributet.-->
+			<xsd:element name="attribute" type="xsd:string"/>
+			<!--Stränglista med ett eller flera värden per attribut. Binära attribut Base64 kodas och inkluderas 
+            direkt i elementet.-->
+			<xsd:element name="value" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:simpleType name="attributeDataType">
+		<xsd:restriction>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:maxLength value="40"/>
+					<xsd:pattern value="[(\p{L})0-9\-]*"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="searchBaseType">
+		<xsd:restriction base="xsd:token">
+			<xsd:maxLength value="350"/>
+			<xsd:pattern value="([OUDCNLoudcnl]{1,2}=[0-9\p{L}\p{Zs}\-.]*,?)*"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="hsaIdentityType">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	
+	<xsd:complexType name="LookupHsaObjectType">
+		<xsd:sequence>
+			<xsd:element name="hsaIdentity" type="tns:hsaIdentityType"/>
+			<xsd:element name="searchBase" type="tns:searchBaseType" minOccurs="0"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="GetHospPersonType">
+		<xsd:sequence>
+			<xsd:element name="personalIdentityNumber" type="xsd:string" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="GetHospPersonResponseType">
+		<xsd:sequence>
+			<xsd:element name="personalIdentityNumber" type="xsd:string" />
+			<xsd:element name="personalPrescriptionCode" type="xsd:string" minOccurs="0" />
+			<xsd:element name="educationCodes" type="tns:EducationCodesType" />
+			<xsd:element name="restrictions" type="tns:RestrictionsType" />
+			<xsd:element name="restrictionCodes" type="tns:RestrictionCodesType" />
+			<xsd:element name="titleCodes" type="tns:TitleCodesType" />
+			<xsd:element name="specialityCodes" type="tns:SpecialityCodesType" />
+			<xsd:element name="specialityNames" type="tns:SpecialityNamesType" />
+			<xsd:element name="hsaTitles" type="tns:HsaTitlesType"/>
+			<xsd:element name="hsaSosNursePrescriptionRight" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />			
+			<xsd:element name="feignedObject" type="xsd:boolean" minOccurs="0" />
+			<xsd:element name="hospIdentityNumber" type="xsd:string" minOccurs="0" />
+			<xsd:element name="titleCodeSpecialities" type="tns:TitleCodeSpecialitiesType" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="EducationCodesType">
+		<xsd:sequence>
+			<xsd:element name="educationCode" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="RestrictionsType">
+		<xsd:sequence>
+			<xsd:element name="restriction" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="RestrictionCodesType">
+		<xsd:sequence>
+			<xsd:element name="restrictionCode" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="TitleCodesType">
+		<xsd:sequence>
+			<xsd:element name="titleCode" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="TitleCodeSpecialitiesType">
+		<xsd:sequence>
+			<xsd:element name="titleCodeSpeciality" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="SpecialityCodesType">
+		<xsd:sequence>
+			<xsd:element name="specialityCode" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="SpecialityNamesType">
+		<xsd:sequence>
+			<xsd:element name="specialityName" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="GetCareUnitResponseType">
+		<xsd:sequence>
+			<xsd:element name="careUnitHsaIdentity" type="tns:hsaIdentityType"/>
+			<xsd:element name="careGiver" type="tns:orgNo"/>
+			<xsd:element name="careUnitStartDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="careUnitEndDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="careGiverStartDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="careGiverEndDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="careUnitfeignedObject" type="xsd:boolean" minOccurs="0" />
+			<xsd:element name="careGiverfeignedObject" type="xsd:boolean" minOccurs="0" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:simpleType name="orgNo">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+
+	<xsd:complexType name="GetCareUnitListResponseType">
+		<xsd:sequence>
+			<xsd:element name="careUnitGiverHsaIdentity" type="tns:hsaIdentityType"/>
+			<xsd:element name="careUnitGiverName" type="xsd:string"/>
+			<xsd:element name="careUnitGiverStartDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="careUnitGiverEndDate" type="xsd:dateTime" minOccurs="0" />			
+			<xsd:element name="careUnits" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="careUnit" type="tns:CareUnitType" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element> 
+			<xsd:element name="feignedObject" type="xsd:boolean" minOccurs="0" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="CareUnitType">
+		<xsd:sequence>
+			<xsd:element name="hsaIdentity" type="tns:hsaIdentityType"/>
+			<xsd:element name="careUnitName" type="xsd:string"/>
+			<xsd:element name="careUnitStartDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="careUnitEndDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="feignedObject" type="xsd:boolean" minOccurs="0" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>						
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="GetCareUnitMembersResponseType">
+		<xsd:sequence>
+			<xsd:element name="careUnitName" type="xsd:string"/>
+			<xsd:element name="unitPrescriptionCode" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="telephoneNumber" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+			<xsd:element name="postalAddress" type="tns:AddressType" minOccurs="0"/>
+			<xsd:element name="postalCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="careUnitStartDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="careUnitEndDate" type="xsd:dateTime" minOccurs="0" />						
+			<xsd:element name="careUnitMembers" minOccurs="0">			
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="careUnitMember" type="tns:CareUnitMemberType" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>            
+			<xsd:element name="feignedObject" type="xsd:boolean" minOccurs="0" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="CareUnitMemberType">
+		<xsd:sequence>
+			<xsd:element name="careUnitName" type="xsd:string"/>
+			<xsd:element name="unitPrescriptionCode" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="telephoneNumber" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+			<xsd:element name="postalAddress" type="tns:AddressType" minOccurs="0"/>
+			<xsd:element name="postalCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="careUnitMemberStartDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="careUnitMemberEndDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="feignedObject" type="xsd:boolean" minOccurs="0" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>						
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="GetMiuForPersonType">
+		<xsd:sequence>
+			<xsd:choice>
+				<xsd:element name="hsaIdentity" type="tns:hsaIdentityType"/>
+				<xsd:element name="personalIdentityNumber" type="xsd:string"/>
+			</xsd:choice>
+			<xsd:element name="searchBase" type="tns:searchBaseType" minOccurs="0"/>
+			<xsd:element name="includeDirectlyBelowProvider" type="xsd:boolean" minOccurs="0"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="GetMiuForPersonResponseType">
+		<xsd:sequence>
+			<xsd:element name="MiuInformation" type="tns:MiuInformationType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="feignedObject" type="xsd:boolean" minOccurs="0" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="MiuInformationType">
+		<xsd:sequence>
+			<xsd:element name="miuName" type="xsd:string"/>
+			<xsd:element name="hsaIdentity" type="tns:hsaIdentityType"/>
+			<xsd:element name="miuPurpose" type="xsd:string"/>
+			<xsd:element name="careUnitHsaIdentity" type="tns:hsaIdentityType" minOccurs="0" />
+			<xsd:element name="careUnitName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="careGiver" type="xsd:string"/>
+			<xsd:element name="careGiverName" type="xsd:string"/>
+			<xsd:element name="careGiverOrgNo" type="tns:orgNo"/>
+			<xsd:element name="personalPrescriptionCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="hsaTitles" type="tns:HsaTitlesType"/>
+			<xsd:element name="miuRights" type="tns:MiuRightsType"/>
+			<xsd:element name="hsaSystemRoles" type="tns:HsaSystemRolesType"/>
+			<xsd:element name="hsaIdentityPerson" type="xsd:string"/>
+			<xsd:element name="paTitleCode" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="givenName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="middleAndSurName" type="xsd:string"/>
+			<xsd:element name="careUnitStartDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="careUnitEndDate" type="xsd:dateTime" minOccurs="0" />			
+			<xsd:element name="careGiverStartDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="careGiverEndDate" type="xsd:dateTime"  minOccurs="0" />
+			<xsd:element name="hsaProtectedPerson" type="xsd:boolean" minOccurs="0" />
+			<xsd:element name="feignedCareGiverObject" type="xsd:boolean" minOccurs="0" />
+			<xsd:element name="feignedCareUnitObject" type="xsd:boolean" minOccurs="0" />
+			<xsd:element name="feignedMiuObject" type="xsd:boolean" minOccurs="0" />
+			<xsd:element name="feignedPersonObject" type="xsd:boolean" minOccurs="0" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="HsaTitlesType">
+		<xsd:sequence>
+			<xsd:element name="hsaTitle" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="MiuRightsType">
+		<xsd:sequence>
+			<xsd:element name="miuRight" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="HsaSystemRolesType">
+		<xsd:sequence>
+			<xsd:element name="hsaSystemRole" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="VpwGetPublicUnitsType" />
+	
+	<xsd:complexType name="VpwGetPublicUnitsResponseType">
+		<xsd:sequence>
+			<xsd:element name="startDate" type="xsd:dateTime"/>
+			<xsd:element name="endDate" type="xsd:dateTime"/>
+			<xsd:element name="publicUnits">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="publicUnit" type="tns:PublicUnitType" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="unavailableLocations">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="unavailableLocation" type="tns:UnavailableLocationType" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="statistics" type="tns:StatisticsType"/>
+			<xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="PublicUnitType">
+		<xsd:sequence>
+			<xsd:element name="hsaIdentity" type="xsd:string" />
+			<xsd:element name="name" type="xsd:string" minOccurs="0" />
+			<xsd:element name="location" type="xsd:string" />
+			<xsd:element name="searchBase" type="xsd:string" />
+			<xsd:element name="modifyTimestamp" type="xsd:dateTime" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="VpwGetPublicPersonsResponseType">
+		<xsd:sequence>
+			<xsd:element name="startDate" type="xsd:dateTime"/>
+			<xsd:element name="endDate" type="xsd:dateTime"/>
+			<xsd:element name="publicPersons">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="publicPerson" type="tns:PublicPersonType" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="PublicPersonType">
+		<xsd:sequence>
+			<xsd:element name="hsaIdentity" type="xsd:string" />
+			<xsd:element name="givenName" type="xsd:string" minOccurs="0" />
+			<xsd:element name="middleName" type="xsd:string" minOccurs="0" />
+			<xsd:element name="sn" type="xsd:string" />
+			<xsd:element name="nickName" type="xsd:string" minOccurs="0" />
+			<xsd:element name="title" type="xsd:string" />
+			<xsd:element name="DN" type="xsd:string" />
+			<xsd:element name="parentPublicUnits">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="parentPublicUnit" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="ListGetHsaUnitsResponseType">
+		<xsd:sequence>
+			<xsd:element name="startDate" type="xsd:dateTime"/>
+			<xsd:element name="endDate" type="xsd:dateTime"/>
+			<xsd:element name="hsaUnits">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="hsaUnit" type="tns:ListHsaUnitType" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="ListHsaUnitType">
+		<xsd:sequence>
+			<xsd:element name="hsaIdentity" type="xsd:string" />
+			<xsd:element name="DN" type="xsd:string" />
+			<xsd:element name="orgNo" type="xsd:string" minOccurs="0" />
+			<xsd:element name="name" type="xsd:string" />
+			<xsd:element name="publicName" type="xsd:string" />
+			<xsd:element name="isHsaHealthCareProvider" type="xsd:boolean" minOccurs="0" />
+			<xsd:element name="isHsaHealthCareUnit" type="xsd:boolean" minOccurs="0" />
+			<xsd:element name="hsaResponsibleHealthCareProvider" type="xsd:string" minOccurs="0" />
+			<xsd:element name="healthCareProviderIsArchived" type="xsd:boolean" minOccurs="0" />
+			<xsd:element name="healthCareUnitIsArchived" type="xsd:boolean" minOccurs="0" />
+			<xsd:element name="unitIsArchived" type="xsd:boolean" minOccurs="0" />
+			<xsd:element name="hsaHealthCareUnitMembers" minOccurs="0" >
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="hsaHealthCareUnitMember" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="startDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="endDate" type="xsd:dateTime" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="UnavailableLocationType">
+		<xsd:sequence>
+			<xsd:element name="location" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="StatisticsType">
+		<xsd:sequence>
+			<xsd:element name="totalPublicUnits" type="xsd:long" />
+			<xsd:element name="locations">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="location" minOccurs="0" maxOccurs="unbounded">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="location" type="xsd:string" />
+									<xsd:element name="publicUnits" type="xsd:long" />
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="GetHsaUnitResponseType">
+		<xsd:sequence>
+			<xsd:element name="alternateNames" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="alternateName" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="alternateText" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="businessClassifications" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="businessClassification" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="businessClassificationCodes" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="businessClassificationCode" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="businessTypes" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="businessType" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="careTypes" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="careType" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="county" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="countyCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="description" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="directoryContact" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="displayOption" type="xsd:string" minOccurs="0"/>
+ 			<xsd:element name="dropInHours" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="dropInHour" type="tns:TimeSpanType" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="email" type="xsd:string" minOccurs="0"/>
+ 			<xsd:element name="faxNumbers" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="faxNumber" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="geographicalCoordinatesRt90" type="tns:CoordinatesType" minOccurs="0"/>
+			<xsd:element name="healthCareArea" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="hsaDestinationIndicators" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="hsaDestinationIndicator" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="hsaIdentity" type="xsd:string"/>
+			<xsd:element name="hsaJpegLogotype" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="invoiceAddress" type="tns:AddressType" minOccurs="0"/>
+			<xsd:element name="jpegPhoto" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="labeledUri" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="location" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="managements" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="management" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="municipality" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="municipalityCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="municipalitySection" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:element name="patientInformation" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="postalAddress" type="tns:AddressType" minOccurs="0"/>
+			<xsd:element name="postalCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="priceInformation" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="publicName" type="xsd:string"/>
+ 			<xsd:element name="relatedUnits" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="relatedUnit" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="route" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="street" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="surgeryHours" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="surgeryHour" type="tns:TimeSpanType" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="switchboardNumber" type="xsd:string" minOccurs="0"/>
+ 			<xsd:element name="telephoneHours" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="telephoneHour" type="tns:TimeSpanType" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+ 			<xsd:element name="telephoneNumbers" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="telephoneNumber" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+ 			<xsd:element name="textTelephoneNumbers" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="textTelephoneNumber" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="unitExtraInformation" type="xsd:string" minOccurs="0"/>
+			 <xsd:element name="unitFunctions" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="unitFunction" type="tns:HsaUnitFunctionType" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="unitTemporaryInformation" type="tns:DateSpanType" minOccurs="0"/>
+ 			<xsd:element name="visitingHours" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="visitingHour" type="tns:TimeSpanType" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="visitingRuleAge" type="tns:AgeSpanType" minOccurs="0"/>
+			<xsd:element name="visitingRuleReferral" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="visitingRules" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="DN" type="xsd:string"/>
+			<xsd:element name="startDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="endDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="hsaVpwWebPage" type="xsd:string" minOccurs="0" />									
+			<xsd:element name="feignedObject" type="xsd:boolean" minOccurs="0" />
+			<xsd:element name="smsTelephoneNumber" type="xsd:string" minOccurs="0" />
+			<xsd:element name="financingOrganizations" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="financingOrganization" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+            </xsd:element>
+			<xsd:element name="indoorRouteDescription" type="xsd:string" minOccurs="0" />
+			<xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="AddressType">
+		<xsd:sequence>
+			<xsd:element name="addressLine" type="xsd:string" maxOccurs="unbounded"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="CoordinatesType">
+		<xsd:sequence>
+			<xsd:element name="type" type="xsd:string" />
+			<xsd:element name="x" type="xsd:string" />
+			<xsd:element name="y" type="xsd:string" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="AgeSpanType">
+		<xsd:sequence>
+			<xsd:element name="from" type="xsd:integer" />
+			<xsd:element name="to" type="xsd:integer" />
+			<xsd:element name="comment" type="xsd:string" minOccurs="0" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="TimeSpanType">
+		<xsd:sequence>
+			<xsd:element name="fromDay" type="xsd:integer" />
+			<xsd:element name="fromTime" type="xsd:time" />
+			<xsd:element name="fromTime2" type="xsd:string" />
+			<xsd:element name="toDay" type="xsd:integer" />
+			<xsd:element name="toTime" type="xsd:time" />
+			<xsd:element name="toTime2" type="xsd:string" />
+			<xsd:element name="comment" type="xsd:string" />
+			<xsd:element name="fromDate" type="xsd:string" />
+			<xsd:element name="toDate" type="xsd:string" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="DateSpanType">
+		<xsd:sequence>
+			<xsd:element name="fromDate" type="xsd:string" />
+			<xsd:element name="toDate" type="xsd:string" />
+			<xsd:element name="comment" type="xsd:string" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="HsaUnitFunctionType">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string" />
+ 			<xsd:element name="telephoneHours" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="telephoneHour" type="tns:TimeSpanType" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+ 			<xsd:element name="telephoneNumbers" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="telephoneNumber" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="IsAuthorizedToSystemType">
+		<xsd:sequence>
+			<xsd:choice>
+				<xsd:element name="hsaIdentity" type="xsd:string" />
+				<xsd:element name="personalIdentityNumber" type="xsd:string" />
+			</xsd:choice>			
+			<xsd:element name="system" type="xsd:string" />
+			<xsd:element name="searchBase" type="tns:searchBaseType" minOccurs="0"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="IsAuthorizedToSystemResponseType">
+		<xsd:sequence>
+			<xsd:element name="isAuthorized" type="xsd:boolean" />
+ 			<xsd:element name="userInformations" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="userInformation" type="tns:HsaUserType" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="HsaUserType">
+		<xsd:sequence>
+			<xsd:element name="description" type="xsd:string" minOccurs="0" />
+			<xsd:element name="email" type="xsd:string" minOccurs="0" />
+			<xsd:element name="givenName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="hsaIdentity" type="xsd:string" />
+			<xsd:element name="hsaSwitchboardNumbers" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="hsaSwitchboardNumber" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="hsaSystemRoles" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="hsaSystemRole" type="tns:HsaSystemRoleType" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="hsaTelephoneNumbers" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="hsaTelephoneNumber" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="labeledUri" type="xsd:string" minOccurs="0" />
+			<xsd:element name="mobileNumbers" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="mobileNumber" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="nickname" type="xsd:string" minOccurs="0" />
+			<xsd:element name="specialityCodes" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="specialityCode" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="specialityNames" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="specialityName" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="surname" type="xsd:string" />
+			<xsd:element name="telephoneHours" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="telephoneHour" type="tns:TimeSpanType" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="telephoneNumbers" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="telephoneNumber" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="title" type="xsd:string" minOccurs="0" />
+			<xsd:element name="DN" type="xsd:string" />
+			<xsd:element name="middleName" type="xsd:string" />
+			<xsd:element name="hsaProtectedPerson" type="xsd:boolean" minOccurs="0" />	
+			<xsd:element name="feignedObject" type="xsd:boolean" minOccurs="0" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="HsaSystemRoleType">
+		<xsd:sequence>
+			<xsd:element name="system" type="xsd:string" />
+			<xsd:element name="role" type="xsd:string" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+		<xsd:complexType name="GetInformationListType">
+		<xsd:sequence>
+			<xsd:element name="listIdentity" type="xsd:string" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="GetInformationListResponseType">
+		<xsd:sequence>
+			<xsd:element name="containsList" type="xsd:boolean" />
+			<xsd:element name="informationList" type="xsd:base64Binary" xmime:expectedContentTypes="application/octet-stream" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="GetHsaPersonType">
+		<xsd:sequence>
+			<xsd:choice>
+				<xsd:element name="hsaIdentity" type="xsd:string" />
+				<xsd:element name="personalIdentityNumber" type="xsd:string" />
+			</xsd:choice>			
+			<xsd:element name="searchBase" type="tns:searchBaseType" minOccurs="0"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="GetHsaPersonResponseType">
+		<xsd:sequence>
+ 			<xsd:element name="userInformations" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="userInformation" type="tns:GetHsaPersonHsaUserType" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="GetHospLastUpdateType" />
+	
+		<xsd:complexType name="GetHospLastUpdateResponseType">
+		<xsd:sequence>
+			<xsd:element name="lastUpdate" type="xsd:dateTime" minOccurs="1" maxOccurs="1"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+		<xsd:complexType name="HandleCertifierType">
+		<xsd:sequence>
+			<xsd:element name="personalIdentityNumber" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="addToCertifiers" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="certifierId" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="reason" type="xsd:string" minOccurs="0" maxOccurs="1"/>		
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="HandleCertifierResponseType">
+		<xsd:sequence>
+			<xsd:element name="result" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="GetHsaPersonHsaUserType">
+		<xsd:sequence>
+			<xsd:element name="description" type="xsd:string" minOccurs="0" />
+			<xsd:element name="mail" type="xsd:string" minOccurs="0" />
+			<xsd:element name="givenName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="hsaIdentity" type="xsd:string" />
+			<xsd:element name="hsaSwitchboardNumber" type="xsd:string" minOccurs="0" />
+			<xsd:element name="hsaTelephoneNumbers" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="hsaTelephoneNumber" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="labeledUri" type="xsd:string" minOccurs="0" />
+			<xsd:element name="mobiles" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="mobile" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="facsimileTelephoneNumbers" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="facsimileTelephoneNumber" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="nickName" type="xsd:string" minOccurs="0" />
+			<xsd:element name="specialityCodes" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="specialityCode" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="specialityNames" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="specialityName" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="sn" type="xsd:string" />
+			<xsd:element name="telephoneHours" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="telephoneHour" type="tns:TimeSpanType" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="telephoneNumbers" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="telephoneNumber" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="title" type="xsd:string" minOccurs="0" />
+			<xsd:element name="DN" type="xsd:string" />
+			<xsd:element name="middleName" type="xsd:string" />
+			<xsd:element name="postalAddress" type="tns:AddressType" minOccurs="0"/>
+			<xsd:element name="hsaTitles" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="hsaTitle" type="xsd:string" minOccurs="1" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="hsaProtectedPerson" type="xsd:boolean" minOccurs="0" />	
+			<xsd:element name="feignedObject" type="xsd:boolean" minOccurs="0" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="GetStatisticsCareGiverType">
+		<xsd:sequence>
+			<xsd:element name="hsaIdentity" type="xsd:string" />
+			<xsd:element name="searchBase" type="tns:searchBaseType" minOccurs="0"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="GetStatisticsCareGiverResponseType">
+		<xsd:sequence>
+			<xsd:element name="hsaIdentity" type="xsd:string"/>
+			<xsd:element name="careGiverOrgNo" type="tns:orgNo" minOccurs="0" />
+			<xsd:element name="startDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="endDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="isArchived" type="xsd:boolean" minOccurs="0" />
+			<xsd:element name="feignedObject" type="xsd:boolean" minOccurs="0" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="GetStatisticsHsaUnitType">
+		<xsd:sequence>
+			<xsd:element name="hsaIdentity" type="xsd:string" />
+			<xsd:element name="searchBase" type="tns:searchBaseType" minOccurs="0"/>
+			<xsd:element name="includeOrgNo" type="xsd:boolean" minOccurs="0"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="GetStatisticsHsaUnitResponseType">
+		<xsd:sequence>
+			<xsd:element name="statisticsUnit" type="tns:StatisticsHsaUnit"/>
+			<xsd:element name="statisticsCareUnit" type="tns:StatisticsHsaUnit" minOccurs="0" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="StatisticsHsaUnit">
+		<xsd:sequence>
+			<xsd:element name="hsaIdentity" type="xsd:string"/>
+			<xsd:element name="isHsaHealthCareUnit" type="xsd:boolean" minOccurs="0" />
+			<xsd:element name="careGiverOrgNo" type="xsd:string" minOccurs="0" />
+			<xsd:element name="careGiverHsaIdentity" type="xsd:string" minOccurs="0" />
+			<xsd:element name="location" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="county" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="countyCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="municipality" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="municipalityCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="municipalitySectionCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="municipalitySectionName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="geographicalCoordinatesRt90" type="tns:GeoCoord" minOccurs="0"/>
+			<xsd:element name="geographicalCoordinatesSWEREF99" type="tns:GeoCoord" minOccurs="0"/>
+			<xsd:element name="businessTypes" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="businessType" type="xsd:string" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="managements" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="management" type="xsd:string" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="businessClassificationCodes" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="businessClassificationCode" type="xsd:string" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="careTypes" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="careType" type="xsd:string" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="startDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="endDate" type="xsd:dateTime" minOccurs="0" />
+			<xsd:element name="isArchived" type="xsd:boolean" minOccurs="0" />			
+			<xsd:element name="feignedObject" type="xsd:boolean" minOccurs="0" />
+			<xsd:element name="feignedCareGiverObject" type="xsd:boolean" minOccurs="0" />
+			<xsd:element name="hsaSweref99Longitude" type="xsd:string" minOccurs="0" />
+			<xsd:element name="hsaSweref99Latitude" type="xsd:string" minOccurs="0" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="GeoCoord">
+		<xsd:sequence>
+			<xsd:element name="Type" type="tns:GeoCoordEnum" />
+			<xsd:choice>
+				<xsd:element name="X" type="xsd:string"/>
+				<xsd:element name="N" type="xsd:string"/>
+			</xsd:choice>
+			<xsd:choice>
+				<xsd:element name="Y" type="xsd:string"/>
+				<xsd:element name="E" type="xsd:string"/>
+			</xsd:choice>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:simpleType name="GeoCoordEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="RT90"/>
+			<xsd:enumeration value="SWEREF99TM"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="GetStatisticsPersonType">
+		<xsd:sequence>
+			<xsd:element name="hsaIdentity" type="xsd:string" />
+			<xsd:element name="searchBase" type="tns:searchBaseType" minOccurs="0"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="GetStatisticsPersonResponseType">
+		<xsd:sequence>
+			<xsd:element name="hsaIdentity" type="xsd:string" />
+			<xsd:element name="age" type="xsd:string" minOccurs="0" />
+			<xsd:element name="gender" type="xsd:string" minOccurs="0" />
+			<xsd:element name="paTitleNames" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="paTitleName" type="xsd:string" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="paTitleCodes" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="paTitleCode" type="xsd:string" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="hsaTitles" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="hsaTitle" type="xsd:string" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="specialityNames" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="specialityName" type="xsd:string" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="specialityCodes" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="specialityCode" type="xsd:string" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="isProtectedPerson" type="xsd:boolean" minOccurs="0" />	
+			<xsd:element name="feignedObject" type="xsd:boolean" minOccurs="0" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="GetStatisticsNamesType">
+		<xsd:sequence>
+			<xsd:element name="hsaIdentities">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="hsaIdentity" type="xsd:string" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="searchBase" type="tns:searchBaseType" minOccurs="0"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="GetStatisticsNamesResponseType">
+		<xsd:sequence>
+			<xsd:element name="statisticsNameInfos">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="statisticsNameInfo" type="tns:StatisticsNameInfo" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="StatisticsNameInfo">
+		<xsd:sequence>
+			<xsd:element name="hsaIdentity" type="xsd:string" />
+			<xsd:element name="personMiddleAndSurName" type="xsd:string" minOccurs="0" />
+			<xsd:element name="personGivenName" type="xsd:string" minOccurs="0" />
+			<xsd:element name="feignedObject" type="xsd:boolean" minOccurs="0" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name='BusinessClassificationType'>
+		<xsd:sequence>
+			<xsd:element name="businessClassificationName" type="xsd:string" />
+			<xsd:element name="businessClassificationCode" type="xsd:string" />
+			<xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name='PaTitleType'>
+		<xsd:sequence>
+			<xsd:element name="paTitleName" type="xsd:string" />
+			<xsd:element name="paTitleCode" type="xsd:string" />
+			<xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+</xsd:schema>
+

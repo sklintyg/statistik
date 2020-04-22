@@ -1,4 +1,5 @@
 ext.wsdlFile = file("src/main/resources/schemas/wsdl/HsaWsInteraction_3.18.wsdl")
+ext.xsdFile = file("src/main/resources/schemas/schemas/HsaWsResponder_3.31.1.xsd")
 ext.generatedJavaDir = file("generatedSource/java")
 
 sourceSets.main.java {
@@ -9,6 +10,7 @@ clean.doLast { ant.delete(dir: generatedJavaDir.parent) }
 
 configurations {
     wsdlgen
+    xsdgen
 }
 
 if (project.hasProperty("codeQuality")) {
@@ -27,10 +29,27 @@ task wsdl2Java(type: JavaExec) {
             "-p", "urn:riv:hsa:HsaWs:3=se.inera.ifv.hsaws.v3",
             "-p", "urn:riv:hsa:HsaWsResponder:3=se.inera.ifv.hsawsresponder.v3",
             "-p", "http://www.w3.org/2005/08/addressing=org.w3.wsaddressing10", '-d', generatedJavaDir.path, wsdlFile
-
 }
 
-compileJava.dependsOn(wsdl2Java)
+task xsd2Java() {
+    doLast {
+        ant.taskdef(
+                name: 'xjc',
+                classname: 'com.sun.tools.xjc.XJCTask',
+                classpath: configurations.xsdgen.asPath
+        )
+        ant.xjc(
+                destdir: generatedJavaDir.path,
+                package: 'se.inera.ifv.hsawsresponder.v3._31._1',
+                schema: xsdFile
+        )
+    }
+}
+
+compileJava.dependsOn(
+        wsdl2Java,
+        xsd2Java
+)
 
 dependencies {
     compile "se.inera.intyg.infra:hsa-integration:${infraVersion}"
@@ -50,8 +69,10 @@ dependencies {
     wsdlgen "com.sun.xml.bind:jaxb-core:${jaxbCoreVersion}"
     wsdlgen "com.sun.xml.bind:jaxb-impl:${jaxbImplVersion}"
     wsdlgen "jakarta.xml.ws:jakarta.xml.ws-api"
-
     wsdlgen "jakarta.annotation:jakarta.annotation-api"
-
     wsdlgen "ch.qos.logback:logback-classic"
+
+    xsdgen "com.sun.xml.bind:jaxb-xjc:${jaxbXjcVersion}"
+    xsdgen "com.sun.xml.bind:jaxb-core:${jaxbCoreVersion}"
+    xsdgen "com.sun.xml.bind:jaxb-impl:${jaxbImplVersion}"
 }
