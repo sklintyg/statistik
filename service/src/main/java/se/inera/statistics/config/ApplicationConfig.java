@@ -19,11 +19,16 @@
 package se.inera.statistics.config;
 
 
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
+import java.util.TimeZone;
 import javax.annotation.PostConstruct;
 import org.apache.cxf.Bus;
-import org.apache.cxf.feature.LoggingFeature;
+import org.apache.cxf.ext.logging.LoggingFeature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,6 +41,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
+//import org.apache.cxf.feature.LoggingFeature;
+
 @Configuration
 @EnableTransactionManagement
 @DependsOn("transactionManager")
@@ -46,6 +53,8 @@ import org.springframework.transaction.annotation.TransactionManagementConfigure
     @PropertySource("file:${statistics.config.file}"),
 })
 public class ApplicationConfig implements TransactionManagementConfigurer {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ApplicationConfig.class);
 
     @Autowired
     private Bus bus;
@@ -60,8 +69,21 @@ public class ApplicationConfig implements TransactionManagementConfigurer {
 
     @PostConstruct
     public Bus init() {
+
+        logSystemInfo();
+
         bus.setFeatures(new ArrayList<>(Arrays.asList(loggingFeature())));
         return bus;
+    }
+
+    private void logSystemInfo() {
+        Locale locale = Locale.getDefault();
+        LOG.info("DefaultTimeZone: " + TimeZone.getDefault().getDisplayName() + ", DefaultZoneId: " + ZoneId.systemDefault().getId());
+        LOG.info(
+            "defaultLang: " + locale.getDisplayLanguage() + ", defaultContry: " + locale.getDisplayCountry() + ", defaultVariant: " + locale
+                .getDisplayVariant() + ", defaultScript: " + locale.getDisplayScript() + ", defaultName: " + locale.getDisplayName());
+        LOG.info("user.language: " + System.getProperty("user.language") + ", user.country: " + System.getProperty("user.country")
+            + ", user.variant: " + System.getProperty("user.variant") + "user.script: " + System.getProperty("user.script"));
     }
 
     @Bean

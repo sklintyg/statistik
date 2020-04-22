@@ -22,20 +22,20 @@ configurations {
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.4.7'
-    compile 'org.codehaus.gpars:gpars:1.1.0'
-    compile 'org.apache.commons:commons-dbcp2:2.0'
+    compile "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
+    compile "org.codehaus.gpars:gpars:${gparsVersion}"
+    compile "org.apache.commons:commons-dbcp2"
+    compile "commons-logging:commons-logging:${commonsLoggingVersion}"
 
-    compile 'mysql:mysql-connector-java:5.1.39'
-    compile "com.h2database:h2:1.4.195"
+    compile "mysql:mysql-connector-java"
+    compile "com.h2database:h2"
 
-    deployerJars "org.apache.maven.wagon:wagon-webdav:1.0-beta-2"
+    deployerJars "org.apache.maven.wagon:wagon-webdav-jackrabbit:${wagonVersion}"
 
-    testCompile 'xmlunit:xmlunit:1.4'
-    testCompile 'org.skyscreamer:jsonassert:1.2.0'
-    testCompile 'commons-io:commons-io:2.4'
-    testCompile 'org.springframework:spring-core:4.0.2.RELEASE'
-    testCompile 'junit:junit:4.11'
+    testCompile "org.xmlunit:xmlunit-legacy"
+    testCompile "org.skyscreamer:jsonassert"
+    testCompile "commons-io:commons-io:${commonsIoVersion}"
+    testCompile 'org.springframework:spring-core'
 }
 
 ext.nexusUsername = System.properties['nexusUsername']

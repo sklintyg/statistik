@@ -21,6 +21,7 @@ package se.inera.auth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -45,7 +46,7 @@ public class FakeAuthenticationFilter extends AbstractAuthenticationProcessingFi
 
         String parameter = request.getParameter("userJsonDisplay");
         // we manually encode the json parameter
-        String json = URLDecoder.decode(parameter, "ISO-8859-1");
+        String json = URLDecoder.decode(parameter, StandardCharsets.ISO_8859_1);
 
         try {
             FakeCredentials fakeCredentials = new ObjectMapper().readValue(json, FakeCredentials.class);

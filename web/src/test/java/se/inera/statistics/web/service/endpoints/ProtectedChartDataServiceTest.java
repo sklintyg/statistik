@@ -18,8 +18,8 @@
  */
 package se.inera.statistics.web.service.endpoints;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import com.google.common.collect.Lists;
 import java.util.Arrays;
@@ -32,7 +32,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import se.inera.auth.model.User;
 import se.inera.auth.model.UserAccessLevel;
@@ -82,15 +82,13 @@ public class ProtectedChartDataServiceTest {
 
         User user = new User(new HsaIdUser("hsaId"), "name", Collections.emptyList(), vardenhets);
         UsernamePasswordAuthenticationToken principal = Mockito.mock(UsernamePasswordAuthenticationToken.class);
-        when(request.getUserPrincipal()).thenReturn(principal);
-        when(principal.getDetails()).thenReturn(user);
     }
 
     @Test
     public void checkDeniedAccessToVerksamhetTest() {
         Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(new LoginInfo());
         boolean result = chartDataService.hasAccessTo(request);
-        assertEquals(false, result);
+        assertFalse(result);
     }
 
     @Test
@@ -107,7 +105,7 @@ public class ProtectedChartDataServiceTest {
         boolean result = chartDataService.hasAccessTo(request);
 
         // Then
-        assertEquals(true, result);
+        assertTrue(result);
     }
 
     @Test
@@ -138,7 +136,7 @@ public class ProtectedChartDataServiceTest {
         boolean result = chartDataService.hasAccessTo(request);
 
         // Then
-        assertEquals(true, result);
+        assertTrue(result);
     }
 
 }

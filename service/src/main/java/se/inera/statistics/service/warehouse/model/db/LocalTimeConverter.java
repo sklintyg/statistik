@@ -34,6 +34,6 @@ public class LocalTimeConverter implements AttributeConverter<LocalTime, Time> {
 
     @Override
     public LocalTime convertToEntityAttribute(Time value) {
-        return LocalTime.parse(value.toString(), DateTimeFormatter.ISO_DATE);
+        return LocalTime.parse(value.toString(), DateTimeFormatter.ISO_LOCAL_TIME);
     }
 }

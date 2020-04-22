@@ -19,9 +19,11 @@
 package se.inera.statistics.service.countypopulation;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.nullable;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -100,13 +102,13 @@ public class CountyPopulationFetcherTest {
     @Test
     public void testGetPopulationForHappyPath() throws Exception {
         //Given
-        Mockito.when(rest.postForObject(anyString(), any(), any())).thenReturn(RESPONSE);
+        Mockito.when(rest.postForObject(nullable(String.class), any(), any())).thenReturn(RESPONSE);
 
         //When
         final Optional<CountyPopulation> countyPopulation = countyPopulationFetcher.getPopulationFor(2013);
 
         //Then
-        assertEquals(true, countyPopulation.isPresent());
+        assertTrue(countyPopulation.isPresent());
         final CountyPopulation population = countyPopulation.get();
         assertEquals(LocalDate.parse("2013-12-31"), population.getDate());
         assertEquals(21, population.getPopulationPerCountyCode().size());
@@ -122,7 +124,7 @@ public class CountyPopulationFetcherTest {
         final Optional<CountyPopulation> countyPopulation = countyPopulationFetcher.getPopulationFor(2013);
 
         //Then
-        assertEquals(false, countyPopulation.isPresent());
+        assertFalse(countyPopulation.isPresent());
     }
 
     @Test
@@ -134,7 +136,7 @@ public class CountyPopulationFetcherTest {
         final Optional<CountyPopulation> countyPopulation = countyPopulationFetcher.getPopulationFor(2013);
 
         //Then
-        assertEquals(false, countyPopulation.isPresent());
+        assertFalse(countyPopulation.isPresent());
     }
 
     @Test
@@ -146,7 +148,7 @@ public class CountyPopulationFetcherTest {
         final Optional<CountyPopulation> countyPopulation = countyPopulationFetcher.getPopulationFor(2012);
 
         //Then
-        assertEquals(false, countyPopulation.isPresent());
+        assertFalse(countyPopulation.isPresent());
     }
 
     @Test
@@ -159,7 +161,7 @@ public class CountyPopulationFetcherTest {
         final Optional<CountyPopulation> countyPopulation = countyPopulationFetcher.getPopulationFor(2013);
 
         //Then
-        assertEquals(false, countyPopulation.isPresent());
+        assertFalse(countyPopulation.isPresent());
     }
 
     @Test
@@ -171,21 +173,22 @@ public class CountyPopulationFetcherTest {
         final Optional<CountyPopulation> countyPopulation = countyPopulationFetcher.getPopulationFor(2013);
 
         //Then
-        assertEquals(false, countyPopulation.isPresent());
+        assertFalse(countyPopulation.isPresent());
     }
 
     @Test
     public void testGetPopulationForCountyUsesCorrectYearInRequest() throws Exception {
         //Given
         final int year = 1234321;
-        Mockito.when(rest.postForObject(anyString(), any(), any())).thenReturn(RESPONSE.replace("Folkmängd 2013", "Folkmängd " + year));
+        Mockito.when(rest.postForObject(nullable(String.class), any(), any()))
+            .thenReturn(RESPONSE.replace("Folkmängd 2013", "Folkmängd " + year));
 
         //When
         countyPopulationFetcher.getPopulationFor(year);
 
         //Then
         final ArgumentCaptor<String> requestBody = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(rest).postForObject(anyString(), requestBody.capture(), any());
+        Mockito.verify(rest).postForObject(nullable(String.class), requestBody.capture(), any());
         assertTrue(requestBody.getValue().contains("\"" + String.valueOf(year) + "\""));
     }
 
@@ -198,7 +201,7 @@ public class CountyPopulationFetcherTest {
         final Optional<CountyPopulation> countyPopulation = countyPopulationFetcher.getPopulationFor(2013);
 
         //Then
-        assertEquals(false, countyPopulation.isPresent());
+        assertFalse(countyPopulation.isPresent());
     }
 
 }

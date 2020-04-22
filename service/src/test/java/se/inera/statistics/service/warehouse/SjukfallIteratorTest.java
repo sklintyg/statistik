@@ -19,6 +19,7 @@
 package se.inera.statistics.service.warehouse;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import java.time.LocalDate;
@@ -55,7 +56,7 @@ public class SjukfallIteratorTest {
         final boolean hasNext = sjukfallIterator.hasNext();
 
         //Then
-        assertEquals(false, hasNext);
+        assertFalse(hasNext);
     }
 
     @Test

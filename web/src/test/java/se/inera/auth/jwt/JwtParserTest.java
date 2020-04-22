@@ -35,6 +35,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SigningKeyResolverAdapter;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.ArrayList;
 import org.apache.commons.io.IOUtils;
@@ -49,10 +50,11 @@ public class JwtParserTest {
         String jwtToken = readTokenFromDisk();
 
         SigningKeyResolverAdapter signingKeyResolverAdapter = buildResolverWithDiskBasedJwks();
-        Jws<Claims> jws = Jwts.parser()
-            .setSigningKeyResolver(signingKeyResolverAdapter)
-            .setAllowedClockSkewSeconds(999999999999999L)
-            .parseClaimsJws(jwtToken);
+            Jws<Claims> jws = Jwts.parserBuilder()
+                .setSigningKeyResolver(signingKeyResolverAdapter)
+                .setAllowedClockSkewSeconds(999999999999999L)
+                .build()
+                .parseClaimsJws(jwtToken);
 
         assertNotNull(jws);
         ArrayList<String> employeeHsaIdList = (ArrayList<String>) jws.getBody().get("employeeHsaId");
@@ -65,14 +67,15 @@ public class JwtParserTest {
         String jwtToken = readTokenFromDisk();
         SigningKeyResolverAdapter signingKeyResolverAdapter = buildResolverWithDiskBasedJwks();
 
-        Jws<Claims> jws = Jwts.parser()
+        Jws<Claims> jws = Jwts.parserBuilder()
             .setSigningKeyResolver(signingKeyResolverAdapter)
             .setAllowedClockSkewSeconds(1)
+            .build()
             .parseClaimsJws(jwtToken);
     }
 
     private String readTokenFromDisk() throws IOException {
-        String token = IOUtils.toString(new ClassPathResource("jwt/token.json").getInputStream(), Charset.forName("UTF-8"));
+        String token = IOUtils.toString(new ClassPathResource("jwt/token.json").getInputStream(), StandardCharsets.UTF_8);
         JsonNode jsonNode = new ObjectMapper().readTree(token);
         return jsonNode.get("access_token").textValue();
     }

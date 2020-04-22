@@ -20,30 +20,36 @@ dependencies {
     compile "se.inera.intyg.clinicalprocess.healthcond.certificate:intyg-clinicalprocess-healthcond-certificate-schematron:${intygSchematronVersion}"
     compile "se.inera.intyg.transportstyrelsen:intyg-transportstyrelsen-schemas:${intygTransportstyrelsenSchemasVersion}"
 
-    compile "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:${hibernateJpaVersion}"
-    compile "org.hibernate:hibernate-entitymanager:${hibernateVersion}"
-    compile "org.springframework:spring-orm:${springContextVersion}"
-    compile "org.springframework:spring-jms:${springContextVersion}"
-    compile "com.h2database:h2:${h2Version}"
-    compile "com.zaxxer:HikariCP-java6:${hikariCPVersion}"
-    compile "org.liquibase:liquibase-core:${liquibaseVersion}"
-    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}"
-    compile "com.helger:ph-schematron:${schematronVersion}"
     compile "se.inera.intyg.infra:hsa-integration:${infraVersion}"
     compile "se.inera.intyg.infra:monitoring:${infraVersion}"
     compile "se.inera.intyg.infra:common-redis-cache-core:${infraVersion}"
+
+    compile "org.springframework.data:spring-data-jpa"
+    compile "org.springframework:spring-orm"
+    compile "org.springframework:spring-jms"
+    compile "com.h2database:h2"
+    compile "org.liquibase:liquibase-core"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
+    compile ("com.helger:ph-schematron:${schematronVersion}") {
+        exclude group: "com.helger", module: "ph-jaxb-pom"
+    }
+
     compile "net.javacrumbs.shedlock:shedlock-spring:${shedlockSpringVersion}"
     compile "net.javacrumbs.shedlock:shedlock-provider-redis-spring:${shedlockSpringVersion}"
-    compile "org.apache.httpcomponents:httpclient:${httpClientVersion}"
+    compile "org.apache.httpcomponents:httpclient"
+    compile "org.apache.cxf:cxf-rt-features-logging:${cxfVersion}"
 
-    compileOnly "org.apache.geronimo.specs:geronimo-jms_1.1_spec:${jmsVersion}"
-    compileOnly "org.apache.activemq:activemq-client:${activeMqVersion}"
+    compileOnly "org.apache.geronimo.specs:geronimo-jms_1.1_spec:${geronimoVersion}"
+    compileOnly "org.apache.activemq:activemq-client"
 
     testCompile "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
-    testCompile "org.apache.activemq:activemq-spring:${activeMqVersion}"
-    testCompile "org.springframework:spring-aop:${springContextVersion}"
-    testCompile "org.aspectj:aspectjrt:${aspectJVersion}"
-    testCompile "org.aspectj:aspectjweaver:${aspectJVersion}"
-    testCompile "org.eclipse.jetty:jetty-server:${jettyVersion}"
+    testCompile "org.apache.activemq:activemq-spring"
+    testCompile "org.springframework:spring-aop"
+    testCompile "org.aspectj:aspectjrt"
+    testCompile "org.aspectj:aspectjweaver"
+    testCompile "org.eclipse.jetty:jetty-server"
 
+    // This will make sure we use the liquibase patch in the web module.
+    // It needs to be in this module to make sure it ends up before the jar version on the classpath in Tomcat
+    testCompile files(project(':statistik-web').sourceSets.main.output)
 }

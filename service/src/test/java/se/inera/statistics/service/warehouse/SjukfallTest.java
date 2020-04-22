@@ -79,7 +79,7 @@ public class SjukfallTest {
         assertTrue(lakare.contains(new HsaIdLakare("1")));
         assertTrue(lakare.contains(new HsaIdLakare("2")));
         assertEquals("02", result.getLanskod());
-        assertEquals(true, result.isExtended());
+        assertTrue(result.isExtended());
         assertEquals(2, result.getIntygCountIncludingBeforeCurrentPeriod());
     }
 
@@ -98,7 +98,7 @@ public class SjukfallTest {
         final SjukfallExtended newSjukfall = orgSjukfall.join(fact);
 
         //Then
-        assertEquals(true, newSjukfall.isExtended());
+        assertTrue(newSjukfall.isExtended());
     }
 
     @Test

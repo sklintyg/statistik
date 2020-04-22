@@ -21,11 +21,10 @@ package se.inera.statistics.web.service.endpoints;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import com.google.common.collect.Lists;
 import java.io.ByteArrayOutputStream;
@@ -50,7 +49,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import se.inera.auth.model.User;
 import se.inera.auth.model.UserAccessLevel;
@@ -116,8 +115,6 @@ public class ProtectedRegionServiceTest {
 
         User user = new User(new HsaIdUser("hsaId"), "name", Collections.emptyList(), vardenhets);
         UsernamePasswordAuthenticationToken principal = Mockito.mock(UsernamePasswordAuthenticationToken.class);
-        when(request.getUserPrincipal()).thenReturn(principal);
-        when(principal.getDetails()).thenReturn(user);
     }
 
     @Test
@@ -152,7 +149,6 @@ public class ProtectedRegionServiceTest {
         final LoginInfoVg loginInfoVg = new LoginInfoVg(vg, "", RegionsVardgivareStatus.NO_REGIONSVARDGIVARE, new UserAccessLevel(true, 1));
         Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(
             new LoginInfo(new HsaIdUser(""), "", new ArrayList<>(), Lists.newArrayList(loginInfoVg), new UserSettingsDTO(), "FAKE"));
-        Mockito.when(regionFileReader.readExcelData(any(DataSource.class))).thenThrow(new RegionEnhetFileParseException(""));
 
         // When
         final Response response = chartDataService.fileupload(req, mb);

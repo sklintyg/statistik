@@ -235,8 +235,8 @@ public class SjukfallUtilTest {
                 });
 
         //Then
-        assertEquals(new Integer(1), response.getDataFromIndex(0, Kon.FEMALE).get(0));
-        assertEquals(new Integer(2), response.getDataFromIndex(0, Kon.MALE).get(0));
+        assertEquals(Integer.valueOf(1), response.getDataFromIndex(0, Kon.FEMALE).get(0));
+        assertEquals(Integer.valueOf(2), response.getDataFromIndex(0, Kon.MALE).get(0));
     }
 
     private Sjukfall createSjukfall(Kon kon) {

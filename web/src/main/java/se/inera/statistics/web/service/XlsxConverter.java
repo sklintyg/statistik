@@ -26,8 +26,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Hyperlink;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -186,9 +188,9 @@ final class XlsxConverter {
 
     private void addLink(Sheet sheet, String text, int rowToCreate, String address) {
         final Row row = sheet.createRow(rowToCreate);
-        final Cell cell = row.createCell(0, Cell.CELL_TYPE_STRING);
+        final Cell cell = row.createCell(0, CellType.STRING);
         cell.setCellValue(text);
-        Hyperlink link = sheet.getWorkbook().getCreationHelper().createHyperlink(Hyperlink.LINK_DOCUMENT);
+        Hyperlink link = sheet.getWorkbook().getCreationHelper().createHyperlink(HyperlinkType.DOCUMENT);
         link.setAddress(address);
         cell.setHyperlink(link);
         cell.setCellStyle(getHlinkStyle(sheet.getWorkbook()));
@@ -218,7 +220,7 @@ final class XlsxConverter {
     }
 
     private void addTitle(Row row, int column, String text) {
-        final Cell cell = row.createCell(column, Cell.CELL_TYPE_STRING);
+        final Cell cell = row.createCell(column, CellType.STRING);
         cell.setCellStyle(getBoldStyle(row.getSheet().getWorkbook()));
         cell.setCellValue(text);
     }
@@ -226,10 +228,10 @@ final class XlsxConverter {
     private void addValue(Row row, int column, Object value) {
         final boolean isNumber = value instanceof Number;
         if (isNumber) {
-            final Cell cell = row.createCell(column, Cell.CELL_TYPE_NUMERIC);
+            final Cell cell = row.createCell(column, CellType.NUMERIC);
             cell.setCellValue(((Number) value).doubleValue());
         } else {
-            final Cell cell = row.createCell(column, Cell.CELL_TYPE_STRING);
+            final Cell cell = row.createCell(column, CellType.STRING);
             cell.setCellValue(String.valueOf(value));
         }
     }

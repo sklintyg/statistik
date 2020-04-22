@@ -38,6 +38,21 @@
         </encoder>
     </appender>
 
+
+    <logger name="org.apache.camel" level="WARN"/>
+    <logger name="org.apache.activemq" level="WARN"/>
+
+<!--    <logger name="org.springframework" level="WARN"/>-->
+<!--    <logger name="org.springframework.security" level="WARN"/>-->
+<!--    <logger name="org.springframework.core.env.PropertySourcesPropertyResolver" level="WARN"/>-->
+<!--    <logger name="org.springframework.web" level="WARN"/>-->
+<!--    <logger name="org.springframework.http" level="WARN"/>-->
+
+    <logger name="se.inera.certificate.web" level="WARN"/>
+
+    <logger name="org.springframework.security.saml.log" level="INFO" />
+    <logger name="org.opensaml" level="INFO" />
+
     <!-- Enable logging of frontend activities -->
     <logger name="se.inera.statistics.web.service.endpoints.LoggingService" level="INFO">
         <appender-ref ref="FRONTEND" />
@@ -59,6 +74,9 @@
     <logger name="se.inera.statistics.scheduler.active.LogJob" level="INFO"  additivity="false">
         <appender-ref ref="PROCESS"/>
     </logger>
+    <logger name="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls" level="INFO"  additivity="false">
+        <appender-ref ref="PROCESS"/>
+    </logger>
     <logger name="se.inera.statistics.web.service.endpoints.ChartDataService" level="INFO"  additivity="false">
         <appender-ref ref="PROCESS"/>
     </logger>
@@ -75,6 +93,12 @@
     <logger name="se.inera.statistics.web.service.monitoring" level="INFO" additivity="false">
         <appender-ref ref="ST_MONITORING" />
     </logger>
+
+    <logger name="se.inera.statistics" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <logger name="liquibase" level="info" />
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>

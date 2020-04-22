@@ -41,7 +41,8 @@ class SjukfallISpecialrapportenSkane extends Rapport {
     }
 
     public void executeTabell(report) {
-        def row = report.find { currentRow -> this.enhet.equalsIgnoreCase(currentRow.enhet) && currentRow.group.startsWith(grupp) }
+        def row = report.find {
+            currentRow -> this.enhet.equalsIgnoreCase(currentRow.enhet) && currentRow.group.startsWith(grupp) }
         resultat = row == null ? -1 : row.resultat
     }
 

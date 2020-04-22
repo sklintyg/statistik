@@ -21,6 +21,8 @@ package se.inera.statistics.service.liquibase;
 import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
+import liquibase.Contexts;
+import liquibase.LabelExpression;
 import liquibase.Liquibase;
 import liquibase.changelog.ChangeSet;
 import liquibase.database.Database;
@@ -43,7 +45,7 @@ public class DbChecker {
             Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(connection);
             Liquibase liquibase = new Liquibase(script, new ClassLoaderResourceAccessor(), database);
             LOG.info(database.getConnection().getURL());
-            List<ChangeSet> changeSets = liquibase.listUnrunChangeSets("none");
+            List<ChangeSet> changeSets = liquibase.listUnrunChangeSets(new Contexts(), new LabelExpression());
             if (!changeSets.isEmpty()) {
                 StringBuilder errors = new StringBuilder();
                 for (ChangeSet changeSet : changeSets) {

@@ -18,7 +18,7 @@
  */
 package se.inera.auth.jwt;
 
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -33,7 +33,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.RedirectStrategy;
 import se.inera.auth.model.User;
@@ -92,7 +92,6 @@ public class JwtAuthenticationSuccessHandlerTest {
         List<Vardenhet> vardenhetsList = new ArrayList<>();
         vardenhetsList.add(new Vardenhet(new HsaIdEnhet("otherHsaId"), "enhet", new HsaIdVardgivare("vgid")));
 
-        when(filterHashHandler.getHash(anyString())).thenReturn("filterhash");
         when(request.getParameter("enhet")).thenReturn("hsaId");
         when(request.getRequestURI()).thenReturn("/oauth/token/view");
         when(authentication.getPrincipal()).thenReturn(user);

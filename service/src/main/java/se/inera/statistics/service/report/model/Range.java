@@ -118,18 +118,28 @@ public final class Range implements Serializable {
             }
         }
 
+        // CHECKSTYLE:OFF MagicNumber
         private String formatMonthWithYear(LocalDate when) {
-            return when.format(DateTimeFormatter.ofPattern(monthFormat + " yyyy", SV));
+            String out = when.format(DateTimeFormatter.ofPattern(monthFormat + " yyyy", SV));
+            if ("MMM".equals(monthFormat)) {
+                out = out.substring(0, 3) + out.substring(out.indexOf(" "));
+            }
+            return out;
         }
 
         private String formatMonth(LocalDate when) {
-            return when.format(DateTimeFormatter.ofPattern(monthFormat, SV));
+            String out = when.format(DateTimeFormatter.ofPattern(monthFormat, SV));
+            if ("MMM".equals(monthFormat)) {
+                out = out.substring(0, 3);
+            }
+            return out;
         }
     }
 
     public String toStringShortMonths() {
-        String fromStr = from.getMonth().getDisplayName(TextStyle.SHORT, SV);
-        String toStr = to.getMonth().getDisplayName(TextStyle.SHORT, SV);
+        String fromStr = from.getMonth().getDisplayName(TextStyle.SHORT, SV).substring(0, 3);
+        String toStr = to.getMonth().getDisplayName(TextStyle.SHORT, SV).substring(0, 3);
         return fromStr + "-" + toStr;
     }
+    // CHECKSTYLE:ON MagicNumber
 }

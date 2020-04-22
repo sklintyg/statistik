@@ -39,6 +39,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -123,7 +124,7 @@ public class TestIntygInjector {
 
     @PostConstruct
     public void init() {
-        if (env.acceptsProfiles("skipTestIntygInjection")) {
+        if (env.acceptsProfiles(Profiles.of("skipTestIntygInjection"))) {
             return;
         }
         base = LocalDate.now(clock).minusMonths(MONTHS);

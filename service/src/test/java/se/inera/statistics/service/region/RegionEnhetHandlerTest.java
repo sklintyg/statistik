@@ -20,11 +20,11 @@ package se.inera.statistics.service.region;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 
 import java.util.ArrayList;
@@ -82,7 +82,7 @@ public class RegionEnhetHandlerTest {
         }
 
         //Then
-        Mockito.verify(regionEnhetManager, times(0)).update(anyLong(), anyListOf(RegionEnhetFileDataRow.class));
+        Mockito.verify(regionEnhetManager, times(0)).update(anyLong(), anyList());
         Mockito.verify(regionEnhetUpdateManager, times(0))
             .update(anyLong(), anyString(), any(HsaIdUser.class), anyString(), any(RegionEnhetUpdateOperation.class));
     }

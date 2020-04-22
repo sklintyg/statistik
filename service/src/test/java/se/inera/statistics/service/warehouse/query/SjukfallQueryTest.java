@@ -20,10 +20,10 @@ package se.inera.statistics.service.warehouse.query;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static se.inera.statistics.service.warehouse.FactBuilder.aFact;
@@ -42,8 +42,8 @@ import java.util.stream.Collectors;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Captor;
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
@@ -260,7 +260,7 @@ public class SjukfallQueryTest {
         final Clock clock = Clock.systemDefaultZone();
         final SjukfallUtil sjukfallUtilMock = Mockito.mock(SjukfallUtil.class);
         Mockito.when(sjukfallUtilMock.calculateKonDataResponse(any(Aisle.class), any(FilterPredicates.class), any(LocalDate.class),
-            anyInt(), anyInt(), anyListOf(String.class), anyListOf(Object.class), any(CounterFunction.class)))
+            anyInt(), anyInt(), anyList(), anyList(), any(CounterFunction.class)))
             .thenReturn(new KonDataResponse(AvailableFilters.getForSjukfall(), Collections.<String>emptyList(),
                 Collections.<KonDataRow>emptyList()));
         ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtilMock);
@@ -279,7 +279,7 @@ public class SjukfallQueryTest {
         //Then
         Mockito.verify(sjukfallUtilMock)
             .calculateKonDataResponse(eq(currentAisle), eq(filter), eq(start), eq(periods), eq(periodSize), names.capture(), ids.capture(),
-                Matchers.<CounterFunction<Object>>any());
+                ArgumentMatchers.<CounterFunction<Object>>any());
         assertEquals("-1", names.getValue().get(0));
         assertEquals(new HsaIdEnhet("-1"), ids.getValue().get(0));
     }
@@ -292,7 +292,7 @@ public class SjukfallQueryTest {
         final KonDataResponse konDataResponse = new KonDataResponse(AvailableFilters.getForSjukfall(), Arrays.asList("1", "2", "3"),
             Collections.<KonDataRow>emptyList());
         Mockito.when(sjukfallUtilMock.calculateKonDataResponse(any(Aisle.class), any(FilterPredicates.class), any(LocalDate.class),
-            anyInt(), anyInt(), anyListOf(String.class), anyListOf(Object.class), any(CounterFunction.class)))
+            anyInt(), anyInt(), anyList(), anyList(), any(CounterFunction.class)))
             .thenReturn(konDataResponse);
         ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtilMock);
         final FilterPredicates enhetFilterFromInternalIntValues = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);

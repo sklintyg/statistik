@@ -23,7 +23,8 @@ Möjligt att ange flera valfria diagnoser som visas i samma rapport.
 
 | Sjukfall i rapporten socialstyrelsen som median |
 | diagnos | startår | slutår | diagnoser | kvinnor? |
-| F33     | 2014    | 2015   |           | 14       |
-| F33     |         |        | B01,F33   | 13       |
-| B01     |         |        | B01,F33   | 10       |
-| B01     | 2014    | 2015   | B01,F33   | 11       |
+| F33     | 2014    | 2015   |           | 14.0       |
+| F33     |         |        | B01,F33   | 13.0       |
+| B01     |         |        | B01,F33   | 10.0       |
+| B01     | 2014    | 2015   | B01,F33   | 11.0       |
+

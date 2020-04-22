@@ -49,15 +49,15 @@ Test
 | Antal nya sjukfall med övriga diagnoser män mar 2018 | ENHET1 | 1 |
 | Antal nya sjukfall med övriga diagnoser män mar 2018 | ENHET2 | 1 |
 | Antal nya sjukfall med övriga diagnoser män mar 2017 | ENHET1 | 1 |
-| Genomsnittlig ålder för nya sjukfall 2018-01-01 - 2018-12-31 | ENHET2 | 38 |
-| Genomsnittlig ålder för nya sjukfall 2016-09-01 - 2016-12-31 | ENHET1 | 26 |
-| Genomsnittlig ålder för nya sjukfall 2017-01-01 - 2017-12-31 | ENHET1 | 37 |
-| Genomsnittlig ålder för nya sjukfall 2018-01-01 - 2018-12-31 | ENHET1 | 38 |
-| Genomsnittlig ålder för nya sjukfall kvinnor 2018-01-01 - 2018-12-31 | ENHET1 | 38 |
-| Genomsnittlig ålder för nya sjukfall män 2016-09-01 - 2016-12-31 | ENHET1 | 26 |
-| Genomsnittlig ålder för nya sjukfall män 2018-01-01 - 2018-12-31 | ENHET1 | 38 |
-| Genomsnittlig ålder för nya sjukfall män 2017-01-01 - 2017-12-31 | ENHET1 | 37 |
-| Genomsnittlig ålder för nya sjukfall män 2018-01-01 - 2018-12-31 | ENHET2 | 38 |
+| Genomsnittlig ålder för nya sjukfall 2018-01-01 - 2018-12-31 | ENHET2 | 38.0 |
+| Genomsnittlig ålder för nya sjukfall 2016-09-01 - 2016-12-31 | ENHET1 | 26.0 |
+| Genomsnittlig ålder för nya sjukfall 2017-01-01 - 2017-12-31 | ENHET1 | 37.0 |
+| Genomsnittlig ålder för nya sjukfall 2018-01-01 - 2018-12-31 | ENHET1 | 38.0 |
+| Genomsnittlig ålder för nya sjukfall kvinnor 2018-01-01 - 2018-12-31 | ENHET1 | 38.0 |
+| Genomsnittlig ålder för nya sjukfall män 2016-09-01 - 2016-12-31 | ENHET1 | 26.0 |
+| Genomsnittlig ålder för nya sjukfall män 2018-01-01 - 2018-12-31 | ENHET1 | 38.0 |
+| Genomsnittlig ålder för nya sjukfall män 2017-01-01 - 2017-12-31 | ENHET1 | 37.0 |
+| Genomsnittlig ålder för nya sjukfall män 2018-01-01 - 2018-12-31 | ENHET2 | 38.0 |
 | Antal pågående sjukfall okt 2016 | ENHET1 | 2 |
 | Antal pågående sjukfall maj 2018 | ENHET2 | 1 |
 | Antal pågående sjukfall jul 2018 | ENHET2 | 1 |
@@ -577,16 +577,12 @@ Test
 | Antal pågående sjukfall per den 25e 1-90 dagar kvinnor mar 2018 | ENHET1 | 1 |
 | Antal pågående sjukfall per den 25e 1-90 dagar män apr 2017 | ENHET1 | 1 |
 | Antal pågående sjukfall per den 25e 365< dagar män dec 2017 | ENHET1 | 1 |
-| Genomsnittlig ålder för pågående sjukfall 2018-01-01 - 2018-12-31 | ENHET2 | 39 |
-| Genomsnittlig ålder för pågående sjukfall 2016-09-01 - 2016-12-31 | ENHET1 | 32 |
-| Genomsnittlig ålder för pågående sjukfall 2017-01-01 - 2017-12-31 | ENHET1 | 35 |
-| Genomsnittlig ålder för pågående sjukfall 2018-01-01 - 2018-12-31 | ENHET1 | 39 |
-| Genomsnittlig ålder för pågående sjukfall kvinnor 2018-01-01 - 2018-12-31 | ENHET1 | 39 |
-| Genomsnittlig ålder för pågående sjukfall män 2016-09-01 - 2016-12-31 | ENHET1 | 32 |
-| Genomsnittlig ålder för pågående sjukfall män 2018-01-01 - 2018-12-31 | ENHET1 | 39 |
-| Genomsnittlig ålder för pågående sjukfall män 2017-01-01 - 2017-12-31 | ENHET1 | 35 |
-| Genomsnittlig ålder för pågående sjukfall män 2018-01-01 - 2018-12-31 | ENHET2 | 39 |
-
-
-
-
+| Genomsnittlig ålder för pågående sjukfall 2018-01-01 - 2018-12-31 | ENHET2 | 39.0 |
+| Genomsnittlig ålder för pågående sjukfall 2016-09-01 - 2016-12-31 | ENHET1 | 32.0 |
+| Genomsnittlig ålder för pågående sjukfall 2017-01-01 - 2017-12-31 | ENHET1 | 35.0 |
+| Genomsnittlig ålder för pågående sjukfall 2018-01-01 - 2018-12-31 | ENHET1 | 39.0 |
+| Genomsnittlig ålder för pågående sjukfall kvinnor 2018-01-01 - 2018-12-31 | ENHET1 | 39.0 |
+| Genomsnittlig ålder för pågående sjukfall män 2016-09-01 - 2016-12-31 | ENHET1 | 32.0 |
+| Genomsnittlig ålder för pågående sjukfall män 2018-01-01 - 2018-12-31 | ENHET1 | 39.0 |
+| Genomsnittlig ålder för pågående sjukfall män 2017-01-01 - 2017-12-31 | ENHET1 | 35.0 |
+| Genomsnittlig ålder för pågående sjukfall män 2018-01-01 - 2018-12-31 | ENHET2 | 39.0 |

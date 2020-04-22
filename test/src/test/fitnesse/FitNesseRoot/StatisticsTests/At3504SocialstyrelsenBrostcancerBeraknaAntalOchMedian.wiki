@@ -50,9 +50,9 @@ Test
 
 | Sjukfall i rapporten socialstyrelsen som median |
 | bröstcancervariant | diagnos | totalt? | kvinnor? | män? | lan01? | lan06? |
-| JA | F32 | 12 | 51 | 11 | 12 | null |
+| JA | F32 | 12.0  | 51.0 | 11.0  | 12.0 | null  |
 | JA | F33 | 156.5 | null | 156.5 | null | 156.5 |
-| JA | C50 | 60 | 60 | 36.5 | 32 | 60 |
+| JA | C50 | 60.0  | 60.0 | 36.5  | 32.0 | 60.0  |
 
 | Sjukfall i rapporten socialstyrelsen som antal |
 | bröstcancervariant | diagnos | totalt? | kvinnor? | män? | under 15 Dagar K? | under 15 Dagar M? | från15Till30DagarK? | från15Till30DagarM? | från31Till60DagarK? | från31Till60DagarM? | från61Till90DagarK? | från61Till90DagarM? | från91Till180DagarK? | från91Till180DagarM? | från181Till365DagarK? | från181Till365DagarM? | över365DagarK? | över365DagarM? |

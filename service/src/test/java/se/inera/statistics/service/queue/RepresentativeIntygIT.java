@@ -23,6 +23,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -179,7 +180,7 @@ public class RepresentativeIntygIT {
     }
 
     private List<String> readList(String path) {
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path), "utf8"))) {
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path), StandardCharsets.UTF_8))) {
             List<String> list = new ArrayList<>();
             for (String line = in.readLine(); line != null; line = in.readLine()) {
                 list.add(line);

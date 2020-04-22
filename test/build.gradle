@@ -97,9 +97,9 @@ if (project.hasProperty('runFitnesse')) {
     }
 
     dependencies {
-        gretty "com.h2database:h2:${h2Version}"
-        gretty "mysql:mysql-connector-java:${mysqlConnectorVersion}"
-        gretty "org.apache.activemq:activemq-broker:${activeMqVersion}"
+        gretty "com.h2database:h2"
+        gretty "mysql:mysql-connector-java"
+        gretty "org.apache.activemq:activemq-broker"
         gretty "org.apache.tomcat:tomcat-catalina:${tomcatVersion}"
     }
 }
@@ -116,8 +116,9 @@ dependencies {
     compile "org.fitnesse:fitnesse:${fitnesseVersion}"
     compile "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
     compile "org.codehaus.groovy.modules.http-builder:http-builder:${groovyHttpVersion}"
-    compile "org.apache.httpcomponents:httpmime:${httpVersion}"
-    compile "org.apache.httpcomponents:httpcore:${httpVersion}"
+    compile "org.apache.httpcomponents:httpmime"
+    compile "org.apache.httpcomponents:httpcore"
+    compile "org.liquibase:liquibase-core"
 
     // The reason why these dependencies are specified with "transitive = false" is that some obsolete
     // platforms (e.g. Windows) cannot handle a very long command line, and the full, transitive
@@ -127,15 +128,36 @@ dependencies {
     fitnesse(project(":statistik-service")) { transitive = false }
     fitnesse(project(":statistik-test")) { transitive = false }
 
-    fitnesse "org.fitnesse:fitnesse:${fitnesseVersion}"
+    fitnesse ("org.fitnesse:fitnesse:${fitnesseVersion}") {
+        exclude group: "org.slf4j", module: "slf4j-jdk14"
+    }
+    // Exclude and import of non-BOM version of Hibernate due to
+    // bug in BOM-version 5.4.12.
+    fitnesse("org.hibernate:hibernate-core") {
+        version {
+            strictly "${hibernateVersion}"
+        }
+    }
+    fitnesse("org.hibernate:hibernate-hikaricp") {
+        version {
+            strictly "${hibernateVersion}"
+        }
+    }
+    fitnesse("org.hibernate:hibernate-entitymanager") {
+        version {
+            strictly "${hibernateVersion}"
+        }
+    }
+
+    fitnesse "org.liquibase:liquibase-core"
     fitnesse "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
     fitnesse "org.codehaus.groovy.modules.http-builder:http-builder:${groovyHttpVersion}"
-    fitnesse "org.apache.httpcomponents:httpmime:${httpVersion}"
-    fitnesse "org.apache.httpcomponents:httpcore:${httpVersion}"
+    fitnesse "org.apache.httpcomponents:httpmime"
+    fitnesse "org.apache.httpcomponents:httpcore"
     fitnesse "com.google.guava:guava:${googleGuavaVersion}"
-    fitnesse "org.springframework:spring-core:${springContextVersion}"
-    fitnesse "org.springframework:spring-context:${springContextVersion}"
-    fitnesse "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:${hibernateJpaVersion}"
-    fitnesse "org.slf4j:slf4j-api:${slf4jVersion}"
-    fitnesse "javax.ws.rs:javax.ws.rs-api:${javaxWsRsApiVersion}"
+    fitnesse "org.springframework:spring-core"
+    fitnesse "org.springframework:spring-context"
+    fitnesse "org.springframework.data:spring-data-jpa"
+    fitnesse "org.slf4j:slf4j-api"
+    fitnesse "jakarta.ws.rs:jakarta.ws.rs-api"
 }

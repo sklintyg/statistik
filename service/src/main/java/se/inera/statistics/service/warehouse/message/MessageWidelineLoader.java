@@ -79,8 +79,8 @@ public class MessageWidelineLoader {
 
         boolean hasVardgivare = vardgivare != null;
         try (
-            Connection connection = dataSource.getConnection();
-            PreparedStatement stmt = prepareStatement(connection, hasVardgivare, enheter)) {
+            Connection connection = dataSource.getConnection()) {
+            PreparedStatement stmt = prepareStatement(connection, hasVardgivare, enheter);
             stmt.setString(COLUMN_FROM, from.format(FORMATTER));
             stmt.setString(COLUMN_TO, to.format(FORMATTER));
 
@@ -106,8 +106,8 @@ public class MessageWidelineLoader {
 
     public List<CountDTOAmne> getAntalMeddelandenPerAmne(MessagesFilter filter, boolean vardenhetdepth) {
         try (
-            Connection connection = dataSource.getConnection();
-            PreparedStatement stmt = prepareStatementAmne(connection, filter, vardenhetdepth)) {
+            Connection connection = dataSource.getConnection()) {
+            PreparedStatement stmt = prepareStatementAmne(connection, filter, vardenhetdepth);
             return getCountDTOAmnes(filter, stmt, vardenhetdepth);
         } catch (SQLException e) {
             LOG.error("Could not populate warehouse", e);
@@ -128,8 +128,8 @@ public class MessageWidelineLoader {
 
     public List<CountDTOAmne> getKompletteringarPerIntyg(MessagesFilter filter) {
         try (
-            Connection connection = dataSource.getConnection();
-            PreparedStatement stmt = prepareStatementKompletteringarPerIntyg(connection, filter)) {
+            Connection connection = dataSource.getConnection()) {
+            PreparedStatement stmt = prepareStatementKompletteringarPerIntyg(connection, filter);
             return getCountDTOAmnes(filter, stmt, false);
         } catch (SQLException e) {
             LOG.error("Could not populate warehouse", e);
@@ -139,8 +139,8 @@ public class MessageWidelineLoader {
 
     public List<CountDTOAmne> getKompletteringar(MessagesFilter filter) {
         try (
-            Connection connection = dataSource.getConnection();
-            PreparedStatement stmt = prepareStatementKompletteringar(connection, filter)) {
+            Connection connection = dataSource.getConnection()) {
+            PreparedStatement stmt = prepareStatementKompletteringar(connection, filter);
             return getCountDTOAmnes(filter, stmt, false);
         } catch (SQLException e) {
             LOG.error("Could not populate warehouse", e);

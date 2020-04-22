@@ -38,7 +38,7 @@ class InsertIntygHelper {
         util.insertRegion(ReportsUtil.VARDGIVARE3);
         util.login("user3", true);
 
-        def file = getClass().getResourceAsStream('/' + filnamn)
+        def file = this.getResourceAsStream('/' + filnamn)
         if (file == null) {
             throw new RuntimeException("File not found: " + filnamn)
         }

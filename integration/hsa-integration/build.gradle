@@ -55,15 +55,22 @@ dependencies {
     compile "se.inera.intyg.infra:hsa-integration:${infraVersion}"
 
     compile "org.jvnet.jaxb2_commons:jaxb2-basics:${jaxb2Version}"
-    compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:${jacksonVersion}"
+    compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider"
     compile "org.apache.cxf:cxf-rt-frontend-jaxrs:${cxfVersion}"
     compile "org.apache.cxf:cxf-rt-frontend-jaxws:${cxfVersion}"
-    compile "org.springframework:spring-context:${springContextVersion}"
-    compile "org.springframework.security:spring-security-web:${springSecurityVersion}"
+    compile "org.springframework:spring-context"
+    compile "org.springframework.security:spring-security-web"
 
     wsdlgen "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:${cxfVersion}"
     wsdlgen "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:${cxfVersion}"
     wsdlgen "org.jvnet.jaxb2_commons:jaxb2-basics:${jaxb2Version}"
+
+    wsdlgen "com.sun.xml.bind:jaxb-xjc:${jaxbXjcVersion}"
+    wsdlgen "com.sun.xml.bind:jaxb-core:${jaxbCoreVersion}"
+    wsdlgen "com.sun.xml.bind:jaxb-impl:${jaxbImplVersion}"
+    wsdlgen "jakarta.xml.ws:jakarta.xml.ws-api"
+    wsdlgen "jakarta.annotation:jakarta.annotation-api"
+    wsdlgen "ch.qos.logback:logback-classic"
 
     xsdgen "com.sun.xml.bind:jaxb-xjc:${jaxbXjcVersion}"
     xsdgen "com.sun.xml.bind:jaxb-core:${jaxbCoreVersion}"

@@ -18,7 +18,7 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 import org.junit.Test;
@@ -34,7 +34,7 @@ public class ConvertersTest {
         final List<Message> result = Converters.combineMessages(null, null);
 
         //Then
-        assertTrue(0 == result.size());
+        assertEquals(0, result.size());
     }
 
     @Test
@@ -43,7 +43,7 @@ public class ConvertersTest {
         final List<Message> result = Converters.combineMessages();
 
         //Then
-        assertTrue(0 == result.size());
+        assertEquals(0, result.size());
     }
 
     @Test
@@ -56,7 +56,7 @@ public class ConvertersTest {
         final List<Message> result = Converters.combineMessages(m1, m2, m3);
 
         //Then
-        assertTrue(2 == result.size());
+        assertEquals(2, result.size());
     }
 
     @Test
@@ -68,7 +68,7 @@ public class ConvertersTest {
         final List<Message> result = Converters.combineMessages(m1, null, m2);
 
         //Then
-        assertTrue(2 == result.size());
+        assertEquals(2, result.size());
     }
 
 }
