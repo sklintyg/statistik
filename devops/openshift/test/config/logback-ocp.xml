@@ -42,6 +42,12 @@
     <logger name="se.inera.statistics.config.ApplicationConfig" level="INFO"/>
     <logger name="se.inera.testsupport.RestSupportService" level="INFO"/>
 
+    <logger name="com.zaxxer.hikari.HikariConfig" level="DEBUG"/>
+    <logger name="se.inera.statistics.config.jpa.JpaConfigBase" level="INFO"/>
+    <logger name="org.hibernate.internal.SessionFactoryImpl" level="DEBUG"/>
+    <logger name="org.hibernate.dialect.Dialect" level="INFO"/>
+
+
     <root level="WARN">
         <appender-ref ref="CONSOLE"/>
     </root>
