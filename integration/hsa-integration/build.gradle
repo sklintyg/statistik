@@ -67,12 +67,12 @@ dependencies {
 
     wsdlgen "com.sun.xml.bind:jaxb-xjc:${jaxbXjcVersion}"
     wsdlgen "com.sun.xml.bind:jaxb-core:${jaxbCoreVersion}"
-    wsdlgen "com.sun.xml.bind:jaxb-impl:${jaxbImplVersion}"
+    wsdlgen "javax.xml.bind:jaxb-api:${jaxbImplVersion}"
     wsdlgen "jakarta.xml.ws:jakarta.xml.ws-api"
     wsdlgen "jakarta.annotation:jakarta.annotation-api"
     wsdlgen "ch.qos.logback:logback-classic"
 
     xsdgen "com.sun.xml.bind:jaxb-xjc:${jaxbXjcVersion}"
     xsdgen "com.sun.xml.bind:jaxb-core:${jaxbCoreVersion}"
-    xsdgen "com.sun.xml.bind:jaxb-impl:${jaxbImplVersion}"
+    xsdgen "javax.xml.bind:jaxb-api:${jaxbImplVersion}"
 }
