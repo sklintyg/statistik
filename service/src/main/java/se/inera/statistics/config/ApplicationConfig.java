@@ -37,6 +37,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.session.web.http.CookieSerializer;
+import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
@@ -63,6 +65,18 @@ public class ApplicationConfig implements TransactionManagementConfigurer {
     private PlatformTransactionManager transactionManager;
 
     @Bean
+    public CookieSerializer cookieSerializer() {
+        DefaultCookieSerializer serializer = new DefaultCookieSerializer();
+        /*
+        This is needed to make IdP functionality work.
+        This will not satisfy all browsers, but it works for IE, Chrome and Edge.
+        Reference: https://auth0.com/blog/browser-behavior-changes-what-developers-need-to-know/
+         */
+        serializer.setSameSite("none");
+        return serializer;
+    }
+
+    @Bean
     public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {
         return new PropertySourcesPlaceholderConfigurer();
     }
@@ -80,7 +94,8 @@ public class ApplicationConfig implements TransactionManagementConfigurer {
         Locale locale = Locale.getDefault();
         LOG.info("DefaultTimeZone: " + TimeZone.getDefault().getDisplayName() + ", DefaultZoneId: " + ZoneId.systemDefault().getId());
         LOG.info(
-            "defaultLang: " + locale.getDisplayLanguage() + ", defaultContry: " + locale.getDisplayCountry() + ", defaultVariant: " + locale
+            "defaultLang: " + locale.getDisplayLanguage() + ", defaultCountry: " + locale.getDisplayCountry() + ", defaultVariant: "
+                + locale
                 .getDisplayVariant() + ", defaultScript: " + locale.getDisplayScript() + ", defaultName: " + locale.getDisplayName());
         LOG.info("user.language: " + System.getProperty("user.language") + ", user.country: " + System.getProperty("user.country")
             + ", user.variant: " + System.getProperty("user.variant") + "user.script: " + System.getProperty("user.script"));

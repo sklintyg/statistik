@@ -24,6 +24,7 @@ dependencies {
     compile "se.inera.intyg.infra:monitoring:${infraVersion}"
     compile "se.inera.intyg.infra:common-redis-cache-core:${infraVersion}"
 
+    compile "org.springframework.session:spring-session-data-redis"
     compile "org.springframework.data:spring-data-jpa"
     compile "org.springframework:spring-orm"
     compile "org.springframework:spring-jms"
