@@ -92,7 +92,7 @@
         <import resource="application-context-jmx.xml"/>
 
         <context:annotation-config/>
-        <context:component-scan base-package="se.inera.statistics.service,se.inera.statistics.config,se.inera.statistics.service.caching"/>
+        <context:component-scan base-package="se.inera.statistics.service,se.inera.statistics.config,se.inera.statistics.web.config,se.inera.statistics.service.caching"/>
         <context:component-scan base-package="se.inera.intyg.infra.monitoring"/>
 
         <bean id="receiver" class="se.inera.statistics.service.processlog.Receiver"/>
