@@ -62,17 +62,18 @@ public class EnhetManager {
 
     @Transactional
     public int updateName(ListGetHsaUnitsResponseType.HsaUnits hsaUnits) {
-        return hsaUnits.getHsaUnit().stream().reduce(0, (integer, hsaUnit) -> {
-            final Query q = manager.createNativeQuery("UPDATE enhet SET namn = :namn WHERE enhetId = :id AND namn <> :namn");
+        return hsaUnits.getHsaUnit().stream().reduce(0, (partialUpdateResultCount, hsaUnit) -> {
+            final Query query = manager.createQuery(
+                    "UPDATE Enhet e SET e.namn = :namn WHERE e.enhetId = :id AND e.namn <> :namn");
             final String name = hsaUnit.getName();
-            q.setParameter("namn", name);
+            query.setParameter("namn", name);
             final String hsaid = hsaUnit.getHsaIdentity();
-            q.setParameter("id", hsaid);
-            final int updated = q.executeUpdate();
-            if (updated > 0) {
+            query.setParameter("id", hsaid);
+            final int updateResultCount = query.executeUpdate();
+            if (updateResultCount > 0) {
                 LOG.info(String.format("Id: %s, Namn: %s", hsaid, name));
             }
-            return updated;
+            return partialUpdateResultCount + updateResultCount;
 
         }, Integer::sum);
     }
