@@ -220,11 +220,21 @@ public class LoginServiceUtil {
                     return allEnhetsForVg.stream().map(this::enhetToVerksamhet);
                 } else {
                     final List<Vardenhet> vardenhetsForVg = realUser.getVardenhetsForVg(hsaIdVardgivare);
-                    return vardenhetsForVg.stream().map(vardEnhet -> vardenhetToVerksamhet(vardEnhet, allEnhetsForVg));
+                    var enhetVerksamhetStream = vardenhetsForVg.stream()
+                        .flatMap(ve -> warehouse.getEnhetsOfVardenhet(ve.getId()).stream())
+                        .filter(e -> !e.isVardenhet()).map(this::enhetToVerksamhet);
+                    var vardenhetVerksamhetStream = vardenhetsForVg.stream().filter(this::vardenhetIsVardenhet)
+                        .map(vardenhet -> vardenhetToVerksamhet(vardenhet, allEnhetsForVg));
+                    return Stream.concat(vardenhetVerksamhetStream, enhetVerksamhetStream);
                 }
             })
             .flatMap(i -> i)
             .collect(Collectors.toList());
+    }
+
+    private boolean vardenhetIsVardenhet(Vardenhet vardenhet) {
+        Enhet enhet = warehouse.getEnhetWithHsaId(vardenhet.getId());
+        return enhet == null || enhet.isVardenhet();
     }
 
     public Verksamhet enhetToVerksamhet(Enhet enhet) {

@@ -23,32 +23,56 @@ Test
 Inloggad:
 
 |Meddelanden i rapporten meddelanden vardenhet som tvarsnitt |
-|inloggad som|vårdenhet|grupp          |vårdenhetdjup|grupp totalt?|män?|kvinnor?|
-|user2       | Enhet enhet1 |Komplettering  |true|2      |1   |1       |
-|user2       | Enhet enhet1 |Avstämningsmöte|true|1      |1   |0       |
-|user2       | Enhet enhet1 |Övrigt         |true|0      |0   |0       |
-|user2       | Enhet enhet2 |Komplettering  |true|-1      |-1   |-1       |
-|user2       | Enhet enhet2 |Avstämningsmöte|true|-1      |-1   |-1       |
-|user2       | Enhet enhet2 |Övrigt         |true|-1      |-1   |-1       |
-|user2       | Enhet enhet1 |Komplettering  |false|-1      |-1   |-1       |
-|user2       | Enhet enhet1 |Avstämningsmöte|false|-1      |-1   |-1       |
-|user2       | Enhet enhet1 |Övrigt         |false|-1      |-1   |-1       |
-|user2       | Enhet enhet2 |Komplettering  |false|1      |0   |1       |
-|user2       | Enhet enhet2 |Avstämningsmöte|false|0      |0   |0       |
-|user2       | Enhet enhet2 |Övrigt         |false|0      |0   |0       |
+|inloggad som|vårdenhet|grupp          |vårdgivarnivå | vårdenhetdjup|grupp totalt?|män?|kvinnor?|
+|user2       | enhet1 |Komplettering  |true|true|2      |1   |1       |
+|user2       | enhet1 |Avstämningsmöte|true|true|1      |1   |0       |
+|user2       | enhet1 |Övrigt         |true|true|0      |0   |0       |
+|user2       | enhet2 |Komplettering  |true|true|-1      |-1   |-1       |
+|user2       | enhet2 |Avstämningsmöte|true|true|-1      |-1   |-1       |
+|user2       | enhet2 |Övrigt         |true|true|-1      |-1   |-1       |
+|user2       | enhet1 |Komplettering  |true|false|-1      |-1   |-1       |
+|user2       | enhet1 |Avstämningsmöte|true|false|-1      |-1   |-1       |
+|user2       | enhet1 |Övrigt         |true|false|-1      |-1   |-1       |
+|user2       | enhet2 |Komplettering  |true|false|1      |0   |1       |
+|user2       | enhet2 |Avstämningsmöte|true|false|0      |0   |0       |
+|user2       | enhet2 |Övrigt         |true|false|0      |0   |0       |
+|user2       | Enhet enhet1 |Komplettering  |false|true|2      |1   |1       |
+|user2       | Enhet enhet1 |Avstämningsmöte|false|true|1      |1   |0       |
+|user2       | Enhet enhet1 |Övrigt         |false|true|0      |0   |0       |
+|user2       | enhet2 |Komplettering  |false|true|-1      |-1   |-1       |
+|user2       | enhet2 |Avstämningsmöte|false|true|-1      |-1   |-1       |
+|user2       | enhet2 |Övrigt         |false|true|-1      |-1   |-1       |
+|user2       | Enhet enhet1 |Komplettering  |false|false|-1      |-1   |-1       |
+|user2       | Enhet enhet1 |Avstämningsmöte|false|false|-1      |-1   |-1       |
+|user2       | Enhet enhet1 |Övrigt         |false|false|-1      |-1   |-1       |
+|user2       | enhet2 |Komplettering  |false|false|1      |0   |1       |
+|user2       | enhet2 |Avstämningsmöte|false|false|0      |0   |0       |
+|user2       | enhet2 |Övrigt         |false|false|0      |0   |0       |
 
 
 |Meddelanden i rapporten meddelanden vardenhet som tvarsnitt diagram|
-|inloggad som | vårdenhet    | ämne            |vårdenhetdjup| totalt? |
-|user2        | Enhet enhet1 | Komplettering   |true| 2       |
-|user2        | Enhet enhet1 | Avstämningsmöte |true| 1       |
-|user2        | Enhet enhet1 | Övrigt          |true| 0       |
-|user2        | Enhet enhet2 | Komplettering   |true| -1       |
-|user2        | Enhet enhet2 | Avstämningsmöte |true| -1       |
-|user2        | Enhet enhet2 | Övrigt          |true| -1       |
-|user2        | Enhet enhet1 | Komplettering   |false| -1       |
-|user2        | Enhet enhet1 | Avstämningsmöte |false| -1       |
-|user2        | Enhet enhet1 | Övrigt          |false| -1       |
-|user2        | Enhet enhet2 | Komplettering   |false| 1       |
-|user2        | Enhet enhet2 | Avstämningsmöte |false| 0       |
-|user2        | Enhet enhet2 | Övrigt          |false| 0       |
+|inloggad som | vårdenhet    | ämne            |vårdgivarnivå |vårdenhetdjup| totalt? |
+|user2        | enhet1 | Komplettering   |true|true| 2       |
+|user2        | enhet1 | Avstämningsmöte |true|true| 1       |
+|user2        | enhet1 | Övrigt          |true|true| 0       |
+|user2        | enhet2 | Komplettering   |true|true| -1       |
+|user2        | enhet2 | Avstämningsmöte |true|true| -1       |
+|user2        | enhet2 | Övrigt          |true|true| -1       |
+|user2        | enhet1 | Komplettering   |true|false| -1       |
+|user2        | enhet1 | Avstämningsmöte |true|false| -1       |
+|user2        | enhet1 | Övrigt          |true|false| -1       |
+|user2        | enhet2 | Komplettering   |true|false| 1       |
+|user2        | enhet2 | Avstämningsmöte |true|false| 0       |
+|user2        | enhet2 | Övrigt          |true|false| 0       |
+|user2        | Enhet enhet1 | Komplettering   |false|true| 2       |
+|user2        | Enhet enhet1 | Avstämningsmöte |false|true| 1       |
+|user2        | Enhet enhet1 | Övrigt          |false|true| 0       |
+|user2        | enhet2 | Komplettering   |false|true| -1       |
+|user2        | enhet2 | Avstämningsmöte |false|true| -1       |
+|user2        | enhet2 | Övrigt          |false|true| -1       |
+|user2        | Enhet enhet1 | Komplettering   |false|false| -1       |
+|user2        | Enhet enhet1 | Avstämningsmöte |false|false| -1       |
+|user2        | Enhet enhet1 | Övrigt          |false|false| -1       |
+|user2        | enhet2 | Komplettering   |false|false| 1       |
+|user2        | enhet2 | Avstämningsmöte |false|false| 0       |
+|user2        | enhet2 | Övrigt          |false|false| 0       |

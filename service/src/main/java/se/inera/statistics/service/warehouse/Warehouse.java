@@ -68,6 +68,10 @@ public class Warehouse implements Iterable<Aisle> {
         return cache.getEnhetsWithHsaId(enhetIds, ids -> enhetLoader.getEnhets(ids));
     }
 
+    public Enhet getEnhetWithHsaId(HsaIdEnhet enhetId) {
+        return cache.getEnhetWithHsaId(enhetId, id -> enhetLoader.getEnhet(id));
+    }
+
     public List<VgNumber> getAllVardgivare() {
         return widelineLoader.getAllVgs();
     }

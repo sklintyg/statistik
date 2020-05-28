@@ -145,6 +145,16 @@ public class Cache {
         return enhets;
     }
 
+    public Enhet getEnhetWithHsaId(HsaIdEnhet enhetId, Function<HsaIdEnhet, Enhet> loader) {
+        LOG.info("Getting enhet: {}", enhetId);
+        return lookup(ENHET + enhetId.getId(), () -> loadEnhet(enhetId, loader));
+    }
+
+    private Enhet loadEnhet(HsaIdEnhet enhetId, Function<HsaIdEnhet, Enhet> loader) {
+        LOG.info("Enhet not cached: {}", enhetId);
+        return loader.apply(enhetId);
+    }
+
     public List<HsaIdEnhet> getEnhetWithVardenhetsId(HsaIdEnhet vardenhetId, Function<HsaIdEnhet, List<Enhet>> loader) {
         LOG.info("Getting VardenhetEnhets: {}", vardenhetId);
         return lookup(VARDENHETENHET + vardenhetId.getId(), () -> loadEnhetWithVardenhetsId(vardenhetId, loader));
