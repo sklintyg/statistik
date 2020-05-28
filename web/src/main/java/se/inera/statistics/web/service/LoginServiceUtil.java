@@ -220,12 +220,21 @@ public class LoginServiceUtil {
                     return allEnhetsForVg.stream().map(this::enhetToVerksamhet);
                 } else {
                     final List<Vardenhet> vardenhetsForVg = realUser.getVardenhetsForVg(hsaIdVardgivare);
-                    return vardenhetsForVg.stream().flatMap(vardEnhet -> vardenhetToVerksamheter(vardEnhet, allEnhetsForVg,
-                        realUser.getVgsWithProcessledarStatus()));
+                    var enhetVerksamhetStream = vardenhetsForVg.stream()
+                        .flatMap(ve -> warehouse.getEnhetsOfVardenhet(ve.getId()).stream())
+                        .filter(e -> !e.isVardenhet()).map(this::enhetToVerksamhet);
+                    var vardenhetVerksamhetStream = vardenhetsForVg.stream().filter(this::vardenhetIsVardenhet)
+                        .map(vardenhet -> vardenhetToVerksamhet(vardenhet, allEnhetsForVg));
+                    return Stream.concat(vardenhetVerksamhetStream, enhetVerksamhetStream);
                 }
             })
             .flatMap(i -> i)
             .collect(Collectors.toList());
+    }
+
+    private boolean vardenhetIsVardenhet(Vardenhet vardenhet) {
+        Enhet enhet = warehouse.getEnhetWithHsaId(vardenhet.getId());
+        return enhet == null || enhet.isVardenhet();
     }
 
     public Verksamhet enhetToVerksamhet(Enhet enhet) {
@@ -234,8 +243,7 @@ public class LoginServiceUtil {
             getVerksamhetsTyper(enhet.getVerksamhetsTyper()), enhet.getVardenhetId());
     }
 
-    private Stream<Verksamhet> vardenhetToVerksamheter(final Vardenhet vardEnhet, Collection<Enhet> enhetsList,
-        List<Vardgivare> vardgivareNiva) {
+    private Verksamhet vardenhetToVerksamhet(final Vardenhet vardEnhet, Collection<Enhet> enhetsList) {
         Optional<Enhet> enhetOpt = enhetsList.stream()
             .filter(enhet -> enhet.getEnhetId().equals(vardEnhet.getId()))
             .findAny();
@@ -249,34 +257,9 @@ public class LoginServiceUtil {
             .map(enhet -> getVerksamhetsTyper(enhet.getVerksamhetsTyper()))
             .orElseGet(() -> Collections.singleton(new Verksamhet.VerksamhetsTyp(VerksamhetsTyp.OVRIGT_ID, VerksamhetsTyp.OVRIGT)));
 
-        Verksamhet verksamhet = new Verksamhet(vardEnhet.getId(), vardEnhet.getNamn(), vardEnhet.getVardgivarId(),
-            vardEnhet.getVardgivarNamn(), lansId,
+        return new Verksamhet(vardEnhet.getId(), vardEnhet.getNamn(), vardEnhet.getVardgivarId(), vardEnhet.getVardgivarNamn(), lansId,
             lansNamn, kommunId,
             kommunNamn, verksamhetsTyper, vardenhetId);
-
-        if (enhetOpt.isPresent()) {
-            return Stream.concat(enhetOpt.map(vardenhet -> warehouse.getEnhetsOfVardenhet(vardenhet.getEnhetId()).stream()
-                    .filter(e -> !e.isVardenhet())
-                    .filter(i -> vardgivareNiva.stream().map(Vardgivare::getId)
-                        .collect(Collectors.toList())
-                        .contains(vardEnhet.getVardgivarId().getId()))
-                    .map(enhet -> {
-                        String li = enhet.getLansId();
-                        String ln = lan.getNamn(li);
-                        String ki = li + enhet.getKommunId();
-                        String kn = kommun.getNamn(ki);
-                        Set<Verksamhet.VerksamhetsTyp> vt = (
-                            enhet.getVerksamhetsTyper() == null || enhet.getVerksamhetsTyper().isEmpty()
-                                ? Collections.singleton(new Verksamhet.VerksamhetsTyp(VerksamhetsTyp.OVRIGT_ID, VerksamhetsTyp.OVRIGT))
-                                : getVerksamhetsTyper(enhet.getVerksamhetsTyper()));
-
-                        return new Verksamhet(enhet.getEnhetId(), enhet.getNamn(), vardEnhet.getVardgivarId(),
-                            vardEnhet.getVardgivarNamn(), enhet.getLansId(), ln, ki, kn, vt, enhet.getVardenhetId());
-                    })).get(),
-                Stream.of(verksamhet));
-        } else {
-            return Stream.of(verksamhet);
-        }
     }
 
     private Set<Verksamhet.VerksamhetsTyp> getVerksamhetsTyper(String verksamhetsTyper) {

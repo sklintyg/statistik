@@ -67,4 +67,16 @@ public class EnhetLoader {
         return query.getResultList();
     }
 
+    Enhet getEnhet(HsaIdEnhet enhetId) {
+        if (enhetId == null) {
+            return null;
+        }
+
+        final TypedQuery<Enhet> query = manager.createNamedQuery("Enhet.getByEnhetid", Enhet.class);
+        LOG.info("Getting enhet for id: " + enhetId.getId());
+        query.setParameter("enhetid", enhetId.getId());
+        List<Enhet> resultList = query.getResultList();
+        return resultList.isEmpty() ? null : resultList.get(0);
+    }
+
 }

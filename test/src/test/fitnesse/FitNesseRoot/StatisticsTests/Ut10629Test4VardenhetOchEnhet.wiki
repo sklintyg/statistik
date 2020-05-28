@@ -20,19 +20,19 @@ Inloggad:
 
 |Sjukfall i rapporten sjukfall per enhet                   |
 |inloggad som|vårdenhet|vårdgivarnivå|vårdenhetdjup|totalt?|män?|kvinnor?|
-|user1       |ENHET1   |false        |false|-1      |-1   |-1       |
-|user1       |enhet2   |false        |false|-1     |-1  |-1      |
+|user1       |Enhet enhet1   |false        |false|-1      |-1   |-1       |
+|user1       |enhet2   |false        |false|1     |0  |1      |
 |user1       |ENHET1   |true         |false|-1      |-1   |-1       |
 |user1       |enhet2   |true         |false|1      |0   |1       |
-|user2       |ENHET1   |false        |false|-1      |-1   |-1       |
+|user2       |Enhet enhet1   |false        |false|-1      |-1   |-1       |
 |user2       |enhet2   |false        |false|1      |0   |1       |
 |user2       |ENHET1   |true         |false|-1      |-1   |-1       |
 |user2       |enhet2   |true         |false|1      |0   |1       |
-|user1       |ENHET1   |false        |true|-1      |-1   |-1       |
+|user1       |Enhet enhet1   |false        |true|2      |1   |1       |
 |user1       |enhet2   |false        |true|-1     |-1  |-1      |
 |user1       |ENHET1   |true         |true|2      |1   |1       |
 |user1       |enhet2   |true         |true|-1      |-1   |-1       |
-|user2       |ENHET1   |false        |true|-1      |-1   |-1       |
+|user2       |Enhet enhet1   |false        |true|2      |1   |1       |
 |user2       |enhet2   |false        |true|-1      |-1   |-1       |
 |user2       |ENHET1   |true         |true|2      |1   |1       |
 |user2       |enhet2   |true         |true|-1      |-1   |-1       |

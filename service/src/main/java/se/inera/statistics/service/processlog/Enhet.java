@@ -37,7 +37,8 @@ import se.inera.statistics.service.report.model.VerksamhetsTyp;
 @NamedQueries({
     @NamedQuery(name = "Enhet.getByVg", query = "SELECT e FROM Enhet e WHERE e.vardgivareId = :vgid"),
     @NamedQuery(name = "Enhet.getByVardenhetid", query = "SELECT e FROM Enhet e WHERE e.vardenhetId = :veid"),
-    @NamedQuery(name = "Enhet.getByEnhetids", query = "SELECT e FROM Enhet e WHERE e.enhetId IN :enhetids")
+    @NamedQuery(name = "Enhet.getByEnhetids", query = "SELECT e FROM Enhet e WHERE e.enhetId IN :enhetids"),
+    @NamedQuery(name = "Enhet.getByEnhetid", query = "SELECT e FROM Enhet e WHERE e.enhetId = :enhetid")
 })
 public class Enhet implements Serializable {
 
