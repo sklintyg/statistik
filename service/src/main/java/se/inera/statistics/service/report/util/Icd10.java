@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -37,6 +38,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
+
+import com.google.common.base.CharMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,21 +68,24 @@ public class Icd10 {
         INTID_OTHER_KATEGORI,
         icd10ToInt(OTHER_KOD, Icd10RangeType.KOD));
     public static final String UNKNOWN_CODE_NAME = "Utan giltig ICD-10 kod";
+    private static final String BOM = "\uFEFF";
+    private static final String ASTERISK_TAB_OR_DAGGER_TAB = "\\u002A\t|\u2020\t";
+    private static final Character SPACE = ' ';
 
     @Autowired
-    private Resource icd10KategoriAnsiFile;
+    private Resource icd10KategoriFile;
 
     @Autowired
-    private Resource icd10AvsnittAnsiFile;
+    private Resource icd10AvsnittFile;
 
     @Autowired
-    private Resource icd10KapitelAnsiFile;
+    private Resource icd10KapitelFile;
 
     @Autowired
-    private Resource icd10KodAnsiFile;
+    private Resource icd10KodFile;
 
     @Autowired
-    private Resource icd10VwxyKodAnsiFile;
+    private Resource icd10VwxyKodFile;
 
     private List<Kapitel> kapitels;
 
@@ -125,11 +131,11 @@ public class Icd10 {
     @PostConstruct
     public void init() {
         try {
-            populateIdMap(icd10KapitelAnsiFile, idToKapitelMap, Kapitel::valueOf);
-            populateIdMap(icd10AvsnittAnsiFile, idToAvsnittMap, s -> Avsnitt.valueOf(s, idToKapitelMap.values()));
-            populateIdMap(icd10KategoriAnsiFile, idToKategoriMap, s -> Kategori.valueOf(s, idToAvsnittMap.values()));
-            populateIdMap(icd10KodAnsiFile, idToKodMap, s -> Kod.valueOf(s, idToKategoriMap.values()));
-            populateIdMap(icd10VwxyKodAnsiFile, idToKodMap, s -> Kod.valueOf(s, idToKategoriMap.values()));
+            populateIdMap(icd10KapitelFile, idToKapitelMap, Kapitel::valueOf);
+            populateIdMap(icd10AvsnittFile, idToAvsnittMap, s -> Avsnitt.valueOf(s, idToKapitelMap.values()));
+            populateIdMap(icd10KategoriFile, idToKategoriMap, s -> Kategori.valueOf(s, idToAvsnittMap.values()));
+            populateIdMap(icd10KodFile, idToKodMap, s -> Kod.valueOf(s, idToKategoriMap.values()));
+            populateIdMap(icd10VwxyKodFile, idToKodMap, s -> Kod.valueOf(s, idToKategoriMap.values()));
             populateInternalIcd10();
             kapitels = new ArrayList<>(idToKapitelMap.values());
             kapitels.sort(Comparator.comparing(Kapitel::getId));
@@ -145,13 +151,30 @@ public class Icd10 {
 
     private <T extends Id> void populateIdMap(Resource file, IdMap<T> idMapToPopulate, Function<String, T> parseToRangeFunction)
         throws IOException {
+
+        int count = 0;
         try (LineReader lr = new LineReader(file)) {
             String line;
             while ((line = lr.next()) != null) {
+                line = removeBOM(line, count == 0);
+
                 T kapitel = parseToRangeFunction.apply(line);
-                idMapToPopulate.put(kapitel);
+                if (kapitel != null) {
+                    idMapToPopulate.put(kapitel);
+                    count++;
+                }
             }
         }
+        LOG.info("Loaded {} codes from file {}", count, file);
+    }
+
+    private String removeBOM(String line, boolean firstLineInFile) {
+        return firstLineInFile ? line.replaceFirst(BOM, "") : line;
+    }
+
+    public static String removeUnwantedCharacters(String line) {
+        String cleanedLine = line.replaceFirst(ASTERISK_TAB_OR_DAGGER_TAB, String.valueOf(SPACE));
+        return CharMatcher.whitespace().trimAndCollapseFrom(cleanedLine, SPACE);
     }
 
     private void populateInternalIcd10() {
@@ -408,13 +431,14 @@ public class Icd10 {
         }
 
         public static Avsnitt valueOf(String line, Collection<Kapitel> kapitels) {
-            String id = line.substring(0, ENDINDEX_ID);
+            String cleanedLine = line.replace("\t", "");
+            String id = cleanedLine.substring(0, ENDINDEX_ID);
             Kapitel kapitel = find(id.substring(0, ENDINDEX_FIRST_KATEGORI), kapitels);
             if (kapitel == null) {
                 return null;
             }
 
-            return new Avsnitt(id, line.substring(STARTINDEX_DESCRIPTION), kapitel);
+            return new Avsnitt(id, cleanedLine.substring(STARTINDEX_DESCRIPTION), kapitel);
         }
 
         public List<Kategori> getKategori() {
@@ -463,12 +487,17 @@ public class Icd10 {
         }
 
         public static Kategori valueOf(String line, Collection<Avsnitt> avsnitts) {
-            String id = line.substring(0, ENDINDEX_FIRST_KATEGORI);
+            String cleanedLine = removeUnwantedCharacters(line);
+            int firstSpacePos = cleanedLine.indexOf(SPACE);
+            if (firstSpacePos == -1) {
+                return null;
+            }
+            String id = cleanedLine.substring(0, firstSpacePos);
             Avsnitt avsnitt = find(id, avsnitts);
             if (avsnitt == null) {
                 return null;
             }
-            return new Kategori(id, line.substring(STARTINDEX_DESCRIPTION), avsnitt);
+            return new Kategori(id, cleanedLine.substring(firstSpacePos + 1), avsnitt);
         }
 
         public Avsnitt getAvsnitt() {
@@ -538,12 +567,17 @@ public class Icd10 {
         }
 
         public static Kod valueOf(String line, Collection<Kategori> kategoris) {
-            String id = line.replaceAll("\\s.*", "");
+            String cleanedLine = removeUnwantedCharacters(line);
+            int firstSpacePos = cleanedLine.indexOf(SPACE);
+            if (firstSpacePos == -1) {
+                return null;
+            }
+            String id = cleanedLine.substring(0, firstSpacePos);
             Kategori kategori = find(id, kategoris);
             if (kategori == null) {
                 return null;
             }
-            return new Kod(id, line.replaceAll("^[^\\s]*\\s*", ""), kategori);
+            return new Kod(id, cleanedLine.substring(firstSpacePos + 1), kategori);
         }
 
         public Kategori getKategori() {
@@ -591,7 +625,7 @@ public class Icd10 {
         private final BufferedReader reader;
 
         LineReader(Resource resource) throws IOException {
-            reader = new BufferedReader(new InputStreamReader(resource.getInputStream(), "ISO-8859-1"));
+            reader = new BufferedReader(new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8));
         }
 
         public String next() throws IOException {

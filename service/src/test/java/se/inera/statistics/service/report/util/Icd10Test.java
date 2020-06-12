@@ -109,6 +109,118 @@ public class Icd10Test {
     }
 
     @Test
+    public void getFirstKapitelFromFile() {
+        Icd10.Kapitel kapitel = icd10.getKapitel("A00-B99");
+        assertEquals("A00-B99", kapitel.getId());
+        assertEquals("Vissa infektionssjukdomar och parasitsjukdomar", kapitel.getName());
+    }
+
+    @Test
+    public void getLastKapitelFromFile() {
+        Icd10.Kapitel kapitel = icd10.getKapitel("Z00-Z99");
+        assertEquals("Z00-Z99", kapitel.getId());
+        assertEquals("Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården", kapitel.getName());
+    }
+
+    @Test
+    public void getFirstAvsnittFromFile() {
+        Icd10.Avsnitt avsnitt = icd10.getAvsnitt("A00-A09");
+        assertEquals("A00-A09", avsnitt.getId());
+        assertEquals("Infektionssjukdomar utgående från mag-tarmkanalen", avsnitt.getName());
+    }
+
+    @Test
+    public void getLastAvsnittFromFile() {
+        Icd10.Avsnitt avsnitt = icd10.getAvsnitt("Z80-Z99");
+        assertEquals("Z80-Z99", avsnitt.getId());
+        assertEquals("Potentiella hälsorisker i familjens och patientens sjukhistoria samt vissa tillstånd och förhållanden som påverkar hälsan", avsnitt.getName());
+    }
+
+    @Test
+    public void getFirstKategoriFromFile() {
+        Icd10.Kategori kategori = icd10.getKategori("A00");
+        assertEquals("A00", kategori.getId());
+        assertEquals("Kolera", kategori.getName());
+    }
+
+    @Test
+    public void getLastKategoriFromFile() {
+        Icd10.Kategori kategori = icd10.getKategori("Z99");
+        assertEquals("Z99", kategori.getId());
+        assertEquals("Beroende av maskinella och andra hjälpmedel som ej klassificeras på annan plats", kategori.getName());
+    }
+
+    @Test
+    public void getKategoriWithAsterisk() {
+        Icd10.Kategori kategori = icd10.getKategori("L99");
+        assertEquals("L99", kategori.getId());
+        assertEquals("Andra tillstånd i hud och underhud vid sjukdomar som klassificeras på annan plats", kategori.getName());
+    }
+
+    @Test
+    public void getKategoriWithDagger() {
+        Icd10.Kategori kategori = icd10.getKategori("A17");
+        assertEquals("A17", kategori.getId());
+        assertEquals("Tuberkulos i nervsystemet", kategori.getName());
+    }
+
+    @Test
+    public void getFirstkodFromDigit4File() {
+        Icd10.Kod kod = icd10.getKod("A000");
+        assertEquals("A000", kod.getId());
+        assertEquals("Kolera orsakad av Vibrio cholerae 01, biovar cholerae", kod.getName());
+    }
+
+    @Test
+    public void getLastKodFromDigit4File() {
+        Icd10.Kod kod = icd10.getKod("Z999");
+        assertEquals("Z999", kod.getId());
+        assertEquals("Beroende av ospecificerade maskinella och andra hjälpmedel", kod.getName());
+    }
+
+    @Test
+    public void getKodWithAsteriskFromDigit4File() {
+        Icd10.Kod kod = icd10.getKod("D630");
+        assertEquals("D630", kod.getId());
+        assertEquals("Anemi vid tumörsjukdom (C00-D48)", kod.getName());
+    }
+
+    @Test
+    public void getKodWithDaggerFromDigit4File() {
+        Icd10.Kod kod = icd10.getKod("A022");
+        assertEquals("A022", kod.getId());
+        assertEquals("Lokaliserade salmonellainfektioner", kod.getName());
+    }
+
+    @Test
+    public void getFirstkodFromDigit5File() {
+        Icd10.Kod kod = icd10.getKod("A083A");
+        assertEquals("A083A", kod.getId());
+        assertEquals("Coxsackievirusenterit", kod.getName());
+    }
+
+    @Test
+    public void getLastkodFromDigit5File() {
+        Icd10.Kod kod = icd10.getKod("Z966X");
+        assertEquals("Z966X", kod.getId());
+        assertEquals("Förekomst av ortopediskt ledimplantat med annan eller ospecificerad lokalisation", kod.getName());
+    }
+
+    @Test
+    public void getKodWithAsteriskFromDigit5File() {
+        Icd10.Kod kod = icd10.getKod("G550A");
+        assertEquals("G550A", kod.getId());
+        assertEquals("Kompression av nervrötter och nervplexus i halsryggen vid tumörsjukdom", kod.getName());
+    }
+
+    @Test
+    public void getKodWithDaggerFromDigit5File() {
+        Icd10.Kod kod = icd10.getKod("A513B");
+        assertEquals("A513B", kod.getId());
+        assertEquals("Syfilitisk (sekundär) alopeci (L99.8)", kod.getName());
+    }
+
+    @Test
     public void noDuplicateIcd10IntIds() {
         final List<Integer> allIntIds = getAllIntIds(icd10.getKapitel(true));
         final Set<Integer> duplicates = findDuplicates(allIntIds);

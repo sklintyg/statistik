@@ -23,21 +23,21 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean class="org.springframework.core.io.ClassPathResource" id="icd10KapitelAnsiFile" >
-        <constructor-arg value="diagnoskoder/KSH97_KAP.ANS"/>
+    <bean class="org.springframework.core.io.ClassPathResource" id="icd10KapitelFile" >
+        <constructor-arg value="diagnoskoder/diagnoskapitel.txt"/>
     </bean>
-    <bean class="org.springframework.core.io.ClassPathResource" id="icd10AvsnittAnsiFile" >
-        <constructor-arg value="diagnoskoder/KSH97_AVS.ANS"/>
+    <bean class="org.springframework.core.io.ClassPathResource" id="icd10AvsnittFile" >
+        <constructor-arg value="diagnoskoder/block.txt"/>
     </bean>
-    <bean class="org.springframework.core.io.ClassPathResource" id="icd10KategoriAnsiFile" >
-        <constructor-arg value="diagnoskoder/KSH97_KAT.ANS"/>
+    <bean class="org.springframework.core.io.ClassPathResource" id="icd10KategoriFile" >
+        <constructor-arg value="diagnoskoder/icd10se/digit3.txt"/>
     </bean>
     
-    <bean class="org.springframework.core.io.ClassPathResource" id="icd10KodAnsiFile" >
-        <constructor-arg value="diagnoskoder/KSH97_KOD.ANS"/>
+    <bean class="org.springframework.core.io.ClassPathResource" id="icd10KodFile" >
+        <constructor-arg value="diagnoskoder/icd10se/digit4.txt"/>
     </bean>
-    <bean class="org.springframework.core.io.ClassPathResource" id="icd10VwxyKodAnsiFile" >
-        <constructor-arg value="diagnoskoder/KSH97_KXX.ANS"/>
+    <bean class="org.springframework.core.io.ClassPathResource" id="icd10VwxyKodFile" >
+        <constructor-arg value="diagnoskoder/icd10se/digit5.txt"/>
     </bean>
 
     <bean class="se.inera.statistics.service.report.util.Icd10" />
