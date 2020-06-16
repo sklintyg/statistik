@@ -12,7 +12,10 @@
             <input type="checkbox" ng-checked="directiveScope.menuOptions.allSelected" id="select-all-diagnoses" class="multiMenuSelectAll" ng-click="itemClicked(directiveScope.menuOptions)" />
             <span>{{directiveScope.selectAllTextKey | messageFilter}}</span>
           </label>
-          <button ng-if="directiveScope.sidebarMenuExpand" class="btn btn-link btn-link-minimal toggle-sidebar-link" ng-click="directiveScope.sidebarState.collapsed = !directiveScope.sidebarState.collapsed" ng-switch="directiveScope.sidebarState.collapsed">
+
+          <!--Due to non-optimal functioning of the quick selection buttons for 'verksamhetstyp', this button is currently hidden
+            (by ng-hide set to true), which renders the quick selection buttons inaccessible from the GUI.-->
+          <button ng-if="directiveScope.sidebarMenuExpand" ng-hide="true" class="btn btn-link btn-link-minimal toggle-sidebar-link" ng-click="directiveScope.sidebarState.collapsed = !directiveScope.sidebarState.collapsed" ng-switch="directiveScope.sidebarState.collapsed">
                                     <span ng-switch-when="true">
                                         <span message key="{{directiveScope.sidebarMenuExpand}}" class="ellipsis-text"></span><i class="fa fa-chevron-right"></i>
                                     </span>
