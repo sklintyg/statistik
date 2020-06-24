@@ -64,6 +64,9 @@ describe('Tester kring inloggning: ', function() {
     });
 
     it('Byt vårdgivare', function() {
+      expect(pages.headerPo.unitMenuBtn.isDisplayed()).toBeTruthy('Knapp för vårdenhetmeny syns inte');
+      pages.headerPo.unitMenuBtn.click();
+      expect(pages.headerPo.changeVardgivareBtn.isDisplayed()).toBeTruthy('Byt vårdgivare-knappen syns inte');
       pages.headerPo.changeVardgivareBtn.click();
 
       var link = pages.selectVardgivare.getVardgivareLink(1);
