@@ -13,15 +13,13 @@
             <span>{{directiveScope.selectAllTextKey | messageFilter}}</span>
           </label>
 
-          <!--Due to non-optimal functioning of the quick selection buttons for 'verksamhetstyp', this button is currently hidden
-            (by ng-hide set to true), which renders the quick selection buttons inaccessible from the GUI.-->
-          <button ng-if="directiveScope.sidebarMenuExpand" ng-hide="true" class="btn btn-link btn-link-minimal toggle-sidebar-link" ng-click="directiveScope.sidebarState.collapsed = !directiveScope.sidebarState.collapsed" ng-switch="directiveScope.sidebarState.collapsed">
-                                    <span ng-switch-when="true">
-                                        <span message key="{{directiveScope.sidebarMenuExpand}}" class="ellipsis-text"></span><i class="fa fa-chevron-right"></i>
-                                    </span>
+          <button ng-if="directiveScope.sidebarMenuExpand" class="btn btn-link btn-link-minimal toggle-sidebar-link" ng-click="directiveScope.sidebarState.collapsed = !directiveScope.sidebarState.collapsed" ng-switch="directiveScope.sidebarState.collapsed">
+            <span ng-switch-when="true">
+                <span message key="{{directiveScope.sidebarMenuExpand}}" class="ellipsis-text"></span><i class="fa fa-chevron-right"></i>
+            </span>
             <span ng-switch-when="false">
-                                      <span message key="{{directiveScope.sidebarMenuCollapse}}" class="ellipsis-text"></span><i class="fa fa-chevron-left"></i>
-                                    </span>
+                <span message key="{{directiveScope.sidebarMenuCollapse}}" class="ellipsis-text"></span><i class="fa fa-chevron-left"></i>
+            </span>
           </button>
 
         </div>
