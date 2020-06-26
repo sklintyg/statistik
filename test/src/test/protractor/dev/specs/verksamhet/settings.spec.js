@@ -38,6 +38,7 @@ describe('Inställningar: ', function() {
 
     it('Knappen ska inte synas', function() {
       expect(header.settingsLink.isPresent()).toBeFalsy();
+      expect(header.userMenuBtn.isPresent()).toBeFalsy();
     });
 
     afterAll(function() {
@@ -53,6 +54,8 @@ describe('Inställningar: ', function() {
     });
 
     it('Öppna och stäng inställningar', function() {
+      expect(pages.headerPo.userMenuBtn.isDisplayed()).toBeTruthy('Knapp för användarmeny syns inte');
+      pages.headerPo.userMenuBtn.click();
       expect(header.settingsLink.isDisplayed()).toBeTruthy();
 
       header.settingsLink.click();
@@ -61,6 +64,10 @@ describe('Inställningar: ', function() {
     });
 
     it('Öppna och spara inställningar', function() {
+      expect(pages.headerPo.userMenuBtn.isDisplayed()).toBeTruthy('Knapp för användarmeny syns inte');
+      pages.headerPo.userMenuBtn.click();
+      expect(header.settingsLink.isDisplayed()).toBeTruthy();
+
       header.settingsLink.click();
 
       header.changeSetting('showMessagesPerLakare');
@@ -69,6 +76,10 @@ describe('Inställningar: ', function() {
     });
 
     it('Återställ tidigare inställning', function() {
+      expect(pages.headerPo.userMenuBtn.isDisplayed()).toBeTruthy('Knapp för användarmeny syns inte');
+      pages.headerPo.userMenuBtn.click();
+      expect(header.settingsLink.isDisplayed()).toBeTruthy();
+
       header.settingsLink.click();
 
       header.changeSetting('showMessagesPerLakare');

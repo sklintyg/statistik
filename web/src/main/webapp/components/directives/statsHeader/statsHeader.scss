@@ -208,7 +208,7 @@ stats-header {
     }
   }
 
-  a.intygsskolan-modal-link, a#business-login-btn, a#logout-link {
+  a.intygsskolan-modal-link, a#business-login-btn, a#logoutLink {
     @extend %st-typo-05;
     font-size: 13px !important;
     color: $st-color-47;
@@ -222,7 +222,7 @@ stats-header {
     }
   }
 
-  a#logout-link, a#business-login-btn {
+  a#logoutLink, a#business-login-btn {
     padding-left: 16px;
     @media (min-width: $screen-xs-max) {
       padding-top: 0;

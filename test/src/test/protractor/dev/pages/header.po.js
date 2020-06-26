@@ -26,6 +26,8 @@ var HeaderPage = function() {
   this.logoutLink = element(by.id('logoutLink'));
   this.changeVardgivareBtn = element(by.id('changeVardgivareBtn'));
   this.verksamhetsNameLabel = element(by.id('verksamhetsNameLabel'));
+  this.unitMenuBtn = element(by.id('expand-unit-menu-btn'));
+  this.userMenuBtn = element(by.id('expand-user-menu-btn'));
 
   this.settingsLink = element(by.id('settingsLink'));
   this.settingsSaveBtn = element(by.id('settings-save-btn'));
