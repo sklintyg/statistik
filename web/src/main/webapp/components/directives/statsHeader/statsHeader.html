@@ -2,49 +2,89 @@
   <img alt="Till startsidan" class="hidden-xs" src="/assets/images/logo_statistik_inv@2x.png"/>
   <img alt="Till startsidan" class="visible-xs" src="/assets/images/logo_vit_intygsstatistik.png"/>
 </div>
+<span class="vl no-margin"></span>
+<div class="header-container-user">
+  <div data-ng-if="UserModel.get().enableVerksamhetMenu" class="header-user">
+    <i class="fa fa-user hidden-xs"></i>
+    <div class="user-name-label truncate-when-needed">{{UserModel.get().userNameWithAccess}}</div>
 
-<div data-ng-if="UserModel.get().enableVerksamhetMenu" class="header-user">
-  <i class="fa fa-user"></i>
-  <div class="truncate-when-needed">{{UserModel.get().userNameWithAccess}}</div>
+    <button ng-if="showSettings()" type="button" id="expand-user-menu-btn" class="btn btn-link expand-menu-btn" ng-click="toggleMenu($event, userMenu)">
+      <i ng-if="userMenu.expanded" class="fa fa-chevron-up"></i>
+      <i ng-if="!userMenu.expanded" class="fa fa-chevron-down"></i>
+    </button>
+  </div>
+  <div ng-if="showSettings()" uib-dropdown is-open="userMenu.expanded">
+    <ul uib-dropdown-menu class="dropdown-menu-right">
+      <li> <a id="settingsLink" data-ng-if="showSettings()" href ng-click="openSettings()"><span message key="lbl.settings"></span></a></li>
+    </ul>
+  </div>
 </div>
+<span data-ng-if="UserModel.get().enableVerksamhetMenu" class="vl no-margin"></span>
 
-<div data-ng-if="UserModel.get().enableVerksamhetMenu" class="header-unit">
+<div class="header-container-unit">
+  <div data-ng-if="UserModel.get().enableVerksamhetMenu" class="header-unit">
 
-  <i class="fa fa-building-o"></i>
+    <i class="fa fa-building-o hidden-xs"></i>
 
-  <div class="header-two-row">
+    <div class="header-two-row">
 
-    <div class="hidden-xs" data-ng-if="UserModel.get().enableVerksamhetMenu && UserModel.get().vgs.length > 1">&nbsp;</div>
-
-    <div class="single-text-row-container">
-      <div id="verksamhetsNameLabel" class="verksamhets-name-label truncate-when-needed">{{pageHeaderVerksamhetName}}</div>
-
-      <show-businesses
-          data-ng-if="showBusinessesDetails"
-          businesses="UserModel.get().businesses"
-          vg-name="vgName"></show-businesses>
+      <div class="single-text-row-container">
+        <div id="verksamhetsNameLabel" class="verksamhets-name-label truncate-when-needed">{{pageHeaderVerksamhetName}}</div>
+        <button ng-if="UserModel.get().vgs.length > 1" type="button" id="expand-unit-menu-btn" class="btn btn-link expand-menu-btn" ng-click="toggleMenu($event, unitMenu)">
+          <i ng-if="unitMenu.expanded" class="fa fa-chevron-up"></i>
+          <i ng-if="!unitMenu.expanded" class="fa fa-chevron-down"></i>
+        </button>
+      </div>
     </div>
+  </div>
 
-    <select-vardgivare-modal
-        data-ng-if="UserModel.get().enableVerksamhetMenu && UserModel.get().vgs.length > 1"
-        vardgivare="UserModel.get().vgs"
-        select-vardgivare="changeVardgivare(vgId)"></select-vardgivare-modal>
+  <div ng-if="UserModel.get().vgs.length > 1" uib-dropdown is-open="unitMenu.expanded">
+    <ul uib-dropdown-menu class="dropdown-menu-right">
+      <li>
+        <show-businesses
+            data-ng-if="showBusinessesDetails"
+            businesses="UserModel.get().businesses"
+            vg-name="vgName">
+        </show-businesses>
+      </li>
+      <hr class="hl"></hr>
+      <li>
+        <select-vardgivare-modal
+            data-ng-if="UserModel.get().enableVerksamhetMenu && UserModel.get().vgs.length > 1"
+            vardgivare="UserModel.get().vgs"
+            select-vardgivare="changeVardgivare(vgId)">
+        </select-vardgivare-modal>
+      </li>
+    </ul>
   </div>
 </div>
 
-<div data-ng-if="UserModel.get().enableVerksamhetMenu" class="header-links">
-  <intygsskolan-modal id="intygsskolanLink" class="link-pad-right"></intygsskolan-modal>
-  <span class="vl"></span>
-  <a id="settingsLink" data-ng-if="showSettings()" href ng-click="openSettings()"><span message key="lbl.settings"></span></a>
-  <a id="logoutLink" href ng-click="onLogoutClick()"><span message key="lbl.log-out"></span></a>
-</div>
+<span data-ng-if="UserModel.get().enableVerksamhetMenu" class="vl"></span>
 
-<div data-ng-if="!UserModel.get().enableVerksamhetMenu" class="header-links">
-  <intygsskolan-modal id="intygsskolanLink" class="link-pad-right"></intygsskolan-modal>
-  <span class="vl"></span>
-  <span class="business-login-span"><span message key="lbl.for-verksamhetsstatistik"></span></span>
-  <button class="btn btn-info" data-ng-click="loginClicked()"
-          type="button" id="business-login-btn">
-    <span message key="lbl.log-in"></span>
-  </button>
+<div class="statistics-menu header-links" id="statistics-menu-accordion"  uib-dropdown auto-close="outsideClick" is-open="isMenuOpen">
+  <div class="visible-xs dropdown-toggle" uib-dropdown-toggle>
+    <button type="button" class="btn" aria-expanded="false">
+      <span class="sr-only">Visa/dölj menyn</span>
+      <i class="fa fa-bars"></i>
+    </button>
+  </div>
+
+  <div class="menu-container dropdown-menu-right" uib-dropdown-menu>
+    <ul class="statistics-menu-list header-links">
+      <li class="intygsskolan-container">
+          <intygsskolan-modal id="intygsskolanLink" class="link-pad-right"></intygsskolan-modal>
+      </li>
+      <li>
+        <span class="hl no-margin visible-xs"></span>
+      </li>
+      <li>
+          <a data-ng-if="UserModel.get().enableVerksamhetMenu" id="logout-link" href ng-click="onLogoutClick()">
+            <span message key="lbl.log-out"></span>
+          </a>
+          <a data-ng-if="!UserModel.get().enableVerksamhetMenu" id="business-login-btn" data-ng-click="loginClicked()">
+            <span message key="lbl.log-in"></span>
+          </a>
+      </li>
+    </ul>
+  </div>
 </div>

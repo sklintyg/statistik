@@ -10,7 +10,7 @@ stats-header {
   //Stretch on cross-axis to make items 100% height
   align-items: stretch;
   justify-content: space-between;
-  background-color: $st-color-35;
+  background-color: $st-color-49;
   color: $st-color-17;
   height: 80px;
 
@@ -22,6 +22,13 @@ stats-header {
   i.fa {
     font-size: 24px;
     margin-right: 7px;
+  }
+
+  i.fa.fa-chevron-up, i.fa.fa-chevron-down {
+    padding-top: 2px;
+    font-size: 16px;
+    padding-bottom: 0;
+    margin: 0;
   }
 
   .header-user,
@@ -37,10 +44,27 @@ stats-header {
     white-space: nowrap;
   }
 
+  .header-container-user, .header-container-unit {
+    flex: 0 3 auto;
+    align-items: center;
+    margin-right: 16px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .header-container-user {
+    min-width: $stats-header-user-min-width;
+  }
+
+  .header-container-unit {
+    min-width: $stats-header-unit-min-width;
+  }
+
   .header-logo {
     flex: 1;
     min-width: 240px;
     max-width: 240px;
+    background-color: $st-color-46;
 
     img {
       height: 30px;
@@ -50,6 +74,15 @@ stats-header {
       min-width: 62px;
       max-width: 62px;
     }
+  }
+
+  #expand-unit-menu-btn {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .header-user, .header-unit {
+    height: 80px;
   }
 
   .header-user {
@@ -77,10 +110,6 @@ stats-header {
 
       //if we user 0px / 0%, scss minification removes the unit - causing flexbox errors in IE, so we set 1px
       min-width: 1px;
-
-      @media (max-width: $screen-xs-max) {
-        flex-direction: column;
-      }
     }
 
     .header-two-row {
@@ -90,9 +119,11 @@ stats-header {
       min-width: 1px;
     }
 
-    .verksamhets-name-label {
-      padding-right: 10px;
-    }
+  }
+
+  .verksamhets-name-label, .user-name-label {
+    padding-left: 10px;
+    padding-right: 12px;
   }
 
   .header-links {
@@ -109,6 +140,7 @@ stats-header {
 
     a {
       margin-left: 15px;
+      color: $st-color-47;
     }
 
     a:first-of-type {
@@ -126,4 +158,112 @@ stats-header {
     margin-right: 15px;
   }
 
+  .hl {
+    border: 0.5px solid $stat-menu-header-bg-from;
+  }
+
+
+  .no-margin {
+    margin: 0 !important;
+  }
+
+  .dropdown-menu {
+    padding: 20px 0 20px 0;
+    min-width: 0;
+    border-style: none !important;
+    width: 100%;
+    background-clip: border-box;
+    background-color: $st-color-49;
+    text-align: left;
+    margin: 0;
+    border-radius: 0;
+    border-width: 0 6px;
+    border-style: solid;
+    border-color: transparent;
+    border-image: none;
+    overflow: visible !important;
+
+    //instead a drowshadow on the sides here
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.32);
+
+    > li > a, li > show-businesses > a, li > select-vardgivare-modal > button > span {
+      @extend %st-typo-05;
+      color: $st-color-47;
+      background-color: $st-color-49;
+      padding-left: 20px;
+      &:focus, &:hover {
+        color: $st-color-47;
+        text-decoration: underline;
+        background-color: $st-color-49;
+      }
+    }
+  }
+
+  .expand-menu-btn {
+    color: $st-color-17;
+    padding: 0;
+
+    &:focus, &:hover {
+      color: $st-color-17;
+    }
+  }
+
+  a.intygsskolan-modal-link, a#business-login-btn, a#logout-link {
+    @extend %st-typo-05;
+    font-size: 13px !important;
+    color: $st-color-47;
+    background-color: $st-color-49;
+    padding-left: 20px;
+    padding-top: 20px;
+    &:focus, &:hover {
+      color: $st-color-47;
+      text-decoration: underline;
+      background-color: $st-color-49;
+    }
+  }
+
+  a#logout-link, a#business-login-btn {
+    padding-left: 16px;
+    @media (min-width: $screen-xs-max) {
+      padding-top: 0;
+    }
+  }
+
+  a.intygsskolan-modal-link {
+    padding-right: 16px;
+  }
+
+  .intygsskolan-container {
+    @media (min-width: $screen-xs-max) {
+      border-right: 0.5px solid $stat-menu-header-bg-from;
+    }
+  }
+
+  .menu-container.dropdown-menu {
+    background-color: $st-color-49;
+    width: fit-content;
+    min-width: 0;
+  }
+
+  ul.statistics-menu-list {
+    background-color: $st-color-49;
+    @media (min-width: $screen-xs-max) {
+      padding-bottom: 0px !important;
+    }
+
+    @media (max-width: $screen-xs-max) {
+      display: table;
+      padding: 0;
+    }
+  }
+
+  i.fa.fa-bars {
+    color: $st-color-17;
+    background-color: $st-color-49;
+
+    &:focus, &:hover {
+      color: $st-color-17;
+      background-color: $st-color-49;
+    }
+  }
 }

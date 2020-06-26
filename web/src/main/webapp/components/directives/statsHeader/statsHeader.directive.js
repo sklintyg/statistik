@@ -39,6 +39,20 @@ angular.module('StatisticsApp')
         return !UserModel.get().isProcessledare;
       };
 
+      $scope.userMenu = {
+        expanded: false
+      };
+
+      $scope.unitMenu = {
+        expanded: false
+      };
+
+      $scope.toggleMenu = function($event, menu) {
+        $event.stopPropagation();
+        menu.expanded = !menu.expanded;
+
+      };
+
       $scope.changeVardgivare = function(vgId) {
         $scope.changeVg({vgId: vgId});
       };
