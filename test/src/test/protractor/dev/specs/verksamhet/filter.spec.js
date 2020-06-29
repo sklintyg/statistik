@@ -132,7 +132,7 @@ describe('Verksamhetsfilter: ', function() {
       filter.enhetDepth1List.first().click();
       filter.enhetDepth2List.first().click();
 
-      var first = filter.enhetDepth3List.first(); //
+      var first = filter.enhetDepth3List.first();
       enhet = first.getText();
 
       first.element(by.css('input')).click();
