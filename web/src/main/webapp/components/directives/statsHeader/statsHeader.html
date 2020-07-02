@@ -1,13 +1,13 @@
 <div class="header-logo">
-  <img alt="Till startsidan" class="hidden-xs" src="/assets/images/logo_statistik_inv@2x.png"/>
-  <img alt="Till startsidan" class="visible-xs" src="/assets/images/logo_vit_intygsstatistik.png"/>
+  <img alt="Till startsidan" class="hidden-md hidden-sm hidden-xs" src="/assets/images/logo_statistik_inv@2x.png"/>
+  <img alt="Till startsidan" class="visible-md visible-sm visible-xs" src="/assets/images/logo_vit_intygsstatistik.png"/>
 </div>
 <span class="vl no-margin"></span>
 <div class="header-container-user">
   <div data-ng-if="UserModel.get().enableVerksamhetMenu" class="header-user">
-    <i class="fa fa-user hidden-xs"></i>
-    <div class="user-name-label truncate-when-needed">{{UserModel.get().userNameWithAccess}}</div>
-
+    <i class="fa fa-user hidden-sm hidden-xs"></i>
+    <div class="user-name-label hidden-xs">{{UserModel.get().userNameWithAccess}}</div>
+    <div class="user-name-label truncate-when-needed visible-xs">{{UserModel.get().userNameWithAccess}}</div>
     <button ng-if="showSettings()" type="button" id="expand-user-menu-btn" class="btn btn-link expand-menu-btn" ng-click="toggleMenu($event, userMenu)">
       <i ng-if="userMenu.expanded" class="fa fa-chevron-up"></i>
       <i ng-if="!userMenu.expanded" class="fa fa-chevron-down"></i>
@@ -24,12 +24,13 @@
 <div class="header-container-unit">
   <div data-ng-if="UserModel.get().enableVerksamhetMenu" class="header-unit">
 
-    <i class="fa fa-building-o hidden-xs"></i>
+    <i class="fa fa-building-o hidden-sm hidden-xs"></i>
 
     <div class="header-two-row">
 
       <div class="single-text-row-container">
-        <div id="verksamhetsNameLabel" class="verksamhets-name-label truncate-when-needed">{{pageHeaderVerksamhetName}}</div>
+        <div id="verksamhetsNameLabel" class="verksamhets-name-label hidden-xs">{{pageHeaderVerksamhetName}}</div>
+        <div id="verksamhetsNameLabel" class="verksamhets-name-label truncate-when-needed visible-xs">{{pageHeaderVerksamhetName}}</div>
         <button ng-if="UserModel.get().vgs.length > 1" type="button" id="expand-unit-menu-btn" class="btn btn-link expand-menu-btn" ng-click="toggleMenu($event, unitMenu)">
           <i ng-if="unitMenu.expanded" class="fa fa-chevron-up"></i>
           <i ng-if="!unitMenu.expanded" class="fa fa-chevron-down"></i>
@@ -61,21 +62,21 @@
 
 <span data-ng-if="UserModel.get().enableVerksamhetMenu" class="vl"></span>
 
-<div class="statistics-menu header-links" id="statistics-menu-accordion"  uib-dropdown auto-close="outsideClick" is-open="isMenuOpen">
-  <div class="visible-xs dropdown-toggle" uib-dropdown-toggle>
+<div class="statistics-menu header-links"  uib-dropdown auto-close="outsideClick" is-open="isMenuOpen">
+  <div class="visible-sm visible-xs dropdown-toggle" uib-dropdown-toggle>
     <button type="button" class="btn" aria-expanded="false">
       <span class="sr-only">Visa/dölj menyn</span>
       <i class="fa fa-bars"></i>
     </button>
   </div>
 
-  <div class="menu-container dropdown-menu-right" uib-dropdown-menu>
+  <div class="menu-container dropdown-menu-right links-drop-down" uib-dropdown-menu>
     <ul class="statistics-menu-list header-links">
       <li class="intygsskolan-container">
           <intygsskolan-modal id="intygsskolanLink" class="link-pad-right"></intygsskolan-modal>
       </li>
       <li>
-        <span class="hl no-margin visible-xs"></span>
+        <span class="hl no-margin visible-sm visible-xs"></span>
       </li>
       <li>
           <a data-ng-if="UserModel.get().enableVerksamhetMenu" id="logoutLink" href ng-click="onLogoutClick()">

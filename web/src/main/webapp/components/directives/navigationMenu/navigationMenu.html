@@ -7,8 +7,8 @@
     </button>
   </div>
 
-  <div class="menu-container" uib-dropdown-menu>
-    <ul class="statistics-menu-list" >
+  <div class="menu-container statistics-side-menu" uib-dropdown-menu>
+    <ul class="statistics-menu-list">
       <li data-ng-repeat="menu in menus">
         <a data-ng-click="toggleMenu(menu, $event)" id="{{::menu.id}}">
           <span class="statistics-menu-heading" message key="{{::menu.name}}" disable-highlight-words="true"></span>

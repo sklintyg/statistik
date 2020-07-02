@@ -70,7 +70,7 @@ stats-header {
       height: 30px;
     }
 
-    @media (max-width: $screen-xs-max) {
+    @media (max-width: $screen-md-max) {
       min-width: 62px;
       max-width: 62px;
     }
@@ -152,6 +152,24 @@ stats-header {
     }
   }
 
+  .links-drop-down {
+    @media(min-width: $screen-sm-max) {
+      display: block;
+      padding: 0;
+      margin: 0;
+      float: none;
+      position: static;
+      top: 100%;
+      left: 0;
+      min-width: 200px;
+      z-index: 1;
+      border: 0;
+      box-shadow: none !important;
+      border-radius: 0;
+      width: 100%;
+    }
+  }
+
   .vl {
     border-left: 1px solid $stat-menu-header-bg-from;
     height: 100%;
@@ -224,7 +242,7 @@ stats-header {
 
   a#logoutLink, a#business-login-btn {
     padding-left: 16px;
-    @media (min-width: $screen-xs-max) {
+    @media (min-width: $screen-sm-max) {
       padding-top: 0;
     }
   }
@@ -234,7 +252,7 @@ stats-header {
   }
 
   .intygsskolan-container {
-    @media (min-width: $screen-xs-max) {
+    @media (min-width: $screen-sm-max) {
       border-right: 0.5px solid $stat-menu-header-bg-from;
     }
   }
@@ -247,11 +265,11 @@ stats-header {
 
   ul.statistics-menu-list {
     background-color: $st-color-49;
-    @media (min-width: $screen-xs-max) {
+    @media (min-width: $screen-sm-max) {
       padding-bottom: 0px !important;
     }
 
-    @media (max-width: $screen-xs-max) {
+    @media (max-width: $screen-sm-max) {
       display: table;
       padding: 0;
     }
