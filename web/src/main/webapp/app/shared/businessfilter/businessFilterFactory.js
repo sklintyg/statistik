@@ -257,6 +257,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
 
   businessFilter.populateGeography = function(businesses) {
     businessFilter.geography = {subs: []};
+
     _.each(businesses, function(business) {
       var county = _.find(businessFilter.geography.subs, {name: business.lansName});
       if (!county) {
@@ -291,22 +292,23 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         munip.subs.push({
           id: business.id,
           numericalId: business.id + 'vardenhet',
-          name: business.vardenhetId && business.vardenhet ? business.vardenhetId : business.id,
-          visibleName: business.vardenhetId && business.vardenhet ? business.vardenhetId : business.id,
+          name: business.name,
+          visibleName: business.visibleName,
           subs: [business]
         });
       } else if (business.vardenhet && existingVardenhetInFilter) {
-        existingVardenhetInFilter.name = business.vardenhetId && business.vardenhet ? business.vardenhetId : business.id;
-        existingVardenhetInFilter.visibleName = business.vardenhetId && business.vardenhet ? business.vardenhetId : business.id;
+        existingVardenhetInFilter.name = business.name;
+        existingVardenhetInFilter.visibleName = business.visibleName;
         existingVardenhetInFilter.subs.push(business);
       } else if (!business.vardenhet && existingVardenhetInFilter) {
         existingVardenhetInFilter.subs.push(business);
       } else {
+        var careUnitName = _.find(businesses, {id: business.vardenhetId}).name;
         munip.subs.push({
           id: business.vardenhetId,
           numericalId: business.vardenhetId + 'vardenhet',
-          name: business.vardenhetId,
-          visibleName: business.vardenhetId,
+          name: careUnitName,
+          visibleName: careUnitName,
           subs: [business]
         });
       }
