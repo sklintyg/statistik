@@ -303,12 +303,12 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
       } else if (!business.vardenhet && existingVardenhetInFilter) {
         existingVardenhetInFilter.subs.push(business);
       } else {
-        var careUnitName = _.find(businesses, {id: business.vardenhetId}).name;
+        var careUnit = _.find(businesses, {id: business.vardenhetId});
         munip.subs.push({
           id: business.vardenhetId,
           numericalId: business.vardenhetId + 'vardenhet',
-          name: careUnitName,
-          visibleName: careUnitName,
+          name: careUnit ? careUnit.name : business.vardenhetId,
+          visibleName: careUnit ? careUnit.name : business.vardenhetId,
           subs: [business]
         });
       }
