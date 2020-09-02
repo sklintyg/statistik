@@ -7,6 +7,11 @@
             "@class": "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
             "id": "TSTNMT2321000156-1077",
             "namn": "NMT vg3 ve1"
+        },
+        {
+            "@class": "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
+            "id": "TSTNMT2321000156-1076",
+            "namn": "NMT vg3 ve2"
         }
     ]
 }
