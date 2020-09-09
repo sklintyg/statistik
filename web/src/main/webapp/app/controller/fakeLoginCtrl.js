@@ -45,15 +45,15 @@ angular.module('StatisticsApp').controller('fakeLoginCtrl',
           'fornamn': 'Arnold',
           'efternamn': 'Johansson',
           'hsaId': 'TSTNMT2321000156-1079',
-          'vardgivarIdSomProcessLedare': ['TSTNMT2321000156-102Q'],
-          'vardgivarniva': 'true', 'description': 'Processledare TSTNMT2321000156-102Q'
+          'vardgivarIdSomProcessLedare': ['SE2321000214-E000002'],
+          'vardgivarniva': 'true', 'description': 'Processledare'
         },
         {
           'fornamn': 'Arnold',
           'efternamn': 'Johansson B',
           'hsaId': 'TSTNMT2321000156-1079B',
-          'vardgivarIdSomProcessLedare': ['TSTNMT2321000156-102Q'],
-          'vardgivarniva': 'false', 'description': 'Ej Processledare TSTNMT2321000156-102Q'
+          'vardgivarIdSomProcessLedare': ['TSE2321000214-E000002'],
+          'vardgivarniva': 'false', 'description': 'Ej Processledare'
         },
         {
           'fornamn': 'Anna',
