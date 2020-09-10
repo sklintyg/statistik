@@ -49,9 +49,9 @@ angular.module('StatisticsApp').controller('fakeLoginCtrl',
           'vardgivarniva': 'true', 'description': 'Processledare'
         },
         {
-          'fornamn': 'Arnold',
-          'efternamn': 'Johansson B',
-          'hsaId': 'TSTNMT2321000156-1079B',
+          'fornamn': 'Annika',
+          'efternamn': 'Larsson',
+          'hsaId': 'TSTNMT2321000156-10CD',
           'vardgivarIdSomProcessLedare': ['TSTNMT2321000156-102Q'],
           'vardgivarniva': 'false', 'description': 'Ej Processledare'
         },
