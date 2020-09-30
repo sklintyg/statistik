@@ -7,8 +7,8 @@ version = '1.1.0-SNAPSHOT'
 
 repositories {
     mavenLocal()
-    maven { url "https://build-inera.nordicmedtest.se/nexus/repository/central/" }
-    maven { url "https://build-inera.nordicmedtest.se/nexus/repository/releases/" }
+    maven { url "https://nexus.drift.inera.se/repository/it-public/" }
+    maven { url "https://nexus.drift.inera.se/repository/maven-releases/" }
     mavenCentral()
 }
 
@@ -38,18 +38,18 @@ dependencies {
     testCompile 'org.springframework:spring-core'
 }
 
-ext.nexusUsername = System.properties['nexusUsername']
-ext.nexusPassword = System.properties['nexusPassword']
+ext.ineraNexusUsername = System.properties['ineraNexusUsername']
+ext.ineraNexusPassword = System.properties['ineraNexusPassword']
 
 uploadArchives {
     repositories {
         mavenDeployer {
             configuration = configurations.deployerJars
-            repository(url: "https://build-inera.nordicmedtest.se/nexus/repository/releases/") {
-                authentication(userName: nexusUsername, password: nexusPassword)
+            repository(url: "https://nexus.drift.inera.se/repository/maven-releases/") {
+                authentication(userName: ineraNexusUsername, password: ineraNexusPassword)
             }
-            snapshotRepository(url: "https://build-inera.nordicmedtest.se/nexus/repository/snapshots") {
-                authentication(userName: nexusUsername, password: nexusPassword)
+            snapshotRepository(url: "https://nexus.drift.inera.se/repository/snapshots") {
+                authentication(userName: ineraNexusUsername, password: ineraNexusPassword)
             }
             uniqueVersion = false
         }
