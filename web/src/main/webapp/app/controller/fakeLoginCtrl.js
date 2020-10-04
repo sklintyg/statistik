@@ -42,6 +42,20 @@ angular.module('StatisticsApp').controller('fakeLoginCtrl',
       // and are discarded before sending the user context to the /fake endpoint.
       $scope.identities = [
         {
+          'fornamn': 'Arnold',
+          'efternamn': 'Johansson',
+          'hsaId': 'TSTNMT2321000156-1079',
+          'vardgivarIdSomProcessLedare': ['TSTNMT2321000156-102Q'],
+          'vardgivarniva': 'true', 'description': 'Processledare'
+        },
+        {
+          'fornamn': 'Annika',
+          'efternamn': 'Larsson',
+          'hsaId': 'TSTNMT2321000156-10CD',
+          'vardgivarIdSomProcessLedare': ['TSTNMT2321000156-102Q'],
+          'vardgivarniva': 'false', 'description': 'Ej Processledare'
+        },
+        {
           'fornamn': 'Anna',
           'efternamn': 'Modig',
           'hsaId': 'HSA-AM',
