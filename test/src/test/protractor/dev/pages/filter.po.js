@@ -42,7 +42,6 @@ var Filter = function() {
   this.enhetBtn = this.container.element(by.css('.select-business button'));
   this.enhetDepth1List = this.dialog.all(by.css('.depth1'));
   this.enhetDepth2List = this.dialog.all(by.css('.depth2'));
-  this.enhetDepth3List = this.dialog.all(by.css('.depth3'));
   this.enhetCloseBtn = element(by.id('treeMultiSelectorCloseBtn'));
   this.enhetSaveAndCloseBtn = element(by.id('treeMultiSelectorSaveBtn'));
 

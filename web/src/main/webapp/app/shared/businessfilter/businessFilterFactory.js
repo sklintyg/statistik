@@ -106,7 +106,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
   };
 
   businessFilter.selectGeographyBusiness = function(businessIds) {
-    businessFilter.selectGeographyByAttribute(businessFilter.geography, businessIds, 'id');
+    businessFilter.selectByAttribute(businessFilter.geography, businessIds, 'id');
     businessFilter.geographyBusinessIds = businessIds;
     treeMultiSelectorUtil.updateSelectionState(businessFilter.geography);
   };
@@ -257,7 +257,6 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
 
   businessFilter.populateGeography = function(businesses) {
     businessFilter.geography = {subs: []};
-
     _.each(businesses, function(business) {
       var county = _.find(businessFilter.geography.subs, {name: business.lansName});
       if (!county) {
@@ -294,21 +293,19 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
           numericalId: business.id + 'vardenhet',
           name: business.name,
           visibleName: business.visibleName,
-          subs: [business]
+          subs: []
         });
       } else if (business.vardenhet && existingVardenhetInFilter) {
         existingVardenhetInFilter.name = business.name;
         existingVardenhetInFilter.visibleName = business.visibleName;
-        existingVardenhetInFilter.subs.push(business);
       } else if (!business.vardenhet && existingVardenhetInFilter) {
         existingVardenhetInFilter.subs.push(business);
       } else {
-        var careUnit = _.find(businesses, {id: business.vardenhetId});
         munip.subs.push({
           id: business.vardenhetId,
           numericalId: business.vardenhetId + 'vardenhet',
-          name: careUnit ? careUnit.name : business.vardenhetId,
-          visibleName: careUnit ? careUnit.name : business.vardenhetId,
+          name: business.vardenhetId,
+          visibleName: business.vardenhetId,
           subs: [business]
         });
       }
@@ -379,22 +376,6 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
     }
   };
 
-  businessFilter.selectGeographyByAttribute = function(item, listOfIdsToSelect, attribute) {
-    if (_.some(listOfIdsToSelect, function(val) {
-      return item[attribute] === val;
-    })) {
-      if (!item.subs) {
-        businessFilter.selectAll(item);
-      }
-    } else {
-      if (item.subs) {
-        _.each(item.subs, function(sub) {
-          businessFilter.selectGeographyByAttribute(sub, listOfIdsToSelect, attribute);
-        });
-      }
-    }
-  };
-
   businessFilter.selectByAttribute = function(item, listOfIdsToSelect, attribute) {
     if (_.some(listOfIdsToSelect, function(val) {
       return item[attribute] === val;
@@ -416,7 +397,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
       if (node.allSelected || node.someSelected) {
         return _.reduce(node.subs, function(acc, item) {
           return acc.concat(businessFilter.collectGeographyIds(item));
-        }, []);
+        }, node.allSelected ? [node.id] : []);
       } else {
         return [];
       }
