@@ -73,7 +73,7 @@ module.exports = function(grunt) {
             host: 'localhost',
             port: 8080,
             rewrite: {
-              '^/assets/fonts/font-awesome': '/bower_components/font-awesome/fonts/',
+              '^/assets/fonts/font-awesome': '/bower_components/font-awesome/webfonts/',
               '^/assets/fonts/bootstrap': '/bower_components/bootstrap-sass/assets/fonts/bootstrap/'
             }
           }
