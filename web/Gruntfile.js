@@ -23,6 +23,7 @@
 module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-connect-proxy');
+  grunt.loadNpmTasks('grunt-bower-install-simple');
 
   // Load grunt tasks automatically, when needed
   require('jit-grunt')(grunt, {
@@ -183,6 +184,13 @@ module.exports = function(grunt) {
       },
       dist: {
         src: '<%= config.client %>/app/*.css'
+      }
+    },
+
+    "bower-install-simple": {
+      options: {
+      },
+      install: {
       }
     },
 
@@ -517,6 +525,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build_no_minify', [
     'clean:dist',
+    'bower-install-simple',
     'jshint',
     'injector:sass',
     'sass',
@@ -529,6 +538,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'bower-install-simple',
     'jshint',
     'copy:dist',
     'injector:sass',
