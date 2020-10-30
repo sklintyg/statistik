@@ -18,6 +18,8 @@
  */
 package se.inera.auth;
 
+import java.util.Collections;
+import java.util.List;
 import org.opensaml.common.SAMLException;
 import org.opensaml.saml2.core.AuthnRequest;
 import org.opensaml.saml2.metadata.AssertionConsumerService;
@@ -31,7 +33,9 @@ import org.springframework.security.saml.websso.WebSSOProfileOptions;
  */
 public class StatistikWebSSOProfileImpl extends org.springframework.security.saml.websso.WebSSOProfileImpl {
 
-    private static final String HTTP_ID_SAMBI_SE_LOA_LOA3 = "http://id.sambi.se/loa/loa3";
+    private static final List<String> SITHS_AUTHN_CLASSES = List.of(
+        "http://id.sambi.se/loa/loa2",
+        "http://id.sambi.se/loa/loa3");
 
     /**
      * Returns AuthnRequest SAML message to be used to demand authentication from an IDP described using
@@ -55,7 +59,7 @@ public class StatistikWebSSOProfileImpl extends org.springframework.security.sam
         AuthnRequest authnRequest = super.getAuthnRequest(context, options, assertionConsumer, bindingService);
 
         // Only specify attributeConsumingServiceIndex for SITHS-based authentications.
-        if (options.getAuthnContexts().contains(HTTP_ID_SAMBI_SE_LOA_LOA3)) {
+        if (!Collections.disjoint(options.getAuthnContexts(), SITHS_AUTHN_CLASSES)) {
             authnRequest.setAttributeConsumingServiceIndex(1);
         }
         return authnRequest;
