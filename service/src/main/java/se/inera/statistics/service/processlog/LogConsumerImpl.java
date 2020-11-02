@@ -124,14 +124,15 @@ public class LogConsumerImpl implements LogConsumer {
     private boolean processRegisterCertificate(IntygEvent event) {
         try {
             final RegisterCertificateType rc = registerCertificateResolver.unmarshalXml(event.getData());
-            final IntygType intygTyp = registerCertificateResolver.getIntygtyp(rc);
+            final IntygType certificateType = registerCertificateResolver.getIntygtyp(rc);
+            final String certificateVersion = registerCertificateResolver.getCertificateVersion(rc);
             final String data = RegisterCertificateHelper.convertToV3(event.getData());
-            final ValidateXmlResponse validation = schemaValidator.validate(intygTyp, data);
+            final ValidateXmlResponse validation = schemaValidator.validate(certificateType, certificateVersion, data);
             if (!validation.isValid()) {
                 LOG.warn("Register certificate validation failed: " + validation.getValidationErrors());
                 return false;
             }
-            final boolean successfullyProcessedXml = processXmlCertificate(event, rc, intygTyp);
+            final boolean successfullyProcessedXml = processXmlCertificate(event, rc, certificateType);
             if (!successfullyProcessedXml) {
                 return false;
             }

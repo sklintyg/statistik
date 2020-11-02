@@ -65,6 +65,11 @@ public class TsDiabetesHelper extends IntygHelper<RegisterTSDiabetesType> {
     }
 
     @Override
+    public String getCertificateVersion(RegisterTSDiabetesType certificate) {
+        return certificate.getIntyg().getVersion();
+    }
+
+    @Override
     public LocalDateTime getSigneringsTidpunkt(RegisterTSDiabetesType intyg) {
         String tidpunkt = intyg.getIntyg().getGrundData().getSigneringsTidstampel();
 

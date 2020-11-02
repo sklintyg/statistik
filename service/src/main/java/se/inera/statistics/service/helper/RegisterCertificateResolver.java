@@ -77,6 +77,10 @@ public class RegisterCertificateResolver {
         return registerCertificateHelper.getIntygtyp(intyg);
     }
 
+    public String getCertificateVersion(RegisterCertificateType certificate) {
+        return registerCertificateHelper.getCertificateVersion(certificate);
+    }
+
     public RegisterCertificateType unmarshalXml(String data) throws JAXBException {
         return registerCertificateHelper.unmarshalXml(data);
     }
