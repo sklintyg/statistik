@@ -54,7 +54,10 @@ public class SchemaValidator {
     private Af00251Validator af00251Validator;
 
     @Autowired
-    private TsBasValidator tsBasValidator;
+    private TsBasV6Validator tsBasV6Validator;
+
+    @Autowired
+    private TsBasV7Validator tsBasV7Validator;
 
     @Autowired
     private TsDiabetesValidator tsDiabetesValidator;
@@ -71,8 +74,9 @@ public class SchemaValidator {
     @Autowired
     private Ag7804Validator ag7804Validator;
 
-    public ValidateXmlResponse validate(@Nonnull final IntygType typ, @Nonnull final String data) {
-        switch (typ) {
+    public ValidateXmlResponse validate(@Nonnull final IntygType certificateType, final String certificateVersion,
+        @Nonnull final String data) {
+        switch (certificateType) {
             case FK7263:
                 return fk7263sitValidator.validateSchematron(data);
             case LISJP:
@@ -92,7 +96,14 @@ public class SchemaValidator {
             case AF00251:
                 return af00251Validator.validateSchematron(data);
             case TSTRK1007:
-                return tsBasValidator.validateSchematron(data);
+                if (certificateVersion.startsWith(TsBasV7Validator.MAJOR_VERSION)) {
+                    return tsBasV7Validator.validateSchematron(data);
+                } else if (certificateVersion.startsWith(TsBasV6Validator.MAJOR_VERSION)) {
+                    return tsBasV6Validator.validateSchematron(data);
+                } else {
+                    return new ValidateXmlResponse("Unknown version: " + certificateVersion
+                        + "for certificate type: " + certificateType);
+                }
             case TSTRK1009:
                 return tstrk1009Validator.validateSchematron(data);
             case TSTRK1031:
@@ -104,7 +115,7 @@ public class SchemaValidator {
             case AG7804:
                 return ag7804Validator.validateSchematron(data);
             default:
-                return new ValidateXmlResponse("Unknown certificate type: " + typ);
+                return new ValidateXmlResponse("Unknown certificate type: " + certificateType);
         }
     }
 

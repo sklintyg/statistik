@@ -65,6 +65,11 @@ public class TsBasHelper extends IntygHelper<RegisterTSBasType> {
     }
 
     @Override
+    public String getCertificateVersion(RegisterTSBasType certificate) {
+        return certificate.getIntyg().getVersion();
+    }
+
+    @Override
     public LocalDateTime getSigneringsTidpunkt(RegisterTSBasType intyg) {
         String tidpunkt = intyg.getIntyg().getGrundData().getSigneringsTidstampel();
 
