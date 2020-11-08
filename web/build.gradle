@@ -64,6 +64,7 @@ gretty {
     jvmArgs = [
             jvmArgSpringProfiles,
             "-Dcatalina.base=${buildDir}/catalina.base",
+            '-Dcertificate.logback.file=classpath:logback-dev.xml',
             '-Dsaml.resource.dir=' + projectDir + '/../devops/dev',
             '-DbaseUrl=' + baseUrl,
             '-Dstatistics.test.max.intyg=200',
