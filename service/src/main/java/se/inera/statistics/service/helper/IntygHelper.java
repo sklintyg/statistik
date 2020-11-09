@@ -53,6 +53,8 @@ public abstract class IntygHelper<T> {
 
     public abstract IntygType getIntygtyp(T intyg);
 
+    public abstract String getCertificateVersion(T certificate);
+
     public abstract LocalDate getDateForPatientAge(T intyg);
 
     public Patientdata getPatientData(T intyg) {

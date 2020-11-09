@@ -81,6 +81,11 @@ public abstract class AbstractRegisterCertificateHelper extends IntygHelper<Regi
     }
 
     @Override
+    public String getCertificateVersion(RegisterCertificateType certificate) {
+        return certificate.getIntyg().getVersion();
+    }
+
+    @Override
     public LocalDateTime getSigneringsTidpunkt(RegisterCertificateType intyg) {
         return intyg.getIntyg().getSigneringstidpunkt();
     }

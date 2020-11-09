@@ -16,15 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.statistics.service.schemavalidation;
 
 import org.springframework.stereotype.Component;
 
 @Component
-class TsBasValidator extends RegisterCertificateValidator {
+class TsBasV6Validator extends RegisterCertificateValidator {
 
-    TsBasValidator() {
+    public static final String MAJOR_VERSION = "6";
+
+    TsBasV6Validator() {
         super("tstrk1007.v6.sch");
     }
-
 }
