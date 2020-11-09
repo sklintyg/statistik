@@ -20,8 +20,9 @@
 
 <configuration>
 
-  <include resource="logback-dev-base.xml"/>
+  <property name="APP_NAME" value="${APP_NAME:-statistik}"/>
 
+  <include resource="logback-dev-base.xml"/>
 
   <logger name="org.apache.camel" level="warn"/>
   <logger name="org.apache.activemq" level="warn"/>
@@ -76,7 +77,6 @@
   <logger name="se.inera.statistics.web.service.endpoints.ProtectedRegionService" level="info" additivity="false">
     <appender-ref ref="ACCESS" />
   </logger>
-
 
   <root level="info">
     <appender-ref ref="CONSOLE"/>
