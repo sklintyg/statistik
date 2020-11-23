@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile("!embedded")
+@Profile("!h2")
 public class JpaConfig extends JpaConfigBase {
 
 }

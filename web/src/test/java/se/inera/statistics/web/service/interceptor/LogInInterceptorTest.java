@@ -43,12 +43,12 @@ public class LogInInterceptorTest {
             "^Ô¥_rels/.relsMK1ïýaîÝl+HÓ^ÐHýc2ûÁn2";
 
         LoggingMessage loggingMessage = new LoggingMessage("", "83");
-        loggingMessage.getAddress().append("http://localhost:8080/api/region/fileupload?vgid=VG3");
+        loggingMessage.getAddress().append("http://localhost:8050/api/region/fileupload?vgid=VG3");
         loggingMessage.getEncoding().append("ISO-8859-1");
         loggingMessage.getHttpMethod().append("POST");
         loggingMessage.getContentType().append("multipart/form-data; boundary=----WebKitFormBoundary6UVVf08Ori6LNKyB");
         loggingMessage.getHeader().append(
-            "{Accept=[application/json], accept-encoding=[gzip, deflate, br], Accept-Language=[sv,en-US;q=0.9,en;q=0.8,nb;q=0.7], Cache-Control=[no-cache], connection=[keep-alive], Content-Length=[9666], content-type=[multipart/form-data; boundary=----WebKitFormBoundary6UVVf08Ori6LNKyB], Cookie=[textwrapon=false; textautoformat=false; wysiwyg=textarea; __ngDebug=true; JSESSIONID=e65v9i48vm82gqxif3nepjis], DNT=[1], Host=[localhost:8080], Origin=[http://localhost:8080], Referer=[http://localhost:8080/], User-Agent=[Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36], X-Requested-With=[XMLHttpRequest]}");
+            "{Accept=[application/json], accept-encoding=[gzip, deflate, br], Accept-Language=[sv,en-US;q=0.9,en;q=0.8,nb;q=0.7], Cache-Control=[no-cache], connection=[keep-alive], Content-Length=[9666], content-type=[multipart/form-data; boundary=----WebKitFormBoundary6UVVf08Ori6LNKyB], Cookie=[textwrapon=false; textautoformat=false; wysiwyg=textarea; __ngDebug=true; JSESSIONID=e65v9i48vm82gqxif3nepjis], DNT=[1], Host=[localhost:8050], Origin=[http://localhost:8050], Referer=[http://localhost:8050/], User-Agent=[Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36], X-Requested-With=[XMLHttpRequest]}");
         loggingMessage.getPayload().append(payload);
 
         String formattedLogMsg = testee.formatLoggingMessage(loggingMessage);
@@ -68,7 +68,7 @@ public class LogInInterceptorTest {
             "b250ZW50cyA1IDAgUgovUmVzb3VyY2VzIDY";
 
         LoggingMessage loggingMessage = new LoggingMessage("", "37");
-        loggingMessage.getAddress().append("http://localhost:8080/api/pdf/create");
+        loggingMessage.getAddress().append("http://localhost:8050/api/pdf/create");
         loggingMessage.getEncoding().append("ISO-8859-1");
         loggingMessage.getHttpMethod().append("POST");
         loggingMessage.getContentType().append("application/x-www-form-urlencoded");

@@ -19,13 +19,8 @@ tasks.withType(GroovyCompile) {
 
 task setupIntygForProtractor(dependsOn: 'classes', type: JavaExec) {
 
-    def statisticsUrl = 'http://localhost:8080/'
-
-    if (project.hasProperty('runWithIntyg')) {
-        statisticsUrl = 'http://localhost:9101/'
-    }
-
-    def baseUrl = System.properties['baseUrl'] ?: "http://localhost:8080/"
+    def statisticsUrl = 'http://localhost:8050/'
+    def baseUrl = System.properties['baseUrl'] ?: "http://localhost:8050/"
 
     jvmArgs = ['-DbaseUrl=' + baseUrl]
 
@@ -52,24 +47,15 @@ fitnesse {
         outputFormat = project.findProperty('outputFormat') ?: "xml&includehtml"
     }
 
-    def baseUrl = 'http://localhost:8080/'
-
-    if (project.hasProperty('runWithIntyg')) {
-        baseUrl = 'http://localhost:9101/'
-    }
-
-    extraProperties = ["baseUrl": System.properties['baseUrl'] ?: "http://localhost:8080/"]
+    def baseUrl = 'http://localhost:8050/'
+    extraProperties = ["baseUrl": System.properties['baseUrl'] ?: "http://localhost:8050/"]
 }
 
 if (project.hasProperty('runFitnesse')) {
     apply plugin: 'org.gretty'
     gretty {
-        def baseUrl = 'http://localhost:8080'
-
-        if (project.hasProperty('runWithIntyg')) {
-            httpPort = 9101
-            baseUrl = 'http://localhost:9101'
-        }
+        def baseUrl = 'http://localhost:8050'
+        httpPort = 8050
 
         contextPath = '/'
         contextConfigFile = project(":statistik-web").projectDir.path + "/src/main/webapp/WEB-INF/jetty-context.xml"
@@ -97,7 +83,6 @@ if (project.hasProperty('runFitnesse')) {
     }
 
     dependencies {
-        gretty "com.h2database:h2"
         gretty "mysql:mysql-connector-java"
         gretty "org.apache.activemq:activemq-broker"
         gretty "org.apache.tomcat:tomcat-catalina:${tomcatVersion}"

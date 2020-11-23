@@ -22,9 +22,9 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
 object Conf {
-  val uri = "http://localhost:8080"
+  val uri = "http://localhost:8050"
   val httpProtocol = http
-    .baseURL("http://localhost:8080")
+    .baseURL("http://localhost:8050")
     .inferHtmlResources()
     .acceptHeader("application/json, text/plain, */*")
     .acceptEncodingHeader("gzip, deflate")
