@@ -39,20 +39,19 @@ grunt_build_no_minify.dependsOn npmInstall
 war.dependsOn createVersionPropertyFile
 
 gretty {
-    def baseUrl = 'http://localhost:8080'
-    def jvmArgSpringProfiles = '-Dspring.profiles.active=dev,caching-enabled,testapi,embedded,hsa-stub,wc-hsa-stub,security-both,noprocessing,ia-stub'
+    def instance = System.properties['instance'] ?: '0'
+    def useHttpPort = 8050 + (instance as Integer)
+    def useInternalHttpPort = 8150 + (instance as Integer)
+    def baseUrl = "http://localhost:${useHttpPort}"
+    def jvmArgSpringProfiles = '-Dspring.profiles.active=dev,caching-enabled,testapi,hsa-stub,wc-hsa-stub,security-both,noprocessing,ia-stub'
 
     servletContainer = 'tomcat9'
     contextPath = '/'
 
 
-    if (project.hasProperty('runWithIntyg')) {
-        httpPort = 9101
-        baseUrl = 'http://localhost:9101'
-    }
-
     scanInterval = 0
-    debugPort = 5011
+    debugPort = 8850 + (instance as Integer)
+    portPropertiesFileName = "gretty_ports_${instance}.properties"
     debugSuspend = false
     fastReload = true
     inplaceMode = 'hard'
@@ -60,6 +59,7 @@ gretty {
     reloadOnClassChange = false
     reloadOnConfigChange = false
     reloadOnLibChange = false
+    serverConfigFile = "tomcat-gretty-${instance}.xml"
 
     jvmArgs = [
             jvmArgSpringProfiles,
@@ -70,7 +70,9 @@ gretty {
             '-Dstatistics.test.max.intyg=200',
             '-Dstatistics.config.file=' + projectDir + '/src/test/resources/dev.properties',
             '-Dstatistics.credentials.file=' + projectDir + '/src/test/resources/dev-credentials.properties',
-            '-Dstatistics.resources.folder=classpath:'
+            '-Dstatistics.resources.folder=classpath:',
+            "-Ddev.http.port=${useHttpPort}",
+            "-Ddev.http.port.internal=${useInternalHttpPort}"
     ]
 }
 

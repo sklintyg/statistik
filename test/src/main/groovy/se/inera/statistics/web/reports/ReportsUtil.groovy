@@ -36,7 +36,7 @@ class ReportsUtil {
 
     static final JSON = MediaType.APPLICATION_JSON
     static final TEXT = MediaType.TEXT_PLAIN
-    
+
     static final VARDGIVARE = "vg1"
     static final VARDGIVARE3 = "vg3"
 
@@ -59,7 +59,7 @@ class ReportsUtil {
     }
 
     private RESTClient createClient() {
-        def baseUrl = System.getProperty("baseUrl") ?: "http://localhost:8080/"
+        def baseUrl = System.getProperty("baseUrl") ?: "http://localhost:8050/"
         def client = new RESTClient(baseUrl, JSON)
         client.ignoreSSLIssues()
 

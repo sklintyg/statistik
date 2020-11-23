@@ -58,7 +58,7 @@ module.exports = function(grunt) {
     connect: {
       dev: {
         options: {
-          port: 9095,
+          port: 8950,
           hostname: '*',
           middleware: function(connect, options, middlewares) {
             return [
@@ -72,7 +72,7 @@ module.exports = function(grunt) {
           {
             context: '/',
             host: 'localhost',
-            port: 8080,
+            port: 8050,
             rewrite: {
               '^/assets/fonts/font-awesome': '/bower_components/font-awesome/webfonts/',
               '^/assets/fonts/bootstrap': '/bower_components/bootstrap-sass/assets/fonts/bootstrap/'
@@ -83,7 +83,7 @@ module.exports = function(grunt) {
     },
     open: {
       dev: {
-        url: 'http://localhost:9095/index.html'
+        url: 'http://localhost:8950'
       }
     },
     watch: {

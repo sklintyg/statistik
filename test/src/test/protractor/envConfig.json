@@ -1,6 +1,6 @@
 {
     "dev": {
-        "ST_URL": "http://localhost:8080/",
+        "ST_URL": "http://localhost:8050/",
         "SELENIUM_ADDRESS": ""
     },
     "build-server": {

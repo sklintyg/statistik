@@ -9,10 +9,6 @@ Se README.md i rooten för att se hur Statistik startas.
 ```sh
 ./gradlew fitnesseTest
 ```
-eller med följande kommando om Statistik har startats med Intygstjänst
-```sh
-./gradlew fitnesseTest -DbaseUrl="http://localhost:9101"
-```
 
 ## För att köra FitNesse-testerna  från FitNesse wiki:
 
