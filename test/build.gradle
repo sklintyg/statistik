@@ -17,7 +17,27 @@ tasks.withType(GroovyCompile) {
     groovyOptions.encoding = "UTF-8" // for Groovy compilation
 }
 
-task setupIntygForProtractor(dependsOn: 'classes', type: JavaExec) {
+task pathingJar(type: Jar) {
+    dependsOn(configurations.runtime)
+    archiveAppendix.set("pathing")
+
+    doFirst {
+        manifest {
+            def classpath = configurations.runtime.files.stream()
+                    .map({it.toURI().toURL().toString().replaceFirst("file:/", "/")})
+                    .collect()
+                    .join(" ")
+
+
+            def mainClass = "se.inera.statistics.InsertIntygHelper"
+
+            attributes["Class-Path"] = classpath
+            attributes["Main-Class"] = mainClass
+        }
+    }
+}
+
+task setupIntygForProtractor(dependsOn: [classes, pathingJar], type: JavaExec) {
 
     def statisticsUrl = 'http://localhost:8050/'
     def baseUrl = System.properties['baseUrl'] ?: "http://localhost:8050/"
@@ -25,8 +45,14 @@ task setupIntygForProtractor(dependsOn: 'classes', type: JavaExec) {
     jvmArgs = ['-DbaseUrl=' + baseUrl]
 
     main = 'se.inera.statistics.InsertIntygHelper'
-    classpath = sourceSets.main.runtimeClasspath
+    // classpath = sourceSets.main.runtimeClasspath
+    classpath = files(
+            "${projectDir}/build/classes/groovy/main",
+            "${projectDir}/src/main/resources",
+            "${projectDir}/build/resources/main",
+            pathingJar.archiveFile)
 }
+
 
 task protractorTest(type: NodeTask, dependsOn: [npmInstall, setupIntygForProtractor]) {
     outputs.upToDateWhen { false }
