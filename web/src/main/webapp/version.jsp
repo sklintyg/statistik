@@ -52,7 +52,13 @@
 
     <div>Application version: <span class="label label-info">${versionUtil.projectVersion}</span></div>
     <div>Application build time: <span class="label label-info">${versionUtil.buildTime}</span></div>
-    <div>Spring profiles: <span class="label label-info"><%= System.getProperty("spring.profiles.active") %></span></div>
+    <div>
+      Spring profiles:
+      <div>
+        <span style="margin-left: 20px;">From SYSTEM (Primary):</span> <span class="label label-info"><%= System.getProperty("spring.profiles.active") %></span><br/>
+        <span style="margin-left: 20px;">From ENV (Secondary):</span> <span class="label label-info"><%= System.getenv("SPRING_PROFILES_ACTIVE") %></span>
+      </div>
+    </div>
   </div>
   <div class="muted">Server now time: <%= LocalDateTime.now() %></div>
 </div>

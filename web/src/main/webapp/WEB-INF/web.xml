@@ -107,7 +107,7 @@
     </context-param>
     <context-param>
         <param-name>logbackConfigParameter</param-name>
-        <param-value>certificate.logback.file</param-value>
+        <param-value>logback.file</param-value>
     </context-param>
 
     <servlet>

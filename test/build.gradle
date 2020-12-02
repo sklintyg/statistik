@@ -77,44 +77,6 @@ fitnesse {
     extraProperties = ["baseUrl": System.properties['baseUrl'] ?: "http://localhost:8050/"]
 }
 
-if (project.hasProperty('runFitnesse')) {
-    apply plugin: 'org.gretty'
-    gretty {
-        def baseUrl = 'http://localhost:8050'
-        httpPort = 8050
-
-        contextPath = '/'
-        contextConfigFile = project(":statistik-web").projectDir.path + "/src/main/webapp/WEB-INF/jetty-context.xml"
-        jvmArgs = ["-Dcertificate.logback.file=${projectDir}/src/main/resources/logback-test.xml",
-                   '-DbaseUrl=' + baseUrl,
-                   '-Dspring.profiles.active=dev,testapi,embedded,hsa-stub,security-fake,skipTestIntygInjection',
-                   '-Dstatistics.config.file=' + project(":statistik-web").projectDir.path + '/src/main/resources/default.properties',
-                   '-Dstatistics.credentials.file=' + project(":statistik-web").projectDir.path + '/src/main/resources/dev-credentials.properties',
-                   '-Dstatistics.resources.folder=' + projectDir + '/../src/main/resources'
-        ]
-    }
-
-    farms {
-        farm 'Fitnesse', {
-            webapp ":statistik-web"
-            webapp project
-            if (project.hasProperty('runFitnesse') && project.hasProperty('runProtractor')) {
-                integrationTestTask = 'allIntegrationTests'
-            } else if (project.hasProperty('runFitnesse')) {
-                integrationTestTask = 'fitnesseTest'
-            } else {
-                integrationTestTask = 'protractorTest'
-            }
-        }
-    }
-
-    dependencies {
-        gretty "mysql:mysql-connector-java"
-        gretty "org.apache.activemq:activemq-broker"
-        gretty "org.apache.tomcat:tomcat-catalina:${tomcatVersion}"
-    }
-}
-
 clean {
     delete "${projectDir}/src/test/fitnesse/FitNesseRoot/ErrorLogs"
     delete "${projectDir}/src/test/fitnesse/FitNesseRoot/files/testResults"
