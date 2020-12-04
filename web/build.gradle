@@ -42,8 +42,8 @@ gretty {
     def instance = System.properties['instance'] ?: '0'
     def useHttpPort = 8050 + (instance as Integer)
     def useInternalHttpPort = 8150 + (instance as Integer)
+    def applicationDir = "${rootProject.projectDir}/devops/dev"
     def baseUrl = "http://localhost:${useHttpPort}"
-    def jvmArgSpringProfiles = '-Dspring.profiles.active=dev,caching-enabled,testapi,hsa-stub,wc-hsa-stub,security-both,noprocessing,ia-stub'
 
     servletContainer = 'tomcat9'
     contextPath = '/'
@@ -59,20 +59,19 @@ gretty {
     reloadOnClassChange = false
     reloadOnConfigChange = false
     reloadOnLibChange = false
-    serverConfigFile = "tomcat-gretty-${instance}.xml"
+    serverConfigFile = "tomcat-gretty.xml"
 
-    jvmArgs = [
-            jvmArgSpringProfiles,
-            "-Dcatalina.base=${buildDir}/catalina.base",
-            '-Dcertificate.logback.file=classpath:logback-dev.xml',
-            '-Dsaml.resource.dir=' + projectDir + '/../devops/dev',
-            '-DbaseUrl=' + baseUrl,
-            '-Dstatistics.test.max.intyg=200',
-            '-Dstatistics.config.file=' + projectDir + '/src/test/resources/dev.properties',
-            '-Dstatistics.credentials.file=' + projectDir + '/src/test/resources/dev-credentials.properties',
-            '-Dstatistics.resources.folder=classpath:',
-            "-Ddev.http.port=${useHttpPort}",
-            "-Ddev.http.port.internal=${useInternalHttpPort}"
+    jvmArgs = ["-Dcatalina.base=${buildDir}/catalina.base",
+               "-Dspring.profiles.active=dev,caching-enabled,testapi,hsa-stub,wc-hsa-stub,security-both,noprocessing,ia-stub",
+               "-Dlogback.file=${applicationDir}/config/logback-dev.xml",
+               "-Djava.awt.headless=true",
+               "-Dfile.encoding=UTF-8",
+               "-Dstatistics.test.max.intyg=200",
+               "-DbaseUrl=http://localhost:${useHttpPort}",
+               "-Dapplication.dir=${applicationDir}",
+               "-Ddev.config.file=${applicationDir}/config/application-dev.properties",
+               "-Ddev.http.port=${useHttpPort}",
+               "-Ddev.http.port.internal=${useInternalHttpPort}"
     ]
 }
 

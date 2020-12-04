@@ -21,11 +21,10 @@ The following configuration properties have been added:
 
 ### 1.4 Configuration of reference data
 
-The main update is activation of the new reference data concept (master data for shared configurations). Refdata is provided as a JAR file and configured with the `REFDATA_URL` and `STATISTICS_RESOURCES_FOLDER ` parameters. Normally the default value of `STATISTICS_RESOURCES_FOLDER ` should be set to  `classpath:`. Three configuration updates is required in order to activate the new refdata:
+The main update is activation of the new reference data concept (master data for shared configurations). Refdata is provided as a JAR file and configured with the `REFDATA_URL` parameter. Two configuration updates are required in order to activate the new refdata:
 
 1. Parameter `REFDATA_URL` shall be set to the actual location of the refdata JAR artefact.
-2. Parameter `STATISTICS_RESOURCES_FOLDER ` or `-Dstatistics.resources.folder=...` in `secret-env.sh` shall be set to `classpath:`. Though, it's recommended to remove this parameter from `secret-env.sh`. 
-3. The old `resources.zip` must be removed in order to enable the `REFDATA_URL` setting. 
+2. The old `resources.zip` must be removed in order to enable the `REFDATA_URL` setting. 
 
 Latest builds of refdata can be downloaded from the Inera Nexus server. 
 
@@ -194,7 +193,6 @@ Open _&lt;env>/configmap-vars.yaml_ and replace example `<value>` with expected 
 	SPRING_PROFILES_ACTIVE: "prod,caching-enabled,redis-sentinel"
 	REFDATA_URL: "file://localhost/opt/statistik/env/refdata-1.0.0.65.jar"
 	LOGIN_URL: "login"
-	STATISTICS_RESOURCES_FOLDER: "classpath:"
 	REDIS_HOST: "<hostname1[;hostname2;...]>"
 	REDIS_PORT: "<port1[;port2;...]>"
 	REDIS_SENTINEL_MASTER_NAME: "<name>"
@@ -202,19 +200,14 @@ Open _&lt;env>/configmap-vars.yaml_ and replace example `<value>` with expected 
 	ACTIVEMQ_RECEIVER_QUEUE_NAME: "statistik.utlatande.queue"
 	DB_SERVER: "<hostname>"
 	DB_NAME: "${database.name}"
-	SAML_KEYSTORE_FILE: "file:${certificate.folder}/<file>"
+	SAML_KEYSTORE_FILE: "file:${application.dir}/certifikat/<file>"
 	SAML_KEYSTORE_ALIAS: "<alias>"
-	SAML_TRUSTSTORE_FILE: file:${certificate.folder}/<file>"
-	NTJP_WS_CERTIFICATE_FILE: "${certificate.folder}/<file>"
-	NTJP_WS_TRUSTSTORE_FILE: "${certificate.folder}/<file>"
+	SAML_TRUSTSTORE_FILE: file:${application.dir}/certifikat/<file>"
+	NTJP_WS_CERTIFICATE_FILE: "${application.dir}/certifikat/<file>"
+	NTJP_WS_TRUSTSTORE_FILE: "${application.dir}/certifikat/<file>"
 	NTJP_WS_CERTIFICATE_TYPE: [ "JKS" | "PKCS12" ]
 	NTJP_WS_TRUSTSTORE_TYPE: [ "JKS" | "PKCS12" ]
-   
-Note: Other properties might be used to define a `<value>`. As an example is the path to certificates indicated by the `certificate.folder` property and the truststore file might be defined like:
- 
-	NTJP_WS_TRUSTSTORE_FILE: "${certificate.folder}/truststore.jks"
-    
-        
+       
 The _&lt;env>/config/recipients.json_ file may need to be updated with any new intyg recipients.
     
 ##### 3.4.1 Redis Sentinel Configuration
