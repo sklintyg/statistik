@@ -27,9 +27,6 @@
 
     <context:component-scan base-package="se.inera.statistics.web.service.monitoring" />
 
-    <context:property-placeholder location="classpath:application.properties, file:${dev.config.file}, classpath*:version.properties"
-                                  order="1" ignore-resource-not-found="true" ignore-unresolvable="true"/>
-
     <beans profile="hsa-stub">
         <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>
         <bean class="se.inera.statistics.service.hsa.HsaServiceStub"/>
@@ -56,9 +53,6 @@
     </beans>
 
     <beans>
-        <context:property-placeholder location="classpath*:application-context.properties" order="2"
-                                      ignore-resource-not-found="false" ignore-unresolvable="false"/>
-
         <bean id="loginVisibility" class="se.inera.auth.LoginVisibility"/>
 
         <bean id="applicationContextProvider" class="se.inera.auth.ApplicationContextProvider"/>

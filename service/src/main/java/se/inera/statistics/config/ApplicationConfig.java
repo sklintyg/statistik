@@ -51,7 +51,7 @@ import se.inera.intyg.infra.security.common.cookie.IneraCookieSerializer;
 @PropertySources({
     @PropertySource("classpath:application.properties"),
     @PropertySource("classpath:version.properties"),
-    @PropertySource(ignoreResourceNotFound = true, value = "file:${dev.config.file}"),
+    @PropertySource(ignoreResourceNotFound = true, value = "file:${dev.config.file}")
 })
 public class ApplicationConfig implements TransactionManagementConfigurer {
 
