@@ -22,12 +22,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,52 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import org.w3.wsaddressing10.AttributedURIType;
-import se.inera.ifv.hsaws.v3.HsaWsFault;
-import se.inera.ifv.hsaws.v3.HsaWsResponderInterface;
-import se.inera.ifv.hsawsresponder.v3.GeoCoord;
-import se.inera.ifv.hsawsresponder.v3.GeoCoordEnum;
-import se.inera.ifv.hsawsresponder.v3.GetCareUnitListResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetCareUnitMembersResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetCareUnitResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetHospLastUpdateResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetHospLastUpdateType;
-import se.inera.ifv.hsawsresponder.v3.GetHospPersonResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetHospPersonType;
-import se.inera.ifv.hsawsresponder.v3.GetHsaPersonResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetHsaPersonType;
-import se.inera.ifv.hsawsresponder.v3.GetHsaUnitResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetInformationListResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetInformationListType;
-import se.inera.ifv.hsawsresponder.v3.GetMiuForPersonResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetMiuForPersonType;
-import se.inera.ifv.hsawsresponder.v3.GetPriceUnitsForAuthResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetPriceUnitsForAuthType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsNamesResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsNamesType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonType;
-import se.inera.ifv.hsawsresponder.v3.HandleCertifierResponseType;
-import se.inera.ifv.hsawsresponder.v3.HandleCertifierType;
-import se.inera.ifv.hsawsresponder.v3.HsawsSimpleLookupResponseType;
-import se.inera.ifv.hsawsresponder.v3.HsawsSimpleLookupType;
-import se.inera.ifv.hsawsresponder.v3.IsAuthorizedToSystemResponseType;
-import se.inera.ifv.hsawsresponder.v3.IsAuthorizedToSystemType;
-import se.inera.ifv.hsawsresponder.v3.LookupHsaObjectType;
-import se.inera.ifv.hsawsresponder.v3.MiuInformationType;
-import se.inera.ifv.hsawsresponder.v3.PingResponseType;
-import se.inera.ifv.hsawsresponder.v3.PingType;
-import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit;
-import se.inera.ifv.hsawsresponder.v3.StatisticsNameInfo;
-import se.inera.ifv.hsawsresponder.v3.VpwGetPublicUnitsResponseType;
-import se.inera.ifv.hsawsresponder.v3.VpwGetPublicUnitsType;
-import se.inera.statistics.hsa.model.HsaIdLakare;
-import se.inera.statistics.hsa.model.Vardenhet;
-import se.inera.statistics.hsa.services.Medarbetaruppdrag;
+import se.inera.statistics.integration.hsa.model.HsaIdLakare;
 import se.inera.statistics.service.report.model.Kommun;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.VerksamhetsTyp;
@@ -89,7 +42,7 @@ import se.inera.statistics.service.report.model.VerksamhetsTyp;
 @Component
 @Profile({"hsa-stub"})
 @Primary
-public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjectable {
+public class HsaWsResponderMock implements HsaDataInjectable {
 
     private static final int POSITIVE_MASK = 0x7fffffff;
     private static final int VERKSAMHET_MODULO = 7;
@@ -201,7 +154,7 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     }
 
     public ObjectNode createPersonal(HsaIdLakare id, String firstName, String lastName, HsaKon kon, int age,
-        List<String> befattnings, boolean skyddad) {
+                                     List<String> befattnings, boolean skyddad) {
         ObjectNode root = factory.objectNode();
         root.put("id", id.getId());
         root.set("initial", null);
@@ -327,96 +280,6 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         this.hsaKey = hsaKey;
     }
 
-    @Override
-    public VpwGetPublicUnitsResponseType vpwGetPublicUnits(AttributedURIType logicalAddress, AttributedURIType id,
-        VpwGetPublicUnitsType parameters) throws HsaWsFault {
-        throw new UnusedMethodException();
-    }
-
-    @Override
-    public GetCareUnitResponseType getCareUnit(AttributedURIType logicalAddress, AttributedURIType id, LookupHsaObjectType parameters)
-        throws HsaWsFault {
-        throw new UnusedMethodException();
-    }
-
-    @Override
-    public GetStatisticsPersonResponseType getStatisticsPerson(AttributedURIType logicalAddress, AttributedURIType id,
-        GetStatisticsPersonType parameters) throws HsaWsFault {
-        GetStatisticsPersonResponseType resp = new GetStatisticsPersonResponseType();
-        String hsaId = parameters.getHsaIdentity();
-        if (!shouldExistInHsa(hsaId)) {
-            return null;
-        }
-        resp.setHsaIdentity(hsaId);
-        JsonNode personal = getOrCreatePersonal(getHsaKey(hsaId));
-        resp.setGender(personal.get("kon").textValue());
-        resp.setAge(personal.get(ALDER).textValue());
-        resp.setIsProtectedPerson(personal.get(SKYDDAD).asBoolean(false));
-        GetStatisticsPersonResponseType.PaTitleCodes titleCodes = new GetStatisticsPersonResponseType.PaTitleCodes();
-        Iterator<JsonNode> befattnings = personal.get(BEFATTNING).iterator();
-        while (befattnings.hasNext()) {
-            JsonNode befattning = befattnings.next();
-            titleCodes.getPaTitleCode().add(befattning.textValue());
-        }
-        resp.setPaTitleCodes(titleCodes);
-        return resp;
-    }
-
-    @Override
-    public IsAuthorizedToSystemResponseType isAuthorizedToSystem(AttributedURIType logicalAddress, AttributedURIType id,
-        IsAuthorizedToSystemType parameters) throws HsaWsFault {
-        throw new UnusedMethodException();
-    }
-
-    @Override
-    public GetCareUnitListResponseType getCareUnitList(AttributedURIType logicalAddress, AttributedURIType id,
-        LookupHsaObjectType parameters) throws HsaWsFault {
-        throw new UnusedMethodException();
-    }
-
-    @Override
-    public GetHospLastUpdateResponseType getHospLastUpdate(AttributedURIType logicalAddress, AttributedURIType id,
-        GetHospLastUpdateType parameters) throws HsaWsFault {
-        throw new UnusedMethodException();
-    }
-
-    @Override
-    public GetHsaUnitResponseType getHsaUnit(AttributedURIType logicalAddress, AttributedURIType id, LookupHsaObjectType parameters)
-        throws HsaWsFault {
-        throw new UnusedMethodException();
-    }
-
-    @Override
-    public GetPriceUnitsForAuthResponseType getPriceUnitsForAuth(AttributedURIType logicalAddress, AttributedURIType id,
-        GetPriceUnitsForAuthType parameters) throws HsaWsFault {
-        throw new UnusedMethodException();
-    }
-
-    @Override
-    public GetHsaPersonResponseType getHsaPerson(AttributedURIType logicalAddress, AttributedURIType id, GetHsaPersonType parameters)
-        throws HsaWsFault {
-        throw new UnusedMethodException();
-    }
-
-    @Override
-    public GetStatisticsNamesResponseType getStatisticsNames(AttributedURIType logicalAddress, AttributedURIType id,
-        GetStatisticsNamesType parameters) throws HsaWsFault {
-        String hsaid = parameters.getHsaIdentities().getHsaIdentity().get(0);
-        if (!shouldExistInHsa(hsaid)) {
-            return null;
-        }
-        GetStatisticsNamesResponseType resp = new GetStatisticsNamesResponseType();
-        GetStatisticsNamesResponseType.StatisticsNameInfos nameInfos = new GetStatisticsNamesResponseType.StatisticsNameInfos();
-        StatisticsNameInfo nameInfo = new StatisticsNameInfo();
-        JsonNode personal = getOrCreatePersonal(getHsaKey(hsaid));
-        nameInfo.setPersonGivenName(personal.get("tilltalsnamn").textValue());
-        nameInfo.setPersonMiddleAndSurName(personal.get(EFTERNAMN).textValue());
-        nameInfo.setHsaIdentity(hsaid);
-        nameInfos.getStatisticsNameInfo().add(nameInfo);
-        resp.setStatisticsNameInfos(nameInfos);
-        return resp;
-    }
-
     private HSAKey getHsaKey(String hsaid) {
         if (this.hsaKey != null) {
             return this.hsaKey;
@@ -424,142 +287,8 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         return new HSAKey(hsaid, hsaid, hsaid);
     }
 
-    @Override
-    public PingResponseType ping(AttributedURIType logicalAddress, AttributedURIType id, PingType parameters) throws HsaWsFault {
-        final PingResponseType resp = new PingResponseType();
-        resp.setMessage("");
-        resp.setResponseTime(new BigInteger("1"));
-        return resp;
-    }
-
-    @Override
-    public GetMiuForPersonResponseType getMiuForPerson(AttributedURIType logicalAddress, AttributedURIType id,
-        GetMiuForPersonType parameters) throws HsaWsFault {
-        GetMiuForPersonResponseType response = new GetMiuForPersonResponseType();
-
-        for (Medarbetaruppdrag medarbetaruppdrag : hsaServiceStub.getMedarbetaruppdrag()) {
-            if (medarbetaruppdrag.getHsaId().getId().equals(parameters.getHsaIdentity())) {
-                response.getMiuInformation().addAll(
-                    miuInformationTypesForEnhetsIds(medarbetaruppdrag));
-            }
-        }
-        return response;
-    }
-
-    private List<MiuInformationType> miuInformationTypesForEnhetsIds(Medarbetaruppdrag medarbetaruppdrag) {
-        List<MiuInformationType> informationTypes = new ArrayList<>();
-
-        for (Vardenhet enhet : hsaServiceStub.getVardenhets()) {
-            if (medarbetaruppdrag.getEnhetIds().contains(enhet.getId())) {
-                MiuInformationType miuInfo = new MiuInformationType();
-                miuInfo.setHsaIdentity(medarbetaruppdrag.getHsaId().getId());
-                miuInfo.setMiuPurpose(medarbetaruppdrag.getAndamal());
-                miuInfo.setCareUnitHsaIdentity(enhet.getId().getId());
-                miuInfo.setCareUnitName(enhet.getNamn());
-                miuInfo.setCareGiver(enhet.getVardgivarId().getId());
-                miuInfo.setCareGiverName(enhet.getVardgivarNamn());
-                informationTypes.add(miuInfo);
-            }
-        }
-
-        return informationTypes;
-    }
-
-    @Override
-    public GetStatisticsCareGiverResponseType getStatisticsCareGiver(AttributedURIType logicalAddress, AttributedURIType id,
-        GetStatisticsCareGiverType parameters) throws HsaWsFault {
-        String hsaid = parameters.getHsaIdentity();
-        GetStatisticsCareGiverResponseType resp = new GetStatisticsCareGiverResponseType();
-        resp.setHsaIdentity(hsaid);
-        return resp;
-    }
-
-    @Override
-    public HsawsSimpleLookupResponseType hsawsSimpleLookup(AttributedURIType logicalAddress, AttributedURIType id,
-        HsawsSimpleLookupType parameters) throws HsaWsFault {
-        throw new UnusedMethodException();
-    }
-
-    @Override
-    public GetStatisticsHsaUnitResponseType getStatisticsHsaUnit(AttributedURIType logicalAddress, AttributedURIType id,
-        GetStatisticsHsaUnitType parameters) throws HsaWsFault {
-        String hsaid = parameters.getHsaIdentity();
-        HSAKey key = getHsaKey(hsaid);
-        if (shouldExistInHsa(hsaid)) {
-            GetStatisticsHsaUnitResponseType resp = new GetStatisticsHsaUnitResponseType();
-            resp.setStatisticsUnit(createHsaUnit(key, false));
-            resp.setStatisticsCareUnit(createHsaUnit(key, true));
-            nextLanCode = null;
-            nextKommunCode = null;
-            nextEnhetName = null;
-            nextHuvudenhetId = null;
-            return resp;
-        }
-
-        nextLanCode = null;
-        nextKommunCode = null;
-        nextEnhetName = null;
-        nextHuvudenhetId = null;
-        return null;
-    }
-
     public static boolean shouldExistInHsa(String hsaId) {
         return hsaId != null && !hsaId.startsWith("EJHSA") && !"UTANENHETSID".equals(hsaId);
-    }
-
-    private StatisticsHsaUnit createHsaUnit(HSAKey key, boolean isHuvudenhet) {
-        JsonNode enhet = createEnhet(key, isHuvudenhet);
-        StatisticsHsaUnit unit = new StatisticsHsaUnit();
-        unit.setHsaIdentity(enhet.get("id").textValue());
-        StatisticsHsaUnit.BusinessTypes businessTypes = new StatisticsHsaUnit.BusinessTypes();
-        businessTypes.getBusinessType().add(VerksamhetsTyp.VARDCENTRAL_ID);
-        unit.setBusinessTypes(businessTypes);
-        StatisticsHsaUnit.Managements value = new StatisticsHsaUnit.Managements();
-        value.getManagement().add("Landsting/Region");
-        unit.setManagements(value);
-        GeoCoord geoCoord = new GeoCoord();
-        geoCoord.setType(GeoCoordEnum.RT_90);
-        geoCoord.setE("1");
-        geoCoord.setN("1");
-        geoCoord.setX("1");
-        geoCoord.setY("1");
-        unit.setGeographicalCoordinatesRt90(geoCoord);
-        String lan = createLan(key);
-        unit.setCountyCode(lan);
-        unit.setCounty(LAN.getNamn(lan));
-        String kommun = createKommun(key, lan);
-        unit.setMunicipalityCode(kommun);
-        unit.setMunicipality(KOMMUN.getNamn(kommun));
-        unit.setCareGiverHsaIdentity(enhet.get("vgid").textValue());
-        String[] verksamhet = createVerksamhet(key);
-        StatisticsHsaUnit.BusinessClassificationCodes classificationCodes = new StatisticsHsaUnit.BusinessClassificationCodes();
-        classificationCodes.getBusinessClassificationCode().addAll(Arrays.asList(verksamhet));
-        unit.setBusinessClassificationCodes(classificationCodes);
-        return unit;
-    }
-
-    @Override
-    public GetCareUnitMembersResponseType getCareUnitMembers(AttributedURIType logicalAddress, AttributedURIType id,
-        LookupHsaObjectType parameters) throws HsaWsFault {
-        throw new UnusedMethodException();
-    }
-
-    @Override
-    public GetHospPersonResponseType getHospPerson(AttributedURIType logicalAddress, AttributedURIType id, GetHospPersonType parameters)
-        throws HsaWsFault {
-        throw new UnusedMethodException();
-    }
-
-    @Override
-    public GetInformationListResponseType getInformationList(AttributedURIType logicalAddress, AttributedURIType id,
-        GetInformationListType parameters) throws HsaWsFault {
-        throw new UnusedMethodException();
-    }
-
-    @Override
-    public HandleCertifierResponseType handleCertifier(AttributedURIType logicalAddress, AttributedURIType id,
-        HandleCertifierType parameters) throws HsaWsFault {
-        throw new UnusedMethodException();
     }
 
     private static class UnusedMethodException extends RuntimeException {

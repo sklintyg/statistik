@@ -25,7 +25,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.integration.hsa.model.HsaIdUser;
 
 /**
  * Keeps information about last file upload action for region.

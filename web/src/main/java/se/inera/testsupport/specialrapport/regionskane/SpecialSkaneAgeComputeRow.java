@@ -18,7 +18,7 @@
  */
 package se.inera.testsupport.specialrapport.regionskane;
 
-import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
 

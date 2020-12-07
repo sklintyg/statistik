@@ -32,7 +32,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.caching.Cache;
 import se.inera.statistics.service.caching.SjukfallGroupCacheKey;
 import se.inera.statistics.service.report.model.AvailableFilters;

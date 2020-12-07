@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.service.report.util.Icd10;

@@ -19,7 +19,7 @@
 package se.inera.statistics.service.warehouse;
 
 import java.util.Collection;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.report.model.Range;
 
 public class IntygCommonFilter {

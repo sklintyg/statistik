@@ -38,9 +38,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdLakare;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdLakare;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.queue.JmsReceiver;
 import se.inera.statistics.service.testsupport.UtlatandeBuilder;
 

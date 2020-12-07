@@ -25,7 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.Icd10RangeType;
 

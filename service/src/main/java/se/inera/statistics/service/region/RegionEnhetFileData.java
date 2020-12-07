@@ -20,8 +20,8 @@ package se.inera.statistics.service.region;
 
 import java.util.Collections;
 import java.util.List;
-import se.inera.statistics.hsa.model.HsaIdUser;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.HsaIdUser;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
 public class RegionEnhetFileData {
 

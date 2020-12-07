@@ -20,7 +20,7 @@ package se.inera.statistics.service.caching;
 
 import java.time.LocalDate;
 import java.util.Date;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.FilterPredicates;
 

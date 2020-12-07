@@ -18,8 +18,8 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdLakare;
 import se.inera.statistics.service.report.model.Kon;
 
 public class FactBuilder {

@@ -22,8 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import se.inera.intyg.infra.monitoring.logging.MarkerFilter;
-import se.inera.statistics.hsa.model.HsaIdUser;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.HsaIdUser;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
 @Service("webMonitoringLogService")
 public class MonitoringLogServiceImpl implements MonitoringLogService {

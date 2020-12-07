@@ -18,7 +18,7 @@
  */
 package se.inera.statistics.service.region;
 
-import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 
 public class RegionEnhetFileDataRow {
 

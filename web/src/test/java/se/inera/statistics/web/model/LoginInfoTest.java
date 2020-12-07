@@ -28,9 +28,9 @@ import java.util.List;
 import org.junit.Test;
 import se.inera.auth.model.User;
 import se.inera.auth.model.UserAccessLevel;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdUser;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdUser;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.region.RegionsVardgivareStatus;
 
 public class LoginInfoTest {

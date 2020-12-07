@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.HSAServiceHelper;
 import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.hsa.HsaInfo;

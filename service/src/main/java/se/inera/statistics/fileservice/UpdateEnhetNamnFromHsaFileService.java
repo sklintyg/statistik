@@ -25,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
-import se.inera.ifv.hsawsresponder.v3._31._1.ListGetHsaUnitsResponseType;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.statistics.service.processlog.EnhetManager;
 
@@ -77,7 +76,7 @@ public class UpdateEnhetNamnFromHsaFileService {
         LOG.info("Updating enhet names");
         int updateCount = enhetManager.updateName(resp.getHsaUnits());
 
-        final int enheterCount = resp.getHsaUnits().getHsaUnit().size();
+        final int enheterCount = resp.getHsaUnits().size();
         final long end = System.currentTimeMillis();
         final String totTime = String.valueOf(end - start);
         LOG.info(updateCount + " enheter uppdated of " + enheterCount + " enheter in " + totTime + " milliseconds");

@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import se.inera.statistics.hsa.model.HsaIdAny;
+import se.inera.statistics.integration.hsa.model.HsaIdAny;
 
 public final class KonDataResponses {
 

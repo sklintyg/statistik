@@ -37,8 +37,8 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.LoggerFactory;
-import se.inera.statistics.hsa.model.HsaIdUser;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.HsaIdUser;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MonitoringLogServiceImplTest {

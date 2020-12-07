@@ -19,7 +19,7 @@
 package se.inera.statistics.web.model;
 
 import se.inera.auth.model.UserAccessLevel;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.region.RegionsVardgivareStatus;
 
 public class LoginInfoVg {

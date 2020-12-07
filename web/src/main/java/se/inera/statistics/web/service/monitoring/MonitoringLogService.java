@@ -18,8 +18,8 @@
  */
 package se.inera.statistics.web.service.monitoring;
 
-import se.inera.statistics.hsa.model.HsaIdUser;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.HsaIdUser;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
 /**
  * Interface used when logging to monitoring file. Used to ensure that the log entries are uniform and easy to parse.

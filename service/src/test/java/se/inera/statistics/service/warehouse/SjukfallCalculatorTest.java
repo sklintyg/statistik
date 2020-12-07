@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import org.junit.Test;
 import org.springframework.util.ReflectionUtils;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.warehouse.sjukfallcalc.SjukfallPerPeriodCalculator;
 

@@ -27,8 +27,8 @@ import java.util.Set;
 import org.apache.commons.text.translate.CharSequenceTranslator;
 import org.apache.commons.text.translate.UnicodeEscaper;
 import org.apache.commons.text.translate.UnicodeUnescaper;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Enhet;
 
 @JsonAutoDetect(

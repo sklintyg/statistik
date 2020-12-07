@@ -28,10 +28,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
-import se.inera.statistics.hsa.model.GetStatisticsCareGiverResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsHsaUnitResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsNamesResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsPersonResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsCareGiverResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsHsaUnitResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsNamesResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsPersonResponseDto;
 import se.inera.statistics.service.caching.Cache;
 
 public class HsaWebServiceCachedTest {

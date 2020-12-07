@@ -21,8 +21,8 @@ package se.inera.statistics.service.warehouse;
 import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import se.inera.statistics.hsa.model.HsaIdAny;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdAny;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 
 public class FilterPredicates {
 

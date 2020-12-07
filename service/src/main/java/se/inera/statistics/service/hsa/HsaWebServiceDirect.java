@@ -19,11 +19,11 @@
 package se.inera.statistics.service.hsa;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
-import se.inera.statistics.hsa.model.GetStatisticsCareGiverResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsHsaUnitResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsNamesResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsPersonResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsCareGiverResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsHsaUnitResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsNamesResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsPersonResponseDto;
+import se.inera.statistics.integration.hsa.services.HsaStatisticsServiceImpl;
 
 /**
  * This implementation will simply delegate all calls directly to HSA.
@@ -31,17 +31,7 @@ import se.inera.statistics.hsa.model.GetStatisticsPersonResponseDto;
 public class HsaWebServiceDirect implements HsaWebService {
 
     @Autowired
-    private HSAWebServiceCalls service;
-
-    @Override
-    public void setHsaLogicalAddress(String hsaLogicalAddress) {
-        service.setHsaLogicalAddress(hsaLogicalAddress);
-    }
-
-    @Override
-    public void callPing() {
-        service.callPing();
-    }
+    private HsaStatisticsServiceImpl service;
 
     @Override
     public GetStatisticsHsaUnitResponseDto getStatisticsHsaUnit(String unitId) {

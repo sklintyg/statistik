@@ -26,11 +26,11 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
-import se.inera.statistics.hsa.model.GetStatisticsCareGiverResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsHsaUnitResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsNamesResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsPersonResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsCareGiverResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsHsaUnitResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsNamesResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsPersonResponseDto;
+import se.inera.statistics.integration.hsa.services.HsaStatisticsServiceImpl;
 
 /**
  * This class is meant to be used when a lot of calls to HSA is expected during a short period of time,
@@ -90,17 +90,7 @@ public class HsaWebServiceCached implements HsaWebService {
             });
 
     @Autowired
-    private HSAWebServiceCalls service;
-
-    @Override
-    public void setHsaLogicalAddress(String hsaLogicalAddress) {
-        service.setHsaLogicalAddress(hsaLogicalAddress);
-    }
-
-    @Override
-    public void callPing() {
-        service.callPing();
-    }
+    private HsaStatisticsServiceImpl service;
 
     @Override
     public GetStatisticsHsaUnitResponseDto getStatisticsHsaUnit(String unitId) {

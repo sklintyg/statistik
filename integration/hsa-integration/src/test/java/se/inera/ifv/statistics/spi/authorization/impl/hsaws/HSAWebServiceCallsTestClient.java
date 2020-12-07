@@ -32,7 +32,6 @@ public class HSAWebServiceCallsTestClient {
             new String[]{"HSAWebServiceCallsTest-applicationContext.xml", "hsa-services-config.xml"});
         HSAWebServiceCalls client = (HSAWebServiceCalls) ctx.getBean("wsCalls");
         try {
-            client.callPing();
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

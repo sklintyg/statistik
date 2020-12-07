@@ -28,7 +28,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.web.service.endpoints.ChartDataService;
 
@@ -61,13 +60,10 @@ public class HealthMonitor extends Collector {
     @Autowired
     private ChartDataService chartDataService;
 
-    @Autowired
-    private HSAWebServiceCalls hsaService;
-
     @PersistenceContext
     private EntityManager entityManager;
 
-    private Gauge uptime, workloadStatus, dbAccessible, chartserviceAccessible, hsaAccessible;
+    private Gauge uptime, workloadStatus, dbAccessible, chartserviceAccessible;
     private AtomicBoolean initialized = new AtomicBoolean();
     private long startTime;
 
@@ -87,7 +83,6 @@ public class HealthMonitor extends Collector {
         this.workloadStatus = register("workload_status", "Current workload status", VALUE);
         this.dbAccessible = register("db_accessible", "0 == OK 1 == NOT OK", NORMAL);
         this.chartserviceAccessible = register("chartservice_accessible", "0 == OK 1 == NOT OK", NORMAL);
-        this.hsaAccessible = register("hsa_accessible", "0 == OK 1 == NOT OK", NORMAL);
         this.register();
         this.initialized.set(true);
     }
@@ -97,7 +92,6 @@ public class HealthMonitor extends Collector {
         if (initialized.get()) {
             uptime.set(getUptime());
             dbAccessible.set(checkDbConnection() ? 0 : 1);
-            hsaAccessible.set(getHsaStatus() ? 0 : 1);
             chartserviceAccessible.set(getOverviewStatus() ? 0 : 1);
             workloadStatus.set(calcCoordinator.getWorkloadPercentage());
         }
@@ -121,15 +115,6 @@ public class HealthMonitor extends Collector {
     private boolean getOverviewStatus() {
         try {
             chartDataService.getOverviewData();
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    private boolean getHsaStatus() {
-        try {
-            hsaService.callPing();
             return true;
         } catch (Exception e) {
             return false;

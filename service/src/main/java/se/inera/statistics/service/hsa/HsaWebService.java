@@ -18,16 +18,12 @@
  */
 package se.inera.statistics.service.hsa;
 
-import se.inera.statistics.hsa.model.GetStatisticsCareGiverResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsHsaUnitResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsNamesResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsPersonResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsCareGiverResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsHsaUnitResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsNamesResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsPersonResponseDto;
 
 public interface HsaWebService {
-
-    void setHsaLogicalAddress(String hsaLogicalAddress);
-
-    void callPing();
 
     GetStatisticsHsaUnitResponseDto getStatisticsHsaUnit(String unitId);
 

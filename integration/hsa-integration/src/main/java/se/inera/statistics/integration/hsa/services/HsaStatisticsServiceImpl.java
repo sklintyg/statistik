@@ -1,0 +1,177 @@
+package se.inera.statistics.integration.hsa.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import se.inera.ifv.statistics.spi.authorization.impl.HsaCommunicationException;
+import se.inera.intyg.infra.integration.hsatk.model.HealthCareProvider;
+import se.inera.intyg.infra.integration.hsatk.model.HealthCareUnit;
+import se.inera.intyg.infra.integration.hsatk.model.PersonInformation;
+import se.inera.intyg.infra.integration.hsatk.model.Unit;
+import se.inera.intyg.infra.integration.hsatk.services.HsatkEmployeeService;
+import se.inera.intyg.infra.integration.hsatk.services.HsatkOrganizationService;
+import se.inera.statistics.integration.hsa.model.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class HsaStatisticsServiceImpl implements HsaStatisticsService{
+
+    @Autowired
+    HsatkOrganizationService hsatkOrganizationService;
+
+    @Autowired
+    HsatkEmployeeService hsatkEmployeeService;
+
+    @Override
+    public GetStatisticsCareGiverResponseDto getStatisticsCareGiver(String careGiverId) {
+        try {
+            List<HealthCareProvider> healthCareProviders = hsatkOrganizationService.getHealthCareProvider(careGiverId, null);
+
+            return toStatisticsCareGiverDto(healthCareProviders.get(0));
+        } catch (Exception ex) {
+            throw new HsaCommunicationException("Could not call getStatisticsCareGiver for " + careGiverId, ex);
+        }
+    }
+
+    private GetStatisticsCareGiverResponseDto toStatisticsCareGiverDto(HealthCareProvider healthCareProvider) {
+        if (healthCareProvider == null) {
+            return null;
+        }
+        final GetStatisticsCareGiverResponseDto getStatisticsCareGiverResponseDto = new GetStatisticsCareGiverResponseDto();
+        getStatisticsCareGiverResponseDto.setStartDate(healthCareProvider.getHealthCareProviderStartDate());
+        getStatisticsCareGiverResponseDto.setArchived(healthCareProvider.getArchivedHealthCareProvider());
+        getStatisticsCareGiverResponseDto.setCareGiverOrgNo(healthCareProvider.getHealthCareProviderOrgNo());
+        getStatisticsCareGiverResponseDto.setEndDate(healthCareProvider.getHealthCareProviderEndDate());
+        getStatisticsCareGiverResponseDto.setHsaIdentity(healthCareProvider.getHealthCareProviderHsaId());
+        return getStatisticsCareGiverResponseDto;
+    }
+
+    @Override
+    public GetStatisticsHsaUnitResponseDto getStatisticsHsaUnit(String unitId) {
+        try {
+
+            String profile = "";
+
+            HealthCareUnit healthCareUnit = hsatkOrganizationService.getHealthCareUnit(unitId);
+
+            Unit unit = hsatkOrganizationService.getUnit(unitId, profile);
+
+            return toStatisticsHsaUnitResponseDto(healthCareUnit, unit);
+        } catch (Exception ex) {
+            throw new HsaCommunicationException("Could not call getStatisticsHsaUnit for " + unitId, ex);
+        }
+    }
+
+    public static GetStatisticsHsaUnitResponseDto toStatisticsHsaUnitResponseDto(HealthCareUnit healthCareUnit, Unit unit) {
+        if (healthCareUnit == null || unit == null) {
+            return null;
+        }
+        final GetStatisticsHsaUnitResponseDto getStatisticsHsaUnitResponseDto = new GetStatisticsHsaUnitResponseDto();
+        getStatisticsHsaUnitResponseDto.setStatisticsUnit(toStatisticsUnitDto(healthCareUnit, unit));
+        return getStatisticsHsaUnitResponseDto;
+    }
+
+    private static StatisticsHsaUnitDto toStatisticsUnitDto(HealthCareUnit healthCareUnit, Unit unit) {
+        if (healthCareUnit == null || unit == null) {
+            return null;
+        }
+        final StatisticsHsaUnitDto statisticsHsaUnitDto = new StatisticsHsaUnitDto();
+        statisticsHsaUnitDto.setArchived(healthCareUnit.getArchivedHealthCareUnit());
+        if (unit.getBusinessClassification() != null) {
+            statisticsHsaUnitDto
+                    .setBusinessClassificationCodes(unit.getBusinessClassification().stream().map(Unit.BusinessClassification::getBusinessClassificationCode).collect(Collectors.toList()));
+        }
+        if (unit.getBusinessType() != null) {
+            statisticsHsaUnitDto.setBusinessTypes(unit.getBusinessType());
+        }
+        statisticsHsaUnitDto.setCareGiverHsaIdentity(healthCareUnit.getHealthCareProviderHsaId());
+        if (unit.getCareType() != null) {
+            statisticsHsaUnitDto.setCareTypes(unit.getCareType());
+        }
+        statisticsHsaUnitDto.setCountyCode(unit.getCountyCode());
+        statisticsHsaUnitDto.setEndDate(healthCareUnit.getHealthCareUnitEndDate());
+        statisticsHsaUnitDto.setGeographicalCoordinatesRt90(toRt90Dto(unit.getGeographicalCoordinatesRt90()));
+        statisticsHsaUnitDto.setHsaIdentity(healthCareUnit.getHealthCareUnitHsaId());
+        statisticsHsaUnitDto.setLocation(unit.getLocation());
+        if (unit.getManagement() != null) {
+            statisticsHsaUnitDto.setManagements(unit.getManagement());
+        }
+        statisticsHsaUnitDto.setMunicipalityCode(unit.getMunicipalityCode());
+        statisticsHsaUnitDto.setStartDate(healthCareUnit.getHealthCareUnitStartDate());
+        //statisticsHsaUnitDto.setMunicipalitySectionName(statisticsCareUnit.getMunicipalitySectionName());
+        //statisticsHsaUnitDto.setMunicipalitySectionCode(statisticsCareUnit.getMunicipalitySectionCode());
+        return statisticsHsaUnitDto;
+    }
+
+    private static GeoCoordDto toRt90Dto(Unit.GeoCoordRt90 geographicalCoordinatesRt90) {
+        if (geographicalCoordinatesRt90 == null) {
+            return null;
+        }
+        final GeoCoordDto geoCoordDto = new GeoCoordDto();
+        geoCoordDto.setType(GeoCoordType.fromValue("RT90"));
+        geoCoordDto.setX(geographicalCoordinatesRt90.getXCoordinate());
+        geoCoordDto.setY(geographicalCoordinatesRt90.getYCoordinate());
+        return geoCoordDto;
+    }
+
+    public GetStatisticsPersonResponseDto getStatisticsPerson(String personId) {
+        try {
+            return toStatisticsPersonDto(hsatkEmployeeService.getEmployee(personId, null, null).stream().findFirst().get());
+        } catch (Exception ex) {
+            throw new HsaCommunicationException("Could not call getStatisticsPerson for " + personId, ex);
+        }
+    }
+
+    private GetStatisticsPersonResponseDto toStatisticsPersonDto(PersonInformation statisticsPerson) {
+        if (statisticsPerson == null) {
+            return null;
+        }
+        final GetStatisticsPersonResponseDto getStatisticsPersonResponseDto = new GetStatisticsPersonResponseDto();
+        getStatisticsPersonResponseDto.setHsaIdentity(statisticsPerson.getPersonHsaId());
+        getStatisticsPersonResponseDto.setAge(statisticsPerson.getAge());
+        getStatisticsPersonResponseDto.setGender(statisticsPerson.getGender());
+        if (statisticsPerson.getHealthCareProfessionalLicence() != null) {
+            getStatisticsPersonResponseDto.setHsaTitles(statisticsPerson.getHealthCareProfessionalLicence());
+        }
+        if (statisticsPerson.getPaTitle() != null) {
+            getStatisticsPersonResponseDto.setPaTitleCodes(statisticsPerson.getPaTitle().stream().map(PersonInformation.PaTitle::getPaTitleCode).collect(Collectors.toList()));
+        }
+        getStatisticsPersonResponseDto.setProtectedPerson(statisticsPerson.getProtectedPerson());
+        if (statisticsPerson.getSpecialityCode() != null) {
+            getStatisticsPersonResponseDto.setSpecialityCodes(statisticsPerson.getSpecialityCode());
+        }
+        return getStatisticsPersonResponseDto;
+    }
+
+    @Override
+    public GetStatisticsNamesResponseDto getStatisticsNames(String personId) {
+        try {
+            return toStatisticsNamesDto(hsatkEmployeeService.getEmployee(personId, null, null));
+        } catch (Exception ex) {
+            throw new HsaCommunicationException("Could not call getStatisticsPerson for " + personId, ex);
+        }
+    }
+
+    private GetStatisticsNamesResponseDto toStatisticsNamesDto(List<PersonInformation> statisticsNames) {
+        if (statisticsNames == null) {
+            return null;
+        }
+        final GetStatisticsNamesResponseDto getStatisticsNamesResponseDto = new GetStatisticsNamesResponseDto();
+        final List<StatisticsNameInfoDto> statisticsNameInfo = statisticsNames.stream()
+                .map(this::toStatisticsNamesInfoDto).collect(Collectors.toList());
+        getStatisticsNamesResponseDto.setStatisticsNameInfos(statisticsNameInfo);
+        return getStatisticsNamesResponseDto;
+    }
+
+    private StatisticsNameInfoDto toStatisticsNamesInfoDto(PersonInformation sni) {
+        if (sni == null) {
+            return null;
+        }
+        final StatisticsNameInfoDto statisticsNameInfoDto = new StatisticsNameInfoDto();
+        statisticsNameInfoDto.setHsaIdentity(sni.getPersonHsaId());
+        statisticsNameInfoDto.setPersonGivenName(sni.getGivenName());
+        statisticsNameInfoDto.setPersonMiddleAndSurName(sni.getMiddleAndSurName());
+        return statisticsNameInfoDto;
+    }
+}

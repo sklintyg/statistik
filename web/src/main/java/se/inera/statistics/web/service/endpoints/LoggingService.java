@@ -37,7 +37,7 @@ import org.springframework.stereotype.Service;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.intyg.infra.monitoring.logging.UserAgentInfo;
 import se.inera.intyg.infra.monitoring.logging.UserAgentParser;
-import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.integration.hsa.model.HsaIdUser;
 import se.inera.statistics.web.model.LogData;
 import se.inera.statistics.web.service.LoginServiceUtil;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;

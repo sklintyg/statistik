@@ -21,8 +21,8 @@ package se.inera.statistics.service.warehouse.query;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Collection;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
 public class MessagesFilter {
 

@@ -22,8 +22,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdLakare;
 
 public class Fact implements Serializable {
 

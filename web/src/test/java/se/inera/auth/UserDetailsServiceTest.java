@@ -38,14 +38,9 @@ import org.opensaml.saml2.core.NameID;
 import org.opensaml.saml2.core.impl.NameIDBuilder;
 import org.springframework.security.saml.SAMLCredential;
 import se.inera.auth.model.User;
-import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
-import se.inera.intyg.infra.integration.hsa.services.HsaPersonService;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdUser;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.hsa.model.Vardenhet;
-import se.inera.statistics.hsa.services.HsaOrganizationsService;
-import se.inera.statistics.hsa.services.UserAuthorization;
+import se.inera.statistics.integration.hsa.model.*;
+import se.inera.statistics.integration.hsa.services.HsaOrganizationsService;
+import se.inera.statistics.integration.hsa.services.HsaPersonService;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 import se.riv.infrastructure.directory.v1.PersonInformationType;
 
@@ -143,8 +138,8 @@ public class UserDetailsServiceTest {
         when(hsaPersonService.getHsaPersonInfo(anyString())).thenReturn(Arrays.asList(buildPersonInformation()));
     }
 
-    private PersonInformationType buildPersonInformation() {
-        PersonInformationType pit = new PersonInformationType();
+    private StatisticsPersonInformation buildPersonInformation() {
+        StatisticsPersonInformation pit = new StatisticsPersonInformation();
         pit.setGivenName("Läkar");
         pit.setMiddleAndSurName("Läkarsson");
         return pit;

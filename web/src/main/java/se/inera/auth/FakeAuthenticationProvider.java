@@ -46,9 +46,9 @@ import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import se.inera.auth.model.User;
-import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.hsa.services.HsaOrganizationsService;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.Vardgivare;
+import se.inera.statistics.integration.hsa.services.HsaOrganizationsService;
 
 /**
  * @author andreaskaltenbach

@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.junit.Test;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.region.persistance.regionenhet.RegionEnhet;
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Range;

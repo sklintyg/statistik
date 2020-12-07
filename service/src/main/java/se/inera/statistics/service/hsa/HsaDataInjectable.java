@@ -19,7 +19,8 @@
 package se.inera.statistics.service.hsa;
 
 import java.util.List;
-import se.inera.statistics.hsa.model.HsaIdLakare;
+
+import se.inera.statistics.integration.hsa.model.HsaIdLakare;
 
 public interface HsaDataInjectable {
 

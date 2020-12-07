@@ -19,7 +19,7 @@
 package se.inera.statistics.web.service;
 
 import java.util.Collection;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
