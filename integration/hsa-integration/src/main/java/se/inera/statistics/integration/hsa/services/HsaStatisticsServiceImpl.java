@@ -1,5 +1,7 @@
 package se.inera.statistics.integration.hsa.services;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.inera.ifv.statistics.spi.authorization.impl.HsaCommunicationException;
@@ -9,13 +11,17 @@ import se.inera.intyg.infra.integration.hsatk.model.PersonInformation;
 import se.inera.intyg.infra.integration.hsatk.model.Unit;
 import se.inera.intyg.infra.integration.hsatk.services.HsatkEmployeeService;
 import se.inera.intyg.infra.integration.hsatk.services.HsatkOrganizationService;
-import se.inera.statistics.integration.hsa.model.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import se.inera.statistics.integration.hsa.model.GeoCoordDto;
+import se.inera.statistics.integration.hsa.model.GeoCoordType;
+import se.inera.statistics.integration.hsa.model.GetStatisticsCareGiverResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsHsaUnitResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsNamesResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsPersonResponseDto;
+import se.inera.statistics.integration.hsa.model.StatisticsHsaUnitDto;
+import se.inera.statistics.integration.hsa.model.StatisticsNameInfoDto;
 
 @Service
-public class HsaStatisticsServiceImpl implements HsaStatisticsService{
+public class HsaStatisticsServiceImpl implements HsaStatisticsService {
 
     @Autowired
     HsatkOrganizationService hsatkOrganizationService;
@@ -28,6 +34,9 @@ public class HsaStatisticsServiceImpl implements HsaStatisticsService{
         try {
             List<HealthCareProvider> healthCareProviders = hsatkOrganizationService.getHealthCareProvider(careGiverId, null);
 
+            if (healthCareProviders.isEmpty()) {
+                return new GetStatisticsCareGiverResponseDto();
+            }
             return toStatisticsCareGiverDto(healthCareProviders.get(0));
         } catch (Exception ex) {
             throw new HsaCommunicationException("Could not call getStatisticsCareGiver for " + careGiverId, ex);
@@ -117,7 +126,8 @@ public class HsaStatisticsServiceImpl implements HsaStatisticsService{
 
     public GetStatisticsPersonResponseDto getStatisticsPerson(String personId) {
         try {
-            return toStatisticsPersonDto(hsatkEmployeeService.getEmployee(personId, null, null).stream().findFirst().get());
+            var employeeOptional = hsatkEmployeeService.getEmployee(personId, null, null).stream().findFirst();
+            return employeeOptional.map(this::toStatisticsPersonDto).orElse(null);
         } catch (Exception ex) {
             throw new HsaCommunicationException("Could not call getStatisticsPerson for " + personId, ex);
         }
