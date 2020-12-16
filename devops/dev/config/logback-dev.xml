@@ -63,9 +63,6 @@
   <logger name="se.inera.statistics.scheduler.active.LogJob" level="info"  additivity="false">
     <appender-ref ref="PROCESS"/>
   </logger>
-  <logger name="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls" level="info"  additivity="false">
-    <appender-ref ref="PROCESS"/>
-  </logger>
   <logger name="se.inera.statistics.web.service.endpoints.ChartDataService" level="info"  additivity="false">
     <appender-ref ref="PROCESS"/>
   </logger>

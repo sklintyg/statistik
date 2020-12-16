@@ -70,7 +70,7 @@
         </jaxrs:server>
     </beans>
 
-    <beans profile="embedded">
+    <beans profile="boostrap">
         <bean class="se.inera.testsupport.TestIntygInjector" depends-on="dbUpdate" lazy-init="false"/>
     </beans>
 

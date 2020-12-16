@@ -29,7 +29,7 @@
 
     <beans profile="hsa-stub">
         <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>
-        <bean class="se.inera.statistics.service.hsa.HsaServiceStub"/>
+<!--        <bean class="se.inera.statistics.service.hsa.HsaServiceStub"/>-->
     </beans>
 
     <beans profile="hsa-stub,wc-hsa-stub">

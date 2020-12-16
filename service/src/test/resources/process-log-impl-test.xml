@@ -38,7 +38,6 @@
     <bean class="se.inera.statistics.service.warehouse.EnhetLoader"/>
     <bean class="se.inera.statistics.service.caching.NoOpRedisTemplate" id="rediscache"/>
     <bean class="se.inera.statistics.service.caching.Cache"/>
-    <bean class="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls" id="hsaWebServiceCalls"/>
     <bean class="se.inera.statistics.service.hsa.HsaServiceStub" id="hsaServiceStub"/>
     <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>
     <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
@@ -64,6 +63,22 @@
     <bean class="se.inera.statistics.fileservice.UpdateEnhetNamnFromHsaFileService">
         <constructor-arg ref="enhetManager"/>
     </bean>
+    <bean class="se.inera.statistics.integration.hsa.services.HsaStatisticsServiceImpl"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.services.HsatkOrganizationServiceImpl"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.client.OrganizationClient"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.services.HsatkEmployeeServiceImpl"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.client.EmployeeClient"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.HsaServiceStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetHealthCareProviderResponderStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetHealthCareUnitResponderStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetHealthCareUnitMembersResponderStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetAuthorizationsForPersonResponderStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetEmployeeResponderStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetHospCredentialsForPersonResponderStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetHospLastUpdateResponderStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetUnitResponderStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.BootstrapBean"/>
+    <bean class="com.fasterxml.jackson.databind.ObjectMapper" />
 
     <context:component-scan base-package="se.inera.statistics.service.warehouse,se.inera.statistics.service.monitoring,se.inera.statistics.config.jpa"/>
 

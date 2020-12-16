@@ -59,7 +59,6 @@ public class HsaStatisticsServiceImpl implements HsaStatisticsService {
     @Override
     public GetStatisticsHsaUnitResponseDto getStatisticsHsaUnit(String unitId) {
         try {
-
             String profile = "";
 
             HealthCareUnit healthCareUnit = hsatkOrganizationService.getHealthCareUnit(unitId);
@@ -89,7 +88,9 @@ public class HsaStatisticsServiceImpl implements HsaStatisticsService {
         statisticsHsaUnitDto.setArchived(healthCareUnit.getArchivedHealthCareUnit());
         if (unit.getBusinessClassification() != null) {
             statisticsHsaUnitDto
-                    .setBusinessClassificationCodes(unit.getBusinessClassification().stream().map(Unit.BusinessClassification::getBusinessClassificationCode).collect(Collectors.toList()));
+                .setBusinessClassificationCodes(
+                    unit.getBusinessClassification().stream().map(Unit.BusinessClassification::getBusinessClassificationCode)
+                        .collect(Collectors.toList()));
         }
         if (unit.getBusinessType() != null) {
             statisticsHsaUnitDto.setBusinessTypes(unit.getBusinessType());
@@ -145,7 +146,8 @@ public class HsaStatisticsServiceImpl implements HsaStatisticsService {
             getStatisticsPersonResponseDto.setHsaTitles(statisticsPerson.getHealthCareProfessionalLicence());
         }
         if (statisticsPerson.getPaTitle() != null) {
-            getStatisticsPersonResponseDto.setPaTitleCodes(statisticsPerson.getPaTitle().stream().map(PersonInformation.PaTitle::getPaTitleCode).collect(Collectors.toList()));
+            getStatisticsPersonResponseDto.setPaTitleCodes(
+                statisticsPerson.getPaTitle().stream().map(PersonInformation.PaTitle::getPaTitleCode).collect(Collectors.toList()));
         }
         getStatisticsPersonResponseDto.setProtectedPerson(statisticsPerson.getProtectedPerson());
         if (statisticsPerson.getSpecialityCode() != null) {

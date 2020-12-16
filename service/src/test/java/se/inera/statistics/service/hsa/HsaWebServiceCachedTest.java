@@ -27,17 +27,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 import se.inera.statistics.integration.hsa.model.GetStatisticsCareGiverResponseDto;
 import se.inera.statistics.integration.hsa.model.GetStatisticsHsaUnitResponseDto;
 import se.inera.statistics.integration.hsa.model.GetStatisticsNamesResponseDto;
 import se.inera.statistics.integration.hsa.model.GetStatisticsPersonResponseDto;
+import se.inera.statistics.integration.hsa.services.HsaStatisticsServiceImpl;
 import se.inera.statistics.service.caching.Cache;
 
 public class HsaWebServiceCachedTest {
 
     @Mock
-    private HSAWebServiceCalls service;
+    private HsaStatisticsServiceImpl service;
 
     @InjectMocks
     private Cache cache;
@@ -169,46 +169,6 @@ public class HsaWebServiceCachedTest {
         assertEquals(mock2, result4);
         Mockito.verify(service, Mockito.times(2)).getStatisticsPerson(Mockito.anyString());
     }
-
-//    @Test
-//    public void testCallMiuRightsCachesNullResponse() throws Exception {
-//        //Given
-//        final GetMiuForPersonType parameters = Mockito.mock(GetMiuForPersonType.class);
-//        Mockito.doReturn(null).when(service).callMiuRights(parameters);
-//
-//        //When
-//        GetMiuForPersonResponseType result1 = cachedService.callMiuRights(parameters);
-//        GetMiuForPersonResponseType result2 = cachedService.callMiuRights(parameters);
-//
-//        //Then
-//        assertNull(result1);
-//        assertNull(result2);
-//        Mockito.verify(service, Mockito.times(1)).callMiuRights(Mockito.any(GetMiuForPersonType.class));
-//    }
-//
-//    @Test
-//    public void testCallMiuRightsCachesCorrectly() throws Exception {
-//        //Given
-//        final GetMiuForPersonType parameters1 = Mockito.mock(GetMiuForPersonType.class);
-//        final GetMiuForPersonType parameters2 = Mockito.mock(GetMiuForPersonType.class);
-//        final GetMiuForPersonResponseType mock1 = Mockito.mock(GetMiuForPersonResponseType.class);
-//        final GetMiuForPersonResponseType mock2 = Mockito.mock(GetMiuForPersonResponseType.class);
-//        Mockito.doReturn(mock1).when(service).callMiuRights(parameters1);
-//        Mockito.doReturn(mock2).when(service).callMiuRights(parameters2);
-//
-//        //When
-//        GetMiuForPersonResponseType result1 = cachedService.callMiuRights(parameters1);
-//        GetMiuForPersonResponseType result2 = cachedService.callMiuRights(parameters2);
-//        GetMiuForPersonResponseType result3 = cachedService.callMiuRights(parameters1);
-//        GetMiuForPersonResponseType result4 = cachedService.callMiuRights(parameters2);
-//
-//        //Then
-//        assertEquals(mock1, result1);
-//        assertEquals(mock2, result2);
-//        assertEquals(mock1, result3);
-//        assertEquals(mock2, result4);
-//        Mockito.verify(service, Mockito.times(2)).callMiuRights(Mockito.any(GetMiuForPersonType.class));
-//    }
 
     @Test
     public void testGetStatisticsCareGiverCachesNullResponse() throws Exception {

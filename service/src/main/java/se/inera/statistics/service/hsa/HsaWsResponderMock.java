@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -73,9 +72,6 @@ public class HsaWsResponderMock implements HsaDataInjectable {
     private String nextEnhetName = null;
     private String nextHuvudenhetId = null;
     private HSAKey hsaKey = null;
-
-    @Autowired
-    private HsaServiceStub hsaServiceStub;
 
     static {
         LAN_CODES = new ArrayList<>();
