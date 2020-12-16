@@ -71,19 +71,19 @@ public class UpdateEnhetNamnFromHsaFileService {
 
     void doUpdateEnhetnamesFromHsaFileServiceInputstream(InputStream inputStream) {
         final long start = System.currentTimeMillis();
-        final ListGetHsaUnitsResponseType resp = unmarshalXml(inputStream);
+        final FileGetHsaUnitsResponse resp = unmarshalXml(inputStream);
 
         LOG.info("Updating enhet names");
-        int updateCount = enhetManager.updateName(resp.getHsaUnits());
+        int updateCount = enhetManager.updateName(resp.getHsaUnits().getHsaUnit());
 
-        final int enheterCount = resp.getHsaUnits().size();
+        final int enheterCount = resp.getHsaUnits().getHsaUnit().size();
         final long end = System.currentTimeMillis();
         final String totTime = String.valueOf(end - start);
         LOG.info(updateCount + " enheter uppdated of " + enheterCount + " enheter in " + totTime + " milliseconds");
     }
 
-    static ListGetHsaUnitsResponseType unmarshalXml(InputStream inputStream) {
-        return JAXB.unmarshal(inputStream, ListGetHsaUnitsResponseType.class);
+    static FileGetHsaUnitsResponse unmarshalXml(InputStream inputStream) {
+        return JAXB.unmarshal(inputStream, FileGetHsaUnitsResponse.class);
     }
 
 }

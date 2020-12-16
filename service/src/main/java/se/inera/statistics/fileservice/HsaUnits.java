@@ -16,17 +16,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package se.inera.statistics.fileservice;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import lombok.Data;
+import java.util.ArrayList;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(
+    name = "HsaUnits",
+    namespace = "urn:riv:hsa:HsaWsResponder:3"
+)
+public class HsaUnits {
 
-@Data
-public class ListGetHsaUnitsResponseType {
+    @XmlElement(
+        namespace = "urn:riv:hsa:HsaWsResponder:3"
+    )
+    private ArrayList<HsaUnit> hsaUnit = new ArrayList<>();
 
-    protected LocalDateTime startDate;
-    protected LocalDateTime endDate;
-    protected List<ListHsaUnitType> hsaUnits;
+    public HsaUnits() {
+    }
+
+    public HsaUnits(ArrayList<HsaUnit> hsaUnit) {
+        this.hsaUnit = hsaUnit;
+    }
+
+    public ArrayList<HsaUnit> getHsaUnit() {
+        return hsaUnit;
+    }
+
+    public void setHsaUnit(ArrayList<HsaUnit> hsaUnit) {
+        this.hsaUnit = hsaUnit;
+    }
+
 }
