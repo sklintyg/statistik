@@ -19,9 +19,7 @@
 package se.inera.statistics.service.hsa;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
@@ -107,44 +105,12 @@ public class HSAServiceImplTest {
     private HSAServiceImpl serviceImpl = new HSAServiceImpl();
 
     @Test
-    public void hsUnitWithMissingGeography() throws Exception {
-        /*GetStatisticsHsaUnitResponseDto response = HSAWebServiceCalls.toDto(getHsaUnitResponse("GetStatisticsHsaUnit-small.xml"));
-        when(wsCalls.getStatisticsHsaUnit("ENHETID")).thenReturn(response);
-        */
-        HSAKey key = new HSAKey("vardgivareId", "enhetId", "lakareId");
-        HsaInfo info = serviceImpl.getHSAInfo(key);
-        assertNotNull(info);
-        assertEquals("IFV1239877878-103H", info.getEnhet().getId());
-        assertNull(info.getEnhet().getGeografi());
-    }
-
-    @Test
-    public void wsFindsNothing() throws Exception {
-        HSAKey key = new HSAKey("vardgivareId", "enhetId", "lakareId");
-        HsaInfo info = serviceImpl.getHSAInfo(key);
-        assertNotNull(info);
-        assertFalse(info.hasEnhet());
-        assertFalse(info.hasHuvudenhet());
-        assertFalse(info.hasVardgivare());
-        assertFalse(info.hasPersonal());
-    }
-
-    @Test
     public void serviceReturnsNullOnException() throws Exception {
         HSAKey key = new HSAKey("vardgivareId", "enhetId", "lakareId");
         when(wsCalls.getStatisticsHsaUnit("ENHETID")).thenThrow(new IllegalStateException("This WS generated and exception"));
         HsaInfo hsaInfo = serviceImpl.getHSAInfo(key);
         assertNull(hsaInfo);
     }
-
-    /*private GetStatisticsHsaUnitResponseType getHsaUnitResponse(String name) throws JAXBException {
-        JAXBContext context = JAXBContext.newInstance(GetStatisticsHsaUnitResponseType.class);
-        Unmarshaller unmarshaller = context.createUnmarshaller();
-        InputStream input = getClass().getResourceAsStream("/soap-response/" + name);
-        @SuppressWarnings("unchecked")
-        JAXBElement<GetStatisticsHsaUnitResponseType> o = (JAXBElement<GetStatisticsHsaUnitResponseType>) unmarshaller.unmarshal(input);
-        return o.getValue();
-    }*/
 
     private HsaInfo getFullJsonNode() {
         return new HsaInfo(getHsaInfoEnhet("cachedvgid"), getHsaInfoEnhet("cachedvgid"), getHsaInfoVg(), getHsaInfoPersonal());

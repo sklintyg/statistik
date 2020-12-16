@@ -46,20 +46,20 @@ public class LakareManagerTest {
 
     @Test
     public void saveOneLakare() {
-        HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare"));
+        HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey("vg-verksamhet1", "verksamhet1", "lakare_my"));
 
         lakareManager.saveLakare(hsaInfo);
 
         List<Lakare> allLakares = lakareManager.getAllLakares();
         assertEquals(1, allLakares.size());
-        assertEquals("LAKARE", allLakares.get(0).getLakareId().getId());
+        assertEquals("LAKARE_MY", allLakares.get(0).getLakareId().getId());
         assertEquals("My", allLakares.get(0).getTilltalsNamn());
         assertEquals("Åsgren", allLakares.get(0).getEfterNamn());
     }
 
     @Test
     public void saveOneLakareWithoutVGFailsWithoutError() {
-        HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey(null, "enhet", "lakare"));
+        HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey(null, "verksamhet1", "lakare_my"));
         hsaInfo = new HsaInfo(hsaInfo.getEnhet(), hsaInfo.getHuvudenhet(), null, hsaInfo.getPersonal());
 
         lakareManager.saveLakare(hsaInfo);
@@ -70,17 +70,17 @@ public class LakareManagerTest {
 
     @Test
     public void getAllLakares() {
-        HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare1"));
+        HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey("vg-verksamhet1", "verksamhet1", "lakare_my"));
         lakareManager.saveLakare(hsaInfo);
-        hsaInfo = hsaService.getHSAInfo(new HSAKey("other-vg", "other-enhet", "lakare2"));
+        hsaInfo = hsaService.getHSAInfo(new HSAKey("vg-verksamhet2", "verksamhet3", "lakare_vieux"));
         lakareManager.saveLakare(hsaInfo);
 
         List<Lakare> allLakares = lakareManager.getAllLakares();
         assertEquals(2, allLakares.size());
-        assertEquals("LAKARE1", allLakares.get(0).getLakareId().getId());
-        assertEquals("Natasha", allLakares.get(0).getTilltalsNamn());
-        assertEquals("Uddhammar", allLakares.get(0).getEfterNamn());
-        assertEquals("LAKARE2", allLakares.get(1).getLakareId().getId());
+        assertEquals("LAKARE_MY", allLakares.get(0).getLakareId().getId());
+        assertEquals("My", allLakares.get(0).getTilltalsNamn());
+        assertEquals("Åsgren", allLakares.get(0).getEfterNamn());
+        assertEquals("LAKARE_VIEUX", allLakares.get(1).getLakareId().getId());
         assertEquals("Vieux", allLakares.get(1).getTilltalsNamn());
         assertEquals("En", allLakares.get(1).getEfterNamn());
     }

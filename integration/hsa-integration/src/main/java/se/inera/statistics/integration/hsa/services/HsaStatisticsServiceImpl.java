@@ -65,18 +65,27 @@ public class HsaStatisticsServiceImpl implements HsaStatisticsService {
 
             Unit unit = hsatkOrganizationService.getUnit(unitId, profile);
 
-            return toStatisticsHsaUnitResponseDto(healthCareUnit, unit);
+            Unit careUnit = null;
+            if (!healthCareUnit.getUnitIsHealthCareUnit()) {
+                careUnit = hsatkOrganizationService.getUnit(healthCareUnit.getHealthCareUnitHsaId(), profile);
+            }
+
+            return toStatisticsHsaUnitResponseDto(healthCareUnit, unit, careUnit);
         } catch (Exception ex) {
             throw new HsaCommunicationException("Could not call getStatisticsHsaUnit for " + unitId, ex);
         }
     }
 
-    public static GetStatisticsHsaUnitResponseDto toStatisticsHsaUnitResponseDto(HealthCareUnit healthCareUnit, Unit unit) {
+    public static GetStatisticsHsaUnitResponseDto toStatisticsHsaUnitResponseDto(HealthCareUnit healthCareUnit, Unit unit,
+        Unit careUnit) {
         if (healthCareUnit == null || unit == null) {
             return null;
         }
         final GetStatisticsHsaUnitResponseDto getStatisticsHsaUnitResponseDto = new GetStatisticsHsaUnitResponseDto();
-        getStatisticsHsaUnitResponseDto.setStatisticsUnit(toStatisticsUnitDto(healthCareUnit, unit));
+        var statisticsUnit = toStatisticsUnitDto(healthCareUnit, unit);
+        getStatisticsHsaUnitResponseDto.setStatisticsUnit(statisticsUnit);
+        getStatisticsHsaUnitResponseDto
+            .setStatisticsCareUnit(careUnit == null ? statisticsUnit : toStatisticsUnitDto(healthCareUnit, careUnit));
         return getStatisticsHsaUnitResponseDto;
     }
 
@@ -100,15 +109,15 @@ public class HsaStatisticsServiceImpl implements HsaStatisticsService {
             statisticsHsaUnitDto.setCareTypes(unit.getCareType());
         }
         statisticsHsaUnitDto.setCountyCode(unit.getCountyCode());
-        statisticsHsaUnitDto.setEndDate(healthCareUnit.getHealthCareUnitEndDate());
+        statisticsHsaUnitDto.setEndDate(unit.getUnitEndDate());
         statisticsHsaUnitDto.setGeographicalCoordinatesRt90(toRt90Dto(unit.getGeographicalCoordinatesRt90()));
-        statisticsHsaUnitDto.setHsaIdentity(healthCareUnit.getHealthCareUnitHsaId());
+        statisticsHsaUnitDto.setHsaIdentity(unit.getUnitHsaId());
         statisticsHsaUnitDto.setLocation(unit.getLocation());
         if (unit.getManagement() != null) {
             statisticsHsaUnitDto.setManagements(unit.getManagement());
         }
         statisticsHsaUnitDto.setMunicipalityCode(unit.getMunicipalityCode());
-        statisticsHsaUnitDto.setStartDate(healthCareUnit.getHealthCareUnitStartDate());
+        statisticsHsaUnitDto.setStartDate(unit.getUnitStartDate());
         //statisticsHsaUnitDto.setMunicipalitySectionName(statisticsCareUnit.getMunicipalitySectionName());
         //statisticsHsaUnitDto.setMunicipalitySectionCode(statisticsCareUnit.getMunicipalitySectionCode());
         return statisticsHsaUnitDto;

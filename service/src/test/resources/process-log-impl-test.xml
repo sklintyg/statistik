@@ -38,8 +38,6 @@
     <bean class="se.inera.statistics.service.warehouse.EnhetLoader"/>
     <bean class="se.inera.statistics.service.caching.NoOpRedisTemplate" id="rediscache"/>
     <bean class="se.inera.statistics.service.caching.Cache"/>
-    <bean class="se.inera.statistics.service.hsa.HsaServiceStub" id="hsaServiceStub"/>
-    <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>
     <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
     <bean class="se.inera.statistics.service.processlog.message.ProcessMessageLogImpl"/>
     <bean class="se.inera.statistics.service.processlog.Processor"/>

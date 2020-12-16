@@ -54,16 +54,12 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
-import se.inera.statistics.integration.hsa.model.HsaIdLakare;
 import se.inera.statistics.integration.hsa.model.HsaIdUser;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.scheduler.active.LogJob;
 import se.inera.statistics.service.caching.Cache;
 import se.inera.statistics.service.countypopulation.CountyPopulationManagerForTest;
-import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAStore;
-import se.inera.statistics.service.hsa.HsaDataInjectable;
-import se.inera.statistics.service.hsa.HsaWsResponderMock;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.IntygEvent;
 import se.inera.statistics.service.processlog.Lakare;
@@ -148,9 +144,6 @@ public class RestSupportService {
 
     @Autowired
     private NationellDataInvoker nationellData;
-
-    @Autowired(required = false)
-    private HsaDataInjectable hsaDataInjectable;
 
     @Autowired
     private SjukfallUtil sjukfallUtil;
@@ -287,18 +280,18 @@ public class RestSupportService {
 
     @Transactional
     public void insertIntygWithoutLogging(Intyg intyg) {
-        if (hsaDataInjectable != null) {
-            hsaDataInjectable.setCountyForNextIntyg(intyg.getCounty());
-            hsaDataInjectable.setKommunForNextIntyg(intyg.getKommun());
-            hsaDataInjectable.setHuvudenhetIdForNextIntyg(intyg.getHuvudenhetId());
-            hsaDataInjectable.setHsaKey(new HSAKey(intyg.getVardgivareId(), intyg.getEnhetId(), intyg.getLakareId()));
-        }
+//        if (hsaDataInjectable != null) {
+//            hsaDataInjectable.setCountyForNextIntyg(intyg.getCounty());
+//            hsaDataInjectable.setKommunForNextIntyg(intyg.getKommun());
+//            hsaDataInjectable.setHuvudenhetIdForNextIntyg(intyg.getHuvudenhetId());
+//            hsaDataInjectable.setHsaKey(new HSAKey(intyg.getVardgivareId(), intyg.getEnhetId(), intyg.getLakareId()));
+//        }
         receiver.accept(intyg.getType(), intyg.getData(), intyg.getDocumentId(), intyg.getTimestamp());
         setEnhetName(intyg);
     }
 
     private void setEnhetName(Intyg intyg) {
-        if (intyg.getEnhetId() == null || intyg.getEnhetId().isEmpty() || !HsaWsResponderMock.shouldExistInHsa(intyg.getEnhetId())) {
+        if (intyg.getEnhetId() == null || intyg.getEnhetId().isEmpty() || !shouldExistInHsa(intyg.getEnhetId())) {
             return;
         }
         String name = intyg.getEnhetName() != null && !intyg.getEnhetName().isEmpty() ? intyg.getEnhetName() : intyg.getEnhetId();
@@ -311,6 +304,10 @@ public class RestSupportService {
                 name, "", "", "", intyg.getHuvudenhetId());
             manager.persist(enhet);
         }
+    }
+
+    public static boolean shouldExistInHsa(String hsaId) {
+        return hsaId != null && !hsaId.startsWith("EJHSA") && !"UTANENHETSID".equals(hsaId);
     }
 
     @PUT
@@ -381,12 +378,12 @@ public class RestSupportService {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response insertPersonal(Personal personal) {
-        if (hsaDataInjectable != null) {
-            LOG.info("Insert personal: " + personal);
-            hsaDataInjectable.addPersonal(new HsaIdLakare(personal.getId()), personal.getFirstName(), personal.getLastName(),
-                personal.getKon(), personal.getAge(),
-                personal.getBefattning(), personal.isSkyddad());
-        }
+//        if (hsaDataInjectable != null) {
+//            LOG.info("Insert personal: " + personal);
+//            hsaDataInjectable.addPersonal(new HsaIdLakare(personal.getId()), personal.getFirstName(), personal.getLastName(),
+//                personal.getKon(), personal.getAge(),
+//                personal.getBefattning(), personal.isSkyddad());
+//        }
         return Response.ok().build();
     }
 

@@ -35,7 +35,6 @@
 
     <bean class="se.inera.intyg.infra.monitoring.logging.LogMDCHelper"/>
     <bean class="se.inera.statistics.web.util.VersionUtil" id="versionUtil"/>
-    <bean class="se.inera.statistics.service.hsa.HsaServiceStub" id="hsaServiceStub"/>
     <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
     <bean class="se.inera.statistics.service.processlog.Processor"/>
     <bean class="se.inera.statistics.service.processlog.message.ProcessMessageLogImpl"/>
@@ -43,7 +42,6 @@
     <bean class="se.inera.statistics.service.processlog.VardgivareManager"/>
     <bean class="se.inera.statistics.service.processlog.LakareManager"/>
     <bean class="se.inera.statistics.service.user.UserSettingsManager" />
-    <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>
     <bean class="se.inera.statistics.service.hsa.HSAServiceImpl"/>
     <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect"/>
     <bean class="se.inera.statistics.web.service.LoginServiceUtil"/>
