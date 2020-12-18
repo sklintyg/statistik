@@ -1,5 +1,8 @@
 package se.inera.statistics.integration.hsa.services;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.xml.ws.WebServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +10,6 @@ import org.springframework.stereotype.Service;
 import se.inera.intyg.infra.integration.hsatk.model.PersonInformation;
 import se.inera.intyg.infra.integration.hsatk.services.HsatkEmployeeService;
 import se.inera.statistics.integration.hsa.model.StatisticsPersonInformation;
-
-import javax.xml.ws.WebServiceException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class HsaPersonServiceImpl implements HsaPersonService {
@@ -40,7 +39,8 @@ public class HsaPersonServiceImpl implements HsaPersonService {
         for (PersonInformation personInformation : personInformationList) {
             StatisticsPersonInformation statisticsPersonInformation = new StatisticsPersonInformation();
             statisticsPersonInformation.setGivenName(personInformation.getGivenName());
-            statisticsPersonInformation.setGivenName(personInformation.getGivenName());
+            statisticsPersonInformation.setMiddleAndSurName(personInformation.getMiddleAndSurName());
+            statisticsPersonInformation.setPersonHsaId(personInformation.getPersonHsaId());
             statisticsPersonInformationList.add(statisticsPersonInformation);
         }
         return statisticsPersonInformationList;
