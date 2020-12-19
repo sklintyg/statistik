@@ -49,10 +49,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+import se.inera.intyg.infra.integration.hsatk.stub.model.HsaPerson;
+import se.inera.intyg.infra.integration.hsatk.stub.model.HsaPerson.PaTitle;
 import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 import se.inera.statistics.integration.hsa.model.HsaIdUser;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
@@ -117,6 +121,13 @@ public class RestSupportService {
     public static final String SOC_PARAM_TOYEAR = "toyear";
     public static final String SOC_PARAM_DX = "dx";
     public static final String SOC_PARAM_STARTDX = "sjukfallstartingwithdx";
+
+    @Autowired
+    @Qualifier("restTemplateStat")
+    private RestTemplate restTemplate;
+
+    @Value("${baseUrl}")
+    private String baseUrl;
 
     @Autowired
     private ChartDataService nationalChartDataService;
@@ -384,6 +395,24 @@ public class RestSupportService {
 //                personal.getKon(), personal.getAge(),
 //                personal.getBefattning(), personal.isSkyddad());
 //        }
+        HsaPerson hsaPerson = new HsaPerson();
+        hsaPerson.setHsaId(personal.getId());
+        hsaPerson.setGivenName(personal.getFirstName());
+        hsaPerson.setMiddleAndSurname(personal.getLastName());
+        hsaPerson.setAge(((Integer) personal.getAge()).toString());
+        hsaPerson.setGender(personal.getKon().name());
+        hsaPerson.setProtectedPerson(personal.isSkyddad());
+        List<PaTitle> paTitles = personal.getBefattning().stream().map(b -> {
+            var paTitle = new PaTitle();
+            paTitle.setTitleCode(b);
+            paTitle.setTitleName(b);
+            return paTitle;
+        }).collect(Collectors.toList());
+        hsaPerson.setPaTitle(paTitles);
+
+        var url = baseUrl + "/services/api/hsa-api/person";
+        var stringResponseEntity = restTemplate.postForEntity(url, hsaPerson, String.class);
+
         return Response.ok().build();
     }
 

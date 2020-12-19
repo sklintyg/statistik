@@ -37,8 +37,8 @@ class ReportsUtil {
     static final JSON = MediaType.APPLICATION_JSON
     static final TEXT = MediaType.TEXT_PLAIN
 
-    static final VARDGIVARE = "vg1"
-    static final VARDGIVARE3 = "vg3"
+    static final VARDGIVARE = "fvg1"
+    static final VARDGIVARE3 = "fvg3"
 
     final restClient = createClient()
     // CHAR_BUFFER must currently be used in order to eager parse of numbers etc. Ex. 17.0 in JSON ends up as 17 in groovy

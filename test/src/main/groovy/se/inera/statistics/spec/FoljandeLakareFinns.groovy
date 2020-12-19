@@ -18,7 +18,7 @@
  */
 package se.inera.statistics.spec
 
-import se.inera.statistics.service.hsa.HsaKon
+import se.inera.testsupport.HsaKon
 import se.inera.statistics.web.reports.ReportsUtil
 import se.inera.testsupport.Personal
 
