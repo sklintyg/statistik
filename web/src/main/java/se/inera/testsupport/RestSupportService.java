@@ -399,8 +399,8 @@ public class RestSupportService {
         hsaPerson.setHsaId(personal.getId());
         hsaPerson.setGivenName(personal.getFirstName());
         hsaPerson.setMiddleAndSurname(personal.getLastName());
-        hsaPerson.setAge(((Integer) personal.getAge()).toString());
-        hsaPerson.setGender(personal.getKon().name());
+        hsaPerson.setAge(String.valueOf(personal.getAge()));
+        hsaPerson.setGender(String.valueOf(personal.getKon().getHsaRepresantation()));
         hsaPerson.setProtectedPerson(personal.isSkyddad());
         List<PaTitle> paTitles = personal.getBefattning().stream().map(b -> {
             var paTitle = new PaTitle();
