@@ -307,9 +307,9 @@ public class RestSupportService {
                 unit = new SubUnitStub();
                 ((SubUnitStub) unit).setParentHsaId(intyg.getHuvudenhetId());
             }
-            unit.setId(intyg.getEnhetId());
-            unit.setCareProviderHsaId(intyg.getVardgivareId());
-            unit.setName(getEnhetsNamn(intyg.getEnhetId(), intyg.getEnhetName()));
+            unit.setId(cleanString(intyg.getEnhetId()));
+            unit.setCareProviderHsaId(cleanString(intyg.getVardgivareId()));
+            unit.setName(getEnhetsNamn(cleanString(intyg.getEnhetId()), intyg.getEnhetName()));
             unit.setCountyCode(intyg.getCounty());
             unit.setMunicipalityCode(intyg.getKommun());
 
@@ -322,6 +322,10 @@ public class RestSupportService {
 
         receiver.accept(intyg.getType(), intyg.getData(), intyg.getDocumentId(), intyg.getTimestamp());
         setEnhetName(intyg);
+    }
+
+    private String cleanString(String string) {
+        return string.replace(" ", "");
     }
 
     private String getEnhetsNamn(String enhetId, String enhetName) {
