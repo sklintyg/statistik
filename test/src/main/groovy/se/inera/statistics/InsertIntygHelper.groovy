@@ -65,94 +65,94 @@ class InsertIntygHelper {
     private static ArrayList<IntygData> getIntygs() {
         def intygs = new ArrayList<IntygData>();
         // 9 lika
-        intygs.add(new IntygData("19790407-1290", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-1291", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-1293", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-1294", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-1295", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-1296", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-1297", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-1298", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-1299", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
+        intygs.add(new IntygData("19790407-1290", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-1291", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-1293", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-1294", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-1295", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-1296", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-1297", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-1298", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-1299", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
 
         //Olika diagnoser
-        intygs.add(new IntygData("19790407-2291", "2016-09-01", "2016-11-30", "enhet1", "vg1", "B01", 0));
-        intygs.add(new IntygData("19790407-2292", "2016-09-01", "2016-11-30", "enhet1", "vg1", "B02", 0));
-        intygs.add(new IntygData("19790407-2293", "2016-09-01", "2016-11-30", "enhet1", "vg1", "B03", 0));
-        intygs.add(new IntygData("19790407-2294", "2016-09-01", "2016-11-30", "enhet1", "vg1", "B25", 0));
-        intygs.add(new IntygData("19790407-2295", "2016-09-01", "2016-11-30", "enhet1", "vg1", "B26", 0));
-        intygs.add(new IntygData("19790407-2296", "2016-09-01", "2016-11-30", "enhet1", "vg1", "D50", 0));
-        intygs.add(new IntygData("19790407-2297", "2016-09-01", "2016-11-30", "enhet1", "vg1", "D51", 0));
-        intygs.add(new IntygData("19790407-2298", "2016-09-01", "2016-11-30", "enhet1", "vg1", "F010", 0));
-        intygs.add(new IntygData("19790407-2299", "2016-09-01", "2016-11-30", "enhet1", "vg1", "F020", 0));
+        intygs.add(new IntygData("19790407-2291", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "B01", 0));
+        intygs.add(new IntygData("19790407-2292", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "B02", 0));
+        intygs.add(new IntygData("19790407-2293", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "B03", 0));
+        intygs.add(new IntygData("19790407-2294", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "B25", 0));
+        intygs.add(new IntygData("19790407-2295", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "B26", 0));
+        intygs.add(new IntygData("19790407-2296", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "D50", 0));
+        intygs.add(new IntygData("19790407-2297", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "D51", 0));
+        intygs.add(new IntygData("19790407-2298", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "F010", 0));
+        intygs.add(new IntygData("19790407-2299", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "F020", 0));
 
         // Olika längder
-        intygs.add(new IntygData("19790407-3290", "2016-09-01", "2016-09-10", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-3291", "2016-09-01", "2016-09-20", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-3292", "2016-09-01", "2016-10-10", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-3293", "2016-09-01", "2016-11-10", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-3294", "2016-07-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-3295", "2016-01-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-3296", "2015-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-3297", "2016-09-01", "2016-09-02", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-3299", "2016-09-01", "2016-09-30", "enhet1", "vg1", "A01", 0));
+        intygs.add(new IntygData("19790407-3290", "2016-09-01", "2016-09-10", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-3291", "2016-09-01", "2016-09-20", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-3292", "2016-09-01", "2016-10-10", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-3293", "2016-09-01", "2016-11-10", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-3294", "2016-07-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-3295", "2016-01-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-3296", "2015-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-3297", "2016-09-01", "2016-09-02", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-3299", "2016-09-01", "2016-09-30", "enhet1", "fvg1", "A01", 0));
 
         // Troskelvarde (A30 over och A31 under)
-        intygs.add(new IntygData("19790407-4290", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A30", 0));
-        intygs.add(new IntygData("19790407-4291", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A30", 0));
-        intygs.add(new IntygData("19790407-4292", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A30", 0));
-        intygs.add(new IntygData("19790407-4293", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A30", 0));
-        intygs.add(new IntygData("19790407-4294", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A30", 0));
-        intygs.add(new IntygData("19790407-4295", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A31", 0));
-        intygs.add(new IntygData("19790407-4297", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A31", 0));
-        intygs.add(new IntygData("19790407-4298", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A31", 0));
-        intygs.add(new IntygData("19790407-4299", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A31", 0));
+        intygs.add(new IntygData("19790407-4290", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A30", 0));
+        intygs.add(new IntygData("19790407-4291", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A30", 0));
+        intygs.add(new IntygData("19790407-4292", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A30", 0));
+        intygs.add(new IntygData("19790407-4293", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A30", 0));
+        intygs.add(new IntygData("19790407-4294", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A30", 0));
+        intygs.add(new IntygData("19790407-4295", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A31", 0));
+        intygs.add(new IntygData("19790407-4297", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A31", 0));
+        intygs.add(new IntygData("19790407-4298", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A31", 0));
+        intygs.add(new IntygData("19790407-4299", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A31", 0));
 
         // Olika enheter och vardgivare
-        intygs.add(new IntygData("19790407-5290", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-5291", "2016-09-01", "2016-11-30", "enhet2", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-5292", "2016-09-01", "2016-11-30", "enhet2", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-5294", "2016-09-01", "2016-11-30", "enhet3", "vg3", "A01", 0));
-        intygs.add(new IntygData("19790407-5295", "2016-09-01", "2016-11-30", "enhet3", "vg3", "A01", 0));
-        intygs.add(new IntygData("19790407-5296", "2016-09-01", "2016-11-30", "enhet3", "vg3", "A01", 0));
-        intygs.add(new IntygData("19790407-5297", "2016-09-01", "2016-11-30", "enhet3", "vg3", "A01", 0));
-        intygs.add(new IntygData("19790407-5298", "2016-09-01", "2016-11-30", "enhet3", "vg3", "A01", 0));
-        intygs.add(new IntygData("19790407-5297", "2016-09-01", "2016-11-30", "enhet4", "vg3", "A01", 0));
-        intygs.add(new IntygData("19790407-5298", "2016-09-01", "2016-11-30", "enhet4", "vg3", "A01", 0));
-        intygs.add(new IntygData("19790407-5299", "2016-09-01", "2016-11-30", "enhet4", "vg3", "A01", 0));
+        intygs.add(new IntygData("19790407-5290", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-5291", "2016-09-01", "2016-11-30", "enhet2", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-5292", "2016-09-01", "2016-11-30", "enhet2", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-5294", "2016-09-01", "2016-11-30", "enhet3", "fvg3", "A01", 0));
+        intygs.add(new IntygData("19790407-5295", "2016-09-01", "2016-11-30", "enhet3", "fvg3", "A01", 0));
+        intygs.add(new IntygData("19790407-5296", "2016-09-01", "2016-11-30", "enhet3", "fvg3", "A01", 0));
+        intygs.add(new IntygData("19790407-5297", "2016-09-01", "2016-11-30", "enhet3", "fvg3", "A01", 0));
+        intygs.add(new IntygData("19790407-5298", "2016-09-01", "2016-11-30", "enhet3", "fvg3", "A01", 0));
+        intygs.add(new IntygData("19790407-5297", "2016-09-01", "2016-11-30", "enhet4", "fvg3", "A01", 0));
+        intygs.add(new IntygData("19790407-5298", "2016-09-01", "2016-11-30", "enhet4", "fvg3", "A01", 0));
+        intygs.add(new IntygData("19790407-5299", "2016-09-01", "2016-11-30", "enhet4", "fvg3", "A01", 0));
 
         // Olika kon
-        intygs.add(new IntygData("19790407-1290", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-1291", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-1293", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-1294", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-1285", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-1286", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-1287", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-1288", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19790407-1289", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
+        intygs.add(new IntygData("19790407-1290", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-1291", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-1293", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-1294", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-1285", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-1286", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-1287", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-1288", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19790407-1289", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
 
         // Olika sjukskrivningsgrad
-        intygs.add(new IntygData("19790407-6290", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 25));
-        intygs.add(new IntygData("19790407-6292", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 25));
-        intygs.add(new IntygData("19790407-6293", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 25));
-        intygs.add(new IntygData("19790407-6294", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 25));
-        intygs.add(new IntygData("19790407-6295", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 50));
-        intygs.add(new IntygData("19790407-6296", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 50));
-        intygs.add(new IntygData("19790407-6297", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 75));
-        intygs.add(new IntygData("19790407-6298", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 75));
-        intygs.add(new IntygData("19790407-6299", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 75));
+        intygs.add(new IntygData("19790407-6290", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 25));
+        intygs.add(new IntygData("19790407-6292", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 25));
+        intygs.add(new IntygData("19790407-6293", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 25));
+        intygs.add(new IntygData("19790407-6294", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 25));
+        intygs.add(new IntygData("19790407-6295", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 50));
+        intygs.add(new IntygData("19790407-6296", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 50));
+        intygs.add(new IntygData("19790407-6297", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 75));
+        intygs.add(new IntygData("19790407-6298", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 75));
+        intygs.add(new IntygData("19790407-6299", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 75));
 
         // Olika alder
-        intygs.add(new IntygData("20100407-1290", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("20000407-1290", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19900407-1290", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19800407-1290", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19700407-1290", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19600407-1290", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19500407-1290", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19400407-1290", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
-        intygs.add(new IntygData("19000407-1290", "2016-09-01", "2016-11-30", "enhet1", "vg1", "A01", 0));
+        intygs.add(new IntygData("20100407-1290", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("20000407-1290", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19900407-1290", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19800407-1290", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19700407-1290", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19600407-1290", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19500407-1290", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19400407-1290", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
+        intygs.add(new IntygData("19000407-1290", "2016-09-01", "2016-11-30", "enhet1", "fvg1", "A01", 0));
         intygs
     }
 

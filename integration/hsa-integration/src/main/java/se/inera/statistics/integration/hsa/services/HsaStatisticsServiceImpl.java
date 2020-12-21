@@ -134,9 +134,10 @@ public class HsaStatisticsServiceImpl implements HsaStatisticsService {
         return geoCoordDto;
     }
 
+    @Override
     public GetStatisticsPersonResponseDto getStatisticsPerson(String personId) {
         try {
-            var employeeOptional = hsatkEmployeeService.getEmployee(personId, null, null).stream().findFirst();
+            var employeeOptional = hsatkEmployeeService.getEmployee(null, personId, null).stream().findFirst();
             return employeeOptional.map(this::toStatisticsPersonDto).orElse(null);
         } catch (Exception ex) {
             throw new HsaCommunicationException("Could not call getStatisticsPerson for " + personId, ex);
@@ -180,7 +181,7 @@ public class HsaStatisticsServiceImpl implements HsaStatisticsService {
         }
         final GetStatisticsNamesResponseDto getStatisticsNamesResponseDto = new GetStatisticsNamesResponseDto();
         final List<StatisticsNameInfoDto> statisticsNameInfo = statisticsNames.stream()
-                .map(this::toStatisticsNamesInfoDto).collect(Collectors.toList());
+            .map(this::toStatisticsNamesInfoDto).collect(Collectors.toList());
         getStatisticsNamesResponseDto.setStatisticsNameInfos(statisticsNameInfo);
         return getStatisticsNamesResponseDto;
     }

@@ -26,25 +26,25 @@ var User = function() {
   this.loginUser1 = function(processledare) {
     this.setCookieConsentBannerState(true);
     headerPo.clickLogin();
-    fakeloginPo.login('Anna', 'Modig', 'user1', 'vg1', processledare);
+    fakeloginPo.login('Anna', 'Modig', 'user1', 'fvg1', processledare);
   };
 
   this.loginUser2 = function(processledare) {
     this.setCookieConsentBannerState(true);
     headerPo.clickLogin();
-    fakeloginPo.login('Anna', 'Modig', 'user2', 'vg1', processledare);
+    fakeloginPo.login('Anna', 'Modig', 'user2', 'fvg1', processledare);
   };
 
   this.loginUser3 = function(processledare) {
     this.setCookieConsentBannerState(true);
     headerPo.clickLogin();
-    fakeloginPo.login('Anna', 'Modig', 'user3', 'vg3', processledare);
+    fakeloginPo.login('Anna', 'Modig', 'user3', 'fvg3', processledare);
   };
 
   this.loginUser5 = function(processledare) {
     this.setCookieConsentBannerState(true);
     headerPo.clickLogin();
-    fakeloginPo.login('Anna', 'Modig', 'user5', 'vg1', processledare);
+    fakeloginPo.login('Anna', 'Modig', 'user5', 'fvg1', processledare);
   };
 
   this.isLoggedIn = function() {
