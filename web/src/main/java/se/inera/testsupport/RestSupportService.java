@@ -55,8 +55,12 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+import se.inera.intyg.infra.integration.hsatk.stub.HsaServiceStub;
+import se.inera.intyg.infra.integration.hsatk.stub.model.AbstractUnitStub;
+import se.inera.intyg.infra.integration.hsatk.stub.model.CareUnitStub;
 import se.inera.intyg.infra.integration.hsatk.stub.model.HsaPerson;
 import se.inera.intyg.infra.integration.hsatk.stub.model.HsaPerson.PaTitle;
+import se.inera.intyg.infra.integration.hsatk.stub.model.SubUnitStub;
 import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 import se.inera.statistics.integration.hsa.model.HsaIdUser;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
@@ -196,6 +200,9 @@ public class RestSupportService {
     @Autowired
     private LogJob logJob;
 
+    @Autowired(required = false)
+    private HsaServiceStub hsaServiceStub;
+
     private IntygCommonSosManager intygCommonSosManager;
 
     @PostConstruct
@@ -291,14 +298,41 @@ public class RestSupportService {
 
     @Transactional
     public void insertIntygWithoutLogging(Intyg intyg) {
-//        if (hsaDataInjectable != null) {
-//            hsaDataInjectable.setCountyForNextIntyg(intyg.getCounty());
-//            hsaDataInjectable.setKommunForNextIntyg(intyg.getKommun());
-//            hsaDataInjectable.setHuvudenhetIdForNextIntyg(intyg.getHuvudenhetId());
-//            hsaDataInjectable.setHsaKey(new HSAKey(intyg.getVardgivareId(), intyg.getEnhetId(), intyg.getLakareId()));
-//        }
+        if (hsaServiceStub != null) {
+            AbstractUnitStub unit;
+            if (intyg.getHuvudenhetId() == null || intyg.getEnhetId().equals(intyg.getHuvudenhetId())) {
+                unit = new CareUnitStub();
+                ((CareUnitStub) unit).setSubUnits(Collections.emptyList());
+            } else {
+                unit = new SubUnitStub();
+                ((SubUnitStub) unit).setParentHsaId(intyg.getHuvudenhetId());
+            }
+            unit.setId(intyg.getEnhetId());
+            unit.setCareProviderHsaId(intyg.getVardgivareId());
+            unit.setName(getEnhetsNamn(intyg.getEnhetId(), intyg.getEnhetName()));
+            unit.setCountyCode(intyg.getCounty());
+            unit.setMunicipalityCode(intyg.getKommun());
+
+            if (unit instanceof CareUnitStub) {
+                hsaServiceStub.addCareUnit((CareUnitStub) unit);
+            } else {
+                hsaServiceStub.addSubUnit((SubUnitStub) unit);
+            }
+        }
+
         receiver.accept(intyg.getType(), intyg.getData(), intyg.getDocumentId(), intyg.getTimestamp());
         setEnhetName(intyg);
+    }
+
+    private String getEnhetsNamn(String enhetId, String enhetName) {
+        if (enhetName != null) {
+            return enhetName;
+        }
+        if (enhetId != null && enhetId.startsWith("vg1-")) {
+            String suffix = enhetId.substring(enhetId.lastIndexOf('-') + 1);
+            return "Verksamhet " + suffix;
+        }
+        return "Enhet " + enhetId;
     }
 
     private void setEnhetName(Intyg intyg) {
@@ -389,29 +423,27 @@ public class RestSupportService {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response insertPersonal(Personal personal) {
-//        if (hsaDataInjectable != null) {
-//            LOG.info("Insert personal: " + personal);
-//            hsaDataInjectable.addPersonal(new HsaIdLakare(personal.getId()), personal.getFirstName(), personal.getLastName(),
-//                personal.getKon(), personal.getAge(),
-//                personal.getBefattning(), personal.isSkyddad());
-//        }
-        HsaPerson hsaPerson = new HsaPerson();
-        hsaPerson.setHsaId(personal.getId());
-        hsaPerson.setGivenName(personal.getFirstName());
-        hsaPerson.setMiddleAndSurname(personal.getLastName());
-        hsaPerson.setAge(String.valueOf(personal.getAge()));
-        hsaPerson.setGender(String.valueOf(personal.getKon().getHsaRepresantation()));
-        hsaPerson.setProtectedPerson(personal.isSkyddad());
-        List<PaTitle> paTitles = personal.getBefattning().stream().map(b -> {
-            var paTitle = new PaTitle();
-            paTitle.setTitleCode(b);
-            paTitle.setTitleName(b);
-            return paTitle;
-        }).collect(Collectors.toList());
-        hsaPerson.setPaTitle(paTitles);
+        if (hsaServiceStub != null) {
+            HsaPerson hsaPerson = hsaServiceStub.getHsaPerson(personal.getId());
+            if (hsaPerson == null) {
+                hsaPerson = new HsaPerson();
+                hsaPerson.setHsaId(personal.getId());
+            }
+            hsaPerson.setGivenName(personal.getFirstName());
+            hsaPerson.setMiddleAndSurname(personal.getLastName());
+            hsaPerson.setAge(String.valueOf(personal.getAge()));
+            hsaPerson.setGender(String.valueOf(personal.getKon().getHsaRepresantation()));
+            hsaPerson.setProtectedPerson(personal.isSkyddad());
+            List<PaTitle> paTitles = personal.getBefattning().stream().map(b -> {
+                var paTitle = new PaTitle();
+                paTitle.setTitleCode(b);
+                paTitle.setTitleName(b);
+                return paTitle;
+            }).collect(Collectors.toList());
+            hsaPerson.setPaTitle(paTitles);
 
-        var url = baseUrl + "/services/api/hsa-api/person";
-        var stringResponseEntity = restTemplate.postForEntity(url, hsaPerson, String.class);
+            hsaServiceStub.addHsaPerson(hsaPerson);
+        }
 
         return Response.ok().build();
     }

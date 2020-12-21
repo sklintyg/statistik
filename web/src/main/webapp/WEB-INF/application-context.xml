@@ -27,6 +27,9 @@
 
     <context:component-scan base-package="se.inera.statistics.web.service.monitoring" />
 
+    <beans profile="hsa-stub">
+        <bean class="se.inera.intyg.infra.integration.hsatk.stub.HsaServiceStub"/>
+    </beans>
 
     <beans profile="hsa-stub,wc-hsa-stub">
         <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>

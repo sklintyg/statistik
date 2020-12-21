@@ -66,18 +66,20 @@ public class HsaStatisticsServiceImpl implements HsaStatisticsService {
             Unit unit = hsatkOrganizationService.getUnit(unitId, profile);
 
             Unit careUnit = null;
-            if (!healthCareUnit.getUnitIsHealthCareUnit()) {
+            HealthCareUnit healthCareCareUnit = null;
+            if (healthCareUnit != null && healthCareUnit.getHealthCareUnitHsaId() != null && !healthCareUnit.getUnitIsHealthCareUnit()) {
+                healthCareCareUnit = hsatkOrganizationService.getHealthCareUnit(healthCareUnit.getHealthCareUnitHsaId());
                 careUnit = hsatkOrganizationService.getUnit(healthCareUnit.getHealthCareUnitHsaId(), profile);
             }
 
-            return toStatisticsHsaUnitResponseDto(healthCareUnit, unit, careUnit);
+            return toStatisticsHsaUnitResponseDto(healthCareUnit, unit, healthCareCareUnit, careUnit);
         } catch (Exception ex) {
             throw new HsaCommunicationException("Could not call getStatisticsHsaUnit for " + unitId, ex);
         }
     }
 
     public static GetStatisticsHsaUnitResponseDto toStatisticsHsaUnitResponseDto(HealthCareUnit healthCareUnit, Unit unit,
-        Unit careUnit) {
+        HealthCareUnit healthCareCareUnit, Unit careUnit) {
         if (healthCareUnit == null || unit == null) {
             return null;
         }
@@ -85,7 +87,7 @@ public class HsaStatisticsServiceImpl implements HsaStatisticsService {
         var statisticsUnit = toStatisticsUnitDto(healthCareUnit, unit);
         getStatisticsHsaUnitResponseDto.setStatisticsUnit(statisticsUnit);
         getStatisticsHsaUnitResponseDto
-            .setStatisticsCareUnit(careUnit == null ? statisticsUnit : toStatisticsUnitDto(healthCareUnit, careUnit));
+            .setStatisticsCareUnit(careUnit == null ? statisticsUnit : toStatisticsUnitDto(healthCareCareUnit, careUnit));
         return getStatisticsHsaUnitResponseDto;
     }
 
