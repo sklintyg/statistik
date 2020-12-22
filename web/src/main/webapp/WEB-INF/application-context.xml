@@ -36,17 +36,6 @@
     </beans>
 
     <beans>
-        <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-            <property name="basenames">
-                <list>
-                    <value>version</value>
-                    <value>buildtime</value>
-                </list>
-            </property>
-        </bean>
-    </beans>
-
-    <beans>
         <import resource="classpath*:process-log-impl.xml"/>
     </beans>
 
