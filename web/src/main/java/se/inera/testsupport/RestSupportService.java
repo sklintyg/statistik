@@ -325,7 +325,7 @@ public class RestSupportService {
     }
 
     private String cleanString(String string) {
-        return string.replace(" ", "");
+        return string == null ? null : string.replace(" ", "").toLowerCase();
     }
 
     private String getEnhetsNamn(String enhetId, String enhetName) {
