@@ -41,6 +41,7 @@ import se.inera.statistics.integration.hsa.model.GetStatisticsNamesResponseDto;
 import se.inera.statistics.integration.hsa.model.GetStatisticsPersonResponseDto;
 import se.inera.statistics.integration.hsa.model.StatisticsHsaUnitDto;
 import se.inera.statistics.integration.hsa.model.StatisticsNameInfoDto;
+import se.inera.statistics.integration.hsa.services.HsaStatisticsService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HSAServiceImplTest {
@@ -99,7 +100,7 @@ public class HSAServiceImplTest {
     }
 
     @Mock
-    private HsaWebService wsCalls;
+    private HsaStatisticsService wsCalls;
 
     @InjectMocks
     private HSAServiceImpl serviceImpl = new HSAServiceImpl();

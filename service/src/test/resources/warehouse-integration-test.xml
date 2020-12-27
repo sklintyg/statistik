@@ -42,7 +42,6 @@
     <bean class="se.inera.statistics.service.processlog.VardgivareManager"/>
     <bean class="se.inera.statistics.service.processlog.LakareManager"/>
     <bean class="se.inera.statistics.service.hsa.HSAServiceImpl"/>
-    <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect"/>
     <bean class="se.inera.statistics.service.helper.RegisterCertificateResolver"/>
     <bean class="se.inera.statistics.service.helper.certificate.RegisterCertificateHelper"/>
     <bean class="se.inera.statistics.service.helper.certificate.FkRegisterCertificateHelper"/>

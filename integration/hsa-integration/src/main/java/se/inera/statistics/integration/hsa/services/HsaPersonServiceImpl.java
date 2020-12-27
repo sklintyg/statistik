@@ -23,7 +23,7 @@ public class HsaPersonServiceImpl implements HsaPersonService {
         try {
             LOG.info("HsatkEmployeeService is {}.", hsatkEmployeeService.toString());
             LOG.info("Fetching PersonInformation for {} from HsatkEmployeeService.", personHsaId);
-            List<PersonInformation> personInformationList = hsatkEmployeeService.getEmployee("", personHsaId, "");
+            List<PersonInformation> personInformationList = hsatkEmployeeService.getEmployee(null, personHsaId, null);
 
             return toStatisticPersonInformationList(personInformationList);
         } catch (Exception e) {

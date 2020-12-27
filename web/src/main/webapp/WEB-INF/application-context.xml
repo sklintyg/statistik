@@ -107,13 +107,6 @@
 
     </beans>
 
-    <beans profile="hsacached">
-        <bean class="se.inera.statistics.service.hsa.HsaWebServiceCached" />
-    </beans>
-    <beans profile="!hsacached">
-        <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect" />
-    </beans>
-
     <beans profile="testapi">
         <bean id="restTemplateStat" class="se.inera.testsupport.RestTemplateStub" />
         <bean class="se.inera.statistics.time.ChangableClock" factory-method="newChangable" />

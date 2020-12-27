@@ -8,7 +8,10 @@ import se.inera.statistics.integration.hsa.model.GetStatisticsPersonResponseDto;
 public interface HsaStatisticsService {
 
     GetStatisticsCareGiverResponseDto getStatisticsCareGiver(String careGiverId);
+
     GetStatisticsHsaUnitResponseDto getStatisticsHsaUnit(String unitId);
-    GetStatisticsPersonResponseDto getStatisticsPerson(String personId);
-    GetStatisticsNamesResponseDto getStatisticsNames(String personId);
+
+    GetStatisticsPersonResponseDto getStatisticsPerson(String personHsaId);
+
+    GetStatisticsNamesResponseDto getStatisticsNames(String personHsaId);
 }

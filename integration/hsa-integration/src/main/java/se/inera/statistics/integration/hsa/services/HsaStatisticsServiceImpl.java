@@ -137,12 +137,12 @@ public class HsaStatisticsServiceImpl implements HsaStatisticsService {
     }
 
     @Override
-    public GetStatisticsPersonResponseDto getStatisticsPerson(String personId) {
+    public GetStatisticsPersonResponseDto getStatisticsPerson(String personHsaId) {
         try {
-            var employeeOptional = hsatkEmployeeService.getEmployee(null, personId, null).stream().findFirst();
+            var employeeOptional = hsatkEmployeeService.getEmployee(null, personHsaId, null).stream().findFirst();
             return employeeOptional.map(this::toStatisticsPersonDto).orElse(null);
         } catch (Exception ex) {
-            throw new HsaCommunicationException("Could not call getStatisticsPerson for " + personId, ex);
+            throw new HsaCommunicationException("Could not call getStatisticsPerson for " + personHsaId, ex);
         }
     }
 
@@ -169,11 +169,11 @@ public class HsaStatisticsServiceImpl implements HsaStatisticsService {
     }
 
     @Override
-    public GetStatisticsNamesResponseDto getStatisticsNames(String personId) {
+    public GetStatisticsNamesResponseDto getStatisticsNames(String personHsaId) {
         try {
-            return toStatisticsNamesDto(hsatkEmployeeService.getEmployee(personId, null, null));
+            return toStatisticsNamesDto(hsatkEmployeeService.getEmployee(null, personHsaId, null));
         } catch (Exception ex) {
-            throw new HsaCommunicationException("Could not call getStatisticsPerson for " + personId, ex);
+            throw new HsaCommunicationException("Could not call getStatisticsPerson for " + personHsaId, ex);
         }
     }
 

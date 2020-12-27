@@ -32,6 +32,7 @@ import se.inera.statistics.integration.hsa.model.GetStatisticsNamesResponseDto;
 import se.inera.statistics.integration.hsa.model.GetStatisticsPersonResponseDto;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.integration.hsa.model.StatisticsHsaUnitDto;
+import se.inera.statistics.integration.hsa.services.HsaStatisticsService;
 
 @Component
 public class HSAServiceImpl implements HSAService {
@@ -41,7 +42,7 @@ public class HSAServiceImpl implements HSAService {
     private static final String SKYDDAD_IDENTITET_EFTERNAMN = "personuppgift";
 
     @Autowired
-    private HsaWebService service;
+    private HsaStatisticsService service;
 
     @Override
     public HsaInfo getHSAInfo(HSAKey key) {

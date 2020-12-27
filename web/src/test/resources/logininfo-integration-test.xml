@@ -43,7 +43,6 @@
     <bean class="se.inera.statistics.service.processlog.LakareManager"/>
     <bean class="se.inera.statistics.service.user.UserSettingsManager" />
     <bean class="se.inera.statistics.service.hsa.HSAServiceImpl"/>
-    <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect"/>
     <bean class="se.inera.statistics.web.service.LoginServiceUtil"/>
     <bean class="se.inera.statistics.web.service.endpoints.LoginInfoService"/>
     <bean class="se.inera.statistics.service.region.RegionEnhetHandler"/>
