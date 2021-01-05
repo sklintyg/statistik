@@ -299,6 +299,9 @@ public class RestSupportService {
     @Transactional
     public void insertIntygWithoutLogging(Intyg intyg) {
         if (hsaServiceStub != null) {
+            hsaServiceStub.deleteCareUnit(intyg.getEnhetId());
+            hsaServiceStub.deleteSubUnit(intyg.getEnhetId());
+
             AbstractUnitStub unit;
             if (intyg.getHuvudenhetId() == null || intyg.getEnhetId().equals(intyg.getHuvudenhetId())) {
                 unit = new CareUnitStub();
