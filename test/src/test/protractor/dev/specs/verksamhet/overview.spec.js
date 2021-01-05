@@ -32,6 +32,7 @@ describe('Verksamhetsöversikt: ', function() {
 
   beforeAll(function() {
     browser.get('/');
+    features.user.makeSureNotLoggedIn();
     features.user.loginUser1(true);
     overview.isAtPage();
   });

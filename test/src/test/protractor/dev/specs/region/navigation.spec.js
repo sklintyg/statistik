@@ -97,9 +97,9 @@ describe('Navigering region: ', function() {
     features.user.makeSureNotLoggedIn();
     features.user.loginUser3(true);
 
-    browser.get('/#/landsting/sjukfallPerManad?vgid=VG3&landstingfilter=c08cf950a2adf1700785e5fd89efc7ab');
+    browser.get('/#/landsting/sjukfallPerManad?vgid=FVG3&landstingfilter=c08cf950a2adf1700785e5fd89efc7ab');
 
-    expect(browser.getCurrentUrl()).toContain('/#/region/sjukfallPerManad?vgid=VG3&regionfilter=c08cf950a2adf1700785e5fd89efc7ab');
+    expect(browser.getCurrentUrl()).toContain('/#/region/sjukfallPerManad?vgid=FVG3&regionfilter=c08cf950a2adf1700785e5fd89efc7ab');
   });
 
   function regionsNiva() {

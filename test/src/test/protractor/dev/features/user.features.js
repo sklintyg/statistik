@@ -47,6 +47,12 @@ var User = function() {
     fakeloginPo.login('Anna', 'Modig', 'user5', 'fvg1', processledare);
   };
 
+  this.loginUser8 = function(processledare) {
+    this.setCookieConsentBannerState(true);
+    headerPo.clickLogin();
+    fakeloginPo.login('Anna', 'Modig', 'user8', 'fvg1', processledare);
+  };
+
   this.isLoggedIn = function() {
     return headerPo.logoutLink.isPresent();
   };
