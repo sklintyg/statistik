@@ -19,6 +19,7 @@
 package se.inera.statistics.service.processlog;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.List;
 import org.junit.Test;
@@ -62,6 +63,32 @@ public class VardgivareManagerTest {
         //Enhet name is set by external script (tools/fileservice).
         //Default name until set by script will be the hsa id.
         assertEquals("ENHET", allEnhets.get(0).getNamn());
+    }
+
+    @Test
+    public void changeUnitToCareUnit() {
+        HSAKey key = new HSAKey("vg", "enhet", "lakare");
+        hsaDataInjectable.setHsaKey(key);
+        HsaInfo hsaInfo = hsaService.getHSAInfo(key);
+
+        vardgivareManager.saveEnhet(hsaInfo, "enhet");
+
+        List<Enhet> units = vardgivareManager.getEnhets("vg");
+        assertEquals(1, units.size());
+        assertEquals("ENHET", units.get(0).getEnhetId().getId());
+        assertEquals("ENHET", units.get(0).getVardenhetId());
+
+        hsaDataInjectable.setAsCareUnit("ENHET");
+        hsaDataInjectable.setHsaKey(key);
+        hsaInfo = hsaService.getHSAInfo(key);
+        hsaDataInjectable.setAsCareUnit(null);
+
+        vardgivareManager.saveEnhet(hsaInfo, "enhet");
+
+        units = vardgivareManager.getEnhets("vg");
+        assertEquals(1, units.size());
+        assertEquals("ENHET", units.get(0).getEnhetId().getId());
+        assertNull(units.get(0).getVardenhetId());
     }
 
     @Test
