@@ -35,4 +35,6 @@ public interface HsaDataInjectable {
 
     void setHsaKey(HSAKey hsaKey);
 
+    void setAsCareUnit(String unit);
+
 }
