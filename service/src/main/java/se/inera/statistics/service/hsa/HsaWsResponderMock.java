@@ -120,6 +120,7 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     private String nextEnhetName = null;
     private String nextHuvudenhetId = null;
     private HSAKey hsaKey = null;
+    private String unitAsCareUnit = null;
 
     @Autowired
     private HsaServiceStub hsaServiceStub;
@@ -328,6 +329,11 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     }
 
     @Override
+    public void setAsCareUnit(String unit) {
+        this.unitAsCareUnit = unit;
+    }
+
+    @Override
     public VpwGetPublicUnitsResponseType vpwGetPublicUnits(AttributedURIType logicalAddress, AttributedURIType id,
         VpwGetPublicUnitsType parameters) throws HsaWsFault {
         throw new UnusedMethodException();
@@ -488,7 +494,9 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         if (shouldExistInHsa(hsaid)) {
             GetStatisticsHsaUnitResponseType resp = new GetStatisticsHsaUnitResponseType();
             resp.setStatisticsUnit(createHsaUnit(key, false));
-            resp.setStatisticsCareUnit(createHsaUnit(key, true));
+            if (!isCareUnit(hsaid)) {
+                resp.setStatisticsCareUnit(createHsaUnit(key, true));
+            }
             nextLanCode = null;
             nextKommunCode = null;
             nextEnhetName = null;
@@ -501,6 +509,10 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         nextEnhetName = null;
         nextHuvudenhetId = null;
         return null;
+    }
+
+    private boolean isCareUnit(String unit) {
+        return unitAsCareUnit != null && unitAsCareUnit.equals(unit);
     }
 
     public static boolean shouldExistInHsa(String hsaId) {
