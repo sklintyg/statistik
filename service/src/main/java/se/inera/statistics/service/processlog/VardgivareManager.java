@@ -47,7 +47,7 @@ public class VardgivareManager {
     public void saveEnhet(HsaInfo hsaInfo, String enhetIdFromIntyg) {
         boolean hsaEnhet = true;
         String huvudenhetIdString = HSAServiceHelper.getHuvudEnhetId(hsaInfo);
-        String underenhetIdString = HSAServiceHelper.getUnderenhetId(hsaInfo);
+        String underenhetIdString = (hsaInfo == null || hsaInfo.getEnhet() == null) ? null : hsaInfo.getEnhet().getId();
         String enhetIdString = underenhetIdString != null ? underenhetIdString : huvudenhetIdString;
         if (enhetIdString == null) {
             hsaEnhet = false;
