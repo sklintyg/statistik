@@ -36,16 +36,12 @@
     <context:component-scan base-package="se.inera.statistics.config.jpa"/>
 
     <bean class="se.inera.intyg.infra.monitoring.logging.LogMDCHelper"/>
-    <bean class="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls" id="hsaWebServiceCalls"/>
-    <bean class="se.inera.statistics.service.hsa.HsaServiceStub" id="hsaServiceStub"/>
     <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
     <bean class="se.inera.statistics.service.processlog.Processor"/>
     <bean class="se.inera.statistics.service.warehouse.Warehouse"/>
     <bean class="se.inera.statistics.service.processlog.VardgivareManager"/>
     <bean class="se.inera.statistics.service.processlog.LakareManager"/>
-    <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>
     <bean class="se.inera.statistics.service.hsa.HSAServiceImpl"/>
-    <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect"/>
     <bean class="se.inera.statistics.service.helper.RegisterCertificateResolver"/>
     <bean class="se.inera.statistics.service.helper.certificate.RegisterCertificateHelper"/>
     <bean class="se.inera.statistics.service.helper.certificate.FkRegisterCertificateHelper"/>
@@ -71,5 +67,20 @@
     <bean class="se.inera.statistics.service.warehouse.message.MessageWidelineConverter" />
     <bean class="se.inera.statistics.service.processlog.message.ProcessMessageLogImpl"/>
     <bean class="java.time.Clock" factory-method="systemDefaultZone"/>
+
+    <bean class="se.inera.statistics.integration.hsa.services.HsaStatisticsServiceImpl"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.services.HsatkOrganizationServiceImpl"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.client.OrganizationClient"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.services.HsatkEmployeeServiceImpl"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.client.EmployeeClient"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.HsaServiceStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetHealthCareProviderResponderStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetHealthCareUnitResponderStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetHealthCareUnitMembersResponderStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetAuthorizationsForPersonResponderStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetEmployeeResponderStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetHospCredentialsForPersonResponderStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetHospLastUpdateResponderStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetUnitResponderStub"/>
 
 </beans>

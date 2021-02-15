@@ -37,8 +37,13 @@ class ReportsUtil {
     static final JSON = MediaType.APPLICATION_JSON
     static final TEXT = MediaType.TEXT_PLAIN
 
-    static final VARDGIVARE = "vg1"
-    static final VARDGIVARE3 = "vg3"
+    static final VARDGIVARE = "fvg1"
+    static final VARDGIVARE3 = "fvg3"
+
+    static final SOC_PARAM_FROMYEAR = "fromyear";
+    static final SOC_PARAM_TOYEAR = "toyear";
+    static final SOC_PARAM_DX = "dx";
+    static final SOC_PARAM_STARTDX = "sjukfallstartingwithdx";
 
     final restClient = createClient()
     // CHAR_BUFFER must currently be used in order to eager parse of numbers etc. Ex. 17.0 in JSON ends up as 17 in groovy
@@ -589,18 +594,18 @@ class ReportsUtil {
     private String getSocialstyrelseQueryString(Integer fromYear, Integer toYear, List<String> dxs, boolean checkSjukfallsStartingWithDx) {
         def qs = new StringBuilder();
         if (fromYear != null) {
-            qs.append("&" + RestSupportService.SOC_PARAM_FROMYEAR + "=" + fromYear);
+            qs.append("&" + SOC_PARAM_FROMYEAR + "=" + fromYear);
         }
         if (toYear != null) {
-            qs.append("&" + RestSupportService.SOC_PARAM_TOYEAR + "=" + toYear);
+            qs.append("&" + SOC_PARAM_TOYEAR + "=" + toYear);
         }
         if (dxs != null) {
             for (String dx : dxs) {
-                qs.append("&" + RestSupportService.SOC_PARAM_DX + "=" + dx);
+                qs.append("&" + SOC_PARAM_DX + "=" + dx);
             }
         }
         if (checkSjukfallsStartingWithDx) {
-            qs.append("&" + RestSupportService.SOC_PARAM_STARTDX + "=true");
+            qs.append("&" + SOC_PARAM_STARTDX + "=true");
         }
         def queryString = qs.replaceFirst("&", "")
         queryString

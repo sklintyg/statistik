@@ -28,24 +28,11 @@
     <context:component-scan base-package="se.inera.statistics.web.service.monitoring" />
 
     <beans profile="hsa-stub">
-        <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>
-        <bean class="se.inera.statistics.service.hsa.HsaServiceStub"/>
-        <bean class="se.inera.statistics.service.hsa.BootstrapBean"/>
+        <bean class="se.inera.intyg.infra.integration.hsatk.stub.HsaServiceStub"/>
     </beans>
 
     <beans profile="hsa-stub,wc-hsa-stub">
         <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
-    </beans>
-
-    <beans>
-        <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-            <property name="basenames">
-                <list>
-                    <value>version</value>
-                    <value>buildtime</value>
-                </list>
-            </property>
-        </bean>
     </beans>
 
     <beans>
@@ -57,7 +44,9 @@
 
         <bean id="applicationContextProvider" class="se.inera.auth.ApplicationContextProvider"/>
 
-        <bean class="se.inera.statistics.hsa.services.HsaOrganizationsServiceImpl"/>
+        <bean class="se.inera.statistics.integration.hsa.services.HsaStatisticsServiceImpl"/>
+        <bean class="se.inera.statistics.integration.hsa.services.HsaOrganizationsServiceImpl"/>
+        <bean class="se.inera.statistics.integration.hsa.services.HsaPersonServiceImpl"/>
         <bean id="filterHashHandler" class="se.inera.statistics.web.service.FilterHashHandler"/>
         <bean id="resultMessageHandler" class="se.inera.statistics.web.service.ResultMessageHandler"/>
         <bean id="chartDataService" class="se.inera.statistics.web.service.endpoints.ChartDataService"/>
@@ -77,8 +66,7 @@
         <bean id="linkService" class="se.inera.statistics.web.service.links.LinkService"/>
         <bean class="se.inera.statistics.web.scheduler.STBannerJob"/>
 
-        <import resource="classpath*:hsa-services-config.xml"/>
-        <import resource="classpath*:hsaws-services-config.xml"/>
+        <import resource="classpath*:hsatk-services-config.xml"/>
         <import resource="classpath*:icd10.xml"/>
         <import resource="classpath*:ia-services-config.xml"/>
         <import resource="application-context-cxf.xml"/>
@@ -117,13 +105,6 @@
             <property name="redisFlushMode" value="IMMEDIATE" />
         </bean>
 
-    </beans>
-
-    <beans profile="hsacached">
-        <bean class="se.inera.statistics.service.hsa.HsaWebServiceCached" />
-    </beans>
-    <beans profile="!hsacached">
-        <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect" />
     </beans>
 
     <beans profile="testapi">

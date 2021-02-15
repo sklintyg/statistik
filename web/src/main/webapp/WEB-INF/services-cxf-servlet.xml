@@ -31,7 +31,7 @@
 
   <context:annotation-config />
 
-  <import resource="classpath:hsa-stub-context.xml" />
+  <import resource="classpath:hsatk-stub-context.xml" />
   <import resource="classpath:ia-stub-context.xml" />
 
   <cxf:bus>

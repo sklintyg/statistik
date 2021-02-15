@@ -19,7 +19,7 @@
 package se.inera.statistics.service.warehouse;
 
 import java.util.List;
-import se.inera.statistics.hsa.model.HsaIdAny;
+import se.inera.statistics.integration.hsa.model.HsaIdAny;
 
 public abstract class AbstractWidlineConverter {
 

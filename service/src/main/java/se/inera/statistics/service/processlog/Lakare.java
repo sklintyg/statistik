@@ -24,8 +24,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import se.inera.statistics.hsa.model.HsaIdLakare;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.HsaIdLakare;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
 @Entity
 @Table(name = Lakare.TABLE)

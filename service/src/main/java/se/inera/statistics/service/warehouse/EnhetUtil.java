@@ -21,7 +21,7 @@ package se.inera.statistics.service.warehouse;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.processlog.Enhet;
 
 public final class EnhetUtil {

@@ -26,7 +26,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.NoSuchElementException;
 import org.junit.Test;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
 public class SjukfallIteratorTest {
 

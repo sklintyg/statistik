@@ -20,8 +20,8 @@ package se.inera.statistics.web.service.responseconverter;
 
 import java.util.Collections;
 import java.util.List;
-import se.inera.statistics.hsa.model.HsaIdAny;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdAny;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.model.ChartData;

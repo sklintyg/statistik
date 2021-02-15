@@ -19,7 +19,7 @@
 package se.inera.statistics.service.warehouse.message;
 
 import java.time.LocalDate;
-import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.integration.hsa.model.HsaIdLakare;
 import se.inera.statistics.service.report.model.Kon;
 
 public class CountDTOAmne {

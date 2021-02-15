@@ -19,7 +19,6 @@
 package se.inera.testsupport;
 
 import java.util.List;
-import se.inera.statistics.service.hsa.HsaKon;
 
 public class Personal {
 

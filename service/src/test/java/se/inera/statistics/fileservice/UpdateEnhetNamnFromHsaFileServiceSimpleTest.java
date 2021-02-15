@@ -22,7 +22,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayInputStream;
 import org.junit.Test;
-import se.inera.ifv.hsawsresponder.v3._31._1.ListGetHsaUnitsResponseType;
 
 public class UpdateEnhetNamnFromHsaFileServiceSimpleTest {
 
@@ -72,7 +71,7 @@ public class UpdateEnhetNamnFromHsaFileServiceSimpleTest {
             "        </hsaUnit>\n" +
             "    </hsaUnits>\n" +
             "</FileGetHsaUnitsResponse>\n";
-        final ListGetHsaUnitsResponseType resp = UpdateEnhetNamnFromHsaFileService.unmarshalXml(new ByteArrayInputStream(in.getBytes()));
+        final FileGetHsaUnitsResponse resp = UpdateEnhetNamnFromHsaFileService.unmarshalXml(new ByteArrayInputStream(in.getBytes()));
         assertEquals(5, resp.getHsaUnits().getHsaUnit().size());
         assertEquals("Furugården", resp.getHsaUnits().getHsaUnit().get(4).getName());
         assertEquals("SE2120001231-00F1KO", resp.getHsaUnits().getHsaUnit().get(4).getHsaIdentity());

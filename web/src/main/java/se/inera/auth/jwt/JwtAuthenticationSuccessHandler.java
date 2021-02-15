@@ -29,7 +29,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import se.inera.auth.model.User;
-import se.inera.statistics.hsa.model.Vardenhet;
+import se.inera.statistics.integration.hsa.model.Vardenhet;
 import se.inera.statistics.web.service.FilterException;
 import se.inera.statistics.web.service.FilterHashHandler;
 

@@ -23,7 +23,7 @@ import static se.inera.statistics.service.warehouse.FactBuilder.aFact;
 
 import java.util.Iterator;
 import org.junit.Test;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Kon;
 
 public class AisleTest {

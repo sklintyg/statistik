@@ -73,8 +73,8 @@ class FoljandeIntygFinns extends FoljandeFinns {
         arbetsförmåga = 0
         arbetsförmåga2 = ""
         läkare = "Personal HSA-ID"
-        län = null
-        kommun = null
+        län = "23"
+        kommun = "80"
         händelsetyp = EventType.CREATED.name()
         intygid = intygIdCounter++
         intygformat = "FK7263SIT"

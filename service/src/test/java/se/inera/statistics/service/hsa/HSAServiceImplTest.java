@@ -19,37 +19,29 @@
 package se.inera.statistics.service.hsa;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
-import java.io.InputStream;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitResponseType;
-import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
-import se.inera.statistics.hsa.model.GetStatisticsCareGiverResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsHsaUnitResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsNamesResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsPersonResponseDto;
-import se.inera.statistics.hsa.model.StatisticsHsaUnitDto;
-import se.inera.statistics.hsa.model.StatisticsNameInfoDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsCareGiverResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsHsaUnitResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsNamesResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsPersonResponseDto;
+import se.inera.statistics.integration.hsa.model.StatisticsHsaUnitDto;
+import se.inera.statistics.integration.hsa.model.StatisticsNameInfoDto;
+import se.inera.statistics.integration.hsa.services.HsaStatisticsService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HSAServiceImplTest {
@@ -108,33 +100,10 @@ public class HSAServiceImplTest {
     }
 
     @Mock
-    private HsaWebService wsCalls;
+    private HsaStatisticsService wsCalls;
 
     @InjectMocks
     private HSAServiceImpl serviceImpl = new HSAServiceImpl();
-
-    @Test
-    public void hsUnitWithMissingGeography() throws Exception {
-        GetStatisticsHsaUnitResponseDto response = HSAWebServiceCalls.toDto(getHsaUnitResponse("GetStatisticsHsaUnit-small.xml"));
-        when(wsCalls.getStatisticsHsaUnit("ENHETID")).thenReturn(response);
-
-        HSAKey key = new HSAKey("vardgivareId", "enhetId", "lakareId");
-        HsaInfo info = serviceImpl.getHSAInfo(key);
-        assertNotNull(info);
-        assertEquals("IFV1239877878-103H", info.getEnhet().getId());
-        assertNull(info.getEnhet().getGeografi());
-    }
-
-    @Test
-    public void wsFindsNothing() throws Exception {
-        HSAKey key = new HSAKey("vardgivareId", "enhetId", "lakareId");
-        HsaInfo info = serviceImpl.getHSAInfo(key);
-        assertNotNull(info);
-        assertFalse(info.hasEnhet());
-        assertFalse(info.hasHuvudenhet());
-        assertFalse(info.hasVardgivare());
-        assertFalse(info.hasPersonal());
-    }
 
     @Test
     public void serviceReturnsNullOnException() throws Exception {
@@ -142,15 +111,6 @@ public class HSAServiceImplTest {
         when(wsCalls.getStatisticsHsaUnit("ENHETID")).thenThrow(new IllegalStateException("This WS generated and exception"));
         HsaInfo hsaInfo = serviceImpl.getHSAInfo(key);
         assertNull(hsaInfo);
-    }
-
-    private GetStatisticsHsaUnitResponseType getHsaUnitResponse(String name) throws JAXBException {
-        JAXBContext context = JAXBContext.newInstance(GetStatisticsHsaUnitResponseType.class);
-        Unmarshaller unmarshaller = context.createUnmarshaller();
-        InputStream input = getClass().getResourceAsStream("/soap-response/" + name);
-        @SuppressWarnings("unchecked")
-        JAXBElement<GetStatisticsHsaUnitResponseType> o = (JAXBElement<GetStatisticsHsaUnitResponseType>) unmarshaller.unmarshal(input);
-        return o.getValue();
     }
 
     private HsaInfo getFullJsonNode() {

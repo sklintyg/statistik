@@ -104,6 +104,7 @@ public class FakeCredentials implements Serializable {
             + ", fornamn='" + fornamn + '\''
             + ", efternamn='" + efternamn + '\''
             + ", vardgivarIdSomProcessLedare='" + vardgivarIdSomProcessLedare.stream().collect(Collectors.joining()) + '\''
+            + ", vardgivarniva='" + vardgivarniva + '\''
             + '}';
     }
 

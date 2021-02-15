@@ -40,11 +40,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdLakare;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.hsa.HSAKey;
-import se.inera.statistics.service.hsa.HsaDataInjectable;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdLakare;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.message.MessageEventType;
 import se.inera.statistics.service.report.util.Icd10;
@@ -94,9 +92,6 @@ public class TestIntygInjector {
 
     @Autowired
     private Icd10 icd10;
-
-    @Autowired
-    private HsaDataInjectable hsaDataInjectable;
 
     @Autowired
     private RestSupportService restSupportService;
@@ -179,7 +174,6 @@ public class TestIntygInjector {
 
         int arbetsformaga = random(ARBETSFORMAGOR);
 
-        hsaDataInjectable.setHsaKey(new HSAKey(vardgivare, vardenhet, lakare));
 
         final JsonNode data = builder.build(patientId, start, end, lakare, vardenhet, vardgivare, diagnos, arbetsformaga);
         final EventType type = EventType.CREATED;

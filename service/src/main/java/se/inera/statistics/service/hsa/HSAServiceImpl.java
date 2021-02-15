@@ -24,14 +24,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.inera.statistics.hsa.model.GeoCoordDto;
-import se.inera.statistics.hsa.model.GeoCoordType;
-import se.inera.statistics.hsa.model.GetStatisticsCareGiverResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsHsaUnitResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsNamesResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsPersonResponseDto;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.hsa.model.StatisticsHsaUnitDto;
+import se.inera.statistics.integration.hsa.model.GeoCoordDto;
+import se.inera.statistics.integration.hsa.model.GeoCoordType;
+import se.inera.statistics.integration.hsa.model.GetStatisticsCareGiverResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsHsaUnitResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsNamesResponseDto;
+import se.inera.statistics.integration.hsa.model.GetStatisticsPersonResponseDto;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.StatisticsHsaUnitDto;
+import se.inera.statistics.integration.hsa.services.HsaStatisticsService;
 
 @Component
 public class HSAServiceImpl implements HSAService {
@@ -41,7 +42,7 @@ public class HSAServiceImpl implements HSAService {
     private static final String SKYDDAD_IDENTITET_EFTERNAMN = "personuppgift";
 
     @Autowired
-    private HsaWebService service;
+    private HsaStatisticsService service;
 
     @Override
     public HsaInfo getHSAInfo(HSAKey key) {

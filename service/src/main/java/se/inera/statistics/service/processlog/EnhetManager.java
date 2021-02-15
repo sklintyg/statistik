@@ -27,13 +27,13 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import se.inera.ifv.hsawsresponder.v3._31._1.ListGetHsaUnitsResponseType;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import org.springframework.transaction.annotation.Transactional;
+import se.inera.statistics.fileservice.HsaUnit;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
 @Component
 public class EnhetManager {
@@ -61,10 +61,10 @@ public class EnhetManager {
     }
 
     @Transactional
-    public int updateName(ListGetHsaUnitsResponseType.HsaUnits hsaUnits) {
-        return hsaUnits.getHsaUnit().stream().reduce(0, (partialUpdateResultCount, hsaUnit) -> {
+    public int updateName(List<HsaUnit> hsaUnits) {
+        return hsaUnits.stream().reduce(0, (partialUpdateResultCount, hsaUnit) -> {
             final Query query = manager.createQuery(
-                    "UPDATE Enhet e SET e.namn = :namn WHERE e.enhetId = :id AND e.namn <> :namn");
+                "UPDATE Enhet e SET e.namn = :namn WHERE e.enhetId = :id AND e.namn <> :namn");
             final String name = hsaUnit.getName();
             query.setParameter("namn", name);
             final String hsaid = hsaUnit.getHsaIdentity();

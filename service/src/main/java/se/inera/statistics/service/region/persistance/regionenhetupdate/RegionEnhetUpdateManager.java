@@ -26,7 +26,7 @@ import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.integration.hsa.model.HsaIdUser;
 
 @Component
 public class RegionEnhetUpdateManager {

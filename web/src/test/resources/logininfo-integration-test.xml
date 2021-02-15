@@ -35,8 +35,6 @@
 
     <bean class="se.inera.intyg.infra.monitoring.logging.LogMDCHelper"/>
     <bean class="se.inera.statistics.web.util.VersionUtil" id="versionUtil"/>
-    <bean class="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls" id="hsaWebServiceCalls"/>
-    <bean class="se.inera.statistics.service.hsa.HsaServiceStub" id="hsaServiceStub"/>
     <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
     <bean class="se.inera.statistics.service.processlog.Processor"/>
     <bean class="se.inera.statistics.service.processlog.message.ProcessMessageLogImpl"/>
@@ -44,9 +42,7 @@
     <bean class="se.inera.statistics.service.processlog.VardgivareManager"/>
     <bean class="se.inera.statistics.service.processlog.LakareManager"/>
     <bean class="se.inera.statistics.service.user.UserSettingsManager" />
-    <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>
     <bean class="se.inera.statistics.service.hsa.HSAServiceImpl"/>
-    <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect"/>
     <bean class="se.inera.statistics.web.service.LoginServiceUtil"/>
     <bean class="se.inera.statistics.web.service.endpoints.LoginInfoService"/>
     <bean class="se.inera.statistics.service.region.RegionEnhetHandler"/>
@@ -73,6 +69,21 @@
     <bean class="se.inera.statistics.time.ChangableClock" factory-method="newChangable" />
     <bean class="se.inera.statistics.service.warehouse.IntygCommonManager" />
     <bean class="se.inera.statistics.service.warehouse.IntygCommonConverter" />
+
+    <bean class="se.inera.statistics.integration.hsa.services.HsaStatisticsServiceImpl"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.services.HsatkOrganizationServiceImpl"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.client.OrganizationClient"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.services.HsatkEmployeeServiceImpl"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.client.EmployeeClient"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.HsaServiceStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetHealthCareProviderResponderStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetHealthCareUnitResponderStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetHealthCareUnitMembersResponderStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetAuthorizationsForPersonResponderStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetEmployeeResponderStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetHospCredentialsForPersonResponderStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetHospLastUpdateResponderStub"/>
+    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetUnitResponderStub"/>
 
     <import resource="classpath*:ia-services-config.xml"/>
     <bean id="iaRestTemplate" class="se.inera.testsupport.RestTemplateStub" />

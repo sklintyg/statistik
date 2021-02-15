@@ -104,6 +104,13 @@ allprojects {
         compile "com.google.guava:guava:${googleGuavaVersion}"
 
         compile "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${sonarqubeGradlePluginVersion}"
+
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+
+        testCompileOnly 'org.projectlombok:lombok'
+        testAnnotationProcessor 'org.projectlombok:lombok'
+
         testCompile "junit:junit:4.+"
         testCompile "org.springframework:spring-test"
         testCompile "org.mockito:mockito-core"

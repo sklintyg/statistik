@@ -15,9 +15,9 @@ I databasen finns bara enhet1 lagrad.
 
 |Enbart foljande intyg finns                                     |
 |personnr     |diagnoskod|start     |slut      |enhet |vardgivare|
-|19700123-9297|G01       |2013-02-05|2013-02-06|enhet1|vg1       |
-|19680102-9288|G01       |2013-02-05|2013-02-06|ENHET1|VG1       |
-|19791020-9290|G01       |2013-02-11|2013-02-12|enHEt1|vG1       |
+|19700123-9297|G01       |2013-02-05|2013-02-06|enhet1|fvg1       |
+|19680102-9288|G01       |2013-02-05|2013-02-06|ENHET1|FVG1       |
+|19791020-9290|G01       |2013-02-11|2013-02-12|enHEt1|fvG1       |
 
 !3 Då gäller:
 

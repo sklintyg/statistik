@@ -26,6 +26,7 @@
 
   <logger name="org.apache.camel" level="warn"/>
   <logger name="org.apache.activemq" level="warn"/>
+  <logger name="org.apache.cxf" level="warn"/>
 
   <logger name="org.springframework" level="warn"/>
   <logger name="org.springframework.security" level="warn"/>
@@ -61,9 +62,6 @@
     <appender-ref ref="PROCESS"/>
   </logger>
   <logger name="se.inera.statistics.scheduler.active.LogJob" level="info"  additivity="false">
-    <appender-ref ref="PROCESS"/>
-  </logger>
-  <logger name="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls" level="info"  additivity="false">
     <appender-ref ref="PROCESS"/>
   </logger>
   <logger name="se.inera.statistics.web.service.endpoints.ChartDataService" level="info"  additivity="false">

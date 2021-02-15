@@ -28,14 +28,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 import se.inera.auth.model.User;
-import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
-import se.inera.intyg.infra.integration.hsa.services.HsaPersonService;
-import se.inera.statistics.hsa.model.HsaIdUser;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.hsa.services.HsaOrganizationsService;
-import se.inera.statistics.hsa.services.UserAuthorization;
+import se.inera.statistics.integration.hsa.model.*;
+import se.inera.statistics.integration.hsa.services.HsaOrganizationsService;
+import se.inera.statistics.integration.hsa.services.HsaPersonService;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
-import se.riv.infrastructure.directory.v1.PersonInformationType;
 
 public class UserDetailsService implements SAMLUserDetailsService {
 
@@ -67,7 +63,7 @@ public class UserDetailsService implements SAMLUserDetailsService {
 
     private User buildUserPrincipal(String employeeHsaId) {
         final HsaIdUser hsaId = new HsaIdUser(employeeHsaId);
-        List<PersonInformationType> hsaPersonInfo = hsaPersonService.getHsaPersonInfo(hsaId.getId());
+        List<StatisticsPersonInformation> hsaPersonInfo = hsaPersonService.getHsaPersonInfo(hsaId.getId());
         UserAuthorization userAuthorization = hsaOrganizationsService.getAuthorizedEnheterForHosPerson(hsaId);
         final List<Vardgivare> vardgivareWithProcessledarStatusList = getVgsWithProcessledarStatus(userAuthorization.getSystemRoles())
             .stream().map(vgHsaId -> hsaOrganizationsService.getVardgivare(vgHsaId))
@@ -79,7 +75,7 @@ public class UserDetailsService implements SAMLUserDetailsService {
         return new User(hsaId, name, vardgivareWithProcessledarStatusList, userAuthorization.getVardenhetList());
     }
 
-    private String extractPersonName(List<PersonInformationType> hsaPersonInfo) {
+    private String extractPersonName(List<StatisticsPersonInformation> hsaPersonInfo) {
         if (hsaPersonInfo != null && !hsaPersonInfo.isEmpty()) {
             return hsaPersonInfo.get(0).getGivenName() + " " + hsaPersonInfo.get(0).getMiddleAndSurName();
         } else {

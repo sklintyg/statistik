@@ -20,7 +20,7 @@ package se.inera.statistics.service.warehouse;
 
 import java.io.Serializable;
 import java.util.Objects;
-import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.integration.hsa.model.HsaIdLakare;
 import se.inera.statistics.service.report.model.Kon;
 
 public class Lakare implements Serializable {

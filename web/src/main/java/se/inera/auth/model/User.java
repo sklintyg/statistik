@@ -22,10 +22,10 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
-import se.inera.statistics.hsa.model.HsaIdUser;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.hsa.model.Vardenhet;
+import se.inera.statistics.integration.hsa.model.HsaIdUser;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.Vardenhet;
+import se.inera.statistics.integration.hsa.model.Vardgivare;
 
 public class User implements Serializable {
 

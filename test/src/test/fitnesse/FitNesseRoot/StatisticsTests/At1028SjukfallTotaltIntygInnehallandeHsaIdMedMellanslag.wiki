@@ -13,14 +13,14 @@ Verifierar INTYG-1812
 
 |Enbart foljande intyg finns                                                                      |
 |personnr     |diagnoskod|start     |slut      |enhet      |vardgivare|kommentar                  |
-|19790330-9230|G01       |2014-03-05|2014-03-16|enhet1     |vg1       |ENHET Inget mellanslag     |
-|19790330-9230|G01       |2014-04-05|2014-04-16|enh et1    |vg1       |ENHET Mellanslag mitt i    |
-|19790330-9230|G01       |2014-05-05|2014-05-16|!- enhet1-!|vg1       |ENHET Börjar med mellanslag|
-|19790330-9230|G01       |2014-06-05|2014-06-16|!-enhet1 -!|vg1       |ENHET Slutar med mellanslag|
-|19790330-9230|G01       |2013-07-05|2013-07-16|enhet1     |vg1       |VG Inget mellanslag        |
-|19790330-9230|G01       |2013-08-05|2013-08-16|enhet1     |v g1      |VG Mellanslag mitt i       |
-|19790330-9230|G01       |2013-09-05|2013-09-16|enhet1     |!- vg1-!  |VG Börjar med mellanslag   |
-|19790330-9230|G01       |2013-10-05|2013-10-16|enhet1     |!-vg1 -!  |VG Slutar med mellanslag   |
+|19790330-9230|G01       |2014-03-05|2014-03-16|enhet1     |fvg1       |ENHET Inget mellanslag     |
+|19790330-9230|G01       |2014-04-05|2014-04-16|enh et1    |fvg1       |ENHET Mellanslag mitt i    |
+|19790330-9230|G01       |2014-05-05|2014-05-16|!- enhet1-!|fvg1       |ENHET Börjar med mellanslag|
+|19790330-9230|G01       |2014-06-05|2014-06-16|!-enhet1 -!|fvg1       |ENHET Slutar med mellanslag|
+|19790330-9230|G01       |2013-07-05|2013-07-16|enhet1     |fvg1       |VG Inget mellanslag        |
+|19790330-9230|G01       |2013-08-05|2013-08-16|enhet1     |fv g1      |VG Mellanslag mitt i       |
+|19790330-9230|G01       |2013-09-05|2013-09-16|enhet1     |!- fvg1-!  |VG Börjar med mellanslag   |
+|19790330-9230|G01       |2013-10-05|2013-10-16|enhet1     |!-fvg1 -!  |VG Slutar med mellanslag   |
 
 !3 Då gäller:
 

@@ -24,9 +24,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.time.LocalDate;
 import org.junit.Assert;
 import org.junit.Test;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdLakare;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdLakare;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.certificate.JsonDocumentHelper;
 
