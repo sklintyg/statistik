@@ -94,7 +94,8 @@ public class ReceiverIT {
     public void deliver_document_from_in_queue_to_statistics_repository() {
         populate();
         SimpleKonResponse webData = sjukfallQuery
-            .getSjukfall(warehouse.get(new HsaIdVardgivare("enhetId")), sjukfallUtil.createEnhetFilter(new HsaIdEnhet("ENHETID")),
+            .getSjukfall(warehouse.get(new HsaIdVardgivare("vg-verksamhet1")),
+                sjukfallUtil.createEnhetFilter(new HsaIdEnhet("verksamhet1")),
                 LocalDate.parse("2011-01-01"), 12, 1, false);
 
         assertEquals(12, webData.getRows().size());
@@ -118,10 +119,10 @@ public class ReceiverIT {
 
         UtlatandeBuilder builder = new UtlatandeBuilder();
         simpleSend(builder
-            .build("19121212-0010", LocalDate.parse("2011-01-20"), LocalDate.parse("2011-03-11"), new HsaIdEnhet("enhetId"), "A00", 0)
+            .build("19121212-0010", LocalDate.parse("2011-01-20"), LocalDate.parse("2011-03-11"), new HsaIdEnhet("verksamhet1"), "A00", 0)
             .toString(), "001", IntygType.FK7263.getItIntygType());
         simpleSend(builder
-            .build("19121212-0110", LocalDate.parse("2011-01-20"), LocalDate.parse("2011-03-11"), new HsaIdEnhet("enhetId"), "A00", 0)
+            .build("19121212-0110", LocalDate.parse("2011-01-20"), LocalDate.parse("2011-03-11"), new HsaIdEnhet("verksamhet1"), "A00", 0)
             .toString(), "002", IntygType.FK7263.getItIntygType());
 
         try {
