@@ -79,8 +79,8 @@ public class HsaStatisticsServiceImpl implements HsaStatisticsService {
     }
 
     private boolean isUnitAHealthCareUnit(HealthCareUnit healthCareUnit) {
-        return healthCareUnit != null && healthCareUnit.getHealthCareUnitHsaId() != null &&
-            (healthCareUnit.getUnitIsHealthCareUnit() == null || !healthCareUnit.getUnitIsHealthCareUnit());
+        return healthCareUnit != null && healthCareUnit.getHealthCareUnitHsaId() != null
+            && (healthCareUnit.getUnitIsHealthCareUnit() == null || !healthCareUnit.getUnitIsHealthCareUnit());
     }
 
     public static GetStatisticsHsaUnitResponseDto toStatisticsHsaUnitResponseDto(HealthCareUnit healthCareUnit, Unit unit,
