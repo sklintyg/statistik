@@ -21,6 +21,7 @@ package se.inera.statistics.integration.hsa.services;
 import static java.util.stream.IntStream.range;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -30,11 +31,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import se.inera.intyg.infra.integration.hsatk.exception.HsaServiceCallException;
 import se.inera.intyg.infra.integration.hsatk.model.Commission;
+import se.inera.intyg.infra.integration.hsatk.model.CredentialInformation;
 import se.inera.intyg.infra.integration.hsatk.model.HsaSystemRole;
 import se.inera.intyg.infra.integration.hsatk.services.HsatkAuthorizationManagementService;
-import se.inera.intyg.infra.integration.hsatk.exception.HsaServiceCallException;
-import se.inera.intyg.infra.integration.hsatk.model.CredentialInformation;
 import se.inera.statistics.integration.hsa.model.HsaIdUser;
 import se.inera.statistics.integration.hsa.model.Medarbetaruppdrag;
 import se.inera.statistics.integration.hsa.model.UserAuthorization;
@@ -56,7 +57,7 @@ public class HsaOrganizationsServiceImplTest {
 
     @Test
     public void testWithSingleMiuStatistik() throws HsaServiceCallException {
-        when(authorizationManagementService.getCredentialInformationForPerson(anyString(), anyString(), anyString()))
+        when(authorizationManagementService.getCredentialInformationForPerson(anyString(), anyString(), eq(null)))
             .thenReturn(buildCredzResponse(Medarbetaruppdrag.STATISTIK, 1, 1));
         List<Vardenhet> authorizedEnheter = testee.getAuthorizedEnheterForHosPerson(HSA_ID).getVardenhetList();
         assertEquals(1, authorizedEnheter.size());
@@ -64,7 +65,7 @@ public class HsaOrganizationsServiceImplTest {
 
     @Test
     public void testWithSingleMiuVardOchBehandling() throws HsaServiceCallException {
-        when(authorizationManagementService.getCredentialInformationForPerson(anyString(), anyString(), anyString()))
+        when(authorizationManagementService.getCredentialInformationForPerson(anyString(), anyString(), eq(null)))
             .thenReturn(buildCredzResponse(Medarbetaruppdrag.VARD_OCH_BEHANDLING, 1, 1));
         List<Vardenhet> authorizedEnheter = testee.getAuthorizedEnheterForHosPerson(HSA_ID).getVardenhetList();
         assertEquals(0, authorizedEnheter.size());
@@ -72,7 +73,7 @@ public class HsaOrganizationsServiceImplTest {
 
     @Test
     public void testThatSingleAuthEnhetIsReturnedWhenHavingTwoMiuOnUnit() throws HsaServiceCallException {
-        when(authorizationManagementService.getCredentialInformationForPerson(anyString(), anyString(), anyString()))
+        when(authorizationManagementService.getCredentialInformationForPerson(anyString(), anyString(), eq(null)))
             .thenReturn(buildCredzResponse(Medarbetaruppdrag.STATISTIK, 2, 0));
         List<Vardenhet> authorizedEnheter = testee.getAuthorizedEnheterForHosPerson(HSA_ID).getVardenhetList();
         assertEquals(1, authorizedEnheter.size());
@@ -80,7 +81,7 @@ public class HsaOrganizationsServiceImplTest {
 
     @Test
     public void testThatSystemRoleIsSet() throws HsaServiceCallException {
-        when(authorizationManagementService.getCredentialInformationForPerson(anyString(), anyString(), anyString()))
+        when(authorizationManagementService.getCredentialInformationForPerson(anyString(), anyString(), eq(null)))
             .thenReturn(buildCredzResponse(Medarbetaruppdrag.STATISTIK, 1, 1));
         UserAuthorization userAuthorization = testee.getAuthorizedEnheterForHosPerson(HSA_ID);
         assertEquals("Statistik;enhet-123", userAuthorization.getSystemRoles().get(0));
@@ -89,7 +90,7 @@ public class HsaOrganizationsServiceImplTest {
     @Test
     public void testThatVEAreSortedByVEId() throws HsaServiceCallException {
         List<CredentialInformation> credzResp = buildCredzResponse(Medarbetaruppdrag.STATISTIK, 3, 3);
-        when(authorizationManagementService.getCredentialInformationForPerson(anyString(), anyString(), anyString())).thenReturn(credzResp);
+        when(authorizationManagementService.getCredentialInformationForPerson(anyString(), anyString(), eq(null))).thenReturn(credzResp);
         UserAuthorization userAuthorization = testee.getAuthorizedEnheterForHosPerson(HSA_ID);
         System.out.println(userAuthorization.getVardenhetList());
         assertEquals("ENHET-1", userAuthorization.getVardenhetList().get(0).getId().getId());

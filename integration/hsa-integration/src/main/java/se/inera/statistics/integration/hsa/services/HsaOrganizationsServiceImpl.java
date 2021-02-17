@@ -18,6 +18,10 @@
  */
 package se.inera.statistics.integration.hsa.services;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +31,13 @@ import se.inera.intyg.infra.integration.hsatk.model.CredentialInformation;
 import se.inera.intyg.infra.integration.hsatk.model.Unit;
 import se.inera.intyg.infra.integration.hsatk.services.HsatkAuthorizationManagementService;
 import se.inera.intyg.infra.integration.hsatk.services.HsatkOrganizationService;
-import se.inera.statistics.integration.hsa.model.*;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdUser;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.Medarbetaruppdrag;
+import se.inera.statistics.integration.hsa.model.UserAuthorization;
+import se.inera.statistics.integration.hsa.model.Vardenhet;
+import se.inera.statistics.integration.hsa.model.Vardgivare;
 
 /**
  * Interfaces with the {@link AuthorizationManagementService} in order to fetch Medarbetaruppdrag for the given
@@ -60,7 +65,7 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
 
         List<CredentialInformation> response = null;
         try {
-            response = authorizationManagementService.getCredentialInformationForPerson("", hosPersonHsaId.getId(), "");
+            response = authorizationManagementService.getCredentialInformationForPerson("", hosPersonHsaId.getId(), null);
         } catch (Exception e) {
             LOG.error("Error loading authorizations", e);
         }
