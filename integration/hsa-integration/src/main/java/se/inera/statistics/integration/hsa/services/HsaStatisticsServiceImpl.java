@@ -67,7 +67,7 @@ public class HsaStatisticsServiceImpl implements HsaStatisticsService {
 
             Unit careUnit = null;
             HealthCareUnit healthCareCareUnit = null;
-            if (healthCareUnit != null && healthCareUnit.getHealthCareUnitHsaId() != null && !healthCareUnit.getUnitIsHealthCareUnit()) {
+            if (isUnitAHealthCareUnit(healthCareUnit)) {
                 healthCareCareUnit = hsatkOrganizationService.getHealthCareUnit(healthCareUnit.getHealthCareUnitHsaId());
                 careUnit = hsatkOrganizationService.getUnit(healthCareUnit.getHealthCareUnitHsaId(), profile);
             }
@@ -76,6 +76,11 @@ public class HsaStatisticsServiceImpl implements HsaStatisticsService {
         } catch (Exception ex) {
             throw new HsaCommunicationException("Could not call getStatisticsHsaUnit for " + unitId, ex);
         }
+    }
+
+    private boolean isUnitAHealthCareUnit(HealthCareUnit healthCareUnit) {
+        return healthCareUnit != null && healthCareUnit.getHealthCareUnitHsaId() != null
+            && (healthCareUnit.getUnitIsHealthCareUnit() == null || !healthCareUnit.getUnitIsHealthCareUnit());
     }
 
     public static GetStatisticsHsaUnitResponseDto toStatisticsHsaUnitResponseDto(HealthCareUnit healthCareUnit, Unit unit,
