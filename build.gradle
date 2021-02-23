@@ -10,7 +10,7 @@ ext {
     infraVersion = System.properties['infraVersion'] ?: '3.15.0-SNAPSHOT'
     refDataVersion = System.properties['refDataVersion'] ?: '1.0-SNAPSHOT'
 
-    intygSchematronVersion = "1.0.53"
+    intygSchematronVersion = "1.0.54"
     rivtaClinicalprocessSchemasVersion = "4.0.5"
     internalMonitoringSchemaVersion = "1.0.4"
     intygTransportstyrelsenSchemasVersion = "1.0.5"
