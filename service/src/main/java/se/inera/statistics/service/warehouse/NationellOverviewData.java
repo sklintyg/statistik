@@ -20,19 +20,17 @@ package se.inera.statistics.service.warehouse;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.inera.statistics.service.countypopulation.CountyPopulation;
 import se.inera.statistics.service.countypopulation.CountyPopulationManager;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
-import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
@@ -85,33 +83,36 @@ public class NationellOverviewData {
     }
 
     private List<OverviewChartRowExtended> getIntygPerLan(NationellDataInfo data) {
-        final Range range = data.getOverviewRange();
-        SimpleKonResponse previousData = perPopulation(data.getOverviewLanPreviousResult(), range);
-        SimpleKonResponse currentData = perPopulation(data.getOverviewLanCurrentResult(), range);
-        Set<String> include = getTop(MAX_LAN, currentData);
-        return getResult(include, previousData, currentData, null);
+        final var range = data.getOverviewRange();
+        final var previousData = perPopulation(data.getOverviewLanPreviousResult(), range);
+        final var currentData = perPopulation(data.getOverviewLanCurrentResult(), range);
+        final var include = getTop(MAX_LAN, currentData);
+        return getResult(include, previousData, currentData);
     }
 
-    private SimpleKonResponse perPopulation(SimpleKonResponse overviewLanPreviousResult, Range range) {
-        final CountyPopulation countyPopulation = countyPopulationManager.getCountyPopulation(range);
-        final Map<String, KonField> populationPerCountyCode = countyPopulation.getPopulationPerCountyCode();
-        final List<SimpleKonDataRow> rows = overviewLanPreviousResult.getRows().stream().map(simpleKonDataRow -> {
-            final KonField data = simpleKonDataRow.getData();
-            final Object county = simpleKonDataRow.getExtras();
-            final KonField population = populationPerCountyCode.get(county);
-            final int female = getGenderPerPopulation(data, population, Kon.FEMALE);
-            final int male = getGenderPerPopulation(data, population, Kon.MALE);
-            return new SimpleKonDataRow(simpleKonDataRow.getName(), female, male, county);
+    private List<OverviewChartRow> perPopulation(SimpleKonResponse overviewLanPreviousResult, Range range) {
+        final var countyPopulation = countyPopulationManager.getCountyPopulation(range);
+        final var populationPerCountyCode = countyPopulation.getPopulationPerCountyCode();
+        return overviewLanPreviousResult.getRows().stream().map(simpleKonDataRow -> {
+            final var data = simpleKonDataRow.getData();
+            final var county = simpleKonDataRow.getExtras();
+            final var population = populationPerCountyCode.get(county);
+            final var total = data.getFemale() + data.getMale();
+            final var totalPerPopulation = getPerPopulation(total, population);
+            return new OverviewChartRow(simpleKonDataRow.getName(), totalPerPopulation);
         }).collect(Collectors.toList());
-        return new SimpleKonResponse(overviewLanPreviousResult.getAvailableFilters(), rows);
     }
 
-    private int getGenderPerPopulation(KonField data, KonField konField, Kon gender) {
-        if (konField == null || konField.getValue(gender) == 0) {
+    private int getPerPopulation(int total, KonField konField) {
+        if (konField == null) {
             return 0;
         }
-        final int million = 1000000;
-        return million * data.getValue(gender) / konField.getValue(gender);
+        final var totalPopulation = konField.getFemale() + konField.getMale();
+        if (totalPopulation == 0) {
+            return 0;
+        }
+        final var million = 1000000L;
+        return (int) (million * total / totalPopulation);
     }
 
     private int getForandringLangaSjukskrivningar(NationellDataInfo data) {
@@ -210,44 +211,35 @@ public class NationellOverviewData {
         return result;
     }
 
-    private List<OverviewChartRowExtended> getResult(Set<String> include, SimpleKonResponse previousData,
-        SimpleKonResponse currentData, String rest) {
-        List<OverviewChartRowExtended> result = new ArrayList<>();
+    private List<OverviewChartRowExtended> getResult(Set<String> include, List<OverviewChartRow> previousData,
+        List<OverviewChartRow> currentData) {
+        final var result = new ArrayList<OverviewChartRowExtended>(include.size());
 
-        int restCurrent = 0;
-        int restPrevious = 0;
-
-        for (int i = 0; i < currentData.getRows().size(); i++) {
-            String rowName = previousData.getRows().get(i).getName();
-            int previous = total(previousData.getRows().get(i));
-            int current = total(currentData.getRows().get(i));
+        for (int i = 0; i < currentData.size(); i++) {
+            final var rowName = previousData.get(i).getName();
+            final var previous = previousData.get(i).getQuantity();
+            final var current = currentData.get(i).getQuantity();
 
             if (include.contains(rowName)) {
                 result.add(new OverviewChartRowExtended(rowName, current, percentChange(current, previous), null));
-            } else {
-                restCurrent += current;
-                restPrevious += previous;
             }
         }
 
         sortByQuantity(result);
 
-        if (rest != null) {
-            result.add(new OverviewChartRowExtended(rest, restCurrent, percentChange(restCurrent, restPrevious), null));
-        }
-
         return result;
     }
 
-    private Set<String> getTop(int size, SimpleKonResponse currentData) {
-        List<SimpleKonDataRow> sorted = new ArrayList<>(currentData.getRows());
-        Collections.sort(sorted, (o1, o2) -> total(o2) - total(o1));
+    private Set<String> getTop(int size, List<OverviewChartRow> currentData) {
+        final var include = new HashSet<String>();
+        currentData.stream()
+            .sorted(Comparator.comparingInt(OverviewChartRow::getQuantity).reversed())
+            .forEach(data -> {
+                if (include.size() < size) {
+                    include.add(data.getName());
+                }
+            });
 
-        Set<String> include = new HashSet<>();
-        Iterator<SimpleKonDataRow> iterator = sorted.iterator();
-        while (include.size() < size && iterator.hasNext()) {
-            include.add(iterator.next().getName());
-        }
         return include;
     }
 
