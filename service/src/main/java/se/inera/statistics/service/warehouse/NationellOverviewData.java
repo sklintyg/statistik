@@ -110,8 +110,8 @@ public class NationellOverviewData {
         if (konField == null || konField.getValue(gender) == 0) {
             return 0;
         }
-        final int million = 1000000;
-        return million * data.getValue(gender) / konField.getValue(gender);
+        final long million = 1000000;
+        return (int) (million * data.getValue(gender) / konField.getValue(gender));
     }
 
     private int getForandringLangaSjukskrivningar(NationellDataInfo data) {
