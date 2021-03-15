@@ -18,13 +18,14 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import static org.junit.Assert.assertEquals;
+import static junit.framework.TestCase.assertEquals;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +41,7 @@ import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 
 public class NationellOverviewDataTest {
@@ -81,4 +83,58 @@ public class NationellOverviewDataTest {
         assertEquals(2, diagnosisGroups.size());
     }
 
+    @Test
+    public void shouldCalculateSickLeavePerThousand() {
+        final var expectedSickleavePerThousand = 9000; // 9 per thousand * 1000 = 9000 (previous:
+
+        final var county = "01";
+        final var countyName = "Stockholm";
+        final NationellDataInfo data = getDefaultOverviewData();
+        data.setOverviewLanPreviousResult(getOverviewLanResult(4500, 3500, county, countyName));
+        data.setOverviewLanCurrentResult(getOverviewLanResult(5000, 4000, county, countyName));
+        setupCountyPopulation(55000, 450000, county);
+
+        final OverviewResponse overview = nationellOverviewData.getOverview(data);
+
+        final var overviewPerCounty = overview.getPerCounty().get(0);
+        assertEquals(expectedSickleavePerThousand, overviewPerCounty.getQuantity());
+    }
+
+    @Test
+    public void shouldCalculateSickLeaveDifferenceInPercent() {
+        final var expectedSickleaveDifference = 12; // 8 / thousand -> 9 / thousand == 12.5 percent ~ 12 percent
+
+        final var county = "01";
+        final var countyName = "Stockholm";
+        final NationellDataInfo data = getDefaultOverviewData();
+        data.setOverviewLanPreviousResult(getOverviewLanResult(4500, 3500, county, countyName));
+        data.setOverviewLanCurrentResult(getOverviewLanResult(5000, 4000, county, countyName));
+        setupCountyPopulation(55000, 450000, county);
+
+        final OverviewResponse overview = nationellOverviewData.getOverview(data);
+
+        final var overviewPerCounty = overview.getPerCounty().get(0);
+        assertEquals(expectedSickleaveDifference, overviewPerCounty.getAlternation());
+    }
+
+    private NationellDataInfo getDefaultOverviewData() {
+        final NationellDataInfo data = new NationellDataInfo();
+        data.setOverviewGenderResult(new SimpleKonResponse(null, Collections.emptyList()));
+        data.setOverviewForandringResult(new SimpleKonResponse(null, Collections.emptyList()));
+        return data;
+    }
+
+    private SimpleKonResponse getOverviewLanResult(int female, int male, String county, String rowName) {
+        final var currentKonField = new KonField(female, male, county);
+        final var currentSimpleKonDataRow = new SimpleKonDataRow(rowName, currentKonField, county);
+        return new SimpleKonResponse(null, Collections.singletonList(currentSimpleKonDataRow));
+    }
+
+    private void setupCountyPopulation(int female, int male, String county) {
+        final var lan = "01";
+        final var countyPopulationMap = new HashMap<String, KonField>();
+        countyPopulationMap.put(lan, new KonField(550000, 450000));
+        final CountyPopulation countyPopulation = new CountyPopulation(countyPopulationMap, LocalDate.now());
+        when(countyPopulationManager.getCountyPopulation(nullable(Range.class))).thenReturn(countyPopulation);
+    }
 }
