@@ -89,14 +89,14 @@ public class NationellOverviewDataTest {
 
     @Test
     public void shouldCalculateSickLeavePerThousand() {
-        final var expectedSickleavePerThousand = 9000; // 9 per thousand * 1000 = 9000 (previous:
+        final var expectedSickleavePerThousand = 9000; // 9 per thousand * 1000 = 9000
 
         final var county = "01";
         final var countyName = "Stockholm";
         final NationellDataInfo data = getDefaultOverviewData();
         data.setOverviewLanPreviousResult(getOverviewLanResult(4500, 3500, county, countyName));
         data.setOverviewLanCurrentResult(getOverviewLanResult(5000, 4000, county, countyName));
-        setupCountyPopulation(55000, 450000, county);
+        setupCountyPopulation(550000, 450000, county);
 
         final OverviewResponse overview = nationellOverviewData.getOverview(data);
 
@@ -113,7 +113,7 @@ public class NationellOverviewDataTest {
         final NationellDataInfo data = getDefaultOverviewData();
         data.setOverviewLanPreviousResult(getOverviewLanResult(4500, 3500, county, countyName));
         data.setOverviewLanCurrentResult(getOverviewLanResult(5000, 4000, county, countyName));
-        setupCountyPopulation(55000, 450000, county);
+        setupCountyPopulation(550000, 450000, county);
 
         final OverviewResponse overview = nationellOverviewData.getOverview(data);
 
@@ -173,9 +173,8 @@ public class NationellOverviewDataTest {
 
 
     private void setupCountyPopulation(int female, int male, String county) {
-        final var lan = "01";
         final var countyPopulationMap = new HashMap<String, KonField>();
-        countyPopulationMap.put(lan, new KonField(550000, 450000));
+        countyPopulationMap.put(county, new KonField(female, male));
         final CountyPopulation countyPopulation = new CountyPopulation(countyPopulationMap, LocalDate.now());
         when(countyPopulationManager.getCountyPopulation(nullable(Range.class))).thenReturn(countyPopulation);
     }
