@@ -108,6 +108,9 @@ public class NationellOverviewData {
             return 0;
         }
         final var totalPopulation = konField.getFemale() + konField.getMale();
+        if (totalPopulation == 0) {
+            return 0;
+        }
         final var million = 1000000L;
         return (int) (million * total / totalPopulation);
     }

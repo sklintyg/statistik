@@ -122,6 +122,23 @@ public class NationellOverviewDataTest {
     }
 
     @Test
+    public void shouldHandleSituationIfPopulationIsZero() {
+        final var expectedSickleavePerThousand = 0; // 9 per thousand * 1000 = 9000
+
+        final var county = "01";
+        final var countyName = "Stockholm";
+        final NationellDataInfo data = getDefaultOverviewData();
+        data.setOverviewLanPreviousResult(getOverviewLanResult(4500, 3500, county, countyName));
+        data.setOverviewLanCurrentResult(getOverviewLanResult(5000, 4000, county, countyName));
+        setupCountyPopulation(0, 0, county);
+
+        final OverviewResponse overview = nationellOverviewData.getOverview(data);
+
+        final var overviewPerCounty = overview.getPerCounty().get(0);
+        assertEquals(expectedSickleavePerThousand, overviewPerCounty.getQuantity());
+    }
+
+    @Test
     public void shouldReturnTopFiveCountiesBasedOnSickLeavesPerThousand() {
         final NationellDataInfo data = getDefaultOverviewData();
         final var previousKonDataRows = new ArrayList<SimpleKonDataRow>(10);
