@@ -54,5 +54,5 @@ I översikten visar antal-kolumnen "antal sjukfall per 1000000 invånare"
 
 |Sjukfall i oversikt per lan    |
 |grupp       |antal?|förändring?|
-|Blekinge län|0.04  |0          |
-|Dalarnas län|0.04  |0          |
+|Blekinge län|0.02  |0          |
+|Dalarnas län|0.02  |0          |
