@@ -222,14 +222,32 @@ public class WarehouseService {
 
     public KonDataResponse getMessagesPerAmnePerEnhetRegion(FilterSettings filterSettings) {
         Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
-        final Range range = filterSettings.getRange();
-        return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {
-            final Map<HsaIdEnhet, String> idsToNames = entry.getValue().stream()
-                .collect(Collectors.toMap(Enhet::getEnhetId, Enhet::getNamn));
-            final MessagesFilter meddelandeFilter = getMeddelandeFilter(entry.getKey(), filterSettings.getFilter(), range);
-            final int cutoff = sjukfallQuery.getCutoff();
-            return messagesQuery.getMeddelandenPerAmneOchEnhetAggregated(konDataResponse, meddelandeFilter, cutoff, idsToNames);
-        }, (konDataResponse, konDataResponse2) -> konDataResponse2);
+        final var resultList = getMessagesPerAmnePerEnhetRegion(enhetsPerVgid, filterSettings);
+        return mergeRowsIntoOneResponse(resultList);
+    }
+
+    private List<KonDataResponse> getMessagesPerAmnePerEnhetRegion(Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid,
+        FilterSettings filterSettings) {
+        return enhetsPerVgid.entrySet().stream().map(hsaIdVardgivareCollectionEntry -> {
+            final var idsToNames = getIdsToNames(hsaIdVardgivareCollectionEntry);
+            final var meddelandeFilter = getMeddelandeFilter(hsaIdVardgivareCollectionEntry.getKey(), filterSettings.getFilter(),
+                filterSettings.getRange());
+            return messagesQuery.getMeddelandenPerAmneOchEnhetAggregated(null, meddelandeFilter, sjukfallQuery.getCutoff(), idsToNames);
+        }).collect(Collectors.toList());
+    }
+
+    private Map<HsaIdEnhet, String> getIdsToNames(Map.Entry<HsaIdVardgivare, Collection<Enhet>> hsaIdVardgivareCollectionEntry) {
+        return hsaIdVardgivareCollectionEntry.getValue().stream().collect(Collectors.toMap(Enhet::getEnhetId, Enhet::getNamn));
+    }
+
+    private KonDataResponse mergeRowsIntoOneResponse(List<KonDataResponse> resultToMerge) {
+        return resultToMerge.stream().reduce(null, (previous, konDataResponse) -> {
+            if (previous == null) {
+                return konDataResponse;
+            }
+            previous.getRows().addAll(konDataResponse.getRows());
+            return previous;
+        });
     }
 
     public DiagnosgruppResponse getDiagnosgrupperPerMonth(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
