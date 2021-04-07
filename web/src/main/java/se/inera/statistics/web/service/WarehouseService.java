@@ -221,33 +221,37 @@ public class WarehouseService {
     }
 
     public KonDataResponse getMessagesPerAmnePerEnhetRegion(FilterSettings filterSettings) {
-        Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
+        final var enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
         final var resultList = getMessagesPerAmnePerEnhetRegion(enhetsPerVgid, filterSettings);
         return mergeRowsIntoOneResponse(resultList);
     }
 
     private List<KonDataResponse> getMessagesPerAmnePerEnhetRegion(Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid,
         FilterSettings filterSettings) {
-        return enhetsPerVgid.entrySet().stream().map(hsaIdVardgivareCollectionEntry -> {
-            final var idsToNames = getIdsToNames(hsaIdVardgivareCollectionEntry);
-            final var meddelandeFilter = getMeddelandeFilter(hsaIdVardgivareCollectionEntry.getKey(), filterSettings.getFilter(),
-                filterSettings.getRange());
-            return messagesQuery.getMeddelandenPerAmneOchEnhetAggregated(null, meddelandeFilter, sjukfallQuery.getCutoff(), idsToNames);
-        }).collect(Collectors.toList());
+        return enhetsPerVgid.entrySet().stream()
+            .map(hsaIdVardgivareCollectionEntry -> {
+                final var idsToNames = getIdsToNames(hsaIdVardgivareCollectionEntry);
+                final var meddelandeFilter = getMeddelandeFilter(hsaIdVardgivareCollectionEntry.getKey(), filterSettings.getFilter(),
+                    filterSettings.getRange());
+                return messagesQuery.getMeddelandenPerAmneOchEnhetAggregated(null, meddelandeFilter, sjukfallQuery.getCutoff(), idsToNames);
+            })
+            .collect(Collectors.toList());
     }
 
     private Map<HsaIdEnhet, String> getIdsToNames(Map.Entry<HsaIdVardgivare, Collection<Enhet>> hsaIdVardgivareCollectionEntry) {
-        return hsaIdVardgivareCollectionEntry.getValue().stream().collect(Collectors.toMap(Enhet::getEnhetId, Enhet::getNamn));
+        return hsaIdVardgivareCollectionEntry.getValue().stream()
+            .collect(Collectors.toMap(Enhet::getEnhetId, Enhet::getNamn));
     }
 
     private KonDataResponse mergeRowsIntoOneResponse(List<KonDataResponse> resultToMerge) {
-        return resultToMerge.stream().reduce(null, (previous, konDataResponse) -> {
-            if (previous == null) {
-                return konDataResponse;
-            }
-            previous.getRows().addAll(konDataResponse.getRows());
-            return previous;
-        });
+        return resultToMerge.stream()
+            .reduce(null, (previous, konDataResponse) -> {
+                if (previous == null) {
+                    return konDataResponse;
+                }
+                previous.getRows().addAll(konDataResponse.getRows());
+                return previous;
+            });
     }
 
     public DiagnosgruppResponse getDiagnosgrupperPerMonth(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
