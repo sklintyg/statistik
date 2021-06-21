@@ -337,6 +337,22 @@ module.exports = function(grunt) {
 
     // Copies remaining files to places other tasks can use
     copy: {
+      client: {
+        files: [
+          {
+            expand: true,
+            cwd: '<%= config.client %>/bower_components/font-awesome/webfonts/',
+            dest: '<%= config.client %>/assets/fonts/font-awesome',
+            src: ['*']
+          },
+          {
+            expand: true,
+            cwd: '<%= config.client %>/bower_components/bootstrap-sass/assets/fonts/bootstrap/',
+            dest: '<%= config.client %>/assets/fonts/bootstrap',
+            src: ['*']
+          }
+        ]
+      },
       dist: {
         files: [
           {
@@ -533,6 +549,7 @@ module.exports = function(grunt) {
     'injector:scripts',
     'injector:css',
     'wiredep',
+    'copy:client',
     'karma:ci'
   ]);
 

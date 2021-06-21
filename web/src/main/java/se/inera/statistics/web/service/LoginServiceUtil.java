@@ -44,6 +44,7 @@ import se.inera.auth.model.User;
 import se.inera.auth.model.UserAccessLevel;
 import se.inera.intyg.infra.driftbannerdto.Banner;
 import se.inera.intyg.infra.driftbannerdto.BannerPriority;
+import se.inera.intyg.infra.integration.hsatk.services.legacy.HsaOrganizationsService;
 import se.inera.intyg.infra.integration.ia.services.IABannerService;
 import se.inera.statistics.integration.hsa.model.HsaIdUser;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
@@ -100,6 +101,9 @@ public class LoginServiceUtil {
 
     @Autowired
     private IABannerService iaBannerService;
+
+    //@Autowired
+    //private HsaOrganizationsService hsaOrganizationsService;
 
     @Value("${login.url}")
     private String loginUrl;
@@ -214,7 +218,7 @@ public class LoginServiceUtil {
             realUser.getVgsWithProcessledarStatus().stream()
                 .map(vg -> new HsaIdVardgivare(vg.getId())))
             .distinct()
-            .map(hsaIdVardgivare -> {
+            .flatMap(hsaIdVardgivare -> {
                 Collection<Enhet> allEnhetsForVg = warehouse.getEnhets(hsaIdVardgivare);
                 if (realUser.isProcessledareForVg(hsaIdVardgivare) && allEnhetsForVg != null && !allEnhetsForVg.isEmpty()) {
                     return allEnhetsForVg.stream().map(this::enhetToVerksamhet);
@@ -228,7 +232,6 @@ public class LoginServiceUtil {
                     return Stream.concat(vardenhetVerksamhetStream, enhetVerksamhetStream);
                 }
             })
-            .flatMap(i -> i)
             .collect(Collectors.toList());
     }
 
@@ -238,6 +241,9 @@ public class LoginServiceUtil {
     }
 
     public Verksamhet enhetToVerksamhet(Enhet enhet) {
+        //final var careProvider = hsaOrganizationsService.getVardgivareInfo(enhet.getVardgivareId() != null
+        //    ? enhet.getVardgivareId().getId() : null);
+        //final String careProviderName = careProvider != null ? null : null;
         return new Verksamhet(enhet.getEnhetId(), enhet.getNamn(), enhet.getVardgivareId(), null, enhet.getLansId(),
             lan.getNamn(enhet.getLansId()), enhet.getKommunId(), kommun.getNamn(enhet.getLansId() + enhet.getKommunId()),
             getVerksamhetsTyper(enhet.getVerksamhetsTyper()), enhet.getVardenhetId());

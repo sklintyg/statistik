@@ -257,7 +257,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
 
   businessFilter.populateGeography = function(businesses) {
     businessFilter.geography = {subs: []};
-    _.each(businesses, function(business) {
+    /*_.each(businesses, function(business) {
       var county = _.find(businessFilter.geography.subs, {name: business.lansName});
       if (!county) {
         county = {
@@ -268,27 +268,41 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
           subs: []
         };
         businessFilter.geography.subs.push(county);
-      }
-
-      var munip = _.find(county.subs, {name: business.kommunName});
-      if (!munip) {
-        munip = {
-          id: business.kommunId,
-          numericalId: business.kommunId + 'munip',
-          name: business.kommunName,
-          visibleName: business.kommunName,
+      }*/
+    _.each(businesses, function(business) {
+      var careProvider = _.find(businessFilter.geography.subs, {id: business.vardgivarId});
+      if (!careProvider) {
+        careProvider = {
+          id: business.vardgivarId,
+          numericalId: business.vardgivarId + 'vardgivare',
+          name: business.vardgivarName,
+          visibleName: business.vardgivarName,
           subs: []
         };
-        county.subs.push(munip);
+        businessFilter.geography.subs.push(careProvider);
       }
-
+      /*
+            var munip = _.find(county.subs, {name: business.kommunName});
+            if (!munip) {
+              munip = {
+                id: business.kommunId,
+                numericalId: business.kommunId + 'munip',
+                name: business.kommunName,
+                visibleName: business.kommunName,
+                subs: []
+              };
+              county.subs.push(munip);
+            }
+      */
       business.numericalId = business.id;
       business.visibleName = business.name;
 
-      var existingVardenhetInFilter = _.find(munip.subs, {id: business.vardenhet ? business.id : business.vardenhetId});
+      // var existingVardenhetInFilter = _.find(munip.subs, {id: business.vardenhet ? business.id : business.vardenhetId});
+      var existingVardenhetInFilter = _.find(careProvider.subs, {id: business.vardenhet ? business.id : business.vardenhetId});
 
       if (business.vardenhet && !existingVardenhetInFilter) {
-        munip.subs.push({
+        // munip.subs.push({
+        careProvider.subs.push({
           id: business.id,
           numericalId: business.id + 'vardenhet',
           name: business.name,
@@ -301,19 +315,36 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
       } else if (!business.vardenhet && existingVardenhetInFilter) {
         existingVardenhetInFilter.subs.push(business);
       } else {
-        munip.subs.push({
+        // munip.subs.push({
+        careProvider.subs.push({
           id: business.vardenhetId,
           numericalId: business.vardenhetId + 'vardenhet',
           name: business.vardenhetId,
           visibleName: business.vardenhetId,
+          // name: business.name,
+          // visibleName: business.visibleName,
           subs: [business]
         });
       }
 
     });
+
+    _.each(businessFilter.geography.subs, function(careProvider) {
+      _.each(careProvider.subs, function(careUnit){
+        if (careUnit.id === careUnit.visibleName) {
+          var actualUnit = _.find(businesses, {id: careUnit.id});
+          careUnit.name = actualUnit.visibleName;
+          careUnit.visibleName = actualUnit.visibleName;
+        }
+      });
+    });
+
     businessFilter.geography.subs = ArrayHelper.sortSwedish(businessFilter.geography.subs, 'name', 'Okän');
-    _.each(businessFilter.geography.subs, function(county) {
-      county.subs = ArrayHelper.sortSwedish(county.subs, 'name', 'Okän');
+    _.each(businessFilter.geography.subs, function(careProvider) {
+      careProvider.subs = ArrayHelper.sortSwedish(careProvider.subs, 'name', 'Okän');
+      _.each(careProvider.subs, function(careUnit) {
+        careUnit.subs = ArrayHelper.sortSwedish(careUnit.subs, 'name', 'Okän');
+      });
     });
   };
 
