@@ -60,7 +60,10 @@ public class SchemaValidator {
     private TsBasV7Validator tsBasV7Validator;
 
     @Autowired
-    private TsDiabetesValidator tsDiabetesValidator;
+    private TsDiabetesV3Validator tsDiabetesV3Validator;
+
+    @Autowired
+    private TsDiabetesV4Validator tsDiabetesV4Validator;
 
     @Autowired
     private Tstrk1009Validator tstrk1009Validator;
@@ -107,7 +110,14 @@ public class SchemaValidator {
             case TSTRK1009:
                 return tstrk1009Validator.validateSchematron(data);
             case TSTRK1031:
-                return tsDiabetesValidator.validateSchematron(data);
+                if (certificateVersion.startsWith(TsDiabetesV4Validator.MAJOR_VERSION)) {
+                    return tsDiabetesV4Validator.validateSchematron(data);
+                } else if (certificateVersion.startsWith(TsDiabetesV3Validator.MAJOR_VERSION)) {
+                    return tsDiabetesV3Validator.validateSchematron(data);
+                } else {
+                    return new ValidateXmlResponse("Unknown version: " + certificateVersion
+                        + "for certificate type: " + certificateType);
+                }
             case TSTRK1062:
                 return tstrk1062Validator.validateSchematron(data);
             case AG114:
