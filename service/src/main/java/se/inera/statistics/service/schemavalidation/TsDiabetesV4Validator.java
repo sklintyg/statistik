@@ -21,10 +21,12 @@ package se.inera.statistics.service.schemavalidation;
 import org.springframework.stereotype.Component;
 
 @Component
-class TsDiabetesValidator extends RegisterCertificateValidator {
+class TsDiabetesV4Validator extends RegisterCertificateValidator {
 
-    TsDiabetesValidator() {
-        super("tstrk1031.v3.sch");
+    public static final String MAJOR_VERSION = "4";
+
+    TsDiabetesV4Validator() {
+        super("tstrk1031.v4.sch");
     }
 
 }
