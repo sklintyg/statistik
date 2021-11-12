@@ -26,7 +26,7 @@ var stMessages = {
 
     //navigation
     'nav.national-header': 'Nationell statistik',
-    'nav.region-header': 'Regionsstatistik',
+    'nav.region-header': 'Regionstatistik',
     'nav.business-header': 'Verksamhetsstatistik',
 
     'nav.sjukfall-header': 'Sjukfall',
@@ -52,7 +52,7 @@ var stMessages = {
     'nav.allmant-om-tjansten': 'Allmänt om tjänsten',
     'nav.region.filuppladdning': 'Filuppladdning',
     'nav.region.listningsjamforelse': 'Vårdenhet, listningar',
-    'nav.region.om': 'Om regionsstatistik',
+    'nav.region.om': 'Om regionstatistik',
     'nav.meddelanden': 'Meddelanden, totalt',
     'nav.meddelandenperamne': 'Meddelanden, totalt',
     'nav.meddelandenperamneochenhet': 'Vårdenhet',

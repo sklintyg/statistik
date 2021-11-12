@@ -20,7 +20,7 @@ logiken för beräkning och sammanställning av rapporten i lämplig query-klass
 
 ## Lägg till rest-endpoint
 Endpoints för nationell statistik finns i klassen "ChartDataService", för 
-verksamhetsstatistik i "ProtectedChartDataService" samt för regionsstatistik 
+verksamhetsstatistik i "ProtectedChartDataService" samt för regionstatistik 
 i "ProtectedRegionService". Lägg till metoder för de nivåer som ska implementeras. 
 Rapporter på verksamhetsnivå och på regionsnivå anropar warehouse i serivce-lagret 
 direkt medans alla rapporter på nationell nivå beräknas samtidigt (och sedan cachas 

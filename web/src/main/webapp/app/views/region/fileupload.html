@@ -1,7 +1,7 @@
 <div class="container-fluid" id="region-upload-agreement-page" data-ng-if="!fileUploadAgreementAccepted">
   <h1>Filuppladdning</h1>
   <p>Denna sida ser du eftersom du har behörighet för hela vårdgivaren {{vgName}}.</p>
-  <p>För att din region ska kunna använda regionsstatistiken behöver du (eller någon annan med samma behörighet som du) rapportera in vilka vårdenheter som ingår i regionen, det inkluderar även privata vårdgivare med regionsavtal. Detta gör du genom att ladda upp en excel-fil som innehåller namn och HSA-id på de vårdenheter som ska ingå.</p>
+  <p>För att din region ska kunna använda regionstatistiken behöver du (eller någon annan med samma behörighet som du) rapportera in vilka vårdenheter som ingår i regionen, det inkluderar även privata vårdgivare med regionsavtal. Detta gör du genom att ladda upp en excel-fil som innehåller namn och HSA-id på de vårdenheter som ska ingå.</p>
   <p>Mer utförliga instruktioner för hur du administrerar listan av enheter finns här: <span dynamiclink key="administrationAvLandsting"></span></p>
   <p>För att komma vidare till sidan för filuppladdning behöver du först intyga följande:</p>
 
@@ -34,7 +34,7 @@
                 <li><a data-ng-href="{{emptyRegionFileUrl}}">Tom fil (Excel)</a></li>
               </ul>
             </li>
-            <li>Ange följande för alla de vårdenheter som som ska ingå i regionsstatistiken:
+            <li>Ange följande för alla de vårdenheter som som ska ingå i regionstatistiken:
               <ol type="a">
                 <li>Vårdenhetsnamn</li>
                 <li>HSA-id för vårdenhet</li>
@@ -43,10 +43,10 @@
             </li>
             <li>Spara filen på din dator.</li>
             <li>Ladda upp filen här nedanför.</li>
-            <li>Regionsstatistiken visas nu för de angivna enheterna.</li>
+            <li>Regionstatistiken visas nu för de angivna enheterna.</li>
           </ol>
 
-          <p>För att uppdatera vilka enheter som ingår i regionsstatistiken eller enheternas listningar, redigerar du filen och laddar upp den på nytt. Det är alltid informationen i den senast uppladdade filen som gäller.</p>
+          <p>För att uppdatera vilka enheter som ingår i regionstatistiken eller enheternas listningar, redigerar du filen och laddar upp den på nytt. Det är alltid informationen i den senast uppladdade filen som gäller.</p>
           <p>Mer utförliga instruktioner för hur du administrerar listan av enheter finns här: <span dynamiclink key="administrationAvLandsting"></span></p>
         </div>
       </div>
@@ -102,11 +102,11 @@
 
   <br/>
   <button class="btn btn-default" confirm-click confirmed-click-action="clearRegionEnhets()"
-        confirm-message="Rapporter för regionsstatistik kommer inte vara tillgängliga ifall du rensar. Vill du verkligen rensa data?">Rensa data</button>
+        confirm-message="Rapporter för regionstatistik kommer inte vara tillgängliga ifall du rensar. Vill du verkligen rensa data?">Rensa data</button>
   <br/>
   <div data-ng-show="parsedRows">
     <div>
-      <h2><b>Just nu finns följande information inrapporterad till regionsstatistiken:</b></h2>
+      <h2><b>Just nu finns följande information inrapporterad till regionstatistiken:</b></h2>
     </div>
     <div data-ng-repeat="row in parsedRows">{{row}}</div>
   </div>

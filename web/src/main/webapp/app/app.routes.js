@@ -491,7 +491,7 @@ var app = angular.module('StatisticsApp')
       }).when('/region/om', {
         templateUrl: '/app/views/region/aboutregion.html',
         controllerAs: 'RegionAboutCtrl',
-        title: 'Om Regionsstatistik'
+        title: 'Om Regionstatistik'
       }).when('/om/kontakt', {
         templateUrl: '/app/views/about/contact.html',
         controllerAs: 'AboutContactCtrl',

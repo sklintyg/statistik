@@ -53,7 +53,7 @@ public class XlsxConverterTest {
         assertTrue(cellTexts.toString().startsWith("[Verksamhetsstatistik, Antal sjukfall fördelat på diagnosgrupp 2001 till 2003"));
 
         cellTexts = addXlsxData(Report.L_VARDENHET, "testar");
-        assertTrue(cellTexts.toString().startsWith("[Regionsstatistik, Antal sjukfall fördelat på vårdenhet testar"));
+        assertTrue(cellTexts.toString().startsWith("[Regionstatistik, Antal sjukfall fördelat på vårdenhet testar"));
     }
 
     private ArrayList<String> addXlsxData(Report report, String period) {
