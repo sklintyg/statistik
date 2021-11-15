@@ -172,7 +172,7 @@ public class ProtectedRegionService {
         } catch (NoRegionSetForVgException e) {
             LOG.warn("Failed to update region settings", e);
             return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR,
-                "Din vårdgivare har inte tillgång till regionsstatistik", resultFormat);
+                "Din vårdgivare har inte tillgång till regionstatistik", resultFormat);
         }
     }
 
@@ -192,7 +192,7 @@ public class ProtectedRegionService {
         } catch (NoRegionSetForVgException e) {
             LOG.warn("Failed to clear region settings", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                .entity("Din vårdgivare har inte tillgång till regionsstatistik").build();
+                .entity("Din vårdgivare har inte tillgång till regionstatistik").build();
         }
     }
 

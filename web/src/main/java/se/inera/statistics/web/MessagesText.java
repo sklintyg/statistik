@@ -30,7 +30,7 @@ public final class MessagesText {
 
     public static final String STATISTICS_LEVEL_NATIONELL = "Nationell statistik";
     public static final String STATISTICS_LEVEL_VERKSAMHET = "Verksamhetsstatistik";
-    public static final String STATISTICS_LEVEL_REGION = "Regionsstatistik";
+    public static final String STATISTICS_LEVEL_REGION = "Regionstatistik";
 
     public static final String EXCEL_FILTER_SHEET_NAME = "urval";
     public static final String EXCEL_FILTER_SHEET_LINK = "Se aktuellt urval i fliken";
