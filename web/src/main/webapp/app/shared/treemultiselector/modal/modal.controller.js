@@ -128,7 +128,9 @@ angular.module('StatisticsApp.treeMultiSelector.modal', ['ui.bootstrap', 'unders
       }
 
       $scope.itemClicked = function(item) {
-        if (item.allSelected) {
+        if (treeMultiSelectorUtil.isCareUnit(item)) {
+          $scope.selectCareUnit(item);
+        } else if (item.allSelected) {
           $scope.deselectAll(item);
         } else {
           $scope.selectAll(item);
@@ -142,11 +144,52 @@ angular.module('StatisticsApp.treeMultiSelector.modal', ['ui.bootstrap', 'unders
         $scope.updateCounters();
       }
 
+      $scope.selectCareUnit = function(item) {
+        if (item.isSelected) {
+          item.isSelected = false;
+          $scope.deselectAll(item);
+          $scope.updateDistributedCareUnits(item, $scope.deselectDistributedCareUnit);
+        } else {
+          item.isSelected = true;
+          $scope.selectAll(item);
+          $scope.updateDistributedCareUnits(item, $scope.selectDistributedCareUnit);
+        }
+      };
+
+      $scope.deselectDistributedCareUnit = function(item, careUnit) {
+        if (careUnit.id === item.id && (careUnit.isSelected || careUnit.allSelected || careUnit.someSelected)) {
+          careUnit.isSelected = false;
+          $scope.deselectAll(careUnit);
+        }
+      };
+
+      $scope.selectDistributedCareUnit = function(item, careUnit) {
+        if (careUnit.id === item.id && (!careUnit.isSelected || !careUnit.allSelected)) {
+          careUnit.isSelected = true;
+          $scope.selectAll(careUnit);
+        }
+      };
+
+      $scope.updateDistributedCareUnits = function(item, selectFunction) {
+        if (item.distributedCareUnit) {
+          _.each(directiveScope.menuOptions.subs, function(county) {
+            _.each(county.subs, function(munip) {
+              _.each(munip.subs, function(careUnit) {
+                selectFunction(item, careUnit);
+              });
+            });
+          });
+        }
+      };
+
       $scope.hideClicked = function(item) {
         item.showChildren = !item.showChildren;
       };
 
       $scope.deselectAll = function(item) {
+        if (treeMultiSelectorUtil.isCareUnit(item)) {
+          item.isSelected = false;
+        }
         item.allSelected = false;
         item.someSelected = false;
         if (item.subs) {
@@ -157,6 +200,9 @@ angular.module('StatisticsApp.treeMultiSelector.modal', ['ui.bootstrap', 'unders
       };
 
       $scope.selectAll = function(item) {
+        if (treeMultiSelectorUtil.isCareUnit(item)) {
+          item.isSelected = true;
+        }
         item.allSelected = true;
         item.someSelected = false;
         if (item.subs) {

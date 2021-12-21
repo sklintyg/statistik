@@ -256,6 +256,8 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
   };
 
   businessFilter.populateGeography = function(businesses) {
+    var distributedCareUnitIds = businessFilter.getDistributedCareUnitIds(businesses);
+
     businessFilter.geography = {subs: []};
     _.each(businesses, function(business) {
       var county = _.find(businessFilter.geography.subs, {name: business.lansName});
@@ -293,6 +295,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
           numericalId: business.id + 'vardenhet',
           name: business.name,
           visibleName: business.visibleName,
+          distributedCareUnit: distributedCareUnitIds.indexOf(business.id) > -1,
           subs: []
         });
       } else if (business.vardenhet && existingVardenhetInFilter) {
@@ -304,17 +307,58 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         munip.subs.push({
           id: business.vardenhetId,
           numericalId: business.vardenhetId + 'vardenhet',
-          name: business.vardenhetId,
-          visibleName: business.vardenhetId,
+          name: businessFilter.getCareUnitName(business.vardenhetId, businesses), //business.vardenhetId,
+          visibleName: businessFilter.getCareUnitNameAndMunip(business.vardenhetId, businesses), //business.vardenhetId,
+          distributedCareUnit: distributedCareUnitIds.indexOf(business.vardenhetId) > -1,
           subs: [business]
         });
       }
-
     });
+
+    businessFilter.sortItemsAlphabetically(businessFilter);
+  };
+
+  businessFilter.sortItemsAlphabetically = function(businessFilter) {
     businessFilter.geography.subs = ArrayHelper.sortSwedish(businessFilter.geography.subs, 'name', 'Okän');
     _.each(businessFilter.geography.subs, function(county) {
       county.subs = ArrayHelper.sortSwedish(county.subs, 'name', 'Okän');
+      _.each(county.subs, function(munip) {
+        munip.subs = ArrayHelper.sortSwedish(munip.subs, 'name', 'Okän');
+        _.each(munip.subs, function(careUnit) {
+          careUnit.subs = ArrayHelper.sortSwedish(careUnit.subs, 'name', 'Okän');
+        });
+      });
     });
+  };
+
+  businessFilter.getDistributedCareUnitIds = function(businesses) {
+    var distributedCareUnitIds = [];
+    var allCareUnits = _.filter(businesses, {vardenhet: true});
+    _.each(allCareUnits, function(careUnit) {
+      var unitsInCareUnit = _.filter(businesses, {vardenhet: false} && {vardenhetId: careUnit.id});
+      _.each(unitsInCareUnit, function(unit){
+        if (unit.kommunId !== careUnit.kommunId && distributedCareUnitIds.indexOf(careUnit.id) < 0) {
+          distributedCareUnitIds.push(careUnit.id);
+        }
+      });
+    });
+    return distributedCareUnitIds;
+  };
+
+  businessFilter.getCareUnitName = function(businessId, businesses) {
+    var careUnit = _.find(businesses, {id: businessId});
+    if (careUnit) {
+      return careUnit.visibleName;
+    }
+    return businessId;
+  };
+
+  businessFilter.getCareUnitNameAndMunip = function(businessId, businesses) {
+    var careUnit = _.find(businesses, {id: businessId});
+    if (careUnit) {
+      return careUnit.visibleName  + ' (' + careUnit.kommunName + ')';
+    }
+    return businessId;
   };
 
   businessFilter.populateSjukskrivningsLangd = function() {
@@ -367,6 +411,9 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
   };
 
   businessFilter.selectAllWithValue = function(item, selected) {
+    if (treeMultiSelectorUtil.isCareUnit(item)) {
+      item.isSelected = selected;
+    }
     item.allSelected = selected;
     item.someSelected = false;
     if (item.subs) {
@@ -380,6 +427,9 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
     if (_.some(listOfIdsToSelect, function(val) {
       return item[attribute] === val;
     })) {
+      if (treeMultiSelectorUtil.isCareUnit(item)) {
+        item.isSelected = true;
+      }
       businessFilter.selectAll(item);
     } else {
       item.allSelected = false;
@@ -394,10 +444,10 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
 
   businessFilter.collectGeographyIds = function(node) {
     if (node.subs) {
-      if (node.allSelected || node.someSelected) {
+      if (node.allSelected || node.someSelected || node.isSelected) {
         return _.reduce(node.subs, function(acc, item) {
           return acc.concat(businessFilter.collectGeographyIds(item));
-        }, node.allSelected ? [node.id] : []);
+        }, node.isSelected ? [node.id] : []);
       } else {
         return [];
       }
