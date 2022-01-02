@@ -307,8 +307,8 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         munip.subs.push({
           id: business.vardenhetId,
           numericalId: business.vardenhetId + 'vardenhet',
-          name: businessFilter.getCareUnitName(business.vardenhetId, businesses), //business.vardenhetId,
-          visibleName: businessFilter.getCareUnitNameAndMunip(business.vardenhetId, businesses), //business.vardenhetId,
+          name: businessFilter.getCareUnitName(business.vardenhetId, businesses),
+          visibleName: businessFilter.getCareUnitNameAndMunip(business.vardenhetId, businesses),
           distributedCareUnit: distributedCareUnitIds.indexOf(business.vardenhetId) > -1,
           subs: [business]
         });
