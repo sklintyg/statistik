@@ -45,6 +45,39 @@ angular.module('StatisticsApp').directive('submenu',
           $scope.subHideClick = function(node, event) {
             $scope.hideClick({node: node, event: event});
           };
+
+          $scope.isChecked = function(item) {
+            if (item.numericalId && typeof item.numericalId === 'string' && item.numericalId.indexOf('vardenhet') > -1) {
+              if (item.subs.length < 1) {
+                return item.isSelected;
+              } else {
+                return item.isSelected;
+              }
+            } else {
+              return item.allSelected;
+            }
+          };
+
+          $scope.isIntermediate = function(item) {
+            if ($scope.isCareUnit(item)) {
+                return !item.isSelected && (item.someSelected || item.allSelected);
+            } else {
+              return item.someSelected;
+            }
+          };
+
+          $scope.disableCheckbox = function(item) {
+            return $scope.isMunipOrCounty(item);
+          };
+
+          $scope.isCareUnit = function(item) {
+            return item.numericalId && typeof item.numericalId === 'string' && item.numericalId.indexOf('vardenhet') > -1;
+          };
+
+          $scope.isMunipOrCounty = function(item) {
+            return item.numericalId && typeof item.numericalId === 'string' && (item.numericalId.indexOf('county') > -1 ||
+                item.numericalId.indexOf('munip') > -1);
+          };
         }
       };
     });

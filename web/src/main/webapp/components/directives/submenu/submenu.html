@@ -3,9 +3,10 @@
     ng-class="[depthClass, {'leaf': isLeaf}]"
     ng-click="hideClick({node: item, event: $event})">
     <span class="indenter"></span>
-    <input type="checkbox" ng-checked="item.allSelected" intermediate="item.someSelected" ng-click="itemClick({node: item, event: $event})" />
+    <input type="checkbox" ng-disabled="disableCheckbox(item)" ng-checked="isChecked(item)" intermediate="isIntermediate(item)"
+           ng-click="!disableCheckbox(item) ? itemClick({node: item, event: $event}) : hideClick({node: item, event: $event})" />
 
-    <span ng-click="itemClick({node: item, event: $event})"
+    <span ng-click="!disableCheckbox(item) ? itemClick({node: item, event: $event}) : hideClick({node: item, event: $event})"
           data-ng-class="{'highlight-words': item.info}"
           uib-tooltip="{{::item.info}}"
           tooltip-enable="{{::!!item.info}}"
