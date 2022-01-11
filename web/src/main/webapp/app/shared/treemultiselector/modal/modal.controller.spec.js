@@ -704,4 +704,82 @@ describe('Controller: TreeMultiSelectorModalCtrl', function() {
     expect(scope.selectedTertiaryCounter).toBe(2);
 
   }));
+
+  it('care units should not be marked as isSelected when all units are selected', inject(function() {
+    var unit1 = {visibleName: 'unit1'};
+    var unit2 = {visibleName: 'unit2'};
+    var careUnit = {visibleName: 'careUnit', numericalId: 'vardenhet', subs: [unit1, unit2]};
+    var munip = {visibleName: 'munip', numericalId: 'munip', subs: [careUnit]};
+    var menuItems = [
+      {visibleName: 'county', numericalId: 'county', subs: [munip]}
+    ];
+    directiveScope.menuOptions = {subs: menuItems};
+
+    scope.itemClicked(unit1, {subs: menuItems});
+    scope.itemClicked(unit2, {subs: menuItems});
+
+    expect(careUnit.allSelected).toBe(true);
+    expect(careUnit.someSelected).toBe(false);
+    expect(careUnit.isSelected).toBeFalsy();
+  }));
+
+  it('care units should be marked as isSelected when selected', inject(function() {
+    var unit1 = {visibleName: 'unit1'};
+    var unit2 = {visibleName: 'unit2'};
+    var careUnit = {visibleName: 'careUnit', numericalId: 'vardenhet', subs: [unit1, unit2]};
+    var munip = {visibleName: 'munip', numericalId: 'munip', subs: [careUnit]};
+    var menuItems = [
+      {visibleName: 'county', numericalId: 'county', subs: [munip]}
+    ];
+    directiveScope.menuOptions = {subs: menuItems};
+
+    scope.itemClicked(careUnit, {subs: menuItems});
+
+    expect(careUnit.allSelected).toBe(true);
+    expect(careUnit.someSelected).toBe(false);
+    expect(careUnit.isSelected).toBeTruthy();
+  }));
+
+  it('distributed care units should be selected in all munips when care unit selected', inject(function() {
+    var unit1 = {visibleName: 'unit1'};
+    var unit2 = {visibleName: 'unit2'};
+    var careUnit1 = {id: 'careUnit', distributedCareUnit: true, visibleName: 'careUnit', numericalId: 'vardenhet', subs: [unit1]};
+    var careUnit2 = {id: 'careUnit', distributedCareUnit: true, visibleName: 'careUnit', numericalId: 'vardenhet', subs: [unit2]};
+    var munip1 = {visibleName: 'munip', numericalId: 'munip', subs: [careUnit1]};
+    var munip2 = {visibleName: 'munip', numericalId: 'munip', subs: [careUnit2]};
+    var menuItems = [
+      {visibleName: 'county', numericalId: 'county', subs: [munip1, munip2]}
+    ];
+    directiveScope.menuOptions = {subs: menuItems};
+
+    scope.itemClicked(careUnit1, {subs: menuItems});
+
+    expect(careUnit1.allSelected).toBe(true);
+    expect(careUnit2.allSelected).toBe(true);
+    expect(careUnit1.someSelected).toBe(false);
+    expect(careUnit2.someSelected).toBe(false);
+    expect(careUnit1.isSelected).toBeTruthy();
+    expect(careUnit2.isSelected).toBeTruthy();
+  }));
+
+  it('distributed care units should be intermediate in all munips when unit selected', inject(function() {
+    var unit1 = {visibleName: 'unit1'};
+    var unit2 = {visibleName: 'unit2'};
+    var careUnit1 = {id: 'careUnit', distributedCareUnit: true, visibleName: 'careUnit', numericalId: 'vardenhet', subs: [unit1]};
+    var careUnit2 = {id: 'careUnit', distributedCareUnit: true, visibleName: 'careUnit', numericalId: 'vardenhet', subs: [unit2]};
+    var munip1 = {visibleName: 'munip', numericalId: 'munip', subs: [careUnit1]};
+    var munip2 = {visibleName: 'munip', numericalId: 'munip', subs: [careUnit2]};
+    var menuItems = [
+      {visibleName: 'county', numericalId: 'county', subs: [munip1, munip2]}
+    ];
+    directiveScope.menuOptions = {subs: menuItems};
+
+    scope.itemClicked(unit1, {subs: menuItems});
+
+    expect(careUnit1.someSelected).toBe(true);
+    expect(careUnit2.someSelected).toBe(true);
+    expect(careUnit1.isSelected).toBeFalsy();
+    expect(careUnit2.isSelected).toBeFalsy();
+  }));
+
 });

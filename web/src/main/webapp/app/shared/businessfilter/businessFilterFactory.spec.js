@@ -249,4 +249,57 @@ describe('Tests for business filter factory', function() {
     });
   });
 
+  it('distributed care units should be marked with distributedCareUnit', inject(function() {
+    var businesses = [];
+    createBusiness('1', null, true, '1', businesses);
+    createBusiness('11', '1', false, '1', businesses);
+    createBusiness('12', '1', false, '2', businesses);
+    createBusiness('2', null, true, '1', businesses);
+    createBusiness('21', '2', false, '1', businesses);
+
+    businessFilter.populateGeography(businesses);
+
+    var careUnit1 = _.find(businessFilter.geography.subs[0].subs[0].subs, {id: '1'});
+    var careUnit2 = _.find(businessFilter.geography.subs[0].subs[0].subs, {id: '2'});
+    var careUnit3 = _.find(businessFilter.geography.subs[0].subs[1].subs, {id: '1'});
+
+    expect(careUnit1.distributedCareUnit).toBeTruthy();
+    expect(careUnit2.distributedCareUnit).toBeFalsy();
+    expect(careUnit3.distributedCareUnit).toBeTruthy();
+  }));
+
+  it('distributed care units should add home munip to visibleName when not in home kommun', inject(function() {
+    var businesses = [];
+    createBusiness('1', null, true, '1', businesses);
+    createBusiness('11', '1', false, '1', businesses);
+    createBusiness('12', '1', false, '2', businesses);
+    createBusiness('2', null, true, '1', businesses);
+    createBusiness('21', '2', false, '1', businesses);
+
+    businessFilter.populateGeography(businesses);
+
+    var careUnit1 = _.find(businessFilter.geography.subs[0].subs[0].subs, {id: '1'});
+    var careUnit2 = _.find(businessFilter.geography.subs[0].subs[1].subs, {id: '1'});
+
+    expect(careUnit1.visibleName.indexOf('kommun')).toEqual(-1);
+    expect(careUnit2.visibleName.indexOf('kommun')).toBeGreaterThan(-1);
+  }));
+
+  function createBusiness(id, careUnitId, isCareUnit, kommunId, businesses) {
+    var unit = {
+      id: id,
+      name: 'item' + id,
+      visibleName: 'item' + id,
+      vardenhetId: careUnitId,
+      vardenhet: isCareUnit,
+      kommunId: kommunId,
+      kommunName: 'kommun' + kommunId,
+      lansId: 1,
+      lansName: 'lan',
+      vardgivarId: 1,
+      vardgivarName: 'vardgivare'
+    };
+    businesses.push(unit);
+  }
+
 });
