@@ -553,6 +553,19 @@ module.exports = function(grunt) {
     'karma:ci'
   ]);
 
+  grunt.registerTask('build_no_minify_no_karma', [
+    'clean:dist',
+    'bower-install-simple',
+    'jshint',
+    'injector:sass',
+    'sass',
+    'postcss',
+    'injector:scripts',
+    'injector:css',
+    'wiredep',
+    'copy:client'
+  ]);
+
   grunt.registerTask('build', [
     'clean:dist',
     'bower-install-simple',
