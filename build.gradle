@@ -39,7 +39,6 @@ ext {
     poiVersion = "4.1.2"
     schematronVersion = "5.5.0"
     springSecuritySamlVersion = "1.0.3.RELEASE"
-    sonarqubeGradlePluginVersion = "2.7.1"
     tomcatVersion = "9.0.31"
     xalanVersion = "2.7.2"
     xmlApisVersion = "1.4.01"
@@ -103,8 +102,6 @@ allprojects {
 
         compile "ch.qos.logback:logback-classic"
         compile "com.google.guava:guava:${googleGuavaVersion}"
-
-        compile "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${sonarqubeGradlePluginVersion}"
 
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
