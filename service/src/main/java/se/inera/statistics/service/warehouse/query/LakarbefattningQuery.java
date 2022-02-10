@@ -55,6 +55,7 @@ public final class LakarbefattningQuery {
         lakarbefattnings.put(201013, "Företagsläkare");
         lakarbefattnings.put(202010, "Specialistläkare");
         lakarbefattnings.put(203010, "Läkare legitimerad, specialiseringstjänstgöring");
+        lakarbefattnings.put(203020, "Läkare legitimerad, bastjänstgöring");
         lakarbefattnings.put(203090, "Läkare legitimerad, annan");
         lakarbefattnings.put(204010, "Läkare ej legitimerad, allmäntjänstgöring");
         lakarbefattnings.put(204090, "Läkare ej legitimerad, annan");
