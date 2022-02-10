@@ -23,6 +23,7 @@ ext {
     gparsVersion = "1.2.1"
     groovyAllVersion = "2.4.19"
     groovyHttpVersion = "0.7.1"
+    h2Version = "2.1.210"
     hibernateVersion = "5.3.15.Final"
     javaxWsRsApiVersion = "2.0.1"
     jaxb2Version = "1.11.1"
