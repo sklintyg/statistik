@@ -1,6 +1,7 @@
 apply plugin: 'groovy'
 apply plugin: 'se.inera.intyg.plugin.fitnesse'
-apply plugin: 'com.moowork.grunt'
+//apply plugin: 'com.moowork.grunt'
+apply plugin: 'nebula.grunt'
 
 node {
     version = "${nodeJsVersion}"
@@ -131,6 +132,6 @@ dependencies {
     fitnesse "org.springframework:spring-core"
     fitnesse "org.springframework:spring-context"
     fitnesse "org.springframework.data:spring-data-jpa"
-    fitnesse "org.slf4j:slf4j-api"
+    fitnesse "org.slf4j:slf4j-api:1.7.30"
     fitnesse "jakarta.ws.rs:jakarta.ws.rs-api"
 }

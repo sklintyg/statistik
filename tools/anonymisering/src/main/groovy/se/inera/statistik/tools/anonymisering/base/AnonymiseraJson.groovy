@@ -20,7 +20,9 @@ package se.inera.statistik.tools.anonymisering.base
 
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
-import groovy.json.internal.LazyMap
+//import groovy.json.internal.LazyMap
+import org.apache.groovy.json.internal.LazyMap
+
 
 class AnonymiseraJson {
 
