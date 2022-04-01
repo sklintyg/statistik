@@ -142,6 +142,16 @@ allprojects {
                 strictly "${springFrameworkVersion}"
             }
         }
+        compile("org.springframework:spring-tx") {
+            version {
+                strictly "${springFrameworkVersion}"
+            }
+        }
+        compile("org.springframework:spring-messaging") {
+            version {
+                strictly "${springFrameworkVersion}"
+            }
+        }
 
         compile "ch.qos.logback:logback-classic"
         compile "com.google.guava:guava:${googleGuavaVersion}"
