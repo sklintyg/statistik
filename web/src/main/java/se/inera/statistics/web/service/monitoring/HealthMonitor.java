@@ -29,7 +29,7 @@ import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
-import se.inera.statistics.web.service.endpoints.ChartDataService;
+import se.inera.statistics.web.api.ChartDataService;
 
 /**
  * Exposes health metrics as Prometheus values. To simplify any 3rd party scraping applications, all metrics produced

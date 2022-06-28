@@ -18,7 +18,7 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
-import se.inera.statistics.web.MessagesText;
+import se.inera.statistics.web.service.dto.MessagesText;
 
 public final class MessagePeriodConverter extends SimpleDualSexConverter {
 

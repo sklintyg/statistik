@@ -20,7 +20,7 @@ package se.inera.statistics.web.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
-import se.inera.statistics.web.service.FilterDataResponse;
+import se.inera.statistics.web.service.dto.FilterDataResponse;
 
 public abstract class TableDataReport implements FilteredDataReport {
 

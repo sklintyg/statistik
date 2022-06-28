@@ -21,7 +21,7 @@ package se.inera.statistics.web.service.responseconverter;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.model.DualSexStatisticsData;
-import se.inera.statistics.web.service.FilterSettings;
+import se.inera.statistics.web.service.dto.FilterSettings;
 
 public class CompareDiagnosisTimeSeriesConverter extends MultiDualSexConverter {
 

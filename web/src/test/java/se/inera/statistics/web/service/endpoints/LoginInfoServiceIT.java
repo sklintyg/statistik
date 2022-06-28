@@ -41,6 +41,7 @@ import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.report.model.Kommun;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.VerksamhetsTyp;
+import se.inera.statistics.web.api.LoginInfoService;
 import se.inera.statistics.web.model.LoginInfo;
 
 @RunWith(SpringJUnit4ClassRunner.class)

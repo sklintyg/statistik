@@ -23,7 +23,7 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.model.SimpleDetailsData;
-import se.inera.statistics.web.service.FilterSettings;
+import se.inera.statistics.web.service.dto.FilterSettings;
 
 public class GroupedSjukfallConverter extends SimpleDualSexConverter {
 

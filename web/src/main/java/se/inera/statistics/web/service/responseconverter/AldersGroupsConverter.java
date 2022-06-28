@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.util.OverviewAgeGroup;
-import se.inera.statistics.web.MessagesText;
+import se.inera.statistics.web.service.dto.MessagesText;
 
 public class AldersGroupsConverter {
 

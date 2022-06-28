@@ -41,6 +41,7 @@ import se.inera.statistics.integration.hsa.model.HsaIdUser;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.integration.hsa.model.Vardenhet;
 import se.inera.statistics.service.region.RegionsVardgivareStatus;
+import se.inera.statistics.web.api.ProtectedChartDataService;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.LoginInfoVg;
 import se.inera.statistics.web.model.UserSettingsDTO;

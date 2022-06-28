@@ -24,8 +24,8 @@ import se.inera.statistics.service.report.util.SjukfallsLangdGroup
 import se.inera.statistics.service.warehouse.IntygType
 import se.inera.statistics.web.error.Message
 import se.inera.statistics.web.reports.ReportsUtil
-import se.inera.statistics.web.service.FilterData
-import se.inera.statistics.web.service.ResponseKeys
+import se.inera.statistics.web.service.dto.FilterData
+import se.inera.statistics.web.service.dto.ResponseKeys
 
 abstract class Rapport {
 

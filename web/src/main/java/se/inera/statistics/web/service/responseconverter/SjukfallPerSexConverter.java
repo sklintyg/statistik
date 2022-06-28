@@ -27,14 +27,14 @@ import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.web.MessagesText;
+import se.inera.statistics.web.service.dto.MessagesText;
 import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableData;
-import se.inera.statistics.web.service.FilterDataResponse;
+import se.inera.statistics.web.service.dto.FilterDataResponse;
 
 public class SjukfallPerSexConverter {
 

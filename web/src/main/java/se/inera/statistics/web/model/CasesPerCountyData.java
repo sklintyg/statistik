@@ -19,7 +19,7 @@
 package se.inera.statistics.web.model;
 
 import se.inera.statistics.service.report.model.AvailableFilters;
-import se.inera.statistics.web.service.FilterDataResponse;
+import se.inera.statistics.web.service.dto.FilterDataResponse;
 
 public class CasesPerCountyData extends SimpleDetailsData {
 

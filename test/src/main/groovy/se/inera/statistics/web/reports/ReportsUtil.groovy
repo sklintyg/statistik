@@ -24,8 +24,7 @@ import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.HttpResponseException
 import groovyx.net.http.RESTClient
 import org.apache.http.entity.mime.MultipartEntityBuilder
-import se.inera.statistics.web.service.FilterData
-import se.inera.testsupport.RestSupportService
+import se.inera.statistics.web.service.dto.FilterData
 
 import javax.ws.rs.core.MediaType
 

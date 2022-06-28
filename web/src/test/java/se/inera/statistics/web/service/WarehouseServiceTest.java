@@ -51,6 +51,8 @@ import se.inera.statistics.service.warehouse.query.CutoffUsage;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
 import se.inera.statistics.service.warehouse.query.OverviewQuery;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
+import se.inera.statistics.web.service.dto.Filter;
+import se.inera.statistics.web.service.dto.FilterSettings;
 import se.inera.statistics.web.util.SpyableClock;
 
 public class WarehouseServiceTest {

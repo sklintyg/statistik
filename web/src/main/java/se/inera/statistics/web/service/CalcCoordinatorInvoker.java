@@ -30,8 +30,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.service.warehouse.query.CalcException;
-import se.inera.statistics.web.service.endpoints.ProtectedChartDataService;
-import se.inera.statistics.web.service.endpoints.ProtectedRegionService;
+import se.inera.statistics.web.api.ProtectedChartDataService;
+import se.inera.statistics.web.api.ProtectedRegionService;
 
 public class CalcCoordinatorInvoker extends JAXRSInvoker {
 

@@ -32,6 +32,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.user.UserSelection;
 import se.inera.statistics.service.user.UserSelectionManager;
+import se.inera.statistics.web.service.dto.FilterData;
+import se.inera.statistics.web.service.exception.FilterException;
+import se.inera.statistics.web.service.exception.FilterHashMissingException;
+import se.inera.statistics.web.service.exception.FilterHashParseException;
 
 public class FilterHashHandler {
 

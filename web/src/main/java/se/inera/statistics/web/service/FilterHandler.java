@@ -54,8 +54,8 @@ import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
-import se.inera.statistics.web.Messages;
-import se.inera.statistics.web.MessagesText;
+import se.inera.statistics.web.service.dto.Messages;
+import se.inera.statistics.web.service.dto.MessagesText;
 import se.inera.statistics.web.error.ErrorSeverity;
 import se.inera.statistics.web.error.ErrorType;
 import se.inera.statistics.web.error.Message;
@@ -63,6 +63,13 @@ import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.LoginInfoVg;
 import se.inera.statistics.web.model.RangeMessageDTO;
 import se.inera.statistics.web.model.Verksamhet;
+import se.inera.statistics.web.service.dto.Filter;
+import se.inera.statistics.web.service.dto.FilterData;
+import se.inera.statistics.web.service.dto.FilterSettings;
+import se.inera.statistics.web.service.exception.FilterException;
+import se.inera.statistics.web.service.exception.FilterHashException;
+import se.inera.statistics.web.service.exception.TooEarlyEndDateException;
+import se.inera.statistics.web.service.exception.TooLateStartDateException;
 
 @Component
 public class FilterHandler {

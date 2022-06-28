@@ -31,8 +31,8 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.message.MsgAmne;
 import se.inera.statistics.web.model.SimpleDetailsData;
-import se.inera.statistics.web.service.Filter;
-import se.inera.statistics.web.service.FilterSettings;
+import se.inera.statistics.web.service.dto.Filter;
+import se.inera.statistics.web.service.dto.FilterSettings;
 
 public class MessageAmneTvarsnittConverterTest {
 

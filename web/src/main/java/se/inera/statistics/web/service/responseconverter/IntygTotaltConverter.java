@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.web.model.DualSexStatisticsData;
-import se.inera.statistics.web.service.FilterSettings;
+import se.inera.statistics.web.service.dto.FilterSettings;
 
 public class IntygTotaltConverter extends MultiDualSexConverter {
 

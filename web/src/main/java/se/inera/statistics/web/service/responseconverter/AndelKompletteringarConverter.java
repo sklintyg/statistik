@@ -30,11 +30,11 @@ import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.query.AndelExtras;
-import se.inera.statistics.web.MessagesText;
+import se.inera.statistics.web.service.dto.MessagesText;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableHeader;
-import se.inera.statistics.web.service.FilterSettings;
+import se.inera.statistics.web.service.dto.FilterSettings;
 
 public class AndelKompletteringarConverter extends MultiDualSexConverter {
 
