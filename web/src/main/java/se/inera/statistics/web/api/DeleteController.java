@@ -22,12 +22,10 @@ package se.inera.statistics.web.api;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import se.inera.statistics.service.DeleteCustomerData;
@@ -35,7 +33,6 @@ import se.inera.statistics.service.DeleteCustomerDataByIntygsIdDao;
 import se.inera.statistics.service.DeletedEnhetDao;
 import se.inera.statistics.service.DeletedVardgivare;
 
-//@RestController
 @Service
 @Path("/internal/v1")//DO NOT CHANGE THIS URL!
 public class DeleteController {

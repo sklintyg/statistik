@@ -41,6 +41,7 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
     public Integer deleteFromEnhet(String enhetId) {
         String sql = "DELETE FROM enhet WHERE enhetId = ?";
         try (Connection connection = dataSource.getConnection()){
+            connection.setAutoCommit(true);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, enhetId);
             Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
@@ -56,6 +57,7 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
     public Integer deleteFromHsa(String intygsid) {
         String sql = "DELETE FROM hsa WHERE id = ?";
         try (Connection connection = dataSource.getConnection()){
+            connection.setAutoCommit(true);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, intygsid);
             Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
@@ -71,6 +73,7 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
     public Integer deleteFromIntygcommon(String intygsid) {
         String sql = "DELETE FROM intygcommon WHERE intygid = ?";
         try (Connection connection = dataSource.getConnection()){
+            connection.setAutoCommit(true);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, intygsid);
             Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
@@ -86,6 +89,7 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
     public Integer deleteFromIntyghandelse(String intygsid) {
         String sql = "DELETE FROM intyghandelse WHERE correlationId = ?";
         try (Connection connection = dataSource.getConnection()){
+            connection.setAutoCommit(true);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, intygsid);
             Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
@@ -101,6 +105,7 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
     public Integer deleteFromLakare(String vardgivareId) {
         String sql = "DELETE FROM lakare WHERE vardgivareid = ?";
         try (Connection connection = dataSource.getConnection()){
+            connection.setAutoCommit(true);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, vardgivareId);
             Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
@@ -121,14 +126,12 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
     }
 
     private Integer deleteFromMeddelandehandelse(String intygsid) {
-
         String sql = "DELETE FROM meddelandehandelse WHERE correlationId IN (SELECT meddelandeId FROM messagewideline WHERE intygid = ?)";
         try (Connection connection = dataSource.getConnection()){
+            connection.setAutoCommit(true);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, intygsid);
-            LOG.warn(LocalDateTime.now().toString());
             Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
-            LOG.warn(LocalDateTime.now().toString());
             LOG.info("Deleted {} rows from meddelandehandelse where intygid = {}", numberOfRowsDeleted, intygsid);
             return numberOfRowsDeleted;
         } catch (SQLException e) {
@@ -144,6 +147,7 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
     private Integer deleteFromMessagewideline(String intygsid) {
         String sql = "DELETE FROM messagewideline WHERE intygid = ?";
         try (Connection connection = dataSource.getConnection()){
+            connection.setAutoCommit(true);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, intygsid);
             Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
@@ -159,6 +163,7 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
     public Integer deleteFromWideline(String intygsid) {
         String sql = "DELETE FROM wideline WHERE correlationId = ?";
         try (Connection connection = dataSource.getConnection()){
+            connection.setAutoCommit(true);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, intygsid);
             Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
@@ -174,6 +179,7 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
     public Integer deleteFromIntygsenthandelse(String intygsid) {
         String sql = "DELETE FROM intygsenthandelse WHERE correlationId = ?";
         try (Connection connection = dataSource.getConnection()){
+            connection.setAutoCommit(true);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, intygsid);
             Integer numberOfRowsDeleted = preparedStatement.executeUpdate();

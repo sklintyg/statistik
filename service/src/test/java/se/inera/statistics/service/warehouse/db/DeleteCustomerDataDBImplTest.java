@@ -42,7 +42,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class DeleteCustomerDataDBImplTest{
 
     private static final String ENHETS_ID = "Något enhetsid";
-    private static final String INTYGSID = "Något enhetsid";
+    private static final String INTYGSID = "Något intygsid";
     private static final String VARDGIVARE_ID = "Något vardgivare Id";
 
     @Mock
@@ -66,6 +66,7 @@ public class DeleteCustomerDataDBImplTest{
 
         assertEquals(deleteCustomerDataDB.deleteFromEnhet(ENHETS_ID).intValue(), 1);
 
+        verify(connection, times(1)).setAutoCommit(true);
         verify(connection, times(1)).prepareStatement("DELETE FROM enhet WHERE enhetId = ?");
         verify(preparedStatement, times(1)).setString(1, ENHETS_ID);
         verify(preparedStatement, times(1)).executeUpdate();
@@ -79,6 +80,7 @@ public class DeleteCustomerDataDBImplTest{
             deleteCustomerDataDB.deleteFromEnhet(ENHETS_ID);
         });
 
+        verify(connection, times(1)).setAutoCommit(true);
         verify(connection, times(1)).prepareStatement("DELETE FROM enhet WHERE enhetId = ?");
         verify(preparedStatement, times(1)).setString(1, ENHETS_ID);
         verify(preparedStatement, times(1)).executeUpdate();
@@ -90,6 +92,7 @@ public class DeleteCustomerDataDBImplTest{
 
         assertEquals(deleteCustomerDataDB.deleteFromHsa(INTYGSID).intValue(), 1);
 
+        verify(connection, times(1)).setAutoCommit(true);
         verify(connection, times(1)).prepareStatement("DELETE FROM hsa WHERE id = ?");
         verify(preparedStatement, times(1)).setString(1, INTYGSID);
         verify(preparedStatement, times(1)).executeUpdate();
@@ -103,10 +106,10 @@ public class DeleteCustomerDataDBImplTest{
             deleteCustomerDataDB.deleteFromHsa(INTYGSID);
         });
 
+        verify(connection, times(1)).setAutoCommit(true);
         verify(connection, times(1)).prepareStatement("DELETE FROM hsa WHERE id = ?");
         verify(preparedStatement, times(1)).setString(1, INTYGSID);
         verify(preparedStatement, times(1)).executeUpdate();
-
     }
 
     @Test
@@ -115,6 +118,7 @@ public class DeleteCustomerDataDBImplTest{
 
         assertEquals(deleteCustomerDataDB.deleteFromIntygcommon(INTYGSID).intValue(), 1);
 
+        verify(connection, times(1)).setAutoCommit(true);
         verify(connection, times(1)).prepareStatement("DELETE FROM intygcommon WHERE intygid = ?");
         verify(preparedStatement, times(1)).setString(1, INTYGSID);
         verify(preparedStatement, times(1)).executeUpdate();
@@ -128,7 +132,7 @@ public class DeleteCustomerDataDBImplTest{
             deleteCustomerDataDB.deleteFromIntygcommon(INTYGSID);
         });
 
-
+        verify(connection, times(1)).setAutoCommit(true);
         verify(connection, times(1)).prepareStatement("DELETE FROM intygcommon WHERE intygid = ?");
         verify(preparedStatement, times(1)).setString(1, INTYGSID);
         verify(preparedStatement, times(1)).executeUpdate();
@@ -140,6 +144,7 @@ public class DeleteCustomerDataDBImplTest{
 
         assertEquals(deleteCustomerDataDB.deleteFromIntyghandelse(INTYGSID).intValue(), 1);
 
+        verify(connection, times(1)).setAutoCommit(true);
         verify(connection, times(1)).prepareStatement("DELETE FROM intyghandelse WHERE correlationId = ?");
         verify(preparedStatement, times(1)).setString(1, INTYGSID);
         verify(preparedStatement, times(1)).executeUpdate();
@@ -153,7 +158,7 @@ public class DeleteCustomerDataDBImplTest{
             deleteCustomerDataDB.deleteFromIntyghandelse(INTYGSID).intValue();
         });
 
-
+        verify(connection, times(1)).setAutoCommit(true);
         verify(connection, times(1)).prepareStatement("DELETE FROM intyghandelse WHERE correlationId = ?");
         verify(preparedStatement, times(1)).setString(1, INTYGSID);
         verify(preparedStatement, times(1)).executeUpdate();
@@ -165,6 +170,7 @@ public class DeleteCustomerDataDBImplTest{
 
         assertEquals(deleteCustomerDataDB.deleteFromLakare(VARDGIVARE_ID).intValue(), 1);
 
+        verify(connection, times(1)).setAutoCommit(true);
         verify(connection, times(1)).prepareStatement("DELETE FROM lakare WHERE vardgivareid = ?");
         verify(preparedStatement, times(1)).setString(1, VARDGIVARE_ID);
         verify(preparedStatement, times(1)).executeUpdate();
@@ -178,6 +184,7 @@ public class DeleteCustomerDataDBImplTest{
             deleteCustomerDataDB.deleteFromLakare(VARDGIVARE_ID);
         });
 
+        verify(connection, times(1)).setAutoCommit(true);
         verify(connection, times(1)).prepareStatement("DELETE FROM lakare WHERE vardgivareid = ?");
         verify(preparedStatement, times(1)).setString(1, VARDGIVARE_ID);
         verify(preparedStatement, times(1)).executeUpdate();
@@ -193,6 +200,7 @@ public class DeleteCustomerDataDBImplTest{
         assertEquals(result.getMeddelandehandelseResult(), deleteFromMeddelandehandelseResult);
         assertEquals(result.getMessagewidelineResult(), deleteFromMessagewidelineResult);
 
+        verify(connection, times(2)).setAutoCommit(true);
         verify(connection, times(1)).prepareStatement("DELETE FROM meddelandehandelse WHERE correlationId IN (SELECT meddelandeId FROM messagewideline WHERE intygid = ?)");
         verify(connection, times(1)).prepareStatement("DELETE FROM messagewideline WHERE intygid = ?");
         verify(preparedStatement, times(2)).setString(1, INTYGSID);
@@ -207,6 +215,7 @@ public class DeleteCustomerDataDBImplTest{
             deleteCustomerDataDB.deleteFromMeddelandehandelseAndMessagewideline(INTYGSID);
         });
 
+        verify(connection, times(1)).setAutoCommit(true);
         verify(connection, times(1)).prepareStatement("DELETE FROM meddelandehandelse WHERE correlationId IN (SELECT meddelandeId FROM messagewideline WHERE intygid = ?)");
         verify(connection, never()).prepareStatement("DELETE FROM messagewideline WHERE intygid = ?");
         verify(preparedStatement, times(1)).setString(1, INTYGSID);
@@ -222,6 +231,7 @@ public class DeleteCustomerDataDBImplTest{
             deleteCustomerDataDB.deleteFromMeddelandehandelseAndMessagewideline(INTYGSID);
         });
 
+        verify(connection, times(2)).setAutoCommit(true);
         verify(connection, times(1)).prepareStatement("DELETE FROM meddelandehandelse WHERE correlationId IN (SELECT meddelandeId FROM messagewideline WHERE intygid = ?)");
         verify(connection, times(1)).prepareStatement("DELETE FROM messagewideline WHERE intygid = ?");
         verify(preparedStatement, times(2)).setString(1, INTYGSID);
@@ -234,6 +244,7 @@ public class DeleteCustomerDataDBImplTest{
 
         assertEquals(deleteCustomerDataDB.deleteFromWideline(INTYGSID).intValue(), 1);
 
+        verify(connection, times(1)).setAutoCommit(true);
         verify(connection, times(1)).prepareStatement("DELETE FROM wideline WHERE correlationId = ?");
         verify(preparedStatement, times(1)).setString(1, INTYGSID);
         verify(preparedStatement, times(1)).executeUpdate();
@@ -247,6 +258,7 @@ public class DeleteCustomerDataDBImplTest{
             deleteCustomerDataDB.deleteFromWideline(INTYGSID);
         });
 
+        verify(connection, times(1)).setAutoCommit(true);
         verify(connection, times(1)).prepareStatement("DELETE FROM wideline WHERE correlationId = ?");
         verify(preparedStatement, times(1)).setString(1, INTYGSID);
         verify(preparedStatement, times(1)).executeUpdate();
@@ -258,6 +270,7 @@ public class DeleteCustomerDataDBImplTest{
 
         assertEquals(deleteCustomerDataDB.deleteFromIntygsenthandelse(INTYGSID).intValue(), 1);
 
+        verify(connection, times(1)).setAutoCommit(true);
         verify(connection, times(1)).prepareStatement("DELETE FROM intygsenthandelse WHERE correlationId = ?");
         verify(preparedStatement, times(1)).setString(1, INTYGSID);
         verify(preparedStatement, times(1)).executeUpdate();
@@ -271,6 +284,7 @@ public class DeleteCustomerDataDBImplTest{
             deleteCustomerDataDB.deleteFromIntygsenthandelse(INTYGSID);
         });
 
+        verify(connection, times(1)).setAutoCommit(true);
         verify(connection, times(1)).prepareStatement("DELETE FROM intygsenthandelse WHERE correlationId = ?");
         verify(preparedStatement, times(1)).setString(1, INTYGSID);
         verify(preparedStatement, times(1)).executeUpdate();
