@@ -2,5 +2,5 @@
   "appVersion": "7.10.2",
   "infraVersion": "3.17.2.+",
   "buildArgs": "--refresh-dependencies clean build testReport -PcodeQuality -DgruntColors=false -PuseMinifiedJavaScript",
-  "tests": [ "integrationTest", "fitnesseTest", "protractorTest" ]
+  "tests": [ "integrationTest", "fitnesseTest" ]
 }
