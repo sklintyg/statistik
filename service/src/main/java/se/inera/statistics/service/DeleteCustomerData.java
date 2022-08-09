@@ -23,9 +23,7 @@ import java.util.List;
 
 public interface DeleteCustomerData {
 
-    List<DeleteCustomerDataByIntygsIdDao> deleteCustomerDataByIntygsId(List<String> intygsIdList);
+    List<String>  deleteCustomerDataByIntygsId(List<String> intygsIdList);
 
-    List<DeletedEnhetDao> deleteCustomerDataByEnhetsId(List<String> enhetsIdList);
-
-    List<DeletedVardgivare> deleteCustomerDataByVardgivarId(List<String> vardgivareIdList);
+    List<String>  deleteCustomerDataByVardgivarId(List<String> vardgivareIdList);
 }

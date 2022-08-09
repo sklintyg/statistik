@@ -21,7 +21,7 @@ package se.inera.statistics.service.warehouse.db;
 
 public interface DeleteCustomerDataDB {
 
-    Integer deleteFromEnhet(String enhetId);
+    Integer deleteFromEnhet(String vardgivareId);
 
     Integer deleteFromHsa(String intygsid);
 
@@ -31,7 +31,7 @@ public interface DeleteCustomerDataDB {
 
     Integer deleteFromLakare(String vardgivareId);
 
-    MeddelandehandelseMessagewidelineResultDao deleteFromMeddelandehandelseAndMessagewideline(String intygsid);
+    MeddelandehandelseMessagewidelineResult deleteFromMeddelandehandelseAndMessagewideline(String intygsid);
 
     Integer deleteFromWideline(String intygsid);
 

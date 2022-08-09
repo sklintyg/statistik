@@ -68,7 +68,7 @@
     </filter>
     <filter-mapping>
         <filter-name>internalApiFilter</filter-name>
-        <url-pattern>/api/internal/*</url-pattern><!-- DO NOT CHANGE THIS URL! -->
+        <url-pattern>/api/internalapi/*</url-pattern><!-- DO NOT CHANGE THIS URL! -->
     </filter-mapping>
 
     <!-- Gzip compression of apis -->

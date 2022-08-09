@@ -29,12 +29,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import se.inera.statistics.service.DeleteCustomerData;
-import se.inera.statistics.service.DeleteCustomerDataByIntygsIdDao;
-import se.inera.statistics.service.DeletedEnhetDao;
-import se.inera.statistics.service.DeletedVardgivare;
 
 @Service
-@Path("/internal/v1")//DO NOT CHANGE THIS URL!
+@Path("/internalapi/v1")//DO NOT CHANGE THIS URL!
 public class DeleteController {
 
     private final DeleteCustomerData deleteCustomerData;
@@ -48,23 +45,16 @@ public class DeleteController {
     @Path("intygsidlist")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public List<DeleteCustomerDataByIntygsIdDao> deleteIntygsIdList(@RequestBody List<String> intygsIdList){
+    public List<String>  deleteIntygsIdList(@RequestBody List<String> intygsIdList){
         return deleteCustomerData.deleteCustomerDataByIntygsId(intygsIdList);
     }
 
-    @DELETE
-    @Path("enhetsidlist")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
-    public List<DeletedEnhetDao> deleteEnhetsIdList(@RequestBody List<String> enhetsIdList){
-        return deleteCustomerData.deleteCustomerDataByEnhetsId(enhetsIdList);
-    }
 
     @DELETE
     @Path("vardgivareidlist")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public List<DeletedVardgivare> deleteVardgivareIdList(@RequestBody List<String> vardgivareIdList){
+    public List<String> deleteVardgivareIdList(@RequestBody List<String> vardgivareIdList){
         return deleteCustomerData.deleteCustomerDataByVardgivarId(vardgivareIdList);
     }
 }

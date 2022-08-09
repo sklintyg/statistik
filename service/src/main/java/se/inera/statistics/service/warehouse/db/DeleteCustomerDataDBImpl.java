@@ -22,7 +22,6 @@ package se.inera.statistics.service.warehouse.db;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,14 +37,14 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
     private DataSource dataSource;
 
     @Override
-    public Integer deleteFromEnhet(String enhetId) {
-        String sql = "DELETE FROM enhet WHERE enhetId = ?";
+    public Integer deleteFromEnhet(String vardgivareId) {
+        String sql = "DELETE FROM enhet WHERE vardgivareId = ?";
         try (Connection connection = dataSource.getConnection()){
             connection.setAutoCommit(true);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, enhetId);
+            preparedStatement.setString(1, vardgivareId);
             Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
-            LOG.info("Deleted {} rows from enhet where enhetId = {}", numberOfRowsDeleted, enhetId);
+            LOG.info("Deleted {} rows from enhet where vardgivareId = {}", numberOfRowsDeleted, vardgivareId);
             return numberOfRowsDeleted;
         } catch (SQLException e) {
             LOG.error(e.toString());
@@ -121,8 +120,8 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
      * Always execute before deleteFromMessagewideline
      */
     @Override
-    public MeddelandehandelseMessagewidelineResultDao deleteFromMeddelandehandelseAndMessagewideline(String intygsid) {
-        return new MeddelandehandelseMessagewidelineResultDao(deleteFromMeddelandehandelse(intygsid), deleteFromMessagewideline(intygsid));
+    public MeddelandehandelseMessagewidelineResult deleteFromMeddelandehandelseAndMessagewideline(String intygsid) {
+        return new MeddelandehandelseMessagewidelineResult(deleteFromMeddelandehandelse(intygsid), deleteFromMessagewideline(intygsid));
     }
 
     private Integer deleteFromMeddelandehandelse(String intygsid) {

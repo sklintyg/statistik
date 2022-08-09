@@ -20,7 +20,7 @@
 package se.inera.statistics.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -33,7 +33,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import se.inera.statistics.service.warehouse.db.DeleteCustomerDataDB;
-import se.inera.statistics.service.warehouse.db.MeddelandehandelseMessagewidelineResultDao;
+import se.inera.statistics.service.warehouse.db.MeddelandehandelseMessagewidelineResult;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DeleteCustomerDataImplTest{
@@ -53,7 +53,7 @@ public class DeleteCustomerDataImplTest{
         when(deleteCustomerDataDB.deleteFromIntygcommon(intygsIdList.get(0))).thenReturn(2);
         when(deleteCustomerDataDB.deleteFromIntyghandelse(intygsIdList.get(0))).thenReturn(3);
         when(deleteCustomerDataDB.deleteFromMeddelandehandelseAndMessagewideline(intygsIdList.get(0)))
-            .thenReturn(new MeddelandehandelseMessagewidelineResultDao(4, 5));
+            .thenReturn(new MeddelandehandelseMessagewidelineResult(4, 5));
         when(deleteCustomerDataDB.deleteFromWideline(intygsIdList.get(0))).thenReturn(6);
         when(deleteCustomerDataDB.deleteFromIntygsenthandelse(intygsIdList.get(0))).thenReturn(7);
 
@@ -61,11 +61,11 @@ public class DeleteCustomerDataImplTest{
         when(deleteCustomerDataDB.deleteFromIntygcommon(intygsIdList.get(1))).thenReturn(12);
         when(deleteCustomerDataDB.deleteFromIntyghandelse(intygsIdList.get(1))).thenReturn(13);
         when(deleteCustomerDataDB.deleteFromMeddelandehandelseAndMessagewideline(intygsIdList.get(1)))
-            .thenReturn(new MeddelandehandelseMessagewidelineResultDao(14, 15));
+            .thenReturn(new MeddelandehandelseMessagewidelineResult(14, 15));
         when(deleteCustomerDataDB.deleteFromWideline(intygsIdList.get(1))).thenReturn(16);
         when(deleteCustomerDataDB.deleteFromIntygsenthandelse(intygsIdList.get(1))).thenReturn(17);
 
-        List<DeleteCustomerDataByIntygsIdDao> result = deleteCustomerData.deleteCustomerDataByIntygsId(intygsIdList);
+        List<String> result = deleteCustomerData.deleteCustomerDataByIntygsId(intygsIdList);
 
         verify(deleteCustomerDataDB, times(1)).deleteFromHsa(intygsIdList.get(0));
         verify(deleteCustomerDataDB, times(1)).deleteFromIntygcommon(intygsIdList.get(0));
@@ -81,89 +81,71 @@ public class DeleteCustomerDataImplTest{
         verify(deleteCustomerDataDB, times(1)).deleteFromWideline(intygsIdList.get(1));
         verify(deleteCustomerDataDB, times(1)).deleteFromIntygsenthandelse(intygsIdList.get(1));
 
-        assertEquals(result.get(0).getIntygsId(), intygsIdList.get(0));
-        assertEquals(result.get(0).getRowsDeletedFromHsa().intValue(), 1);
-        assertEquals(result.get(0).getRowsDeletedFromIntygcommon().intValue(), 2);
-        assertEquals(result.get(0).getRowsDeletedFromIntyghandelse().intValue(), 3);
-        assertEquals(result.get(0).getRowsDeletedFromMeddelandehandelse().intValue(), 4);
-        assertEquals(result.get(0).getRowsDeleteMessagewideline().intValue(), 5);
-        assertEquals(result.get(0).getRowsDeleteFromMideline().intValue(), 6);
-        assertEquals(result.get(0).getRowsDeleteFromIntygsenthandelse().intValue(), 7);
-
-        assertEquals(result.get(1).getIntygsId(), intygsIdList.get(1));
-        assertEquals(result.get(1).getRowsDeletedFromHsa().intValue(), 11);
-        assertEquals(result.get(1).getRowsDeletedFromIntygcommon().intValue(), 12);
-        assertEquals(result.get(1).getRowsDeletedFromIntyghandelse().intValue(), 13);
-        assertEquals(result.get(1).getRowsDeletedFromMeddelandehandelse().intValue(), 14);
-        assertEquals(result.get(1).getRowsDeleteMessagewideline().intValue(), 15);
-        assertEquals(result.get(1).getRowsDeleteFromMideline().intValue(), 16);
-        assertEquals(result.get(1).getRowsDeleteFromIntygsenthandelse().intValue(), 17);
+        assertEquals(result.get(0), intygsIdList.get(0));
+        assertEquals(result.get(1), intygsIdList.get(1));
     }
 
     @Test
-    public void testDeleteCustomerDataByIntygsIdIgnoreExceptions() {
+    public void testDeleteCustomerDataByIntygsIdExceptions() {
         List<String> intygsIdList = new ArrayList<>();
         intygsIdList.add("IntygsId1");
+        intygsIdList.add("IntygsId2");
+        intygsIdList.add("IntygsId3");
+        intygsIdList.add("IntygsId4");
+        intygsIdList.add("IntygsId5");
+        intygsIdList.add("IntygsId6");
         when(deleteCustomerDataDB.deleteFromHsa(intygsIdList.get(0))).thenThrow(new RuntimeException());
-        when(deleteCustomerDataDB.deleteFromIntygcommon(intygsIdList.get(0))).thenThrow(new RuntimeException());
-        when(deleteCustomerDataDB.deleteFromIntyghandelse(intygsIdList.get(0))).thenThrow(new RuntimeException());
-        when(deleteCustomerDataDB.deleteFromMeddelandehandelseAndMessagewideline(intygsIdList.get(0))).thenThrow(new RuntimeException());
-        when(deleteCustomerDataDB.deleteFromWideline(intygsIdList.get(0))).thenThrow(new RuntimeException());
-        when(deleteCustomerDataDB.deleteFromIntygsenthandelse(intygsIdList.get(0))).thenThrow(new RuntimeException());
+        when(deleteCustomerDataDB.deleteFromIntygcommon(intygsIdList.get(1))).thenThrow(new RuntimeException());
+        when(deleteCustomerDataDB.deleteFromIntyghandelse(intygsIdList.get(2))).thenThrow(new RuntimeException());
+        when(deleteCustomerDataDB.deleteFromMeddelandehandelseAndMessagewideline(intygsIdList.get(3))).thenThrow(new RuntimeException());
+        when(deleteCustomerDataDB.deleteFromWideline(intygsIdList.get(4))).thenThrow(new RuntimeException());
+        when(deleteCustomerDataDB.deleteFromIntygsenthandelse(intygsIdList.get(5))).thenThrow(new RuntimeException());
 
-        List<DeleteCustomerDataByIntygsIdDao> result = deleteCustomerData.deleteCustomerDataByIntygsId(intygsIdList);
+        List<String> result = deleteCustomerData.deleteCustomerDataByIntygsId(intygsIdList);
+
+        assertTrue(result.isEmpty());
 
         verify(deleteCustomerDataDB, times(1)).deleteFromHsa(intygsIdList.get(0));
-        verify(deleteCustomerDataDB, times(1)).deleteFromIntygcommon(intygsIdList.get(0));
-        verify(deleteCustomerDataDB, times(1)).deleteFromIntyghandelse(intygsIdList.get(0));
-        verify(deleteCustomerDataDB, times(1)).deleteFromMeddelandehandelseAndMessagewideline(intygsIdList.get(0));
-        verify(deleteCustomerDataDB, times(1)).deleteFromWideline(intygsIdList.get(0));
-        verify(deleteCustomerDataDB, times(1)).deleteFromIntygsenthandelse(intygsIdList.get(0));
+        verify(deleteCustomerDataDB, times(0)).deleteFromIntygcommon(intygsIdList.get(0));
+        verify(deleteCustomerDataDB, times(0)).deleteFromIntyghandelse(intygsIdList.get(0));
+        verify(deleteCustomerDataDB, times(0)).deleteFromMeddelandehandelseAndMessagewideline(intygsIdList.get(0));
+        verify(deleteCustomerDataDB, times(0)).deleteFromWideline(intygsIdList.get(0));
+        verify(deleteCustomerDataDB, times(0)).deleteFromIntygsenthandelse(intygsIdList.get(0));
 
-        assertEquals(result.get(0).getIntygsId(), intygsIdList.get(0));
-        assertNull(result.get(0).getRowsDeletedFromHsa());
-        assertNull(result.get(0).getRowsDeletedFromIntygcommon());
-        assertNull(result.get(0).getRowsDeletedFromIntyghandelse());
-        assertNull(result.get(0).getRowsDeletedFromMeddelandehandelse());
-        assertNull(result.get(0).getRowsDeleteMessagewideline());
-        assertNull(result.get(0).getRowsDeleteFromMideline());
-        assertNull(result.get(0).getRowsDeleteFromIntygsenthandelse());
-    }
+        verify(deleteCustomerDataDB, times(1)).deleteFromHsa(intygsIdList.get(1));
+        verify(deleteCustomerDataDB, times(1)).deleteFromIntygcommon(intygsIdList.get(1));
+        verify(deleteCustomerDataDB, times(0)).deleteFromIntyghandelse(intygsIdList.get(1));
+        verify(deleteCustomerDataDB, times(0)).deleteFromMeddelandehandelseAndMessagewideline(intygsIdList.get(1));
+        verify(deleteCustomerDataDB, times(0)).deleteFromWideline(intygsIdList.get(1));
+        verify(deleteCustomerDataDB, times(0)).deleteFromIntygsenthandelse(intygsIdList.get(1));
 
-    @Test
-    public void testDeleteCustomerDataByEnhetsId() {
-        List<String> enhetsIdList = new ArrayList<>();
-        enhetsIdList.add("EnhetsId1");
-        enhetsIdList.add("EnhetsId2");
+        verify(deleteCustomerDataDB, times(1)).deleteFromHsa(intygsIdList.get(2));
+        verify(deleteCustomerDataDB, times(1)).deleteFromIntygcommon(intygsIdList.get(2));
+        verify(deleteCustomerDataDB, times(1)).deleteFromIntyghandelse(intygsIdList.get(2));
+        verify(deleteCustomerDataDB, times(0)).deleteFromMeddelandehandelseAndMessagewideline(intygsIdList.get(2));
+        verify(deleteCustomerDataDB, times(0)).deleteFromWideline(intygsIdList.get(2));
+        verify(deleteCustomerDataDB, times(0)).deleteFromIntygsenthandelse(intygsIdList.get(2));
 
-        when(deleteCustomerDataDB.deleteFromEnhet(enhetsIdList.get(0))).thenReturn(1);
-        when(deleteCustomerDataDB.deleteFromEnhet(enhetsIdList.get(1))).thenReturn(2);
+        verify(deleteCustomerDataDB, times(1)).deleteFromHsa(intygsIdList.get(3));
+        verify(deleteCustomerDataDB, times(1)).deleteFromIntygcommon(intygsIdList.get(3));
+        verify(deleteCustomerDataDB, times(1)).deleteFromIntyghandelse(intygsIdList.get(3));
+        verify(deleteCustomerDataDB, times(1)).deleteFromMeddelandehandelseAndMessagewideline(intygsIdList.get(3));
+        verify(deleteCustomerDataDB, times(0)).deleteFromWideline(intygsIdList.get(3));
+        verify(deleteCustomerDataDB, times(0)).deleteFromIntygsenthandelse(intygsIdList.get(3));
 
-        List<DeletedEnhetDao> result = deleteCustomerData.deleteCustomerDataByEnhetsId(enhetsIdList);
+        verify(deleteCustomerDataDB, times(1)).deleteFromHsa(intygsIdList.get(4));
+        verify(deleteCustomerDataDB, times(1)).deleteFromIntygcommon(intygsIdList.get(4));
+        verify(deleteCustomerDataDB, times(1)).deleteFromIntyghandelse(intygsIdList.get(4));
+        verify(deleteCustomerDataDB, times(1)).deleteFromMeddelandehandelseAndMessagewideline(intygsIdList.get(4));
+        verify(deleteCustomerDataDB, times(1)).deleteFromWideline(intygsIdList.get(4));
+        verify(deleteCustomerDataDB, times(0)).deleteFromIntygsenthandelse(intygsIdList.get(4));
 
-        verify(deleteCustomerDataDB, times(1)).deleteFromEnhet(enhetsIdList.get(0));
-        verify(deleteCustomerDataDB, times(1)).deleteFromEnhet(enhetsIdList.get(1));
-
-        assertEquals(result.get(0).getEnhetsId(), enhetsIdList.get(0));
-        assertEquals(result.get(0).getRowsDeletedFromEnhet().intValue(), 1);
-
-        assertEquals(result.get(1).getEnhetsId(), enhetsIdList.get(1));
-        assertEquals(result.get(1).getRowsDeletedFromEnhet().intValue(), 2);
-    }
-
-    @Test
-    public void testDeleteCustomerDataByEnhetsIdIgnoreExceptions() {
-        List<String> enhetsIdList = new ArrayList<>();
-        enhetsIdList.add("EnhetsId1");
-
-        when(deleteCustomerDataDB.deleteFromEnhet(enhetsIdList.get(0))).thenThrow(new RuntimeException());
-
-        List<DeletedEnhetDao> result = deleteCustomerData.deleteCustomerDataByEnhetsId(enhetsIdList);
-
-        verify(deleteCustomerDataDB, times(1)).deleteFromEnhet(enhetsIdList.get(0));
-
-        assertEquals(result.get(0).getEnhetsId(), enhetsIdList.get(0));
-        assertNull(result.get(0).getRowsDeletedFromEnhet());
+        verify(deleteCustomerDataDB, times(1)).deleteFromHsa(intygsIdList.get(5));
+        verify(deleteCustomerDataDB, times(1)).deleteFromIntygcommon(intygsIdList.get(5));
+        verify(deleteCustomerDataDB, times(1)).deleteFromIntyghandelse(intygsIdList.get(5));
+        verify(deleteCustomerDataDB, times(1)).deleteFromMeddelandehandelseAndMessagewideline(intygsIdList.get(5));
+        verify(deleteCustomerDataDB, times(1)).deleteFromWideline(intygsIdList.get(5));
+        verify(deleteCustomerDataDB, times(1)).deleteFromIntygsenthandelse(intygsIdList.get(5));
     }
 
     @Test
@@ -175,30 +157,32 @@ public class DeleteCustomerDataImplTest{
         when(deleteCustomerDataDB.deleteFromLakare(vardgivarIdList.get(0))).thenReturn(1);
         when(deleteCustomerDataDB.deleteFromLakare(vardgivarIdList.get(1))).thenReturn(2);
 
-        List<DeletedVardgivare> result = deleteCustomerData.deleteCustomerDataByVardgivarId(vardgivarIdList);
+        List<String> result = deleteCustomerData.deleteCustomerDataByVardgivarId(vardgivarIdList);
+
+        assertEquals(result.get(0), vardgivarIdList.get(0));
+        assertEquals(result.get(1), vardgivarIdList.get(1));
 
         verify(deleteCustomerDataDB, times(1)).deleteFromLakare(vardgivarIdList.get(0));
         verify(deleteCustomerDataDB, times(1)).deleteFromLakare(vardgivarIdList.get(1));
-
-        assertEquals(result.get(0).getVardgivareId(), vardgivarIdList.get(0));
-        assertEquals(result.get(0).getRowsDeletedFromLakare().intValue(), 1);
-
-        assertEquals(result.get(1).getVardgivareId(), vardgivarIdList.get(1));
-        assertEquals(result.get(1).getRowsDeletedFromLakare().intValue(), 2);
     }
 
     @Test
-    public void testDeleteCustomerDataByVardgivarIdIgnoreExceptions() {
+    public void testDeleteCustomerDataByVardgivarIdExceptions() {
         List<String> vardgivarIdList = new ArrayList<>();
         vardgivarIdList.add("VardgivarId1");
+        vardgivarIdList.add("VardgivarId2");
 
         when(deleteCustomerDataDB.deleteFromLakare(vardgivarIdList.get(0))).thenThrow(new RuntimeException());
+        when(deleteCustomerDataDB.deleteFromEnhet(vardgivarIdList.get(1))).thenThrow(new RuntimeException());
 
-        List<DeletedVardgivare> result = deleteCustomerData.deleteCustomerDataByVardgivarId(vardgivarIdList);
+        List<String> result = deleteCustomerData.deleteCustomerDataByVardgivarId(vardgivarIdList);
+
+        assertTrue(result.isEmpty());
 
         verify(deleteCustomerDataDB, times(1)).deleteFromLakare(vardgivarIdList.get(0));
+        verify(deleteCustomerDataDB, times(0)).deleteFromEnhet(vardgivarIdList.get(0));
 
-        assertEquals(result.get(0).getVardgivareId(), vardgivarIdList.get(0));
-        assertNull(result.get(0).getRowsDeletedFromLakare());
+        verify(deleteCustomerDataDB, times(1)).deleteFromLakare(vardgivarIdList.get(1));
+        verify(deleteCustomerDataDB, times(1)).deleteFromEnhet(vardgivarIdList.get(1));
     }
 }

@@ -32,9 +32,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import se.inera.statistics.service.DeleteCustomerData;
-import se.inera.statistics.service.DeleteCustomerDataByIntygsIdDao;
-import se.inera.statistics.service.DeletedEnhetDao;
-import se.inera.statistics.service.DeletedVardgivare;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DeleteControllerTest extends TestCase {
@@ -48,8 +45,8 @@ public class DeleteControllerTest extends TestCase {
     @Test
     public void testDeleteIntygsIdList() {
         List<String> strings = new ArrayList<>();
-        List<DeleteCustomerDataByIntygsIdDao> dataByIntygsIdDaoList = new ArrayList<>();
-        when(deleteCustomerData.deleteCustomerDataByIntygsId(strings)).thenReturn(dataByIntygsIdDaoList);
+        List<String> dataByIntygsIdResult = new ArrayList<>();
+        when(deleteCustomerData.deleteCustomerDataByIntygsId(strings)).thenReturn(dataByIntygsIdResult);
 
         assertNotNull(deleteController.deleteIntygsIdList(strings));
 
@@ -57,20 +54,9 @@ public class DeleteControllerTest extends TestCase {
     }
 
     @Test
-    public void testDeleteEnhetsIdList() {
-        List<String> strings = new ArrayList<>();
-        List<DeletedEnhetDao> deletedEnhetDaos = new ArrayList<>();
-        when(deleteCustomerData.deleteCustomerDataByEnhetsId(strings)).thenReturn(deletedEnhetDaos);
-
-        assertNotNull(deleteController.deleteEnhetsIdList(strings));
-
-        verify(deleteCustomerData, times(1)).deleteCustomerDataByEnhetsId(strings);
-    }
-
-    @Test
     public void testDeleteVardgivareIdList() {
         List<String> strings = new ArrayList<>();
-        List<DeletedVardgivare> deletedVardgivares = new ArrayList<>();
+        List<String> deletedVardgivares = new ArrayList<>();
         when(deleteCustomerData.deleteCustomerDataByVardgivarId(strings)).thenReturn(deletedVardgivares);
 
         assertNotNull(deleteController.deleteVardgivareIdList(strings));

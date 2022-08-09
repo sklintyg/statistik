@@ -258,7 +258,6 @@ public class RestSupportService {
         return Response.ok().build();
     }
 
-    //TODO Should this realy be here?
     @POST
     @Path("clearDatabase")
     @Produces({MediaType.APPLICATION_JSON})

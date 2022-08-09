@@ -17,26 +17,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package se.inera.statistics.service;
+package se.inera.statistics.service.warehouse.db;
 
-public class DeletedVardgivare {
+public class MeddelandehandelseMessagewidelineResult {
 
-    private String vardgivareId;
-    private Integer rowsDeletedFromLakare;
+    private final Integer meddelandehandelseResult;
 
-    public String getVardgivareId() {
-        return vardgivareId;
+    private final Integer messagewidelineResult;
+
+    public MeddelandehandelseMessagewidelineResult(Integer meddelandehandelseResult, Integer messagewidelineResult) {
+        this.meddelandehandelseResult = meddelandehandelseResult;
+        this.messagewidelineResult = messagewidelineResult;
     }
 
-    public void setVardgivareId(String vardgivareId) {
-        this.vardgivareId = vardgivareId;
+    public Integer getMeddelandehandelseResult() {
+        return meddelandehandelseResult;
     }
 
-    public Integer getRowsDeletedFromLakare() {
-        return rowsDeletedFromLakare;
-    }
-
-    public void setRowsDeletedFromLakare(Integer rowsDeletedFromLakare) {
-        this.rowsDeletedFromLakare = rowsDeletedFromLakare;
+    public Integer getMessagewidelineResult() {
+        return messagewidelineResult;
     }
 }

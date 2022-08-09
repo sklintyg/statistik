@@ -26,7 +26,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.inera.statistics.service.warehouse.db.DeleteCustomerDataDB;
-import se.inera.statistics.service.warehouse.db.MeddelandehandelseMessagewidelineResultDao;
 
 @Service
 public class DeleteCustomerDataImpl implements DeleteCustomerData {
@@ -41,85 +40,38 @@ public class DeleteCustomerDataImpl implements DeleteCustomerData {
     }
 
     @Override
-    public List<DeleteCustomerDataByIntygsIdDao> deleteCustomerDataByIntygsId(List<String> intygsIdList) {
-        List<DeleteCustomerDataByIntygsIdDao> list = new ArrayList<>();
+    public List<String> deleteCustomerDataByIntygsId(List<String> intygsIdList) {
+        List<String> deletedIntygsIdList = new ArrayList<>();
         for (String intygsId:intygsIdList) {
-            DeleteCustomerDataByIntygsIdDao dbResult = new DeleteCustomerDataByIntygsIdDao();
-            dbResult.setIntygsId(intygsId);
             try {
-                dbResult.setRowsDeletedFromHsa(deleteCustomerDataDB.deleteFromHsa(intygsId));
+                deleteCustomerDataDB.deleteFromHsa(intygsId);
+                deleteCustomerDataDB.deleteFromIntygcommon(intygsId);
+                deleteCustomerDataDB.deleteFromIntyghandelse(intygsId);
+                deleteCustomerDataDB.deleteFromMeddelandehandelseAndMessagewideline(intygsId);
+                deleteCustomerDataDB.deleteFromWideline(intygsId);
+                deleteCustomerDataDB.deleteFromIntygsenthandelse(intygsId);
             } catch (Exception e) {
                 LOG.error(e.getMessage());
+                continue;
             }
-
-            try {
-                dbResult.setRowsDeletedFromIntygcommon(deleteCustomerDataDB.deleteFromIntygcommon(intygsId));
-            } catch (Exception e) {
-                LOG.error(e.getMessage());
-            }
-
-            try {
-                dbResult.setRowsDeletedFromIntyghandelse(deleteCustomerDataDB.deleteFromIntyghandelse(intygsId));
-            } catch (Exception e) {
-                LOG.error(e.getMessage());
-            }
-
-            try {
-                MeddelandehandelseMessagewidelineResultDao result =
-                    deleteCustomerDataDB.deleteFromMeddelandehandelseAndMessagewideline(intygsId);
-                dbResult.setRowsDeletedFromMeddelandehandelse(result.getMeddelandehandelseResult());
-                dbResult.setRowsDeleteMessagewideline(result.getMessagewidelineResult());
-
-            } catch (Exception e) {
-                LOG.error(e.getMessage());
-            }
-
-            try {
-                dbResult.setRowsDeleteFromMideline(deleteCustomerDataDB.deleteFromWideline(intygsId));
-            } catch (Exception e) {
-                LOG.error(e.getMessage());
-            }
-
-            try {
-                dbResult.setRowsDeleteFromIntygsenthandelse(deleteCustomerDataDB.deleteFromIntygsenthandelse(intygsId));
-            } catch (Exception e) {
-                LOG.error(e.getMessage());
-            }
-            list.add(dbResult);
+            deletedIntygsIdList.add(intygsId);
         }
-        return list;
+        return deletedIntygsIdList;
     }
 
     @Override
-    public List<DeletedEnhetDao> deleteCustomerDataByEnhetsId(List<String> enhetsIdList) {
-        List<DeletedEnhetDao> deletedEnhetDaos = new ArrayList<>();
-        for (String enhetsId: enhetsIdList) {
-            DeletedEnhetDao deletedEnhetDao = new DeletedEnhetDao();
-            deletedEnhetDao.setEnhetsId(enhetsId);
-            try {
-                deletedEnhetDao.setRowsDeletedFromEnhet(deleteCustomerDataDB.deleteFromEnhet(enhetsId));
-            } catch (Exception e) {
-                LOG.error(e.getMessage());
-            }
-            deletedEnhetDaos.add(deletedEnhetDao);
-        }
-        return deletedEnhetDaos;
-    }
-
-    @Override
-    public List<DeletedVardgivare> deleteCustomerDataByVardgivarId(List<String> vardgivareIdList) {
-        List<DeletedVardgivare> deletedVardgivareDaos = new ArrayList<>();
+    public List<String>  deleteCustomerDataByVardgivarId(List<String> vardgivareIdList) {
+        List<String> deletedVardgivareIdList = new ArrayList<>();
         for (String vardgivarId: vardgivareIdList) {
-            DeletedVardgivare deletedVardgivare = new DeletedVardgivare();
-            deletedVardgivare.setVardgivareId(vardgivarId);
             try {
-                deletedVardgivare.setRowsDeletedFromLakare(deleteCustomerDataDB.deleteFromLakare(vardgivarId));
+                deleteCustomerDataDB.deleteFromLakare(vardgivarId);
+                deleteCustomerDataDB.deleteFromEnhet(vardgivarId);
             } catch (Exception e) {
                 LOG.error(e.getMessage());
+                continue;
             }
-
-            deletedVardgivareDaos.add(deletedVardgivare);
+            deletedVardgivareIdList.add(vardgivarId);
         }
-        return deletedVardgivareDaos;
+        return deletedVardgivareIdList;
     }
 }

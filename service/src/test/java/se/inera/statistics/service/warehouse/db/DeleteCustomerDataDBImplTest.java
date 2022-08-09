@@ -67,7 +67,7 @@ public class DeleteCustomerDataDBImplTest{
         assertEquals(deleteCustomerDataDB.deleteFromEnhet(ENHETS_ID).intValue(), 1);
 
         verify(connection, times(1)).setAutoCommit(true);
-        verify(connection, times(1)).prepareStatement("DELETE FROM enhet WHERE enhetId = ?");
+        verify(connection, times(1)).prepareStatement("DELETE FROM enhet WHERE vardgivareId = ?");
         verify(preparedStatement, times(1)).setString(1, ENHETS_ID);
         verify(preparedStatement, times(1)).executeUpdate();
     }
@@ -81,7 +81,7 @@ public class DeleteCustomerDataDBImplTest{
         });
 
         verify(connection, times(1)).setAutoCommit(true);
-        verify(connection, times(1)).prepareStatement("DELETE FROM enhet WHERE enhetId = ?");
+        verify(connection, times(1)).prepareStatement("DELETE FROM enhet WHERE vardgivareId = ?");
         verify(preparedStatement, times(1)).setString(1, ENHETS_ID);
         verify(preparedStatement, times(1)).executeUpdate();
     }
@@ -196,7 +196,7 @@ public class DeleteCustomerDataDBImplTest{
         Integer deleteFromMessagewidelineResult = 2;
         when(preparedStatement.executeUpdate()).thenReturn(deleteFromMeddelandehandelseResult, deleteFromMessagewidelineResult);
 
-        MeddelandehandelseMessagewidelineResultDao result = deleteCustomerDataDB.deleteFromMeddelandehandelseAndMessagewideline(INTYGSID);
+        MeddelandehandelseMessagewidelineResult result = deleteCustomerDataDB.deleteFromMeddelandehandelseAndMessagewideline(INTYGSID);
         assertEquals(result.getMeddelandehandelseResult(), deleteFromMeddelandehandelseResult);
         assertEquals(result.getMessagewidelineResult(), deleteFromMessagewidelineResult);
 
