@@ -76,7 +76,7 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, intygsid);
             Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
-            LOG.info("Deleted {} rows from iwntygcommon where intygsid = {}", numberOfRowsDeleted, intygsid);
+            LOG.info("Deleted {} rows from intygcommon where intygsid = {}", numberOfRowsDeleted, intygsid);
             return numberOfRowsDeleted;
         } catch (SQLException e) {
             LOG.error(e.toString());
