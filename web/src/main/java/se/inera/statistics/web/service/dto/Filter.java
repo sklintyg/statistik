@@ -35,8 +35,9 @@ public class Filter {
     private boolean useDefaultPeriod;
 
     //CHECKSTYLE:OFF ParameterNumber
-    public Filter(FilterPredicates predicate, Collection<HsaIdEnhet> enheter, Collection<String> diagnoser, Collection<String> sjukskrivningslangd,
-        Collection<String> aldersgrupp, String hashValue, Collection<String> intygstyper, boolean useDefaultPeriod) {
+    public Filter(FilterPredicates predicate, Collection<HsaIdEnhet> enheter, Collection<String> diagnoser,
+        Collection<String> sjukskrivningslangd, Collection<String> aldersgrupp, String hashValue,
+        Collection<String> intygstyper, boolean useDefaultPeriod) {
         this.predicate = predicate;
         this.enheter = enheter;
         this.diagnoser = diagnoser;

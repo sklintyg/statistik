@@ -39,7 +39,7 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
     @Override
     public Integer deleteFromEnhet(String vardgivareId) {
         String sql = "DELETE FROM enhet WHERE vardgivareId = ?";
-        try (Connection connection = dataSource.getConnection()){
+        try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, vardgivareId);
@@ -55,7 +55,7 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
     @Override
     public Integer deleteFromHsa(String intygsid) {
         String sql = "DELETE FROM hsa WHERE id = ?";
-        try (Connection connection = dataSource.getConnection()){
+        try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, intygsid);
@@ -71,7 +71,7 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
     @Override
     public Integer deleteFromIntygcommon(String intygsid) {
         String sql = "DELETE FROM intygcommon WHERE intygid = ?";
-        try (Connection connection = dataSource.getConnection()){
+        try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, intygsid);
@@ -87,7 +87,7 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
     @Override
     public Integer deleteFromIntyghandelse(String intygsid) {
         String sql = "DELETE FROM intyghandelse WHERE correlationId = ?";
-        try (Connection connection = dataSource.getConnection()){
+        try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, intygsid);
@@ -103,7 +103,7 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
     @Override
     public Integer deleteFromLakare(String vardgivareId) {
         String sql = "DELETE FROM lakare WHERE vardgivareid = ?";
-        try (Connection connection = dataSource.getConnection()){
+        try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, vardgivareId);
@@ -126,7 +126,7 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
 
     private Integer deleteFromMeddelandehandelse(String intygsid) {
         String sql = "DELETE FROM meddelandehandelse WHERE correlationId IN (SELECT meddelandeId FROM messagewideline WHERE intygid = ?)";
-        try (Connection connection = dataSource.getConnection()){
+        try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, intygsid);
@@ -145,7 +145,7 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
      */
     private Integer deleteFromMessagewideline(String intygsid) {
         String sql = "DELETE FROM messagewideline WHERE intygid = ?";
-        try (Connection connection = dataSource.getConnection()){
+        try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, intygsid);
@@ -161,7 +161,7 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
     @Override
     public Integer deleteFromWideline(String intygsid) {
         String sql = "DELETE FROM wideline WHERE correlationId = ?";
-        try (Connection connection = dataSource.getConnection()){
+        try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, intygsid);
@@ -177,7 +177,7 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
     @Override
     public Integer deleteFromIntygsenthandelse(String intygsid) {
         String sql = "DELETE FROM intygsenthandelse WHERE correlationId = ?";
-        try (Connection connection = dataSource.getConnection()){
+        try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, intygsid);

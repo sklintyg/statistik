@@ -39,7 +39,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DeleteCustomerDataDBImplTest{
+public class DeleteCustomerDataDBImplTest {
 
     private static final String ENHETS_ID = "Något enhetsid";
     private static final String INTYGSID = "Något intygsid";
@@ -201,7 +201,8 @@ public class DeleteCustomerDataDBImplTest{
         assertEquals(result.getMessagewidelineResult(), deleteFromMessagewidelineResult);
 
         verify(connection, times(2)).setAutoCommit(true);
-        verify(connection, times(1)).prepareStatement("DELETE FROM meddelandehandelse WHERE correlationId IN (SELECT meddelandeId FROM messagewideline WHERE intygid = ?)");
+        verify(connection, times(1)).prepareStatement(
+            "DELETE FROM meddelandehandelse WHERE correlationId IN (SELECT meddelandeId FROM messagewideline WHERE intygid = ?)");
         verify(connection, times(1)).prepareStatement("DELETE FROM messagewideline WHERE intygid = ?");
         verify(preparedStatement, times(2)).setString(1, INTYGSID);
         verify(preparedStatement, times(2)).executeUpdate();
@@ -216,7 +217,8 @@ public class DeleteCustomerDataDBImplTest{
         });
 
         verify(connection, times(1)).setAutoCommit(true);
-        verify(connection, times(1)).prepareStatement("DELETE FROM meddelandehandelse WHERE correlationId IN (SELECT meddelandeId FROM messagewideline WHERE intygid = ?)");
+        verify(connection, times(1)).prepareStatement(
+            "DELETE FROM meddelandehandelse WHERE correlationId IN (SELECT meddelandeId FROM messagewideline WHERE intygid = ?)");
         verify(connection, never()).prepareStatement("DELETE FROM messagewideline WHERE intygid = ?");
         verify(preparedStatement, times(1)).setString(1, INTYGSID);
         verify(preparedStatement, times(1)).executeUpdate();
@@ -232,7 +234,8 @@ public class DeleteCustomerDataDBImplTest{
         });
 
         verify(connection, times(2)).setAutoCommit(true);
-        verify(connection, times(1)).prepareStatement("DELETE FROM meddelandehandelse WHERE correlationId IN (SELECT meddelandeId FROM messagewideline WHERE intygid = ?)");
+        verify(connection, times(1)).prepareStatement(
+            "DELETE FROM meddelandehandelse WHERE correlationId IN (SELECT meddelandeId FROM messagewideline WHERE intygid = ?)");
         verify(connection, times(1)).prepareStatement("DELETE FROM messagewideline WHERE intygid = ?");
         verify(preparedStatement, times(2)).setString(1, INTYGSID);
         verify(preparedStatement, times(2)).executeUpdate();

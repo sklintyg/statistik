@@ -45,7 +45,7 @@ public class DeleteController {
     @Path("intygsidlist")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public List<String>  deleteIntygsIdList(@RequestBody List<String> intygsIdList){
+    public List<String>  deleteIntygsIdList(@RequestBody List<String> intygsIdList) {
         return deleteCustomerData.deleteCustomerDataByIntygsId(intygsIdList);
     }
 
@@ -54,7 +54,7 @@ public class DeleteController {
     @Path("vardgivareidlist")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public List<String> deleteVardgivareIdList(@RequestBody List<String> vardgivareIdList){
+    public List<String> deleteVardgivareIdList(@RequestBody List<String> vardgivareIdList) {
         return deleteCustomerData.deleteCustomerDataByVardgivarId(vardgivareIdList);
     }
 }

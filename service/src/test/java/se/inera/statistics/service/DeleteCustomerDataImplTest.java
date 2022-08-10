@@ -36,7 +36,7 @@ import se.inera.statistics.service.warehouse.db.DeleteCustomerDataDB;
 import se.inera.statistics.service.warehouse.db.MeddelandehandelseMessagewidelineResult;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DeleteCustomerDataImplTest{
+public class DeleteCustomerDataImplTest {
 
     @Mock
     private DeleteCustomerDataDB deleteCustomerDataDB;
