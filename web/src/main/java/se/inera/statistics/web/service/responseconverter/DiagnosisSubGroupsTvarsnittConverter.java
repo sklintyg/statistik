@@ -23,7 +23,7 @@ import java.util.List;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.web.MessagesText;
+import se.inera.statistics.web.service.dto.MessagesText;
 import se.inera.statistics.web.model.ChartData;
 
 public class DiagnosisSubGroupsTvarsnittConverter extends SimpleDualSexConverter {

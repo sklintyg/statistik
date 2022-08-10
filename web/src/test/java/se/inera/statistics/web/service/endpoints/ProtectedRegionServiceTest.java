@@ -66,6 +66,7 @@ import se.inera.statistics.service.region.RegionsVardgivareStatus;
 import se.inera.statistics.service.region.persistance.regionenhet.RegionEnhet;
 import se.inera.statistics.service.region.persistance.regionenhetupdate.RegionEnhetUpdate;
 import se.inera.statistics.service.region.persistance.regionenhetupdate.RegionEnhetUpdateOperation;
+import se.inera.statistics.web.api.ProtectedRegionService;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.LoginInfoVg;
 import se.inera.statistics.web.model.UserSettingsDTO;

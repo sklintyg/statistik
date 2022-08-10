@@ -32,6 +32,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import se.inera.statistics.service.user.UserSelection;
 import se.inera.statistics.service.user.UserSelectionManager;
+import se.inera.statistics.web.service.dto.FilterData;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FilterHashHandlerTest {

@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.web.error.Message;
-import se.inera.statistics.web.service.FilterDataResponse;
+import se.inera.statistics.web.service.dto.FilterDataResponse;
 
 public class DualSexStatisticsData extends TableDataReport {
 

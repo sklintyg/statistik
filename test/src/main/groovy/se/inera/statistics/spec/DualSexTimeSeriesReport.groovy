@@ -18,7 +18,7 @@
  */
 package se.inera.statistics.spec
 
-import se.inera.statistics.web.service.FilterData
+import se.inera.statistics.web.service.dto.FilterData
 
 abstract class DualSexTimeSeriesReport extends Rapport {
 

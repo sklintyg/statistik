@@ -27,13 +27,13 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.query.AndelExtras;
-import se.inera.statistics.web.MessagesText;
+import se.inera.statistics.web.service.dto.MessagesText;
 import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.SimpleDetailsData;
-import se.inera.statistics.web.service.FilterSettings;
+import se.inera.statistics.web.service.dto.FilterSettings;
 
 public final class AndelKompletteringarTvarsnittConverter extends SimpleDualSexConverter {
 

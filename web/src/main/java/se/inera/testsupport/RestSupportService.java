@@ -98,7 +98,7 @@ import se.inera.statistics.service.warehouse.model.db.WideLine;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.service.warehouse.query.RegionCutoff;
 import se.inera.statistics.time.ChangableClock;
-import se.inera.statistics.web.service.endpoints.ChartDataService;
+import se.inera.statistics.web.api.ChartDataService;
 import se.inera.testsupport.fkrapport.FkReportCreator;
 import se.inera.testsupport.fkrapport.FkReportDataRow;
 import se.inera.testsupport.socialstyrelsenspecial.IntygCommonSosManager;

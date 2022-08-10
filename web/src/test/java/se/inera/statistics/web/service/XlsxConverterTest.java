@@ -41,6 +41,9 @@ import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.TableHeader;
+import se.inera.statistics.web.service.dto.FilterDataResponse;
+import se.inera.statistics.web.service.dto.FilterSelections;
+import se.inera.statistics.web.service.dto.Report;
 
 public class XlsxConverterTest {
 

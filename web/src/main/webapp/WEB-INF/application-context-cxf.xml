@@ -28,6 +28,7 @@
                 <ref bean="loggingService"/>
                 <ref bean="linkService"/>
                 <ref bean="sessionStatusService"/>
+                <ref bean="deleteController"/>
             </jaxrs:serviceBeans>
             <jaxrs:providers>
                 <ref bean="jacksonJsonProvider"/>

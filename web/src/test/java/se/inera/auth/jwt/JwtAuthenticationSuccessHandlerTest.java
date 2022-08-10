@@ -40,7 +40,7 @@ import se.inera.auth.model.User;
 import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.integration.hsa.model.Vardenhet;
-import se.inera.statistics.web.service.FilterException;
+import se.inera.statistics.web.service.exception.FilterException;
 import se.inera.statistics.web.service.FilterHashHandler;
 
 

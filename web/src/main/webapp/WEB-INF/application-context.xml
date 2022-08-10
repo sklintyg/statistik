@@ -49,21 +49,22 @@
         <bean class="se.inera.statistics.integration.hsa.services.HsaPersonServiceImpl"/>
         <bean id="filterHashHandler" class="se.inera.statistics.web.service.FilterHashHandler"/>
         <bean id="resultMessageHandler" class="se.inera.statistics.web.service.ResultMessageHandler"/>
-        <bean id="chartDataService" class="se.inera.statistics.web.service.endpoints.ChartDataService"/>
+        <bean id="chartDataService" class="se.inera.statistics.web.api.ChartDataService"/>
         <bean id="nationellDataCalculator" class="se.inera.statistics.web.service.NationellDataCalculator"/>
-        <bean id="pdfService" class="se.inera.statistics.web.service.endpoints.PdfService"/>
+        <bean id="pdfService" class="se.inera.statistics.web.api.PdfService"/>
 
-        <bean id="protectedChartDataService" class="se.inera.statistics.web.service.endpoints.ProtectedChartDataService"/>
-        <bean id="protectedRegionService" class="se.inera.statistics.web.service.endpoints.ProtectedRegionService"/>
+        <bean id="protectedChartDataService" class="se.inera.statistics.web.api.ProtectedChartDataService"/>
+        <bean id="protectedRegionService" class="se.inera.statistics.web.api.ProtectedRegionService"/>
         <bean class="se.inera.statistics.web.service.ResponseHandler"/>
 
         <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
-        <bean id="loginInfoService" class="se.inera.statistics.web.service.endpoints.LoginInfoService"/>
-        <bean id="loggingService" class="se.inera.statistics.web.service.endpoints.LoggingService"/>
-        <bean id="sessionStatusService" class="se.inera.statistics.web.service.endpoints.SessionStatusService"/>
+        <bean id="loginInfoService" class="se.inera.statistics.web.api.LoginInfoService"/>
+        <bean id="loggingService" class="se.inera.statistics.web.api.LoggingService"/>
+        <bean id="sessionStatusService" class="se.inera.statistics.web.api.SessionStatusService"/>
         <bean id="dynamicLinkRepository" class="se.inera.intyg.infra.dynamiclink.repository.DynamicLinkRepositoryImpl" />
         <bean id="dynamicLinkService" class="se.inera.intyg.infra.dynamiclink.service.DynamicLinkServiceImpl"/>
-        <bean id="linkService" class="se.inera.statistics.web.service.links.LinkService"/>
+        <bean id="linkService" class="se.inera.statistics.web.api.LinkService"/>
+        <bean id="deleteController" class="se.inera.statistics.web.api.DeleteController"/>
         <bean class="se.inera.statistics.web.scheduler.STBannerJob"/>
 
         <import resource="classpath*:hsatk-services-config.xml"/>

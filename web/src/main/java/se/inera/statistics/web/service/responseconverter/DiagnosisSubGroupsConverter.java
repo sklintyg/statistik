@@ -27,16 +27,16 @@ import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.web.MessagesText;
+import se.inera.statistics.web.service.dto.MessagesText;
 import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
-import se.inera.statistics.web.service.Filter;
-import se.inera.statistics.web.service.FilterDataResponse;
-import se.inera.statistics.web.service.FilterSettings;
+import se.inera.statistics.web.service.dto.Filter;
+import se.inera.statistics.web.service.dto.FilterDataResponse;
+import se.inera.statistics.web.service.dto.FilterSettings;
 import se.inera.statistics.web.util.Pair;
 
 public class DiagnosisSubGroupsConverter {

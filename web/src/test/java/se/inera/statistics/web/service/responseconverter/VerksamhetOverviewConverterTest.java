@@ -34,7 +34,7 @@ import se.inera.statistics.web.model.overview.DonutChartData;
 import se.inera.statistics.web.model.overview.SickLeaveLengthOverview;
 import se.inera.statistics.web.model.overview.VerksamhetNumberOfCasesPerMonthOverview;
 import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
-import se.inera.statistics.web.service.Filter;
+import se.inera.statistics.web.service.dto.Filter;
 
 public class VerksamhetOverviewConverterTest {
 

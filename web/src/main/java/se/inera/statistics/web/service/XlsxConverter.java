@@ -42,12 +42,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.web.MessagesText;
+import se.inera.statistics.web.service.dto.MessagesText;
 import se.inera.statistics.web.model.DiagnosisSubGroupStatisticsData;
 import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.TableHeader;
+import se.inera.statistics.web.service.dto.FilterDataResponse;
+import se.inera.statistics.web.service.dto.FilterSelections;
+import se.inera.statistics.web.service.dto.Report;
+import se.inera.statistics.web.service.exception.XslxFileGenerationException;
 
 final class XlsxConverter {
 

@@ -52,11 +52,13 @@ import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
-import se.inera.statistics.web.Messages;
+import se.inera.statistics.web.service.dto.Messages;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.LoginInfoVg;
 import se.inera.statistics.web.model.UserSettingsDTO;
 import se.inera.statistics.web.model.Verksamhet;
+import se.inera.statistics.web.service.dto.FilterData;
+import se.inera.statistics.web.service.dto.FilterSettings;
 import se.inera.statistics.web.util.SpyableClock;
 
 public class FilterHandlerTest {

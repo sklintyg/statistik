@@ -21,7 +21,7 @@ package se.inera.statistics.web.error;
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
-import se.inera.statistics.web.Messages;
+import se.inera.statistics.web.service.dto.Messages;
 
 /**
  * @author Magnus Ekstrand on 2016-11-09.

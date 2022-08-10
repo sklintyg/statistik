@@ -21,6 +21,7 @@ package se.inera.statistics.web.service;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import se.inera.statistics.web.service.dto.Report;
 
 public class ReportTest {
 

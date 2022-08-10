@@ -60,6 +60,8 @@ import se.inera.statistics.service.warehouse.query.RangeNotFoundException;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
+import se.inera.statistics.web.service.dto.Filter;
+import se.inera.statistics.web.service.dto.FilterSettings;
 import se.inera.statistics.web.service.responseconverter.AldersGroupsConverter;
 import se.inera.statistics.web.service.responseconverter.DiagnosisGroupsConverter;
 

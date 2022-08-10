@@ -34,15 +34,15 @@ import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.DiagnosisGroup;
 import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.web.MessagesText;
+import se.inera.statistics.web.service.dto.MessagesText;
 import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
-import se.inera.statistics.web.service.Filter;
-import se.inera.statistics.web.service.FilterDataResponse;
-import se.inera.statistics.web.service.FilterSettings;
+import se.inera.statistics.web.service.dto.Filter;
+import se.inera.statistics.web.service.dto.FilterDataResponse;
+import se.inera.statistics.web.service.dto.FilterSettings;
 
 public class DiagnosisGroupsConverter extends MultiDualSexConverter {
 

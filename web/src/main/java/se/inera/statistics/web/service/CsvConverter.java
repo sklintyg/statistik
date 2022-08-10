@@ -24,7 +24,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableHeader;
-import se.inera.statistics.web.service.endpoints.ChartDataService;
+import se.inera.statistics.web.api.ChartDataService;
 
 final class CsvConverter {
 

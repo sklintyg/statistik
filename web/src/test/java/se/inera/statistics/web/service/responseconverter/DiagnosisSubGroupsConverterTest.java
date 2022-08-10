@@ -32,10 +32,10 @@ import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.web.MessagesText;
+import se.inera.statistics.web.service.dto.MessagesText;
 import se.inera.statistics.web.model.DualSexStatisticsData;
-import se.inera.statistics.web.service.Filter;
-import se.inera.statistics.web.service.FilterSettings;
+import se.inera.statistics.web.service.dto.Filter;
+import se.inera.statistics.web.service.dto.FilterSettings;
 
 public class DiagnosisSubGroupsConverterTest {
 

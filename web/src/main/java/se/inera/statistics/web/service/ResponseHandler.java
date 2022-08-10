@@ -41,8 +41,8 @@ import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.Warehouse;
-import se.inera.statistics.web.Messages;
-import se.inera.statistics.web.MessagesText;
+import se.inera.statistics.web.service.dto.Messages;
+import se.inera.statistics.web.service.dto.MessagesText;
 import se.inera.statistics.web.error.ErrorSeverity;
 import se.inera.statistics.web.error.ErrorType;
 import se.inera.statistics.web.error.Message;
@@ -50,6 +50,10 @@ import se.inera.statistics.web.model.FilteredDataReport;
 import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableDataReport;
+import se.inera.statistics.web.service.dto.FilterDataResponse;
+import se.inera.statistics.web.service.dto.FilterSelections;
+import se.inera.statistics.web.service.dto.Report;
+import se.inera.statistics.web.service.dto.ReportInfo;
 
 public class ResponseHandler {
 
