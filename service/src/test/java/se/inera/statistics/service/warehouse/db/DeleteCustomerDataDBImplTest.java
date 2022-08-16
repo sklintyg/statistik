@@ -70,6 +70,7 @@ public class DeleteCustomerDataDBImplTest {
         verify(connection, times(1)).prepareStatement("DELETE FROM enhet WHERE vardgivareId = ?");
         verify(preparedStatement, times(1)).setString(1, ENHETS_ID);
         verify(preparedStatement, times(1)).executeUpdate();
+        verify(preparedStatement, times(1)).close();
     }
 
     @Test
@@ -84,6 +85,7 @@ public class DeleteCustomerDataDBImplTest {
         verify(connection, times(1)).prepareStatement("DELETE FROM enhet WHERE vardgivareId = ?");
         verify(preparedStatement, times(1)).setString(1, ENHETS_ID);
         verify(preparedStatement, times(1)).executeUpdate();
+        verify(preparedStatement, times(1)).close();
     }
 
     @Test
@@ -96,6 +98,7 @@ public class DeleteCustomerDataDBImplTest {
         verify(connection, times(1)).prepareStatement("DELETE FROM hsa WHERE id = ?");
         verify(preparedStatement, times(1)).setString(1, INTYGSID);
         verify(preparedStatement, times(1)).executeUpdate();
+        verify(preparedStatement, times(1)).close();
     }
 
     @Test
@@ -110,6 +113,7 @@ public class DeleteCustomerDataDBImplTest {
         verify(connection, times(1)).prepareStatement("DELETE FROM hsa WHERE id = ?");
         verify(preparedStatement, times(1)).setString(1, INTYGSID);
         verify(preparedStatement, times(1)).executeUpdate();
+        verify(preparedStatement, times(1)).close();
     }
 
     @Test
@@ -122,6 +126,7 @@ public class DeleteCustomerDataDBImplTest {
         verify(connection, times(1)).prepareStatement("DELETE FROM intygcommon WHERE intygid = ?");
         verify(preparedStatement, times(1)).setString(1, INTYGSID);
         verify(preparedStatement, times(1)).executeUpdate();
+        verify(preparedStatement, times(1)).close();
     }
 
     @Test
@@ -136,6 +141,7 @@ public class DeleteCustomerDataDBImplTest {
         verify(connection, times(1)).prepareStatement("DELETE FROM intygcommon WHERE intygid = ?");
         verify(preparedStatement, times(1)).setString(1, INTYGSID);
         verify(preparedStatement, times(1)).executeUpdate();
+        verify(preparedStatement, times(1)).close();
     }
 
     @Test
@@ -148,6 +154,7 @@ public class DeleteCustomerDataDBImplTest {
         verify(connection, times(1)).prepareStatement("DELETE FROM intyghandelse WHERE correlationId = ?");
         verify(preparedStatement, times(1)).setString(1, INTYGSID);
         verify(preparedStatement, times(1)).executeUpdate();
+        verify(preparedStatement, times(1)).close();
     }
 
     @Test
@@ -162,6 +169,7 @@ public class DeleteCustomerDataDBImplTest {
         verify(connection, times(1)).prepareStatement("DELETE FROM intyghandelse WHERE correlationId = ?");
         verify(preparedStatement, times(1)).setString(1, INTYGSID);
         verify(preparedStatement, times(1)).executeUpdate();
+        verify(preparedStatement, times(1)).close();
     }
 
     @Test
@@ -174,6 +182,7 @@ public class DeleteCustomerDataDBImplTest {
         verify(connection, times(1)).prepareStatement("DELETE FROM lakare WHERE vardgivareid = ?");
         verify(preparedStatement, times(1)).setString(1, VARDGIVARE_ID);
         verify(preparedStatement, times(1)).executeUpdate();
+        verify(preparedStatement, times(1)).close();
     }
 
     @Test
@@ -188,6 +197,7 @@ public class DeleteCustomerDataDBImplTest {
         verify(connection, times(1)).prepareStatement("DELETE FROM lakare WHERE vardgivareid = ?");
         verify(preparedStatement, times(1)).setString(1, VARDGIVARE_ID);
         verify(preparedStatement, times(1)).executeUpdate();
+        verify(preparedStatement, times(1)).close();
     }
 
     @Test
@@ -206,6 +216,7 @@ public class DeleteCustomerDataDBImplTest {
         verify(connection, times(1)).prepareStatement("DELETE FROM messagewideline WHERE intygid = ?");
         verify(preparedStatement, times(2)).setString(1, INTYGSID);
         verify(preparedStatement, times(2)).executeUpdate();
+        verify(preparedStatement, times(2)).close();
     }
 
     @Test
@@ -222,6 +233,7 @@ public class DeleteCustomerDataDBImplTest {
         verify(connection, never()).prepareStatement("DELETE FROM messagewideline WHERE intygid = ?");
         verify(preparedStatement, times(1)).setString(1, INTYGSID);
         verify(preparedStatement, times(1)).executeUpdate();
+        verify(preparedStatement, times(1)).close();
     }
 
     @Test
@@ -239,6 +251,7 @@ public class DeleteCustomerDataDBImplTest {
         verify(connection, times(1)).prepareStatement("DELETE FROM messagewideline WHERE intygid = ?");
         verify(preparedStatement, times(2)).setString(1, INTYGSID);
         verify(preparedStatement, times(2)).executeUpdate();
+        verify(preparedStatement, times(2)).close();
     }
 
     @Test
@@ -251,6 +264,7 @@ public class DeleteCustomerDataDBImplTest {
         verify(connection, times(1)).prepareStatement("DELETE FROM wideline WHERE correlationId = ?");
         verify(preparedStatement, times(1)).setString(1, INTYGSID);
         verify(preparedStatement, times(1)).executeUpdate();
+        verify(preparedStatement, times(1)).close();
     }
 
     @Test
@@ -265,6 +279,7 @@ public class DeleteCustomerDataDBImplTest {
         verify(connection, times(1)).prepareStatement("DELETE FROM wideline WHERE correlationId = ?");
         verify(preparedStatement, times(1)).setString(1, INTYGSID);
         verify(preparedStatement, times(1)).executeUpdate();
+        verify(preparedStatement, times(1)).close();
     }
 
     @Test
@@ -277,6 +292,7 @@ public class DeleteCustomerDataDBImplTest {
         verify(connection, times(1)).prepareStatement("DELETE FROM intygsenthandelse WHERE correlationId = ?");
         verify(preparedStatement, times(1)).setString(1, INTYGSID);
         verify(preparedStatement, times(1)).executeUpdate();
+        verify(preparedStatement, times(1)).close();
     }
 
     @Test
@@ -291,5 +307,6 @@ public class DeleteCustomerDataDBImplTest {
         verify(connection, times(1)).prepareStatement("DELETE FROM intygsenthandelse WHERE correlationId = ?");
         verify(preparedStatement, times(1)).setString(1, INTYGSID);
         verify(preparedStatement, times(1)).executeUpdate();
+        verify(preparedStatement, times(1)).close();
     }
 }
