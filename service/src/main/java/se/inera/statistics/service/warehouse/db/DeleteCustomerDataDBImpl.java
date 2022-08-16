@@ -41,11 +41,16 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
         String sql = "DELETE FROM enhet WHERE vardgivareId = ?";
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, vardgivareId);
-            Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
-            LOG.info("Deleted {} rows from enhet where vardgivareId = {}", numberOfRowsDeleted, vardgivareId);
-            return numberOfRowsDeleted;
+            PreparedStatement preparedStatement = null;
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, vardgivareId);
+                Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
+                LOG.info("Deleted {} rows from enhet where vardgivareId = {}", numberOfRowsDeleted, vardgivareId);
+                return numberOfRowsDeleted;
+            } finally {
+                preparedStatement.close();
+            }
         } catch (SQLException e) {
             LOG.error(e.toString());
             throw new RuntimeException(e);
@@ -57,11 +62,16 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
         String sql = "DELETE FROM hsa WHERE id = ?";
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, intygsid);
-            Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
-            LOG.info("Deleted {} rows from hsa where intygsid = {}", numberOfRowsDeleted, intygsid);
-            return numberOfRowsDeleted;
+            PreparedStatement preparedStatement = null;
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, intygsid);
+                Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
+                LOG.info("Deleted {} rows from hsa where intygsid = {}", numberOfRowsDeleted, intygsid);
+                return numberOfRowsDeleted;
+            } finally {
+                preparedStatement.close();
+            }
         } catch (SQLException e) {
             LOG.error(e.toString());
             throw new RuntimeException(e);
@@ -73,11 +83,16 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
         String sql = "DELETE FROM intygcommon WHERE intygid = ?";
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, intygsid);
-            Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
-            LOG.info("Deleted {} rows from intygcommon where intygsid = {}", numberOfRowsDeleted, intygsid);
-            return numberOfRowsDeleted;
+            PreparedStatement preparedStatement = null;
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, intygsid);
+                Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
+                LOG.info("Deleted {} rows from intygcommon where intygsid = {}", numberOfRowsDeleted, intygsid);
+                return numberOfRowsDeleted;
+            } finally {
+                preparedStatement.close();
+            }
         } catch (SQLException e) {
             LOG.error(e.toString());
             throw new RuntimeException(e);
@@ -89,11 +104,16 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
         String sql = "DELETE FROM intyghandelse WHERE correlationId = ?";
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, intygsid);
-            Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
-            LOG.info("Deleted {} rows from intyghandelse where intygsid = {}", numberOfRowsDeleted, intygsid);
-            return numberOfRowsDeleted;
+            PreparedStatement preparedStatement = null;
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, intygsid);
+                Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
+                LOG.info("Deleted {} rows from intyghandelse where intygsid = {}", numberOfRowsDeleted, intygsid);
+                return numberOfRowsDeleted;
+            } finally {
+                preparedStatement.close();
+            }
         } catch (SQLException e) {
             LOG.error(e.toString());
             throw new RuntimeException(e);
@@ -105,11 +125,16 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
         String sql = "DELETE FROM lakare WHERE vardgivareid = ?";
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, vardgivareId);
-            Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
-            LOG.info("Deleted {} rows from lakare where vardgivareId = {}", numberOfRowsDeleted, vardgivareId);
-            return numberOfRowsDeleted;
+            PreparedStatement preparedStatement = null;
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, vardgivareId);
+                Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
+                LOG.info("Deleted {} rows from lakare where vardgivareId = {}", numberOfRowsDeleted, vardgivareId);
+                return numberOfRowsDeleted;
+            } finally {
+                preparedStatement.close();
+            }
         } catch (SQLException e) {
             LOG.error(e.toString());
             throw new RuntimeException(e);
@@ -128,11 +153,16 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
         String sql = "DELETE FROM meddelandehandelse WHERE correlationId IN (SELECT meddelandeId FROM messagewideline WHERE intygid = ?)";
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, intygsid);
-            Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
-            LOG.info("Deleted {} rows from meddelandehandelse where intygid = {}", numberOfRowsDeleted, intygsid);
-            return numberOfRowsDeleted;
+            PreparedStatement preparedStatement = null;
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, intygsid);
+                Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
+                LOG.info("Deleted {} rows from meddelandehandelse where intygid = {}", numberOfRowsDeleted, intygsid);
+                return numberOfRowsDeleted;
+            } finally {
+                preparedStatement.close();
+            }
         } catch (SQLException e) {
             LOG.error(e.toString());
             throw new RuntimeException(e);
@@ -147,11 +177,16 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
         String sql = "DELETE FROM messagewideline WHERE intygid = ?";
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, intygsid);
-            Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
-            LOG.info("Deleted {} rows from messagewideline where intygid = {}", numberOfRowsDeleted, intygsid);
-            return numberOfRowsDeleted;
+            PreparedStatement preparedStatement = null;
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, intygsid);
+                Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
+                LOG.info("Deleted {} rows from messagewideline where intygid = {}", numberOfRowsDeleted, intygsid);
+                return numberOfRowsDeleted;
+            } finally {
+                preparedStatement.close();
+            }
         } catch (SQLException e) {
             LOG.error(e.toString());
             throw new RuntimeException(e);
@@ -163,11 +198,16 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
         String sql = "DELETE FROM wideline WHERE correlationId = ?";
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, intygsid);
-            Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
-            LOG.info("Deleted {} rows from wideline where intygsid = {}", numberOfRowsDeleted, intygsid);
-            return numberOfRowsDeleted;
+            PreparedStatement preparedStatement = null;
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, intygsid);
+                Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
+                LOG.info("Deleted {} rows from wideline where intygsid = {}", numberOfRowsDeleted, intygsid);
+                return numberOfRowsDeleted;
+            } finally {
+                preparedStatement.close();
+            }
         } catch (SQLException e) {
             LOG.error(e.toString());
             throw new RuntimeException(e);
@@ -179,11 +219,16 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
         String sql = "DELETE FROM intygsenthandelse WHERE correlationId = ?";
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, intygsid);
-            Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
-            LOG.info("Deleted {} rows from intygsenthandelse where intygsid = {}", numberOfRowsDeleted, intygsid);
-            return numberOfRowsDeleted;
+            PreparedStatement preparedStatement = null;
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, intygsid);
+                Integer numberOfRowsDeleted = preparedStatement.executeUpdate();
+                LOG.info("Deleted {} rows from intygsenthandelse where intygsid = {}", numberOfRowsDeleted, intygsid);
+                return numberOfRowsDeleted;
+            } finally {
+                preparedStatement.close();
+            }
         } catch (SQLException e) {
             LOG.error(e.toString());
             throw new RuntimeException(e);
