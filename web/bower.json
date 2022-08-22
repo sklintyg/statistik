@@ -21,7 +21,7 @@
     "momentjs": "2.24.0",
     "dropzone": "4.3.0",
     "ngstorage": "0.3.11",
-    "highcharts": "6.0.7",
+    "highcharts": "10.0.0",
     "font-awesome": "fontawesome#^5.15.1",
     "pdfmake": "0.1.59"
   },
