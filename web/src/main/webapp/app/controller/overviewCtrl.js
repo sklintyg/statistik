@@ -101,7 +101,6 @@ angular.module('StatisticsApp').controller('overviewCtrl',
         chartOptions.title = {
           verticalAlign: 'middle',
           align: 'center',
-          y: 15,
           floating: true,
           text: (alteration > 0 ? '+' : '') + alteration + ' %',
           style: {

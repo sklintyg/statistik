@@ -101,7 +101,6 @@ angular.module('StatisticsApp').controller('businessOverviewCtrl',
           verticalAlign: 'middle',
           floating: true,
           align: 'center',
-          y: 15,
           text: alteration,
           style: {
             fontFamily: 'Helvetica, Arial, sans-serif',
