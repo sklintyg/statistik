@@ -89,13 +89,13 @@ class FoljandeIntygFinns extends FoljandeFinns {
         intygdata = null
     }
 
-    public void execute() {
+    void execute() {
         if (huvudenhet == null || huvudenhet.trim().isEmpty()) {
-            huvudenhet = enhet;
+            huvudenhet = enhet
         }
         def finalIntygDataString = getIntygDataString()
-        Intyg intyg = new Intyg(EventType.valueOf(händelsetyp), finalIntygDataString, String.valueOf(intygid), System.currentTimeMillis(),
-                län, kommun, huvudenhet, enhetsnamn, vardgivare, enhet, läkare)
+        Intyg intyg = new Intyg(EventType.valueOf(händelsetyp), String.valueOf(finalIntygDataString), String.valueOf(intygid),
+                System.currentTimeMillis(), län, kommun, huvudenhet, enhetsnamn, vardgivare, enhet, läkare)
         reportsUtil.insertIntyg(intyg)
     }
 
@@ -205,7 +205,7 @@ class FoljandeIntygFinns extends FoljandeFinns {
     }
 
     private Node readXmlFormat(String filepath) {
-        def slurper = new XmlParser(false, true)
+        def slurper = new groovy.xml.XmlParser(false, true)
         String intygString = getClass().getResource(filepath).getText('UTF-8')
         return slurper.parseText(intygString)
     }

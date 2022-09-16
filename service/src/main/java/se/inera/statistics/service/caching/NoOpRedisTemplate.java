@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.caching;
 
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -64,7 +65,7 @@ public class NoOpRedisTemplate extends RedisTemplate<Object, Object> {
     @Override
     public ValueOperations opsForValue() {
 
-        return new ValueOperations<Object, Object>() {
+        return new ValueOperations<>() {
 
             @Override
             public void set(Object key, Object value) {
@@ -105,6 +106,26 @@ public class NoOpRedisTemplate extends RedisTemplate<Object, Object> {
 
             @Override
             public Object get(Object key) {
+                return null;
+            }
+
+            @Override
+            public Object getAndDelete(Object key) {
+                return null;
+            }
+
+            @Override
+            public Object getAndExpire(Object key, long timeout, TimeUnit unit) {
+                return null;
+            }
+
+            @Override
+            public Object getAndExpire(Object key, Duration timeout) {
+                return null;
+            }
+
+            @Override
+            public Object getAndPersist(Object key) {
                 return null;
             }
 

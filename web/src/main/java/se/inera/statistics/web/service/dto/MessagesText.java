@@ -22,10 +22,13 @@ package se.inera.statistics.web.service.dto;
 public final class MessagesText {
 
     public static final String MESSAGE_NO_DATA = "Ingen data tillgänglig. Det beror på att det inte finns någon data för verksamheten.";
-    public static final String MESSAGE_TOO_MUCH_DATA = "Rapporten innehåller mycket data, vilket kan göra diagrammet svårt att läsa. Överväg att filtrera resultatet för att minska mängden data.";
-    public static final String MESSAGE_DIAGNOS_MISS_MATCH = "Du har gjort ett val av diagnos som inte matchar det val du gjort i diagnosfiltret (se 'Visa alla aktiva filter' ovan).";
+    public static final String MESSAGE_TOO_MUCH_DATA = "Rapporten innehåller mycket data, vilket kan göra diagrammet svårt att läsa. "
+        + "Överväg att filtrera resultatet för att minska mängden data.";
+    public static final String MESSAGE_DIAGNOS_MISS_MATCH = "Du har gjort ett val av diagnos som inte matchar det val du gjort i "
+        + "diagnosfiltret (se 'Visa alla aktiva filter' ovan).";
     public static final String MESSAGE_NO_DIAGNOSIS = "Inga diagnoser valda";
-    public static final String MESSAGE_OVERVIEW_WITH_FILTER = "Översikten visar alltid de senaste tre avslutade kalendermånaderna (%s) oavsett valt tidsintervall.";
+    public static final String MESSAGE_OVERVIEW_WITH_FILTER = "Översikten visar alltid de senaste tre avslutade kalendermånaderna (%s) "
+        + "oavsett valt tidsintervall.";
 
 
     public static final String STATISTICS_LEVEL_NATIONELL = "Nationell statistik";
@@ -45,13 +48,18 @@ public final class MessagesText {
     public static final String EXCEL_FILTER_AGEGROUPS = "Valda åldersgrupper";
     public static final String EXCEL_FILTER_INTYGTYPES = "Valda intygstyper";
 
-    public static final String FILTER_WRONG_FROM_AND_END_DATE = "Det finns ingen statistik innan %s och ingen efter %s, visar statistik mellan %s och %s.";
+    public static final String FILTER_WRONG_FROM_AND_END_DATE = "Det finns ingen statistik innan %s och ingen efter %s, visar statistik "
+        + "mellan %s och %s.";
     public static final String FILTER_WRONG_FROM_DATE = "Det finns ingen statistik innan %s. Visar statistik från tidigast möjliga datum.";
-    public static final String FILTER_WRONG_END_DATE = "Det finns ingen statistik efter %s. Visar statistik fram till senast möjliga datum.";
-    public static final String FILTER_TOO_EARLY_FROM_AND_END_DATE = "Det finns ingen statistik innan 2013-10. Vänligen välj ett senare från- och tilldatum.";
-    public static final String FILTER_TOO_LATE_FROM_AND_END_DATE = "Du har valt två framtida datum. Vänligen välj ett tidigare från- och tilldatum.";
+    public static final String FILTER_WRONG_END_DATE = "Det finns ingen statistik efter %s. Visar statistik fram till senast möjliga "
+        + "datum.";
+    public static final String FILTER_TOO_EARLY_FROM_AND_END_DATE = "Det finns ingen statistik innan 2013-10. Vänligen välj ett senare "
+        + "från- och tilldatum.";
+    public static final String FILTER_TOO_LATE_FROM_AND_END_DATE = "Du har valt två framtida datum. Vänligen välj ett tidigare "
+        + "från- och tilldatum.";
 
-    public static final String FILTER_NO_DATA = "Det finns ingen statistik att visa för den angivna filtreringen. Överväg en mindre restriktiv filtrering.";
+    public static final String FILTER_NO_DATA = "Det finns ingen statistik att visa för den angivna filtreringen. Överväg en mindre "
+        + "restriktiv filtrering.";
     public static final String FILTER_COULD_NOT_APPLY = "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna.";
 
     public static final String REPORT_GROUP_OTHER = "Övriga";

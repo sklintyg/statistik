@@ -41,6 +41,10 @@ dependencies {
         exclude group: "com.helger", module: "ph-jaxb-pom"
     }
 
+    compile "org.hibernate:hibernate-core"
+    compile "org.hibernate:hibernate-hikaricp"
+    compile "org.hibernate:hibernate-entitymanager"
+
     compile "net.javacrumbs.shedlock:shedlock-spring:${shedlockSpringVersion}"
     compile "net.javacrumbs.shedlock:shedlock-provider-redis-spring:${shedlockSpringVersion}"
     compile "org.apache.httpcomponents:httpclient"
