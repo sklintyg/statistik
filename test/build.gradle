@@ -116,6 +116,7 @@ dependencies {
     fitnesse "org.springframework:spring-core"
     fitnesse "org.springframework:spring-context"
     fitnesse "org.springframework.data:spring-data-jpa"
+    fitnesse "ch.qos.logback:logback-classic"
     fitnesse "org.slf4j:slf4j-api"
     fitnesse "jakarta.ws.rs:jakarta.ws.rs-api"
 }
