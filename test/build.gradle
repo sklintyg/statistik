@@ -1,6 +1,6 @@
 apply plugin: 'groovy'
 apply plugin: 'se.inera.intyg.plugin.fitnesse'
-apply plugin: 'com.moowork.grunt'
+apply plugin: 'nebula.grunt'
 
 node {
     version = "${nodeJsVersion}"
@@ -48,6 +48,7 @@ task setupIntygForProtractor(dependsOn: [classes, pathingJar], type: JavaExec) {
     // classpath = sourceSets.main.runtimeClasspath
     classpath = files(
             "${projectDir}/build/classes/groovy/main",
+            "${projectDir}/build/classes/java/main",
             "${projectDir}/src/main/resources",
             "${projectDir}/build/resources/main",
             pathingJar.archiveFile)
@@ -64,7 +65,7 @@ task protractorTest(type: NodeTask, dependsOn: [npmInstall, setupIntygForProtrac
 
 fitnesse {
     port = 9125
-    mainClass = "fitnesseMain.FitNesseMain"
+    fitnesseMainClass = "fitnesseMain.FitNesseMain"
     root = "FitNesseRoot"
     workingDir = "src/test/fitnesse"
     wikiStartPage = "StatisticsTests"
@@ -104,25 +105,9 @@ dependencies {
     fitnesse ("org.fitnesse:fitnesse:${fitnesseVersion}") {
         exclude group: "org.slf4j", module: "slf4j-jdk14"
     }
-    // Exclude and import of non-BOM version of Hibernate due to
-    // bug in BOM-version 5.4.12.
-    fitnesse("org.hibernate:hibernate-core") {
-        version {
-            strictly "${hibernateVersion}"
-        }
-    }
-    fitnesse("org.hibernate:hibernate-hikaricp") {
-        version {
-            strictly "${hibernateVersion}"
-        }
-    }
-    fitnesse("org.hibernate:hibernate-entitymanager") {
-        version {
-            strictly "${hibernateVersion}"
-        }
-    }
 
     fitnesse "org.liquibase:liquibase-core"
+    fitnesse "org.codehaus.groovy:groovy-dateutil:${groovyAllVersion}"
     fitnesse "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
     fitnesse "org.codehaus.groovy.modules.http-builder:http-builder:${groovyHttpVersion}"
     fitnesse "org.apache.httpcomponents:httpmime"
@@ -131,6 +116,7 @@ dependencies {
     fitnesse "org.springframework:spring-core"
     fitnesse "org.springframework:spring-context"
     fitnesse "org.springframework.data:spring-data-jpa"
+    fitnesse "ch.qos.logback:logback-classic"
     fitnesse "org.slf4j:slf4j-api"
     fitnesse "jakarta.ws.rs:jakarta.ws.rs-api"
 }

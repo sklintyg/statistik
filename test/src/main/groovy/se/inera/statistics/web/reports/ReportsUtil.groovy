@@ -23,6 +23,7 @@ import groovy.json.JsonSlurper
 import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.HttpResponseException
 import groovyx.net.http.RESTClient
+import groovyx.net.http.RESTClientSuccessHandlerOverride
 import org.apache.http.entity.mime.MultipartEntityBuilder
 import se.inera.statistics.web.service.dto.FilterData
 
@@ -64,7 +65,7 @@ class ReportsUtil {
 
     private RESTClient createClient() {
         def baseUrl = System.getProperty("baseUrl") ?: "http://localhost:8050/"
-        def client = new RESTClient(baseUrl, JSON)
+        def client = new RESTClientSuccessHandlerOverride(baseUrl, JSON)
         client.ignoreSSLIssues()
 
         client.encoder[MediaType.MULTIPART_FORM_DATA] = { MultipartBody body ->

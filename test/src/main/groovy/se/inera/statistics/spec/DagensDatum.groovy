@@ -20,6 +20,8 @@ package se.inera.statistics.spec
 
 import se.inera.statistics.web.reports.ReportsUtil
 
+import java.text.SimpleDateFormat
+
 class DagensDatum {
 
     static Date currentDate = new Date(new ReportsUtil().getCurrentDateTime())
@@ -27,8 +29,9 @@ class DagensDatum {
     private ReportsUtil reportsUtil = new ReportsUtil()
 
     DagensDatum(String dateString) {
-        def date = Date.parse("yyyy-MM-dd", dateString)
-        reportsUtil.setCurrentDateTime(date.time)
+        def dateFormat = new SimpleDateFormat("yyyy-MM-dd")
+        def date = dateFormat.parse(dateString)
+        reportsUtil.setCurrentDateTime(date.getTime())
         currentDate = date
     }
 

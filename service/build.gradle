@@ -34,12 +34,16 @@ dependencies {
     compile "org.springframework.data:spring-data-jpa"
     compile "org.springframework:spring-orm"
     compile "org.springframework:spring-jms"
-    compile "com.h2database:h2:${h2Version}"
+    compile "com.h2database:h2"
     compile "org.liquibase:liquibase-core"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
     compile ("com.helger:ph-schematron:${schematronVersion}") {
         exclude group: "com.helger", module: "ph-jaxb-pom"
     }
+
+    compile "org.hibernate:hibernate-core"
+    compile "org.hibernate:hibernate-hikaricp"
+    compile "org.hibernate:hibernate-entitymanager"
 
     compile "net.javacrumbs.shedlock:shedlock-spring:${shedlockSpringVersion}"
     compile "net.javacrumbs.shedlock:shedlock-provider-redis-spring:${shedlockSpringVersion}"

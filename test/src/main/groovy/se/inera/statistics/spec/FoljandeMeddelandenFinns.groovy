@@ -55,7 +55,7 @@ class FoljandeMeddelandenFinns extends FoljandeFinns {
     }
 
     private String executeForXmlFormatGeneral(String filepath) {
-        def slurper = new XmlParser(false, true)
+        def slurper = new groovy.xml.XmlParser(false, true)
         String intygString = getClass().getResource(filepath).getText('UTF-8')
         def result = slurper.parseText(intygString)
         def meddelande = result.value()
