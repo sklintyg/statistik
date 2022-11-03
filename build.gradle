@@ -129,6 +129,18 @@ configure(subprojects.findAll { ['statistik-service', 'web'].contains(it.name) }
     }
 }
 
+gradle.taskGraph.whenReady {
+    def runningIntegrationTest = false
+    project('statistik-service') { runningIntegrationTest = gradle.taskGraph.getAllTasks().contains(integrationTest) }
+
+    if (runningIntegrationTest) {
+        project('statistik-service') { test.enabled(false) }
+        project('statistik-web') { test.enabled(false) }
+        project('hsa-integration') { test.enabled(false) }
+        project('anonymisering') { test.enabled(false) }
+    }
+}
+
 apply from: "checkPnr.gradle"
 
 task tagRelease(type: TagReleaseTask)
