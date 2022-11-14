@@ -266,7 +266,7 @@ var stMessages = {
     'login.alert-loginrequired.title': 'Inloggning krävs.',
     'login.alert-loginrequired.body': 'Du försöker nå en sida som kräver inloggning. Vänligen logga in för att komma vidare.',
     'login.alert-danger': 'Ajdå!',
-    'login.btn.siths-login': 'Logga in med SITHS-kort',
+    'login.btn.siths-login': 'Logga in med SITHS',
 
     'selectvg.header': 'Välj vårdgivare',
     'login.instruktioner-for-valj-vg': 'Du har behörighet till vårdenheter som tillhör flera olika vårdgivare. Välj den vårdgivare som du vill se statistik för. Observera att du bara kan se verksamhetsstatistik för de vårdenheter som du har behörighet till inom vald vårdgivare.',
