@@ -7,7 +7,7 @@ plugins {
 }
 
 ext {
-    infraVersion = System.properties['infraVersion'] ?: '3.18.0-SNAPSHOT'
+    infraVersion = System.properties['infraVersion'] ?: '3.19.0-SNAPSHOT'
     refDataVersion = System.properties['refDataVersion'] ?: '1.0-SNAPSHOT'
 
     intygSchematronVersion = "1.0.57"
@@ -19,7 +19,7 @@ ext {
     commonsIoVersion = "2.11.0"
     commonsLoggingVersion = "1.2"
     commonsTextVersion = "1.10.0"
-    cxfVersion = '3.5.3'
+    cxfVersion = '3.5.5'
     fitnesseVersion = "20220815"
     gatlingVersion = "3.8.4"
     geronimoVersion = "1.1.1"
@@ -42,7 +42,7 @@ ext {
     nodeJsVersion = "12.22.12"
     npmVersion = "6.14.16"
 
-    springbootMavenBomVersion = "2.7.3"
+    springbootMavenBomVersion = "2.7.6"
 }
 
 allprojects {
