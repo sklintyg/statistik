@@ -25,7 +25,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.Cache;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -46,6 +49,10 @@ public final class CalcCoordinator {
     private AtomicInteger waits = new AtomicInteger();
     private volatile boolean denyAll;
 
+    @Autowired
+    @Qualifier("taskCoordinatorRedisCache")
+    private Cache taskCoordinatorCache;
+
     /**
      * Allows maxConcurrentTasks (concurrent tasks), and maxWaitingTasks (waiting tasks).
      *
@@ -60,7 +67,7 @@ public final class CalcCoordinator {
             LOG.info("No available executors, denyAll active");
             throw new CalcException("No available executors, denyAll active");
         }
-
+        taskCoordinatorCache.put("hej", "hej");
         for (int n = 0; n < maxWait; ) {
             try {
                 if (tasks.incrementAndGet() < maxConcurrentTasks) {
