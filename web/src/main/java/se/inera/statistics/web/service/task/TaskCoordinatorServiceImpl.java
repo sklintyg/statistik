@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
 import org.springframework.stereotype.Component;
-import se.inera.statistics.service.timer.ThreadLocalTimer;
+import se.inera.statistics.service.util.ThreadLocalTimerUtil;
 
 @Component("taskCoordinatorServiceImpl")
 public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
@@ -67,7 +67,7 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
         }
         cachedSessionIds.add(sessionId);
         updateCachedSessions(cachedSessionIds);
-        ThreadLocalTimer.set();
+        ThreadLocalTimerUtil.setValue(sessionId);
         LOG.debug("Request started for {} and was added to cache. Cache currently holding {} slots. Timestamp when request started: {} ms",
             sessionId, cachedSessionIds.size(), LocalDateTime.now());
         return TaskCoordinatorResponse.ACCEPTED;
@@ -81,9 +81,9 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
         cachedSessionIds.remove(sessionId);
         updateCachedSessions(cachedSessionIds);
         long endTime = System.currentTimeMillis();
-        long startTime = ThreadLocalTimer.get();
-        ThreadLocalTimer.remove();
+        long startTime = ThreadLocalTimerUtil.getValue(sessionId);
         LOG.debug("Request completed for {}. Total time taken for request to finish: {} ms.", sessionId, (endTime - startTime));
+        ThreadLocalTimerUtil.removeValue(sessionId);
     }
 
     private void updateCachedSessions(List<String> cachedSessionIds) {

@@ -17,24 +17,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package se.inera.statistics.service.timer;
+package se.inera.statistics.service.util;
 
-import org.springframework.stereotype.Component;
+import java.util.HashMap;
+import java.util.Map;
 
-@Component
-public class ThreadLocalTimer {
+public class ThreadLocalTimerUtil {
 
-    private static final ThreadLocal<Long> REQUEST_TIMER = new ThreadLocal<>();
+    private static final ThreadLocal<Map<String, Long>> THREAD_LOCAL = ThreadLocal.withInitial(HashMap::new);
 
-    public static Long get() {
-        return REQUEST_TIMER.get();
+    public static void setValue(String key) {
+        THREAD_LOCAL.get().put(key, System.currentTimeMillis());
     }
 
-    public static void set() {
-        REQUEST_TIMER.set(System.currentTimeMillis());
+    public static long getValue(String key) {
+        return THREAD_LOCAL.get().get(key);
     }
 
-    public static void remove() {
-        REQUEST_TIMER.remove();
+    public static void removeValue(String key) {
+        THREAD_LOCAL.get().remove(key);
     }
 }

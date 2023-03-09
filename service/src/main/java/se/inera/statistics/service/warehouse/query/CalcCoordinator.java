@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import se.inera.statistics.service.timer.ThreadLocalTimer;
+import se.inera.statistics.service.util.ThreadLocalTimerUtil;
 
 @Component
 public final class CalcCoordinator {
@@ -65,7 +65,7 @@ public final class CalcCoordinator {
         for (int n = 0; n < maxWait; ) {
             try {
                 if (tasks.incrementAndGet() < maxConcurrentTasks) {
-                    final var startTimeMillis = ThreadLocalTimer.get();
+                    final var startTimeMillis = ThreadLocalTimerUtil.getValue(sessionId);
                     final var currentTimeMillis = System.currentTimeMillis();
                     LOG.debug("Executor starting task for sessionId: {}. Wait time for executor was: {} ms", sessionId,
                         (currentTimeMillis - startTimeMillis));
