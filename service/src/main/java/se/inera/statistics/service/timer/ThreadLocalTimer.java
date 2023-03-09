@@ -17,8 +17,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package se.inera.statistics.web.task;
+package se.inera.statistics.service.timer;
 
-public enum TaskCoordinatorResponse {
-    ACCEPTED, DECLINED
+import org.springframework.stereotype.Component;
+
+@Component
+public class ThreadLocalTimer {
+
+    private static final ThreadLocal<Long> REQUEST_TIMER = new ThreadLocal<>();
+
+    public static Long get() {
+        return REQUEST_TIMER.get();
+    }
+
+    public static void set() {
+        REQUEST_TIMER.set(System.currentTimeMillis());
+    }
+
+    public static void remove() {
+        REQUEST_TIMER.remove();
+    }
 }

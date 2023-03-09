@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import se.inera.statistics.service.timer.ThreadLocalTimer;
 
 @Component
 public final class CalcCoordinator {
@@ -55,7 +56,7 @@ public final class CalcCoordinator {
      * @throws CalcException when no ticket is available.
      * @throws Exception on task errors.
      */
-    public <T> T submit(Callable<T> task) throws Exception {
+    public <T> T submit(Callable<T> task, String sessionId) throws Exception {
         if (denyAll) {
             LOG.info("No available executors, denyAll active");
             throw new CalcException("No available executors, denyAll active");
@@ -64,6 +65,10 @@ public final class CalcCoordinator {
         for (int n = 0; n < maxWait; ) {
             try {
                 if (tasks.incrementAndGet() < maxConcurrentTasks) {
+                    final var startTimeMillis = ThreadLocalTimer.get();
+                    final var currentTimeMillis = System.currentTimeMillis();
+                    LOG.debug("Executor starting task for sessionId: {}. Wait time for executor was: {} ms", sessionId,
+                        (currentTimeMillis - startTimeMillis));
                     return task.call();
                 }
             } finally {

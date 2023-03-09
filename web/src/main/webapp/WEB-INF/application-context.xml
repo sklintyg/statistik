@@ -55,7 +55,7 @@
         <bean id="protectedChartDataService" class="se.inera.statistics.web.api.ProtectedChartDataService"/>
         <bean id="protectedRegionService" class="se.inera.statistics.web.api.ProtectedRegionService"/>
         <bean class="se.inera.statistics.web.service.ResponseHandler"/>
-        <bean id="taskCoordinatorServiceImpl" class="se.inera.statistics.web.task.TaskCoordinatorServiceImpl"/>
+        <bean id="taskCoordinatorServiceImpl" class="se.inera.statistics.web.service.task.TaskCoordinatorServiceImpl"/>
         <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
         <bean id="loginInfoService" class="se.inera.statistics.web.api.LoginInfoService"/>
         <bean id="loggingService" class="se.inera.statistics.web.api.LoggingService"/>

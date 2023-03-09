@@ -18,6 +18,8 @@
  */
 package se.inera.statistics.web.service;
 
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import org.apache.cxf.common.util.ClassHelper;
@@ -33,8 +35,8 @@ import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.service.warehouse.query.CalcException;
 import se.inera.statistics.web.api.ProtectedChartDataService;
 import se.inera.statistics.web.api.ProtectedRegionService;
-import se.inera.statistics.web.task.TaskCoordinatorResponse;
-import se.inera.statistics.web.task.TaskCoordinatorService;
+import se.inera.statistics.web.service.task.TaskCoordinatorResponse;
+import se.inera.statistics.web.service.task.TaskCoordinatorService;
 
 public class CalcCoordinatorInvoker extends JAXRSInvoker {
 
@@ -61,7 +63,7 @@ public class CalcCoordinatorInvoker extends JAXRSInvoker {
             return new MessageContentsList(Response.status(Status.TOO_MANY_REQUESTS).build());
         }
         try {
-            return calcCoordinator.submit(() -> super.invoke(exchange, requestParams, resourceObject));
+            return calcCoordinator.submit(() -> super.invoke(exchange, requestParams, resourceObject), getSessionId(requestParams));
         } catch (Fault f) {
             if (f.getCause() instanceof AccessDeniedException) {
                 throw (AccessDeniedException) f.getCause();
@@ -77,5 +79,12 @@ public class CalcCoordinatorInvoker extends JAXRSInvoker {
         } finally {
             taskCoordinatorService.clearRequest(requestParams);
         }
+    }
+
+    private String getSessionId(Object request) {
+        final var requestParams1 = (List) request;
+        final var httpServletRequest = (HttpServletRequest) requestParams1.get(0);
+        final var session = httpServletRequest.getSession();
+        return session.getId();
     }
 }

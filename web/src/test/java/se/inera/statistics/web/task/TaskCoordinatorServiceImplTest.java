@@ -38,6 +38,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
+import se.inera.statistics.web.service.task.TaskCoordinatorResponse;
+import se.inera.statistics.web.service.task.TaskCoordinatorServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 class TaskCoordinatorServiceImplTest {

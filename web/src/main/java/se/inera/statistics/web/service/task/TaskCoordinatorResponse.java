@@ -17,11 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package se.inera.statistics.web.task;
+package se.inera.statistics.web.service.task;
 
-public interface TaskCoordinatorService {
-
-    TaskCoordinatorResponse request(Object request);
-
-    void clearRequest(Object request);
+public enum TaskCoordinatorResponse {
+    ACCEPTED, DECLINED
 }
