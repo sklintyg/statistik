@@ -47,6 +47,7 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
 
     @Override
     public TaskCoordinatorResponse request(Object request) {
+        // Behöver den här checken göras? Kan jag lita på att mitt testadata ser likadant ut i production?
         if (!hasSession(request)) {
             return TaskCoordinatorResponse.ACCEPTED;
         }

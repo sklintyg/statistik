@@ -113,6 +113,7 @@ dependencies {
     compile "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api"
 
     compile "org.liquibase:liquibase-core"
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
 
     compileOnly "javax.servlet:javax.servlet-api"
 
