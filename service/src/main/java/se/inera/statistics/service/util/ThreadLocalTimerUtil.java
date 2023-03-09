@@ -24,7 +24,10 @@ public class ThreadLocalTimerUtil {
     private static final ThreadLocal<Long> THREAD_LOCAL = new ThreadLocal<>();
 
     public static void startTimer() {
-        THREAD_LOCAL.set(System.currentTimeMillis());
+        Thread thread = new Thread(() -> {
+            THREAD_LOCAL.set(System.currentTimeMillis());
+        });
+        thread.start();
     }
 
     public static long getTimer() {
