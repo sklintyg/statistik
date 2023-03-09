@@ -20,6 +20,7 @@
 package se.inera.statistics.web.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -69,95 +70,165 @@ class TaskCoordinatorServiceImplTest {
     }
 
     @Nested
-    class UserHasNoCurrentRequestStoredInRedis {
+    class Request {
 
-        @BeforeEach
-        void setUp() {
-            request = new ArrayList<String>();
+        @Nested
+        class UserHasNoCurrentRequestStoredInRedis {
+
+            @BeforeEach
+            void setUp() {
+                request = new ArrayList<String>();
+            }
+
+            @Test
+            void shouldReturnTaskCoordinatorAccepted() {
+                request.add(httpServletRequest);
+                when(httpServletRequest.getSession()).thenReturn(session);
+                when(session.getId()).thenReturn(SESSION_ID);
+                final var response = taskCoordinatorService.request(request);
+                assertEquals(TaskCoordinatorResponse.ACCEPTED, response);
+            }
+
+            //Possibly redundant test
+            @Test
+            void shouldReturnTaskCoordinatorAcceptedIfNoSessionWasFound() {
+                String notHttpServletRequest = "notHttpServletRequest";
+                request.add(notHttpServletRequest);
+                final var response = taskCoordinatorService.request(request);
+                assertEquals(TaskCoordinatorResponse.ACCEPTED, response);
+            }
         }
 
-        @Test
-        void shouldReturnTaskCoordinatorAccepted() {
-            request.add(httpServletRequest);
-            when(httpServletRequest.getSession()).thenReturn(session);
-            when(session.getId()).thenReturn(SESSION_ID);
-            final var response = taskCoordinatorService.request(request);
-            assertEquals(TaskCoordinatorResponse.ACCEPTED, response);
+        @Nested
+        class UserHasCurrentlyOngoingRequestsStoredInRedis {
+
+            @BeforeEach
+            void setUp() {
+                when(httpServletRequest.getSession()).thenReturn(session);
+                when(session.getId()).thenReturn(SESSION_ID);
+            }
+
+            @Test
+            void shouldReturnTaskCoordinatorAcceptedIfOnlyOneRequestIsFound() throws JsonProcessingException {
+                taskCoordinatorCache.put(REDIS_CACHE_KEY,
+                    objectMapper.writeValueAsString(new ArrayList<>(Collections.singleton(SESSION_ID))));
+                final var response = taskCoordinatorService.request(request);
+                assertEquals(TaskCoordinatorResponse.ACCEPTED, response);
+            }
+
+            @Test
+            void shouldReturnTaskCoordinatorDeniedIfTwoRequestIsFound() throws JsonProcessingException {
+                final var sessionIdsCurrentlyStoredInRedis = new ArrayList<>(Arrays.asList(SESSION_ID, SESSION_ID));
+                taskCoordinatorCache.put(REDIS_CACHE_KEY, objectMapper.writeValueAsString(sessionIdsCurrentlyStoredInRedis));
+                final var response = taskCoordinatorService.request(request);
+                assertEquals(TaskCoordinatorResponse.DECLINED, response);
+            }
         }
 
-        //Possibly redundant test
-        @Test
-        void shouldReturnTaskCoordinatorAcceptedIfNoSessionWasFound() {
-            String notHttpServletRequest = "notHttpServletRequest";
-            request.add(notHttpServletRequest);
-            final var response = taskCoordinatorService.request(request);
-            assertEquals(TaskCoordinatorResponse.ACCEPTED, response);
+        @Nested
+        class MultipleUsersHasyOngoingRequestsStoredInRedis {
+
+            @BeforeEach
+            void setUp() {
+                when(httpServletRequest.getSession()).thenReturn(session);
+                when(session.getId()).thenReturn(SESSION_ID);
+            }
+
+            private static final String ANOTHER_SESSION_ID = "anotherSessionId";
+
+            @Test
+            void shouldReturnTaskCoordinatorAcceptedIfOneRequestIsFoundForUser() throws JsonProcessingException {
+                final var sessionIdsCurrentlyStoredInRedis = new ArrayList<>(Arrays.asList(SESSION_ID, ANOTHER_SESSION_ID));
+                taskCoordinatorCache.put(REDIS_CACHE_KEY, objectMapper.writeValueAsString(sessionIdsCurrentlyStoredInRedis));
+
+                final var response = taskCoordinatorService.request(request);
+                assertEquals(TaskCoordinatorResponse.ACCEPTED, response);
+            }
+
+            @Test
+            void shouldReturnTaskCoordinatorAcceptedIfSessionIdsDoesNotMatchWithUser() throws JsonProcessingException {
+                final var sessionIdsCurrentlyStoredInRedis = new ArrayList<>(
+                    Arrays.asList(SESSION_ID, ANOTHER_SESSION_ID, ANOTHER_SESSION_ID));
+
+                taskCoordinatorCache.put(REDIS_CACHE_KEY, objectMapper.writeValueAsString(sessionIdsCurrentlyStoredInRedis));
+
+                final var response = taskCoordinatorService.request(request);
+                assertEquals(TaskCoordinatorResponse.ACCEPTED, response);
+            }
+
+            @Test
+            void shouldReturnTaskCoordinatorDeniedIfSessionIdsMatchWithUser() throws JsonProcessingException {
+                final var sessionIdsCurrentlyStoredInRedis = new ArrayList<>(Arrays.asList(SESSION_ID, SESSION_ID, ANOTHER_SESSION_ID));
+
+                taskCoordinatorCache.put(REDIS_CACHE_KEY, objectMapper.writeValueAsString(sessionIdsCurrentlyStoredInRedis));
+
+                final var response = taskCoordinatorService.request(request);
+                assertEquals(TaskCoordinatorResponse.DECLINED, response);
+            }
         }
     }
 
     @Nested
-    class UserHasCurrentlyOngoingRequestsStoredInRedis {
+    class ClearRequests {
+
+        private static final String SESSION_ID_1 = "sessionId 1";
+        private static final String SESSION_ID_2 = "sessionId 2";
+        private static final String SESSION_ID_3 = "sessionId 3";
 
         @BeforeEach
         void setUp() {
             when(httpServletRequest.getSession()).thenReturn(session);
-            when(session.getId()).thenReturn(SESSION_ID);
+            when(session.getId()).thenReturn(SESSION_ID_1);
         }
 
         @Test
-        void shouldReturnTaskCoordinatorAcceptedIfOnlyOneRequestIsFound() throws JsonProcessingException {
-            taskCoordinatorCache.put(REDIS_CACHE_KEY, objectMapper.writeValueAsString(new ArrayList<>(Collections.singleton(SESSION_ID))));
-            final var response = taskCoordinatorService.request(request);
-            assertEquals(TaskCoordinatorResponse.ACCEPTED, response);
+        void shouldClearSessionIdFromCache() throws JsonProcessingException {
+            taskCoordinatorCache.put(REDIS_CACHE_KEY, objectMapper.writeValueAsString(Collections.singleton(SESSION_ID_1)));
+            taskCoordinatorService.clearRequest(request);
+
+            final var actualResult = (List<String>) objectMapper.readValue(taskCoordinatorCache.get(REDIS_CACHE_KEY, String.class),
+                objectMapper.getTypeFactory().constructCollectionType(List.class, String.class));
+
+            assertEquals(0, actualResult.size());
         }
 
         @Test
-        void shouldReturnTaskCoordinatorDeniedIfTwoRequestIsFound() throws JsonProcessingException {
-            final var sessionIdsCurrentlyStoredInRedis = new ArrayList<>(Arrays.asList(SESSION_ID, SESSION_ID));
+        void shouldClearSessionIdFromCacheIfMultipleRequestsAreStored() throws JsonProcessingException {
+            final var expectedResult = new ArrayList<>(Arrays.asList(SESSION_ID_2, SESSION_ID_3));
+
+            final var sessionIdsCurrentlyStoredInRedis = new ArrayList<>(Arrays.asList(SESSION_ID_1, SESSION_ID_2, SESSION_ID_3));
             taskCoordinatorCache.put(REDIS_CACHE_KEY, objectMapper.writeValueAsString(sessionIdsCurrentlyStoredInRedis));
-            final var response = taskCoordinatorService.request(request);
-            assertEquals(TaskCoordinatorResponse.DECLINED, response);
-        }
-    }
+            taskCoordinatorService.clearRequest(request);
 
-    @Nested
-    class MultipleUsersHasyOngoingRequestsStoredInRedis {
+            final var actualResult = (List<String>) objectMapper.readValue(taskCoordinatorCache.get(REDIS_CACHE_KEY, String.class),
+                objectMapper.getTypeFactory().constructCollectionType(List.class, String.class));
 
-        @BeforeEach
-        void setUp() {
-            when(httpServletRequest.getSession()).thenReturn(session);
-            when(session.getId()).thenReturn(SESSION_ID);
-        }
-
-        private static final String ANOTHER_SESSION_ID = "anotherSessionId";
-
-        @Test
-        void shouldReturnTaskCoordinatorAcceptedIfOneRequestIsFoundForUser() throws JsonProcessingException {
-            final var sessionIdsCurrentlyStoredInRedis = new ArrayList<>(Arrays.asList(SESSION_ID, ANOTHER_SESSION_ID));
-            taskCoordinatorCache.put(REDIS_CACHE_KEY, objectMapper.writeValueAsString(sessionIdsCurrentlyStoredInRedis));
-
-            final var response = taskCoordinatorService.request(request);
-            assertEquals(TaskCoordinatorResponse.ACCEPTED, response);
+            assertIterableEquals(expectedResult, actualResult);
         }
 
         @Test
-        void shouldReturnTaskCoordinatorAcceptedIfSessionIdsDoesNotMatchWithUser() throws JsonProcessingException {
-            final var sessionIdsCurrentlyStoredInRedis = new ArrayList<>(Arrays.asList(SESSION_ID, ANOTHER_SESSION_ID, ANOTHER_SESSION_ID));
+        void shouldClearFirstAddedSessionIdFromCacheIfMultipleRequestsAreStored() throws JsonProcessingException {
+            final var expectedResult = new ArrayList<>(Arrays.asList(SESSION_ID_2, SESSION_ID_3, SESSION_ID_1));
 
+            final var sessionIdsCurrentlyStoredInRedis = new ArrayList<>(
+                Arrays.asList(SESSION_ID_1, SESSION_ID_2, SESSION_ID_3, SESSION_ID_1));
             taskCoordinatorCache.put(REDIS_CACHE_KEY, objectMapper.writeValueAsString(sessionIdsCurrentlyStoredInRedis));
+            taskCoordinatorService.clearRequest(request);
 
-            final var response = taskCoordinatorService.request(request);
-            assertEquals(TaskCoordinatorResponse.ACCEPTED, response);
+            final var actualResult = (List<String>) objectMapper.readValue(taskCoordinatorCache.get(REDIS_CACHE_KEY, String.class),
+                objectMapper.getTypeFactory().constructCollectionType(List.class, String.class));
+
+            assertIterableEquals(expectedResult, actualResult);
         }
 
         @Test
-        void shouldReturnTaskCoordinatorDeniedIfSessionIdsMatchWithUser() throws JsonProcessingException {
-            final var sessionIdsCurrentlyStoredInRedis = new ArrayList<>(Arrays.asList(SESSION_ID, SESSION_ID, ANOTHER_SESSION_ID));
+        void shouldHandleScenarioWhereSessionIdIsNotFoundInCache() throws JsonProcessingException {
+            taskCoordinatorService.clearRequest(request);
 
-            taskCoordinatorCache.put(REDIS_CACHE_KEY, objectMapper.writeValueAsString(sessionIdsCurrentlyStoredInRedis));
+            final var actualResult = (List<String>) objectMapper.readValue(taskCoordinatorCache.get(REDIS_CACHE_KEY, String.class),
+                objectMapper.getTypeFactory().constructCollectionType(List.class, String.class));
 
-            final var response = taskCoordinatorService.request(request);
-            assertEquals(TaskCoordinatorResponse.DECLINED, response);
+            assertEquals(0, actualResult.size());
         }
     }
 }

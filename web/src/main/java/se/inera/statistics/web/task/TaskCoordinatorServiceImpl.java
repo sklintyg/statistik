@@ -52,33 +52,38 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
             return TaskCoordinatorResponse.ACCEPTED;
         }
         final var sessionId = getSessionId(request);
-        final var cachedSessionIds = deserialize(
-            taskCoordinatorCache.get(REDIS_CACHE_KEY, () -> objectMapper.writeValueAsString(new ArrayList<String>())));
+        final var cachedSessionIds = getCachedSessionIds();
 
         final var numberOfRequestFromSession = getNumberOfRequestFromSession(sessionId, cachedSessionIds);
 
         if (numberOfRequestFromSession >= SIMULTANEOUS_CALLS_ALLOWED) {
             return TaskCoordinatorResponse.DECLINED;
         }
-
-        addSessionIdToRedisCache(sessionId, cachedSessionIds);
+        cachedSessionIds.add(sessionId);
+        updateCachedSessions(cachedSessionIds);
         return TaskCoordinatorResponse.ACCEPTED;
     }
 
+
     @Override
     public void clearRequest(Object request) {
-        if (hasSession(request)) {
-            System.out.println("session active");
-        }
+        final var sessionId = getSessionId(request);
+        final var cachedSessionIds = getCachedSessionIds();
+        cachedSessionIds.remove(sessionId);
+        updateCachedSessions(cachedSessionIds);
     }
 
-    private void addSessionIdToRedisCache(String sessionId, List<String> cachedSessionIds) {
-        cachedSessionIds.add(sessionId);
+    private void updateCachedSessions(List<String> cachedSessionIds) {
         try {
             taskCoordinatorCache.put(REDIS_CACHE_KEY, objectMapper.writeValueAsString(cachedSessionIds));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private List<String> getCachedSessionIds() {
+        return deserialize(
+            taskCoordinatorCache.get(REDIS_CACHE_KEY, () -> objectMapper.writeValueAsString(new ArrayList<String>())));
     }
 
     private int getNumberOfRequestFromSession(String sessionId, List<String> cachedSessionIds) {
