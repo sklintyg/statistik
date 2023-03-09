@@ -38,6 +38,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
+import se.inera.statistics.service.util.ThreadLocalTimerUtil;
 import se.inera.statistics.web.service.task.TaskCoordinatorResponse;
 import se.inera.statistics.web.service.task.TaskCoordinatorServiceImpl;
 
@@ -181,6 +182,7 @@ class TaskCoordinatorServiceImplTest {
         void setUp() {
             when(httpServletRequest.getSession()).thenReturn(session);
             when(session.getId()).thenReturn(SESSION_ID_1);
+            ThreadLocalTimerUtil.startTimer(SESSION_ID_1);
         }
 
         @Test

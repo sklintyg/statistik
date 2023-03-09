@@ -26,15 +26,15 @@ public class ThreadLocalTimerUtil {
 
     private static final ThreadLocal<Map<String, Long>> THREAD_LOCAL = ThreadLocal.withInitial(HashMap::new);
 
-    public static void setValue(String key) {
+    public static void startTimer(String key) {
         THREAD_LOCAL.get().put(key, System.currentTimeMillis());
     }
 
-    public static long getValue(String key) {
+    public static long getTimer(String key) {
         return THREAD_LOCAL.get().get(key);
     }
 
-    public static void removeValue(String key) {
+    public static void removeTimer(String key) {
         THREAD_LOCAL.get().remove(key);
     }
 }

@@ -65,7 +65,7 @@ public final class CalcCoordinator {
         for (int n = 0; n < maxWait; ) {
             try {
                 if (tasks.incrementAndGet() < maxConcurrentTasks) {
-                    final var startTimeMillis = ThreadLocalTimerUtil.getValue(sessionId);
+                    final var startTimeMillis = ThreadLocalTimerUtil.getTimer(sessionId);
                     final var currentTimeMillis = System.currentTimeMillis();
                     LOG.debug("Executor starting task for sessionId: {}. Wait time for executor was: {} ms", sessionId,
                         (currentTimeMillis - startTimeMillis));

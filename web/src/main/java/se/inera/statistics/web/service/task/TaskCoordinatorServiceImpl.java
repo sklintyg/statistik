@@ -55,7 +55,6 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
         }
         final var sessionId = getSessionId(request);
         final var cachedSessionIds = getCachedSessionIds();
-
         final var numberOfRequestFromSession = getNumberOfRequestFromSession(sessionId, cachedSessionIds);
 
         if (numberOfRequestFromSession >= SIMULTANEOUS_CALLS_ALLOWED) {
@@ -67,7 +66,7 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
         }
         cachedSessionIds.add(sessionId);
         updateCachedSessions(cachedSessionIds);
-        ThreadLocalTimerUtil.setValue(sessionId);
+        ThreadLocalTimerUtil.startTimer(sessionId);
         LOG.debug("Request started for {} and was added to cache. Cache currently holding {} slots. Timestamp when request started: {} ms",
             sessionId, cachedSessionIds.size(), LocalDateTime.now());
         return TaskCoordinatorResponse.ACCEPTED;
@@ -77,13 +76,21 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
     @Override
     public void clearRequest(Object request) {
         final var sessionId = getSessionId(request);
+        clearRequestFromCache(sessionId);
+        LOG.debug("Request completed for {}. Total time taken for request to finish: {} ms.", sessionId, timeElapsed(sessionId));
+        ThreadLocalTimerUtil.removeTimer(sessionId);
+    }
+
+    private long timeElapsed(String sessionId) {
+        long endTime = System.currentTimeMillis();
+        long startTime = ThreadLocalTimerUtil.getTimer(sessionId);
+        return endTime - startTime;
+    }
+
+    private void clearRequestFromCache(String sessionId) {
         final var cachedSessionIds = getCachedSessionIds();
         cachedSessionIds.remove(sessionId);
         updateCachedSessions(cachedSessionIds);
-        long endTime = System.currentTimeMillis();
-        long startTime = ThreadLocalTimerUtil.getValue(sessionId);
-        LOG.debug("Request completed for {}. Total time taken for request to finish: {} ms.", sessionId, (endTime - startTime));
-        ThreadLocalTimerUtil.removeValue(sessionId);
     }
 
     private void updateCachedSessions(List<String> cachedSessionIds) {
