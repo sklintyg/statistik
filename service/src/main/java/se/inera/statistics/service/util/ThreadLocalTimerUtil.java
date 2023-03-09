@@ -19,22 +19,19 @@
 
 package se.inera.statistics.service.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class ThreadLocalTimerUtil {
 
-    private static final ThreadLocal<Map<String, Long>> THREAD_LOCAL = ThreadLocal.withInitial(HashMap::new);
+    private static final ThreadLocal<Long> THREAD_LOCAL = new ThreadLocal<>();
 
-    public static void startTimer(String key) {
-        THREAD_LOCAL.get().put(key, System.currentTimeMillis());
+    public static void startTimer() {
+        THREAD_LOCAL.set(System.currentTimeMillis());
     }
 
-    public static long getTimer(String key) {
-        return THREAD_LOCAL.get().get(key);
+    public static long getTimer() {
+        return THREAD_LOCAL.get();
     }
 
-    public static void removeTimer(String key) {
-        THREAD_LOCAL.get().remove(key);
+    public static void removeTimer() {
+        THREAD_LOCAL.remove();
     }
 }

@@ -66,7 +66,7 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
         }
         cachedSessionIds.add(sessionId);
         updateCachedSessions(cachedSessionIds);
-        ThreadLocalTimerUtil.startTimer(sessionId);
+        ThreadLocalTimerUtil.startTimer();
         LOG.debug("Request started for {} and was added to cache. Cache currently holding {} slots. Timestamp when request started: {} ms",
             sessionId, cachedSessionIds.size(), LocalDateTime.now());
         return TaskCoordinatorResponse.ACCEPTED;
@@ -78,12 +78,12 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
         final var sessionId = getSessionId(request);
         clearRequestFromCache(sessionId);
         LOG.debug("Request completed for {}. Total time taken for request to finish: {} ms.", sessionId, timeElapsed(sessionId));
-        ThreadLocalTimerUtil.removeTimer(sessionId);
+        ThreadLocalTimerUtil.removeTimer();
     }
 
     private long timeElapsed(String sessionId) {
         long endTime = System.currentTimeMillis();
-        long startTime = ThreadLocalTimerUtil.getTimer(sessionId);
+        long startTime = ThreadLocalTimerUtil.getTimer();
         return endTime - startTime;
     }
 
@@ -116,6 +116,7 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
         final var requestParams1 = (List) request;
         final var httpServletRequest = (HttpServletRequest) requestParams1.get(0);
         final var session = httpServletRequest.getSession();
+        System.out.println(session.getCreationTime());
         return session.getId();
     }
 

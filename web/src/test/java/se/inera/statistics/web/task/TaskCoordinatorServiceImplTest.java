@@ -182,7 +182,7 @@ class TaskCoordinatorServiceImplTest {
         void setUp() {
             when(httpServletRequest.getSession()).thenReturn(session);
             when(session.getId()).thenReturn(SESSION_ID_1);
-            ThreadLocalTimerUtil.startTimer(SESSION_ID_1);
+            ThreadLocalTimerUtil.startTimer();
         }
 
         @Test
