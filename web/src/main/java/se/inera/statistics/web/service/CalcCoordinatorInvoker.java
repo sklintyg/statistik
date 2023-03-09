@@ -19,6 +19,7 @@
 package se.inera.statistics.web.service;
 
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import org.apache.cxf.common.util.ClassHelper;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.jaxrs.JAXRSInvoker;
@@ -26,25 +27,38 @@ import org.apache.cxf.message.Exchange;
 import org.apache.cxf.message.MessageContentsList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.AccessDeniedException;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.service.warehouse.query.CalcException;
 import se.inera.statistics.web.api.ProtectedChartDataService;
 import se.inera.statistics.web.api.ProtectedRegionService;
+import se.inera.statistics.web.task.TaskCoordinatorResponse;
+import se.inera.statistics.web.task.TaskCoordinatorService;
 
 public class CalcCoordinatorInvoker extends JAXRSInvoker {
 
     private static final Logger LOG = LoggerFactory.getLogger(CalcCoordinatorInvoker.class);
 
-    @Autowired
-    CalcCoordinator calcCoordinator;
+
+    private final CalcCoordinator calcCoordinator;
+
+    private final TaskCoordinatorService taskCoordinatorService;
+
+    public CalcCoordinatorInvoker(CalcCoordinator calcCoordinator,
+        @Qualifier(value = "taskCoordinatorServiceImpl") TaskCoordinatorService taskCoordinatorService) {
+        this.calcCoordinator = calcCoordinator;
+        this.taskCoordinatorService = taskCoordinatorService;
+    }
 
     @Override
     public Object invoke(Exchange exchange, Object requestParams, Object resourceObject) {
         Class<?> realClass = ClassHelper.getRealClass(resourceObject);
         if (realClass != ProtectedChartDataService.class && realClass != ProtectedRegionService.class) {
             return super.invoke(exchange, requestParams, resourceObject);
+        }
+        if (taskCoordinatorService.request(requestParams).equals(TaskCoordinatorResponse.DECLINED)) {
+            return new MessageContentsList(Response.status(Status.TOO_MANY_REQUESTS).build());
         }
         try {
             return calcCoordinator.submit(() -> super.invoke(exchange, requestParams, resourceObject));
@@ -60,6 +74,8 @@ public class CalcCoordinatorInvoker extends JAXRSInvoker {
                 LOG.error("Unexpected error", e);
             }
             return new MessageContentsList(Response.status(Response.Status.SERVICE_UNAVAILABLE).build());
+        } finally {
+            taskCoordinatorService.clearRequest(requestParams);
         }
     }
 }

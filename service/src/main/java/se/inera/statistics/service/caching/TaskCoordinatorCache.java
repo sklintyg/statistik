@@ -35,9 +35,8 @@ public class TaskCoordinatorCache {
     private String appName;
     @Value("${task.cache.expiry}")
     private String cacheExpiry;
-
     private final RedisCacheOptionsSetter redisCacheOptionsSetter;
-
+    
     public TaskCoordinatorCache(RedisCacheOptionsSetter redisCacheOptionsSetter) {
         this.redisCacheOptionsSetter = redisCacheOptionsSetter;
     }
