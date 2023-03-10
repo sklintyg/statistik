@@ -74,7 +74,7 @@ public final class CalcCoordinator {
             n += await();
         }
 
-        LOG.warn("No available executors, max wait time exceeded. Max wait time currently set to: {}.", maxWait);
+        LOG.warn("No available executors, max wait time exceeded. Max wait time currently set to: {} seconds.", maxWait / TO_SECONDS);
         throw new CalcException("Max wait time exceeded");
     }
 
