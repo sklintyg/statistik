@@ -21,23 +21,16 @@ package se.inera.statistics.web.service.task;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
 import org.springframework.stereotype.Component;
-import se.inera.statistics.service.util.ThreadLocalTimerUtil;
 
 @Component("taskCoordinatorServiceImpl")
 public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
 
     private static final Logger LOG = LoggerFactory.getLogger(TaskCoordinatorServiceImpl.class);
-    private static final String REDIS_CACHE_KEY = "CURRENT_TASKS";
     private static final int SIMULTANEOUS_CALLS_ALLOWED = 2;
     private static final boolean UNLIMITED_REQUESTS = false;
     private final Cache taskCoordinatorCache;
@@ -49,28 +42,22 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
     }
 
     @Override
-    public TaskCoordinatorResponse request(Object request) {
-        if (!hasSession(request)) {
-            LOG.warn("No session was found for request.");
-            return TaskCoordinatorResponse.ACCEPT;
-        }
-        final var sessionId = getSessionId(request);
-        final var cachedSessionIds = getCachedSession();
-        final var numberOfRequestFromSession = getNumberOfRequestFromSession(sessionId, cachedSessionIds);
-
-        if (limitForSimultaneousCallsExceeded(numberOfRequestFromSession)) {
+    public TaskCoordinatorResponse request(String userHsaId) {
+        final var cachedRequests = getCachedRequests(userHsaId);
+        if (limitForSimultaneousCallsExceeded(cachedRequests)) {
             LOG.debug(
                 "Request was declined for {}. Reason for this is that the number of simultaneous call "
                     + "was exceeded. Allowed numbers of simultaneous call is currently set to {}.",
-                sessionId, SIMULTANEOUS_CALLS_ALLOWED);
+                userHsaId, SIMULTANEOUS_CALLS_ALLOWED);
             return TaskCoordinatorResponse.DECLINE;
         }
-        cachedSessionIds.add(sessionId);
-        updateCachedSessions(cachedSessionIds);
-        ThreadLocalTimerUtil.startTimer();
-        LOG.debug("Request started for {} and was added to cache. Cache currently holding {} slots. Timestamp when request started: {} ms",
-            sessionId, cachedSessionIds.size(), LocalDateTime.now());
+        updateCachedRequests(userHsaId, cachedRequests + 1);
         return TaskCoordinatorResponse.ACCEPT;
+    }
+
+    @Override
+    public void clearRequest(String userHsaId) {
+        clearRequestFromCache(userHsaId);
     }
 
     private static boolean limitForSimultaneousCallsExceeded(int numberOfRequestFromSession) {
@@ -80,65 +67,27 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
         return numberOfRequestFromSession >= SIMULTANEOUS_CALLS_ALLOWED;
     }
 
-
-    @Override
-    public void clearRequest(Object request) {
-        final var sessionId = getSessionId(request);
-        clearSessionIdFromCache(sessionId);
-        LOG.debug("Request completed for {}. Total time taken for request to finish: {} ms.", sessionId, timeElapsed());
-        ThreadLocalTimerUtil.removeTimer();
+    private void clearRequestFromCache(String userHsaId) {
+        final var numberOfRequests = getCachedRequests(userHsaId);
+        updateCachedRequests(userHsaId, numberOfRequests > 0 ? numberOfRequests - 1 : 0);
     }
 
-    private long timeElapsed() {
-        long endTime = System.currentTimeMillis();
-        long startTime = ThreadLocalTimerUtil.getTimer();
-        return endTime - startTime;
-    }
-
-    private void clearSessionIdFromCache(String sessionId) {
-        final var cachedSessionIds = getCachedSession();
-        cachedSessionIds.remove(sessionId);
-        updateCachedSessions(cachedSessionIds);
-    }
-
-    private void updateCachedSessions(List<String> cachedSessionIds) {
+    private void updateCachedRequests(String key, Integer numberOfRequests) {
         try {
-            taskCoordinatorCache.put(REDIS_CACHE_KEY, objectMapper.writeValueAsString(cachedSessionIds));
+            taskCoordinatorCache.put(key, objectMapper.writeValueAsString(numberOfRequests));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private List<String> getCachedSession() {
+    private Integer getCachedRequests(String key) {
         return deserialize(
-            taskCoordinatorCache.get(REDIS_CACHE_KEY, () -> objectMapper.writeValueAsString(new ArrayList<String>())));
+            taskCoordinatorCache.get(key, () -> objectMapper.writeValueAsString(0)));
     }
 
-    private int getNumberOfRequestFromSession(String sessionId, List<String> cachedSessionIds) {
-        return (int) cachedSessionIds.stream()
-            .filter(id -> Objects.equals(id, sessionId))
-            .count();
-    }
-
-    private String getSessionId(Object request) {
-        final var requestParams1 = (List) request;
-        final var httpServletRequest = (HttpServletRequest) requestParams1.get(0);
-        final var session = httpServletRequest.getSession();
-        System.out.println(session.getCreationTime());
-        return session.getId();
-    }
-
-    private static Boolean hasSession(Object request) {
-        if (request instanceof List) {
-            final var requestParams1 = (List) request;
-            return requestParams1.get(0) instanceof HttpServletRequest;
-        }
-        return false;
-    }
-
-    private List<String> deserialize(String jsonData) {
+    private Integer deserialize(String jsonData) {
         try {
-            return objectMapper.readValue(jsonData, objectMapper.getTypeFactory().constructCollectionType(List.class, String.class));
+            return Integer.parseInt(objectMapper.readValue(jsonData, String.class));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

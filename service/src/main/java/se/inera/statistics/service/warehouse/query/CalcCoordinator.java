@@ -28,13 +28,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import se.inera.statistics.service.util.ThreadLocalTimerUtil;
 
 @Component
 public final class CalcCoordinator {
 
     private static final Logger LOG = LoggerFactory.getLogger(CalcCoordinator.class);
     private static final int POLL_TIME = 100;
+    private static final int TO_SECONDS = 1000;
 
     @Value("${calcCoordinator.maxConcurrentTasks:4}")
     private int maxConcurrentTasks;
@@ -56,7 +56,7 @@ public final class CalcCoordinator {
      * @throws CalcException when no ticket is available.
      * @throws Exception on task errors.
      */
-    public <T> T submit(Callable<T> task, String sessionId) throws Exception {
+    public <T> T submit(Callable<T> task, String userHsaId) throws Exception {
         if (denyAll) {
             LOG.info("No available executors, denyAll active");
             throw new CalcException("No available executors, denyAll active");
@@ -65,10 +65,7 @@ public final class CalcCoordinator {
         for (int n = 0; n < maxWait; ) {
             try {
                 if (tasks.incrementAndGet() < maxConcurrentTasks) {
-                    final var startTimeMillis = ThreadLocalTimerUtil.getTimer();
-                    final var currentTimeMillis = System.currentTimeMillis();
-                    LOG.debug("Executor starting task for sessionId: {}. Wait time for executor was: {} ms", sessionId,
-                        (currentTimeMillis - startTimeMillis));
+                    LOG.info("Executor starting task for userHsaId: {}. Wait time for executor was: {} seconds", userHsaId, n / TO_SECONDS);
                     return task.call();
                 }
             } finally {
@@ -77,7 +74,7 @@ public final class CalcCoordinator {
             n += await();
         }
 
-        LOG.warn("No available executors, max wait time exceeded");
+        LOG.warn("No available executors, max wait time exceeded. Max wait time currently set to: {}.", maxWait);
         throw new CalcException("Max wait time exceeded");
     }
 

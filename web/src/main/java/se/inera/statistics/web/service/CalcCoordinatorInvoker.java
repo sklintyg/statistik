@@ -18,8 +18,7 @@
  */
 package se.inera.statistics.web.service;
 
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import org.apache.cxf.common.util.ClassHelper;
@@ -31,9 +30,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import se.inera.auth.model.User;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.service.warehouse.query.CalcException;
 import se.inera.statistics.web.api.ProtectedChartDataService;
@@ -45,13 +41,15 @@ public class CalcCoordinatorInvoker extends JAXRSInvoker {
 
     private static final Logger LOG = LoggerFactory.getLogger(CalcCoordinatorInvoker.class);
 
-
+    private final LoginServiceUtil loginServiceUtil;
     private final CalcCoordinator calcCoordinator;
+    private static final int TO_SECONDS = 1000;
 
     private final TaskCoordinatorService taskCoordinatorService;
 
-    public CalcCoordinatorInvoker(CalcCoordinator calcCoordinator,
+    public CalcCoordinatorInvoker(LoginServiceUtil loginServiceUtil, CalcCoordinator calcCoordinator,
         @Qualifier(value = "taskCoordinatorServiceImpl") TaskCoordinatorService taskCoordinatorService) {
+        this.loginServiceUtil = loginServiceUtil;
         this.calcCoordinator = calcCoordinator;
         this.taskCoordinatorService = taskCoordinatorService;
     }
@@ -62,11 +60,15 @@ public class CalcCoordinatorInvoker extends JAXRSInvoker {
         if (realClass != ProtectedChartDataService.class && realClass != ProtectedRegionService.class) {
             return super.invoke(exchange, requestParams, resourceObject);
         }
-        if (taskCoordinatorService.request(requestParams).equals(TaskCoordinatorResponse.DECLINE)) {
+        final var userHsaId = loginServiceUtil.getCurrentUser().getHsaId().getId();
+        if (taskCoordinatorService.request(userHsaId).equals(TaskCoordinatorResponse.DECLINE)) {
             return new MessageContentsList(Response.status(Status.TOO_MANY_REQUESTS).build());
         }
+        final var startTime = System.currentTimeMillis();
+        LOG.info("Request started for {} and was added to cache. Timestamp when request started: {}.",
+            userHsaId, LocalDateTime.now());
         try {
-            return calcCoordinator.submit(() -> super.invoke(exchange, requestParams, resourceObject), getSessionId(requestParams));
+            return calcCoordinator.submit(() -> super.invoke(exchange, requestParams, resourceObject), userHsaId);
         } catch (Fault f) {
             if (f.getCause() instanceof AccessDeniedException) {
                 throw (AccessDeniedException) f.getCause();
@@ -80,26 +82,12 @@ public class CalcCoordinatorInvoker extends JAXRSInvoker {
             }
             return new MessageContentsList(Response.status(Response.Status.SERVICE_UNAVAILABLE).build());
         } finally {
-            taskCoordinatorService.clearRequest(requestParams);
+            LOG.info("Request completed for {}. Total time taken for request to finish: {} seconds.", userHsaId, timeElapsed(startTime));
+            taskCoordinatorService.clearRequest(userHsaId);
         }
     }
 
-    private String getSessionId(Object request) {
-        final var requestParams1 = (List) request;
-        final var httpServletRequest = (HttpServletRequest) requestParams1.get(0);
-        final var session = httpServletRequest.getSession();
-        return session.getId();
-    }
-
-    private User getCurrentUser() {
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) {
-            throw new IllegalStateException("Authentication object is null");
-        }
-        final Object details = authentication.getPrincipal();
-        if (!(details instanceof User)) {
-            throw new IllegalStateException("details object is of wrong type: " + details);
-        }
-        return (User) details;
+    private long timeElapsed(long startTime) {
+        return (System.currentTimeMillis() - startTime) / TO_SECONDS;
     }
 }

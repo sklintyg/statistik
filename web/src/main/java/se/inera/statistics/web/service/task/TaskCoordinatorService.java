@@ -21,7 +21,7 @@ package se.inera.statistics.web.service.task;
 
 public interface TaskCoordinatorService {
 
-    TaskCoordinatorResponse request(Object request);
+    TaskCoordinatorResponse request(String userHsaId);
 
-    void clearRequest(Object request);
+    void clearRequest(String userHsaId);
 }

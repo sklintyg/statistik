@@ -182,7 +182,7 @@ public class LoginServiceUtil {
         return new LoginInfoVg(vgId, vgName, regionsVardgivareStatus, userAccessLevel);
     }
 
-    private User getCurrentUser() {
+    public User getCurrentUser() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             throw new IllegalStateException("Authentication object is null");
@@ -210,9 +210,9 @@ public class LoginServiceUtil {
 
     private List<Verksamhet> getVerksamhetsList(User realUser) {
         return Stream.concat(realUser.getVardenhetList().stream()
-                .map(Vardenhet::getVardgivarId),
-            realUser.getVgsWithProcessledarStatus().stream()
-                .map(vg -> new HsaIdVardgivare(vg.getId())))
+                    .map(Vardenhet::getVardgivarId),
+                realUser.getVgsWithProcessledarStatus().stream()
+                    .map(vg -> new HsaIdVardgivare(vg.getId())))
             .distinct()
             .map(hsaIdVardgivare -> {
                 Collection<Enhet> allEnhetsForVg = warehouse.getEnhets(hsaIdVardgivare);
