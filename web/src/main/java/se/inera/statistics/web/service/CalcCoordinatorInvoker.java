@@ -31,6 +31,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import se.inera.auth.model.User;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.service.warehouse.query.CalcException;
 import se.inera.statistics.web.api.ProtectedChartDataService;
@@ -86,5 +89,17 @@ public class CalcCoordinatorInvoker extends JAXRSInvoker {
         final var httpServletRequest = (HttpServletRequest) requestParams1.get(0);
         final var session = httpServletRequest.getSession();
         return session.getId();
+    }
+
+    private User getCurrentUser() {
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            throw new IllegalStateException("Authentication object is null");
+        }
+        final Object details = authentication.getPrincipal();
+        if (!(details instanceof User)) {
+            throw new IllegalStateException("details object is of wrong type: " + details);
+        }
+        return (User) details;
     }
 }

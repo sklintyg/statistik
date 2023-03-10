@@ -171,7 +171,7 @@ class TaskCoordinatorServiceImplTest {
         }
 
         @Nested
-        class RedisCacheIsNotUpdatedIfRequestIsDeclined {
+        class RedisCacheGetsUpdatedCorrectly {
 
             @BeforeEach
             void setUp() {
