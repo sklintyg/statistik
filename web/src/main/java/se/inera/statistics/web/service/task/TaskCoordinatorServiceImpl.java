@@ -39,6 +39,7 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
     private static final Logger LOG = LoggerFactory.getLogger(TaskCoordinatorServiceImpl.class);
     private static final String REDIS_CACHE_KEY = "CURRENT_TASKS";
     private static final int SIMULTANEOUS_CALLS_ALLOWED = 2;
+    private static final boolean UNLIMITED_REQUESTS = false;
     private final Cache taskCoordinatorCache;
     private final ObjectMapper objectMapper;
 
@@ -57,7 +58,7 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
         final var cachedSessionIds = getCachedSession();
         final var numberOfRequestFromSession = getNumberOfRequestFromSession(sessionId, cachedSessionIds);
 
-        if (numberOfRequestFromSession >= SIMULTANEOUS_CALLS_ALLOWED) {
+        if (limitForSimultaneousCallsExceeded(numberOfRequestFromSession)) {
             LOG.debug(
                 "Request was declined for {}. Reason for this is that the number of simultaneous call "
                     + "was exceeded. Allowed numbers of simultaneous call is currently set to {}.",
@@ -70,6 +71,13 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
         LOG.debug("Request started for {} and was added to cache. Cache currently holding {} slots. Timestamp when request started: {} ms",
             sessionId, cachedSessionIds.size(), LocalDateTime.now());
         return TaskCoordinatorResponse.ACCEPTED;
+    }
+
+    private static boolean limitForSimultaneousCallsExceeded(int numberOfRequestFromSession) {
+        if (UNLIMITED_REQUESTS) {
+            return true;
+        }
+        return numberOfRequestFromSession >= SIMULTANEOUS_CALLS_ALLOWED;
     }
 
 
