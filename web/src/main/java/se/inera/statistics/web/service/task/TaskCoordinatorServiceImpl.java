@@ -77,11 +77,11 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
     public void clearRequest(Object request) {
         final var sessionId = getSessionId(request);
         clearRequestFromCache(sessionId);
-        LOG.debug("Request completed for {}. Total time taken for request to finish: {} ms.", sessionId, timeElapsed(sessionId));
+        LOG.debug("Request completed for {}. Total time taken for request to finish: {} ms.", sessionId, timeElapsed());
         ThreadLocalTimerUtil.removeTimer();
     }
 
-    private long timeElapsed(String sessionId) {
+    private long timeElapsed() {
         long endTime = System.currentTimeMillis();
         long startTime = ThreadLocalTimerUtil.getTimer();
         return endTime - startTime;
