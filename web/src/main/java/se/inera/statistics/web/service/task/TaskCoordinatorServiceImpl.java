@@ -54,7 +54,7 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
             return TaskCoordinatorResponse.ACCEPTED;
         }
         final var sessionId = getSessionId(request);
-        final var cachedSessionIds = getCachedSessionIds();
+        final var cachedSessionIds = getCachedSession();
         final var numberOfRequestFromSession = getNumberOfRequestFromSession(sessionId, cachedSessionIds);
 
         if (numberOfRequestFromSession >= SIMULTANEOUS_CALLS_ALLOWED) {
@@ -76,7 +76,7 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
     @Override
     public void clearRequest(Object request) {
         final var sessionId = getSessionId(request);
-        clearRequestFromCache(sessionId);
+        clearSessionIdFromCache(sessionId);
         LOG.debug("Request completed for {}. Total time taken for request to finish: {} ms.", sessionId, timeElapsed());
         ThreadLocalTimerUtil.removeTimer();
     }
@@ -87,8 +87,8 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
         return endTime - startTime;
     }
 
-    private void clearRequestFromCache(String sessionId) {
-        final var cachedSessionIds = getCachedSessionIds();
+    private void clearSessionIdFromCache(String sessionId) {
+        final var cachedSessionIds = getCachedSession();
         cachedSessionIds.remove(sessionId);
         updateCachedSessions(cachedSessionIds);
     }
@@ -101,7 +101,7 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
         }
     }
 
-    private List<String> getCachedSessionIds() {
+    private List<String> getCachedSession() {
         return deserialize(
             taskCoordinatorCache.get(REDIS_CACHE_KEY, () -> objectMapper.writeValueAsString(new ArrayList<String>())));
     }
