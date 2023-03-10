@@ -75,7 +75,7 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
 
     private static boolean limitForSimultaneousCallsExceeded(int numberOfRequestFromSession) {
         if (UNLIMITED_REQUESTS) {
-            return true;
+            return false;
         }
         return numberOfRequestFromSession >= SIMULTANEOUS_CALLS_ALLOWED;
     }
