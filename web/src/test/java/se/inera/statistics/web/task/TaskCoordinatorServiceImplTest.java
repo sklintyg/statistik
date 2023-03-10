@@ -89,7 +89,7 @@ class TaskCoordinatorServiceImplTest {
                 when(httpServletRequest.getSession()).thenReturn(session);
                 when(session.getId()).thenReturn(SESSION_ID);
                 final var response = taskCoordinatorService.request(request);
-                assertEquals(TaskCoordinatorResponse.ACCEPTED, response);
+                assertEquals(TaskCoordinatorResponse.ACCEPT, response);
             }
 
             //Possibly redundant test
@@ -98,7 +98,7 @@ class TaskCoordinatorServiceImplTest {
                 String notHttpServletRequest = "notHttpServletRequest";
                 request.add(notHttpServletRequest);
                 final var response = taskCoordinatorService.request(request);
-                assertEquals(TaskCoordinatorResponse.ACCEPTED, response);
+                assertEquals(TaskCoordinatorResponse.ACCEPT, response);
             }
         }
 
@@ -116,7 +116,7 @@ class TaskCoordinatorServiceImplTest {
                 taskCoordinatorCache.put(REDIS_CACHE_KEY,
                     objectMapper.writeValueAsString(new ArrayList<>(Collections.singleton(SESSION_ID))));
                 final var response = taskCoordinatorService.request(request);
-                assertEquals(TaskCoordinatorResponse.ACCEPTED, response);
+                assertEquals(TaskCoordinatorResponse.ACCEPT, response);
             }
 
             @Test
@@ -124,7 +124,7 @@ class TaskCoordinatorServiceImplTest {
                 final var sessionIdsCurrentlyStoredInRedis = new ArrayList<>(Arrays.asList(SESSION_ID, SESSION_ID));
                 taskCoordinatorCache.put(REDIS_CACHE_KEY, objectMapper.writeValueAsString(sessionIdsCurrentlyStoredInRedis));
                 final var response = taskCoordinatorService.request(request);
-                assertEquals(TaskCoordinatorResponse.DECLINED, response);
+                assertEquals(TaskCoordinatorResponse.DECLINE, response);
             }
         }
 
@@ -145,7 +145,7 @@ class TaskCoordinatorServiceImplTest {
                 taskCoordinatorCache.put(REDIS_CACHE_KEY, objectMapper.writeValueAsString(sessionIdsCurrentlyStoredInRedis));
 
                 final var response = taskCoordinatorService.request(request);
-                assertEquals(TaskCoordinatorResponse.ACCEPTED, response);
+                assertEquals(TaskCoordinatorResponse.ACCEPT, response);
             }
 
             @Test
@@ -156,7 +156,7 @@ class TaskCoordinatorServiceImplTest {
                 taskCoordinatorCache.put(REDIS_CACHE_KEY, objectMapper.writeValueAsString(sessionIdsCurrentlyStoredInRedis));
 
                 final var response = taskCoordinatorService.request(request);
-                assertEquals(TaskCoordinatorResponse.ACCEPTED, response);
+                assertEquals(TaskCoordinatorResponse.ACCEPT, response);
             }
 
             @Test
@@ -166,7 +166,29 @@ class TaskCoordinatorServiceImplTest {
                 taskCoordinatorCache.put(REDIS_CACHE_KEY, objectMapper.writeValueAsString(sessionIdsCurrentlyStoredInRedis));
 
                 final var response = taskCoordinatorService.request(request);
-                assertEquals(TaskCoordinatorResponse.DECLINED, response);
+                assertEquals(TaskCoordinatorResponse.DECLINE, response);
+            }
+        }
+
+        @Nested
+        class RedisCacheIsNotUpdatedIfRequestIsDeclined {
+
+            @BeforeEach
+            void setUp() {
+                when(httpServletRequest.getSession()).thenReturn(session);
+                when(session.getId()).thenReturn(SESSION_ID);
+                ThreadLocalTimerUtil.startTimer();
+            }
+
+            @Test
+            void shouldNotAddNewRequestIfDeclined() throws JsonProcessingException {
+                taskCoordinatorCache.put(REDIS_CACHE_KEY, objectMapper.writeValueAsString(Arrays.asList(SESSION_ID, SESSION_ID)));
+                taskCoordinatorService.request(request);
+
+                final var actualResult = (List<String>) objectMapper.readValue(taskCoordinatorCache.get(REDIS_CACHE_KEY, String.class),
+                    objectMapper.getTypeFactory().constructCollectionType(List.class, String.class));
+
+                assertEquals(2, actualResult.size());
             }
         }
     }

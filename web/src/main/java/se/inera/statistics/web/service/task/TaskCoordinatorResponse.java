@@ -20,5 +20,5 @@
 package se.inera.statistics.web.service.task;
 
 public enum TaskCoordinatorResponse {
-    ACCEPTED, DECLINED
+    ACCEPT, DECLINE
 }

@@ -52,7 +52,7 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
     public TaskCoordinatorResponse request(Object request) {
         if (!hasSession(request)) {
             LOG.warn("No session was found for request.");
-            return TaskCoordinatorResponse.ACCEPTED;
+            return TaskCoordinatorResponse.ACCEPT;
         }
         final var sessionId = getSessionId(request);
         final var cachedSessionIds = getCachedSession();
@@ -63,14 +63,14 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
                 "Request was declined for {}. Reason for this is that the number of simultaneous call "
                     + "was exceeded. Allowed numbers of simultaneous call is currently set to {}.",
                 sessionId, SIMULTANEOUS_CALLS_ALLOWED);
-            return TaskCoordinatorResponse.DECLINED;
+            return TaskCoordinatorResponse.DECLINE;
         }
         cachedSessionIds.add(sessionId);
         updateCachedSessions(cachedSessionIds);
         ThreadLocalTimerUtil.startTimer();
         LOG.debug("Request started for {} and was added to cache. Cache currently holding {} slots. Timestamp when request started: {} ms",
             sessionId, cachedSessionIds.size(), LocalDateTime.now());
-        return TaskCoordinatorResponse.ACCEPTED;
+        return TaskCoordinatorResponse.ACCEPT;
     }
 
     private static boolean limitForSimultaneousCallsExceeded(int numberOfRequestFromSession) {

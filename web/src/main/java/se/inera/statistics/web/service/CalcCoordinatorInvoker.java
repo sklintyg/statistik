@@ -59,7 +59,7 @@ public class CalcCoordinatorInvoker extends JAXRSInvoker {
         if (realClass != ProtectedChartDataService.class && realClass != ProtectedRegionService.class) {
             return super.invoke(exchange, requestParams, resourceObject);
         }
-        if (taskCoordinatorService.request(requestParams).equals(TaskCoordinatorResponse.DECLINED)) {
+        if (taskCoordinatorService.request(requestParams).equals(TaskCoordinatorResponse.DECLINE)) {
             return new MessageContentsList(Response.status(Status.TOO_MANY_REQUESTS).build());
         }
         try {
