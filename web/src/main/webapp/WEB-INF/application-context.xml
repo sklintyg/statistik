@@ -64,6 +64,7 @@
         <bean id="dynamicLinkService" class="se.inera.intyg.infra.dynamiclink.service.DynamicLinkServiceImpl"/>
         <bean id="linkService" class="se.inera.statistics.web.api.LinkService"/>
         <bean id="deleteController" class="se.inera.statistics.web.api.DeleteController"/>
+        <bean id="simultaneousCalls" class="se.inera.statistics.web.api.SimultaneousCallsService"/>
         <bean class="se.inera.statistics.web.scheduler.STBannerJob"/>
 
         <import resource="classpath*:hsatk-services-config.xml"/>

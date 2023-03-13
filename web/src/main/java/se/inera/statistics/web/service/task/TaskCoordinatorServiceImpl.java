@@ -24,19 +24,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
 import org.springframework.stereotype.Component;
 
-@Component("taskCoordinatorServiceImpl")
+@Component()
 public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
 
     private static final Logger LOG = LoggerFactory.getLogger(TaskCoordinatorServiceImpl.class);
-    private static final int SIMULTANEOUS_CALLS_ALLOWED = 2;
-    private static final boolean UNLIMITED_REQUESTS = false;
+
+    private final int simultaneousCallsAllowed;
     private final Cache taskCoordinatorCache;
     private final ObjectMapper objectMapper;
 
-    public TaskCoordinatorServiceImpl(@Qualifier("taskCoordinatorRedisCache") Cache taskCoordinatorCache, ObjectMapper objectMapper) {
+    public TaskCoordinatorServiceImpl(
+        @Value("${taskCoordinatorService.simultaneous.calls.allowed}") int simultaneousCallsAllowed,
+        @Qualifier("taskCoordinatorRedisCache") Cache taskCoordinatorCache,
+        ObjectMapper objectMapper) {
+        this.simultaneousCallsAllowed = simultaneousCallsAllowed;
         this.taskCoordinatorCache = taskCoordinatorCache;
         this.objectMapper = objectMapper;
     }
@@ -48,7 +53,7 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
             LOG.debug(
                 "Request was declined for {}. Reason for this is that the number of simultaneous call "
                     + "was exceeded. Allowed numbers of simultaneous call is currently set to {}.",
-                userHsaId, SIMULTANEOUS_CALLS_ALLOWED);
+                userHsaId, simultaneousCallsAllowed);
             return TaskCoordinatorResponse.DECLINE;
         }
         updateCachedRequests(userHsaId, cachedRequests + 1);
@@ -60,11 +65,11 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
         clearRequestFromCache(userHsaId);
     }
 
-    private static boolean limitForSimultaneousCallsExceeded(int numberOfRequestFromSession) {
-        if (UNLIMITED_REQUESTS) {
+    private boolean limitForSimultaneousCallsExceeded(int numberOfRequestFromSession) {
+        if (simultaneousCallsAllowed == -1) {
             return false;
         }
-        return numberOfRequestFromSession >= SIMULTANEOUS_CALLS_ALLOWED;
+        return numberOfRequestFromSession >= simultaneousCallsAllowed;
     }
 
     private void clearRequestFromCache(String userHsaId) {
@@ -89,7 +94,7 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
         try {
             return Integer.parseInt(objectMapper.readValue(jsonData, String.class));
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            return 0;
         }
     }
 }

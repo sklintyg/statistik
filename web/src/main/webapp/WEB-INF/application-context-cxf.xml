@@ -29,6 +29,7 @@
                 <ref bean="linkService"/>
                 <ref bean="sessionStatusService"/>
                 <ref bean="deleteController"/>
+                <ref bean="simultaneousCalls"/>
             </jaxrs:serviceBeans>
             <jaxrs:providers>
                 <ref bean="jacksonJsonProvider"/>

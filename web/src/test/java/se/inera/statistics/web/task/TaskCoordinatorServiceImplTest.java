@@ -41,7 +41,7 @@ class TaskCoordinatorServiceImplTest {
     private ObjectMapper objectMapper;
 
     private TaskCoordinatorServiceImpl taskCoordinatorService;
-
+    private final int simultaneousCallsAllowed = 2;
     private static final String USER_HSA_ID = "userHsaId";
 
     @BeforeEach
@@ -49,6 +49,7 @@ class TaskCoordinatorServiceImplTest {
         taskCoordinatorCache = new ConcurrentMapCache("test-cache");
         objectMapper = new ObjectMapper();
         taskCoordinatorService = new TaskCoordinatorServiceImpl(
+            simultaneousCallsAllowed,
             taskCoordinatorCache,
             objectMapper
         );
@@ -130,6 +131,29 @@ class TaskCoordinatorServiceImplTest {
                 final var requestsStoredInRedis = Integer.parseInt(taskCoordinatorCache.get(USER_HSA_ID, String.class));
 
                 assertEquals(2, requestsStoredInRedis);
+            }
+        }
+
+        @Nested
+        class UnlimitedRequests {
+
+            @BeforeEach
+            void setUp() {
+                taskCoordinatorCache = new ConcurrentMapCache("test-cache");
+                objectMapper = new ObjectMapper();
+                taskCoordinatorService = new TaskCoordinatorServiceImpl(
+                    -1,
+                    taskCoordinatorCache,
+                    objectMapper
+                );
+            }
+
+            @Test
+            void shouldAcceptIfSimultaneousCallsAllowedSetToMinusOne() throws JsonProcessingException {
+                taskCoordinatorCache.put(USER_HSA_ID, objectMapper.writeValueAsString(5));
+                final var request = taskCoordinatorService.request(USER_HSA_ID);
+
+                assertEquals(TaskCoordinatorResponse.ACCEPT, request);
             }
         }
     }

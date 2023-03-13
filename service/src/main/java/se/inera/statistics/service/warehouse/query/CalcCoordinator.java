@@ -34,7 +34,6 @@ public final class CalcCoordinator {
 
     private static final Logger LOG = LoggerFactory.getLogger(CalcCoordinator.class);
     private static final int POLL_TIME = 100;
-    private static final int TO_SECONDS = 1000;
 
     @Value("${calcCoordinator.maxConcurrentTasks:4}")
     private int maxConcurrentTasks;
@@ -65,7 +64,9 @@ public final class CalcCoordinator {
         for (int n = 0; n < maxWait; ) {
             try {
                 if (tasks.incrementAndGet() < maxConcurrentTasks) {
-                    LOG.info("Executor starting task for userHsaId: {}. Wait time for executor was: {} seconds", userHsaId, n / TO_SECONDS);
+                    Thread.sleep(10000);
+                    LOG.info("Executor starting task for userHsaId: {}. Wait time for executor was: {} seconds", userHsaId,
+                        TimeUnit.MILLISECONDS.toSeconds(n));
                     return task.call();
                 }
             } finally {
@@ -74,7 +75,8 @@ public final class CalcCoordinator {
             n += await();
         }
 
-        LOG.warn("No available executors, max wait time exceeded. Max wait time currently set to: {} seconds.", maxWait / TO_SECONDS);
+        LOG.warn("No available executors, max wait time exceeded for userHsaId: {}. Max wait time currently set to: {} seconds.", userHsaId,
+            TimeUnit.MILLISECONDS.toSeconds(maxWait));
         throw new CalcException("Max wait time exceeded");
     }
 

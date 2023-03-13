@@ -18,7 +18,7 @@
  */
 package se.inera.statistics.web.service;
 
-import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import org.apache.cxf.common.util.ClassHelper;
@@ -28,7 +28,6 @@ import org.apache.cxf.message.Exchange;
 import org.apache.cxf.message.MessageContentsList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.AccessDeniedException;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.service.warehouse.query.CalcException;
@@ -43,12 +42,10 @@ public class CalcCoordinatorInvoker extends JAXRSInvoker {
 
     private final LoginServiceUtil loginServiceUtil;
     private final CalcCoordinator calcCoordinator;
-    private static final int TO_SECONDS = 1000;
-
     private final TaskCoordinatorService taskCoordinatorService;
 
     public CalcCoordinatorInvoker(LoginServiceUtil loginServiceUtil, CalcCoordinator calcCoordinator,
-        @Qualifier(value = "taskCoordinatorServiceImpl") TaskCoordinatorService taskCoordinatorService) {
+        TaskCoordinatorService taskCoordinatorService) {
         this.loginServiceUtil = loginServiceUtil;
         this.calcCoordinator = calcCoordinator;
         this.taskCoordinatorService = taskCoordinatorService;
@@ -65,8 +62,7 @@ public class CalcCoordinatorInvoker extends JAXRSInvoker {
             return new MessageContentsList(Response.status(Status.TOO_MANY_REQUESTS).build());
         }
         final var startTime = System.currentTimeMillis();
-        LOG.info("Request started for {} and was added to cache. Timestamp when request started: {}.",
-            userHsaId, LocalDateTime.now());
+        LOG.info("Request started for {}.", userHsaId);
         try {
             return calcCoordinator.submit(() -> super.invoke(exchange, requestParams, resourceObject), userHsaId);
         } catch (Fault f) {
@@ -88,6 +84,6 @@ public class CalcCoordinatorInvoker extends JAXRSInvoker {
     }
 
     private long timeElapsed(long startTime) {
-        return (System.currentTimeMillis() - startTime) / TO_SECONDS;
+        return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - startTime);
     }
 }
