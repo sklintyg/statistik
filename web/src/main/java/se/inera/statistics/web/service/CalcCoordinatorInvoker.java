@@ -18,7 +18,9 @@
  */
 package se.inera.statistics.web.service;
 
+import java.util.concurrent.TimeUnit;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import org.apache.cxf.common.util.ClassHelper;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.jaxrs.JAXRSInvoker;
@@ -26,19 +28,28 @@ import org.apache.cxf.message.Exchange;
 import org.apache.cxf.message.MessageContentsList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.service.warehouse.query.CalcException;
 import se.inera.statistics.web.api.ProtectedChartDataService;
 import se.inera.statistics.web.api.ProtectedRegionService;
+import se.inera.statistics.web.service.task.TaskCoordinatorResponse;
+import se.inera.statistics.web.service.task.TaskCoordinatorService;
 
 public class CalcCoordinatorInvoker extends JAXRSInvoker {
 
     private static final Logger LOG = LoggerFactory.getLogger(CalcCoordinatorInvoker.class);
 
-    @Autowired
-    CalcCoordinator calcCoordinator;
+    private final LoginServiceUtil loginServiceUtil;
+    private final CalcCoordinator calcCoordinator;
+    private final TaskCoordinatorService taskCoordinatorService;
+
+    public CalcCoordinatorInvoker(LoginServiceUtil loginServiceUtil, CalcCoordinator calcCoordinator,
+        TaskCoordinatorService taskCoordinatorService) {
+        this.loginServiceUtil = loginServiceUtil;
+        this.calcCoordinator = calcCoordinator;
+        this.taskCoordinatorService = taskCoordinatorService;
+    }
 
     @Override
     public Object invoke(Exchange exchange, Object requestParams, Object resourceObject) {
@@ -46,8 +57,14 @@ public class CalcCoordinatorInvoker extends JAXRSInvoker {
         if (realClass != ProtectedChartDataService.class && realClass != ProtectedRegionService.class) {
             return super.invoke(exchange, requestParams, resourceObject);
         }
+        final var userHsaId = loginServiceUtil.getCurrentUser().getHsaId().getId();
+        if (taskCoordinatorService.request(userHsaId).equals(TaskCoordinatorResponse.DECLINE)) {
+            return new MessageContentsList(Response.status(Status.TOO_MANY_REQUESTS).build());
+        }
+        final var startTime = System.currentTimeMillis();
+        LOG.info("Request started for {}.", userHsaId);
         try {
-            return calcCoordinator.submit(() -> super.invoke(exchange, requestParams, resourceObject));
+            return calcCoordinator.submit(() -> super.invoke(exchange, requestParams, resourceObject), userHsaId);
         } catch (Fault f) {
             if (f.getCause() instanceof AccessDeniedException) {
                 throw (AccessDeniedException) f.getCause();
@@ -60,6 +77,13 @@ public class CalcCoordinatorInvoker extends JAXRSInvoker {
                 LOG.error("Unexpected error", e);
             }
             return new MessageContentsList(Response.status(Response.Status.SERVICE_UNAVAILABLE).build());
+        } finally {
+            LOG.info("Request completed for {}. Total time taken for request to finish: {} seconds.", userHsaId, timeElapsed(startTime));
+            taskCoordinatorService.clearRequest(userHsaId);
         }
+    }
+
+    private long timeElapsed(long startTime) {
+        return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - startTime);
     }
 }

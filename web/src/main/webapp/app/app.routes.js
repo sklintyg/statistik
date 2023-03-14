@@ -500,6 +500,9 @@ var app = angular.module('StatisticsApp')
         redirectTo: '/verksamhet/oversikt'
       }).when('/', {
         redirectTo: '/nationell/oversikt'
+      }).when('/tooManyRequests', {
+        templateUrl: '/app/views/error/tooManyRequests.html',
+        title: 'För många samtidiga anrop'
       }).when('/nationell', {
         redirectTo: '/nationell/oversikt'
       }).when('/landsting:rest*', {

@@ -99,6 +99,9 @@ angular.module('StatisticsApp').factory('statisticsData',
           if (response.status === 503) {
             $location.path('/serverbusy');
           }
+          if (response.status === 429) {
+            $location.path('/tooManyRequests');
+          }
           $log.error('Failed to call server. Status: ' + response.status);
           callFailure(failureCallback, response);
         });
