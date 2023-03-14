@@ -104,7 +104,8 @@ public class LoginServiceUtil {
 
     @Value("${login.url}")
     private String loginUrl;
-
+    @Value("${taskCoordinatorService.simultaneous.calls.allowed}")
+    private int simultaneousCallsAllowed;
     private Kommun kommun = new Kommun();
 
     private Lan lan = new Lan();
@@ -184,7 +185,7 @@ public class LoginServiceUtil {
         return new LoginInfoVg(vgId, vgName, regionsVardgivareStatus, userAccessLevel);
     }
 
-    private User getCurrentUser() {
+    public User getCurrentUser() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             throw new IllegalStateException("Authentication object is null");
@@ -283,6 +284,7 @@ public class LoginServiceUtil {
         settings.setLoggedIn(isLoggedIn());
         settings.setProjectVersion(versionUtil.getProjectVersion());
         settings.setDriftbanners(getBanners());
+        settings.setSimultaneousCallsAllowed(simultaneousCallsAllowed);
         return settings;
     }
 
