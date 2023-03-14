@@ -20,11 +20,11 @@
 angular.module('StatisticsApp').controller('taskCoordinatorCtrl',
     /** @ngInject */ function($http, $scope) {
   'use strict';
-      $http.get('/api/simultaneous').then(function(response) {
-            if (response.data === 1) {
-              $scope.simultaneousCalls = response.data + ' rapport';
+      $http.get('/api/login/getAppSettings').then(function(response) {
+            if (response.data.simultaneousCallsAllowed === 1) {
+              $scope.simultaneousCalls = response.data.simultaneousCallsAllowed + ' rapport';
             } else {
-              $scope.simultaneousCalls = response.data + ' rapporter';
+              $scope.simultaneousCalls = response.data.simultaneousCallsAllowed + ' rapporter';
             }
           }, function(error) {
             console.error('Error retrieving simultaneous calls: ', error);

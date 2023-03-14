@@ -50,7 +50,7 @@ public class TaskCoordinatorServiceImpl implements TaskCoordinatorService {
     public TaskCoordinatorResponse request(String userHsaId) {
         final var cachedRequests = getCachedRequests(userHsaId);
         if (limitForSimultaneousCallsExceeded(cachedRequests)) {
-            LOG.debug(
+            LOG.info(
                 "Request was declined for {}. Reason for this is that the number of simultaneous call "
                     + "was exceeded. Allowed numbers of simultaneous call is currently set to {}.",
                 userHsaId, simultaneousCallsAllowed);
