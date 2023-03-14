@@ -35,6 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.saml.SAMLCredential;
@@ -121,6 +122,7 @@ public class LoginServiceUtil {
         }
     }
 
+    @Cacheable(cacheManager = "scopeRequestCacheManager", cacheNames = "default")
     public LoginInfo getLoginInfo() {
         User realUser;
         try {
@@ -210,9 +212,9 @@ public class LoginServiceUtil {
 
     private List<Verksamhet> getVerksamhetsList(User realUser) {
         return Stream.concat(realUser.getVardenhetList().stream()
-                .map(Vardenhet::getVardgivarId),
-            realUser.getVgsWithProcessledarStatus().stream()
-                .map(vg -> new HsaIdVardgivare(vg.getId())))
+                    .map(Vardenhet::getVardgivarId),
+                realUser.getVgsWithProcessledarStatus().stream()
+                    .map(vg -> new HsaIdVardgivare(vg.getId())))
             .distinct()
             .map(hsaIdVardgivare -> {
                 Collection<Enhet> allEnhetsForVg = warehouse.getEnhets(hsaIdVardgivare);
