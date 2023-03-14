@@ -28,6 +28,7 @@ public class AppSettings {
     private boolean isLoggedIn;
     private String projectVersion;
     private List<Message> driftbanners;
+    private int simultaneousCallsAllowed;
 
     public String getLoginUrl() {
         return loginUrl;
@@ -67,5 +68,13 @@ public class AppSettings {
 
     public List<Message> getDriftbanners() {
         return driftbanners;
+    }
+
+    public void setSimultaneousCallsAllowed(int simultaneousCallsAllowed) {
+        this.simultaneousCallsAllowed = simultaneousCallsAllowed;
+    }
+
+    public int getSimultaneousCallsAllowed() {
+        return simultaneousCallsAllowed;
     }
 }
