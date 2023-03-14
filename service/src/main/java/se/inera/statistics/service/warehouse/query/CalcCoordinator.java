@@ -64,7 +64,6 @@ public final class CalcCoordinator {
         for (int n = 0; n < maxWait; ) {
             try {
                 if (tasks.incrementAndGet() < maxConcurrentTasks) {
-                    Thread.sleep(10000);
                     LOG.info("Executor starting task for userHsaId: {}. Wait time for executor was: {} seconds", userHsaId,
                         TimeUnit.MILLISECONDS.toSeconds(n));
                     return task.call();
