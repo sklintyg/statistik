@@ -30,15 +30,12 @@
         <bean class="se.inera.intyg.infra.integration.hsatk.stub.HsaServiceStub"/>
     </beans>
 
-    <beans profile="hsa-stub,wc-hsa-stub">
-        <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
-    </beans>
-
     <beans>
         <import resource="classpath*:process-log-impl.xml"/>
     </beans>
 
     <beans>
+        <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
         <bean id="loginVisibility" class="se.inera.auth.LoginVisibility"/>
 
         <bean id="applicationContextProvider" class="se.inera.auth.ApplicationContextProvider"/>
