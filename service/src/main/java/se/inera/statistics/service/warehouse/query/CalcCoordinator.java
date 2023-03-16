@@ -55,7 +55,8 @@ public final class CalcCoordinator {
      * @throws CalcException when no ticket is available.
      * @throws Exception on task errors.
      */
-    public <T> T submit(Callable<T> task, String userHsaId) throws Exception {
+     
+    public <T> T submit(Callable<T> task, String userHsaId, String requestEndpoint) throws Exception {
         if (denyAll) {
             LOG.info("No available executors, denyAll active");
             throw new CalcException("No available executors, denyAll active");
@@ -64,8 +65,12 @@ public final class CalcCoordinator {
         for (int n = 0; n < maxWait; ) {
             try {
                 if (tasks.incrementAndGet() < maxConcurrentTasks) {
-                    LOG.info("Executor starting task for userHsaId: {}. Wait time for executor was: {} seconds", userHsaId,
-                        TimeUnit.MILLISECONDS.toSeconds(n));
+                    LOG.info(
+                        "Executor starting task for userHsaId: {}. Wait time for executor was: {} seconds. Request endpoint: {}",
+                        userHsaId,
+                        TimeUnit.MILLISECONDS.toSeconds(n),
+                        requestEndpoint);
+
                     return task.call();
                 }
             } finally {
@@ -74,8 +79,12 @@ public final class CalcCoordinator {
             n += await();
         }
 
-        LOG.warn("No available executors, max wait time exceeded for userHsaId: {}. Max wait time currently set to: {} seconds.", userHsaId,
-            TimeUnit.MILLISECONDS.toSeconds(maxWait));
+        LOG.warn(
+            "No available executors, max wait time exceeded for userHsaId: {}. Max wait time currently set to: {} seconds."
+                + " Request endpoint: {}",
+            userHsaId,
+            TimeUnit.MILLISECONDS.toSeconds(maxWait),
+            requestEndpoint);
         throw new CalcException("Max wait time exceeded");
     }
 
