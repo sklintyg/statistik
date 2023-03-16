@@ -55,6 +55,7 @@ public final class CalcCoordinator {
      * @throws CalcException when no ticket is available.
      * @throws Exception on task errors.
      */
+     
     public <T> T submit(Callable<T> task, String userHsaId, String requestEndpoint) throws Exception {
         if (denyAll) {
             LOG.info("No available executors, denyAll active");
@@ -69,6 +70,7 @@ public final class CalcCoordinator {
                         userHsaId,
                         TimeUnit.MILLISECONDS.toSeconds(n),
                         requestEndpoint);
+
                     return task.call();
                 }
             } finally {
