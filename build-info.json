@@ -1,6 +1,6 @@
 {
-  "appVersion": "7.11.0",
-  "infraVersion": "3.18.0.+",
+  "appVersion": "7.11.0.49",
+  "infraVersion": "3.18.0.54",
   "buildArgs": "--refresh-dependencies clean build testReport -PcodeQuality -DgruntColors=false -PuseMinifiedJavaScript",
   "tests": [ "integrationTest", "fitnesseTest" ]
 }
