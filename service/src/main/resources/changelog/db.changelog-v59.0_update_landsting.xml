@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2023 Inera AB (http://www.inera.se)
+  ~
+  ~ This file is part of sklintyg (https://github.com/sklintyg).
+  ~
+  ~ sklintyg is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ sklintyg is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+                   logicalFilePath="liquibase/db.changelog-v59.0_update_landsting.xml">
+    <changeSet id="59_update_landsting_table" author="mww">
+        <update tableName="Landsting"> <column name="namn" value="Region Blekinge"/> <where>id = 1</where> </update>
+        <update tableName="Landsting"> <column name="namn" value="Region Dalarna "/> <where>id = 2</where> </update>
+        <update tableName="Landsting"> <column name="namn" value="Region Kalmar län"/> <where>id = 7</where> </update>
+        <update tableName="Landsting"> <column name="namn" value="Region Norrbotten"/> <where>id = 9</where> </update>
+        <update tableName="Landsting"> <column name="namn" value="Region Stockholm"/> <where>id = 11</where> </update>
+        <update tableName="Landsting"> <column name="namn" value="Region Gotland"/> <column name="vardgivareId" value="SE2321000016-5VVK"/> <where>id = 12</where> </update>
+        <update tableName="Landsting"> <column name="namn" value="Region Sörmland"/> <where>id = 13</where> </update>
+        <update tableName="Landsting"> <column name="namn" value="Region Uppsala"/> <where>id = 14</where> </update>
+        <update tableName="Landsting"> <column name="namn" value="Region Värmland"/> <where>id = 15</where> </update>
+        <update tableName="Landsting"> <column name="namn" value="Region Västerbotten"/> <where>id = 16</where> </update>
+        <update tableName="Landsting"> <column name="namn" value="Region Västernorrland"/> <where>id = 17</where> </update>
+        <update tableName="Landsting"> <column name="namn" value="Region Västmanland"/> <where>id = 18</where> </update>
+    </changeSet>
+</databaseChangeLog>

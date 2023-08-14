@@ -84,5 +84,6 @@
   <include file="changelog/db.changelog-v56.0_add_frageids_column_to_messeagewideline.xml"/>
   <include file="changelog/db.changelog-v57.0_add_vardenhet.xml"/>
   <include file="changelog/db.changelog-v58.0_add_indexes.xml"/>
+  <include file="changelog/db.changelog-v59.0_update_landsting.xml"/>
 
 </databaseChangeLog>
