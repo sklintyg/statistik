@@ -7,14 +7,15 @@ plugins {
 }
 
 ext {
-    infraVersion = System.properties['infraVersion'] ?: '3.19.1-SNAPSHOT'
+    infraVersion = System.properties['infraVersion'] ?: '3.20.0-SNAPSHOT'
     refDataVersion = System.properties['refDataVersion'] ?: '1.0-SNAPSHOT'
 
-    intygSchematronVersion = "1.0.57"
-    rivtaClinicalprocessSchemasVersion = "4.0.5"
-    internalMonitoringSchemaVersion = "1.0.4"
-    intygTransportstyrelsenSchemasVersion = "1.0.5"
+    intygSchematronVersion = "1.0.57.1"
+    rivtaClinicalprocessSchemasVersion = "4.0.5.2"
+    internalMonitoringSchemaVersion = "1.0.4.1"
+    intygTransportstyrelsenSchemasVersion = "1.0.5.1"
 
+    apiguardianVersion = "1.1.2"
     auth0JwksVersion = "0.21.1"
     commonsIoVersion = "2.11.0"
     commonsLoggingVersion = "1.2"
@@ -85,6 +86,9 @@ allprojects {
         testCompile "org.springframework:spring-test"
         testCompile "org.mockito:mockito-core"
         testCompile "se.inera.intyg.refdata:refdata:${refDataVersion}"
+
+        // apiguardian-api dependency added to remove "warning: unknown enum constant Status.STABLE" (used by junit-jupiter 5.8.2)
+        testImplementation "org.apiguardian:apiguardian-api:${apiguardianVersion}"
     }
 
     group = 'se.inera.statistik'
