@@ -73,9 +73,6 @@ allprojects {
     }
 
     dependencies {
-        // apiguardian-api dependency added to remove "warning: unknown enum constant Status.STABLE" (used by junit-jupiter 5.8.2)
-        implementation "org.apiguardian:apiguardian-api:${apiguardianVersion}"
-
         compile "ch.qos.logback:logback-classic"
         compile "com.google.guava:guava:${googleGuavaVersion}"
 
@@ -89,6 +86,9 @@ allprojects {
         testCompile "org.springframework:spring-test"
         testCompile "org.mockito:mockito-core"
         testCompile "se.inera.intyg.refdata:refdata:${refDataVersion}"
+
+        // apiguardian-api dependency added to remove "warning: unknown enum constant Status.STABLE" (used by junit-jupiter 5.8.2)
+        testImplementation "org.apiguardian:apiguardian-api:${apiguardianVersion}"
     }
 
     group = 'se.inera.statistik'
