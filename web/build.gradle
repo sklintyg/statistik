@@ -104,7 +104,7 @@ dependencies {
     compile "org.springframework.session:spring-session-data-redis"
     compile "org.apache.activemq:activemq-spring"
     compile "org.springframework:spring-jms"
-    compile "mysql:mysql-connector-java"
+    compile "com.mysql:mysql-connector-j"
 
     compile "io.jsonwebtoken:jjwt-impl:${jsonwebtokenVersion}"
     compile "io.jsonwebtoken:jjwt-jackson:${jsonwebtokenVersion}"

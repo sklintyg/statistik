@@ -27,7 +27,7 @@ dependencies {
     compile "org.apache.commons:commons-dbcp2"
     compile "commons-logging:commons-logging:${commonsLoggingVersion}"
 
-    compile "mysql:mysql-connector-java"
+    compile "com.mysql:mysql-connector-j"
     compile "com.h2database:h2"
 
     deployerJars "org.apache.maven.wagon:wagon-webdav-jackrabbit:${wagonVersion}"
