@@ -28,7 +28,7 @@ dependencies {
     compile "org.codehaus.gpars:gpars:${gparsVersion}"
     compile "org.apache.commons:commons-dbcp2"
 
-    compile "mysql:mysql-connector-java"
+    compile "com.mysql:mysql-connector-j"
 
     deployerJars "org.apache.maven.wagon:wagon-webdav-jackrabbit:${wagonVersion}"
 
