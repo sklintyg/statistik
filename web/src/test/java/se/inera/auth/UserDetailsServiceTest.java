@@ -42,7 +42,6 @@ import se.inera.statistics.integration.hsa.model.*;
 import se.inera.statistics.integration.hsa.services.HsaOrganizationsService;
 import se.inera.statistics.integration.hsa.services.HsaPersonService;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
-import se.riv.infrastructure.directory.v1.PersonInformationType;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserDetailsServiceTest {

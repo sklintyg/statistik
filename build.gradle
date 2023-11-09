@@ -1,9 +1,10 @@
 plugins {
-    id "se.inera.intyg.plugin.common" version "3.2.9" apply false
-    id "se.inera.intyg.plugin.fitnesse" version "1.1.2" apply false
-    id "org.gretty" version "3.0.9" apply false
-    id "nebula.node" version "1.4.2" apply false
-    id "io.spring.dependency-management" version "1.0.15.RELEASE" apply false
+    id "se.inera.intyg.plugin.common" version "3.2.10-SNAPSHOT" apply false
+    id "se.inera.intyg.plugin.fitnesse" version "1.1.4-SNAPSHOT" apply false
+    id "io.spring.dependency-management" version "1.1.3" apply false
+    id "com.netflix.nebula.node" version "3.0.0" apply false
+    id "org.gretty" version "3.1.1" apply false
+    id 'test-report-aggregation'
 }
 
 ext {
@@ -15,27 +16,23 @@ ext {
     internalMonitoringSchemaVersion = "1.0.4.1"
     intygTransportstyrelsenSchemasVersion = "1.0.5.1"
 
-    apiguardianVersion = "1.1.2"
     auth0JwksVersion = "0.22.0"
     commonsIoVersion = "2.14.0"
     commonsLoggingVersion = "1.2"
     commonsTextVersion = "1.10.0"
     cxfVersion = "3.6.2"
-    fitnesseVersion = "20230503"
+    fitnesseVersion = "20231029"
     gatlingVersion = "3.9.5"
     geronimoVersion = "1.1.1"
-    googleGuavaVersion = "32.0.1-jre"
+    googleGuavaVersion = "32.1.3-jre"
     gparsVersion = "1.2.1"
     groovyAllVersion = "3.0.19"
     groovyHttpVersion = "0.7.1"
-    jaxb2Version = "0.13.1"
     jsonwebtokenVersion = "0.11.5"
     picocliVersion = "4.7.5"
     poiVersion = "5.2.4"
     schematronVersion = "5.6.5"
     springSecuritySamlVersion = "1.0.3.RELEASE"
-    xalanVersion = "2.7.3"
-    xmlApisVersion = "1.4.01"
     zipletVersion = "2.4.1"
     shedlockSpringVersion = "4.46.0"
     wagonVersion = "3.5.3"
@@ -47,6 +44,45 @@ ext {
 }
 
 allprojects {
+    apply plugin: 'se.inera.intyg.plugin.common'
+    apply plugin: "io.spring.dependency-management"
+    apply plugin: 'maven-publish'
+
+    group = 'se.inera.statistik'
+    version = System.properties['buildVersion'] ?: '0-SNAPSHOT'
+    sourceCompatibility = 11
+    targetCompatibility = 11
+
+    dependencyManagement {
+        imports { mavenBom "org.springframework.boot:spring-boot-dependencies:${springbootMavenBomVersion}" }
+    }
+
+    dependencies {
+        implementation "ch.qos.logback:logback-classic"
+        implementation "com.google.guava:guava:${googleGuavaVersion}"
+
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testCompileOnly 'org.projectlombok:lombok'
+        testAnnotationProcessor 'org.projectlombok:lombok'
+
+        testImplementation 'junit:junit'
+        testImplementation "org.junit.jupiter:junit-jupiter-api"
+        testImplementation "org.junit.jupiter:junit-jupiter-params"
+        testImplementation "org.mockito:mockito-inline"
+        testImplementation "org.mockito:mockito-junit-jupiter"
+        testImplementation "org.springframework:spring-test"
+        testImplementation "se.inera.intyg.refdata:refdata:${refDataVersion}"
+    }
+
+    tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+    tasks.register('createVersionPropertyFile', VersionPropertyFileTask)
+
+    checkstyleMain.dependsOn createVersionPropertyFile
+    compileJava.dependsOn processResources
+    compileTestJava.dependsOn createVersionPropertyFile
+    test { exclude '**/*FunctionalTest.*' }
+
     repositories {
         mavenLocal()
         maven { url "https://nexus.drift.inera.se/repository/it-public/" }
@@ -58,93 +94,33 @@ allprojects {
         }
     }
 
+    if (project.hasProperty('codeQuality')) {
+        dependencies { spotbugsSlf4j "org.slf4j:slf4j-simple" }
+    }
+
+    clean {
+        setDelete(fileTree(project.layout.buildDirectory.get().asFile) {
+            exclude("/tmp/.cache/expanded/expanded.lock")
+        })
+    }
+
     // Spotbugs does not work very well with groovy code. Hence we exclude groovy projects.
-    ext.spotbugsExclude = "(fileservice|.*groovy)\$"
-
     // Errorprone has no mechanism (yet) for excluding generated code. We therefore disable it for hsa-integration.
+    ext.spotbugsExclude = "(fileservice|.*groovy)\$"
     ext.errorproneExclude = "hsa-integration"
+}
 
-    apply plugin: 'maven'
-    apply plugin: 'se.inera.intyg.plugin.common'
-    apply plugin: "io.spring.dependency-management"
+apply from: "checkPnr.gradle"
+tasks.register('tagRelease', TagReleaseTask)
 
-    dependencyManagement {
-        imports { mavenBom "org.springframework.boot:spring-boot-dependencies:${springbootMavenBomVersion}" }
-    }
-
-    dependencies {
-        compile "ch.qos.logback:logback-classic"
-        compile "com.google.guava:guava:${googleGuavaVersion}"
-
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
-
-        testCompileOnly 'org.projectlombok:lombok'
-        testAnnotationProcessor 'org.projectlombok:lombok'
-
-        testCompile "junit:junit"
-        testCompile "org.springframework:spring-test"
-        testCompile "org.mockito:mockito-core"
-        testCompile "se.inera.intyg.refdata:refdata:${refDataVersion}"
-
-        // apiguardian-api dependency added to remove "warning: unknown enum constant Status.STABLE" (used by junit-jupiter 5.8.2)
-        testImplementation "org.apiguardian:apiguardian-api:${apiguardianVersion}"
-    }
-
-    group = 'se.inera.statistik'
-    version = System.properties['buildVersion'] ?: '0-SNAPSHOT'
-
-    sourceCompatibility = 11
-    targetCompatibility = 11
-
-    tasks.withType(JavaCompile) {
-        options.encoding = 'UTF-8'
-    }
-
-    test {
-        exclude '**/*FunctionalTest.*'
-    }
-
-    task createVersionPropertyFile(type: VersionPropertyFileTask)
-
-    uploadArchives.enabled = false
-
-    uploadArchives.repositories.mavenDeployer {
-        repository(url: "https://nexus.drift.inera.se/repository/maven-releases/") {
-            authentication(userName: System.properties['ineraNexusUsername'], password: System.properties['ineraNexusPassword'])
-        }
-    }
-
-    [install.repositories.mavenInstaller, uploadArchives.repositories.mavenDeployer]*.pom*.whenConfigured { pom ->
-        pom.dependencies.findAll { dep -> dep.groupId == 'se.inera.intyg.infra' }.each {
-            it.version = se.inera.intyg.IntygPluginKt.findResolvedVersion(project, 'se.inera.intyg.infra')
-        }
-    }
+subprojects.collect {subproject -> subproject.name }.each { subprojectName ->
+    dependencies { testReportAggregation project(":${subprojectName}") }
 }
 
 configure(subprojects.findAll { ['statistik-service', 'web'].contains(it.name) }) {
-    test {
-        exclude '**/*IT*'
-    }
-
-    task integrationTest(type: Test) {
+    test { exclude '**/*IT*' }
+    tasks.register('integrationTest', Test) {
         outputs.upToDateWhen { false }
         include '**/*IT*'
     }
 }
-
-gradle.taskGraph.whenReady {
-    def runningIntegrationTest = false
-    project('statistik-service') { runningIntegrationTest = gradle.taskGraph.getAllTasks().contains(integrationTest) }
-
-    if (runningIntegrationTest) {
-        project('statistik-service') { test.enabled(false) }
-        project('statistik-web') { test.enabled(false) }
-        project('hsa-integration') { test.enabled(false) }
-        project('anonymisering') { test.enabled(false) }
-    }
-}
-
-apply from: "checkPnr.gradle"
-
-task tagRelease(type: TagReleaseTask)

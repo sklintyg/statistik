@@ -1,17 +1,53 @@
-apply plugin: 'war'
+apply plugin: 'com.netflix.nebula.grunt'
 apply plugin: 'org.gretty'
-apply plugin: 'nebula.grunt'
 apply plugin: 'idea'
+apply plugin: 'war'
+
+gretty {
+    def instance = System.properties['instance'] ?: '0'
+    def useHttpPort = 8050 + (instance as Integer)
+    def useInternalHttpPort = 8150 + (instance as Integer)
+    def applicationDir = "${rootProject.projectDir}/devops/dev"
+    def baseUrl = "http://localhost:${useHttpPort}"
+
+    servletContainer = 'tomcat9'
+    contextPath = '/'
+    scanInterval = 0
+    debugPort = 8850 + (instance as Integer)
+    portPropertiesFileName = "gretty_ports_${instance}.properties"
+    debugSuspend = false
+    fastReload = true
+    inplaceMode = 'hard'
+    recompileOnSourceChange = false
+    reloadOnClassChange = false
+    reloadOnConfigChange = false
+    reloadOnLibChange = false
+    serverConfigFile = "tomcat-gretty.xml"
+
+    jvmArgs = ["-Dcatalina.base=${project.layout.buildDirectory.get().asFile}/catalina.base",
+               "-Dspring.profiles.active=dev,caching-enabled,hsa-caching-disabled,testapi,hsa-stub,wc-hsa-stub,security-both,noprocessing,ia-stub,request-caching-enabled",
+               "-Dlogback.file=${applicationDir}/config/logback-dev.xml",
+               "-Djava.awt.headless=true",
+               "-Dfile.encoding=UTF-8",
+               "-Dstatistics.test.max.intyg=200",
+               "-DbaseUrl=http://localhost:${useHttpPort}",
+               "-Dapplication.dir=${applicationDir}",
+               "-Ddev.config.file=${applicationDir}/config/application-dev.properties",
+               "-Ddev.http.port=${useHttpPort}",
+               "-Ddev.http.port.internal=${useInternalHttpPort}"
+    ]
+
+    dependencies {
+        implementation "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api"
+        implementation "se.inera.intyg.refdata:refdata:${refDataVersion}"
+    }
+}
 
 idea {
     module {
         excludeDirs += file('node_modules')
         excludeDirs += file('src/main/webapp/bower_components')
     }
-}
-
-grunt {
-    colors = true
 }
 
 node {
@@ -35,89 +71,46 @@ if (project.hasProperty('useMinifiedJavaScript')) {
     war.dependsOn grunt_build_no_minify
 }
 
+grunt { colors = true }
+
 grunt_build.dependsOn npmInstall
 grunt_build_no_minify.dependsOn npmInstall
 grunt_build_no_minify_no_karma.dependsOn npmInstall
-
 war.dependsOn createVersionPropertyFile
 
-gretty {
-    def instance = System.properties['instance'] ?: '0'
-    def useHttpPort = 8050 + (instance as Integer)
-    def useInternalHttpPort = 8150 + (instance as Integer)
-    def applicationDir = "${rootProject.projectDir}/devops/dev"
-    def baseUrl = "http://localhost:${useHttpPort}"
-
-    servletContainer = 'tomcat9'
-    contextPath = '/'
-
-
-    scanInterval = 0
-    debugPort = 8850 + (instance as Integer)
-    portPropertiesFileName = "gretty_ports_${instance}.properties"
-    debugSuspend = false
-    fastReload = true
-    inplaceMode = 'hard'
-    recompileOnSourceChange = false
-    reloadOnClassChange = false
-    reloadOnConfigChange = false
-    reloadOnLibChange = false
-    serverConfigFile = "tomcat-gretty.xml"
-
-    jvmArgs = ["-Dcatalina.base=${buildDir}/catalina.base",
-               "-Dspring.profiles.active=dev,caching-enabled,hsa-caching-disabled,testapi,hsa-stub,wc-hsa-stub,security-both,noprocessing,ia-stub,request-caching-enabled",
-               "-Dlogback.file=${applicationDir}/config/logback-dev.xml",
-               "-Djava.awt.headless=true",
-               "-Dfile.encoding=UTF-8",
-               "-Dstatistics.test.max.intyg=200",
-               "-DbaseUrl=http://localhost:${useHttpPort}",
-               "-Dapplication.dir=${applicationDir}",
-               "-Ddev.config.file=${applicationDir}/config/application-dev.properties",
-               "-Ddev.http.port=${useHttpPort}",
-               "-Ddev.http.port.internal=${useInternalHttpPort}"
-    ]
-}
-
 dependencies {
-    compile project(':statistik-service')
+    implementation project(':hsa-integration')
+    implementation project(':statistik-service')
 
-    compile "se.riv.clinicalprocess.healthcond.monitoring:clinicalprocess-healthcond-monitoring-schemas:${internalMonitoringSchemaVersion}"
-    compile "se.inera.intyg.infra:dynamiclink:${infraVersion}"
-    compile "se.inera.intyg.infra:security-filter:${infraVersion}"
-    compile "se.inera.intyg.infra:ia-integration:${infraVersion}"
-    compile "se.inera.intyg.infra:monitoring:${infraVersion}"
+    implementation "se.riv.clinicalprocess.healthcond.monitoring:clinicalprocess-healthcond-monitoring-schemas:${internalMonitoringSchemaVersion}"
 
-    compile "org.springframework.security.extensions:spring-security-saml2-core:${springSecuritySamlVersion}"
-    compile "xml-apis:xml-apis:${xmlApisVersion}"
-    compile "org.springframework:spring-webmvc"
-    compile "org.apache.commons:commons-lang3"
+    implementation "se.inera.intyg.infra:driftbanner-dto:${infraVersion}"
+    implementation "se.inera.intyg.infra:dynamiclink:${infraVersion}"
+    implementation "se.inera.intyg.infra:hsatk-integration:${infraVersion}"
+    implementation "se.inera.intyg.infra:ia-integration:${infraVersion}"
+    implementation "se.inera.intyg.infra:monitoring:${infraVersion}"
+    implementation "se.inera.intyg.infra:security-filter:${infraVersion}"
 
-    compile "org.apache.cxf:cxf-rt-features-logging:${cxfVersion}"
+    implementation "com.auth0:jwks-rsa:${auth0JwksVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind"
+    implementation "io.jsonwebtoken:jjwt-impl:${jsonwebtokenVersion}"
+    implementation "io.jsonwebtoken:jjwt-jackson:${jsonwebtokenVersion}"
+    implementation "io.prometheus:simpleclient_servlet"
+    implementation "net.javacrumbs.shedlock:shedlock-spring:${shedlockSpringVersion}"
+    implementation "org.apache.commons:commons-text:${commonsTextVersion}"
+    implementation "org.apache.cxf:cxf-rt-frontend-jaxrs:${cxfVersion}"
+    implementation "org.apache.poi:poi-ooxml:${poiVersion}"
+    implementation "org.liquibase:liquibase-core"
+    implementation "org.springframework.security.extensions:spring-security-saml2-core:${springSecuritySamlVersion}"
+    implementation "org.springframework:spring-jms"
 
-    compile "org.apache.commons:commons-text:${commonsTextVersion}"
-    compile "org.springframework.security:spring-security-config"
-    compile "org.springframework.security:spring-security-taglibs"
-    compile "org.apache.poi:poi:${poiVersion}"
-    compile "org.apache.poi:poi-ooxml:${poiVersion}"
-    compile "xalan:xalan:${xalanVersion}"
-    compile "com.github.ziplet:ziplet:${zipletVersion}"
-    compile "org.springframework.session:spring-session-data-redis"
-    compile "org.apache.activemq:activemq-spring"
-    compile "org.springframework:spring-jms"
-    compile "com.mysql:mysql-connector-j"
+    compileOnly "jakarta.persistence:jakarta.persistence-api"
+    compileOnly "jakarta.ws.rs:jakarta.ws.rs-api"
 
-    compile "io.jsonwebtoken:jjwt-impl:${jsonwebtokenVersion}"
-    compile "io.jsonwebtoken:jjwt-jackson:${jsonwebtokenVersion}"
-    compile "com.auth0:jwks-rsa:${auth0JwksVersion}"
-    compile "com.sun.activation:jakarta.activation"
-    compile "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api"
+    runtimeOnly "com.github.ziplet:ziplet:${zipletVersion}"
+    runtimeOnly "com.mysql:mysql-connector-j"
+    runtimeOnly "org.apache.activemq:activemq-spring"
 
-    compile "org.liquibase:liquibase-core"
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
-    testImplementation 'org.mockito:mockito-junit-jupiter:4.5.1'
-
-    compileOnly "javax.servlet:javax.servlet-api"
-
-    gretty "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api"
-    gretty "se.inera.intyg.refdata:refdata:${refDataVersion}"
+    testImplementation "jakarta.transaction:jakarta.transaction-api"
+    testCompileOnly "jakarta.persistence:jakarta.persistence-api"
 }
