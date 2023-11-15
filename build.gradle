@@ -1,14 +1,19 @@
+import se.inera.intyg.IntygPluginKt
+
+import java.nio.file.Files
+import java.nio.file.Paths
+
 plugins {
-    id "se.inera.intyg.plugin.common" version "3.2.10-SNAPSHOT" apply false
-    id "se.inera.intyg.plugin.fitnesse" version "1.1.4-SNAPSHOT" apply false
+    id "se.inera.intyg.plugin.common" version "3.3.1" apply false
     id "io.spring.dependency-management" version "1.1.3" apply false
+    id "se.inera.intyg.plugin.fitnesse" version "1.2.1" apply false
     id "com.netflix.nebula.node" version "3.0.0" apply false
     id "org.gretty" version "3.1.1" apply false
     id 'test-report-aggregation'
 }
 
 ext {
-    infraVersion = System.properties['infraVersion'] ?: '3.20.0-SNAPSHOT'
+    infraVersion = System.properties['infraVersion'] ?: '3.21.0-SNAPSHOT'
     refDataVersion = System.properties['refDataVersion'] ?: '1.0-SNAPSHOT'
 
     intygSchematronVersion = "1.0.57.1"
@@ -46,7 +51,6 @@ ext {
 allprojects {
     apply plugin: 'se.inera.intyg.plugin.common'
     apply plugin: "io.spring.dependency-management"
-    apply plugin: 'maven-publish'
 
     group = 'se.inera.statistik'
     version = System.properties['buildVersion'] ?: '0-SNAPSHOT'
@@ -63,8 +67,6 @@ allprojects {
 
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
-        testCompileOnly 'org.projectlombok:lombok'
-        testAnnotationProcessor 'org.projectlombok:lombok'
 
         testImplementation 'junit:junit'
         testImplementation "org.junit.jupiter:junit-jupiter-api"
@@ -73,12 +75,31 @@ allprojects {
         testImplementation "org.mockito:mockito-junit-jupiter"
         testImplementation "org.springframework:spring-test"
         testImplementation "se.inera.intyg.refdata:refdata:${refDataVersion}"
+
+        testCompileOnly 'org.projectlombok:lombok'
+        testAnnotationProcessor 'org.projectlombok:lombok'
     }
 
     tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
     tasks.register('createVersionPropertyFile', VersionPropertyFileTask)
 
-    checkstyleMain.dependsOn createVersionPropertyFile
+    if (project.hasProperty('codeQuality')) {
+        tasks.register('spotbugsIncludesAndExcludes') {
+            dependsOn ":unzipBuildTools"
+            def spotbugsToolDir = "${rootProject.layout.buildDirectory.get().asFile}/build-tools/spotbugs"
+            spotbugsMain {
+                includeFilter.set(file("${spotbugsToolDir}/spotbugsIncludeFilter.xml"))
+                excludeFilter.set(file("${spotbugsToolDir}/spotbugsExcludeFilter.xml"))
+            }
+        }
+
+        checkstyleMain.dependsOn createVersionPropertyFile
+        jacocoTestReport.mustRunAfter createVersionPropertyFile
+        spotbugsMain.dependsOn('spotbugsIncludesAndExcludes')
+        spotbugsTest.enabled(false)
+        dependencies { spotbugsSlf4j "org.slf4j:slf4j-simple" }
+    }
+
     compileJava.dependsOn processResources
     compileTestJava.dependsOn createVersionPropertyFile
     test { exclude '**/*FunctionalTest.*' }
@@ -88,20 +109,9 @@ allprojects {
         maven { url "https://nexus.drift.inera.se/repository/it-public/" }
         mavenCentral {
             content {
-                // this repository contains everything BUT artifacts with group starting with "se.inera"
                 excludeGroupByRegex "se\\.inera.*"
             }
         }
-    }
-
-    if (project.hasProperty('codeQuality')) {
-        dependencies { spotbugsSlf4j "org.slf4j:slf4j-simple" }
-    }
-
-    clean {
-        setDelete(fileTree(project.layout.buildDirectory.get().asFile) {
-            exclude("/tmp/.cache/expanded/expanded.lock")
-        })
     }
 
     // Spotbugs does not work very well with groovy code. Hence we exclude groovy projects.
@@ -111,7 +121,6 @@ allprojects {
 }
 
 apply from: "checkPnr.gradle"
-tasks.register('tagRelease', TagReleaseTask)
 
 subprojects.collect {subproject -> subproject.name }.each { subprojectName ->
     dependencies { testReportAggregation project(":${subprojectName}") }
@@ -124,3 +133,26 @@ configure(subprojects.findAll { ['statistik-service', 'web'].contains(it.name) }
         include '**/*IT*'
     }
 }
+
+tasks.register('tagRelease', TagReleaseTask)
+
+tasks.register('unzipBuildTools', Copy) {
+    into "${rootProject.layout.buildDirectory.get().asFile}/build-tools/"
+    from { zipTree(project.rootProject.buildscript.configurations.classpath.find { it.name.contains("se.inera.intyg.plugin.common") })
+            .matching { include "/spotbugs/**", "/git_hooks/**" }
+    }
+}
+
+tasks.register('applyGitHooks', Copy) {
+    def repository = IntygPluginKt.findGitRepository(project.rootProject.projectDir)
+    def gitHooksDir = "${rootProject.layout.buildDirectory.get().asFile}/build-tools/git_hooks"
+    def commitMsg = file("${gitHooksDir}/commit-msg")
+    def preCommit = file("${gitHooksDir}/pre-commit")
+    def toDir = Paths.get(repository.directory.path, "hooks")
+
+    if (!Files.exists(toDir)) { Files.createDirectory(toDir) }
+    IntygPluginKt.copyFile(commitMsg, toDir)
+    IntygPluginKt.copyFile(preCommit, toDir)
+}
+
+applyGitHooks.dependsOn(unzipBuildTools)
