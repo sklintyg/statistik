@@ -1,12 +1,19 @@
 apply plugin: 'application'
 apply plugin: 'groovy'
-apply plugin: 'maven'
 
 group = 'se.inera.statistik'
 version = '3.0.0-SNAPSHOT'
-
 mainClassName = "se.inera.statistik.tools.MigreraIntyg"
 applicationDefaultJvmArgs = ["-Dfile.encoding=utf8"]
+
+dependencies {
+    implementation "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
+    implementation "org.apache.commons:commons-dbcp2"
+    implementation "org.codehaus.gpars:gpars:${gparsVersion}"
+    implementation "com.mysql:mysql-connector-j"
+
+    deployerJars "org.apache.maven.wagon:wagon-webdav-jackrabbit:${wagonVersion}"
+}
 
 repositories {
     mavenLocal()
@@ -14,37 +21,5 @@ repositories {
     mavenCentral()
 }
 
-artifacts {
-    archives distZip
-}
-
-configurations {
-    deployerJars
-}
-
-dependencies {
-    compile "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
-    compile "org.apache.commons:commons-dbcp2"
-    compile "org.codehaus.gpars:gpars:${gparsVersion}"
-    compile "com.mysql:mysql-connector-j"
-
-    deployerJars "org.apache.maven.wagon:wagon-webdav-jackrabbit:${wagonVersion}"
-}
-
-ext.ineraNexusUsername = System.properties['ineraNexusUsername']
-ext.ineraNexusPassword = System.properties['ineraNexusPassword']
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            configuration = configurations.deployerJars
-            repository(url: "https://nexus.drift.inera.se/repository/maven-releases/") {
-                authentication(userName: ineraNexusUsername, password: ineraNexusPassword)
-            }
-            snapshotRepository(url: "https://nexus.drift.inera.se/repository/snapshots") {
-                authentication(userName: ineraNexusUsername, password: ineraNexusPassword)
-            }
-            uniqueVersion = false
-        }
-    }
-}
+artifacts { archives distZip }
+configurations { deployerJars }

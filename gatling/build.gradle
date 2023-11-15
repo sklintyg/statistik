@@ -51,5 +51,5 @@ repositories {
 
 dependencies {
     // Gatling dependencies
-    compile "io.gatling.highcharts:gatling-charts-highcharts:${gatlingVersion}"
+    implementation "io.gatling.highcharts:gatling-charts-highcharts:${gatlingVersion}"
 }
