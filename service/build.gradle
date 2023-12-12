@@ -8,59 +8,46 @@ sourceSets {
     }
 }
 
+compileTestGroovy.dependsOn ':statistik-web:createVersionPropertyFile'
+
 // JPA expects classes and configuration files to be in the same directory.
-sourceSets.main.output.resourcesDir = sourceSets.main.java.outputDir
+sourceSets.main.output.resourcesDir = sourceSets.main.java.destinationDirectory
 // B/c of the above, we create duplicates within the JAR. This configuration excludes the duplicates.
 jar.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
 dependencies {
-    compile project(':hsa-integration')
+    implementation project(':hsa-integration')
 
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
+    implementation "com.h2database:h2"
+    implementation ("com.helger:ph-schematron:${schematronVersion}") { exclude group: "com.helger", module: "ph-jaxb-pom" }
+    implementation "net.javacrumbs.shedlock:shedlock-provider-redis-spring:${shedlockSpringVersion}"
+    implementation "net.javacrumbs.shedlock:shedlock-spring:${shedlockSpringVersion}"
+    implementation "org.apache.cxf:cxf-rt-features-logging:${cxfVersion}"
+    implementation "org.apache.cxf:cxf-rt-frontend-jaxws:${cxfVersion}"
+    implementation "org.apache.httpcomponents:httpclient"
+    implementation "org.hibernate:hibernate-hikaricp"
+    implementation "org.liquibase:liquibase-core"
+    implementation "org.springframework.session:spring-session-data-redis"
+    implementation "org.springframework:spring-orm"
+    implementation "org.springframework:spring-jms"
+    implementation "org.springframework:spring-webmvc"
+    implementation "se.inera.intyg.infra:common-redis-cache-core:${infraVersion}"
+    implementation "se.inera.intyg.infra:monitoring:${infraVersion}"
+    implementation "se.inera.intyg.infra:security-common:${infraVersion}"
+    implementation "se.inera.intyg.clinicalprocess.healthcond.certificate:intyg-clinicalprocess-healthcond-certificate-schematron:${intygSchematronVersion}"
+    implementation "se.inera.intyg.transportstyrelsen:intyg-transportstyrelsen-schemas:${intygTransportstyrelsenSchemasVersion}"
+    implementation "se.riv.clinicalprocess.healthcond.certificate:clinicalprocess-healthcond-certificate-schemas:${rivtaClinicalprocessSchemasVersion}"
 
-    testCompileOnly 'org.projectlombok:lombok'
-    testAnnotationProcessor 'org.projectlombok:lombok'
-
-    compile "se.riv.clinicalprocess.healthcond.certificate:clinicalprocess-healthcond-certificate-schemas:${rivtaClinicalprocessSchemasVersion}"
-    compile "se.inera.intyg.clinicalprocess.healthcond.certificate:intyg-clinicalprocess-healthcond-certificate-schematron:${intygSchematronVersion}"
-    compile "se.inera.intyg.transportstyrelsen:intyg-transportstyrelsen-schemas:${intygTransportstyrelsenSchemasVersion}"
-
-    compile "se.inera.intyg.infra:hsa-integration:${infraVersion}"
-    compile "se.inera.intyg.infra:monitoring:${infraVersion}"
-    compile "se.inera.intyg.infra:common-redis-cache-core:${infraVersion}"
-    compile "se.inera.intyg.infra:security-common:${infraVersion}"
-
-    compile "org.springframework.data:spring-data-jpa"
-    compile "org.springframework:spring-orm"
-    compile "org.springframework:spring-jms"
-    compile "com.h2database:h2"
-    compile "org.liquibase:liquibase-core"
-    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
-    compile ("com.helger:ph-schematron:${schematronVersion}") {
-        exclude group: "com.helger", module: "ph-jaxb-pom"
-    }
-
-    compile "org.hibernate:hibernate-core"
-    compile "org.hibernate:hibernate-hikaricp"
-    compile "org.hibernate:hibernate-entitymanager"
-
-    compile "net.javacrumbs.shedlock:shedlock-spring:${shedlockSpringVersion}"
-    compile "net.javacrumbs.shedlock:shedlock-provider-redis-spring:${shedlockSpringVersion}"
-    compile "org.apache.httpcomponents:httpclient"
-    compile "org.apache.cxf:cxf-rt-features-logging:${cxfVersion}"
-
-    compileOnly "org.apache.geronimo.specs:geronimo-jms_1.1_spec:${geronimoVersion}"
     compileOnly "org.apache.activemq:activemq-client"
+    compileOnly "org.apache.geronimo.specs:geronimo-jms_1.1_spec:${geronimoVersion}"
 
-    testCompile "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
-    testCompile "org.apache.activemq:activemq-spring"
-    testCompile "org.springframework:spring-aop"
-    testCompile "org.aspectj:aspectjrt"
-    testCompile "org.aspectj:aspectjweaver"
-    testCompile "org.eclipse.jetty:jetty-server"
+    testImplementation "org.apache.activemq:activemq-spring"
+    testImplementation "org.aspectj:aspectjweaver"
+    testImplementation "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
+    testImplementation "org.eclipse.jetty:jetty-server"
 
     // This will make sure we use the liquibase patch in the web module.
     // It needs to be in this module to make sure it ends up before the jar version on the classpath in Tomcat
-    testCompile files(project(':statistik-web').sourceSets.main.output)
+    testImplementation files(project(':statistik-web').sourceSets.main.output)
 }

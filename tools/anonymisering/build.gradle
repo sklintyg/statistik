@@ -1,57 +1,33 @@
 apply plugin: 'application'
 apply plugin: 'idea'
 apply plugin: 'groovy'
-apply plugin: 'maven'
+
+mainClassName = "se.inera.statistik.tools.AnonymiseraStatistikDatabas"
+applicationDefaultJvmArgs = ["-Dfile.encoding=utf8"]
+
+artifacts { archives distZip }
+configurations { deployerJars }
+
+dependencies {
+    implementation "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
+    implementation "org.codehaus.gpars:gpars:${gparsVersion}"
+    implementation "org.apache.commons:commons-dbcp2"
+    implementation "commons-logging:commons-logging:${commonsLoggingVersion}"
+
+    implementation "com.mysql:mysql-connector-j"
+    implementation "com.h2database:h2"
+
+    deployerJars "org.apache.maven.wagon:wagon-webdav-jackrabbit:${wagonVersion}"
+
+    testImplementation "org.xmlunit:xmlunit-legacy"
+    testImplementation "org.skyscreamer:jsonassert"
+    testImplementation "commons-io:commons-io:${commonsIoVersion}"
+    testImplementation 'org.springframework:spring-core'
+}
 
 repositories {
     mavenLocal()
     maven { url "https://nexus.drift.inera.se/repository/it-public/" }
     maven { url "https://nexus.drift.inera.se/repository/maven-releases/" }
     mavenCentral()
-}
-
-mainClassName = "se.inera.statistik.tools.AnonymiseraStatistikDatabas"
-applicationDefaultJvmArgs = ["-Dfile.encoding=utf8"]
-
-artifacts {
-    archives distZip
-}
-
-configurations {
-    deployerJars
-}
-
-dependencies {
-    compile "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
-    compile "org.codehaus.gpars:gpars:${gparsVersion}"
-    compile "org.apache.commons:commons-dbcp2"
-    compile "commons-logging:commons-logging:${commonsLoggingVersion}"
-
-    compile "mysql:mysql-connector-java"
-    compile "com.h2database:h2"
-
-    deployerJars "org.apache.maven.wagon:wagon-webdav-jackrabbit:${wagonVersion}"
-
-    testCompile "org.xmlunit:xmlunit-legacy"
-    testCompile "org.skyscreamer:jsonassert"
-    testCompile "commons-io:commons-io:${commonsIoVersion}"
-    testCompile 'org.springframework:spring-core'
-}
-
-ext.ineraNexusUsername = System.properties['ineraNexusUsername']
-ext.ineraNexusPassword = System.properties['ineraNexusPassword']
-
-uploadArchives {
-    enabled = true
-    repositories {
-        mavenDeployer {
-            configuration = configurations.deployerJars
-            repository(url: "https://nexus.drift.inera.se/repository/maven-releases/") {
-                authentication(userName: ineraNexusUsername, password: ineraNexusPassword)
-            }
-            snapshotRepository(url: "https://nexus.drift.inera.se/repository/snapshots") {
-                authentication(userName: ineraNexusUsername, password: ineraNexusPassword)
-            }
-        }
-    }
 }

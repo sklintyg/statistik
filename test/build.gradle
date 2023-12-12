@@ -1,6 +1,6 @@
-apply plugin: 'groovy'
 apply plugin: 'se.inera.intyg.plugin.fitnesse'
-apply plugin: 'nebula.grunt'
+apply plugin: 'com.netflix.nebula.grunt'
+apply plugin: 'groovy'
 
 node {
     version = "${nodeJsVersion}"
@@ -12,40 +12,34 @@ node {
     nodeModulesDir = file("${project.projectDir}")
 }
 
-tasks.withType(GroovyCompile) {
+tasks.withType(GroovyCompile).configureEach {
     options.encoding = "UTF-8" // for Java compilation
     groovyOptions.encoding = "UTF-8" // for Groovy compilation
 }
 
-task pathingJar(type: Jar) {
-    dependsOn(configurations.runtime)
+tasks.register('pathingJar', Jar) {
+    dependsOn configurations.runtimeOnly
     archiveAppendix.set("pathing")
 
     doFirst {
         manifest {
-            def classpath = configurations.runtime.files.stream()
-                    .map({it.toURI().toURL().toString().replaceFirst("file:/", "/")})
+            def classpath = configurations.runtimeOnly.files.stream()
+                    .map({ it.toURI().toURL().toString().replaceFirst("file:/", "/") })
                     .collect()
                     .join(" ")
-
-
             def mainClass = "se.inera.statistics.InsertIntygHelper"
-
             attributes["Class-Path"] = classpath
             attributes["Main-Class"] = mainClass
         }
     }
 }
 
-task setupIntygForProtractor(dependsOn: [classes, pathingJar], type: JavaExec) {
+tasks.register('setupIntygForProtractor', JavaExec) {
+    dependsOn classes, pathingJar
 
-    def statisticsUrl = 'http://localhost:8050/'
     def baseUrl = System.properties['baseUrl'] ?: "http://localhost:8050/"
-
     jvmArgs = ['-DbaseUrl=' + baseUrl]
-
     main = 'se.inera.statistics.InsertIntygHelper'
-    // classpath = sourceSets.main.runtimeClasspath
     classpath = files(
             "${projectDir}/build/classes/groovy/main",
             "${projectDir}/build/classes/java/main",
@@ -54,11 +48,11 @@ task setupIntygForProtractor(dependsOn: [classes, pathingJar], type: JavaExec) {
             pathingJar.archiveFile)
 }
 
-
-task protractorTest(type: NodeTask, dependsOn: [npmInstall, setupIntygForProtractor]) {
+tasks.register('protractorTest', NodeTask) {
+    dependsOn npmInstall, setupIntygForProtractor
     outputs.upToDateWhen { false }
-    def environment = System.properties['protractor.env'] ?: "dev"
 
+    def environment = System.properties['protractor.env'] ?: "dev"
     script = file('node_modules/grunt-cli/bin/grunt')
     args = ["default:${environment}"]
 }
@@ -85,14 +79,17 @@ clean {
 }
 
 dependencies {
-    compile project(":statistik-web")
+    implementation project(':statistik-service')
+    implementation project(":statistik-web")
 
-    compile "org.fitnesse:fitnesse:${fitnesseVersion}"
-    compile "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
-    compile "org.codehaus.groovy.modules.http-builder:http-builder:${groovyHttpVersion}"
-    compile "org.apache.httpcomponents:httpmime"
-    compile "org.apache.httpcomponents:httpcore"
-    compile "org.liquibase:liquibase-core"
+    implementation "org.fitnesse:fitnesse:${fitnesseVersion}"
+    implementation "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
+    implementation "org.codehaus.groovy.modules.http-builder:http-builder:${groovyHttpVersion}"
+    implementation "org.apache.httpcomponents:httpmime"
+    implementation "org.apache.httpcomponents:httpcore"
+    implementation "org.liquibase:liquibase-core"
+
+    compileOnly "jakarta.ws.rs:jakarta.ws.rs-api"
 
     // The reason why these dependencies are specified with "transitive = false" is that some obsolete
     // platforms (e.g. Windows) cannot handle a very long command line, and the full, transitive
@@ -101,22 +98,18 @@ dependencies {
     fitnesse(project(":statistik-web")) { transitive = false }
     fitnesse(project(":statistik-service")) { transitive = false }
     fitnesse(project(":statistik-test")) { transitive = false }
+    fitnesse ("org.fitnesse:fitnesse:${fitnesseVersion}") { exclude group: "org.slf4j", module: "slf4j-jdk14" }
 
-    fitnesse ("org.fitnesse:fitnesse:${fitnesseVersion}") {
-        exclude group: "org.slf4j", module: "slf4j-jdk14"
-    }
-
-    fitnesse "org.liquibase:liquibase-core"
-    fitnesse "org.codehaus.groovy:groovy-dateutil:${groovyAllVersion}"
-    fitnesse "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
-    fitnesse "org.codehaus.groovy.modules.http-builder:http-builder:${groovyHttpVersion}"
-    fitnesse "org.apache.httpcomponents:httpmime"
-    fitnesse "org.apache.httpcomponents:httpcore"
-    fitnesse "com.google.guava:guava:${googleGuavaVersion}"
-    fitnesse "org.springframework:spring-core"
-    fitnesse "org.springframework:spring-context"
-    fitnesse "org.springframework.data:spring-data-jpa"
     fitnesse "ch.qos.logback:logback-classic"
-    fitnesse "org.slf4j:slf4j-api"
+    fitnesse "com.google.guava:guava:${googleGuavaVersion}"
     fitnesse "jakarta.ws.rs:jakarta.ws.rs-api"
+    fitnesse "org.apache.httpcomponents:httpcore"
+    fitnesse "org.apache.httpcomponents:httpmime"
+    fitnesse "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
+    fitnesse "org.codehaus.groovy:groovy-dateutil:${groovyAllVersion}"
+    fitnesse "org.codehaus.groovy.modules.http-builder:http-builder:${groovyHttpVersion}"
+    fitnesse "org.liquibase:liquibase-core"
+    fitnesse "org.springframework.data:spring-data-jpa"
+    fitnesse "org.springframework:spring-context"
+    fitnesse "org.springframework:spring-core"
 }

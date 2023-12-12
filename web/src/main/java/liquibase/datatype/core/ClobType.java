@@ -18,30 +18,21 @@
  */
 package liquibase.datatype.core;
 
-import java.util.Locale;
-import liquibase.GlobalConfiguration;
 import liquibase.change.core.LoadDataChange;
+import liquibase.GlobalConfiguration;
 import liquibase.database.Database;
-import liquibase.database.core.FirebirdDatabase;
-import liquibase.database.core.H2Database;
-import liquibase.database.core.HsqlDatabase;
-import liquibase.database.core.InformixDatabase;
-import liquibase.database.core.MSSQLDatabase;
-import liquibase.database.core.MySQLDatabase;
-import liquibase.database.core.OracleDatabase;
-import liquibase.database.core.PostgresDatabase;
-import liquibase.database.core.SQLiteDatabase;
-import liquibase.database.core.SybaseASADatabase;
-import liquibase.database.core.SybaseDatabase;
+import liquibase.database.core.*;
 import liquibase.datatype.DataTypeInfo;
 import liquibase.datatype.DatabaseDataType;
 import liquibase.datatype.LiquibaseDataType;
 import liquibase.statement.DatabaseFunction;
 import liquibase.util.StringUtil;
 
+import java.util.Locale;
+
 @DataTypeInfo(name = "clob", aliases = {"longvarchar", "text", "longtext", "java.sql.Types.LONGVARCHAR", "java.sql.Types.CLOB", "nclob",
-    "longnvarchar", "ntext", "java.sql.Types.LONGNVARCHAR", "java.sql.Types.NCLOB", "tinytext",
-    "mediumtext"}, minParameters = 0, maxParameters = 0, priority = LiquibaseDataType.PRIORITY_DEFAULT)
+    "longnvarchar", "ntext", "java.sql.Types.LONGNVARCHAR", "java.sql.Types.NCLOB", "tinytext", "mediumtext"},
+    minParameters = 0, maxParameters = 0, priority = LiquibaseDataType.PRIORITY_DEFAULT)
 public class ClobType extends LiquibaseDataType {
 
     @Override
@@ -73,7 +64,7 @@ public class ClobType extends LiquibaseDataType {
         String originalDefinition = StringUtil.trimToEmpty(getRawDefinition());
         if (database instanceof MSSQLDatabase) {
             if ((!GlobalConfiguration.CONVERT_DATA_TYPES.getCurrentValue()
-                && originalDefinition.toLowerCase(Locale.US).startsWith("text"))
+                    && originalDefinition.toLowerCase(Locale.US).startsWith("text"))
                 || originalDefinition.toLowerCase(Locale.US).startsWith("[text]")) {
                 DatabaseDataType type = new DatabaseDataType(database.escapeDataTypeName("varchar"));
                 // If there is additional specification after ntext (e.g.  COLLATE), import that.
@@ -112,7 +103,7 @@ public class ClobType extends LiquibaseDataType {
                 return type;
             }
             if (originalDefinition.toLowerCase(Locale.US).startsWith("ntext")
-                || originalDefinition.toLowerCase(Locale.US).startsWith("[ntext]")) {
+                    || originalDefinition.toLowerCase(Locale.US).startsWith("[ntext]")) {
                 // The SQL Server datatype "ntext" is deprecated and should be replaced with NVARCHAR(MAX).
                 // See: https://docs.microsoft.com/en-us/sql/t-sql/data-types/ntext-text-and-image-transact-sql
                 DatabaseDataType type = new DatabaseDataType(database.escapeDataTypeName("nvarchar"));
@@ -148,8 +139,8 @@ public class ClobType extends LiquibaseDataType {
                 return new DatabaseDataType("LONGTEXT");
             }
         } else if ((database instanceof H2Database) || (database instanceof HsqlDatabase)) {
-            if (originalDefinition.toLowerCase(Locale.US).startsWith("longvarchar") || originalDefinition.startsWith(
-                "java.sql.Types.LONGVARCHAR")) {
+            if (originalDefinition.toLowerCase(Locale.US).startsWith("longvarchar")
+                || originalDefinition.startsWith("java.sql.Types.LONGVARCHAR")) {
                 return new DatabaseDataType("LONGVARCHAR");
             } else {
                 return new DatabaseDataType("LONGVARCHAR");

@@ -1,6 +1,5 @@
 apply plugin: 'application'
 apply plugin: 'groovy'
-apply plugin: 'maven'
 
 group = 'se.inera.statistik'
 version = '1.1.0-SNAPSHOT'
@@ -15,43 +14,20 @@ repositories {
 mainClassName = "se.inera.statistik.tools.ResetVardgivare"
 applicationDefaultJvmArgs = ["-Dfile.encoding=utf8"]
 
-artifacts {
-    archives distZip
-}
-
-configurations {
-    deployerJars
-}
+artifacts { archives distZip }
+configurations { deployerJars }
 
 dependencies {
-    compile "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
-    compile "org.codehaus.gpars:gpars:${gparsVersion}"
-    compile "org.apache.commons:commons-dbcp2"
+    implementation "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
+    implementation "org.codehaus.gpars:gpars:${gparsVersion}"
+    implementation "org.apache.commons:commons-dbcp2"
 
-    compile "mysql:mysql-connector-java"
+    implementation "com.mysql:mysql-connector-j"
 
     deployerJars "org.apache.maven.wagon:wagon-webdav-jackrabbit:${wagonVersion}"
 
-    testCompile "org.xmlunit:xmlunit-legacy"
-    testCompile 'org.skyscreamer:jsonassert'
-    testCompile "commons-io:commons-io:${commonsIoVersion}"
-    testCompile 'org.springframework:spring-core'
-}
-
-ext.ineraNexusUsername = System.properties['ineraNexusUsername']
-ext.ineraNexusPassword = System.properties['ineraNexusPassword']
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            configuration = configurations.deployerJars
-            repository(url: "https://nexus.drift.inera.se/repository/maven-releases/") {
-                authentication(userName: ineraNexusUsername, password: ineraNexusPassword)
-            }
-            snapshotRepository(url: "https://nexus.drift.inera.se/repository/snapshots") {
-                authentication(userName: ineraNexusUsername, password: ineraNexusPassword)
-            }
-            uniqueVersion = false
-        }
-    }
+    testImplementation "org.xmlunit:xmlunit-legacy"
+    testImplementation 'org.skyscreamer:jsonassert'
+    testImplementation "commons-io:commons-io:${commonsIoVersion}"
+    testImplementation 'org.springframework:spring-core'
 }
