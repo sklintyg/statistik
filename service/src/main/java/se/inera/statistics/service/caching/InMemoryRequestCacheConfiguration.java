@@ -19,6 +19,7 @@
 
 package se.inera.statistics.service.caching;
 
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +28,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.web.context.WebApplicationContext;
 
 /**
  * Used for caching things in memory for a specific request. Can reduce trips to external cache or databases.
@@ -37,7 +37,7 @@ import org.springframework.web.context.WebApplicationContext;
 public class InMemoryRequestCacheConfiguration {
 
     @Bean
-    @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
+    @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE, proxyMode = ScopedProxyMode.TARGET_CLASS)
     @Primary
     public CacheManager scopeRequestCacheManager() {
         return new ConcurrentMapCacheManager();
