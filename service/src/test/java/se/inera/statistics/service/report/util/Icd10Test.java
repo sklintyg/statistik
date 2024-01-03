@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -133,7 +133,9 @@ public class Icd10Test {
     public void getLastAvsnittFromFile() {
         Icd10.Avsnitt avsnitt = icd10.getAvsnitt("Z80-Z99");
         assertEquals("Z80-Z99", avsnitt.getId());
-        assertEquals("Potentiella hälsorisker i familjens och patientens sjukhistoria samt vissa tillstånd och förhållanden som påverkar hälsan", avsnitt.getName());
+        assertEquals(
+            "Potentiella hälsorisker i familjens och patientens sjukhistoria samt vissa tillstånd och förhållanden som påverkar hälsan",
+            avsnitt.getName());
     }
 
     @Test

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -88,12 +88,12 @@ public class VardgivareManager {
     private void persistVardenhet(HsaInfo hsaInfo, String huvudenhetIdString, HsaIdVardgivare vardgivare, String lansId, String kommunId) {
         // Must use 'LIKE' instead of '=' due to STATISTIK-1231
         TypedQuery<Enhet> vardenhetQuery = manager
-                .createQuery("SELECT v FROM Enhet v WHERE v.enhetId LIKE :enhetId AND v.vardgivareId = :vardgivareId", Enhet.class);
+            .createQuery("SELECT v FROM Enhet v WHERE v.enhetId LIKE :enhetId AND v.vardgivareId = :vardgivareId", Enhet.class);
         final HsaIdEnhet hsaIdVardenhet = new HsaIdEnhet(huvudenhetIdString);
         List<Enhet> resultListVe = vardenhetQuery
-                .setParameter("enhetId", hsaIdVardenhet.getId())
-                .setParameter("vardgivareId", vardgivare.getId())
-                .getResultList();
+            .setParameter("enhetId", hsaIdVardenhet.getId())
+            .setParameter("vardgivareId", vardgivare.getId())
+            .getResultList();
 
         if (resultListVe.isEmpty()) {
             final String veVerksamheter = HSAServiceHelper.getVerksamhetsTyper(hsaInfo, true);

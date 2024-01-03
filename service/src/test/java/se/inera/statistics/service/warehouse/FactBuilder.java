@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -60,7 +60,8 @@ public class FactBuilder {
             || lakaralder == -1 || lakarbefattnings == null || lakarid == null || enkelt == null) {
             throw new UninitializedValuesException("unintialized values");
         }
-        return new Fact(id, lan, kommun, forsamling, enhet, underenhet, lakarintyg, patient, startdatum, slutdatum, kon, alder, diagnoskapitel,
+        return new Fact(id, lan, kommun, forsamling, enhet, underenhet, lakarintyg, patient, startdatum, slutdatum, kon, alder,
+            diagnoskapitel,
             diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon,
             lakaralder, lakarbefattnings, lakarid);
     }
@@ -175,13 +176,14 @@ public class FactBuilder {
         return this;
     }
 
-    public static Fact newFact(long id, int lan, int kommun, int forsamling, int enhet, int underenhet, long lakarintyg, long patient, int startdatum,
+    public static Fact newFact(long id, int lan, int kommun, int forsamling, int enhet, int underenhet, long lakarintyg, long patient,
+        int startdatum,
         int slutdatum,
         int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod, int sjukskrivningsgrad,
         int lakarkon, int lakaralder, int[] lakarbefattnings, int lakarid) {
         return new Fact(id, lan, kommun, forsamling, new HsaIdEnhet(String.valueOf(enhet)), new HsaIdEnhet(String.valueOf(underenhet)),
-                lakarintyg, patient, startdatum, slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod,
-                sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattnings, new HsaIdLakare(String.valueOf(lakarid)));
+            lakarintyg, patient, startdatum, slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod,
+            sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattnings, new HsaIdLakare(String.valueOf(lakarid)));
     }
 
     private static class UninitializedValuesException extends RuntimeException {

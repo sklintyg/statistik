@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -182,7 +182,8 @@ public class FkReportCreatorTest {
     }
 
     private Fact createFact(int startdatum, int slutdatum, int lakarintyg) {
-        return new Fact(1L, 1, 1, 1, new HsaIdEnhet("1"), new HsaIdEnhet("1"), lakarintyg, 1, startdatum, slutdatum, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0],
+        return new Fact(1L, 1, 1, 1, new HsaIdEnhet("1"), new HsaIdEnhet("1"), lakarintyg, 1, startdatum, slutdatum, 1, 1, 1, 1, 1, 1, 1, 1,
+            1, new int[0],
             new HsaIdLakare("1"));
     }
 

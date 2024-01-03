@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -44,7 +44,7 @@ public class DeleteController {
     @Path("intygsidlist")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public List<String>  deleteIntygsIdList(@RequestBody List<String> intygsIdList) {
+    public List<String> deleteIntygsIdList(@RequestBody List<String> intygsIdList) {
         return deleteCustomerData.deleteCustomerDataByIntygsId(intygsIdList);
     }
 

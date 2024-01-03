@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -37,7 +37,7 @@ public class SpecialSkaneComputeRow {
     private long patient;
 
     public SpecialSkaneComputeRow(String dx, HsaIdEnhet enhet, LocalDate range, Kon kon,
-                                  int sjukskrivningsgrad, Sjukfall sjukfall, long patient) {
+        int sjukskrivningsgrad, Sjukfall sjukfall, long patient) {
         this.dx = dx;
         this.enhet = enhet;
         this.range = range;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -63,7 +63,7 @@ public class SosMeCfs2ReportCreator {
         int sjukfallWithMoreThanOneDx = 0;
         List<Integer> dxs = new ArrayList<>();
 
-        for (Iterator<Aisle> it = aisles; it.hasNext();) {
+        for (Iterator<Aisle> it = aisles; it.hasNext(); ) {
             Aisle aisle = it.next();
             final Predicate<Sjukfall> sjukfallDxFilter = sjukfall -> g933 == sjukfall.getLastDx().getDiagnoskod();
             final LocalDate fromDate = LocalDate.of(2017, 1, 1);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -50,11 +50,11 @@ public class JwtParserTest {
         String jwtToken = readTokenFromDisk();
 
         SigningKeyResolverAdapter signingKeyResolverAdapter = buildResolverWithDiskBasedJwks();
-            Jws<Claims> jws = Jwts.parserBuilder()
-                .setSigningKeyResolver(signingKeyResolverAdapter)
-                .setAllowedClockSkewSeconds(999999999999999L)
-                .build()
-                .parseClaimsJws(jwtToken);
+        Jws<Claims> jws = Jwts.parserBuilder()
+            .setSigningKeyResolver(signingKeyResolverAdapter)
+            .setAllowedClockSkewSeconds(999999999999999L)
+            .build()
+            .parseClaimsJws(jwtToken);
 
         assertNotNull(jws);
         ArrayList<String> employeeHsaIdList = (ArrayList<String>) jws.getBody().get("employeeHsaId");

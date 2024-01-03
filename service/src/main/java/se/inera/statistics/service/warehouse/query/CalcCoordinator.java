@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -55,7 +55,7 @@ public final class CalcCoordinator {
      * @throws CalcException when no ticket is available.
      * @throws Exception on task errors.
      */
-     
+
     public <T> T submit(Callable<T> task, String userHsaId, String requestEndpoint) throws Exception {
         if (denyAll) {
             LOG.info("No available executors, denyAll active");

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -60,7 +60,7 @@ public class SjukfallUtil {
         final Set<HsaIdEnhet> availableEnhets = Arrays.stream(enhetIds).collect(Collectors.toSet());
         final String hashValue = FilterPredicates.getHashValueForEnhets(availableEnhets);
         final Predicate<Fact> factPredicate = fact ->
-                fact != null && (availableEnhets.contains(fact.getVardenhet()) || availableEnhets.contains(fact.getUnderenhet()));
+            fact != null && (availableEnhets.contains(fact.getVardenhet()) || availableEnhets.contains(fact.getUnderenhet()));
         return new FilterPredicates(factPredicate, sjukfall -> true, hashValue, false);
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -170,7 +170,6 @@ public class DeleteCustomerDataDBImpl implements DeleteCustomerDataDB {
 
     /**
      * Newer execute before deleteFromMeddelandehandelse
-     * @param intygsid
      */
     private Integer deleteFromMessagewideline(String intygsid) {
         String sql = "DELETE FROM messagewideline WHERE intygid = ?";

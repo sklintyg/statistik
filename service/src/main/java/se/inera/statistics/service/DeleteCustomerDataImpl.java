@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -41,7 +41,7 @@ public class DeleteCustomerDataImpl implements DeleteCustomerData {
     @Override
     public List<String> deleteCustomerDataByIntygsId(List<String> intygsIdList) {
         List<String> deletedIntygsIdList = new ArrayList<>();
-        for (String intygsId:intygsIdList) {
+        for (String intygsId : intygsIdList) {
             try {
                 deleteCustomerDataDB.deleteFromHsa(intygsId);
                 deleteCustomerDataDB.deleteFromIntygcommon(intygsId);
@@ -59,9 +59,9 @@ public class DeleteCustomerDataImpl implements DeleteCustomerData {
     }
 
     @Override
-    public List<String>  deleteCustomerDataByVardgivarId(List<String> vardgivareIdList) {
+    public List<String> deleteCustomerDataByVardgivarId(List<String> vardgivareIdList) {
         List<String> deletedVardgivareIdList = new ArrayList<>();
-        for (String vardgivarId: vardgivareIdList) {
+        for (String vardgivarId : vardgivareIdList) {
             try {
                 deleteCustomerDataDB.deleteFromLakare(vardgivarId);
                 deleteCustomerDataDB.deleteFromEnhet(vardgivarId);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -117,8 +117,8 @@ public class WidelineLoader {
     private PreparedStatement prepareStatementForVg(Connection connection, List<HsaIdVardgivare> vgids) throws SQLException {
         final String vgidsJoined = String.join("', '", vgids.stream().map(HsaIdAny::getId).collect(Collectors.toList()));
         String sql = "SELECT id, correlationid, lkf, enhet, vardenhet, lakarintyg, patientid, startdatum, slutdatum, kon, alder,"
-                + " diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon, lakaralder, "
-                + "lakarbefattning, vardgivareid, lakareid, active FROM wideline WHERE active AND vardgivareid IN ('" + vgidsJoined + "')";
+            + " diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon, lakaralder, "
+            + "lakarbefattning, vardgivareid, lakareid, active FROM wideline WHERE active AND vardgivareid IN ('" + vgidsJoined + "')";
 
         int maxIntyg = Integer.parseInt(System.getProperty("statistics.test.max.fact", "0"));
         if (maxIntyg > 0) {

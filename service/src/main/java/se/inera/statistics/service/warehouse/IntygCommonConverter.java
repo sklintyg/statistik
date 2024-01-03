@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -63,7 +63,7 @@ public class IntygCommonConverter {
 
         final String vgid = vardgivare.getId();
         return new IntygCommon(correlationId, patient, signeringsDatum, intygTyp, underenhet, vardenhet,
-                vgid, kon, eventType, diagnoskod, sentToFk, lakareId);
+            vgid, kon, eventType, diagnoskod, sentToFk, lakareId);
     }
 
     String parseDiagnos(String diagnoskod) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -35,10 +35,10 @@ public final class EnhetUtil {
         }
 
         return Stream.concat(enheter.stream(),
-            warehouse.getEnhetsWithHsaId(enheter).stream()
-                .filter(Enhet::isVardenhet)
-                .flatMap(enhet -> warehouse.getEnhetsOfVardenhet(enhet.getEnhetId()).stream())
-                .map(Enhet::getEnhetId))
+                warehouse.getEnhetsWithHsaId(enheter).stream()
+                    .filter(Enhet::isVardenhet)
+                    .flatMap(enhet -> warehouse.getEnhetsOfVardenhet(enhet.getEnhetId()).stream())
+                    .map(Enhet::getEnhetId))
             .collect(Collectors.toSet());
     }
 }

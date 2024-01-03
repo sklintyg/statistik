@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -58,7 +58,7 @@ public class SjukfallLengthSpecialReportCreator {
     public List<SjukfallLengthSpecialRow> getReport(int year) {
         final List<SjukfallLengthSpecialComputeRow> rows = new ArrayList<>();
 
-        for (Iterator<Aisle> it = aisles; it.hasNext();) {
+        for (Iterator<Aisle> it = aisles; it.hasNext(); ) {
             Aisle aisle = it.next();
             final LocalDate fromDate = LocalDate.of(year, 1, 1);
             final LocalDate toDate = LocalDate.of(year, 12, 31);
