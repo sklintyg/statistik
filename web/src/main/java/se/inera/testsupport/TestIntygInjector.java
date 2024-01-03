@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -173,7 +173,6 @@ public class TestIntygInjector {
         }
 
         int arbetsformaga = random(ARBETSFORMAGOR);
-
 
         final JsonNode data = builder.build(patientId, start, end, lakare, vardenhet, vardgivare, diagnos, arbetsformaga);
         final EventType type = EventType.CREATED;

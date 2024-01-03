@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -45,7 +45,7 @@ public class WidelineConverterTest {
 
     WideLine wideLine = new WideLine(1, "{id}", "256002", new HsaIdEnhet("enhet"), 1, EventType.CREATED, "19121212-1212", 4000, 4021, 0, 45,
         "A00", "A00-A09", "A00-B99", "A0000", 100, 0, 32, "201010",
-            new HsaIdVardgivare("vardgivare"), new HsaIdLakare("lakare"), true, new HsaIdEnhet("vardenhet"));
+        new HsaIdVardgivare("vardgivare"), new HsaIdLakare("lakare"), true, new HsaIdEnhet("vardenhet"));
     @Autowired
     private WidelineConverter converter;
 

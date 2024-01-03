@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -115,7 +115,7 @@ public class Warehouse implements Iterable<Aisle> {
             private int getToIndex(int fromIndex) {
                 int toIndex = fromIndex;
                 final int size = allVardgivare.size();
-                for (int nrOfIntyg = 0; nrOfIntyg < BATCH_SIZE;) {
+                for (int nrOfIntyg = 0; nrOfIntyg < BATCH_SIZE; ) {
                     if (size <= toIndex) {
                         break;
                     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -61,7 +61,7 @@ public final class HsaUnitSource {
     }
 
     public static InputStream getUnits(String certFileName, String certPass, String trustStoreName, String trustPass,
-                                       String url) {
+        String url) {
 
         SSLContext sslContext = buildSSLContext(certFileName, certPass, trustStoreName, trustPass);
         if (sslContext == null) {
@@ -71,7 +71,7 @@ public final class HsaUnitSource {
         Registry<ConnectionSocketFactory> registry = buildRegistry(sslConnectionSocketFactory);
 
         try (PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager(registry);
-                CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(sslConnectionSocketFactory)
+            CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(sslConnectionSocketFactory)
                 .setConnectionManager(connectionManager).build()) {
             final File fetchedFile = File.createTempFile("hsazip-", ".zip");
             LOG.info("Fetching data from: " + url + " and saving into file: " + fetchedFile);
@@ -95,7 +95,7 @@ public final class HsaUnitSource {
                         byte[] hsaUnitsBytes = ByteStreams.toByteArray(stream);
                         if (hsaUnitsBytes.length != len) {
                             throw new IOException("Reported file length does not match actual read bytes." + len
-                                    + " vs. " + hsaUnitsBytes.length);
+                                + " vs. " + hsaUnitsBytes.length);
                         } else {
                             return new ByteArrayInputStream(hsaUnitsBytes);
                         }
@@ -110,9 +110,9 @@ public final class HsaUnitSource {
     }
 
     private static SSLContext buildSSLContext(String certFileName, String certPass, String trustStoreName,
-                                              String trustPass) {
+        String trustPass) {
         try (InputStream keystoreInput = new BufferedInputStream(new FileInputStream(certFileName));
-             InputStream truststoreInput = new BufferedInputStream(new FileInputStream(trustStoreName))) {
+            InputStream truststoreInput = new BufferedInputStream(new FileInputStream(trustStoreName))) {
 
             final KeyStore keystore = KeyStore.getInstance("pkcs12");
             keystore.load(keystoreInput, certPass.toCharArray());
@@ -121,11 +121,11 @@ public final class HsaUnitSource {
             truststore.load(truststoreInput, trustPass.toCharArray());
 
             return SSLContexts.custom()
-                    .loadTrustMaterial(truststore, null)
-                    .loadKeyMaterial(keystore, certPass.toCharArray())
-                    .build();
+                .loadTrustMaterial(truststore, null)
+                .loadKeyMaterial(keystore, certPass.toCharArray())
+                .build();
         } catch (IOException | CertificateException | NoSuchAlgorithmException | UnrecoverableKeyException
-                | KeyStoreException | KeyManagementException e) {
+                 | KeyStoreException | KeyManagementException e) {
             LOG.error("Failed to build SSLContext", e);
         }
 
@@ -133,11 +133,11 @@ public final class HsaUnitSource {
     }
 
     private static Registry<ConnectionSocketFactory> buildRegistry(
-            SSLConnectionSocketFactory sslConnectionSocketFactory) {
+        SSLConnectionSocketFactory sslConnectionSocketFactory) {
         return RegistryBuilder.<ConnectionSocketFactory>create()
-                .register("http", new PlainConnectionSocketFactory())
-                .register("https", sslConnectionSocketFactory)
-                .build();
+            .register("http", new PlainConnectionSocketFactory())
+            .register("https", sslConnectionSocketFactory)
+            .build();
     }
 
 }

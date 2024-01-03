@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -107,9 +107,9 @@ public class WidelineConverter extends AbstractWidlineConverter {
     // CHECKSTYLE:OFF ParameterNumberCheck
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     private WideLine createWideLine(long logId, String correlationId, EventType type, String lkf, String vardenhet,
-                                    String enhet, HsaIdVardgivare vardgivare, String patient, int kon,
-                                    int alder, Diagnos dx, int lakarkon, int lakaralder, String lakarbefattning,
-                                    HsaIdLakare lakareid, Arbetsnedsattning arbetsnedsattning, boolean active) {
+        String enhet, HsaIdVardgivare vardgivare, String patient, int kon,
+        int alder, Diagnos dx, int lakarkon, int lakaralder, String lakarbefattning,
+        HsaIdLakare lakareid, Arbetsnedsattning arbetsnedsattning, boolean active) {
         WideLine line = new WideLine();
 
         int sjukskrivningsgrad = arbetsnedsattning.getNedsattning();

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -98,7 +98,7 @@ public class SosReportCreator {
         final int nowMinusFiveDaysIntDay = WidelineConverter.toDay(LocalDate.now(clock).minusDays(5));
 
         final ArrayList<SosRow> sosRows = new ArrayList<>();
-        for (Iterator<Aisle> it = aisles; it.hasNext();) {
+        for (Iterator<Aisle> it = aisles; it.hasNext(); ) {
             Aisle aisle = it.next();
             for (Map.Entry<String, Integer> stringIntegerEntry : dxsToShowInReport.entrySet()) {
                 final Integer dx = stringIntegerEntry.getValue();

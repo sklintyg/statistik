@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -310,9 +310,9 @@ public class ResponseHandler {
         noNameFound.removeAll(foundEnhetsIds);
 
         return Stream.concat(
-            enhetNames.stream(),
-            noNameFound.stream().map(HsaIdEnhet::getId)
-        )
+                enhetNames.stream(),
+                noNameFound.stream().map(HsaIdEnhet::getId)
+            )
             .sorted()
             .collect(Collectors.toList());
     }

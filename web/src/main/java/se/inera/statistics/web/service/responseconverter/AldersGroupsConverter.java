@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -33,10 +33,10 @@ public class AldersGroupsConverter {
     private static final String ALDERSGRUPPER_REST_COLOR = "#5D5D5D";
     private static final int DISPLAYED_AGE_GROUPS = 5;
     private static final List<String> ORDERED_GROUPS_FOR_OVERVIEW = Stream.of(
-        OverviewAgeGroup.GROUP2_21TO30,
-        OverviewAgeGroup.GROUP3_31TO40,
-        OverviewAgeGroup.GROUP4_41TO50,
-        OverviewAgeGroup.GROUP5_51TO60)
+            OverviewAgeGroup.GROUP2_21TO30,
+            OverviewAgeGroup.GROUP3_31TO40,
+            OverviewAgeGroup.GROUP4_41TO50,
+            OverviewAgeGroup.GROUP5_51TO60)
         .map(OverviewAgeGroup::getGroupName).collect(Collectors.toList());
 
     public List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> aldersGroups) {

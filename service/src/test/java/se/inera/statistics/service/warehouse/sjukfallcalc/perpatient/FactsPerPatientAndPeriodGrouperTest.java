@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -125,7 +125,7 @@ public class FactsPerPatientAndPeriodGrouperTest {
 
     private Fact createFact(long patient, LocalDate startDatum) {
         final int start = WidelineConverter.toDay(startDatum);
-        return FactBuilder.newFact(1L, 1, 1, 1, 1, 1,  1, patient, start, start, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
+        return FactBuilder.newFact(1L, 1, 1, 1, 1, 1, 1, patient, start, start, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
     }
 
 }

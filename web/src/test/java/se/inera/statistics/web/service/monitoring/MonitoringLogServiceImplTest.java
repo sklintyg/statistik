@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -97,8 +97,9 @@ public class MonitoringLogServiceImplTest {
 
     @Test
     public void shouldLogBrowserInfo() {
-        logService.logBrowserInfo("BROWSERNAME", "VERSION","OS", "OS-VERSION", "WIDTH", "HEIGHT");
-        verifyLog(Level.INFO, "BROWSER_INFO Name 'BROWSERNAME' Version 'VERSION' OSFamily 'OS' OSVersion 'OS-VERSION' Width 'WIDTH' Height 'HEIGHT'");
+        logService.logBrowserInfo("BROWSERNAME", "VERSION", "OS", "OS-VERSION", "WIDTH", "HEIGHT");
+        verifyLog(Level.INFO,
+            "BROWSER_INFO Name 'BROWSERNAME' Version 'VERSION' OSFamily 'OS' OSVersion 'OS-VERSION' Width 'WIDTH' Height 'HEIGHT'");
     }
 
     private void verifyLog(Level logLevel, String logMessage) {

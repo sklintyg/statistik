@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -96,7 +96,7 @@ public class WarehouseServiceTest {
         final SimpleKonResponse response = new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
         final Range range = new Range(clock);
         Mockito.when(sjukfallQuery
-            .getSjukfallPerEnhet(null, null, range.getFrom(), 1, range.getNumberOfMonths(), null, CutoffUsage.DO_NOT_APPLY_CUTOFF, true))
+                .getSjukfallPerEnhet(null, null, range.getFrom(), 1, range.getNumberOfMonths(), null, CutoffUsage.DO_NOT_APPLY_CUTOFF, true))
             .thenReturn(response);
 
         //When
@@ -128,7 +128,7 @@ public class WarehouseServiceTest {
 
         Mockito.doReturn(simpleKonResponse)
             .when(sjukfallQuery).getSjukfallPerEnhet(nullable(Aisle.class), eq(predicate1), eq(range.getFrom()), anyInt(),
-            eq(range.getNumberOfMonths()), any(Map.class), eq(CutoffUsage.APPLY_CUTOFF_PER_SEX), eq(true));
+                eq(range.getNumberOfMonths()), any(Map.class), eq(CutoffUsage.APPLY_CUTOFF_PER_SEX), eq(true));
 
         Mockito.doReturn(Arrays.asList(new Enhet(new HsaIdVardgivare("1"), HsaIdEnhet.empty(), "namne1", "1", "1", "", "ve1")))
             .when(enhetManager).getEnhets(enheter);
@@ -162,7 +162,7 @@ public class WarehouseServiceTest {
 
         Mockito.doReturn(simpleKonResponse)
             .when(sjukfallQuery).getSjukfallPerEnhet(nullable(Aisle.class), eq(predicate1), eq(range.getFrom()), anyInt(),
-            eq(range.getNumberOfMonths()), any(Map.class), eq(CutoffUsage.APPLY_CUTOFF_ON_TOTAL), eq(true));
+                eq(range.getNumberOfMonths()), any(Map.class), eq(CutoffUsage.APPLY_CUTOFF_ON_TOTAL), eq(true));
 
         Mockito.doReturn(Arrays.asList(new Enhet(new HsaIdVardgivare("1"), HsaIdEnhet.empty(), "namne1", "1", "1", "", "ve1")))
             .when(enhetManager).getEnhets(enheter);

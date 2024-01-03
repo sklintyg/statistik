@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -208,7 +208,7 @@ public class SjukfallQuery {
         final List<String> names = groupEntries.stream().map(entry -> entry.getKey().getId()).collect(Collectors.toList());
         final List<HsaIdEnhet> ids = groupEntries.stream().map(Map.Entry::getKey).collect(Collectors.toList());
         final CounterFunction<HsaIdEnhet> counterFunction =
-                (sjukfall, counter) -> counter.add(vardenhetdepth ? sjukfall.getLastVardEnhet() : sjukfall.getLastEnhet());
+            (sjukfall, counter) -> counter.add(vardenhetdepth ? sjukfall.getLastVardEnhet() : sjukfall.getLastEnhet());
         final KonDataResponse response = sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodSize, names, ids,
             counterFunction);
         return KonDataResponses.changeIdGroupsToNamesAndAddIdsToDuplicates(response, idsToNames);

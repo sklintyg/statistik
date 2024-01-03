@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -36,7 +36,6 @@ import se.inera.statistics.web.service.FilterHashHandler;
 /**
  * Custom Spring Security {@link AuthenticationSuccessHandler} that post-authorization can augment the created
  * session redirect the user to the originally requested resource given a enhet parameter.
- *
  */
 public class JwtAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 

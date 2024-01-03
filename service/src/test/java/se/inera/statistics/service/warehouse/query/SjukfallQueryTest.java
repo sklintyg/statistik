@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -260,7 +260,7 @@ public class SjukfallQueryTest {
         final Clock clock = Clock.systemDefaultZone();
         final SjukfallUtil sjukfallUtilMock = Mockito.mock(SjukfallUtil.class);
         Mockito.when(sjukfallUtilMock.calculateKonDataResponse(any(Aisle.class), any(FilterPredicates.class), any(LocalDate.class),
-            anyInt(), anyInt(), anyList(), anyList(), any(CounterFunction.class)))
+                anyInt(), anyInt(), anyList(), anyList(), any(CounterFunction.class)))
             .thenReturn(new KonDataResponse(AvailableFilters.getForSjukfall(), Collections.<String>emptyList(),
                 Collections.<KonDataRow>emptyList()));
         ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtilMock);
@@ -292,7 +292,7 @@ public class SjukfallQueryTest {
         final KonDataResponse konDataResponse = new KonDataResponse(AvailableFilters.getForSjukfall(), Arrays.asList("1", "2", "3"),
             Collections.<KonDataRow>emptyList());
         Mockito.when(sjukfallUtilMock.calculateKonDataResponse(any(Aisle.class), any(FilterPredicates.class), any(LocalDate.class),
-            anyInt(), anyInt(), anyList(), anyList(), any(CounterFunction.class)))
+                anyInt(), anyInt(), anyList(), anyList(), any(CounterFunction.class)))
             .thenReturn(konDataResponse);
         ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtilMock);
         final FilterPredicates enhetFilterFromInternalIntValues = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
@@ -303,7 +303,8 @@ public class SjukfallQueryTest {
 
         //When
         final KonDataResponse result = sjukfallQuery
-            .getSjukfallPerEnhetSeries(aisle.createAisle(), enhetFilterFromInternalIntValues, LocalDate.now(clock), 1, 2, idsToNames, false);
+            .getSjukfallPerEnhetSeries(aisle.createAisle(), enhetFilterFromInternalIntValues, LocalDate.now(clock), 1, 2, idsToNames,
+                false);
 
         //Then
         assertEquals(3, result.getGroups().size());

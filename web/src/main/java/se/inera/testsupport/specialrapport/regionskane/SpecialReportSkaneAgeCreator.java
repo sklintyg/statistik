@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -68,7 +68,7 @@ public class SpecialReportSkaneAgeCreator {
         final List<HsaIdEnhet> enhets = enhetStringIds.stream().map(HsaIdEnhet::new).collect(Collectors.toList());
 
         final List<SpecialSkaneAgeComputeRow> rows = new ArrayList<>();
-        for (Iterator<Aisle> it = aisles; it.hasNext();) {
+        for (Iterator<Aisle> it = aisles; it.hasNext(); ) {
             Aisle aisle = it.next();
             for (Range period : periods) {
                 final LocalDate fromDate = period.getFrom();
@@ -76,10 +76,10 @@ public class SpecialReportSkaneAgeCreator {
                 final Predicate<Fact> intygFilter = in -> enhetStringIds.contains(in.getVardenhet().getId());
                 final Predicate<Sjukfall> sjukfallPredicate = s -> includeOngoingSjukfall || s.getStart() >= startDay;
                 final FilterPredicates filter = new FilterPredicates(intygFilter, sjukfallPredicate,
-                        "SpecialSkane2019" + includeOngoingSjukfall, true);
+                    "SpecialSkane2019" + includeOngoingSjukfall, true);
 
                 final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(period.getFrom(), 1,
-                        period.getNumberOfMonths(), aisle, filter);
+                    period.getNumberOfMonths(), aisle, filter);
 
                 for (SjukfallGroup sjukfallGroup : sjukfallGroups) {
                     final Collection<Sjukfall> sjukfalls = sjukfallGroup.getSjukfall();
@@ -90,13 +90,13 @@ public class SpecialReportSkaneAgeCreator {
                         if (includeOngoingSjukfall || sjukfall.getStart() >= startDayOfRange) {
                             final long intygId = sjukfall.getFirstIntygId();
                             final Optional<Fact> fact = StreamSupport.stream(aisle.spliterator(), false)
-                                    .filter(f -> f.getLakarintyg() == intygId).findAny();
+                                .filter(f -> f.getLakarintyg() == intygId).findAny();
                             if (!fact.isPresent()) {
                                 LOG.warn("Fact from sjukfall not found..");
                                 continue;
                             }
                             final int ageDay = includeOngoingSjukfall
-                                    ? Math.min(sjukfall.getEnd(), WidelineConverter.toDay(currentRange.getTo())) : sjukfall.getStart();
+                                ? Math.min(sjukfall.getEnd(), WidelineConverter.toDay(currentRange.getTo())) : sjukfall.getStart();
                             final int age = getAge(fact.get().getPatient(), WidelineConverter.toDate(ageDay));
                             final Collection<HsaIdEnhet> enhetsInSjukfall = sjukfall.getEnhets();
                             final Optional<HsaIdEnhet> enhet = enhetsInSjukfall.stream().filter(s -> enhets.contains(s)).findAny();
@@ -115,20 +115,19 @@ public class SpecialReportSkaneAgeCreator {
 
         // Ålder nya sjukfall tot
         results.addAll(resultadder(rows,
-                r -> r.getEnhet() + r.getRange().getFrom().format(DateTimeFormatter.ISO_DATE),
-                o -> "Genomsnittlig ålder för " + (includeOngoingSjukfall ? "pågående" : "nya") + " sjukfall " + o.getFormattedRange()));
-
+            r -> r.getEnhet() + r.getRange().getFrom().format(DateTimeFormatter.ISO_DATE),
+            o -> "Genomsnittlig ålder för " + (includeOngoingSjukfall ? "pågående" : "nya") + " sjukfall " + o.getFormattedRange()));
 
         // Ålder nya sjukfall per kon
         results.addAll(resultadder(rows,
-                r -> r.getEnhet() + r.getRange().getFrom().format(DateTimeFormatter.ISO_DATE) + r.getKon().name(),
-                o -> "Genomsnittlig ålder för " + (includeOngoingSjukfall ? "pågående" : "nya") + " sjukfall "
-                        + SpecialReportSkaneCreator.getGenderName(o.getKon()) + " " + o.getFormattedRange()));
+            r -> r.getEnhet() + r.getRange().getFrom().format(DateTimeFormatter.ISO_DATE) + r.getKon().name(),
+            o -> "Genomsnittlig ålder för " + (includeOngoingSjukfall ? "pågående" : "nya") + " sjukfall "
+                + SpecialReportSkaneCreator.getGenderName(o.getKon()) + " " + o.getFormattedRange()));
 
         return results;
     }
 
-    private static  int getAge(long pnr, LocalDate date) {
+    private static int getAge(long pnr, LocalDate date) {
         final long yearPos = 100000000L;
         final long monthPos = 1000000L;
         final long dayPos = 10000L;
@@ -140,15 +139,15 @@ public class SpecialReportSkaneAgeCreator {
     }
 
     private List<SpecialSkaneRow> resultadder(List<SpecialSkaneAgeComputeRow> rows, Function<SpecialSkaneAgeComputeRow,
-            String> groupByFunction, Function<SpecialSkaneAgeComputeRow, String> rowName) {
+        String> groupByFunction, Function<SpecialSkaneAgeComputeRow, String> rowName) {
         final List<SpecialSkaneRow> results = new ArrayList<>();
         final Map<String, List<SpecialSkaneAgeComputeRow>> rowsGroupedByFunction = rows.stream()
-                .collect(Collectors.groupingBy(groupByFunction));
+            .collect(Collectors.groupingBy(groupByFunction));
         for (Map.Entry<String, List<SpecialSkaneAgeComputeRow>> entry : rowsGroupedByFunction.entrySet()) {
             final SpecialSkaneAgeComputeRow firstRow = entry.getValue().get(0);
             final int missingAge = -2;
             results.add(new SpecialSkaneRow(rowName.apply(firstRow), firstRow.getEnhet().getId(),
-                    entry.getValue().stream().mapToInt(SpecialSkaneAgeComputeRow::getAge).average().orElse(missingAge)));
+                entry.getValue().stream().mapToInt(SpecialSkaneAgeComputeRow::getAge).average().orElse(missingAge)));
         }
         return results;
     }

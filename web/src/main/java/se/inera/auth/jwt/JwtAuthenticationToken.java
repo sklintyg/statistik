@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,7 +22,6 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 
 /**
  * Our internal class for representing a JWT authentication token.
- *
  */
 public class JwtAuthenticationToken extends AbstractAuthenticationToken {
 

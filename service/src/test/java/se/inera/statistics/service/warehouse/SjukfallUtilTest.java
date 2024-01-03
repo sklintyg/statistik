@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -241,7 +241,7 @@ public class SjukfallUtilTest {
 
     private Sjukfall createSjukfall(Kon kon) {
         return Sjukfall.create(new SjukfallExtended(
-            FactBuilder.newFact(1L, 0, 1, 2, 3, 5,  4, 1, 6, 15, kon.getNumberRepresentation(), 30, 0, 0, 0, 0, 100, 1, 30, new int[0], 0)));
+            FactBuilder.newFact(1L, 0, 1, 2, 3, 5, 4, 1, 6, 15, kon.getNumberRepresentation(), 30, 0, 0, 0, 0, 100, 1, 30, new int[0], 0)));
     }
 
     public static FilterPredicates createEnhetFilterFromInternalIntValues(Integer... enhetIds) {

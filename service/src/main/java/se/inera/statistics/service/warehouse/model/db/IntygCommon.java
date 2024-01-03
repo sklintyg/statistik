@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -56,7 +56,7 @@ public class IntygCommon {
 
     // CHECKSTYLE:OFF ParameterNumber
     public IntygCommon(String intygid, String patientid, LocalDate signeringsdatum, IntygType intygtyp, String enhet, String vardenhet,
-                       String vardgivareId, int kon, EventType eventType, String dx, boolean sentToFk, String lakareId) {
+        String vardgivareId, int kon, EventType eventType, String dx, boolean sentToFk, String lakareId) {
         this.intygid = intygid;
         this.patientid = patientid;
         this.kon = kon;

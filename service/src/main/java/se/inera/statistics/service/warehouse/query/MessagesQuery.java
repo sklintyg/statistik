@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -172,7 +172,7 @@ public class MessagesQuery {
     }
 
     public KonDataResponse getMessagesTvarsnittPerAmnePerEnhet(MessagesFilter filter, Map<HsaIdEnhet, String> idToNameMap,
-                                                               boolean vardenhetdepth) {
+        boolean vardenhetdepth) {
         List<CountDTOAmne> rows = messageWidelineLoader.getAntalMeddelandenPerAmne(filter, vardenhetdepth);
         return convertToSimpleResponseTvarsnittPerAmnePerEnhet(rows, idToNameMap);
     }
@@ -694,8 +694,8 @@ public class MessagesQuery {
         final Collection<String> intygstyper = filter.getIntygstyper() == null || filter.getIntygstyper().isEmpty()
             ? Collections.singleton(IntygType.SJUKPENNING.getText())
             : Stream.concat(
-                filter.getIntygstyper().stream().filter(s -> IntygType.SJUKPENNING.getText().equals(s)),
-                Stream.of("NoMatchingIntygTypeWithThisText")) //Make sure the filter is never empty (same as "all selected")
+                    filter.getIntygstyper().stream().filter(s -> IntygType.SJUKPENNING.getText().equals(s)),
+                    Stream.of("NoMatchingIntygTypeWithThisText")) //Make sure the filter is never empty (same as "all selected")
                 .collect(Collectors.toSet());
         final HsaIdVardgivare vgid = filter.getVardgivarId();
         final LocalDate from = range.getFrom();

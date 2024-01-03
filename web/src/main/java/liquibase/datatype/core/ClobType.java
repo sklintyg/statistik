@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Inera AB (http://www.inera.se)
+ * Copyright (C) 2024 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -64,7 +64,7 @@ public class ClobType extends LiquibaseDataType {
         String originalDefinition = StringUtil.trimToEmpty(getRawDefinition());
         if (database instanceof MSSQLDatabase) {
             if ((!GlobalConfiguration.CONVERT_DATA_TYPES.getCurrentValue()
-                    && originalDefinition.toLowerCase(Locale.US).startsWith("text"))
+                && originalDefinition.toLowerCase(Locale.US).startsWith("text"))
                 || originalDefinition.toLowerCase(Locale.US).startsWith("[text]")) {
                 DatabaseDataType type = new DatabaseDataType(database.escapeDataTypeName("varchar"));
                 // If there is additional specification after ntext (e.g.  COLLATE), import that.
@@ -103,7 +103,7 @@ public class ClobType extends LiquibaseDataType {
                 return type;
             }
             if (originalDefinition.toLowerCase(Locale.US).startsWith("ntext")
-                    || originalDefinition.toLowerCase(Locale.US).startsWith("[ntext]")) {
+                || originalDefinition.toLowerCase(Locale.US).startsWith("[ntext]")) {
                 // The SQL Server datatype "ntext" is deprecated and should be replaced with NVARCHAR(MAX).
                 // See: https://docs.microsoft.com/en-us/sql/t-sql/data-types/ntext-text-and-image-transact-sql
                 DatabaseDataType type = new DatabaseDataType(database.escapeDataTypeName("nvarchar"));
