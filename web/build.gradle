@@ -38,8 +38,8 @@ gretty {
     ]
 
     dependencies {
-        implementation "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api"
-        implementation "se.inera.intyg.refdata:refdata:${refDataVersion}"
+        gretty "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api"
+        gretty "se.inera.intyg.refdata:refdata:${refDataVersion}"
     }
 }
 
