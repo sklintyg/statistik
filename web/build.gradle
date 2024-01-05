@@ -71,7 +71,6 @@ if (project.hasProperty('useMinifiedJavaScript')) {
 }
 
 grunt { colors = true }
-
 grunt_build.dependsOn npmInstall
 grunt_build_no_minify.dependsOn npmInstall
 grunt_build_no_minify_no_karma.dependsOn npmInstall
