@@ -39,7 +39,6 @@ gretty {
 
     dependencies {
         gretty "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api"
-        gretty "se.inera.intyg.refdata:refdata:${refDataVersion}"
     }
 }
 
@@ -72,7 +71,6 @@ if (project.hasProperty('useMinifiedJavaScript')) {
 }
 
 grunt { colors = true }
-
 grunt_build.dependsOn npmInstall
 grunt_build_no_minify.dependsOn npmInstall
 grunt_build_no_minify_no_karma.dependsOn npmInstall
