@@ -83,8 +83,10 @@ class IcdCodeConverterTest {
                 + "Detta kapitel innehåller följande avsnitt:<div>O00-O08 Graviditet som avslutas med abort</div><div>O10-O16 "
                 + "Ödem, proteinuri och hypertoni under graviditet, förlossning och barnsängstid</div><div>O20-O29 Andra sjukdomar"
                 + " hos den blivande modern i huvudsak sammanhängande med graviditeten</div><div>O30-O49 Vård under graviditet på "
-                + "grund av problem relaterade till fostret och amnionhålan samt befarade förlossningsproblem</div><div>O60-O75 Komplikationer"
-                + " vid värkarbete och förlossning</div><div>O80-O84 Förlossning</div><div>O85-O92 Komplikationer huvudsakligen sammanhängande"
+                + "grund av problem relaterade till fostret och amnionhålan samt befarade förlossningsproblem"
+                + "</div><div>O60-O75 Komplikationer"
+                + " vid värkarbete och förlossning</div><div>O80-O84 Förlossning</div><div>O85-O92 Komplikationer "
+                + "huvudsakligen sammanhängande"
                 + " med barnsängstiden</div><div>O94-O99 Andra obstetriska tillstånd som ej klassificeras på annan plats</div>"
                 + "\"\t\"\"\t\"\"\t\"\"\t\"Kapitelkod\"\n";
 
@@ -166,8 +168,10 @@ class IcdCodeConverterTest {
                 + "Detta kapitel innehåller följande avsnitt:<div>O00-O08 Graviditet som avslutas med abort</div><div>O10-O16 "
                 + "Ödem, proteinuri och hypertoni under graviditet, förlossning och barnsängstid</div><div>O20-O29 Andra sjukdomar"
                 + " hos den blivande modern i huvudsak sammanhängande med graviditeten</div><div>O30-O49 Vård under graviditet på "
-                + "grund av problem relaterade till fostret och amnionhålan samt befarade förlossningsproblem</div><div>O60-O75 Komplikationer"
-                + " vid värkarbete och förlossning</div><div>O80-O84 Förlossning</div><div>O85-O92 Komplikationer huvudsakligen sammanhängande"
+                + "grund av problem relaterade till fostret och amnionhålan samt befarade förlossningsproblem"
+                + "</div><div>O60-O75 Komplikationer"
+                + " vid värkarbete och förlossning</div><div>O80-O84 Förlossning</div><div>O85-O92 Komplikationer "
+                + "huvudsakligen sammanhängande"
                 + " med barnsängstiden</div><div>O94-O99 Andra obstetriska tillstånd som ej klassificeras på annan plats</div>"
                 + "\"\t\"\"\t\"\"\t\"\"\t\"Kapitelkod\"\n";
 
