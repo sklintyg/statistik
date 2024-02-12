@@ -169,45 +169,31 @@ public class Icd10Test {
     }
 
     @Test
-    public void getFirstkodFromDigit4File() {
+    public void getFirstkodFromIcd10File() {
         Icd10.Kod kod = icd10.getKod("A000");
         assertEquals("A000", kod.getId());
         assertEquals("Kolera orsakad av Vibrio cholerae 01, biovar cholerae", kod.getName());
     }
 
     @Test
-    public void getLastKodFromDigit4File() {
+    public void getLastKodFromFromIcd10File() {
         Icd10.Kod kod = icd10.getKod("Z999");
         assertEquals("Z999", kod.getId());
         assertEquals("Beroende av ospecificerade maskinella och andra hjälpmedel", kod.getName());
     }
 
     @Test
-    public void getKodWithDaggerFromDigit4File() {
+    public void getKodWithAsteriskFromIcd10File() {
+        Icd10.Kod kod = icd10.getKod("D630");
+        assertEquals("D630", kod.getId());
+        assertEquals("Anemi vid tumörsjukdom", kod.getName());
+    }
+
+    @Test
+    public void getKodWithDaggerFromIcd10File() {
         Icd10.Kod kod = icd10.getKod("A022");
         assertEquals("A022", kod.getId());
         assertEquals("Lokaliserade salmonellainfektioner", kod.getName());
-    }
-
-    @Test
-    public void getFirstkodFromDigit5File() {
-        Icd10.Kod kod = icd10.getKod("A083A");
-        assertEquals("A083A", kod.getId());
-        assertEquals("Coxsackievirusenterit", kod.getName());
-    }
-
-    @Test
-    public void getLastkodFromDigit5File() {
-        Icd10.Kod kod = icd10.getKod("Z966X");
-        assertEquals("Z966X", kod.getId());
-        assertEquals("Förekomst av ortopediskt ledimplantat med annan eller ospecificerad lokalisation", kod.getName());
-    }
-
-    @Test
-    public void getKodWithAsteriskFromDigit5File() {
-        Icd10.Kod kod = icd10.getKod("G550A");
-        assertEquals("G550A", kod.getId());
-        assertEquals("Kompression av nervrötter och nervplexus i halsryggen vid tumörsjukdom", kod.getName());
     }
 
     @Test
