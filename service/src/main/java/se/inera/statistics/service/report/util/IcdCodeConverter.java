@@ -33,10 +33,16 @@ public class IcdCodeConverter {
     private static final int DIAGNOSIS_CODE_INDEX = 0;
     private static final int DIAGNOSIS_TITLE_INDEX = 3;
 
+    /**
+     * Convert to code handles Diagnosis codes. It ignores codes of length 3 since these are considered Diagnosis chapters
+     */
     public Kod convertToCode(String line, Collection<Kategori> categories) {
         return toCode(line, categories);
     }
 
+    /**
+     * Convert to Category handles Diagnosis chapters. It only considers diagnosis codes with three characters.
+     */
     public Kategori convertToCategory(String line, Collection<Avsnitt> episode) {
         return toCategory(line, episode);
     }
@@ -73,7 +79,7 @@ public class IcdCodeConverter {
         if (code.length() != 3) {
             return null;
         }
-        
+
         final var description = getDescription(text);
         final var episode = find(code, episodes);
 
