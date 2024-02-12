@@ -39,6 +39,8 @@ import se.inera.statistics.service.report.util.Icd10.Kapitel;
 public class Icd10Test {
 
     @Autowired
+    private IcdCodeConverter codeConverter;
+    @Autowired
     private Icd10 icd10;
 
     @Test

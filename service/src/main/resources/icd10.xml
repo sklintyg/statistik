@@ -34,11 +34,9 @@
     </bean>
     
     <bean class="org.springframework.core.io.ClassPathResource" id="icd10KodFile" >
-        <constructor-arg value="diagnoskoder/icd10se/digit4.txt"/>
-    </bean>
-    <bean class="org.springframework.core.io.ClassPathResource" id="icd10VwxyKodFile" >
-        <constructor-arg value="diagnoskoder/icd10se/digit5.txt"/>
+        <constructor-arg value="diagnoskoder/icd10se/icd-10-se.tsv"/>
     </bean>
 
     <bean class="se.inera.statistics.service.report.util.Icd10" />
+    <bean class="se.inera.statistics.service.report.util.IcdCodeConverter" />
 </beans>

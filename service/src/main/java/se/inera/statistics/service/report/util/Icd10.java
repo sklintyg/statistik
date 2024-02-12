@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.report.util;
 
+import com.google.common.base.CharMatcher;
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
@@ -38,8 +39,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
-
-import com.google.common.base.CharMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +84,7 @@ public class Icd10 {
     private Resource icd10KodFile;
 
     @Autowired
-    private Resource icd10VwxyKodFile;
+    private IcdCodeConverter icdCodeConverter;
 
     private List<Kapitel> kapitels;
 
@@ -134,15 +133,19 @@ public class Icd10 {
             populateIdMap(icd10KapitelFile, idToKapitelMap, Kapitel::valueOf);
             populateIdMap(icd10AvsnittFile, idToAvsnittMap, s -> Avsnitt.valueOf(s, idToKapitelMap.values()));
             populateIdMap(icd10KategoriFile, idToKategoriMap, s -> Kategori.valueOf(s, idToAvsnittMap.values()));
-            populateIdMap(icd10KodFile, idToKodMap, s -> Kod.valueOf(s, idToKategoriMap.values()));
-            populateIdMap(icd10VwxyKodFile, idToKodMap, s -> Kod.valueOf(s, idToKategoriMap.values()));
+            populateIdMap(icd10KodFile, idToKodMap, s -> icdCodeConverter.convert(s, idToKategoriMap.values()));
             populateInternalIcd10();
             kapitels = new ArrayList<>(idToKapitelMap.values());
             kapitels.sort(Comparator.comparing(Kapitel::getId));
             intIdMap = Stream
                 .of(idToKategoriMap.values(), idToAvsnittMap.values(), idToKapitelMap.values(), idToKodMap.values(), internalIcd10)
                 .flatMap(Collection::stream)
-                .collect(Collectors.toMap(Id::toInt, java.util.function.Function.identity()));
+                .collect(Collectors.toMap(
+                        Id::toInt,
+                        java.util.function.Function.identity(),
+                        (existingValue, newValue) -> newValue
+                    )
+                );
         } catch (IOException e) {
             LOG.error("Could not parse ICD10: " + e);
             throw new RuntimeException(e);
