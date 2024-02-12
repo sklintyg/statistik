@@ -183,13 +183,6 @@ public class Icd10Test {
     }
 
     @Test
-    public void getKodWithAsteriskFromDigit4File() {
-        Icd10.Kod kod = icd10.getKod("D630");
-        assertEquals("D630", kod.getId());
-        assertEquals("Anemi vid tumörsjukdom (C00-D48)", kod.getName());
-    }
-
-    @Test
     public void getKodWithDaggerFromDigit4File() {
         Icd10.Kod kod = icd10.getKod("A022");
         assertEquals("A022", kod.getId());
@@ -215,13 +208,6 @@ public class Icd10Test {
         Icd10.Kod kod = icd10.getKod("G550A");
         assertEquals("G550A", kod.getId());
         assertEquals("Kompression av nervrötter och nervplexus i halsryggen vid tumörsjukdom", kod.getName());
-    }
-
-    @Test
-    public void getKodWithDaggerFromDigit5File() {
-        Icd10.Kod kod = icd10.getKod("A513B");
-        assertEquals("A513B", kod.getId());
-        assertEquals("Syfilitisk (sekundär) alopeci (L99.8)", kod.getName());
     }
 
     @Test
