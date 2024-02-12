@@ -132,8 +132,8 @@ public class Icd10 {
         try {
             populateIdMap(icd10KapitelFile, idToKapitelMap, Kapitel::valueOf);
             populateIdMap(icd10AvsnittFile, idToAvsnittMap, s -> Avsnitt.valueOf(s, idToKapitelMap.values()));
-            populateIdMap(icd10KategoriFile, idToKategoriMap, s -> Kategori.valueOf(s, idToAvsnittMap.values()));
-            populateIdMap(icd10KodFile, idToKodMap, s -> icdCodeConverter.convert(s, idToKategoriMap.values()));
+            populateIdMap(icd10KategoriFile, idToKategoriMap, s -> icdCodeConverter.convertToCategory(s, idToAvsnittMap.values()));
+            populateIdMap(icd10KodFile, idToKodMap, s -> icdCodeConverter.convertToCode(s, idToKategoriMap.values()));
             populateInternalIcd10();
             kapitels = new ArrayList<>(idToKapitelMap.values());
             kapitels.sort(Comparator.comparing(Kapitel::getId));
@@ -142,8 +142,7 @@ public class Icd10 {
                 .flatMap(Collection::stream)
                 .collect(Collectors.toMap(
                         Id::toInt,
-                        java.util.function.Function.identity(),
-                        (existingValue, newValue) -> newValue
+                        java.util.function.Function.identity()
                     )
                 );
         } catch (IOException e) {
@@ -485,7 +484,7 @@ public class Icd10 {
             super(id.toUpperCase(), name);
             this.avsnitt = avsnitt;
             this.kods = new ArrayList<>();
-            avsnitt.kategori.add(this);
+            avsnitt.getKategori().add(this);
             intId = icd10ToInt(getId(), Icd10RangeType.KATEGORI);
         }
 
@@ -554,7 +553,7 @@ public class Icd10 {
                 + "en mer detaljerad diagnoskod" : null);
             this.kategori = kategori;
             this.unknown = unknownKod;
-            kategori.kods.add(this);
+            kategori.getKods().add(this);
             if (unknownKod) {
                 kategori.unknownKod = this;
             }

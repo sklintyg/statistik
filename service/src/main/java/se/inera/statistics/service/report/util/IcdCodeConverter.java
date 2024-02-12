@@ -21,8 +21,10 @@ package se.inera.statistics.service.report.util;
 
 import java.util.Collection;
 import org.springframework.stereotype.Component;
+import se.inera.statistics.service.report.util.Icd10.Avsnitt;
 import se.inera.statistics.service.report.util.Icd10.Kategori;
 import se.inera.statistics.service.report.util.Icd10.Kod;
+import se.inera.statistics.service.report.util.Icd10.Range;
 
 @Component
 public class IcdCodeConverter {
@@ -31,17 +33,27 @@ public class IcdCodeConverter {
     private static final int DIAGNOSIS_CODE_INDEX = 0;
     private static final int DIAGNOSIS_TITLE_INDEX = 3;
 
-    public Kod convert(String line, Collection<Kategori> categories) {
-        return toDiagnosis(line, categories);
+    public Kod convertToCode(String line, Collection<Kategori> categories) {
+        return toCode(line, categories);
     }
 
-    private Kod toDiagnosis(String line, Collection<Kategori> categories) {
+    public Kategori convertToCategory(String line, Collection<Avsnitt> episode) {
+        return toCategory(line, episode);
+    }
+
+    private Kod toCode(String line, Collection<Kategori> categories) {
         final var text = line.replace("\"", "").split("\t");
         if (isDiagnosisChapter(text) || isDiagnosisGroup(text) || isNotActive(text) || isHeading(text)) {
             return null;
         }
-        final var code = text[DIAGNOSIS_CODE_INDEX].replace(".", "");
-        final var description = text[DIAGNOSIS_TITLE_INDEX];
+
+        final var code = getCode(text);
+
+        if (code.length() == 3) {
+            return null;
+        }
+
+        final var description = getDescription(text);
         final var kategori = find(code, categories);
 
         if (kategori == null) {
@@ -51,13 +63,42 @@ public class IcdCodeConverter {
         return new Kod(code, description, kategori);
     }
 
-    private static Kategori find(String id, Collection<Kategori> categories) {
-        for (Kategori kategori : categories) {
-            if (kategori.contains(id)) {
-                return kategori;
+    private Kategori toCategory(String line, Collection<Avsnitt> episodes) {
+        final var text = line.replace("\"", "").split("\t");
+        if (isDiagnosisChapter(text) || isDiagnosisGroup(text) || isNotActive(text) || isHeading(text)) {
+            return null;
+        }
+        final var code = getCode(text);
+
+        if (code.length() != 3) {
+            return null;
+        }
+        
+        final var description = getDescription(text);
+        final var episode = find(code, episodes);
+
+        if (episode == null) {
+            return null;
+        }
+
+        return new Kategori(code, description, episode);
+    }
+
+    private static <T extends Range> T find(String id, Collection<T> ranges) {
+        for (T range : ranges) {
+            if (range.contains(id)) {
+                return range;
             }
         }
         return null;
+    }
+
+    private static String getDescription(String[] text) {
+        return text[DIAGNOSIS_TITLE_INDEX];
+    }
+
+    private static String getCode(String[] text) {
+        return text[DIAGNOSIS_CODE_INDEX].replace(".", "");
     }
 
     private boolean isHeading(String[] text) {
