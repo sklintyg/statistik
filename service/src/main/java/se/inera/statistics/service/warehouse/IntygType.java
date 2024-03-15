@@ -45,14 +45,15 @@ public enum IntygType {
     TSTRK1009("TSTRK1009", "tstrk1009", "TSTRK1009", "TSTRK1009 Transportstyrelsen Läkares anmälan", true),
     TSTRK1062("TSTRK1062", "tstrk1062", "TSTRK1062", "TSTRK1062 Transportstyrelsens läkarintyg ADHD", true),
     AG114("AG1-14", "ag114", "AG1-14", "AG1-14 Läkarintyg om arbetsförmåga - sjuklöneperioden", true),
-    AG7804("AG7804", "ag7804", "AG7804", "AG7804 Läkarintyg om arbetsförmåga - arbetsgivare", true);
+    AG7804("AG7804", "ag7804", "AG7804", "AG7804 Läkarintyg om arbetsförmåga - arbetsgivare", true),
+    FK7211("IGRAV", "fk7211", "FK 7211", "Intyg om graviditet", true);
 
     private static final ImmutableSet<IntygType> INCLUDED_IN_KOMPLETTERING_REPORT = ImmutableSet.of(LISJP, LUSE, LUAE_NA, LUAE_FS);
 
     private static final ImmutableSet<IntygType> IS_SJUKPENNING = ImmutableSet.of(LISJP, FK7263);
 
     private static final ImmutableList<IntygType> INCLUDED_IN_INTYG_TOTALT_REPORT = ImmutableList.of(
-        AF00213, AF00251, AG114, AG7804, DB, DOI, LISJP, LUSE, LUAE_NA, LUAE_FS, TSTRK1009, TSTRK1007, TSTRK1031, TSTRK1062);
+        AF00213, AF00251, AG114, AG7804, DB, DOI, LISJP, LUSE, LUAE_NA, LUAE_FS, TSTRK1009, TSTRK1007, TSTRK1031, TSTRK1062, FK7211);
 
     private static final ImmutableList<IntygType> INCLUDED_IN_INTYG_FILTER = ImmutableList.of(SJUKPENNING, LUSE, LUAE_NA, LUAE_FS);
 
