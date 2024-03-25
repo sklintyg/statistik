@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.schemavalidation;
 
+import java.util.Collections;
 import javax.annotation.Nonnull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -124,6 +125,8 @@ public class SchemaValidator {
                 return ag114Validator.validateSchematron(data);
             case AG7804:
                 return ag7804Validator.validateSchematron(data);
+            case FK7211:
+                return new ValidateXmlResponse(Collections.emptyList());
             default:
                 return new ValidateXmlResponse("Unknown certificate type: " + certificateType);
         }
