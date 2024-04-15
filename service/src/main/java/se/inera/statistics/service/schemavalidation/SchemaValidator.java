@@ -126,6 +126,7 @@ public class SchemaValidator {
             case AG7804:
                 return ag7804Validator.validateSchematron(data);
             case FK7211:
+            case FK7443:
                 return new ValidateXmlResponse(Collections.emptyList());
             default:
                 return new ValidateXmlResponse("Unknown certificate type: " + certificateType);

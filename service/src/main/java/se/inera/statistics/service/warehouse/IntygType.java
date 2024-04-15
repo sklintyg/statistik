@@ -46,7 +46,8 @@ public enum IntygType {
     TSTRK1062("TSTRK1062", "tstrk1062", "TSTRK1062", "TSTRK1062 Transportstyrelsens läkarintyg ADHD", true),
     AG114("AG1-14", "ag114", "AG1-14", "AG1-14 Läkarintyg om arbetsförmåga - sjuklöneperioden", true),
     AG7804("AG7804", "ag7804", "AG7804", "AG7804 Läkarintyg om arbetsförmåga - arbetsgivare", true),
-    FK7211("IGRAV", "fk7211", "FK 7211", "Intyg om graviditet", true);
+    FK7211("IGRAV", "fk7211", "FK 7211", "Intyg om graviditet", true),
+    FK7443("ITFP", "fk7443", "FK 7443", "Intyg om tillfällig föräldrapenning", true);
 
     private static final ImmutableSet<IntygType> INCLUDED_IN_KOMPLETTERING_REPORT = ImmutableSet.of(LISJP, LUSE, LUAE_NA, LUAE_FS);
 
