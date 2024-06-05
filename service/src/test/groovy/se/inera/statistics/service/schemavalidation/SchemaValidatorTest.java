@@ -95,109 +95,109 @@ class SchemaValidatorTest {
     }
 
     @Test
-    void shouldUseLisjpValidatorIfCertificateTypeIsLISJP() {
+    void shouldUseLisjpValidatorIfCertificateTypeIsLisjp() {
         schemaValidator.validate(IntygType.LISJP, "1", "data");
         verify(lisjpValidator, Mockito.times(1)).validateSchematron("data");
     }
 
     @Test
-    void shouldUseLuaeFsValidatorIfCertificateTypeIsLUAEFS() {
+    void shouldUseLuaeFsValidatorIfCertificateTypeIsLuaeFs() {
         schemaValidator.validate(IntygType.LUAE_FS, "1", "data");
         verify(luaeFsValidator, Mockito.times(1)).validateSchematron("data");
     }
 
     @Test
-    void shouldUseLuaeNaValidatorIfCertificateTypeIsLUAEFS() {
+    void shouldUseLuaeNaValidatorIfCertificateTypeIsLuaeNa() {
         schemaValidator.validate(IntygType.LUAE_NA, "1", "data");
         verify(luaeNaValidator, Mockito.times(1)).validateSchematron("data");
     }
 
     @Test
-    void shouldUseLuseValidatorValidatorIfCertificateTypeIsLUSE() {
+    void shouldUseLuseValidatorValidatorIfCertificateTypeIsLuse() {
         schemaValidator.validate(IntygType.LUSE, "1", "data");
         verify(luseValidator, Mockito.times(1)).validateSchematron("data");
     }
 
     @Test
-    void shouldUseDbValidatorIfCertificateTypeIsDB() {
+    void shouldUseDbValidatorIfCertificateTypeIsDb() {
         schemaValidator.validate(IntygType.DB, "1", "data");
         verify(dbValidator, Mockito.times(1)).validateSchematron("data");
     }
 
     @Test
-    void shouldUseDoiValidatorIfCertificateTypeIsDOI() {
+    void shouldUseDoiValidatorIfCertificateTypeIsDoi() {
         schemaValidator.validate(IntygType.DOI, "1", "data");
         verify(doiValidator, Mockito.times(1)).validateSchematron("data");
     }
 
     @Test
-    void shouldUseAf00213ValidatorIfCertificateTypeIsAF00213() {
+    void shouldUseAf00213ValidatorIfCertificateTypeIsAf00213() {
         schemaValidator.validate(IntygType.AF00213, "1", "data");
         verify(af00213Validator, Mockito.times(1)).validateSchematron("data");
     }
 
     @Test
-    void shouldUseAf00251ValidatorIfCertificateTypeIsAF00213() {
+    void shouldUseAf00251ValidatorIfCertificateTypeIsAf00213() {
         schemaValidator.validate(IntygType.AF00251, "1", "data");
         verify(af00251Validator, Mockito.times(1)).validateSchematron("data");
     }
 
     @Test
-    void shouldUseTsBasV6ValidatorIfCertificateTypeIsTSTRK1007AndCertificateVersionStartsWith6() {
+    void shouldUseTsBasV6ValidatorIfCertificateTypeIsTstrk1007AndCertificateVersionStartsWith6() {
         schemaValidator.validate(IntygType.TSTRK1007, "6", "data");
         verify(tsBasV6Validator, Mockito.times(1)).validateSchematron("data");
     }
 
     @Test
-    void shouldUseTsBasV7ValidatorIfCertificateTypeIsTSTRK1007AndCertificateVersionStartsWith7() {
+    void shouldUseTsBasV7ValidatorIfCertificateTypeIsTstrk1007AndCertificateVersionStartsWith7() {
         schemaValidator.validate(IntygType.TSTRK1007, "7", "data");
         verify(tsBasV7Validator, Mockito.times(1)).validateSchematron("data");
     }
 
     @Test
-    void shouldReturnValidationErrorIfCertificateTypeIsTSTRK1007AndHasUnknownCertificateVersion() {
+    void shouldReturnValidationErrorIfCertificateTypeIsTstrk1007AndHasUnknownCertificateVersion() {
         final var result = schemaValidator.validate(IntygType.TSTRK1007, "11", "data");
         assertEquals(1, result.getValidationErrors().size());
     }
 
     @Test
-    void shouldUseTstrk1009ValidatorIfCertificateTypeIsTSTRK1009() {
+    void shouldUseTstrk1009ValidatorIfCertificateTypeIsTstrk1009() {
         schemaValidator.validate(IntygType.TSTRK1009, "1", "data");
         verify(tstrk1009Validator, Mockito.times(1)).validateSchematron("data");
     }
 
     @Test
-    void shouldUseTsDiabetesV3ValidatorIfCertificateTypeIsTSTRK1031AndCertificateVersionStartsWith3() {
+    void shouldUseTsDiabetesV3ValidatorIfCertificateTypeIsTstrk1031AndCertificateVersionStartsWith3() {
         schemaValidator.validate(IntygType.TSTRK1031, "3", "data");
         verify(tsDiabetesV3Validator, Mockito.times(1)).validateSchematron("data");
     }
 
     @Test
-    void shouldUseTsDiabetesV4ValidatorIfCertificateTypeIsTSTRK1031AndCertificateVersionStartsWith4() {
+    void shouldUseTsDiabetesV4ValidatorIfCertificateTypeIsTstrk1031AndCertificateVersionStartsWith4() {
         schemaValidator.validate(IntygType.TSTRK1031, "4", "data");
         verify(tsDiabetesV4Validator, Mockito.times(1)).validateSchematron("data");
     }
 
     @Test
-    void shouldReturnValidationErrorIfCertificateTypeIsTSTRK1031AndHasUnknownCertificateVersion() {
+    void shouldReturnValidationErrorIfCertificateTypeIsTstrk1031AndHasUnknownCertificateVersion() {
         final var result = schemaValidator.validate(IntygType.TSTRK1031, "11", "data");
         assertEquals(1, result.getValidationErrors().size());
     }
 
     @Test
-    void shouldUseTstrk1062ValidatorIfCertificateTypeIsTSTRK1062() {
+    void shouldUseTstrk1062ValidatorIfCertificateTypeIsTstrk1062() {
         schemaValidator.validate(IntygType.TSTRK1062, "1", "data");
         verify(tstrk1062Validator, Mockito.times(1)).validateSchematron("data");
     }
 
     @Test
-    void shouldUseAg114ValidatorValidatorIfCertificateTypeIsAG114() {
+    void shouldUseAg114ValidatorValidatorIfCertificateTypeIsAg114() {
         schemaValidator.validate(IntygType.AG114, "1", "data");
         verify(ag114Validator, Mockito.times(1)).validateSchematron("data");
     }
 
     @Test
-    void shouldUseAg7804ValidatorValidatorIfCertificateTypeIsAG7804() {
+    void shouldUseAg7804ValidatorValidatorIfCertificateTypeIsAg7804() {
         schemaValidator.validate(IntygType.AG7804, "1", "data");
         verify(ag7804Validator, Mockito.times(1)).validateSchematron("data");
     }

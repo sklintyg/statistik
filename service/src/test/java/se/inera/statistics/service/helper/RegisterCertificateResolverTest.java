@@ -55,31 +55,31 @@ class RegisterCertificateResolverTest {
     class FkHelper {
 
         @Test
-        void shouldUseFkRegisterCertificateHelperIfCertificateTypeIsLISJP() {
+        void shouldUseFkRegisterCertificateHelperIfCertificateTypeIsLisjp() {
             final var result = registerCertificateResolver.resolveIntygHelper(IntygType.LISJP);
             assertEquals(FkRegisterCertificateHelper.class, result.getClass());
         }
 
         @Test
-        void shouldUseFkRegisterCertificateHelperIfCertificateTypeIsLUSE() {
+        void shouldUseFkRegisterCertificateHelperIfCertificateTypeIsLuse() {
             final var result = registerCertificateResolver.resolveIntygHelper(IntygType.LUSE);
             assertEquals(FkRegisterCertificateHelper.class, result.getClass());
         }
 
         @Test
-        void shouldUseFkRegisterCertificateHelperIfCertificateTypeIsFK7263() {
+        void shouldUseFkRegisterCertificateHelperIfCertificateTypeIsFk7263() {
             final var result = registerCertificateResolver.resolveIntygHelper(IntygType.FK7263);
             assertEquals(FkRegisterCertificateHelper.class, result.getClass());
         }
 
         @Test
-        void shouldUseFkRegisterCertificateHelperIfCertificateTypeIsLUAENA() {
+        void shouldUseFkRegisterCertificateHelperIfCertificateTypeIsLuaeNa() {
             final var result = registerCertificateResolver.resolveIntygHelper(IntygType.LUAE_NA);
             assertEquals(FkRegisterCertificateHelper.class, result.getClass());
         }
 
         @Test
-        void shouldUseFkRegisterCertificateHelperIfCertificateTypeIsLUAEFS() {
+        void shouldUseFkRegisterCertificateHelperIfCertificateTypeIsLuaeFs() {
             final var result = registerCertificateResolver.resolveIntygHelper(IntygType.LUAE_FS);
             assertEquals(FkRegisterCertificateHelper.class, result.getClass());
         }
@@ -89,7 +89,7 @@ class RegisterCertificateResolverTest {
     class AG114Helper {
 
         @Test
-        void shouldUseAg114RegisterCertificateHelperIfCertificateTypeIsAG114() {
+        void shouldUseAg114RegisterCertificateHelperIfCertificateTypeIsAg114() {
             final var result = registerCertificateResolver.resolveIntygHelper(IntygType.AG114);
             assertEquals(Ag114RegisterCertificateHelper.class, result.getClass());
         }
@@ -99,7 +99,7 @@ class RegisterCertificateResolverTest {
     class AG7804Helper {
 
         @Test
-        void shouldUseAg7804RegisterCertificateHelperIfCertificateTypeIsAG7804() {
+        void shouldUseAg7804RegisterCertificateHelperIfCertificateTypeIsAg7804() {
             final var result = registerCertificateResolver.resolveIntygHelper(IntygType.AG7804);
             assertEquals(Ag7804RegisterCertificateHelper.class, result.getClass());
         }
@@ -109,49 +109,49 @@ class RegisterCertificateResolverTest {
     class CertificateHelper {
 
         @Test
-        void shouldUseRegisterCertificateHelperIfCertificateTypeIsDB() {
+        void shouldUseRegisterCertificateHelperIfCertificateTypeIsDb() {
             final var result = registerCertificateResolver.resolveIntygHelper(IntygType.DB);
             assertEquals(RegisterCertificateHelper.class, result.getClass());
         }
 
         @Test
-        void shouldUseRegisterCertificateHelperIfCertificateTypeIsDOI() {
+        void shouldUseRegisterCertificateHelperIfCertificateTypeIsDoi() {
             final var result = registerCertificateResolver.resolveIntygHelper(IntygType.DOI);
             assertEquals(RegisterCertificateHelper.class, result.getClass());
         }
 
         @Test
-        void shouldUseRegisterCertificateHelperIfCertificateTypeIsAF00213() {
+        void shouldUseRegisterCertificateHelperIfCertificateTypeIsAf00213() {
             final var result = registerCertificateResolver.resolveIntygHelper(IntygType.AF00213);
             assertEquals(RegisterCertificateHelper.class, result.getClass());
         }
 
         @Test
-        void shouldUseRegisterCertificateHelperIfCertificateTypeIsAF00251() {
+        void shouldUseRegisterCertificateHelperIfCertificateTypeIsAf00251() {
             final var result = registerCertificateResolver.resolveIntygHelper(IntygType.AF00251);
             assertEquals(RegisterCertificateHelper.class, result.getClass());
         }
 
         @Test
-        void shouldUseRegisterCertificateHelperIfCertificateTypeIsTSTRK1007() {
+        void shouldUseRegisterCertificateHelperIfCertificateTypeIsTstrk1007() {
             final var result = registerCertificateResolver.resolveIntygHelper(IntygType.TSTRK1007);
             assertEquals(RegisterCertificateHelper.class, result.getClass());
         }
 
         @Test
-        void shouldUseRegisterCertificateHelperIfCertificateTypeIsTSTRK1031() {
+        void shouldUseRegisterCertificateHelperIfCertificateTypeIsTstrk1031() {
             final var result = registerCertificateResolver.resolveIntygHelper(IntygType.TSTRK1031);
             assertEquals(RegisterCertificateHelper.class, result.getClass());
         }
 
         @Test
-        void shouldUseRegisterCertificateHelperIfCertificateTypeIsTSTRK1009() {
+        void shouldUseRegisterCertificateHelperIfCertificateTypeIsTstrk1009() {
             final var result = registerCertificateResolver.resolveIntygHelper(IntygType.TSTRK1009);
             assertEquals(RegisterCertificateHelper.class, result.getClass());
         }
 
         @Test
-        void shouldUseRegisterCertificateHelperIfCertificateTypeIsTSTRK1062() {
+        void shouldUseRegisterCertificateHelperIfCertificateTypeIsTstrk1062() {
             final var result = registerCertificateResolver.resolveIntygHelper(IntygType.TSTRK1062);
             assertEquals(RegisterCertificateHelper.class, result.getClass());
         }
