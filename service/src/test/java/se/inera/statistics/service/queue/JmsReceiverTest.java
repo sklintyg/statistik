@@ -174,10 +174,10 @@ public class JmsReceiverTest {
     }
 
     @Test
-    public void testOnMessageIntygKnowTypeFK7211() throws MessageNotWriteableException, IOException {
+    public void testOnMessageIntygKnowTypeFK7210() throws MessageNotWriteableException, IOException {
         String intyg = "intyg";
         String correlationId = "123";
-        String certificateType = "fk7211";
+        String certificateType = "fk7210";
 
         Message rawMessage = getIntygMessage(intyg, correlationId, certificateType, JmsReceiver.CREATED);
 
@@ -188,10 +188,10 @@ public class JmsReceiverTest {
     }
 
     @Test
-    public void testOnMessageIntygKnowTypeFK7443() throws MessageNotWriteableException, IOException {
+    public void testOnMessageIntygKnowTypeFK7472() throws MessageNotWriteableException, IOException {
         String intyg = "intyg";
         String correlationId = "123";
-        String certificateType = "fk7443";
+        String certificateType = "fk7472";
 
         Message rawMessage = getIntygMessage(intyg, correlationId, certificateType, JmsReceiver.CREATED);
 
@@ -201,4 +201,32 @@ public class JmsReceiverTest {
             .accept(Mockito.eq(EventType.CREATED), Mockito.eq(intyg), Mockito.eq(correlationId), Mockito.anyLong());
     }
 
+    @Test
+    public void testOnMessageIntygKnowTypeFK3226() throws MessageNotWriteableException, IOException {
+        String intyg = "intyg";
+        String correlationId = "123";
+        String certificateType = "fk3226";
+
+        Message rawMessage = getIntygMessage(intyg, correlationId, certificateType, JmsReceiver.CREATED);
+
+        jmsReceiver.onMessage(rawMessage);
+
+        verify(receiver, times(1))
+            .accept(Mockito.eq(EventType.CREATED), Mockito.eq(intyg), Mockito.eq(correlationId), Mockito.anyLong());
+    }
+
+    @Test
+    public void testOnMessageIntygKnowTypeFK7809() throws MessageNotWriteableException, IOException {
+        String intyg = "intyg";
+        String correlationId = "123";
+        String certificateType = "fk7809";
+
+        Message rawMessage = getIntygMessage(intyg, correlationId, certificateType, JmsReceiver.CREATED);
+
+        jmsReceiver.onMessage(rawMessage);
+
+        verify(receiver, times(1))
+            .accept(Mockito.eq(EventType.CREATED), Mockito.eq(intyg), Mockito.eq(correlationId), Mockito.anyLong());
+    }
+    
 }

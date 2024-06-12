@@ -59,19 +59,8 @@ public class RegisterCertificateResolver {
                 return ag114RegisterCertificateHelper;
             case AG7804:
                 return ag7804RegisterCertificateHelper;
-            case DB:
-            case DOI:
-            case AF00213:
-            case AF00251:
-            case TSTRK1007:
-            case TSTRK1031:
-            case TSTRK1009:
-            case TSTRK1062:
-            case FK7211:
-            case FK7443:
-                return registerCertificateHelper;
             default:
-                throw new RuntimeException("Unknown certificate type: " + intygType);
+                return registerCertificateHelper;
         }
     }
 
