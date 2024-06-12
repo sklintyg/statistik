@@ -46,10 +46,10 @@ public enum IntygType {
     TSTRK1062("TSTRK1062", "tstrk1062", "TSTRK1062", "TSTRK1062 Transportstyrelsens läkarintyg ADHD", true),
     AG114("AG1-14", "ag114", "AG1-14", "AG1-14 Läkarintyg om arbetsförmåga - sjuklöneperioden", true),
     AG7804("AG7804", "ag7804", "AG7804", "AG7804 Läkarintyg om arbetsförmåga - arbetsgivare", true),
-    FK7210("IGRAV", "fk7210", "FK 7210", "Intyg om graviditet", true),
-    FK7472("ITFP", "fk7472", "FK 7472", "Intyg om tillfällig föräldrapenning", true),
-    FK3226("LUNSP", "fk3226", "FK 3226", "Läkarutlåtande för närståendepenning", true),
-    FK7809("LUMEK", "fk7809", "FK 7809", "Läkarutlåtande för merkostnadsersättning", true);
+    FK7210("IGRAV", "fk7210", "FK 7210", "FK 7210 Intyg om graviditet", true),
+    FK7472("ITFP", "fk7472", "FK 7472", "FK 7472 Intyg om tillfällig föräldrapenning", true),
+    FK3226("LUNSP", "fk3226", "FK 3226", "FK 3226 Läkarutlåtande för närståendepenning", true),
+    FK7809("LUMEK", "fk7809", "FK 7809", "FK 7809 Läkarutlåtande för merkostnadsersättning", true);
 
     private static final ImmutableSet<IntygType> INCLUDED_IN_KOMPLETTERING_REPORT = ImmutableSet.of(LISJP, LUSE, LUAE_NA, LUAE_FS,
         FK7472, FK3226, FK7809);
