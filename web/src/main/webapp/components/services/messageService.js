@@ -82,7 +82,7 @@ angular.module('StatisticsApp').factory('messageService',
       function _getPropertyInLanguage(lang, key, variables) {
         _checkResources();
 
-        var normalizedKey = angular.lowercase(key);
+        var normalizedKey = key.toLowerCase();
 
         var message = _messageResources[lang][normalizedKey];
 
