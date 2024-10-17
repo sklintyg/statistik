@@ -2,32 +2,32 @@
   "name": "statistik",
   "version": "0.0.0",
   "dependencies": {
-    "jquery": "3.4.1",
-    "angular": "1.8.3",
-    "angular-route": "1.8.3",
-    "angular-cookies": "1.8.3",
-    "angular-sanitize": "1.8.3",
-    "angular-animate": "1.8.3",
-    "angular-i18n": "1.8.3",
-    "bootstrap": "3.4.1",
-    "bootstrap-sass": "3.4.1",
-    "angular-bootstrap": "2.5.0",
-    "bootstrap-multiselect": "0.9.15",
-    "outdated-browser": "1.1.5",
-    "lodash": "4.17.15",
-    "stackblur-canvas": "1.4.1",
-    "rgb-color": "v1.2.3",
-    "canvg-canvg": "v1.5.3",
+    "jquery": "^3.7.1",
+    "angular": "^1.8.3",
+    "angular-route": "^1.8.3",
+    "angular-cookies": "^1.8.3",
+    "angular-sanitize": "^1.8.3",
+    "angular-animate": "^1.8.3",
+    "angular-i18n": "^1.8.3",
+    "bootstrap": "^5.3.3",
+    "bootstrap-sass": "^3.4.3",
+    "angular-bootstrap": "^2.5.0",
+    "bootstrap-multiselect": "^1.1.2",
+    "outdated-browser": "^1.1.5",
+    "lodash": "^4.17.21",
+    "stackblur-canvas": "^2.7.0",
+    "rgb-color": "^2.1.2",
+    "canvg-canvg": "^4.0.2",
     "momentjs": "2.24.0",
-    "dropzone": "4.3.0",
-    "ngstorage": "0.3.11",
-    "highcharts": "11.4.8",
-    "font-awesome": "fontawesome#^5.15.1",
-    "pdfmake": "0.1.59"
+    "dropzone": "^5.9.3",
+    "ngstorage": "^0.3.11",
+    "highcharts": "^11.4.8",
+    "font-awesome": "^6.6.0",
+    "pdfmake": "^0.2.14"
   },
   "devDependencies": {
-    "angular-mocks": "1.8.3",
-    "angular-scenario": "1.8.3"
+    "angular-mocks": "^1.8.3",
+    "angular-scenario": "^1.8.3"
   },
   "overrides": {
     "angular-i18n": {
@@ -52,6 +52,17 @@
     }
   },
   "resolutions": {
-    "angular": "1.8.3"
+    "angular": "1.8.3",
+    "jquery": "^3.7.1",
+    "bootstrap": ">= 2.3.2",
+    "bootstrap-sass": "^3.4.3",
+    "bootstrap-multiselect": "^1.1.2",
+    "lodash": "^4.17.21",
+    "stackblur-canvas": "^2.7.0",
+    "rgb-color": "^2.1.2",
+    "canvg-canvg": "^4.0.2",
+    "dropzone": "^5.9.3",
+    "font-awesome": "^6.6.0",
+    "pdfmake": "^0.2.14"
   }
 }

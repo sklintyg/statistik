@@ -21,7 +21,7 @@ filter-active-selection {
     }
   }
 
-  @media (max-width: $filterWidth * $number + $paddingWidth) {
+  @media (max-width: ($filterWidth * $number) + $paddingWidth) {
     .number-of-active-filters-#{$number} {
       filter-selection-list {
         display: block;
@@ -40,11 +40,11 @@ filter-active-selection {
   }
 }
 
-  @include break-filter(2)
-  @include break-filter(3)
-  @include break-filter(4)
-  @include break-filter(5)
-  @include break-filter(6)
+  @include break-filter(2);
+  @include break-filter(3);
+  @include break-filter(4);
+  @include break-filter(5);
+  @include break-filter(6);
 
 .modal-width-90 {
   .modal-body {

@@ -59,6 +59,10 @@ node {
     nodeModulesDir = file("${project.projectDir}")
 }
 
+npmInstall {
+    args = ['install', '--legacy-peer-deps']
+}
+
 if (project.hasProperty('useMinifiedJavaScript')) {
     war {
         webAppDirName = 'build/webapp'

@@ -12,6 +12,10 @@ node {
     nodeModulesDir = file("${project.projectDir}")
 }
 
+npmInstall {
+    args = ['install', '--legacy-peer-deps']
+}
+
 tasks.withType(GroovyCompile).configureEach {
     options.encoding = "UTF-8" // for Java compilation
     groovyOptions.encoding = "UTF-8" // for Groovy compilation
