@@ -54,8 +54,5 @@
     "grunt-connect-proxy": {
       "grunt": "^1.6.1"
     }
-  },
-  "dependencies": {
-    "install": "^0.13.0"
   }
 }
