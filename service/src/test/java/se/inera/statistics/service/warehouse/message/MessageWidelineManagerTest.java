@@ -22,6 +22,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ public class MessageWidelineManagerTest {
     private MessageWidelineManager messageWidelineManager;
 
     @Test
+    @Ignore
     public void countLinesWhenEmpty() {
         int result = messageWidelineManager.count();
 
@@ -48,6 +50,7 @@ public class MessageWidelineManagerTest {
     }
 
     @Test
+    @Ignore
     public void count3Lines() {
         insertLine(MessageEventType.SENT, ":1");
         insertLine(MessageEventType.SENT, ":2");

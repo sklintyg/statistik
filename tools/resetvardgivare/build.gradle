@@ -18,7 +18,7 @@ artifacts { archives distZip }
 configurations { deployerJars }
 
 dependencies {
-    implementation "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
+    implementation "org.apache.groovy:groovy-all:${groovyAllVersion}"
     implementation "org.codehaus.gpars:gpars:${gparsVersion}"
     implementation "org.apache.commons:commons-dbcp2"
 

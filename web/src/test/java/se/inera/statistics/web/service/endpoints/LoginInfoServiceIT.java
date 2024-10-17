@@ -18,19 +18,19 @@
  */
 package se.inera.statistics.web.service.endpoints;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import java.util.Arrays;
 import java.util.Collections;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import se.inera.auth.AuthUtil;
 import se.inera.auth.model.User;
 import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
@@ -44,7 +44,7 @@ import se.inera.statistics.service.report.model.VerksamhetsTyp;
 import se.inera.statistics.web.api.LoginInfoService;
 import se.inera.statistics.web.model.LoginInfo;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = {"classpath:logininfo-integration-test.xml", "classpath:icd10.xml"})
 @DirtiesContext
 public class LoginInfoServiceIT {

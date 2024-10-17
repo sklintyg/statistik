@@ -18,13 +18,13 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
@@ -103,12 +103,14 @@ public class AvsnittConverterTest {
 
         //Then
         assertEquals("[period1]", data.getFemaleChart().getCategories().toString());
-        assertTrue(data.getFemaleChart().getSeries().toString(),
-            data.getFemaleChart().getSeries().toString().contains("A00-E90, G00-L99, N00-N99 Somatiska sjukdomar: [3]"));
+        assertTrue(
+            data.getFemaleChart().getSeries().toString().contains("A00-E90, G00-L99, N00-N99 Somatiska sjukdomar: [3]"),
+            data.getFemaleChart().getSeries().toString());
 
         assertEquals("[period1]", data.getMaleChart().getCategories().toString());
-        assertTrue(data.getMaleChart().getSeries().toString(),
-            data.getMaleChart().getSeries().toString().contains("A00-E90, G00-L99, N00-N99 Somatiska sjukdomar: [2]"));
+        assertTrue(
+            data.getMaleChart().getSeries().toString().contains("A00-E90, G00-L99, N00-N99 Somatiska sjukdomar: [2]"),
+            data.getMaleChart().getSeries().toString());
 
         assertEquals("[[;1, ;1, A00-B99 name1;3], [Period;1, Antal sjukfall totalt;1, Totalt;1, Kvinnor;1, Män;1]]",
             data.getTableData().getHeaders().toString());

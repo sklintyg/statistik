@@ -23,7 +23,7 @@ import org.apache.commons.io.FileUtils
 import org.junit.Test
 import org.springframework.core.io.ClassPathResource
 
-import static groovy.util.GroovyTestCase.assertEquals
+import static groovy.test.GroovyTestCase.assertEquals
 
 class AnonymiseraTsDiabetesTest {
 

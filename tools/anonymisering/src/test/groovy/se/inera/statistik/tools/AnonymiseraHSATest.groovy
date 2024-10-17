@@ -19,6 +19,7 @@
 package se.inera.statistik.tools
 
 import groovy.json.JsonSlurper
+import groovy.test.GroovyTestCase
 import se.inera.statistik.tools.anonymisering.base.AnonymiseraHsaId
 
 

@@ -10,7 +10,7 @@ gretty {
     def applicationDir = "${rootProject.projectDir}/devops/dev"
     def baseUrl = "http://localhost:${useHttpPort}"
 
-    servletContainer = 'tomcat9'
+    servletContainer = 'tomcat10'
     contextPath = '/'
     scanInterval = 0
     debugPort = 8850 + (instance as Integer)
@@ -83,7 +83,6 @@ dependencies {
 
     implementation "se.inera.intyg.infra:driftbanner-dto:${infraVersion}"
     implementation "se.inera.intyg.infra:dynamiclink:${infraVersion}"
-    implementation "se.inera.intyg.infra:hsatk-integration:${infraVersion}"
     implementation "se.inera.intyg.infra:ia-integration:${infraVersion}"
     implementation "se.inera.intyg.infra:monitoring:${infraVersion}"
     implementation "se.inera.intyg.infra:security-filter:${infraVersion}"

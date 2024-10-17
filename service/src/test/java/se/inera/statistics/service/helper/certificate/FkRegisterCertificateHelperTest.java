@@ -24,9 +24,9 @@ import static org.junit.Assert.fail;
 import static se.inera.statistics.service.helper.certificate.FkRegisterCertificateHelper.BEHOV_AV_SJUKSKRIVNING_PERIOD_DELSVARSVAR_ID_32;
 import static se.inera.statistics.service.helper.certificate.FkRegisterCertificateHelper.BEHOV_AV_SJUKSKRIVNING_SVAR_ID_32;
 
+import jakarta.xml.bind.JAXBException;
 import java.time.LocalDate;
 import java.util.stream.IntStream;
-import javax.xml.bind.JAXBException;
 import org.junit.Assert;
 import org.junit.Test;
 import se.inera.statistics.service.helper.ConversionHelper;

@@ -83,10 +83,10 @@ dependencies {
     implementation project(":statistik-web")
 
     implementation "org.fitnesse:fitnesse:${fitnesseVersion}"
-    implementation "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
+    implementation "org.apache.groovy:groovy-all:${groovyAllVersion}"
     implementation "org.codehaus.groovy.modules.http-builder:http-builder:${groovyHttpVersion}"
-    implementation "org.apache.httpcomponents:httpmime"
-    implementation "org.apache.httpcomponents:httpcore"
+    implementation "org.apache.httpcomponents.client5:httpclient5"
+    implementation "org.apache.httpcomponents.core5:httpcore5"
     implementation "org.liquibase:liquibase-core"
 
     compileOnly "jakarta.ws.rs:jakarta.ws.rs-api"
@@ -98,14 +98,14 @@ dependencies {
     fitnesse(project(":statistik-web")) { transitive = false }
     fitnesse(project(":statistik-service")) { transitive = false }
     fitnesse(project(":statistik-test")) { transitive = false }
-    fitnesse ("org.fitnesse:fitnesse:${fitnesseVersion}") { exclude group: "org.slf4j", module: "slf4j-jdk14" }
+    fitnesse("org.fitnesse:fitnesse:${fitnesseVersion}") { exclude group: "org.slf4j", module: "slf4j-jdk14" }
 
     fitnesse "ch.qos.logback:logback-classic"
     fitnesse "com.google.guava:guava:${googleGuavaVersion}"
     fitnesse "jakarta.ws.rs:jakarta.ws.rs-api"
-    fitnesse "org.apache.httpcomponents:httpcore"
-    fitnesse "org.apache.httpcomponents:httpmime"
-    fitnesse "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
+    fitnesse "org.apache.httpcomponents.core5:httpcore5"
+    fitnesse "org.apache.httpcomponents.client5:httpclient5"
+    fitnesse "org.apache.groovy:groovy-all:${groovyAllVersion}"
     fitnesse "org.codehaus.groovy:groovy-dateutil:${groovyAllVersion}"
     fitnesse "org.codehaus.groovy.modules.http-builder:http-builder:${groovyHttpVersion}"
     fitnesse "org.liquibase:liquibase-core"

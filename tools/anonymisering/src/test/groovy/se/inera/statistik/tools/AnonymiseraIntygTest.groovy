@@ -24,7 +24,7 @@ import org.skyscreamer.jsonassert.JSONAssert
 import org.springframework.core.io.ClassPathResource
 import se.inera.statistik.tools.anonymisering.base.*
 
-import static groovy.util.GroovyTestCase.assertEquals
+import static groovy.test.GroovyTestCase.assertEquals
 
 class AnonymiseraIntygTest {
 

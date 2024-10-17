@@ -18,13 +18,13 @@
  */
 package se.inera.statistics.web.service;
 
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.ResponseBuilder;
 import java.util.List;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
+import se.inera.statistics.web.api.ChartDataService;
 import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableHeader;
-import se.inera.statistics.web.api.ChartDataService;
 
 final class CsvConverter {
 

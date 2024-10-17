@@ -18,13 +18,14 @@
  */
 package se.inera.auth;
 
-import static org.junit.Assert.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.opensaml.Configuration;
 import org.opensaml.DefaultBootstrap;
 import org.opensaml.saml2.core.Assertion;
@@ -37,8 +38,8 @@ public class SakerhetstjanstAssertionTest {
 
     private static SakerhetstjanstAssertion sakerhetstjanstAssertion;
 
-    @BeforeClass
-    public static void setupClass() throws Exception {
+    @BeforeEach
+    public void setupClass() {
         sakerhetstjanstAssertion = new SakerhetstjanstAssertion(getSamlAssertion());
     }
 

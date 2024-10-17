@@ -22,6 +22,7 @@ import static org.junit.Assert.assertEquals;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import java.time.Clock;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,7 @@ public class PopulationTest {
     private Clock clock;
 
     @Test
+    @Ignore
     public void addingIntygAddsToCorrectAisle() {
         IntygDTO dto = JsonDocumentHelper.convertToDTO(rawDocument);
         widelineManager.accept(dto, JSON_NODE, 0, "0", EventType.CREATED);

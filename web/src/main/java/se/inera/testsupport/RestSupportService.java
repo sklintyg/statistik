@@ -18,6 +18,21 @@
  */
 package se.inera.testsupport;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -30,21 +45,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,12 +55,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-import se.inera.intyg.infra.integration.hsatk.stub.HsaServiceStub;
-import se.inera.intyg.infra.integration.hsatk.stub.model.AbstractUnitStub;
-import se.inera.intyg.infra.integration.hsatk.stub.model.CareUnitStub;
-import se.inera.intyg.infra.integration.hsatk.stub.model.HsaPerson;
-import se.inera.intyg.infra.integration.hsatk.stub.model.HsaPerson.PaTitle;
-import se.inera.intyg.infra.integration.hsatk.stub.model.SubUnitStub;
 import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 import se.inera.statistics.integration.hsa.model.HsaIdUser;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
@@ -200,8 +194,8 @@ public class RestSupportService {
     @Autowired
     private LogJob logJob;
 
-    @Autowired(required = false)
-    private HsaServiceStub hsaServiceStub;
+//    @Autowired(required = false)
+//    private HsaServiceStub hsaServiceStub;
 
     private IntygCommonSosManager intygCommonSosManager;
 
@@ -285,47 +279,47 @@ public class RestSupportService {
         return Response.ok().build();
     }
 
-    @PUT
-    @Path("intyg")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
-    @Transactional
-    public Response insertIntyg(Intyg intyg) {
-        LOG.info("Insert intyg. id: " + intyg.getDocumentId() + ", data: " + intyg.getData());
-        insertIntygWithoutLogging(intyg);
-        return Response.ok().build();
-    }
-
-    @Transactional
-    public void insertIntygWithoutLogging(Intyg intyg) {
-        if (hsaServiceStub != null) {
-            hsaServiceStub.deleteCareUnit(intyg.getEnhetId());
-            hsaServiceStub.deleteSubUnit(intyg.getEnhetId());
-
-            AbstractUnitStub unit;
-            if (intyg.getHuvudenhetId() == null || intyg.getEnhetId().equals(intyg.getHuvudenhetId())) {
-                unit = new CareUnitStub();
-                ((CareUnitStub) unit).setSubUnits(Collections.emptyList());
-            } else {
-                unit = new SubUnitStub();
-                ((SubUnitStub) unit).setParentHsaId(intyg.getHuvudenhetId());
-            }
-            unit.setId(cleanString(intyg.getEnhetId()));
-            unit.setCareProviderHsaId(cleanString(intyg.getVardgivareId()));
-            unit.setName(getEnhetsNamn(cleanString(intyg.getEnhetId()), intyg.getEnhetName()));
-            unit.setCountyCode(intyg.getCounty());
-            unit.setMunicipalityCode(intyg.getKommun());
-
-            if (unit instanceof CareUnitStub) {
-                hsaServiceStub.addCareUnit((CareUnitStub) unit);
-            } else {
-                hsaServiceStub.addSubUnit((SubUnitStub) unit);
-            }
-        }
-
-        receiver.accept(intyg.getType(), intyg.getData(), intyg.getDocumentId(), intyg.getTimestamp());
-        setEnhetName(intyg);
-    }
+//    @PUT
+//    @Path("intyg")
+//    @Consumes({MediaType.APPLICATION_JSON})
+//    @Produces({MediaType.APPLICATION_JSON})
+//    @Transactional
+//    public Response insertIntyg(Intyg intyg) {
+//        LOG.info("Insert intyg. id: " + intyg.getDocumentId() + ", data: " + intyg.getData());
+//        insertIntygWithoutLogging(intyg);
+//        return Response.ok().build();
+//    }
+//
+//    @Transactional
+//    public void insertIntygWithoutLogging(Intyg intyg) {
+//        if (hsaServiceStub != null) {
+//            hsaServiceStub.deleteCareUnit(intyg.getEnhetId());
+//            hsaServiceStub.deleteSubUnit(intyg.getEnhetId());
+//
+//            AbstractUnitStub unit;
+//            if (intyg.getHuvudenhetId() == null || intyg.getEnhetId().equals(intyg.getHuvudenhetId())) {
+//                unit = new CareUnitStub();
+//                ((CareUnitStub) unit).setSubUnits(Collections.emptyList());
+//            } else {
+//                unit = new SubUnitStub();
+//                ((SubUnitStub) unit).setParentHsaId(intyg.getHuvudenhetId());
+//            }
+//            unit.setId(cleanString(intyg.getEnhetId()));
+//            unit.setCareProviderHsaId(cleanString(intyg.getVardgivareId()));
+//            unit.setName(getEnhetsNamn(cleanString(intyg.getEnhetId()), intyg.getEnhetName()));
+//            unit.setCountyCode(intyg.getCounty());
+//            unit.setMunicipalityCode(intyg.getKommun());
+//
+//            if (unit instanceof CareUnitStub) {
+//                hsaServiceStub.addCareUnit((CareUnitStub) unit);
+//            } else {
+//                hsaServiceStub.addSubUnit((SubUnitStub) unit);
+//            }
+//        }
+//
+//        receiver.accept(intyg.getType(), intyg.getData(), intyg.getDocumentId(), intyg.getTimestamp());
+//        setEnhetName(intyg);
+//    }
 
     private String cleanString(String string) {
         return string == null ? null : string.replace(" ", "").toLowerCase();
@@ -425,35 +419,35 @@ public class RestSupportService {
         return Response.ok().build();
     }
 
-    @PUT
-    @Path("personal")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response insertPersonal(Personal personal) {
-        if (hsaServiceStub != null) {
-            HsaPerson hsaPerson = hsaServiceStub.getHsaPerson(personal.getId());
-            if (hsaPerson == null) {
-                hsaPerson = new HsaPerson();
-                hsaPerson.setHsaId(personal.getId());
-            }
-            hsaPerson.setGivenName(personal.getFirstName());
-            hsaPerson.setMiddleAndSurname(personal.getLastName());
-            hsaPerson.setAge(String.valueOf(personal.getAge()));
-            hsaPerson.setGender(String.valueOf(personal.getKon().getHsaRepresantation()));
-            hsaPerson.setProtectedPerson(personal.isSkyddad());
-            List<PaTitle> paTitles = personal.getBefattning().stream().map(b -> {
-                var paTitle = new PaTitle();
-                paTitle.setTitleCode(b);
-                paTitle.setTitleName(b);
-                return paTitle;
-            }).collect(Collectors.toList());
-            hsaPerson.setPaTitle(paTitles);
-
-            hsaServiceStub.addHsaPerson(hsaPerson);
-        }
-
-        return Response.ok().build();
-    }
+//    @PUT
+//    @Path("personal")
+//    @Consumes({MediaType.APPLICATION_JSON})
+//    @Produces({MediaType.APPLICATION_JSON})
+//    public Response insertPersonal(Personal personal) {
+//        if (hsaServiceStub != null) {
+//            HsaPerson hsaPerson = hsaServiceStub.getHsaPerson(personal.getId());
+//            if (hsaPerson == null) {
+//                hsaPerson = new HsaPerson();
+//                hsaPerson.setHsaId(personal.getId());
+//            }
+//            hsaPerson.setGivenName(personal.getFirstName());
+//            hsaPerson.setMiddleAndSurname(personal.getLastName());
+//            hsaPerson.setAge(String.valueOf(personal.getAge()));
+//            hsaPerson.setGender(String.valueOf(personal.getKon().getHsaRepresantation()));
+//            hsaPerson.setProtectedPerson(personal.isSkyddad());
+//            List<PaTitle> paTitles = personal.getBefattning().stream().map(b -> {
+//                var paTitle = new PaTitle();
+//                paTitle.setTitleCode(b);
+//                paTitle.setTitleName(b);
+//                return paTitle;
+//            }).collect(Collectors.toList());
+//            hsaPerson.setPaTitle(paTitles);
+//
+//            hsaServiceStub.addHsaPerson(hsaPerson);
+//        }
+//
+//        return Response.ok().build();
+//    }
 
     @PUT
     @Path("region/vgid/{vgid}")

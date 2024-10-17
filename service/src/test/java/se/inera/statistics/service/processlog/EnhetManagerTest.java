@@ -18,6 +18,14 @@
  */
 package se.inera.statistics.service.processlog;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -26,16 +34,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.anyString;
 
 public class EnhetManagerTest {
 

@@ -18,21 +18,21 @@
  */
 package se.inera.statistics.web.service.endpoints;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.common.collect.Lists;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import se.inera.auth.model.User;
 import se.inera.auth.model.UserAccessLevel;
@@ -51,7 +51,7 @@ import se.inera.statistics.web.service.LoginServiceUtil;
 import se.inera.statistics.web.service.WarehouseService;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ProtectedChartDataServiceTest {
 
     @Mock
@@ -75,7 +75,7 @@ public class ProtectedChartDataServiceTest {
     @InjectMocks
     private ProtectedChartDataService chartDataService = new ProtectedChartDataService();
 
-    @Before
+    @BeforeEach
     public void init() {
         final Vardenhet vardenhet1 = new Vardenhet(new HsaIdEnhet("verksamhet1"), "Närhälsan i Småmåla", new HsaIdVardgivare("VG1"));
         final Vardenhet vardenhet2 = new Vardenhet(new HsaIdEnhet("verksamhet2"), "Småmålas akutmottagning", new HsaIdVardgivare("VG2"));

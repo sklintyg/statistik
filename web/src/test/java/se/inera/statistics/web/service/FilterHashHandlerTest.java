@@ -18,23 +18,25 @@
  */
 package se.inera.statistics.web.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.never;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import se.inera.statistics.service.user.UserSelection;
 import se.inera.statistics.service.user.UserSelectionManager;
 import se.inera.statistics.web.service.dto.FilterData;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class FilterHashHandlerTest {
 
     @Mock
@@ -44,7 +46,7 @@ public class FilterHashHandlerTest {
     private FilterHashHandler handler = new FilterHashHandler();
 
     @Test
-    public void willSkipSaveOnNonJsonData() throws Exception {
+    public void willSkipSaveOnNonJsonData() {
         try {
             handler.getHash("not json");
             fail();
@@ -76,26 +78,16 @@ public class FilterHashHandlerTest {
         assertEquals(null, filterFromHash.getToDate());
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void testGetFilterFromHashUnparsableData() throws Exception {
-        //Given
         Mockito.when(userSelectionManager.find(anyString())).thenReturn(new UserSelection("mykey", "UnparsableData"));
-
-        //When
-        final FilterData filterFromHash = handler.getFilterFromHash("");
-
-        //Then Exception is thrown
+        assertThrows(RuntimeException.class, () -> handler.getFilterFromHash(""));
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void testGetFilterFromHashDataNotFound() throws Exception {
-        //Given
         Mockito.when(userSelectionManager.find(anyString())).thenReturn(null);
-
-        //When
-        final FilterData filterFromHash = handler.getFilterFromHash("");
-
-        //Then Exception is thrown
+        assertThrows(RuntimeException.class, () -> handler.getFilterFromHash(""));
     }
 
 }

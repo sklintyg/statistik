@@ -4,20 +4,21 @@
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
  * sklintyg is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU General  License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * sklintyg is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+ * GNU General  License for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU General  License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package se.inera.auth.jwt;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -27,16 +28,16 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.IncorrectClaimException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.MissingClaimException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -45,8 +46,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import se.inera.auth.model.User;
 import se.inera.statistics.web.service.jwt.JwtValidationService;
 
-@RunWith(MockitoJUnitRunner.class)
-public class JwtAuthenticationFilterTest {
+@ExtendWith(MockitoExtension.class)
+class JwtAuthenticationFilterTest {
 
     private static final String USER_ID = "hsa-123";
 
@@ -66,8 +67,8 @@ public class JwtAuthenticationFilterTest {
     private Claims claims = mock(Claims.class);
     private Jws<Claims> jws = mock(Jws.class);
 
-    @Before
-    public void init() {
+    @BeforeEach
+    void init() {
         SecurityContextHolder.clearContext();
         when(req.getMethod()).thenReturn("POST");
         when(req.getParameter("access_token")).thenReturn("access-token");
@@ -76,7 +77,7 @@ public class JwtAuthenticationFilterTest {
     }
 
     @Test
-    public void testOkWithPlainEmployeeHsaIdParameter() {
+    void testOkWithPlainEmployeeHsaIdParameter() {
         when(claims.get("employeeHsaId")).thenReturn(USER_ID);
         when(jws.getBody()).thenReturn(claims);
         when(jwtValidationService.validateJwsToken(anyString())).thenReturn(jws);
@@ -84,7 +85,7 @@ public class JwtAuthenticationFilterTest {
     }
 
     @Test
-    public void testOkWithArrayListEmployeeHsaIdParameter() {
+    void testOkWithArrayListEmployeeHsaIdParameter() {
         when(claims.get("employeeHsaId")).thenReturn(Arrays.asList(USER_ID));
         when(jws.getBody()).thenReturn(claims);
         when(jwtValidationService.validateJwsToken(anyString())).thenReturn(jws);
@@ -92,7 +93,7 @@ public class JwtAuthenticationFilterTest {
     }
 
     @Test
-    public void testOkWithBearerHeader() {
+    void testOkWithBearerHeader() {
         when(req.getParameter("access_token")).thenReturn(null);
         when(req.getHeader("Authorization")).thenReturn("Bearer: access-token");
         when(claims.get("employeeHsaId")).thenReturn(USER_ID);
@@ -101,55 +102,56 @@ public class JwtAuthenticationFilterTest {
         testee.attemptAuthentication(req, resp);
     }
 
-    @Test(expected = IncorrectClaimException.class)
-    public void testReturnsUnsupportedEmployeeHsaIdClass() {
+    @Test
+    void testReturnsUnsupportedEmployeeHsaIdClass() {
         when(claims.get("employeeHsaId")).thenReturn(123);
         when(jws.getBody()).thenReturn(claims);
         when(jwtValidationService.validateJwsToken(anyString())).thenReturn(jws);
-        testee.attemptAuthentication(req, resp);
+        assertThrows(IncorrectClaimException.class, () -> testee.attemptAuthentication(req, resp));
     }
 
-    @Test(expected = IncorrectClaimException.class)
-    public void testReturnsEmptyArrayListAsEmployeeHsaId() {
+    @Test
+    void testReturnsEmptyArrayListAsEmployeeHsaId() {
         when(claims.get("employeeHsaId")).thenReturn(new ArrayList<>());
         when(jws.getBody()).thenReturn(claims);
         when(jwtValidationService.validateJwsToken(anyString())).thenReturn(jws);
-        testee.attemptAuthentication(req, resp);
+        assertThrows(IncorrectClaimException.class, () -> testee.attemptAuthentication(req, resp));
     }
 
-    @Test(expected = MissingClaimException.class)
-    public void testReturnsNullEmployeeHsaIdClass() {
+    @Test
+    void testReturnsNullEmployeeHsaIdClass() {
         when(claims.get("employeeHsaId")).thenReturn(null);
         when(jws.getBody()).thenReturn(claims);
         when(jwtValidationService.validateJwsToken(anyString())).thenReturn(jws);
-        testee.attemptAuthentication(req, resp);
+        assertThrows(MissingClaimException.class, () -> testee.attemptAuthentication(req, resp));
+
     }
 
-    @Test(expected = MissingClaimException.class)
-    public void testReturnsEmptyStringEmployeeHsaIdClass() {
+    @Test
+    void testReturnsEmptyStringEmployeeHsaIdClass() {
         when(claims.get("employeeHsaId")).thenReturn("");
         when(jws.getBody()).thenReturn(claims);
         when(jwtValidationService.validateJwsToken(anyString())).thenReturn(jws);
-        testee.attemptAuthentication(req, resp);
+        assertThrows(MissingClaimException.class, () -> testee.attemptAuthentication(req, resp));
     }
 
-    @Test(expected = AuthenticationServiceException.class)
-    public void testPostContainsNoTokenInHeaderOrBody() {
+    @Test
+    void testPostContainsNoTokenInHeaderOrBody() {
         when(req.getParameter("access_token")).thenReturn(null);
-        testee.attemptAuthentication(req, resp);
+        assertThrows(AuthenticationServiceException.class, () -> testee.attemptAuthentication(req, resp));
     }
 
-    @Test(expected = AuthenticationServiceException.class)
-    public void testThrowsExceptionIfUnsupportedMethod() {
+    @Test
+    void testThrowsExceptionIfUnsupportedMethod() {
         when(req.getMethod()).thenReturn("GET");
-        testee.attemptAuthentication(req, resp);
+        assertThrows(AuthenticationServiceException.class, () -> testee.attemptAuthentication(req, resp));
     }
 
-    @Test(expected = AuthenticationServiceException.class)
-    public void testThrowsExceptionIfNotParameterNorBearerHeader() {
+    @Test
+    void testThrowsExceptionIfNotParameterNorBearerHeader() {
         when(req.getParameter("access_token")).thenReturn(null);
         when(req.getHeader("Authorization")).thenReturn("Basic");
-        testee.attemptAuthentication(req, resp);
+        assertThrows(AuthenticationServiceException.class, () -> testee.attemptAuthentication(req, resp));
     }
 
 }

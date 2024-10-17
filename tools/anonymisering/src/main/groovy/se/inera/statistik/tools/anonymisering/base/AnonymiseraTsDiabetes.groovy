@@ -18,8 +18,10 @@
  */
 package se.inera.statistik.tools.anonymisering.base
 
-import groovy.util.slurpersupport.GPathResult
+
 import groovy.xml.StreamingMarkupBuilder
+import groovy.xml.XmlSlurper
+import groovy.xml.slurpersupport.GPathResult
 
 class AnonymiseraTsDiabetes {
 

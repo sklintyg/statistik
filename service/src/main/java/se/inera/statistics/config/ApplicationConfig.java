@@ -19,12 +19,12 @@
 package se.inera.statistics.config;
 
 
+import jakarta.annotation.PostConstruct;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.TimeZone;
-import javax.annotation.PostConstruct;
 import org.apache.cxf.Bus;
 import org.apache.cxf.ext.logging.LoggingFeature;
 import org.slf4j.Logger;

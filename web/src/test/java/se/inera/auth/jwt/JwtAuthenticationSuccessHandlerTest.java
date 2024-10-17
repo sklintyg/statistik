@@ -18,33 +18,34 @@
  */
 package se.inera.auth.jwt;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.RedirectStrategy;
 import se.inera.auth.model.User;
 import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.integration.hsa.model.Vardenhet;
-import se.inera.statistics.web.service.exception.FilterException;
 import se.inera.statistics.web.service.FilterHashHandler;
+import se.inera.statistics.web.service.exception.FilterException;
 
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class JwtAuthenticationSuccessHandlerTest {
 
     @Mock
@@ -56,7 +57,7 @@ public class JwtAuthenticationSuccessHandlerTest {
     @InjectMocks
     private JwtAuthenticationSuccessHandler testee;
 
-    @Before
+    @BeforeEach
     public void setup() {
         testee.setRedirectStrategy(redirectStrategy);
     }
@@ -117,7 +118,7 @@ public class JwtAuthenticationSuccessHandlerTest {
         verify(redirectStrategy).sendRedirect(request, response, "/logout");
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void onAuthenticationSuccessWrongUrl() throws IOException {
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
         HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
@@ -127,10 +128,10 @@ public class JwtAuthenticationSuccessHandlerTest {
         when(request.getRequestURI()).thenReturn("/notfound");
         when(authentication.getPrincipal()).thenReturn(user);
 
-        testee.onAuthenticationSuccess(request, response, authentication);
+        assertThrows(RuntimeException.class, () -> testee.onAuthenticationSuccess(request, response, authentication));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void onAuthenticationSuccessTestNoUser() throws IOException {
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
         HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
@@ -138,6 +139,6 @@ public class JwtAuthenticationSuccessHandlerTest {
 
         when(authentication.getPrincipal()).thenReturn(null);
 
-        testee.onAuthenticationSuccess(request, response, authentication);
+        assertThrows(IllegalStateException.class, () -> testee.onAuthenticationSuccess(request, response, authentication));
     }
 }

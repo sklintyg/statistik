@@ -18,25 +18,25 @@
  */
 package se.inera.statistics.web.service;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyInt;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10RangeType;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ResultMessagHandlerTest {
 
     @InjectMocks
@@ -45,7 +45,7 @@ public class ResultMessagHandlerTest {
     @Mock
     private Icd10 icd10;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         Mockito.when(icd10.findIcd10FromNumericId(anyInt())).thenReturn(new Icd10.Id("180108190", "A00-B99") {
             @Override

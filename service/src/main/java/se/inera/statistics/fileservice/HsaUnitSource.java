@@ -36,18 +36,17 @@ import java.security.cert.CertificateException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import javax.net.ssl.SSLContext;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.config.Registry;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.socket.PlainConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.ssl.SSLContexts;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
+import org.apache.hc.client5.http.socket.PlainConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
+import org.apache.hc.core5.http.config.Registry;
+import org.apache.hc.core5.http.config.RegistryBuilder;
+import org.apache.hc.core5.ssl.SSLContexts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,13 +70,14 @@ public final class HsaUnitSource {
         Registry<ConnectionSocketFactory> registry = buildRegistry(sslConnectionSocketFactory);
 
         try (PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager(registry);
-            CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(sslConnectionSocketFactory)
-                .setConnectionManager(connectionManager).build()) {
+            CloseableHttpClient httpClient = HttpClients.custom()
+                .setConnectionManager(connectionManager)
+                .build()) {
             final File fetchedFile = File.createTempFile("hsazip-", ".zip");
             LOG.info("Fetching data from: " + url + " and saving into file: " + fetchedFile);
             HttpGet httpget = new HttpGet(url);
             try (CloseableHttpResponse response = httpClient.execute(httpget)) {
-                HttpEntity entity = response.getEntity();
+                final var entity = response.getEntity();
                 if (entity != null) {
                     try (InputStream instream = entity.getContent();
                         OutputStream receivedZipFile = new FileOutputStream(fetchedFile)) {

@@ -22,9 +22,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
+import jakarta.xml.bind.JAXBException;
 import java.time.LocalDate;
 import java.util.stream.IntStream;
-import javax.xml.bind.JAXBException;
 import org.junit.Test;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.model.Kon;

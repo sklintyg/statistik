@@ -18,32 +18,38 @@
  */
 package se.inera.auth;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.Collections;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.NameID;
 import org.opensaml.saml2.core.impl.NameIDBuilder;
 import org.springframework.security.saml.SAMLCredential;
 import se.inera.auth.model.User;
-import se.inera.statistics.integration.hsa.model.*;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdUser;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.StatisticsPersonInformation;
+import se.inera.statistics.integration.hsa.model.UserAuthorization;
+import se.inera.statistics.integration.hsa.model.Vardenhet;
+import se.inera.statistics.integration.hsa.model.Vardgivare;
 import se.inera.statistics.integration.hsa.services.HsaOrganizationsService;
 import se.inera.statistics.integration.hsa.services.HsaPersonService;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class UserDetailsServiceTest {
 
     private static final String HSA_ID = "TST5565594230-106J";
@@ -68,7 +74,7 @@ public class UserDetailsServiceTest {
 
     private SAMLCredential credential;
 
-    @Before
+    @BeforeEach
     public void setup() {
         newCredentials("/test-saml-biljett-uppdragslos.xml");
         setupHsaPersonService();

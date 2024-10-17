@@ -24,10 +24,9 @@ import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.HttpResponseException
 import groovyx.net.http.RESTClient
 import groovyx.net.http.RESTClientSuccessHandlerOverride
-import org.apache.http.entity.mime.MultipartEntityBuilder
+import jakarta.ws.rs.core.MediaType
+import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder
 import se.inera.statistics.web.service.dto.FilterData
-
-import javax.ws.rs.core.MediaType
 
 import static groovy.json.JsonParserType.CHAR_BUFFER
 import static org.apache.http.entity.ContentType.DEFAULT_BINARY
@@ -139,7 +138,7 @@ class ReportsUtil {
 
     def processMeddelande() {
         post("processMeddelande")
-      }
+    }
 
     def denyCalc() {
         post("denyCalc")
@@ -230,7 +229,7 @@ class ReportsUtil {
     }
 
     def getReportAntalMeddelandenVardenhetInloggad(String vgid, filter, vardenhetdepth) {
-        return get(getVerksamhetUrlPrefix() + "/getMeddelandenPerAmnePerEnhet", filter, "vgid=" + vgid +  "&vardenhetdepth=" + vardenhetdepth)
+        return get(getVerksamhetUrlPrefix() + "/getMeddelandenPerAmnePerEnhet", filter, "vgid=" + vgid + "&vardenhetdepth=" + vardenhetdepth)
     }
 
     def getReportAntalMeddelandenLakareInloggad(String vgid, filter) {
@@ -238,7 +237,7 @@ class ReportsUtil {
     }
 
     def getReportAntalMeddelandenVardenhetTvarsnittInloggad(String vgid, filter, vardenhetdepth) {
-        return get(getVerksamhetUrlPrefix() + "/getMeddelandenPerAmnePerEnhetTvarsnitt", filter, "vgid=" + vgid +  "&vardenhetdepth=" + vardenhetdepth)
+        return get(getVerksamhetUrlPrefix() + "/getMeddelandenPerAmnePerEnhetTvarsnitt", filter, "vgid=" + vgid + "&vardenhetdepth=" + vardenhetdepth)
     }
 
     def getReportAntalMeddelandenLakareTvarsnittInloggad(String vgid, filter) {
@@ -281,11 +280,11 @@ class ReportsUtil {
         return get("/api/getDiagnosavsnittstatistik/" + kapitel)
     }
 
-    private def get(String url, FilterData filter=FilterData.empty(), String queryString="", String filterQueryName="filter") {
+    private def get(String url, FilterData filter = FilterData.empty(), String queryString = "", String filterQueryName = "filter") {
         try {
             def queryWithFilter = addFilterToQueryStringIfSet(filterQueryName, filter, queryString)
             println("GET: " + url + "?" + queryWithFilter)
-            def response = restClient.get(path: url, queryString : queryWithFilter)
+            def response = restClient.get(path: url, queryString: queryWithFilter)
             return response.data;
         } catch (HttpResponseException e) {
             println "e.response.status: " + e.response.status
@@ -444,7 +443,7 @@ class ReportsUtil {
                 "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
                 "}"
         def loginData = logins[user]
-        def response = restClient.post(path: '/fake', body: [userJsonDisplay:loginData ], requestContentType : "application/x-www-form-urlencoded" )
+        def response = restClient.post(path: '/fake', body: [userJsonDisplay: loginData], requestContentType: "application/x-www-form-urlencoded")
         assert response.status == 302
         println "Using logindata: ${loginData}"
     }
@@ -561,7 +560,7 @@ class ReportsUtil {
     def uploadFile(String vgid, InputStream file, filename) {
         def body = new MultipartBody(file: file, filename: filename);
         try {
-            def response = restClient.post(requestContentType: "multipart/form-data", path: '/api/region/fileupload', body: body, queryString : "vgid=" + vgid)
+            def response = restClient.post(requestContentType: "multipart/form-data", path: '/api/region/fileupload', body: body, queryString: "vgid=" + vgid)
             return response.data
         } catch (HttpResponseException e) {
             return e.getResponse().getData()
@@ -651,4 +650,3 @@ class ReportsUtil {
     }
 
 }
-

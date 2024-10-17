@@ -51,5 +51,4 @@ public class LogJobTest {
         Mockito.verify(intygsentLogConsumer, Mockito.times(5)).processBatch();
         Mockito.verify(messageLogConsumer, Mockito.times(3)).processBatch(Mockito.anyLong());
     }
-
 }

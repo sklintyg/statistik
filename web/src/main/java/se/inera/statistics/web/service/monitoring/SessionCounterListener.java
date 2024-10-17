@@ -18,10 +18,10 @@
  */
 package se.inera.statistics.web.service.monitoring;
 
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpSessionEvent;
+import jakarta.servlet.http.HttpSessionListener;
 import java.util.concurrent.atomic.AtomicInteger;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.web.context.support.SecurityWebApplicationContextUtils;
 import org.springframework.security.web.session.HttpSessionDestroyedEvent;

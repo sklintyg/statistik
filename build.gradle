@@ -1,8 +1,8 @@
 plugins {
-    id "io.spring.dependency-management" version "1.1.3" apply false
+    id "io.spring.dependency-management" version "1.1.6" apply false
     id "se.inera.intyg.plugin.fitnesse" version "1.2.1" apply false
     id "com.netflix.nebula.node" version "3.0.0" apply false
-    id "org.gretty" version "3.0.9" apply false
+    id "org.gretty" version "4.1.5" apply false
     id 'test-report-aggregation'
     id 'org.sonarqube' version '5.1.0.4882'
     id "org.owasp.dependencycheck" version "10.0.4"
@@ -10,38 +10,38 @@ plugins {
 }
 
 ext {
-    infraVersion = System.properties['infraVersion'] ?: '3.21.0-SNAPSHOT'
+    infraVersion = System.properties['infraVersion'] ?: '4.0.0-SNAPSHOT'
 
-    intygSchematronVersion = "1.0.57.1"
-    rivtaClinicalprocessSchemasVersion = "4.0.5.2"
-    internalMonitoringSchemaVersion = "1.0.4.1"
-    intygTransportstyrelsenSchemasVersion = "1.0.5.1"
+    intygSchematronVersion = "1.0.57.2"
+    rivtaClinicalprocessSchemasVersion = "4.0.5.3"
+    internalMonitoringSchemaVersion = "1.0.4.3"
+    intygTransportstyrelsenSchemasVersion = "1.0.5.3"
 
-    auth0JwksVersion = "0.22.0"
+    auth0JwksVersion = "0.22.1"
     commonsIoVersion = "2.14.0"
-    commonsLoggingVersion = "1.2"
-    commonsTextVersion = "1.10.0"
-    cxfVersion = "3.6.2"
-    fitnesseVersion = "20231029"
-    gatlingVersion = "3.9.5"
-    geronimoVersion = "1.1.1"
-    googleGuavaVersion = "32.1.3-jre"
+    commonsLoggingVersion = "1.3.4"
+    commonsTextVersion = "1.12.0"
+    cxfVersion = "4.0.5"
+    fitnesseVersion = "20240707"
+    gatlingVersion = "3.9.5" // High chars - handled by K1J-414
+    jakartaMessagingApiVersion = "3.1.0"
+    googleGuavaVersion = "33.0.0-jre"
     gparsVersion = "1.2.1"
-    groovyAllVersion = "3.0.19"
+    groovyAllVersion = "4.0.23"
     groovyHttpVersion = "0.7.1"
     jsonwebtokenVersion = "0.11.5"
-    picocliVersion = "4.7.5"
-    poiVersion = "5.2.4"
+    picocliVersion = "4.7.6"
+    poiVersion = "5.3.0"
     schematronVersion = "5.6.5"
     springSecuritySamlVersion = "1.0.3.RELEASE"
     zipletVersion = "2.4.1"
-    shedlockSpringVersion = "4.46.0"
+    shedlockSpringVersion = "5.16.0"
     wagonVersion = "3.5.3"
 
     nodeJsVersion = "12.22.12"
     npmVersion = "6.14.16"
 
-    springbootMavenBomVersion = "2.7.17"
+    springbootMavenBomVersion = "3.3.4"
 
     nvdMirror = 'https://vulnz-nvd-mirror-devtest.intyg.nordicmedtest.se'
 }
@@ -52,12 +52,14 @@ allprojects {
     apply plugin: 'jacoco'
 
     group = 'se.inera.statistik'
-    version = System.properties['buildVersion'] ?: '0-SNAPSHOT'
-    sourceCompatibility = 11
-    targetCompatibility = 11
+    version = System.properties['buildVersion'] ?: '4.0.0-SNAPSHOT'
+    sourceCompatibility = 21
+    targetCompatibility = 21
 
     dependencyManagement {
-        imports { mavenBom "org.springframework.boot:spring-boot-dependencies:${springbootMavenBomVersion}" }
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:${springbootMavenBomVersion}"
+        }
     }
 
     dependencies {
@@ -67,11 +69,10 @@ allprojects {
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
 
-        testImplementation 'junit:junit'
         testImplementation "org.junit.jupiter:junit-jupiter-api"
         testImplementation "org.junit.jupiter:junit-jupiter-params"
-        testImplementation "org.mockito:mockito-inline"
         testImplementation "org.mockito:mockito-junit-jupiter"
+        testImplementation "org.mockito:mockito-core"
         testImplementation "org.springframework:spring-test"
 
         testCompileOnly 'org.projectlombok:lombok'
