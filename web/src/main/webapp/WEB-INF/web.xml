@@ -71,23 +71,6 @@
         <url-pattern>/api/internalapi/*</url-pattern><!-- DO NOT CHANGE THIS URL! -->
     </filter-mapping>
 
-    <!-- Map cache filter to all static resources -->
-    <filter>
-        <filter-name>ExpiresFilter</filter-name>
-        <filter-class>org.apache.catalina.filters.ExpiresFilter</filter-class>
-        <init-param>
-            <param-name>ExpiresDefault</param-name>
-            <param-value>access plus 1 years</param-value>
-        </init-param>
-    </filter>
-    <filter-mapping>
-        <filter-name>ExpiresFilter</filter-name>
-        <url-pattern>/app/*</url-pattern>
-        <url-pattern>/assets/*</url-pattern>
-        <url-pattern>/js/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-    </filter-mapping>
-
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>/WEB-INF/application-context.xml</param-value>
