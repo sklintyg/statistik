@@ -1,78 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:jaxrs="http://cxf.apache.org/jaxrs"
-       xmlns:cxf="http://cxf.apache.org/core"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+    xmlns:cxf="http://cxf.apache.org/core"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
         http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
         http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd">
 
-    <import resource="classpath:META-INF/cxf/cxf.xml"/>
-    <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
+  <import resource="classpath:META-INF/cxf/cxf.xml"/>
+  <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
 
-    <beans>
+  <beans>
 
-        <bean id="jacksonJsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider"/>
-        <bean id="accessDeniedExceptionHandler" class="se.inera.statistics.web.handler.AccessDeniedExceptionHandler"/>
-        <bean id="calcCoordinator" class="se.inera.statistics.service.warehouse.query.CalcCoordinator"/>
+    <bean id="jacksonJsonProvider" class="com.fasterxml.jackson.jakarta.rs.json.JacksonJsonProvider"/>
+    <bean id="accessDeniedExceptionHandler" class="se.inera.statistics.web.handler.AccessDeniedExceptionHandler"/>
+    <bean id="calcCoordinator" class="se.inera.statistics.service.warehouse.query.CalcCoordinator"/>
 
-        <jaxrs:server id="restContainer" address="/">
-            <jaxrs:invoker>
-                <bean class="se.inera.statistics.web.service.CalcCoordinatorInvoker"/>
-            </jaxrs:invoker>
-            <jaxrs:serviceBeans>
-                <ref bean="pdfService"/>
-                <ref bean="chartDataService"/>
-                <ref bean="protectedChartDataService"/>
-                <ref bean="protectedRegionService"/>
-                <ref bean="loginInfoService"/>
-                <ref bean="loggingService"/>
-                <ref bean="linkService"/>
-                <ref bean="sessionStatusService"/>
-                <ref bean="deleteController"/>
-            </jaxrs:serviceBeans>
-            <jaxrs:providers>
-                <ref bean="jacksonJsonProvider"/>
-                <ref bean="accessDeniedExceptionHandler"/>
-            </jaxrs:providers>
-        </jaxrs:server>
+    <jaxrs:server id="restContainer" address="/">
+      <jaxrs:invoker>
+        <bean class="se.inera.statistics.web.service.CalcCoordinatorInvoker"/>
+      </jaxrs:invoker>
+      <jaxrs:serviceBeans>
+        <ref bean="pdfService"/>
+        <ref bean="chartDataService"/>
+        <ref bean="protectedChartDataService"/>
+        <ref bean="protectedRegionService"/>
+        <ref bean="loginInfoService"/>
+        <ref bean="loggingService"/>
+        <ref bean="linkService"/>
+        <ref bean="sessionStatusService"/>
+        <ref bean="deleteController"/>
+      </jaxrs:serviceBeans>
+      <jaxrs:providers>
+        <ref bean="jacksonJsonProvider"/>
+        <ref bean="accessDeniedExceptionHandler"/>
+      </jaxrs:providers>
+    </jaxrs:server>
 
-    </beans>
+  </beans>
 
-    <beans>
-        <bean id="logInbound" class="se.inera.statistics.web.service.interceptor.LogInInterceptor"/>
-        <bean id="logOutbound" class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+  <beans>
+    <bean id="logInbound" class="se.inera.statistics.web.service.interceptor.LogInInterceptor"/>
+    <bean id="logOutbound" class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
 
-        <cxf:bus>
-            <cxf:inInterceptors>
-                <ref bean="logInbound"/>
-            </cxf:inInterceptors>
-            <cxf:outInterceptors>
-                <ref bean="logOutbound"/>
-            </cxf:outInterceptors>
-            <cxf:outFaultInterceptors>
-                <ref bean="logOutbound"/>
-            </cxf:outFaultInterceptors>
-            <cxf:inFaultInterceptors>
-                <ref bean="logInbound"/>
-            </cxf:inFaultInterceptors>
-        </cxf:bus>
+    <cxf:bus>
+      <cxf:inInterceptors>
+        <ref bean="logInbound"/>
+      </cxf:inInterceptors>
+      <cxf:outInterceptors>
+        <ref bean="logOutbound"/>
+      </cxf:outInterceptors>
+      <cxf:outFaultInterceptors>
+        <ref bean="logOutbound"/>
+      </cxf:outFaultInterceptors>
+      <cxf:inFaultInterceptors>
+        <ref bean="logInbound"/>
+      </cxf:inFaultInterceptors>
+    </cxf:bus>
 
-    </beans>
+  </beans>
 
-    <beans profile="testapi">
-        <bean id="restSupportService" class="se.inera.testsupport.RestSupportService"/>
-        <jaxrs:server id="restSupportContainer" address="/testsupport">
-            <jaxrs:serviceBeans>
-                <ref bean="restSupportService"/>
-            </jaxrs:serviceBeans>
-            <jaxrs:providers>
-                <ref bean="jacksonJsonProvider"/>
-            </jaxrs:providers>
-        </jaxrs:server>
-    </beans>
+  <beans profile="testapi">
+    <bean id="restSupportService" class="se.inera.testsupport.RestSupportService"/>
+    <jaxrs:server id="restSupportContainer" address="/testsupport">
+      <jaxrs:serviceBeans>
+        <ref bean="restSupportService"/>
+      </jaxrs:serviceBeans>
+      <jaxrs:providers>
+        <ref bean="jacksonJsonProvider"/>
+      </jaxrs:providers>
+    </jaxrs:server>
+  </beans>
 
-    <beans profile="boostrap">
-        <bean class="se.inera.testsupport.TestIntygInjector" depends-on="dbUpdate" lazy-init="false"/>
-    </beans>
+  <beans profile="boostrap">
+    <bean class="se.inera.testsupport.TestIntygInjector" depends-on="dbUpdate" lazy-init="false"/>
+  </beans>
 
 </beans>
