@@ -71,29 +71,6 @@
         <url-pattern>/api/internalapi/*</url-pattern><!-- DO NOT CHANGE THIS URL! -->
     </filter-mapping>
 
-    <!-- Gzip compression of apis -->
-    <!-- Filter for adding expiry (cache) header -->
-    <filter>
-        <filter-name>CompressingFilter</filter-name>
-        <filter-class>com.github.ziplet.filter.compression.CompressingFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>CompressingFilter</filter-name>
-        <url-pattern>/app/*</url-pattern>
-        <url-pattern>/js/*</url-pattern>
-        <url-pattern>/api/getOverview</url-pattern>
-        <url-pattern>/api/getNumberOfCasesPerMonth</url-pattern>
-        <url-pattern>/api/getDiagnoskapitelstatistik</url-pattern>
-        <url-pattern>/api/getAgeGroupsStatistics</url-pattern>
-        <url-pattern>/api/getDegreeOfSickLeaveStatistics</url-pattern>
-        <url-pattern>/api/getSickLeaveLengthData</url-pattern>
-        <url-pattern>/api/getCountyStatistics</url-pattern>
-        <url-pattern>/api/getSjukfallPerSexStatistics</url-pattern>
-        <url-pattern>/api/getIcd10Structure</url-pattern>
-        <url-pattern>/api/getIntygPerSjukfallTvarsnitt</url-pattern>
-        <url-pattern>/api/login/getStaticData</url-pattern>
-    </filter-mapping>
-
     <!-- Map cache filter to all static resources -->
     <filter>
         <filter-name>ExpiresFilter</filter-name>
