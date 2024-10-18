@@ -34,7 +34,6 @@ angular.module('StatisticsApp').config(
 
       $compileProvider.commentDirectivesEnabled(false);
       $compileProvider.cssClassDirectivesEnabled(false);
-      $compileProvider.preAssignBindingsEnabled(true);
 
       $compileProvider.debugInfoEnabled(debugInfoState);
 

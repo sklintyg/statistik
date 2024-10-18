@@ -27,7 +27,7 @@ angular.module('StatisticsApp').filter('messageFilter',
 
       return function(interpolatedKey, fallback, fallbackDefaultLang, params, lang, disableHighlightWords) {
         var result;
-        var normalizedKey = angular.lowercase(interpolatedKey);
+        var normalizedKey = interpolatedKey.toLowerCase();
         var useLanguage;
         if (typeof lang !== 'undefined') {
           useLanguage = lang;

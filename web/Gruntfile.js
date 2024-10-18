@@ -36,7 +36,7 @@ module.exports = function(grunt) {
     sasslint: 'grunt-sass-lint'
   });
 
-  var sass = require('node-sass');
+  var sass = require('sass');
 
   var serveStatic = require('serve-static');
 

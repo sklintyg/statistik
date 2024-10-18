@@ -31,8 +31,8 @@
   <!-- build:css(src/main/webapp) app/vendor.css -->
   <!-- bower:css -->
   <link rel="stylesheet" href="bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css" />
+  <link rel="stylesheet" href="bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.min.css" />
   <link rel="stylesheet" href="bower_components/outdated-browser/outdatedbrowser/outdatedbrowser.min.css" />
-  <link rel="stylesheet" href="bower_components/dropzone/dist/min/dropzone.min.css" />
   <!-- endbower -->
   <!-- endbuild -->
 
