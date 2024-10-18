@@ -34,7 +34,6 @@ ext {
     poiVersion = "5.3.0"
     schematronVersion = "5.6.5"
     springSecuritySamlVersion = "1.0.3.RELEASE"
-    zipletVersion = "2.4.1"
     shedlockSpringVersion = "5.16.0"
     wagonVersion = "3.5.3"
 
