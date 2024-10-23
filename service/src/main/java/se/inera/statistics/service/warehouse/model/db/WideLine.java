@@ -35,7 +35,7 @@ public class WideLine {
     public static final String TABLE = "wideline";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String correlationId;

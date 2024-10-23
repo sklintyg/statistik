@@ -34,7 +34,7 @@ public class Lakare {
     public static final String TABLE = "lakare";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String vardgivareId;

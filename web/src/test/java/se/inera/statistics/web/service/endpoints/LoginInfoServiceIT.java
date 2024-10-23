@@ -32,6 +32,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import se.inera.auth.AuthUtil;
+import se.inera.auth.LoginMethod;
 import se.inera.auth.model.User;
 import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 import se.inera.statistics.integration.hsa.model.HsaIdUser;
@@ -60,7 +61,8 @@ public class LoginInfoServiceIT {
     public void getLoginInfoTestThatEnhetNotFoundInWarehouseGetsUnknownVerksamhetstypAssigned() {
         //Given
         final Vardenhet vardenhet = new Vardenhet(new HsaIdEnhet("ENHETID"), "e1namn", new HsaIdVardgivare("VG1"));
-        final User user = new User(new HsaIdUser("USERID"), "UserName", Collections.emptyList(), Arrays.asList(vardenhet));
+        final User user = new User(new HsaIdUser("USERID"), "UserName", Collections.emptyList(), Arrays.asList(vardenhet),
+            LoginMethod.SITHS);
         AuthUtil.setUserToSecurityContext(user);
 
         manager.persist(new Enhet(new HsaIdVardgivare("VG2"), new HsaIdEnhet("ENHETID"), "EnhetNamn", Lan.OVRIGT_ID, Kommun.OVRIGT_ID,

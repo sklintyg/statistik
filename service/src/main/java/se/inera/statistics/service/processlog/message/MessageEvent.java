@@ -34,7 +34,7 @@ public class MessageEvent {
     public static final String TABLE = "meddelandehandelse";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Enumerated(EnumType.STRING)
     private MessageEventType type;

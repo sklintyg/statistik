@@ -26,14 +26,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import se.inera.auth.LoginMethod;
 import se.inera.auth.model.User;
 import se.inera.auth.model.UserAccessLevel;
 import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
@@ -81,7 +82,7 @@ public class ProtectedChartDataServiceTest {
         final Vardenhet vardenhet2 = new Vardenhet(new HsaIdEnhet("verksamhet2"), "Småmålas akutmottagning", new HsaIdVardgivare("VG2"));
         List<Vardenhet> vardenhets = Arrays.asList(vardenhet1, vardenhet2);
 
-        User user = new User(new HsaIdUser("hsaId"), "name", Collections.emptyList(), vardenhets);
+        User user = new User(new HsaIdUser("hsaId"), "name", Collections.emptyList(), vardenhets, LoginMethod.SITHS);
         UsernamePasswordAuthenticationToken principal = Mockito.mock(UsernamePasswordAuthenticationToken.class);
     }
 

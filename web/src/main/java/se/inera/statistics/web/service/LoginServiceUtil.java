@@ -21,6 +21,7 @@ package se.inera.statistics.web.service;
 import static java.util.stream.Collectors.toMap;
 
 import com.google.common.base.Splitter;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -30,15 +31,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.saml.SAMLCredential;
 import org.springframework.stereotype.Component;
 import se.inera.auth.LoginVisibility;
 import se.inera.auth.model.User;
@@ -123,7 +121,6 @@ public class LoginServiceUtil {
         }
     }
 
-    @Cacheable(cacheManager = "scopeRequestCacheManager", cacheNames = "default")
     public LoginInfo getLoginInfo() {
         User realUser;
         try {
@@ -202,13 +199,8 @@ public class LoginServiceUtil {
         if (authentication == null) {
             throw new IllegalStateException("Authentication object is null");
         }
-        Object credentials = authentication.getCredentials();
-        if ((credentials instanceof SAMLCredential)) {
-            if (!"fake-idp".equals(((SAMLCredential) credentials).getRemoteEntityID())) {
-                return "SITHS";
-            }
-        }
-        return "FAKE";
+        final var principal = (User) authentication.getPrincipal();
+        return principal.getLoginMethod().value();
     }
 
     private List<Verksamhet> getVerksamhetsList(User realUser) {

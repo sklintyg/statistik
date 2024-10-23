@@ -20,20 +20,23 @@ package se.inera.auth;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.saml.SAMLCredential;
-import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
+import org.springframework.stereotype.Service;
 import se.inera.auth.model.User;
-import se.inera.statistics.integration.hsa.model.*;
+import se.inera.statistics.integration.hsa.model.HsaIdUser;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.StatisticsPersonInformation;
+import se.inera.statistics.integration.hsa.model.UserAuthorization;
+import se.inera.statistics.integration.hsa.model.Vardgivare;
 import se.inera.statistics.integration.hsa.services.HsaOrganizationsService;
 import se.inera.statistics.integration.hsa.services.HsaPersonService;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
-public class UserDetailsService implements SAMLUserDetailsService {
+@Service
+public class UserDetailsService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserDetailsService.class);
     public static final String GLOBAL_VG_ACCESS_PREFIX = "INTYG;Statistik-";
@@ -48,31 +51,18 @@ public class UserDetailsService implements SAMLUserDetailsService {
     @Qualifier("webMonitoringLogService")
     private MonitoringLogService monitoringLogService;
 
-    @Override
-    public Object loadUserBySAML(SAMLCredential credential) {
-        LOG.info("User authentication was successful. SAML credential is " + credential);
-        SakerhetstjanstAssertion assertion = getSakerhetstjanstAssertion(credential);
-
-        return buildUserPrincipal(assertion.getHsaId());
-    }
-
-    public User loadUserByHsaId(String hsaId) {
-        LOG.info("User authentication was successful. loading user by hsaId {}", hsaId);
-        return buildUserPrincipal(hsaId);
-    }
-
-    private User buildUserPrincipal(String employeeHsaId) {
+    public User buildUserPrincipal(String employeeHsaId, LoginMethod loginMethod) {
         final HsaIdUser hsaId = new HsaIdUser(employeeHsaId);
         List<StatisticsPersonInformation> hsaPersonInfo = hsaPersonService.getHsaPersonInfo(hsaId.getId());
         UserAuthorization userAuthorization = hsaOrganizationsService.getAuthorizedEnheterForHosPerson(hsaId);
         final List<Vardgivare> vardgivareWithProcessledarStatusList = getVgsWithProcessledarStatus(userAuthorization.getSystemRoles())
             .stream().map(vgHsaId -> hsaOrganizationsService.getVardgivare(vgHsaId))
-            .collect(Collectors.toList());
+            .toList();
 
         monitoringLogService.logUserLogin(hsaId);
 
         final String name = extractPersonName(hsaPersonInfo);
-        return new User(hsaId, name, vardgivareWithProcessledarStatusList, userAuthorization.getVardenhetList());
+        return new User(hsaId, name, vardgivareWithProcessledarStatusList, userAuthorization.getVardenhetList(), loginMethod);
     }
 
     private String extractPersonName(List<StatisticsPersonInformation> hsaPersonInfo) {
@@ -92,9 +82,5 @@ public class UserDetailsService implements SAMLUserDetailsService {
             }
         }
         return statistikRoles;
-    }
-
-    private SakerhetstjanstAssertion getSakerhetstjanstAssertion(SAMLCredential credential) {
-        return new SakerhetstjanstAssertion(credential.getAuthenticationAssertion());
     }
 }

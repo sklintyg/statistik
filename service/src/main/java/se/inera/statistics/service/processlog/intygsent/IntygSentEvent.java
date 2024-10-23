@@ -32,7 +32,7 @@ public class IntygSentEvent {
     public static final String TABLE = "intygsenthandelse";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String correlationId;
     private String recipient;

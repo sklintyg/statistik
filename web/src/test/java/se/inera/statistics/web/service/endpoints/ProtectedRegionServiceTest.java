@@ -42,8 +42,8 @@ import java.util.List;
 import java.util.Optional;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
@@ -51,6 +51,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import se.inera.auth.LoginMethod;
 import se.inera.auth.model.User;
 import se.inera.auth.model.UserAccessLevel;
 import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
@@ -114,7 +115,7 @@ public class ProtectedRegionServiceTest {
         final Vardenhet vardenhet2 = new Vardenhet(new HsaIdEnhet("verksamhet2"), "Småmålas akutmottagning", new HsaIdVardgivare("VG2"));
         List<Vardenhet> vardenhets = Arrays.asList(vardenhet1, vardenhet2);
 
-        User user = new User(new HsaIdUser("hsaId"), "name", Collections.emptyList(), vardenhets);
+        User user = new User(new HsaIdUser("hsaId"), "name", Collections.emptyList(), vardenhets, LoginMethod.SITHS);
         UsernamePasswordAuthenticationToken principal = Mockito.mock(UsernamePasswordAuthenticationToken.class);
     }
 
@@ -203,7 +204,7 @@ public class ProtectedRegionServiceTest {
         Mockito.when(ds.getName()).thenReturn("testfilename");
         Mockito.when(dh.getDataSource()).thenReturn(ds);
         final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
-        final User user = new User(new HsaIdUser(""), "", new ArrayList<>(), new ArrayList<>());
+        final User user = new User(new HsaIdUser(""), "", new ArrayList<>(), new ArrayList<>(), LoginMethod.SITHS);
         final HsaIdVardgivare vg = new HsaIdVardgivare("TestVg");
         Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vg);
         final LoginInfoVg loginInfoVg = new LoginInfoVg(vg, "", RegionsVardgivareStatus.NO_REGIONSVARDGIVARE, new UserAccessLevel(true, 1));

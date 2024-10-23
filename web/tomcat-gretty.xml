@@ -36,14 +36,12 @@
         redirectPort="8443"
         compression="on"
         compressionMinSize="1024"
-        compressableMimeType="text/html,text/xml,text/plain,text/css,application/json,application/javascript"
     />
     <Connector port="${dev.http.port.internal}" protocol="HTTP/1.1"
         connectionTimeout="20000"
         redirectPort="8443"
         compression="on"
         compressionMinSize="1024"
-        compressableMimeType="text/html,text/xml,text/plain,text/css,application/json,application/javascript"
     />
     <Engine name="Catalina" defaultHost="localhost">
       <Host name="localhost"  appBase="webapps"

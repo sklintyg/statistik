@@ -38,7 +38,7 @@ var FakeLoginPage = function() {
 
     // Reload to trigger addMockModule after login.
     browser.waitForAngular();
-
+    
     browser.refresh();
 
   };

@@ -25,9 +25,16 @@
     ">
 
   <context:component-scan base-package="se.inera.statistics.web.service.monitoring"/>
+  <context:component-scan base-package="se.inera.testability"/>
+  <context:component-scan base-package="se.inera.auth"/>
+  <context:component-scan base-package="se.inera.config"/>
 
   <beans profile="hsa-integration-intyg-proxy-service">
     <import resource="classpath:/hsa-integration-intyg-proxy-service-config.xml"/>
+  </beans>
+
+  <beans profile="testability">
+    <bean id="testabilityController" class="se.inera.testability.TestabilityController"/>
   </beans>
 
   <beans>
@@ -66,7 +73,6 @@
     <import resource="classpath*:icd10.xml"/>
     <import resource="classpath*:ia-services-config.xml"/>
     <import resource="application-context-cxf.xml"/>
-    <import resource="application-context-security.xml"/>
     <import resource="application-context-jmx.xml"/>
 
     <context:annotation-config/>
@@ -98,7 +104,6 @@
 
     <bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">
       <property name="redisNamespace" value="${app.name}"/>
-      <property name="redisFlushMode" value="IMMEDIATE"/>
     </bean>
 
   </beans>

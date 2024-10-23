@@ -40,8 +40,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.providers.ExpiringUsernameAuthenticationToken;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import se.inera.auth.model.User;
 import se.inera.statistics.web.service.jwt.JwtValidationService;
@@ -73,7 +73,7 @@ class JwtAuthenticationFilterTest {
         when(req.getMethod()).thenReturn("POST");
         when(req.getParameter("access_token")).thenReturn("access-token");
         when(authenticationManager.authenticate(any(JwtAuthenticationToken.class)))
-            .thenReturn(new ExpiringUsernameAuthenticationToken(mock(User.class), mock(User.class)));
+            .thenReturn(new UsernamePasswordAuthenticationToken(mock(User.class), mock(User.class)));
     }
 
     @Test

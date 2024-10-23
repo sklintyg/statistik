@@ -31,7 +31,7 @@ angular.module('StatisticsApp')
     },
     restrict: 'E',
     templateUrl: '/components/directives/statsHeader/statsHeader.html',
-    controller: function($window, $scope, AppModel, UserModel, $uibModal) {
+    controller: function($window, $scope, AppModel, UserModel, $uibModal, $http) {
       $scope.AppModel = AppModel;
       $scope.UserModel = UserModel;
 
@@ -69,7 +69,14 @@ angular.module('StatisticsApp')
 
       $scope.onLogoutClick = function() {
         if (UserModel.get().authenticationMethod === 'FAKE') {
-          $window.location = '/logout';
+          $http({
+            url: '/api/testability/logout',
+            method: 'POST'
+          })
+          .then(function() {
+            $window.location.href = '/#/fakelogin';
+            $window.location.reload();
+          });
         } else {
           $window.location = '/saml/logout/';
         }

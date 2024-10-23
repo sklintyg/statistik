@@ -27,13 +27,14 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import se.inera.auth.AuthUtil;
+import se.inera.auth.LoginMethod;
 import se.inera.auth.LoginVisibility;
 import se.inera.auth.model.User;
 import se.inera.intyg.infra.integration.ia.services.IABannerService;
@@ -107,7 +108,7 @@ public class LoginServiceUtilTest {
         final Vardenhet enhet2 = newVardenhet("e2", "vg1");
         final Vardenhet enhet3 = newVardenhet("e3", "vg2");
         final List<Vardenhet> vardenhetsList = Arrays.asList(enhet1, enhet2, enhet3);
-        final User user = new User(userId, "testname", null, vardenhetsList);
+        final User user = new User(userId, "testname", null, vardenhetsList, LoginMethod.SITHS);
         AuthUtil.setUserToSecurityContext(user);
 
         // When
@@ -132,7 +133,8 @@ public class LoginServiceUtilTest {
         final Vardenhet enhet2 = newVardenhet("e2", "vg1");
         final Vardenhet enhet3 = newVardenhet("e3", "vg2");
         final List<Vardenhet> vardenhetsList = Arrays.asList(enhet1, enhet2, enhet3);
-        final User user = new User(userId, "testname", Arrays.asList(new Vardgivare("vg2", "Vårdgivare 2")), vardenhetsList);
+        final User user = new User(userId, "testname", Arrays.asList(new Vardgivare("vg2", "Vårdgivare 2")), vardenhetsList,
+            LoginMethod.SITHS);
         AuthUtil.setUserToSecurityContext(user);
 
         when(warehouse.getEnhets(any())).thenAnswer(invocationOnMock -> {

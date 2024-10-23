@@ -38,7 +38,7 @@ public class MessageWideLine {
     public static final String TABLE = "messagewideline";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private long logId;
