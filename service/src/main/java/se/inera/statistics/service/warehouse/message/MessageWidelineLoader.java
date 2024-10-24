@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.service.warehouse.message;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -230,8 +229,6 @@ public class MessageWidelineLoader {
         return dto;
     }
 
-    @SuppressFBWarnings(value = "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
-        justification = "We know what we're doing. No user supplied data.")
     private PreparedStatement prepareStatement(Connection connection, boolean vardgivare, Collection<HsaIdEnhet> enheter)
         throws SQLException {
 
@@ -257,8 +254,6 @@ public class MessageWidelineLoader {
         return stmt;
     }
 
-    @SuppressFBWarnings(value = "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
-        justification = "We know what we're doing. No user supplied data.")
     private PreparedStatement prepareStatementAmne(Connection connection, MessagesFilter filter, boolean vardenhetdepth)
         throws SQLException {
 
@@ -312,8 +307,6 @@ public class MessageWidelineLoader {
         return stmt;
     }
 
-    @SuppressFBWarnings(value = "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
-        justification = "We know what we're doing. No user supplied data.")
     private PreparedStatement prepareStatementKompletteringarPerIntyg(Connection connection, MessagesFilter filter)
         throws SQLException {
 
@@ -370,8 +363,6 @@ public class MessageWidelineLoader {
         return stmt;
     }
 
-    @SuppressFBWarnings(value = "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
-        justification = "We know what we're doing. No user supplied data.")
     private PreparedStatement prepareStatementKompletteringar(Connection connection, MessagesFilter filter)
         throws SQLException {
 

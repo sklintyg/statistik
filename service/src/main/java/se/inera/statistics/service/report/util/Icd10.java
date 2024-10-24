@@ -19,6 +19,7 @@
 package se.inera.statistics.service.report.util;
 
 import com.google.common.base.CharMatcher;
+import jakarta.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
@@ -38,7 +39,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

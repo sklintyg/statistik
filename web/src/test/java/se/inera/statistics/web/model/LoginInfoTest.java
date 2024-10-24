@@ -18,15 +18,14 @@
  */
 package se.inera.statistics.web.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.junit.Test;
-import se.inera.auth.model.User;
+import org.junit.jupiter.api.Test;
 import se.inera.auth.model.UserAccessLevel;
 import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 import se.inera.statistics.integration.hsa.model.HsaIdUser;
@@ -82,10 +81,6 @@ public class LoginInfoTest {
 
         // Then
         assertEquals(0, loginInfo.getVgs().size());
-    }
-
-    private User createUser(String id, String name) {
-        return new User(new HsaIdUser(id), name, null, null);
     }
 
     @Test

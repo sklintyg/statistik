@@ -18,9 +18,9 @@
  */
 package se.inera.statistics.web.service;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import se.inera.statistics.web.service.dto.Report;
 
 public class ReportTest {
@@ -34,7 +34,7 @@ public class ReportTest {
         final Report[] allReports = Report.values();
         for (Report report : allReports) {
             final String shortName = report.getShortName();
-            assertTrue("Unexpected short name: " + shortName, shortName.matches("[0-9a-zA-Z]*"));
+            assertTrue(shortName.matches("[0-9a-zA-Z]*"), "Unexpected short name: " + shortName);
         }
     }
 

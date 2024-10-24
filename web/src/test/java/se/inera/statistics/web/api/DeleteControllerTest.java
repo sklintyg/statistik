@@ -18,22 +18,22 @@
  */
 package se.inera.statistics.web.api;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-import junit.framework.TestCase;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import se.inera.statistics.service.DeleteCustomerData;
 
-@RunWith(MockitoJUnitRunner.class)
-public class DeleteControllerTest extends TestCase {
+@ExtendWith(MockitoExtension.class)
+public class DeleteControllerTest {
 
     @Mock
     private DeleteCustomerData deleteCustomerData;

@@ -18,11 +18,11 @@
  */
 package se.inera.statistics.service.helper;
 
+import jakarta.xml.bind.JAXB;
+import jakarta.xml.bind.JAXBException;
 import java.io.StringReader;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import javax.xml.bind.JAXB;
-import javax.xml.bind.JAXBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.inera.statistics.service.hsa.HSAKey;

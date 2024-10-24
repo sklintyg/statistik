@@ -18,15 +18,15 @@
  */
 package se.inera.statistics.web.service.region;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
+import jakarta.activation.FileDataSource;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
-import javax.activation.FileDataSource;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import se.inera.statistics.service.region.RegionEnhetFileDataRow;
 
 public class RegionFileReaderTest {
@@ -112,7 +112,7 @@ public class RegionFileReaderTest {
             fail();
         } catch (RegionEnhetFileParseException e) {
             //Then
-            assertTrue(e.getMessage(), e.getMessage().startsWith("Rad 2"));
+            assertTrue(e.getMessage().startsWith("Rad 2"), e.getMessage());
         }
     }
 
@@ -129,7 +129,7 @@ public class RegionFileReaderTest {
             fail();
         } catch (RegionEnhetFileParseException e) {
             //Then
-            assertTrue(e.getMessage(), e.getMessage().startsWith("Rad 3"));
+            assertTrue(e.getMessage().startsWith("Rad 3"), e.getMessage());
         }
     }
 
@@ -146,7 +146,7 @@ public class RegionFileReaderTest {
             fail();
         } catch (RegionEnhetFileParseException e) {
             //Then
-            assertTrue(e.getMessage(), e.getMessage().startsWith("Rad 3"));
+            assertTrue(e.getMessage().startsWith("Rad 3"), e.getMessage());
         }
     }
 

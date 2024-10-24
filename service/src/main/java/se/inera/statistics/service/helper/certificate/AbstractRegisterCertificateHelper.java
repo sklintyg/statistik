@@ -18,10 +18,10 @@
  */
 package se.inera.statistics.service.helper.certificate;
 
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
 import org.apache.neethi.builders.converters.ConverterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

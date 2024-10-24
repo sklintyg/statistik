@@ -33,13 +33,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,7 +134,7 @@ public class HSADecorator {
         final HsaInfo updatedHsaInfo = service.getHSAInfo(key, info);
         try {
             storeHSAInfo(documentId, updatedHsaInfo);
-        } catch (javax.persistence.PersistenceException e) {
+        } catch (jakarta.persistence.PersistenceException e) {
             // Expected error if multiple HSA is fetched for same key. Ignore.
             LOG.debug("Ignoring expected error", e);
         }

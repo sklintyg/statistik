@@ -20,8 +20,8 @@
 /* global JSON */
 
 angular.module('StatisticsApp').factory('sessionCheckService',
-    ['$http', '$log', '$interval', '$window', 'UserModel',
-      function($http, $log, $interval, $window, UserModel) {
+    ['$http', '$log', '$interval', '$window', 'UserModel', '$cookies',
+      function($http, $log, $interval, $window, UserModel, $cookies) {
       'use strict';
 
       var pollPromise;
@@ -92,11 +92,18 @@ angular.module('StatisticsApp').factory('sessionCheckService',
       function _logout() {
         if (UserModel.get().authenticationMethod !== 'FAKE') {
           // FAKE logouts will be handled upon next request
-
-          // The RelayState is a mechanism to preserve the desired location after
+          
           // SAML redirects/POSTs has occured
           $log.debug('SAML inactive logout');
-          $window.location = '/saml/logout?RelayState=timeout';
+          var form = angular.element('<form></form>');
+          var input = angular.element('<input type="hidden" name="_csrf" />');
+          form.attr('method', 'POST');
+          form.attr('action', '/logout');
+          var csrfToken = $cookies.get('XSRF-TOKEN') || '';
+          input.val(csrfToken);
+          form.append(input);
+          angular.element(document.body).append(form);
+          form[0].submit();
         }
       }
 

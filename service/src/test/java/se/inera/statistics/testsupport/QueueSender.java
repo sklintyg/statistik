@@ -18,9 +18,9 @@
  */
 package se.inera.statistics.testsupport;
 
-import javax.annotation.PostConstruct;
-import javax.jms.ConnectionFactory;
-import javax.jms.TextMessage;
+import jakarta.annotation.PostConstruct;
+import jakarta.jms.ConnectionFactory;
+import jakarta.jms.TextMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;

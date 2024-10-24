@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -112,8 +111,6 @@ public class WidelineLoader {
         return aisles;
     }
 
-    @SuppressFBWarnings(value = "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
-        justification = "We know what we're doing. No user supplied data.")
     private PreparedStatement prepareStatementForVg(Connection connection, List<HsaIdVardgivare> vgids) throws SQLException {
         final String vgidsJoined = String.join("', '", vgids.stream().map(HsaIdAny::getId).collect(Collectors.toList()));
         String sql = "SELECT id, correlationid, lkf, enhet, vardenhet, lakarintyg, patientid, startdatum, slutdatum, kon, alder,"

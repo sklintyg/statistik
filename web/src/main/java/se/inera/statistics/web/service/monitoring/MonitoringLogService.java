@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.web.service.monitoring;
 
+import se.inera.auth.LoginMethod;
 import se.inera.statistics.integration.hsa.model.HsaIdUser;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
@@ -26,7 +27,7 @@ import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
  */
 public interface MonitoringLogService {
 
-    void logUserLogin(HsaIdUser hsaUser);
+    void logUserLogin(HsaIdUser hsaUser, LoginMethod loginMethod);
 
     void logFileUpload(HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, String fileName, Integer rows);
 
@@ -36,6 +37,5 @@ public interface MonitoringLogService {
 
     void logBrowserInfo(String browserName, String browserVersion, String osFamily, String osVersion, String width, String height);
 
-    // Saml
-    void logSamlStatusForFailedLogin(String issuer, String samlStatus);
+    void logUserLoginFailed(String exception);
 }

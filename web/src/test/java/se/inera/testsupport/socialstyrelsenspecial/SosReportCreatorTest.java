@@ -18,13 +18,13 @@
  */
 package se.inera.testsupport.socialstyrelsenspecial;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SosReportCreatorTest {
 

@@ -20,67 +20,53 @@
 
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-    <tx:annotation-driven/>
+  <tx:annotation-driven/>
 
-    <context:property-placeholder/>
-    <context:property-placeholder location="classpath*:application-context-test.properties" order="2"
-                                  ignore-resource-not-found="false" ignore-unresolvable="false"/>
+  <context:property-placeholder/>
+  <context:property-placeholder location="classpath*:application-context-test.properties" order="2"
+      ignore-resource-not-found="false" ignore-unresolvable="false"/>
 
-    <bean class="se.inera.intyg.infra.monitoring.logging.LogMDCHelper"/>
-    <bean class="se.inera.statistics.config.jpa.JpaConfigDev"/>
-    <bean class="se.inera.statistics.service.warehouse.EnhetLoader"/>
-    <bean class="se.inera.statistics.service.caching.NoOpRedisTemplate" id="rediscache"/>
-    <bean class="se.inera.statistics.service.caching.Cache"/>
-    <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
-    <bean class="se.inera.statistics.service.processlog.message.ProcessMessageLogImpl"/>
-    <bean class="se.inera.statistics.service.processlog.Processor"/>
-    <bean class="se.inera.statistics.service.warehouse.FactConverter"/>
-    <bean class="se.inera.statistics.service.warehouse.Warehouse"/>
-    <bean class="se.inera.statistics.service.processlog.VardgivareManager"/>
-    <bean class="se.inera.statistics.service.processlog.LakareManager"/>
-    <bean class="se.inera.statistics.service.hsa.HSAServiceImpl"/>
-    <bean class="se.inera.statistics.service.helper.RegisterCertificateResolver"/>
-    <bean class="se.inera.statistics.service.helper.certificate.RegisterCertificateHelper"/>
-    <bean class="se.inera.statistics.service.helper.certificate.FkRegisterCertificateHelper"/>
-    <bean class="se.inera.statistics.service.helper.certificate.Ag114RegisterCertificateHelper"/>
-    <bean class="se.inera.statistics.service.helper.certificate.Ag7804RegisterCertificateHelper"/>
-    <bean class="se.inera.statistics.service.helper.certificate.TsBasHelper"/>
-    <bean class="se.inera.statistics.service.helper.certificate.TsDiabetesHelper"/>
-    <bean class="se.inera.statistics.service.countypopulation.CountyPopulationManagerMock"/>
-    <bean class="se.inera.statistics.service.helper.SendMessageToCareHelper"/>
-    <bean class="se.inera.statistics.time.ChangableClock" factory-method="newChangable"/>
-    <bean class="se.inera.statistics.service.processlog.EnhetManager" id="enhetManager"/>
-    <bean class="se.inera.statistics.fileservice.UpdateEnhetNamnFromHsaFileService">
-        <constructor-arg ref="enhetManager"/>
-    </bean>
-    <bean class="se.inera.statistics.integration.hsa.services.HsaStatisticsServiceImpl"/>
-    <bean class="se.inera.intyg.infra.integration.hsatk.services.HsatkOrganizationServiceImpl"/>
-    <bean class="se.inera.intyg.infra.integration.hsatk.client.OrganizationClient"/>
-    <bean class="se.inera.intyg.infra.integration.hsatk.services.HsatkEmployeeServiceImpl"/>
-    <bean class="se.inera.intyg.infra.integration.hsatk.client.EmployeeClient"/>
-    <bean class="se.inera.intyg.infra.integration.hsatk.stub.HsaServiceStub"/>
-    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetHealthCareProviderResponderStub"/>
-    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetHealthCareUnitResponderStub"/>
-    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetHealthCareUnitMembersResponderStub"/>
-    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetAuthorizationsForPersonResponderStub"/>
-    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetEmployeeResponderStub"/>
-    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetHospCredentialsForPersonResponderStub"/>
-    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetHospLastUpdateResponderStub"/>
-    <bean class="se.inera.intyg.infra.integration.hsatk.stub.GetUnitResponderStub"/>
-    <bean class="se.inera.intyg.infra.integration.hsatk.stub.BootstrapBean"/>
-    <bean class="com.fasterxml.jackson.databind.ObjectMapper" />
+  <bean class="se.inera.intyg.infra.monitoring.logging.LogMDCHelper"/>
+  <bean class="se.inera.statistics.config.jpa.JpaConfigDev"/>
+  <bean class="se.inera.statistics.service.warehouse.EnhetLoader"/>
+  <bean class="se.inera.statistics.service.caching.NoOpRedisTemplate" id="rediscache"/>
+  <bean class="se.inera.statistics.service.caching.Cache"/>
+  <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
+  <bean class="se.inera.statistics.service.processlog.message.ProcessMessageLogImpl"/>
+  <bean class="se.inera.statistics.service.processlog.Processor"/>
+  <bean class="se.inera.statistics.service.warehouse.FactConverter"/>
+  <bean class="se.inera.statistics.service.warehouse.Warehouse"/>
+  <bean class="se.inera.statistics.service.processlog.VardgivareManager"/>
+  <bean class="se.inera.statistics.service.processlog.LakareManager"/>
+  <bean class="se.inera.statistics.service.hsa.HSAServiceImpl"/>
+  <bean class="se.inera.statistics.service.helper.RegisterCertificateResolver"/>
+  <bean class="se.inera.statistics.service.helper.certificate.RegisterCertificateHelper"/>
+  <bean class="se.inera.statistics.service.helper.certificate.FkRegisterCertificateHelper"/>
+  <bean class="se.inera.statistics.service.helper.certificate.Ag114RegisterCertificateHelper"/>
+  <bean class="se.inera.statistics.service.helper.certificate.Ag7804RegisterCertificateHelper"/>
+  <bean class="se.inera.statistics.service.helper.certificate.TsBasHelper"/>
+  <bean class="se.inera.statistics.service.helper.certificate.TsDiabetesHelper"/>
+  <bean class="se.inera.statistics.service.countypopulation.CountyPopulationManagerMock"/>
+  <bean class="se.inera.statistics.service.helper.SendMessageToCareHelper"/>
+  <bean class="se.inera.statistics.time.ChangableClock" factory-method="newChangable"/>
+  <bean class="se.inera.statistics.service.processlog.EnhetManager" id="enhetManager"/>
+  <bean class="se.inera.statistics.fileservice.UpdateEnhetNamnFromHsaFileService">
+    <constructor-arg ref="enhetManager"/>
+  </bean>
+  <bean class="se.inera.statistics.integration.hsa.services.HsaStatisticsServiceImpl"/>
+  <bean class="com.fasterxml.jackson.databind.ObjectMapper"/>
 
-    <context:component-scan base-package="se.inera.statistics.service.warehouse,se.inera.statistics.service.monitoring,se.inera.statistics.config.jpa"/>
+  <context:component-scan base-package="se.inera.statistics.service.warehouse,se.inera.statistics.service.monitoring,se.inera.statistics.config.jpa"/>
 
-    <!--This profile is used when testing transactional aspects of the application, i.e. when receiving a message on a queue and storing it to the db-->
-    <beans profile="transactional-test-mock">
-        <bean id="processLog" class="se.inera.statistics.service.processlog.ProcessLogMock"/>
-    </beans>
+  <!--This profile is used when testing transactional aspects of the application, i.e. when receiving a message on a queue and storing it to the db-->
+  <beans profile="transactional-test-mock">
+    <bean id="processLog" class="se.inera.statistics.service.processlog.ProcessLogMock"/>
+  </beans>
 </beans>

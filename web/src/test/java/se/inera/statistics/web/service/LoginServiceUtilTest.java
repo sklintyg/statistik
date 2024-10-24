@@ -18,26 +18,31 @@
  */
 package se.inera.statistics.web.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import se.inera.auth.AuthUtil;
+import se.inera.auth.LoginMethod;
 import se.inera.auth.LoginVisibility;
 import se.inera.auth.model.User;
 import se.inera.intyg.infra.integration.ia.services.IABannerService;
-import se.inera.statistics.integration.hsa.model.*;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdUser;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.Vardenhet;
+import se.inera.statistics.integration.hsa.model.Vardgivare;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.region.RegionEnhetHandler;
 import se.inera.statistics.service.report.util.Icd10;
@@ -78,7 +83,7 @@ public class LoginServiceUtilTest {
 
     private final Random rand = new Random();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         loginServiceUtil = Mockito.spy(loginServiceUtilInjected);
@@ -103,7 +108,7 @@ public class LoginServiceUtilTest {
         final Vardenhet enhet2 = newVardenhet("e2", "vg1");
         final Vardenhet enhet3 = newVardenhet("e3", "vg2");
         final List<Vardenhet> vardenhetsList = Arrays.asList(enhet1, enhet2, enhet3);
-        final User user = new User(userId, "testname", null, vardenhetsList);
+        final User user = new User(userId, "testname", null, vardenhetsList, LoginMethod.SITHS);
         AuthUtil.setUserToSecurityContext(user);
 
         // When
@@ -128,7 +133,8 @@ public class LoginServiceUtilTest {
         final Vardenhet enhet2 = newVardenhet("e2", "vg1");
         final Vardenhet enhet3 = newVardenhet("e3", "vg2");
         final List<Vardenhet> vardenhetsList = Arrays.asList(enhet1, enhet2, enhet3);
-        final User user = new User(userId, "testname", Arrays.asList(new Vardgivare("vg2", "Vårdgivare 2")), vardenhetsList);
+        final User user = new User(userId, "testname", Arrays.asList(new Vardgivare("vg2", "Vårdgivare 2")), vardenhetsList,
+            LoginMethod.SITHS);
         AuthUtil.setUserToSecurityContext(user);
 
         when(warehouse.getEnhets(any())).thenAnswer(invocationOnMock -> {

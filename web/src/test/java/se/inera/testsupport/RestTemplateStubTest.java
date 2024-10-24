@@ -18,10 +18,10 @@
  */
 package se.inera.testsupport;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
@@ -35,7 +35,7 @@ public class RestTemplateStubTest {
     @InjectMocks
     private RestTemplateStub restTemplateStub;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         restTemplateStub.restTemplateStubPostConstruct();

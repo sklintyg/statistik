@@ -18,12 +18,12 @@
  */
 package se.inera.statistics.service.processlog;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.util.Objects;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import se.inera.statistics.integration.hsa.model.HsaIdLakare;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
@@ -34,7 +34,7 @@ public class Lakare {
     public static final String TABLE = "lakare";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String vardgivareId;

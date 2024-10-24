@@ -18,28 +18,36 @@
  */
 package se.inera.auth.model;
 
+import static se.inera.auth.AuthenticationConstants.RELYING_PARTY_REGISTRATION_ID;
+
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.security.saml2.provider.service.authentication.Saml2AuthenticatedPrincipal;
+import se.inera.auth.LoginMethod;
 import se.inera.statistics.integration.hsa.model.HsaIdUser;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.integration.hsa.model.Vardenhet;
 import se.inera.statistics.integration.hsa.model.Vardgivare;
 
-public class User implements Serializable {
+public class User implements Serializable, Saml2AuthenticatedPrincipal {
 
     private final HsaIdUser hsaId;
     private final String name;
     private final List<Vardgivare> vgsWithProcessledarStatus;
     private final List<Vardenhet> vardenhetList;
 
-    public User(HsaIdUser hsaId, String name, List<Vardgivare> vgsWithProcessledarStatus, List<Vardenhet> vardenhetsList) {
+    private final LoginMethod loginMethod;
+
+    public User(HsaIdUser hsaId, String name, List<Vardgivare> vgsWithProcessledarStatus, List<Vardenhet> vardenhetsList,
+        LoginMethod loginMethod) {
         this.hsaId = hsaId;
         this.name = name;
         this.vgsWithProcessledarStatus = vgsWithProcessledarStatus != null ? Collections.unmodifiableList(vgsWithProcessledarStatus)
             : Collections.emptyList();
         this.vardenhetList = vardenhetsList != null ? Collections.unmodifiableList(vardenhetsList) : Collections.emptyList();
+        this.loginMethod = loginMethod;
     }
 
     public boolean isProcessledareForVg(HsaIdVardgivare vardgivareId) {
@@ -75,4 +83,12 @@ public class User implements Serializable {
             .collect(Collectors.toList());
     }
 
+    public LoginMethod getLoginMethod() {
+        return loginMethod;
+    }
+
+    @Override
+    public String getRelyingPartyRegistrationId() {
+        return RELYING_PARTY_REGISTRATION_ID;
+    }
 }

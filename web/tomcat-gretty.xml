@@ -32,11 +32,17 @@
 
   <Service name="Catalina">
     <Connector port="${dev.http.port}" protocol="HTTP/1.1"
-               connectionTimeout="20000"
-               redirectPort="8443" />
+        connectionTimeout="20000"
+        redirectPort="8443"
+        compression="on"
+        compressionMinSize="1024"
+    />
     <Connector port="${dev.http.port.internal}" protocol="HTTP/1.1"
         connectionTimeout="20000"
-        redirectPort="8443" />
+        redirectPort="8443"
+        compression="on"
+        compressionMinSize="1024"
+    />
     <Engine name="Catalina" defaultHost="localhost">
       <Host name="localhost"  appBase="webapps"
             unpackWARs="true" autoDeploy="false" deployOnStartup="true">

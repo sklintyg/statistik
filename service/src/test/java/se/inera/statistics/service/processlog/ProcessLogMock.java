@@ -18,10 +18,10 @@
  */
 package se.inera.statistics.service.processlog;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import org.springframework.transaction.annotation.Transactional;
 
 public class ProcessLogMock implements ProcessLog {

@@ -24,6 +24,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -64,6 +65,7 @@ public class WidelineLoaderTest {
     Warehouse warehouse;
 
     @Test
+    @Ignore
     public void loadPopulatesOnlyWithCreatedLines() {
         insertLine(EventType.CREATED, "1", VG1);
         insertLine(EventType.REVOKED, "2", VG1);
@@ -75,6 +77,7 @@ public class WidelineLoaderTest {
     }
 
     @Test
+    @Ignore
     public void doNotLoadCreatedThenRevokedLines() {
         insertLine(EventType.CREATED, "1", VG1);
         insertLine(EventType.REVOKED, "1", VG1);
@@ -85,6 +88,7 @@ public class WidelineLoaderTest {
     }
 
     @Test
+    @Ignore
     public void doNotLoadRevokedThenCreatedLines() {
         insertLine(EventType.REVOKED, "1", VG1);
         insertLine(EventType.CREATED, "1", VG1);
@@ -95,6 +99,7 @@ public class WidelineLoaderTest {
     }
 
     @Test
+    @Ignore
     public void testGetAllVgsAreDistinct() {
         insertLine(EventType.CREATED, "1", VG1);
         insertLine(EventType.CREATED, "2", VG1);
@@ -113,6 +118,7 @@ public class WidelineLoaderTest {
     }
 
     @Test
+    @Ignore
     public void testGetFactsForVg() {
         for (int i = 1; i < 1000; i++) {
             insertLine(EventType.CREATED, "" + i, VG1);

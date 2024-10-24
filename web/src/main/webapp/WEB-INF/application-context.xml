@@ -24,101 +24,100 @@
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
     ">
 
-    <context:component-scan base-package="se.inera.statistics.web.service.monitoring" />
+  <context:component-scan base-package="se.inera.statistics.web.service.monitoring"/>
+  <context:component-scan base-package="se.inera.testability"/>
+  <context:component-scan base-package="se.inera.auth"/>
+  <context:component-scan base-package="se.inera.config"/>
 
-    <beans profile="hsa-integration-intyg-proxy-service">
-        <import resource="classpath:/hsa-integration-intyg-proxy-service-config.xml"/>
-    </beans>
+  <beans profile="hsa-integration-intyg-proxy-service">
+    <import resource="classpath:/hsa-integration-intyg-proxy-service-config.xml"/>
+  </beans>
 
-    <beans profile="hsa-stub">
-        <bean class="se.inera.intyg.infra.integration.hsatk.stub.HsaServiceStub"/>
-    </beans>
+  <beans profile="testability">
+    <bean id="testabilityController" class="se.inera.testability.TestabilityController"/>
+  </beans>
 
-    <beans>
-        <import resource="classpath*:process-log-impl.xml"/>
-    </beans>
+  <beans>
+    <import resource="classpath*:process-log-impl.xml"/>
+  </beans>
 
-    <beans>
-        <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
-        <bean id="loginVisibility" class="se.inera.auth.LoginVisibility"/>
+  <beans>
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
+    <bean id="loginVisibility" class="se.inera.auth.LoginVisibility"/>
 
-        <bean id="applicationContextProvider" class="se.inera.auth.ApplicationContextProvider"/>
+    <bean id="applicationContextProvider" class="se.inera.auth.ApplicationContextProvider"/>
+    <bean id="internalApiFilter" class="se.inera.intyg.infra.security.filter.InternalApiFilter" />
+    <bean class="se.inera.statistics.integration.hsa.services.HsaStatisticsServiceImpl"/>
+    <bean class="se.inera.statistics.integration.hsa.services.HsaOrganizationsServiceImpl"/>
+    <bean class="se.inera.statistics.integration.hsa.services.HsaPersonServiceImpl"/>
+    <bean id="filterHashHandler" class="se.inera.statistics.web.service.FilterHashHandler"/>
+    <bean id="resultMessageHandler" class="se.inera.statistics.web.service.ResultMessageHandler"/>
+    <bean id="chartDataService" class="se.inera.statistics.web.api.ChartDataService"/>
+    <bean id="nationellDataCalculator" class="se.inera.statistics.web.service.NationellDataCalculator"/>
+    <bean id="pdfService" class="se.inera.statistics.web.api.PdfService"/>
 
-        <bean class="se.inera.statistics.integration.hsa.services.HsaStatisticsServiceImpl"/>
-        <bean class="se.inera.statistics.integration.hsa.services.HsaOrganizationsServiceImpl"/>
-        <bean class="se.inera.statistics.integration.hsa.services.HsaPersonServiceImpl"/>
-        <bean id="filterHashHandler" class="se.inera.statistics.web.service.FilterHashHandler"/>
-        <bean id="resultMessageHandler" class="se.inera.statistics.web.service.ResultMessageHandler"/>
-        <bean id="chartDataService" class="se.inera.statistics.web.api.ChartDataService"/>
-        <bean id="nationellDataCalculator" class="se.inera.statistics.web.service.NationellDataCalculator"/>
-        <bean id="pdfService" class="se.inera.statistics.web.api.PdfService"/>
+    <bean id="protectedChartDataService" class="se.inera.statistics.web.api.ProtectedChartDataService"/>
+    <bean id="protectedRegionService" class="se.inera.statistics.web.api.ProtectedRegionService"/>
+    <bean class="se.inera.statistics.web.service.ResponseHandler"/>
+    <bean id="taskCoordinatorServiceImpl" class="se.inera.statistics.web.service.task.TaskCoordinatorServiceImpl"/>
+    <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
+    <bean id="loginInfoService" class="se.inera.statistics.web.api.LoginInfoService"/>
+    <bean id="loggingService" class="se.inera.statistics.web.api.LoggingService"/>
+    <bean id="sessionStatusService" class="se.inera.statistics.web.api.SessionStatusService"/>
+    <bean id="dynamicLinkRepository" class="se.inera.intyg.infra.dynamiclink.repository.DynamicLinkRepositoryImpl"/>
+    <bean id="dynamicLinkService" class="se.inera.intyg.infra.dynamiclink.service.DynamicLinkServiceImpl"/>
+    <bean id="linkService" class="se.inera.statistics.web.api.LinkService"/>
+    <bean id="deleteController" class="se.inera.statistics.web.api.DeleteController"/>
+    <bean class="se.inera.statistics.web.scheduler.STBannerJob"/>
+    <import resource="classpath*:icd10.xml"/>
+    <import resource="classpath*:ia-services-config.xml"/>
+    <import resource="application-context-cxf.xml"/>
+    <import resource="application-context-jmx.xml"/>
 
-        <bean id="protectedChartDataService" class="se.inera.statistics.web.api.ProtectedChartDataService"/>
-        <bean id="protectedRegionService" class="se.inera.statistics.web.api.ProtectedRegionService"/>
-        <bean class="se.inera.statistics.web.service.ResponseHandler"/>
-        <bean id="taskCoordinatorServiceImpl" class="se.inera.statistics.web.service.task.TaskCoordinatorServiceImpl"/>
-        <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
-        <bean id="loginInfoService" class="se.inera.statistics.web.api.LoginInfoService"/>
-        <bean id="loggingService" class="se.inera.statistics.web.api.LoggingService"/>
-        <bean id="sessionStatusService" class="se.inera.statistics.web.api.SessionStatusService"/>
-        <bean id="dynamicLinkRepository" class="se.inera.intyg.infra.dynamiclink.repository.DynamicLinkRepositoryImpl" />
-        <bean id="dynamicLinkService" class="se.inera.intyg.infra.dynamiclink.service.DynamicLinkServiceImpl"/>
-        <bean id="linkService" class="se.inera.statistics.web.api.LinkService"/>
-        <bean id="deleteController" class="se.inera.statistics.web.api.DeleteController"/>
-        <bean class="se.inera.statistics.web.scheduler.STBannerJob"/>
+    <context:annotation-config/>
+    <context:component-scan base-package="se.inera.statistics.service,se.inera.statistics.config,se.inera.statistics.service.caching"/>
+    <context:component-scan base-package="se.inera.intyg.infra.monitoring"/>
 
-        <import resource="classpath*:hsatk-services-config.xml"/>
-        <import resource="classpath*:icd10.xml"/>
-        <import resource="classpath*:ia-services-config.xml"/>
-        <import resource="application-context-cxf.xml"/>
-        <import resource="application-context-security.xml"/>
-        <import resource="application-context-jmx.xml"/>
+    <bean id="receiver" class="se.inera.statistics.service.processlog.Receiver"/>
 
-        <context:annotation-config/>
-        <context:component-scan base-package="se.inera.statistics.service,se.inera.statistics.config,se.inera.statistics.service.caching"/>
-        <context:component-scan base-package="se.inera.intyg.infra.monitoring"/>
+    <bean class="org.springframework.web.context.support.ServletContextAttributeExporter">
+      <property name="attributes">
+        <map>
+          <entry key="loginUrl" value="${login.url}"/>
+          <entry key="versionUtil" value-ref="versionUtil"/>
+        </map>
+      </property>
+    </bean>
 
-        <bean id="receiver" class="se.inera.statistics.service.processlog.Receiver"/>
+    <bean id="versionUtil" class="se.inera.statistics.web.util.VersionUtil"/>
 
-        <bean class="org.springframework.web.context.support.ServletContextAttributeExporter">
-            <property name="attributes">
-                <map>
-                    <entry key="loginUrl" value="${login.url}"/>
-                    <entry key="versionUtil" value-ref="versionUtil"/>
-                </map>
-            </property>
-        </bean>
+    <bean id="warehouse" class="se.inera.statistics.service.warehouse.Warehouse"/>
+    <bean id="warehouseService" class="se.inera.statistics.web.service.WarehouseService"/>
 
-        <bean id="versionUtil" class="se.inera.statistics.web.util.VersionUtil"/>
+    <bean id="factPopulator" class="se.inera.statistics.service.warehouse.FactConverter"/>
+    <bean id="widelineConverter" class="se.inera.statistics.service.warehouse.WidelineConverter"/>
 
-        <bean id="warehouse" class="se.inera.statistics.service.warehouse.Warehouse" />
-        <bean id="warehouseService" class="se.inera.statistics.web.service.WarehouseService" />
+    <bean class="se.inera.statistics.service.processlog.Processor"/>
+    <bean class="se.inera.statistics.web.service.LoginServiceUtil"/>
+    <bean class="se.inera.statistics.web.service.FilterHandler"/>
 
-        <bean id="factPopulator" class="se.inera.statistics.service.warehouse.FactConverter" />
-        <bean id="widelineConverter" class="se.inera.statistics.service.warehouse.WidelineConverter" />
+    <bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">
+      <property name="redisNamespace" value="${app.name}"/>
+    </bean>
 
-        <bean class="se.inera.statistics.service.processlog.Processor" />
-        <bean class="se.inera.statistics.web.service.LoginServiceUtil" />
-        <bean class="se.inera.statistics.web.service.FilterHandler" />
+  </beans>
 
-        <bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">
-            <property name="redisNamespace" value="${app.name}"/>
-            <property name="redisFlushMode" value="IMMEDIATE" />
-        </bean>
+  <beans profile="testapi">
+    <bean id="restTemplateStat" class="se.inera.testsupport.RestTemplateStub"/>
+    <bean class="se.inera.statistics.time.ChangableClock" factory-method="newChangable"/>
+  </beans>
+  <beans profile="!testapi">
+    <bean id="restTemplateStat" class="org.springframework.web.client.RestTemplate"/>
+    <bean class="java.time.Clock" factory-method="systemDefaultZone"/>
+  </beans>
 
-    </beans>
-
-    <beans profile="testapi">
-        <bean id="restTemplateStat" class="se.inera.testsupport.RestTemplateStub" />
-        <bean class="se.inera.statistics.time.ChangableClock" factory-method="newChangable" />
-    </beans>
-    <beans profile="!testapi">
-        <bean id="restTemplateStat" class="org.springframework.web.client.RestTemplate" />
-        <bean class="java.time.Clock" factory-method="systemDefaultZone"/>
-    </beans>
-
-    <beans profile="populate-intygcommon-dx">
-        <bean id="intygCommonDxPopulator" class="se.inera.statistics.service.warehouse.IntygCommonDxPopulator" />
-    </beans>
+  <beans profile="populate-intygcommon-dx">
+    <bean id="intygCommonDxPopulator" class="se.inera.statistics.service.warehouse.IntygCommonDxPopulator"/>
+  </beans>
 
 </beans>

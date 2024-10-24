@@ -42,6 +42,6 @@ angular.module('StatisticsApp').controller('loginCtrl',
       $scope.errorUrlParam = $location.search().error;
       $scope.hasActiveStatUrl = $cookies.get('statUrl');
 
-      $scope.defaultUrl = '/saml/login';
+      $scope.defaultUrl = '/saml2/authenticate/siths';
     }
 );

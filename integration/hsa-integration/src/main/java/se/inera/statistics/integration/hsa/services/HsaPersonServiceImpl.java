@@ -1,8 +1,8 @@
 package se.inera.statistics.integration.hsa.services;
 
+import jakarta.xml.ws.WebServiceException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.ws.WebServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

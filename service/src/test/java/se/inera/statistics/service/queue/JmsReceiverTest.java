@@ -22,9 +22,9 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import jakarta.jms.Message;
+import jakarta.jms.MessageNotWriteableException;
 import java.io.IOException;
-import javax.jms.Message;
-import javax.jms.MessageNotWriteableException;
 import org.apache.activemq.command.ActiveMQTextMessage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -228,5 +228,5 @@ public class JmsReceiverTest {
         verify(receiver, times(1))
             .accept(Mockito.eq(EventType.CREATED), Mockito.eq(intyg), Mockito.eq(correlationId), Mockito.anyLong());
     }
-    
+
 }

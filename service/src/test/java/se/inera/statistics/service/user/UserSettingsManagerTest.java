@@ -20,7 +20,7 @@ package se.inera.statistics.service.user;
 
 import static org.junit.Assert.assertNull;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
