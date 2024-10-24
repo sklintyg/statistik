@@ -46,7 +46,7 @@
     <bean id="loginVisibility" class="se.inera.auth.LoginVisibility"/>
 
     <bean id="applicationContextProvider" class="se.inera.auth.ApplicationContextProvider"/>
-
+    <bean id="internalApiFilter" class="se.inera.intyg.infra.security.filter.InternalApiFilter" />
     <bean class="se.inera.statistics.integration.hsa.services.HsaStatisticsServiceImpl"/>
     <bean class="se.inera.statistics.integration.hsa.services.HsaOrganizationsServiceImpl"/>
     <bean class="se.inera.statistics.integration.hsa.services.HsaPersonServiceImpl"/>
@@ -69,7 +69,6 @@
     <bean id="linkService" class="se.inera.statistics.web.api.LinkService"/>
     <bean id="deleteController" class="se.inera.statistics.web.api.DeleteController"/>
     <bean class="se.inera.statistics.web.scheduler.STBannerJob"/>
-
     <import resource="classpath*:icd10.xml"/>
     <import resource="classpath*:ia-services-config.xml"/>
     <import resource="application-context-cxf.xml"/>

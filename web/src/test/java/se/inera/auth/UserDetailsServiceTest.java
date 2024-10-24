@@ -23,6 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -124,6 +126,13 @@ public class UserDetailsServiceTest {
         auktoriseradeEnheter(VE1_VG1, VE3_VG2);
         final var user = service.buildUserPrincipal(HSA_ID, LoginMethod.SITHS);
         assertEquals(LoginMethod.SITHS, user.getLoginMethod());
+    }
+
+    @Test
+    void shallMonitorLogUserLogin() {
+        auktoriseradeEnheter(VE1_VG1, VE3_VG2);
+        service.buildUserPrincipal(HSA_ID, LoginMethod.SITHS);
+        verify(monitoringLogService).logUserLogin(any(), eq(LoginMethod.SITHS));
     }
 
     private void auktoriseradeEnheter(Vardenhet... enheter) {

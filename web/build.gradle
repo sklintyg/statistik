@@ -99,11 +99,15 @@ dependencies {
     implementation "org.apache.poi:poi-ooxml:${poiVersion}"
     implementation "org.liquibase:liquibase-core"
     implementation "org.springframework:spring-jms"
+    implementation 'org.opensaml:opensaml-core'
+    implementation 'org.opensaml:opensaml-saml-api'
+    implementation 'org.opensaml:opensaml-saml-impl'
+    implementation 'org.springframework.security:spring-security-saml2-service-provider'
     implementation 'org.springframework.security:spring-security-core'
     implementation 'org.springframework.security:spring-security-web'
     implementation 'org.springframework.security:spring-security-config'
-    implementation 'org.springframework:spring-webmvc'
     implementation 'org.springframework.session:spring-session-core'
+    implementation 'org.springframework:spring-webmvc'
 
     compileOnly "jakarta.persistence:jakarta.persistence-api"
     compileOnly "jakarta.ws.rs:jakarta.ws.rs-api"

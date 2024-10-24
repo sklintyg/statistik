@@ -35,6 +35,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.LoggerFactory;
+import se.inera.auth.LoginMethod;
 import se.inera.statistics.integration.hsa.model.HsaIdUser;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
@@ -71,8 +72,15 @@ public class MonitoringLogServiceImplTest {
 
     @Test
     public void shouldLogUserLogin() {
-        logService.logUserLogin(HSA_USER);
-        verifyLog(Level.INFO, "USER_LOGIN Login user hsaId 'HSA_USER'");
+        logService.logUserLogin(HSA_USER, LoginMethod.SITHS);
+        verifyLog(Level.INFO, "USER_LOGIN Login user hsaId 'HSA_USER' using login method 'SITHS'");
+    }
+
+    @Test
+    void shallLogUserLoginFailed() {
+        final var exception = "exception";
+        logService.logUserLoginFailed(exception);
+        verifyLog(Level.INFO, String.format("USER_LOGIN_FAILURE User failed to login, exception message '%s'", exception));
     }
 
     @Test

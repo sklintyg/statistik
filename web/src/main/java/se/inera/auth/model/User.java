@@ -18,17 +18,20 @@
  */
 package se.inera.auth.model;
 
+import static se.inera.auth.AuthenticationConstants.RELYING_PARTY_REGISTRATION_ID;
+
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.security.saml2.provider.service.authentication.Saml2AuthenticatedPrincipal;
 import se.inera.auth.LoginMethod;
 import se.inera.statistics.integration.hsa.model.HsaIdUser;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.integration.hsa.model.Vardenhet;
 import se.inera.statistics.integration.hsa.model.Vardgivare;
 
-public class User implements Serializable {
+public class User implements Serializable, Saml2AuthenticatedPrincipal {
 
     private final HsaIdUser hsaId;
     private final String name;
@@ -82,5 +85,10 @@ public class User implements Serializable {
 
     public LoginMethod getLoginMethod() {
         return loginMethod;
+    }
+
+    @Override
+    public String getRelyingPartyRegistrationId() {
+        return RELYING_PARTY_REGISTRATION_ID;
     }
 }

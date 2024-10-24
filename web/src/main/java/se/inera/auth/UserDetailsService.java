@@ -20,8 +20,6 @@ package se.inera.auth;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -38,7 +36,6 @@ import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 @Service
 public class UserDetailsService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UserDetailsService.class);
     public static final String GLOBAL_VG_ACCESS_PREFIX = "INTYG;Statistik-";
 
     @Autowired
@@ -59,7 +56,7 @@ public class UserDetailsService {
             .stream().map(vgHsaId -> hsaOrganizationsService.getVardgivare(vgHsaId))
             .toList();
 
-        monitoringLogService.logUserLogin(hsaId);
+        monitoringLogService.logUserLogin(hsaId, loginMethod);
 
         final String name = extractPersonName(hsaPersonInfo);
         return new User(hsaId, name, vardgivareWithProcessledarStatusList, userAuthorization.getVardenhetList(), loginMethod);

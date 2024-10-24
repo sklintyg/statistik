@@ -31,7 +31,7 @@ angular.module('StatisticsApp')
     },
     restrict: 'E',
     templateUrl: '/components/directives/statsHeader/statsHeader.html',
-    controller: function($window, $scope, AppModel, UserModel, $uibModal, $http) {
+    controller: function($window, $scope, AppModel, UserModel, $uibModal, $http, $cookies) {
       $scope.AppModel = AppModel;
       $scope.UserModel = UserModel;
 
@@ -74,12 +74,20 @@ angular.module('StatisticsApp')
             method: 'POST'
           })
           .then(function() {
-            $window.location.href = '/#/fakelogin';
+            $window.location = '/#/fakelogin';
             $window.location.reload();
           });
         } else {
-          $window.location = '/saml/logout/';
-        }
+            var form = angular.element('<form></form>');
+            var input = angular.element('<input type="hidden" name="_csrf" />');
+            form.attr('method', 'POST');
+            form.attr('action', '/logout');
+            var csrfToken = $cookies.get('XSRF-TOKEN') || '';
+            input.val(csrfToken);
+            form.append(input);
+            angular.element(document.body).append(form);
+            form[0].submit();
+          }
       };
 
     }
