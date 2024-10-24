@@ -25,12 +25,14 @@ angular.module('StatisticsApp').factory('monitoringLogService',
         'use strict';
 
         function post(request) {
-            var csrfToken = $cookies.get('XSRF-TOKEN') || '';
+            var csrfToken = $cookies.get('XSRF-TOKEN') || undefined;
+            if (csrfToken) {
             $http.post('/api/logging/monitorlog', request, {
-                headers: {
-                    'X-XSRF-TOKEN': csrfToken
-                },
-            });
+                    headers: {
+                        'X-XSRF-TOKEN': csrfToken
+                    },
+                });
+            }
         }
 
         function isDefined(input) {
