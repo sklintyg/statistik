@@ -21,11 +21,16 @@
  */
 angular.module('StatisticsApp').factory('monitoringLogService',
     /** @ngInject */
-    function($http) {
+    function($http, $cookies) {
         'use strict';
 
         function post(request) {
-            $http.post('/api/logging/monitorlog', request);
+            var csrfToken = $cookies.get('XSRF-TOKEN') || '';
+            $http.post('/api/logging/monitorlog', request, {
+                headers: {
+                    'X-XSRF-TOKEN': csrfToken
+                },
+            });
         }
 
         function isDefined(input) {

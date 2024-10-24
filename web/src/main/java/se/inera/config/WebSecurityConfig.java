@@ -90,10 +90,6 @@ public class WebSecurityConfig {
     private String samlLogoutSuccessUrl;
     @Value("${saml.keystore.type:PKCS12}")
     private String keyStoreType;
-    @Value("${oidc.op.identity}")
-    private String opIdentity;
-    @Value("${oidc.client.id}")
-    private String rpIdentity;
     @Value("${saml.keystore.file}")
     private String keyStorePath;
     @Value("${saml.keystore.alias}")
@@ -137,22 +133,23 @@ public class WebSecurityConfig {
         }
 
         http
-            .authorizeHttpRequests(request -> request.
-                requestMatchers("/*").permitAll().
-                requestMatchers("/js/**").permitAll().
-                requestMatchers("/api/*").permitAll().
-                requestMatchers("/app/**").permitAll().
-                requestMatchers("/assets/**").permitAll().
-                requestMatchers("/api/pdf/*").permitAll().
-                requestMatchers("/api/links/**").permitAll().
-                requestMatchers("/components/**").permitAll().
-                requestMatchers("/api/logging/**").permitAll().
-                requestMatchers("/internalapi/**").permitAll().
-                requestMatchers("/bower_components/**").permitAll().
-                requestMatchers("/services/api/ia-api/**").permitAll().
-                requestMatchers("/api/login/getAppSettings").permitAll().
-                requestMatchers("/api/getDiagnosavsnittstatistik/**").permitAll().
-                anyRequest().fullyAuthenticated()
+            .authorizeHttpRequests(request -> request
+                .requestMatchers("/*").permitAll()
+                .requestMatchers("/js/**").permitAll()
+                .requestMatchers("/api/*").permitAll()
+                .requestMatchers("/app/**").permitAll()
+                .requestMatchers("/assets/**").permitAll()
+                .requestMatchers("/api/pdf/*").permitAll()
+                .requestMatchers("/api/links/**").permitAll()
+                .requestMatchers("/components/**").permitAll()
+                .requestMatchers("/api/logging/**").permitAll()
+                .requestMatchers("/internalapi/**").permitAll()
+                .requestMatchers("/bower_components/**").permitAll()
+                .requestMatchers("/services/api/ia-api/**").permitAll()
+                .requestMatchers("/api/login/getAppSettings").permitAll()
+                .requestMatchers("/api/session-auth-check/**").permitAll()
+                .requestMatchers("/api/getDiagnosavsnittstatistik/**").permitAll()
+                .anyRequest().fullyAuthenticated()
             )
             .saml2Metadata(withDefaults())
             .saml2Login(saml2 -> saml2

@@ -20,8 +20,8 @@
 /* global JSON */
 
 angular.module('StatisticsApp').factory('sessionCheckService',
-    ['$http', '$log', '$interval', '$window', 'UserModel',
-      function($http, $log, $interval, $window, UserModel) {
+    ['$http', '$log', '$interval', '$window', 'UserModel', '$cookies',
+      function($http, $log, $interval, $window, UserModel, $cookies) {
       'use strict';
 
       var pollPromise;

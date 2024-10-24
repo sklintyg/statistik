@@ -16,12 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.schemavalidation;
+package se.inera.auth.exceptions;
 
-import javax.annotation.Nonnull;
+import org.springframework.security.core.AuthenticationException;
 
-public interface SchematronValidator {
+public class MissingMedarbetaruppdragException extends AuthenticationException {
 
-    ValidateXmlResponse validateSchematron(@Nonnull String xmlContent);
-
+    public MissingMedarbetaruppdragException(String hsaId) {
+        super("User with HSA-ID " + hsaId + " does not have any medarbetaruppdrag with 'Vård och behandling'");
+    }
 }

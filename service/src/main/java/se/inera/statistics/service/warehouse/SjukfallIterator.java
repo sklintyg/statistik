@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -48,8 +47,6 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
         return new SjukfallCalculator(aisle, filter, ranges);
     }
 
-    @SuppressFBWarnings(value = "ICAST_INTEGER_MULTIPLY_CAST_TO_LONG",
-        justification = "We know what we're doing. No no risk for integer overflow.")
     public static List<Range> getRanges(LocalDate from, int periods, int periodSize) {
         final ArrayList<Range> ranges = new ArrayList<>();
         for (int i = 0; i < periods; i++) {
@@ -66,8 +63,6 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
     }
 
     @Override
-    @SuppressFBWarnings(value = "ICAST_INTEGER_MULTIPLY_CAST_TO_LONG",
-        justification = "We know what we're doing. No no risk for integer overflow.")
     public SjukfallGroup next() {
         if (!hasNext()) {
             throw new NoSuchElementException();

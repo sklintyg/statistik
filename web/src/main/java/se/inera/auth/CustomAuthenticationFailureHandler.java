@@ -3,21 +3,27 @@ package se.inera.auth;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
+import se.inera.auth.exceptions.MissingMedarbetaruppdragException;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
 @Slf4j
 @Component
-public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
+public class CustomAuthenticationFailureHandler extends ExceptionMappingAuthenticationFailureHandler {
 
-    @Value("${error.login.url}")
-    private String errorLoginUrl;
     private final MonitoringLogService monitoringLogService;
+    private static final String DEFAULT_FAILURE_URL = "/#/login?error=loginfailed";
+
+    private static final Map<String, String> failureUrls = Map.of(
+        BadCredentialsException.class.getName(), DEFAULT_FAILURE_URL,
+        MissingMedarbetaruppdragException.class.getName(), "/#/login?error=medarbetaruppdrag"
+    );
 
     public CustomAuthenticationFailureHandler(MonitoringLogService monitoringLogService) {
         this.monitoringLogService = monitoringLogService;
@@ -26,9 +32,17 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
         AuthenticationException exception) throws IOException {
+        final var exceptionName = exception.getClass().getName();
         final var errorId = String.valueOf(UUID.randomUUID());
         handleLogEvents(exception, errorId);
-        response.sendRedirect(request.getContextPath() + errorLoginUrl);
+        String url;
+        if (failureUrls.containsKey(exceptionName)) {
+            url = failureUrls.get(exceptionName);
+        } else {
+            saveException(request, exception);
+            url = DEFAULT_FAILURE_URL;
+        }
+        getRedirectStrategy().sendRedirect(request, response, url);
     }
 
     private void handleLogEvents(AuthenticationException exception,
