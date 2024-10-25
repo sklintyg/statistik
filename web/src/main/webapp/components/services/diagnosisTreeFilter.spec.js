@@ -265,31 +265,6 @@ describe('Test of diagnosisTreeFilter', function() {
     });
   });
 
-  describe('setupDiagnosisTreeForSelectionModal', function() {
-
-    var diagnosis = {};
-
-    beforeEach(function() {
-      diagnosis = [{
-        id: '1',
-        name: 'Kapitel',
-        subItems: [{
-          id: '2',
-          name: 'Avsnitt',
-          subItems: [{
-            id: '3',
-            name: 'Kategori',
-            subItems: [{
-              id: '4',
-              name: 'code'
-            }]
-          }]
-        }]
-      }];
-    });
-
-  });
-
   describe('getSelectedLeaves', function() {
 
     it('none selected one level', function() {
