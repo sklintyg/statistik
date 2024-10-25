@@ -58,8 +58,8 @@ import se.inera.auth.CustomAuthenticationFailureHandler;
 import se.inera.auth.LoginMethod;
 import se.inera.auth.Saml2AuthenticationToken;
 import se.inera.auth.SpaCsrfTokenRequestHandler;
-import se.inera.auth.StatistikCookieSerializer;
 import se.inera.auth.UserDetailsService;
+import se.inera.intyg.infra.security.common.cookie.IneraCookieSerializer;
 
 @Configuration
 @EnableWebSecurity
@@ -203,7 +203,7 @@ public class WebSecurityConfig {
 
     @Bean
     public DefaultCookieSerializer cookieSerializer() {
-        return new StatistikCookieSerializer();
+        return new IneraCookieSerializer();
     }
 
     @Bean
