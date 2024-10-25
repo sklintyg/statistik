@@ -203,7 +203,7 @@ public class WebSecurityConfig {
 
     @Bean
     public DefaultCookieSerializer cookieSerializer() {
-        return new StatistikCookieSerializer(true);
+        return new StatistikCookieSerializer();
     }
 
     @Bean

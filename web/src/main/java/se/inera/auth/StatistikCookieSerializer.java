@@ -14,9 +14,8 @@ public class StatistikCookieSerializer extends DefaultCookieSerializer {
     private final boolean useSameSiteNoneExclusion;
     private final Pattern ucBrowserPattern = Pattern.compile("UCBrowser/(\\d+)\\.(\\d+)\\.(\\d+)\\.");
 
-    public StatistikCookieSerializer(boolean useSameSiteNoneExclusion) {
-        super();
-        this.useSameSiteNoneExclusion = useSameSiteNoneExclusion;
+    public StatistikCookieSerializer() {
+        this.useSameSiteNoneExclusion = false;
     }
 
     @Override
