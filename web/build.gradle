@@ -36,10 +36,6 @@ gretty {
                "-Ddev.http.port=${useHttpPort}",
                "-Ddev.http.port.internal=${useInternalHttpPort}"
     ]
-
-    dependencies {
-        gretty "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api"
-    }
 }
 
 idea {
