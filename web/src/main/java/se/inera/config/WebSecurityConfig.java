@@ -74,7 +74,7 @@ public class WebSecurityConfig {
     public static final String TESTABILITY_API = "/api/testability/**";
     @Value("${saml.sp.entity.id}")
     private String samlEntityId;
-    @Value("${saml.idp.metadata.location}")
+    @Value("${saml.idp.metadata.file}")
     private String samlIdpMetadataLocation;
     @Value("${saml.sp.assertion.consumer.service.location}")
     private String assertionConsumerServiceLocation;
