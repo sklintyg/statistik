@@ -18,32 +18,36 @@
  */
 package se.inera.auth;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.Collections;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.opensaml.saml2.core.Assertion;
-import org.opensaml.saml2.core.NameID;
-import org.opensaml.saml2.core.impl.NameIDBuilder;
-import org.springframework.security.saml.SAMLCredential;
+import org.mockito.junit.jupiter.MockitoExtension;
 import se.inera.auth.model.User;
-import se.inera.statistics.integration.hsa.model.*;
+import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
+import se.inera.statistics.integration.hsa.model.HsaIdUser;
+import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.integration.hsa.model.StatisticsPersonInformation;
+import se.inera.statistics.integration.hsa.model.UserAuthorization;
+import se.inera.statistics.integration.hsa.model.Vardenhet;
+import se.inera.statistics.integration.hsa.model.Vardgivare;
 import se.inera.statistics.integration.hsa.services.HsaOrganizationsService;
 import se.inera.statistics.integration.hsa.services.HsaPersonService;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class UserDetailsServiceTest {
 
     private static final String HSA_ID = "TST5565594230-106J";
@@ -53,6 +57,7 @@ public class UserDetailsServiceTest {
         new HsaIdVardgivare("IFV1239877878-0001"));
     private static final Vardenhet VE3_VG2 = new Vardenhet(new HsaIdEnhet("Vardenhet3"), "Enhetsnamn3", new HsaIdVardgivare("VG2"));
     private static final Vardenhet VE4_VG2 = new Vardenhet(new HsaIdEnhet("Vardenhet4"), "Enhetsnamn4", new HsaIdVardgivare("VG2"));
+    private static final String EMPLOYEE_HSA_ID = "TST5565594230-106J";
 
     @Mock
     private HsaOrganizationsService hsaOrganizationsService;
@@ -66,18 +71,15 @@ public class UserDetailsServiceTest {
     @InjectMocks
     private UserDetailsService service = new UserDetailsService();
 
-    private SAMLCredential credential;
-
-    @Before
+    @BeforeEach
     public void setup() {
-        newCredentials("/test-saml-biljett-uppdragslos.xml");
         setupHsaPersonService();
     }
 
     @Test
-    public void vardenhetOnOtherVardgivareAreNotFiltered() {
+    void vardenhetOnOtherVardgivareAreNotFiltered() {
         auktoriseradeEnheter(VE1_VG1, VE3_VG2, VE4_VG2);
-        User user = (User) service.loadUserBySAML(credential);
+        User user = service.buildUserPrincipal(EMPLOYEE_HSA_ID, LoginMethod.SITHS);
         assertEquals(3, user.getVardenhetList().size());
         assertEquals(VE1_VG1, user.getVardenhetList().get(0));
         assertEquals(VE3_VG2, user.getVardenhetList().get(1));
@@ -85,45 +87,52 @@ public class UserDetailsServiceTest {
     }
 
     @Test
-    public void hasVgAccessByMultipleEnhets() {
-        newCredentials("/test-saml-biljett-uppdragslos.xml");
+    void hasVgAccessByMultipleEnhets() {
         when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(any(HsaIdUser.class)))
             .thenReturn(new UserAuthorization(Arrays.asList(VE1_VG1, VE2_VG1), Collections.emptyList()));
-        User user = (User) service.loadUserBySAML(credential);
+        User user = service.buildUserPrincipal(EMPLOYEE_HSA_ID, LoginMethod.SITHS);
+
         assertTrue(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isDelprocessledare());
         assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isProcessledare());
     }
 
     @Test
-    public void hasVgAccessBySystemRole() {
+    void hasVgAccessBySystemRole() {
         auktoriseradeEnheter(VE1_VG1, VE3_VG2);
-        User user = (User) service.loadUserBySAML(credential);
+        User user = service.buildUserPrincipal(EMPLOYEE_HSA_ID, LoginMethod.SITHS);
         assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isDelprocessledare());
         assertTrue(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isProcessledare());
     }
 
     @Test
-    public void hasNoVgAccessBySystemRole() {
+    void hasNoVgAccessBySystemRole() {
         final UserAuthorization userAuthorization = new UserAuthorization(Arrays.asList(VE2_VG1, VE3_VG2), Collections.emptyList());
         when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(any(HsaIdUser.class))).thenReturn(userAuthorization);
-        User user = (User) service.loadUserBySAML(credential);
+        User user = service.buildUserPrincipal(EMPLOYEE_HSA_ID, LoginMethod.SITHS);
         assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isDelprocessledare());
         assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isProcessledare());
     }
 
     @Test
-    public void testLoadUserByHsaId() {
+    void testLoadUserByHsaId() {
         auktoriseradeEnheter(VE1_VG1, VE3_VG2);
-        User user = service.loadUserByHsaId(HSA_ID);
+        User user = service.buildUserPrincipal(HSA_ID, LoginMethod.SITHS);
         assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isDelprocessledare());
         assertTrue(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isProcessledare());
     }
 
-    private void newCredentials(String samlTicketName) {
-        Assertion assertion = SakerhetstjanstAssertionTest.getSamlAssertion(samlTicketName);
+    @Test
+    void shallSetLoginMethod() {
+        auktoriseradeEnheter(VE1_VG1, VE3_VG2);
+        final var user = service.buildUserPrincipal(HSA_ID, LoginMethod.SITHS);
+        assertEquals(LoginMethod.SITHS, user.getLoginMethod());
+    }
 
-        NameID nameID = new NameIDBuilder().buildObject();
-        credential = new SAMLCredential(nameID, assertion, "", "");
+    @Test
+    void shallMonitorLogUserLogin() {
+        auktoriseradeEnheter(VE1_VG1, VE3_VG2);
+        service.buildUserPrincipal(HSA_ID, LoginMethod.SITHS);
+        verify(monitoringLogService).logUserLogin(any(), eq(LoginMethod.SITHS));
     }
 
     private void auktoriseradeEnheter(Vardenhet... enheter) {

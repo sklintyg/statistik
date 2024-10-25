@@ -22,7 +22,7 @@ angular.module('StatisticsApp')
 .factory('pdfFactory',
     /** @ngInject */
     function($window, $timeout, thousandseparatedFilter, $location, _, MAX_ROWS_TABLE_PDF, messageService, $rootScope,
-        ControllerCommons, sortableTableViewState, filterViewState, chartFactory) {
+        ControllerCommons, sortableTableViewState, filterViewState, chartFactory, $cookies) {
 
       'use strict';
 
@@ -171,9 +171,11 @@ angular.module('StatisticsApp')
           if (pdfDoneCallback) {
             pdfDoneCallback();
           }
+          var csrfToken = $cookies.get('XSRF-TOKEN') || '';
           var inputs = '<input type="hidden" name="pdf" value="' + result + '">';
           inputs += '<input type="hidden" name="name" value="' + fileName + '">';
           inputs += '<input type="hidden" name="url" value="' + $location.url() + '">';
+          inputs += '<input type="hidden" name="_csrf" value="' + csrfToken + '">';
 
           $window.jQuery('<form action="/api/pdf/create" method="post">' + inputs + '</form>')
           .appendTo('body').submit().remove();

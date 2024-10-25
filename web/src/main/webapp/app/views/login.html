@@ -1,5 +1,5 @@
 <div class="container-fluid login-view">
-  <div data-ng-if="loggedInWithoutStatistikuppdrag" class="alert alert-danger">
+  <div data-ng-if="loggedInWithoutStatistikuppdrag  || (errorUrlParam == 'medarbetaruppdrag')" class="alert alert-danger">
     <strong message key="login.alert-info.behorighet.title"></strong> <span message key="login.alert-info.behorighet.body"></span>
   </div>
   <div data-ng-if="(loginTimedOut && !loggedInWithoutStatistikuppdrag) || (errorUrlParam == 'timeout')" class="alert alert-info">

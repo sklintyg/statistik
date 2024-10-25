@@ -10,7 +10,7 @@ gretty {
     def applicationDir = "${rootProject.projectDir}/devops/dev"
     def baseUrl = "http://localhost:${useHttpPort}"
 
-    servletContainer = 'tomcat9'
+    servletContainer = 'tomcat10'
     contextPath = '/'
     scanInterval = 0
     debugPort = 8850 + (instance as Integer)
@@ -25,7 +25,7 @@ gretty {
     serverConfigFile = "tomcat-gretty.xml"
 
     jvmArgs = ["-Dcatalina.base=${project.layout.buildDirectory.get().asFile}/catalina.base",
-               "-Dspring.profiles.active=dev,caching-enabled,hsa-caching-disabled,testapi,hsa-stub,wc-hsa-stub,security-both,noprocessing,ia-stub,request-caching-enabled",
+               "-Dspring.profiles.active=dev,caching-enabled,hsa-caching-disabled,testapi,hsa-stub,wc-hsa-stub,security-both,noprocessing,ia-stub,request-caching-enabled,hsa-integration-intyg-proxy-service,testability",
                "-Dlogback.file=${applicationDir}/config/logback-dev.xml",
                "-Djava.awt.headless=true",
                "-Dfile.encoding=UTF-8",
@@ -36,10 +36,6 @@ gretty {
                "-Ddev.http.port=${useHttpPort}",
                "-Ddev.http.port.internal=${useInternalHttpPort}"
     ]
-
-    dependencies {
-        gretty "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api"
-    }
 }
 
 idea {
@@ -74,7 +70,6 @@ grunt { colors = true }
 grunt_build.dependsOn npmInstall
 grunt_build_no_minify.dependsOn npmInstall
 grunt_build_no_minify_no_karma.dependsOn npmInstall
-war.dependsOn createVersionPropertyFile
 
 dependencies {
     implementation project(':hsa-integration')
@@ -84,13 +79,13 @@ dependencies {
 
     implementation "se.inera.intyg.infra:driftbanner-dto:${infraVersion}"
     implementation "se.inera.intyg.infra:dynamiclink:${infraVersion}"
-    implementation "se.inera.intyg.infra:hsatk-integration:${infraVersion}"
     implementation "se.inera.intyg.infra:ia-integration:${infraVersion}"
     implementation "se.inera.intyg.infra:monitoring:${infraVersion}"
     implementation "se.inera.intyg.infra:security-filter:${infraVersion}"
 
     implementation "com.auth0:jwks-rsa:${auth0JwksVersion}"
     implementation "com.fasterxml.jackson.core:jackson-databind"
+    implementation 'jakarta.servlet:jakarta.servlet-api'
     implementation "io.jsonwebtoken:jjwt-impl:${jsonwebtokenVersion}"
     implementation "io.jsonwebtoken:jjwt-jackson:${jsonwebtokenVersion}"
     implementation "io.prometheus:simpleclient_servlet"
@@ -99,13 +94,20 @@ dependencies {
     implementation "org.apache.cxf:cxf-rt-frontend-jaxrs:${cxfVersion}"
     implementation "org.apache.poi:poi-ooxml:${poiVersion}"
     implementation "org.liquibase:liquibase-core"
-    implementation "org.springframework.security.extensions:spring-security-saml2-core:${springSecuritySamlVersion}"
     implementation "org.springframework:spring-jms"
+    implementation 'org.opensaml:opensaml-core'
+    implementation 'org.opensaml:opensaml-saml-api'
+    implementation 'org.opensaml:opensaml-saml-impl'
+    implementation 'org.springframework.security:spring-security-saml2-service-provider'
+    implementation 'org.springframework.security:spring-security-core'
+    implementation 'org.springframework.security:spring-security-web'
+    implementation 'org.springframework.security:spring-security-config'
+    implementation 'org.springframework.session:spring-session-core'
+    implementation 'org.springframework:spring-webmvc'
 
     compileOnly "jakarta.persistence:jakarta.persistence-api"
     compileOnly "jakarta.ws.rs:jakarta.ws.rs-api"
 
-    runtimeOnly "com.github.ziplet:ziplet:${zipletVersion}"
     runtimeOnly "com.mysql:mysql-connector-j"
     runtimeOnly "org.apache.activemq:activemq-spring"
     runtimeOnly "se.inera.intyg.infra:hsa-integration-intyg-proxy-service:${infraVersion}"

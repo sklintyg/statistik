@@ -18,9 +18,7 @@
  */
 package se.inera.statistics.web.service.monitoring;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
-//import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
 import ch.qos.logback.classic.Level;
@@ -28,19 +26,20 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.LoggingEvent;
 import ch.qos.logback.core.Appender;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.LoggerFactory;
+import se.inera.auth.LoginMethod;
 import se.inera.statistics.integration.hsa.model.HsaIdUser;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class MonitoringLogServiceImplTest {
 
     private static final int ROWS = 99;
@@ -59,13 +58,13 @@ public class MonitoringLogServiceImplTest {
 
     MonitoringLogService logService = new MonitoringLogServiceImpl();
 
-    @Before
+    @BeforeEach
     public void setup() {
         final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
         logger.addAppender(mockAppender);
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
         logger.detachAppender(mockAppender);
@@ -73,8 +72,15 @@ public class MonitoringLogServiceImplTest {
 
     @Test
     public void shouldLogUserLogin() {
-        logService.logUserLogin(HSA_USER);
-        verifyLog(Level.INFO, "USER_LOGIN Login user hsaId 'HSA_USER'");
+        logService.logUserLogin(HSA_USER, LoginMethod.SITHS);
+        verifyLog(Level.INFO, "USER_LOGIN Login user hsaId 'HSA_USER' using login method 'SITHS'");
+    }
+
+    @Test
+    void shallLogUserLoginFailed() {
+        final var exception = "exception";
+        logService.logUserLoginFailed(exception);
+        verifyLog(Level.INFO, String.format("USER_LOGIN_FAILURE User failed to login, exception message '%s'", exception));
     }
 
     @Test
@@ -108,8 +114,7 @@ public class MonitoringLogServiceImplTest {
         final LoggingEvent loggingEvent = captorLoggingEvent.getValue();
 
         // Verify log
-        assertThat(loggingEvent.getLevel(), equalTo(logLevel));
-        assertThat(loggingEvent.getFormattedMessage(),
-            equalTo(logMessage));
+        assertEquals(loggingEvent.getLevel(), logLevel);
+        assertEquals(loggingEvent.getFormattedMessage(), logMessage);
     }
 }

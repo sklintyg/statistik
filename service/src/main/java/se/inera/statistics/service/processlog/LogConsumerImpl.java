@@ -31,13 +31,10 @@ import se.inera.intygstjanster.ts.services.RegisterTSDiabetesResponder.v1.Regist
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.helper.RegisterCertificateResolver;
 import se.inera.statistics.service.helper.certificate.JsonDocumentHelper;
-import se.inera.statistics.service.helper.certificate.RegisterCertificateHelper;
 import se.inera.statistics.service.helper.certificate.TsBasHelper;
 import se.inera.statistics.service.helper.certificate.TsDiabetesHelper;
 import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.hsa.HsaInfo;
-import se.inera.statistics.service.schemavalidation.SchemaValidator;
-import se.inera.statistics.service.schemavalidation.ValidateXmlResponse;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 
@@ -64,9 +61,6 @@ public class LogConsumerImpl implements LogConsumer {
 
     @Autowired
     private TsDiabetesHelper tsDiabetesHelper;
-
-    @Autowired
-    private SchemaValidator schemaValidator;
 
     private volatile boolean isRunning = false;
 
@@ -125,13 +119,6 @@ public class LogConsumerImpl implements LogConsumer {
         try {
             final RegisterCertificateType rc = registerCertificateResolver.unmarshalXml(event.getData());
             final IntygType certificateType = registerCertificateResolver.getIntygtyp(rc);
-            final String certificateVersion = registerCertificateResolver.getCertificateVersion(rc);
-            final String data = RegisterCertificateHelper.convertToV3(event.getData());
-            final ValidateXmlResponse validation = schemaValidator.validate(certificateType, certificateVersion, data);
-            if (!validation.isValid()) {
-                LOG.warn("Register certificate validation failed: " + validation.getValidationErrors());
-                return false;
-            }
             final boolean successfullyProcessedXml = processXmlCertificate(event, rc, certificateType);
             if (!successfullyProcessedXml) {
                 return false;

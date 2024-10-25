@@ -23,13 +23,13 @@ import static se.inera.statistics.service.helper.certificate.JsonDocumentHelper.
 import static se.inera.statistics.service.helper.certificate.JsonDocumentHelper.getVardgivareId;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

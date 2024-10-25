@@ -18,11 +18,12 @@
  */
 package se.inera.statistics.web.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 
+import jakarta.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,9 +31,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.ws.rs.core.Response;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -47,7 +47,6 @@ import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.Warehouse;
-import se.inera.statistics.web.service.dto.MessagesText;
 import se.inera.statistics.web.error.ErrorSeverity;
 import se.inera.statistics.web.error.ErrorType;
 import se.inera.statistics.web.error.Message;
@@ -56,6 +55,7 @@ import se.inera.statistics.web.model.FilteredDataReport;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.service.dto.FilterDataResponse;
+import se.inera.statistics.web.service.dto.MessagesText;
 import se.inera.statistics.web.service.dto.Report;
 import se.inera.statistics.web.service.dto.ReportInfo;
 import se.inera.statistics.web.service.dto.ReportType;
@@ -72,7 +72,7 @@ public class ResponseHandlerTest {
     @Mock
     private Warehouse warehouse;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
     }
@@ -524,7 +524,7 @@ public class ResponseHandlerTest {
     public void testGetXlsxFilenameContainsNoSpacesAllReportsINTYG6852() {
         for (Report report : Report.values()) {
             final String filename = getFilenameForReport(report);
-            assertFalse("Xslx filename contains space: " + filename, filename.matches(".*\\s.*"));
+            assertFalse(filename.matches(".*\\s.*"), "Xslx filename contains space: " + filename);
         }
     }
 

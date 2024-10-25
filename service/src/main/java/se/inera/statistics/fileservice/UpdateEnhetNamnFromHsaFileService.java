@@ -18,8 +18,9 @@
  */
 package se.inera.statistics.fileservice;
 
+import static jakarta.xml.bind.JAXB.unmarshal;
+
 import java.io.InputStream;
-import javax.xml.bind.JAXB;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,7 +84,7 @@ public class UpdateEnhetNamnFromHsaFileService {
     }
 
     static FileGetHsaUnitsResponse unmarshalXml(InputStream inputStream) {
-        return JAXB.unmarshal(inputStream, FileGetHsaUnitsResponse.class);
+        return unmarshal(inputStream, FileGetHsaUnitsResponse.class);
     }
 
 }

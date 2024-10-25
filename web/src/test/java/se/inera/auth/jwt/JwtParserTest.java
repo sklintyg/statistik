@@ -18,8 +18,9 @@
  */
 package se.inera.auth.jwt;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.auth0.jwk.Jwk;
 import com.auth0.jwk.JwkException;
@@ -34,12 +35,11 @@ import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SigningKeyResolverAdapter;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.ArrayList;
 import org.apache.commons.io.IOUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 
 public class JwtParserTest {
@@ -61,17 +61,19 @@ public class JwtParserTest {
         assertEquals("TST5565594230-10R3072", employeeHsaIdList.get(0));
     }
 
-    @Test(expected = ExpiredJwtException.class)
+    @Test
     public void verifySignatureFailsDueToSkew() throws IOException {
 
         String jwtToken = readTokenFromDisk();
         SigningKeyResolverAdapter signingKeyResolverAdapter = buildResolverWithDiskBasedJwks();
 
-        Jws<Claims> jws = Jwts.parserBuilder()
-            .setSigningKeyResolver(signingKeyResolverAdapter)
-            .setAllowedClockSkewSeconds(1)
-            .build()
-            .parseClaimsJws(jwtToken);
+        assertThrows(ExpiredJwtException.class, () ->
+            Jwts.parserBuilder()
+                .setSigningKeyResolver(signingKeyResolverAdapter)
+                .setAllowedClockSkewSeconds(1)
+                .build()
+                .parseClaimsJws(jwtToken)
+        );
     }
 
     private String readTokenFromDisk() throws IOException {

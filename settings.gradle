@@ -16,7 +16,6 @@ include ':test'
 include ':anonymisering'
 
 project(':web').name = 'statistik-web'
-project(':test').name = 'statistik-test'
 project(':service').name = 'statistik-service'
 
 project(':hsa-integration').projectDir = "$rootDir/integration/hsa-integration" as File

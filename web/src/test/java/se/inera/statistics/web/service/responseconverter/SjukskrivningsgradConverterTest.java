@@ -18,14 +18,14 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -98,12 +98,14 @@ public class SjukskrivningsgradConverterTest {
 
         //Then
         assertEquals("[period1]", data.getFemaleChart().getCategories().toString());
-        assertTrue(data.getFemaleChart().getSeries().toString(),
-            data.getFemaleChart().getSeries().toString().contains("50 % sjukskrivningsgrad: [3]"));
+        assertTrue(
+            data.getFemaleChart().getSeries().toString().contains("50 % sjukskrivningsgrad: [3]"),
+            data.getFemaleChart().getSeries().toString());
 
         assertEquals("[period1]", data.getMaleChart().getCategories().toString());
-        assertTrue(data.getMaleChart().getSeries().toString(),
-            data.getMaleChart().getSeries().toString().contains("50 % sjukskrivningsgrad: [2]"));
+        assertTrue(
+            data.getMaleChart().getSeries().toString().contains("50 % sjukskrivningsgrad: [2]"),
+            data.getMaleChart().getSeries().toString());
 
         assertEquals("[[;1, ;1, 50 % sjukskrivningsgrad;3], [Period;1, Antal sjukfall totalt;1, Totalt;1, Kvinnor;1, Män;1]]",
             data.getTableData().getHeaders().toString());

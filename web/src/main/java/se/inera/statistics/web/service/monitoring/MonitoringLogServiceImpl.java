@@ -21,6 +21,7 @@ package se.inera.statistics.web.service.monitoring;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import se.inera.auth.LoginMethod;
 import se.inera.intyg.infra.monitoring.logging.MarkerFilter;
 import se.inera.statistics.integration.hsa.model.HsaIdUser;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
@@ -29,12 +30,17 @@ import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 public class MonitoringLogServiceImpl implements MonitoringLogService {
 
     private static final Object SPACE = " ";
-    private static final Logger LOG = LoggerFactory.getLogger(MonitoringLogService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MonitoringLogServiceImpl.class);
 
     @Override
-    public void logUserLogin(HsaIdUser hsaUser) {
+    public void logUserLogin(HsaIdUser hsaUser, LoginMethod loginMethod) {
         String hsaUserId = hsaUser != null ? hsaUser.getId() : null;
-        logEvent(MonitoringEvent.USER_LOGIN, hsaUserId);
+        logEvent(MonitoringEvent.USER_LOGIN, hsaUserId, loginMethod.value());
+    }
+
+    @Override
+    public void logUserLoginFailed(String exception) {
+        logEvent(MonitoringEvent.USER_LOGIN_FAILURE, exception);
     }
 
     @Override
@@ -63,11 +69,6 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
         logEvent(MonitoringEvent.BROWSER_INFO, browserName, browserVersion, osFamily, osVersion, width, height);
     }
 
-    @Override
-    public void logSamlStatusForFailedLogin(String issuer, String samlStatus) {
-        logEvent(MonitoringEvent.SAML_STATUS_LOGIN_FAIL, issuer, samlStatus);
-    }
-
     private void logEvent(MonitoringEvent logEvent, Object... logMsgArgs) {
         LOG.info(MarkerFilter.MONITORING, buildMessage(logEvent), logMsgArgs);
     }
@@ -79,13 +80,13 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
     }
 
     private enum MonitoringEvent {
-        USER_LOGIN("Login user hsaId '{}'"),
+        USER_LOGIN("Login user hsaId '{}' using login method '{}'"),
         FILE_UPLOAD("User hsaId '{}', vardgivarId '{}' uploaded file '{}' with '{}' rows"),
         TRACK_ACCESS_PROTECTED_CHART_DATA("User hsaId '{}', vardgivarId '{}' accessed uri '{}'"),
         TRACK_ACCESS_ANONYMOUS_CHART_DATA("Accessed uri '{}'"),
         BROWSER_INFO("Name '{}' Version '{}' OSFamily '{}' OSVersion '{}' Width '{}' Height '{}'"),
-
-        SAML_STATUS_LOGIN_FAIL("Login failed at IDP '{}' with status message '{}'");
+        USER_LOGIN_FAILURE(
+            "User failed to login, exception message '{}'");
 
         private final String message;
 

@@ -17,11 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 angular.module('StatisticsApp').controller('fakeLoginCtrl',
     /** @ngInject */
-    function($scope, $rootScope, _, $http) {
+    function($scope, $rootScope, _, $http, $window) {
       'use strict';
-
+      
       $rootScope.hideNavigationTabs = true;
 
       $scope.selectedPerson = '0';
@@ -231,6 +232,17 @@ angular.module('StatisticsApp').controller('fakeLoginCtrl',
               $scope.IA.latestEvent = 'Fel vid skapande av banner' + response.data;
             });
       };
-
+      
+      $scope.performLogin = function() {
+        $http({
+            url: '/api/testability/fake',
+            method: 'POST',
+            data: $scope.fakeUserContext
+          })
+        .then(
+            function success() {
+          $window.location.reload();
+        });
+      };
     }
 );

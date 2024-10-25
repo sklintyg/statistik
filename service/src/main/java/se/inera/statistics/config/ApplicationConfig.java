@@ -19,12 +19,12 @@
 package se.inera.statistics.config;
 
 
+import jakarta.annotation.PostConstruct;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.TimeZone;
-import javax.annotation.PostConstruct;
 import org.apache.cxf.Bus;
 import org.apache.cxf.ext.logging.LoggingFeature;
 import org.slf4j.Logger;
@@ -50,7 +50,7 @@ import se.inera.intyg.infra.security.common.cookie.IneraCookieSerializer;
 @DependsOn("transactionManager")
 @PropertySources({
     @PropertySource("classpath:application.properties"),
-    @PropertySource("classpath:version.properties"),
+    @PropertySource(ignoreResourceNotFound = true, value = "classpath:version.properties"),
     @PropertySource(ignoreResourceNotFound = true, value = "file:${dev.config.file}")
 })
 public class ApplicationConfig implements TransactionManagementConfigurer {

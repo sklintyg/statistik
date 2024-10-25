@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+import jakarta.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -33,7 +34,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-import javax.annotation.PostConstruct;
 import org.apache.cxf.helpers.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +48,7 @@ import se.inera.statistics.service.processlog.message.MessageEventType;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.testsupport.UtlatandeBuilder;
 import se.inera.statistics.service.warehouse.WidelineConverter;
+
 
 public class TestIntygInjector {
 
@@ -184,7 +185,7 @@ public class TestIntygInjector {
         final String lakareId = lakare.getId();
         final String enhetName = "Enheten " + enhetId;
         final Intyg intyg = new Intyg(type, data.toString(), id, timestamp, null, null, huvudenhetId, enhetName, vgId, enhetId, lakareId);
-        restSupportService.insertIntygWithoutLogging(intyg);
+//        restSupportService.insertIntygWithoutLogging(intyg);
 
         return id;
     }

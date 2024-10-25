@@ -24,13 +24,13 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import java.sql.Date;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Optional;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;

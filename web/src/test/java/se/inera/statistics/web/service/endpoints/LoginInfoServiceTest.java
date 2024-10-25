@@ -18,9 +18,10 @@
  */
 package se.inera.statistics.web.service.endpoints;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -38,7 +39,7 @@ public class LoginInfoServiceTest {
     private LoginInfoService loginInfoService;
 
 
-    @Before
+    @BeforeEach
     public void init() {
         MockitoAnnotations.initMocks(this);
     }
@@ -48,7 +49,7 @@ public class LoginInfoServiceTest {
         final LoginInfo loginInfo = new LoginInfo();
         Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(loginInfo);
         LoginInfo info = loginInfoService.getLoginInfo();
-        Assert.assertEquals(loginInfo, info);
+        assertEquals(loginInfo, info);
     }
 
 }
