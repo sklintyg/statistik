@@ -298,12 +298,15 @@ module.exports = function(grunt) {
     // Allow the use of non-minsafe AngularJS files. Automatically makes it
     // minsafe compatible so Uglify does not destroy the ng references
     ngAnnotate: {
+      options: {
+        singleQuotes: true
+      },
       dist: {
         files: [
           {
             expand: true,
             cwd: '<%= config.tmp %>/concat',
-            src: '*/**.js',
+            src: ['**/*.js', '!app/vendor.js', '!**/pdfmake.js'],
             dest: '<%= config.tmp %>/concat'
           }
         ]
