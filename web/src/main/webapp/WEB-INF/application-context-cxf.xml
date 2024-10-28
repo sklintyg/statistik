@@ -9,7 +9,36 @@
   <import resource="classpath:META-INF/cxf/cxf.xml"/>
   <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
 
-  <beans>
+  <beans profile="!testability">
+
+    <bean id="jacksonJsonProvider" class="com.fasterxml.jackson.jakarta.rs.json.JacksonJsonProvider"/>
+    <bean id="accessDeniedExceptionHandler" class="se.inera.statistics.web.handler.AccessDeniedExceptionHandler"/>
+    <bean id="calcCoordinator" class="se.inera.statistics.service.warehouse.query.CalcCoordinator"/>
+
+    <jaxrs:server id="restContainer" address="/">
+      <jaxrs:invoker>
+        <bean class="se.inera.statistics.web.service.CalcCoordinatorInvoker"/>
+      </jaxrs:invoker>
+      <jaxrs:serviceBeans>
+        <ref bean="pdfService"/>
+        <ref bean="chartDataService"/>
+        <ref bean="protectedChartDataService"/>
+        <ref bean="protectedRegionService"/>
+        <ref bean="loginInfoService"/>
+        <ref bean="loggingService"/>
+        <ref bean="linkService"/>
+        <ref bean="sessionStatusService"/>
+        <ref bean="deleteController"/>
+      </jaxrs:serviceBeans>
+      <jaxrs:providers>
+        <ref bean="jacksonJsonProvider"/>
+        <ref bean="accessDeniedExceptionHandler"/>
+      </jaxrs:providers>
+    </jaxrs:server>
+
+  </beans>
+
+  <beans profile="testability">
 
     <bean id="jacksonJsonProvider" class="com.fasterxml.jackson.jakarta.rs.json.JacksonJsonProvider"/>
     <bean id="accessDeniedExceptionHandler" class="se.inera.statistics.web.handler.AccessDeniedExceptionHandler"/>
