@@ -71,7 +71,7 @@ public class ProcessMessageLogImpl extends AbstractProcessLog implements Process
 
     @Override
     public long setProcessed(long logId) {
-        Query select = getManager().createQuery("UPDATE MessageEvent e SET e.processed = 1 WHERE e.id = :logId");
+        Query select = getManager().createQuery("UPDATE MessageEvent e SET e.processed = true WHERE e.id = :logId");
         select.setParameter("logId", logId);
         return select.executeUpdate();
     }
