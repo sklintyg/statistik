@@ -12,12 +12,9 @@ include ':hsa-integration'
 include ':service'
 include ':liquibase-runner'
 include ':web'
-include ':test'
-include ':anonymisering'
 
 project(':web').name = 'statistik-web'
 project(':service').name = 'statistik-service'
 
 project(':hsa-integration').projectDir = "$rootDir/integration/hsa-integration" as File
 project(':liquibase-runner').projectDir = "$rootDir/tools/liquibase-runner" as File
-project(':anonymisering').projectDir = "$rootDir/tools/anonymisering" as File

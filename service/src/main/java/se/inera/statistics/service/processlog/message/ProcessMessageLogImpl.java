@@ -71,7 +71,7 @@ public class ProcessMessageLogImpl extends AbstractProcessLog implements Process
 
     @Override
     public long setProcessed(long logId) {
-        Query select = getManager().createQuery("UPDATE MessageEvent e SET e.processed = 1 WHERE e.id = :logId");
+        Query select = getManager().createQuery("UPDATE MessageEvent e SET e.processed = true WHERE e.id = :logId");
         select.setParameter("logId", logId);
         return select.executeUpdate();
     }
@@ -79,7 +79,7 @@ public class ProcessMessageLogImpl extends AbstractProcessLog implements Process
     @Override
     @Transactional
     public List<MessageEvent> getPending(int max, long firstId, int maxNumberOfTries) {
-        String query = "SELECT e FROM MessageEvent e WHERE e.id > :lastId AND e.tries <= :maxTries AND e.processed = 0 ORDER BY e.id ASC";
+        String query = "SELECT e FROM MessageEvent e WHERE e.id > :lastId AND e.tries <= :maxTries AND e.processed = false ORDER BY e.id ASC";
 
         TypedQuery<MessageEvent> allQuery = getManager().createQuery(query, MessageEvent.class);
         allQuery.setParameter("lastId", firstId);
