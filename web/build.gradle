@@ -74,6 +74,7 @@ grunt_build_no_minify_no_karma.dependsOn npmInstall
 dependencies {
     implementation project(':hsa-integration')
     implementation project(':statistik-service')
+    implementation project(':logging')
 
     implementation "se.riv.clinicalprocess.healthcond.monitoring:clinicalprocess-healthcond-monitoring-schemas:${internalMonitoringSchemaVersion}"
 

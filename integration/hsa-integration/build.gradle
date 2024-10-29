@@ -10,6 +10,7 @@ if (project.hasProperty("codeQuality")) {
 }
 
 dependencies {
+    implementation project(':logging')
     implementation "com.fasterxml.jackson.jakarta.rs:jackson-jakarta-rs-json-provider"
     implementation "org.apache.cxf:cxf-rt-frontend-jaxws:${cxfVersion}"
     implementation "org.springframework:spring-context"

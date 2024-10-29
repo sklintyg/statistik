@@ -12,6 +12,7 @@ include ':hsa-integration'
 include ':service'
 include ':liquibase-runner'
 include ':web'
+include ':logging'
 
 project(':web').name = 'statistik-web'
 project(':service').name = 'statistik-service'
