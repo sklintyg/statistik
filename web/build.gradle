@@ -26,7 +26,7 @@ gretty {
 
     jvmArgs = ["-Dcatalina.base=${project.layout.buildDirectory.get().asFile}/catalina.base",
                "-Dspring.profiles.active=dev,caching-enabled,hsa-caching-disabled,testapi,hsa-stub,wc-hsa-stub,security-both,noprocessing,ia-stub,request-caching-enabled,hsa-integration-intyg-proxy-service,testability",
-               "-Dlogback.file=${applicationDir}/config/logback-dev.xml",
+               "-Dlogback.file=${applicationDir}/config/logback-spring.xml",
                "-Djava.awt.headless=true",
                "-Dfile.encoding=UTF-8",
                "-Dstatistics.test.max.intyg=200",
