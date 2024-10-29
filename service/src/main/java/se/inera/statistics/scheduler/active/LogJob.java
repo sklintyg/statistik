@@ -55,7 +55,7 @@ public class LogJob {
     @Scheduled(cron = "${scheduler.logJob.cron}")
     @SchedulerLock(name = JOB_NAME)
     @PrometheusTimeMethod(help = "Jobb för att hantera inkomna intyg och meddelanden från kön")
-    @PerformanceLogging(eventAction = "process-sent-certificates-and-messages-batch-job", eventType = MdcLogConstants.EVENT_TYPE_CHANGE)
+    @PerformanceLogging(eventAction = "process-sent-certificates-and-messages-batch-job", eventType = MdcLogConstants.EVENT_TYPE_INFO)
     public void run() {
         logMDCHelper.run(this::process);
     }

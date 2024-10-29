@@ -22,6 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import se.inera.auth.LoginMethod;
+import se.inera.intyg.certificateservice.logging.MdcCloseableMap;
+import se.inera.intyg.certificateservice.logging.MdcLogConstants;
 import se.inera.intyg.infra.monitoring.logging.MarkerFilter;
 import se.inera.statistics.integration.hsa.model.HsaIdUser;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
@@ -35,7 +37,15 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
     @Override
     public void logUserLogin(HsaIdUser hsaUser, LoginMethod loginMethod) {
         String hsaUserId = hsaUser != null ? hsaUser.getId() : null;
-        logEvent(MonitoringEvent.USER_LOGIN, hsaUserId, loginMethod.value());
+        try (MdcCloseableMap mdc =
+            MdcCloseableMap.builder()
+                .put(MdcLogConstants.EVENT_TYPE, toEventType(MonitoringEvent.USER_LOGIN))
+                .put(MdcLogConstants.USER_ID, getValue(hsaUserId))
+                .put(MdcLogConstants.EVENT_LOGIN_METHOD, loginMethod.value())
+                .build()
+        ) {
+            logEvent(MonitoringEvent.USER_LOGIN, hsaUserId, loginMethod.value());
+        }
     }
 
     @Override
@@ -47,16 +57,30 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
     public void logFileUpload(HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, String fileName, Integer rows) {
         String hsaUserId = hsaUser != null ? hsaUser.getId() : null;
         String vardgivarId = hsaVardgivare != null ? hsaVardgivare.getId() : null;
-
-        logEvent(MonitoringEvent.FILE_UPLOAD, hsaUserId, vardgivarId, fileName, rows);
+        try (MdcCloseableMap mdc =
+            MdcCloseableMap.builder()
+                .put(MdcLogConstants.EVENT_TYPE, toEventType(MonitoringEvent.FILE_UPLOAD))
+                .put(MdcLogConstants.USER_ID, getValue(hsaUserId))
+                .put(MdcLogConstants.EVENT_USER_CARE_PROVIDER_ID, getValue(vardgivarId))
+                .build()
+        ) {
+            logEvent(MonitoringEvent.FILE_UPLOAD, hsaUserId, vardgivarId, fileName, rows);
+        }
     }
 
     @Override
     public void logTrackAccessProtectedChartData(HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, String uri) {
         String hsaUserId = hsaUser != null ? hsaUser.getId() : null;
         String vardgivarId = hsaVardgivare != null ? hsaVardgivare.getId() : null;
-
-        logEvent(MonitoringEvent.TRACK_ACCESS_PROTECTED_CHART_DATA, hsaUserId, vardgivarId, uri);
+        try (MdcCloseableMap mdc =
+            MdcCloseableMap.builder()
+                .put(MdcLogConstants.EVENT_TYPE, toEventType(MonitoringEvent.TRACK_ACCESS_PROTECTED_CHART_DATA))
+                .put(MdcLogConstants.USER_ID, getValue(hsaUserId))
+                .put(MdcLogConstants.EVENT_USER_CARE_PROVIDER_ID, getValue(vardgivarId))
+                .build()
+        ) {
+            logEvent(MonitoringEvent.TRACK_ACCESS_PROTECTED_CHART_DATA, hsaUserId, vardgivarId, uri);
+        }
     }
 
     @Override
@@ -97,5 +121,14 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
         public String getMessage() {
             return message;
         }
+    }
+
+    private String toEventType(MonitoringEvent monitoringEvent) {
+        return monitoringEvent.name().toLowerCase().replace("_", "-");
+    }
+
+
+    private static String getValue(String hsaUserId) {
+        return hsaUserId != null ? hsaUserId : "-";
     }
 }

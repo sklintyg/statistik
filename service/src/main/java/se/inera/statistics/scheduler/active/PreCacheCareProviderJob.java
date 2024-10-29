@@ -47,7 +47,7 @@ public class PreCacheCareProviderJob {
 
     @Scheduled(cron = "${job.precache.careprovider.cron}")
     @SchedulerLock(name = JOB_NAME)
-    @PerformanceLogging(eventAction = "pre-cache-careprovider-job", eventType = MdcLogConstants.EVENT_TYPE_CHANGE)
+    @PerformanceLogging(eventAction = "pre-cache-careprovider-job", eventType = MdcLogConstants.EVENT_TYPE_INFO)
     public void run() {
         LOG.info("Started job to precache the following careproviders: {}", precacheCareProviderIds);
 

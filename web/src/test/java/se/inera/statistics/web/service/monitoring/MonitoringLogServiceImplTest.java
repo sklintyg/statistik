@@ -28,6 +28,7 @@ import ch.qos.logback.classic.spi.LoggingEvent;
 import ch.qos.logback.core.Appender;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -36,19 +37,22 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.LoggerFactory;
 import se.inera.auth.LoginMethod;
+import se.inera.intyg.certificateservice.logging.MdcLogConstants;
 import se.inera.statistics.integration.hsa.model.HsaIdUser;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
 @ExtendWith(MockitoExtension.class)
-public class MonitoringLogServiceImplTest {
+class MonitoringLogServiceImplTest {
 
     private static final int ROWS = 99;
 
     private static final String FILE_NAME = "FILE_NAME";
     private static final String URI = "URI";
 
-    private static final HsaIdUser HSA_USER = new HsaIdUser("HSA_USER");
-    private static final HsaIdVardgivare HSA_VARDGIVARE = new HsaIdVardgivare("HSA_VARDGIVARE");
+    private static final String USER_ID = "HSA_USER";
+    private static final HsaIdUser HSA_USER = new HsaIdUser(USER_ID);
+    private static final String CARE_PROVIDER_ID = "HSA_VARDGIVARE";
+    private static final HsaIdVardgivare HSA_VARDGIVARE = new HsaIdVardgivare(CARE_PROVIDER_ID);
 
     @Mock
     private Appender<ILoggingEvent> mockAppender;
@@ -70,11 +74,28 @@ public class MonitoringLogServiceImplTest {
         logger.detachAppender(mockAppender);
     }
 
-    @Test
-    public void shouldLogUserLogin() {
-        logService.logUserLogin(HSA_USER, LoginMethod.SITHS);
-        verifyLog(Level.INFO, "USER_LOGIN Login user hsaId 'HSA_USER' using login method 'SITHS'");
+    @Nested
+    class LogUserLoginTests {
+
+        @Test
+        void shouldLogUserLogin() {
+            logService.logUserLogin(HSA_USER, LoginMethod.SITHS);
+            verifyLog(Level.INFO, "USER_LOGIN Login user hsaId 'HSA_USER' using login method 'SITHS'");
+        }
+
+        @Test
+        void shouldIncludeUserHsaIdInMDC() {
+            logService.logUserLogin(HSA_USER, LoginMethod.SITHS);
+            assertEquals(USER_ID, getValueFromMDC(MdcLogConstants.USER_ID));
+        }
+
+        @Test
+        void shouldIncludeLoginMethodInMDC() {
+            logService.logUserLogin(HSA_USER, LoginMethod.SITHS);
+            assertEquals(LoginMethod.SITHS.name(), getValueFromMDC(MdcLogConstants.EVENT_LOGIN_METHOD));
+        }
     }
+
 
     @Test
     void shallLogUserLoginFailed() {
@@ -83,26 +104,63 @@ public class MonitoringLogServiceImplTest {
         verifyLog(Level.INFO, String.format("USER_LOGIN_FAILURE User failed to login, exception message '%s'", exception));
     }
 
-    @Test
-    public void shouldLogFileUpload() {
-        logService.logFileUpload(HSA_USER, HSA_VARDGIVARE, FILE_NAME, ROWS);
-        verifyLog(Level.INFO, "FILE_UPLOAD User hsaId 'HSA_USER', vardgivarId 'HSA_VARDGIVARE' uploaded file 'FILE_NAME' with '99' rows");
+    @Nested
+    class LogFileUploadTests {
+
+        @Test
+        void shouldLogFileUpload() {
+            logService.logFileUpload(HSA_USER, HSA_VARDGIVARE, FILE_NAME, ROWS);
+            verifyLog(Level.INFO,
+                "FILE_UPLOAD User hsaId 'HSA_USER', vardgivarId 'HSA_VARDGIVARE' uploaded file 'FILE_NAME' with '99' rows");
+        }
+
+        @Test
+        void shouldIncludeUserHsaIdInMDC() {
+            logService.logFileUpload(HSA_USER, HSA_VARDGIVARE, FILE_NAME, ROWS);
+            assertEquals(USER_ID, getValueFromMDC(MdcLogConstants.USER_ID));
+        }
+
+        @Test
+        void shouldIncludeCareGiverIdInMDC() {
+            logService.logFileUpload(HSA_USER, HSA_VARDGIVARE, FILE_NAME, ROWS);
+            assertEquals(CARE_PROVIDER_ID, getValueFromMDC(MdcLogConstants.EVENT_USER_CARE_PROVIDER_ID));
+        }
     }
 
-    @Test
-    public void shouldLogTrackAccessProtectedChartData() {
-        logService.logTrackAccessProtectedChartData(HSA_USER, HSA_VARDGIVARE, URI);
-        verifyLog(Level.INFO, "TRACK_ACCESS_PROTECTED_CHART_DATA User hsaId 'HSA_USER', vardgivarId 'HSA_VARDGIVARE' accessed uri 'URI'");
+    @Nested
+    class LogTrackAccessProtectedChartDataTests {
+
+        @Test
+        void shouldLogTrackAccessProtectedChartData() {
+            logService.logTrackAccessProtectedChartData(HSA_USER, HSA_VARDGIVARE, URI);
+            verifyLog(Level.INFO,
+                "TRACK_ACCESS_PROTECTED_CHART_DATA User hsaId 'HSA_USER', vardgivarId 'HSA_VARDGIVARE' accessed uri 'URI'");
+        }
+
+
+        @Test
+        void shouldIncludeUserHsaIdInMDC() {
+            logService.logTrackAccessProtectedChartData(HSA_USER, HSA_VARDGIVARE, URI);
+            assertEquals(USER_ID, getValueFromMDC(MdcLogConstants.USER_ID));
+        }
+
+        @Test
+        void shouldIncludeCareGiverIdInMDC() {
+            logService.logTrackAccessProtectedChartData(HSA_USER, HSA_VARDGIVARE, URI);
+            assertEquals(CARE_PROVIDER_ID, getValueFromMDC(MdcLogConstants.EVENT_USER_CARE_PROVIDER_ID));
+        }
+
     }
 
+
     @Test
-    public void shouldLogTrackAccessAnonymousChartData() {
+    void shouldLogTrackAccessAnonymousChartData() {
         logService.logTrackAccessAnonymousChartData(URI);
         verifyLog(Level.INFO, "TRACK_ACCESS_ANONYMOUS_CHART_DATA Accessed uri 'URI'");
     }
 
     @Test
-    public void shouldLogBrowserInfo() {
+    void shouldLogBrowserInfo() {
         logService.logBrowserInfo("BROWSERNAME", "VERSION", "OS", "OS-VERSION", "WIDTH", "HEIGHT");
         verifyLog(Level.INFO,
             "BROWSER_INFO Name 'BROWSERNAME' Version 'VERSION' OSFamily 'OS' OSVersion 'OS-VERSION' Width 'WIDTH' Height 'HEIGHT'");
@@ -116,5 +174,11 @@ public class MonitoringLogServiceImplTest {
         // Verify log
         assertEquals(loggingEvent.getLevel(), logLevel);
         assertEquals(loggingEvent.getFormattedMessage(), logMessage);
+    }
+
+    private String getValueFromMDC(String key) {
+        verify(mockAppender).doAppend(captorLoggingEvent.capture());
+        final var loggingEvent = captorLoggingEvent.getValue();
+        return loggingEvent.getMDCPropertyMap().get(key);
     }
 }
