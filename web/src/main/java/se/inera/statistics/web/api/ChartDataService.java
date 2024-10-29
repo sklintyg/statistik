@@ -18,12 +18,6 @@
  */
 package se.inera.statistics.web.api;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -32,6 +26,12 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,20 +42,22 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
+import se.inera.intyg.certificateservice.logging.MdcLogConstants;
+import se.inera.intyg.certificateservice.logging.PerformanceLogging;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
 import se.inera.statistics.service.caching.Cache;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.web.api.dto.DiagnosisKapitelAndAvsnittAndKategoriResponse;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.overview.OverviewData;
-import se.inera.statistics.web.api.dto.DiagnosisKapitelAndAvsnittAndKategoriResponse;
-import se.inera.statistics.web.service.exception.FilterException;
 import se.inera.statistics.web.service.FilterHashHandler;
 import se.inera.statistics.web.service.NationellDataCalculator;
+import se.inera.statistics.web.service.ResponseHandler;
 import se.inera.statistics.web.service.dto.NationellDataResult;
 import se.inera.statistics.web.service.dto.Report;
-import se.inera.statistics.web.service.ResponseHandler;
+import se.inera.statistics.web.service.exception.FilterException;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
 /**
@@ -106,6 +108,7 @@ public class ChartDataService {
 
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
     @SchedulerLock(name = JOB_NAME)
+    @PerformanceLogging(eventAction = "build-national-data-cache-job", eventType = MdcLogConstants.EVENT_TYPE_CHANGE)
     public void reloadJob() {
         cache.clearCaches();
         buildNationalDataCache();

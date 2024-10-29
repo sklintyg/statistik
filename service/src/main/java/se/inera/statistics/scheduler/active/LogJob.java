@@ -22,6 +22,8 @@ import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
+import se.inera.intyg.certificateservice.logging.MdcLogConstants;
+import se.inera.intyg.certificateservice.logging.PerformanceLogging;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
 import se.inera.statistics.service.monitoring.MonitoringLogService;
@@ -53,6 +55,7 @@ public class LogJob {
     @Scheduled(cron = "${scheduler.logJob.cron}")
     @SchedulerLock(name = JOB_NAME)
     @PrometheusTimeMethod(help = "Jobb för att hantera inkomna intyg och meddelanden från kön")
+    @PerformanceLogging(eventAction = "process-sent-certificates-and-messages-batch-job", eventType = MdcLogConstants.EVENT_TYPE_CHANGE)
     public void run() {
         logMDCHelper.run(this::process);
     }
