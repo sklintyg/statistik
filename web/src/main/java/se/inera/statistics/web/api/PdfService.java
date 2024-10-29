@@ -26,6 +26,8 @@ import jakarta.ws.rs.core.Response;
 import jakarta.xml.bind.DatatypeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import se.inera.intyg.certificateservice.logging.MdcLogConstants;
+import se.inera.intyg.certificateservice.logging.PerformanceLogging;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.statistics.web.model.LogData;
 
@@ -42,6 +44,7 @@ public class PdfService {
     @POST
     @Path("create")
     @PrometheusTimeMethod(help = "API-tjänst för att skapa ett PDF dokument")
+    @PerformanceLogging(eventAction = "create-pdf", eventType = MdcLogConstants.EVENT_TYPE_CREATION)
     public Response pdf(@FormParam("pdf") String pdf, @FormParam("name") String name,
         @FormParam("url") String url) {
 

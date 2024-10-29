@@ -40,6 +40,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import se.inera.intyg.certificateservice.logging.MdcLogConstants;
+import se.inera.intyg.certificateservice.logging.PerformanceLogging;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
@@ -160,6 +162,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till antal sjukfall per månad")
+    @PerformanceLogging(eventAction = "get-number-of-cases-per-month", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getNumberOfCasesPerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
@@ -177,6 +180,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till tvärsnittet av antal sjukfall per månad")
+    @PerformanceLogging(eventAction = "get-number-of-cases-per-month-cross-section", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getNumberOfCasesPerMonthTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
@@ -199,6 +203,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till totalt antal intyg per måndad")
+    @PerformanceLogging(eventAction = "get-total-number-of-certificates-per-month", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getTotalNumberOfIntygPerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
@@ -219,6 +224,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till tvärsnittet av totalt antal intyg per måndad")
+    @PerformanceLogging(eventAction = "get-total-number-of-certificates-per-month-cross-section", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getTotalNumberOfIntygTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
@@ -239,6 +245,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till antal intyg per typ och månad för en given verksamhet")
+    @PerformanceLogging(eventAction = "get-number-of-certificate-types-per-month", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getNumberOfIntygPerTypePerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
@@ -259,6 +266,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till tvärsnittet av antal intyg per typ och månad för en given verksamhet")
+    @PerformanceLogging(eventAction = "get-number-of-certificate-types-per-month-cross-section", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getNumberOfIntygPerTypeTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
@@ -279,6 +287,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till antal meddelanden per månad för en given verksamhet")
+    @PerformanceLogging(eventAction = "get-number-of-messages-per-month", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getNumberOfMeddelandenPerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
@@ -296,6 +305,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till tvärsnittet av antal meddelanden per månad")
+    @PerformanceLogging(eventAction = "get-number-of-messages-per-month-cross-section", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getNumberOfMeddelandenPerMonthTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
@@ -315,6 +325,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till meddelanden per ämne")
+    @PerformanceLogging(eventAction = "get-number-of-messages-per-subject", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getMeddelandenPerAmne(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
@@ -332,6 +343,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till tvärsnittet av meddelanden per ämne")
+    @PerformanceLogging(eventAction = "get-number-of-messages-per-subject-cross-section", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getMeddelandenPerAmneTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
@@ -351,6 +363,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till meddelanden per ämne och enhet")
+    @PerformanceLogging(eventAction = "get-number-of-messages-per-subject-by-units", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getMeddelandenPerAmnePerEnhet(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format, @QueryParam("vardenhetdepth") boolean vardenhetdepth) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18, vardenhetdepth);
@@ -370,6 +383,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till tvärsnittet av meddelanden per ämne och enhet")
+    @PerformanceLogging(eventAction = "get-number-of-messages-per-subject-by-units-cross-section", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getMeddelandenPerAmnePerEnhetTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format, @QueryParam("vardenhetdepth") boolean vardenhetdepth) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12, vardenhetdepth);
@@ -391,6 +405,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(name = "api_protected_get_messages_per_subject_and_lakare",
         help = "API-tjänst för skyddad åtkomst till meddelanden per ämne och läkare")
+    @PerformanceLogging(eventAction = "get-number-of-messages-per-subject-by-doctor", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getMeddelandenPerAmnePerLakare(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
@@ -415,6 +430,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(name = "api_protected_get_messages_per_subject_and_lakare_cross_section",
         help = "API-tjänst för skyddad åtkomst till tvärsnittet av meddelanden per ämne och läkare")
+    @PerformanceLogging(eventAction = "get-number-of-messages-per-subject-by-doctor-cross-section", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getMeddelandenPerAmnePerLakareTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
@@ -465,6 +481,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till andel kompletteringar")
+    @PerformanceLogging(eventAction = "get-number-of-complements", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getAndelKompletteringar(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
@@ -482,6 +499,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till tvärsnittet av andel kompletteringar")
+    @PerformanceLogging(eventAction = "get-number-of-complements-cross-section", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getAndelKompletteringarTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
@@ -501,6 +519,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till kompletteringar per fråga")
+    @PerformanceLogging(eventAction = "get-number-of-complements-by-question", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getKompletteringarPerFraga(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
@@ -519,6 +538,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till tvärsnittet av kompletteringar per fråga")
+    @PerformanceLogging(eventAction = "get-number-of-complements-by-question-cross-section", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getKompletteringarPerFragaTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
@@ -541,6 +561,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till antal sjukfall per enhet")
+    @PerformanceLogging(eventAction = "get-number-of-sick-leaves-by-units", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getNumberOfCasesPerEnhet(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format, @QueryParam("vardenhetdepth") boolean vardenhetdepth) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12, vardenhetdepth);
@@ -565,6 +586,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till en tidsserie med antal sjukfall per enhet")
+    @PerformanceLogging(eventAction = "get-time-series-of-sick-leaves-by-units", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getNumberOfCasesPerEnhetTimeSeries(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format, @QueryParam("vardenhetdepth") boolean vardenhetdepth) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18, vardenhetdepth);
@@ -589,6 +611,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till antal sjukfall per läkare")
+    @PerformanceLogging(eventAction = "get-number-of-sick-leaves-by-doctor", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getNumberOfCasesPerLakare(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
@@ -608,6 +631,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till en tidsserie med antal sjukfall per läkare")
+    @PerformanceLogging(eventAction = "get-time-series-of-sick-leaves-by-doctor", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getNumberOfCasesPerLakareSomTidsserie(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
@@ -631,6 +655,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till sjukfall per diagnoskaptiel och -grupp")
+    @PerformanceLogging(eventAction = "get-diagnosis-group-statistics", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getDiagnosisGroupStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
@@ -650,6 +675,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till sjukfall per diagnoskaptiel och -grupp")
+    @PerformanceLogging(eventAction = "get-diagnosis-group-statistics-cross-section", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getDiagnosisGroupTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
@@ -672,6 +698,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till sjukfall per diagnosavsnitt för ett givet diagnoskapitel")
+    @PerformanceLogging(eventAction = "get-diagnosis-group-sub-group-statistics", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getDiagnosisSubGroupStatistics(@Context HttpServletRequest request, @PathParam("groupId") String groupId,
         @QueryParam("filter") String filterHash, @QueryParam("format") String format) {
         try {
@@ -700,6 +727,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till tvärsnittet av sjukfall per diagnosavsnitt för ett givet diagnoskapitel")
+    @PerformanceLogging(eventAction = "get-diagnosis-group-sub-group-statistics-cross-section", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getDiagnosisSubGroupTvarsnitt(@Context HttpServletRequest request, @PathParam("groupId") String groupId,
         @QueryParam("filter") String filterHash, @QueryParam("format") String format) {
         try {
@@ -726,6 +754,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till jämförelse mellan olika diagnoser")
+    @PerformanceLogging(eventAction = "get-compared-diagnosis-statistics", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getCompareDiagnosisStatistics(@Context HttpServletRequest request, @PathParam("diagnosHash") String diagnosisHash,
         @QueryParam("filter") String filterHash, @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
@@ -761,6 +790,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till en tidsserie med jämförelse mellan olika diagnoser")
+    @PerformanceLogging(eventAction = "get-compared-diagnosis-statistics-time-series", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getCompareDiagnosisStatisticsTimeSeries(@Context HttpServletRequest request,
         @PathParam("diagnosHash") String diagnosisHash, @QueryParam("filter") String filterHash, @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
@@ -794,6 +824,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till topp-listan för diagnos, ålder etc.")
+    @PerformanceLogging(eventAction = "get-overview-data", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getOverviewData(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 3);
         final Filter orgFilter = filterSettings.getFilter();
@@ -834,6 +865,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till sjukfall grupperade över ålder och kön.")
+    @PerformanceLogging(eventAction = "get-age-groups-statistics", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getAgeGroupsStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
@@ -853,6 +885,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till en tidsserie med sjukfall grupperade över ålder och kön.")
+    @PerformanceLogging(eventAction = "get-age-groups-statistics-time-series", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getAgeGroupsStatisticsAsTimeSeries(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
@@ -875,6 +908,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till en sjukfall grupperade över läkarens ålder och kön.")
+    @PerformanceLogging(eventAction = "get-cases-per-doctor-age-and-gender-statistics", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getCasesPerDoctorAgeAndGenderStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
@@ -894,6 +928,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till en tidsserie med sjukfall grupperade över läkarens ålder och kön.")
+    @PerformanceLogging(eventAction = "get-cases-per-doctor-age-and-gender-statistics-time-series", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getCasesPerDoctorAgeAndGenderTimeSeriesStatistics(@Context HttpServletRequest request,
         @QueryParam("filter") String filterHash, @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
@@ -916,6 +951,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till sjukfall grupperade över läkarens befattning.")
+    @PerformanceLogging(eventAction = "get-number-of-cases-per-doctor-by-position", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getNumberOfCasesPerLakarbefattning(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
@@ -935,6 +971,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till en tidsserie med sjukfall grupperade över läkarens befattning.")
+    @PerformanceLogging(eventAction = "get-number-of-cases-per-doctor-by-position-time-series", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getNumberOfCasesPerLakarbefattningSomTidsserie(@Context HttpServletRequest request,
         @QueryParam("filter") String filterHash, @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
@@ -954,6 +991,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till intyg per sjukfall")
+    @PerformanceLogging(eventAction = "get-number-of-certificates-by-sick-leaves-cross-section", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getIntygPerSjukfallTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
@@ -973,6 +1011,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till en tidsserie med intyg per sjukfall")
+    @PerformanceLogging(eventAction = "get-number-of-certificates-by-sick-leaves-time-series", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getIntygPerSjukfallTidsserie(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
@@ -995,6 +1034,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till sjukskrivningsgrad per månad.")
+    @PerformanceLogging(eventAction = "get-degree-of-sick-leave-statistics", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getDegreeOfSickLeaveStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
@@ -1014,6 +1054,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till ett tvärsmnitt av sjukskrivningsgrad per månad.")
+    @PerformanceLogging(eventAction = "get-degree-of-sick-leave-statistics-cross-section", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getDegreeOfSickLeaveTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
@@ -1037,6 +1078,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till sjukfallens längd (grupperat).")
+    @PerformanceLogging(eventAction = "get-sick-leave-length", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getSickLeaveLength(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
@@ -1056,6 +1098,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till en tidsserie med sjukfallens längd (grupperat).")
+    @PerformanceLogging(eventAction = "get-sick-leave-length-time-series", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getSickLeaveLengthTimeSeries(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
@@ -1078,6 +1121,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till sjukfallens längd per kön (långa).")
+    @PerformanceLogging(eventAction = "get-extended-sick-leaves-data", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getLongSickLeavesData(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
@@ -1097,6 +1141,7 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till en tidsserie med sjukfallens längd per kön (långa).")
+    @PerformanceLogging(eventAction = "get-extended-sick-leaves-data-cross-section", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getLongSickLeavesTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);

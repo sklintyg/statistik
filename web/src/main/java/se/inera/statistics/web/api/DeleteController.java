@@ -18,15 +18,17 @@
  */
 package se.inera.statistics.web.api;
 
-import java.util.List;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+import se.inera.intyg.certificateservice.logging.MdcLogConstants;
+import se.inera.intyg.certificateservice.logging.PerformanceLogging;
 import se.inera.statistics.service.DeleteCustomerData;
 
 @Service
@@ -44,6 +46,7 @@ public class DeleteController {
     @Path("intygsidlist")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
+    @PerformanceLogging(eventAction = "delete-customer-data-by-certificate-id", eventType = MdcLogConstants.EVENT_TYPE_DELETION)
     public List<String> deleteIntygsIdList(@RequestBody List<String> intygsIdList) {
         return deleteCustomerData.deleteCustomerDataByIntygsId(intygsIdList);
     }
@@ -53,6 +56,7 @@ public class DeleteController {
     @Path("vardgivareidlist")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
+    @PerformanceLogging(eventAction = "delete-customer-data-by-caregiver-id", eventType = MdcLogConstants.EVENT_TYPE_DELETION)
     public List<String> deleteVardgivareIdList(@RequestBody List<String> vardgivareIdList) {
         return deleteCustomerData.deleteCustomerDataByVardgivarId(vardgivareIdList);
     }
