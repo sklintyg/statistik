@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.certificateservice.logging;
+package se.inera.intyg.statistik.logging;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -27,20 +27,20 @@ class HashUtilityTest {
     @Test
     void shouldReturnHashedValue() {
         final var payload = "123123123";
-        final var hashedPayload = HashUtility.hash(payload);
+        final var hashedPayload = se.inera.intyg.statistik.logging.HashUtility.hash(payload);
         assertEquals("932f3c1b56257ce8539ac269d7aab42550dacf8818d075f0bdf1990562aae3ef", hashedPayload);
     }
 
     @Test
     void shouldReturnEmptyHashConstantWhenPayloadIsNull() {
-        final var hashedPayload = HashUtility.hash(null);
-        assertEquals(HashUtility.EMPTY, hashedPayload);
+        final var hashedPayload = se.inera.intyg.statistik.logging.HashUtility.hash(null);
+        assertEquals(se.inera.intyg.statistik.logging.HashUtility.EMPTY, hashedPayload);
     }
 
     @Test
     void shouldReturnEmptyHashConstantWhenPayloadIsEmpty() {
         final var payload = "";
-        final var hashedPayload = HashUtility.hash(payload);
-        assertEquals(HashUtility.EMPTY, hashedPayload);
+        final var hashedPayload = se.inera.intyg.statistik.logging.HashUtility.hash(payload);
+        assertEquals(se.inera.intyg.statistik.logging.HashUtility.EMPTY, hashedPayload);
     }
 }

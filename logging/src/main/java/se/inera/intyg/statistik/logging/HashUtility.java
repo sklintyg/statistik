@@ -16,25 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.certificateservice.logging;
+package se.inera.intyg.statistik.logging;
 
-import static se.inera.intyg.certificateservice.logging.MdcLogConstants.EVENT_CATEGORY_API;
+import com.google.common.base.Strings;
+import com.google.common.hash.HashFunction;
+import com.google.common.hash.Hashing;
+import com.google.common.io.BaseEncoding;
+import java.nio.charset.StandardCharsets;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public final class HashUtility {
 
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface PerformanceLogging {
+    public static final String EMPTY = "EMPTY";
 
-    String eventType();
+    private static final HashFunction hf = Hashing.sha256();
 
-    String eventAction();
+    private HashUtility() {
+    }
 
-    String eventCategory() default EVENT_CATEGORY_API;
-
-    boolean isActive() default true;
-
+    public static String hash(final String payload) {
+        if (Strings.isNullOrEmpty(payload)) {
+            return EMPTY;
+        }
+        final byte[] digest = hf.hashString(payload, StandardCharsets.UTF_8).asBytes();
+        return BaseEncoding.base16().lowerCase().encode(digest);
+    }
 }

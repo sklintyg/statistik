@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.certificateservice.logging;
+package se.inera.intyg.statistik.logging;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component;
 public class PerformanceLoggingAdvice {
 
     @Around("@annotation(performanceLogging)")
-    public Object logPerformance(ProceedingJoinPoint joinPoint, PerformanceLogging performanceLogging)
+    public Object logPerformance(ProceedingJoinPoint joinPoint, se.inera.intyg.statistik.logging.PerformanceLogging performanceLogging)
         throws Throwable {
         if (performanceLogging.isActive()) {
             final var start = LocalDateTime.now();
@@ -48,17 +48,18 @@ public class PerformanceLoggingAdvice {
                 final var className = joinPoint.getSignature().getDeclaringTypeName();
                 final var methodName = joinPoint.getSignature().getName();
                 try (final var mdcLogConstants =
-                    MdcCloseableMap.builder()
-                        .put(MdcLogConstants.EVENT_START, start.toString())
-                        .put(MdcLogConstants.EVENT_END, end.toString())
-                        .put(MdcLogConstants.EVENT_DURATION, Long.toString(duration))
-                        .put(MdcLogConstants.EVENT_ACTION, performanceLogging.eventAction())
-                        .put(MdcLogConstants.EVENT_TYPE, performanceLogging.eventType())
-                        .put(MdcLogConstants.EVENT_CATEGORY, performanceLogging.eventCategory())
-                        .put(MdcLogConstants.EVENT_CLASS, className)
-                        .put(MdcLogConstants.EVENT_METHOD, methodName)
-                        .put(MdcLogConstants.EVENT_OUTCOME, success ? MdcLogConstants.EVENT_OUTCOME_SUCCESS
-                            : MdcLogConstants.EVENT_OUTCOME_FAILURE
+                    se.inera.intyg.statistik.logging.MdcCloseableMap.builder()
+                        .put(se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_START, start.toString())
+                        .put(se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_END, end.toString())
+                        .put(se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_DURATION, Long.toString(duration))
+                        .put(se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_ACTION, performanceLogging.eventAction())
+                        .put(se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_TYPE, performanceLogging.eventType())
+                        .put(se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_CATEGORY, performanceLogging.eventCategory())
+                        .put(se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_CLASS, className)
+                        .put(se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_METHOD, methodName)
+                        .put(
+                            se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_OUTCOME, success ? se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_OUTCOME_SUCCESS
+                            : se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_OUTCOME_FAILURE
                         )
                         .build()
                 ) {

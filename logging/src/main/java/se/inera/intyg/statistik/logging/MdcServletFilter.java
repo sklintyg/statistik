@@ -16,11 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.certificateservice.logging;
+package se.inera.intyg.statistik.logging;
 
-import static se.inera.intyg.certificateservice.logging.MdcLogConstants.SESSION_ID_KEY;
-import static se.inera.intyg.certificateservice.logging.MdcLogConstants.SPAN_ID_KEY;
-import static se.inera.intyg.certificateservice.logging.MdcLogConstants.TRACE_ID_KEY;
+import static se.inera.intyg.statistik.logging.MdcLogConstants.SESSION_ID_KEY;
+import static se.inera.intyg.statistik.logging.MdcLogConstants.SPAN_ID_KEY;
+import static se.inera.intyg.statistik.logging.MdcLogConstants.TRACE_ID_KEY;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -39,7 +39,7 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 public class MdcServletFilter implements Filter {
 
     @Autowired
-    private MdcHelper mdcHelper;
+    private se.inera.intyg.statistik.logging.MdcHelper mdcHelper;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

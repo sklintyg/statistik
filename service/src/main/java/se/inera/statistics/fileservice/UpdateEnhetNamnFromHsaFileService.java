@@ -26,9 +26,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
-import se.inera.intyg.certificateservice.logging.MdcLogConstants;
-import se.inera.intyg.certificateservice.logging.PerformanceLogging;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
+import se.inera.intyg.statistik.logging.MdcLogConstants;
+import se.inera.intyg.statistik.logging.PerformanceLogging;
 import se.inera.statistics.service.processlog.EnhetManager;
 
 public class UpdateEnhetNamnFromHsaFileService {

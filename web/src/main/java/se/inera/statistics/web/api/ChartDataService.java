@@ -42,10 +42,10 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
-import se.inera.intyg.certificateservice.logging.MdcLogConstants;
-import se.inera.intyg.certificateservice.logging.PerformanceLogging;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
+import se.inera.intyg.statistik.logging.MdcLogConstants;
+import se.inera.intyg.statistik.logging.PerformanceLogging;
 import se.inera.statistics.service.caching.Cache;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.util.Icd10;
@@ -108,13 +108,13 @@ public class ChartDataService {
 
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
     @SchedulerLock(name = JOB_NAME)
-    @PerformanceLogging(eventAction = "build-national-data-cache-job", eventType = MdcLogConstants.EVENT_TYPE_CHANGE)
     public void reloadJob() {
         cache.clearCaches();
         buildNationalDataCache();
     }
 
     @PrometheusTimeMethod(help = "Jobb för att uppdatera information i cache")
+    @PerformanceLogging(eventAction = "build-national-data-cache-job", eventType = MdcLogConstants.EVENT_TYPE_CHANGE)
     public NationellDataResult buildNationalDataCache() {
         final List<NationellDataResult> nationalData = new ArrayList<>();
         logMDCHelper.run(() -> {

@@ -85,6 +85,7 @@ dependencies {
     implementation "se.inera.intyg.infra:security-filter:${infraVersion}"
     implementation "se.inera.intyg.infra:security-common:${infraVersion}"
 
+    implementation "co.elastic.logging:logback-ecs-encoder:${logbackEcsEncoderVersion}"
     implementation "com.auth0:jwks-rsa:${auth0JwksVersion}"
     implementation "com.fasterxml.jackson.core:jackson-databind"
     implementation 'jakarta.servlet:jakarta.servlet-api'

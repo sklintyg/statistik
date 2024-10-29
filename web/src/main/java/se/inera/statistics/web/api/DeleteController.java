@@ -27,8 +27,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-import se.inera.intyg.certificateservice.logging.MdcLogConstants;
-import se.inera.intyg.certificateservice.logging.PerformanceLogging;
+import se.inera.intyg.statistik.logging.MdcLogConstants;
+import se.inera.intyg.statistik.logging.PerformanceLogging;
 import se.inera.statistics.service.DeleteCustomerData;
 
 @Service

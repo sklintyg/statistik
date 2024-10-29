@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.certificateservice.logging;
+package se.inera.intyg.statistik.logging;
 
-import static se.inera.intyg.certificateservice.logging.MdcLogConstants.EVENT_CATEGORY;
-import static se.inera.intyg.certificateservice.logging.MdcLogConstants.EVENT_CATEGORY_PROCESS;
+import static se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_CATEGORY;
+import static se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_CATEGORY_PROCESS;
 
 import java.io.Closeable;
 import java.util.Collections;

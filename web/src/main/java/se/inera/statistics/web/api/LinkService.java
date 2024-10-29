@@ -28,11 +28,11 @@ import jakarta.ws.rs.Produces;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.inera.intyg.certificateservice.logging.MdcLogConstants;
-import se.inera.intyg.certificateservice.logging.PerformanceLogging;
 import se.inera.intyg.infra.dynamiclink.model.DynamicLink;
 import se.inera.intyg.infra.dynamiclink.service.DynamicLinkService;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
+import se.inera.intyg.statistik.logging.MdcLogConstants;
+import se.inera.intyg.statistik.logging.PerformanceLogging;
 
 @Path("/links")
 @Component

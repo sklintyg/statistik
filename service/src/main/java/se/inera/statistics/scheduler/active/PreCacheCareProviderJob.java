@@ -26,8 +26,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import se.inera.intyg.certificateservice.logging.MdcLogConstants;
-import se.inera.intyg.certificateservice.logging.PerformanceLogging;
+import se.inera.intyg.statistik.logging.MdcLogConstants;
+import se.inera.intyg.statistik.logging.PerformanceLogging;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.warehouse.Warehouse;
 

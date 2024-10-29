@@ -16,14 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.certificateservice.logging;
+package se.inera.intyg.statistik.logging;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static se.inera.intyg.certificateservice.logging.MdcHelper.LOG_SESSION_ID_HEADER;
-import static se.inera.intyg.certificateservice.logging.MdcHelper.LOG_TRACE_ID_HEADER;
+import static se.inera.intyg.statistik.logging.MdcHelper.LOG_SESSION_ID_HEADER;
+import static se.inera.intyg.statistik.logging.MdcHelper.LOG_TRACE_ID_HEADER;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,11 +32,11 @@ import org.junit.jupiter.api.Test;
 
 class MdcHelperTest {
 
-    private MdcHelper mdcHelper;
+    private se.inera.intyg.statistik.logging.MdcHelper mdcHelper;
 
     @BeforeEach
     void setUp() {
-        mdcHelper = new MdcHelper();
+        mdcHelper = new se.inera.intyg.statistik.logging.MdcHelper();
     }
 
     @Nested

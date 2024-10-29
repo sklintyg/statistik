@@ -2,15 +2,12 @@
 <configuration scan="true" debug="true" scanPeriod="15 seconds">
   <include resource="logback/logback-spring-base.xml"/>
 
-  <springProfile name="dev">
-    <root level="INFO">
-      <appender-ref ref="CONSOLE"/>
-    </root>
-  </springProfile>
+<!--  <root level="INFO">-->
+<!--    <appender-ref ref="CONSOLE"/>-->
+<!--  </root>-->
 
-  <springProfile name="!dev">
-    <root level="INFO">
-      <appender-ref ref="ECS_JSON_CONSOLE"/>
-    </root>
-  </springProfile>
+  <root level="INFO">
+    <appender-ref ref="ECS_JSON_CONSOLE"/>
+  </root> -->
+
 </configuration>

@@ -37,7 +37,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.LoggerFactory;
 import se.inera.auth.LoginMethod;
-import se.inera.intyg.certificateservice.logging.MdcLogConstants;
+import se.inera.intyg.statistik.logging.MdcLogConstants;
 import se.inera.statistics.integration.hsa.model.HsaIdUser;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 

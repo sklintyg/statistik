@@ -18,21 +18,20 @@
  */
 package se.inera.statistics.web.service.monitoring;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import se.inera.auth.LoginMethod;
-import se.inera.intyg.certificateservice.logging.MdcCloseableMap;
-import se.inera.intyg.certificateservice.logging.MdcLogConstants;
 import se.inera.intyg.infra.monitoring.logging.MarkerFilter;
+import se.inera.intyg.statistik.logging.MdcCloseableMap;
+import se.inera.intyg.statistik.logging.MdcLogConstants;
 import se.inera.statistics.integration.hsa.model.HsaIdUser;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
+@Slf4j
 @Service("webMonitoringLogService")
 public class MonitoringLogServiceImpl implements MonitoringLogService {
 
     private static final Object SPACE = " ";
-    private static final Logger LOG = LoggerFactory.getLogger(MonitoringLogServiceImpl.class);
 
     @Override
     public void logUserLogin(HsaIdUser hsaUser, LoginMethod loginMethod) {
@@ -94,7 +93,7 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
     }
 
     private void logEvent(MonitoringEvent logEvent, Object... logMsgArgs) {
-        LOG.info(MarkerFilter.MONITORING, buildMessage(logEvent), logMsgArgs);
+        log.info(MarkerFilter.MONITORING, buildMessage(logEvent), logMsgArgs);
     }
 
     private String buildMessage(MonitoringEvent logEvent) {

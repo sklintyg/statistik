@@ -29,9 +29,9 @@ import jakarta.ws.rs.core.Response;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
-import se.inera.intyg.certificateservice.logging.MdcLogConstants;
-import se.inera.intyg.certificateservice.logging.PerformanceLogging;
 import se.inera.intyg.infra.security.filter.SessionTimeoutFilter;
+import se.inera.intyg.statistik.logging.MdcLogConstants;
+import se.inera.intyg.statistik.logging.PerformanceLogging;
 import se.inera.statistics.web.api.dto.SessionStatusResponse;
 
 /**

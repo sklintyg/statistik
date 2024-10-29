@@ -28,6 +28,7 @@
   <context:component-scan base-package="se.inera.testability"/>
   <context:component-scan base-package="se.inera.auth"/>
   <context:component-scan base-package="se.inera.config"/>
+  <context:component-scan base-package="se.inera.intyg.statistik.logging"/>
 
   <beans profile="hsa-integration-intyg-proxy-service">
     <import resource="classpath:/hsa-integration-intyg-proxy-service-config.xml"/>
