@@ -2,8 +2,6 @@
 <configuration scan="true" debug="true" scanPeriod="15 seconds">
   <include resource="logback/logback-spring-base.xml"/>
 
-  <logger name="org.apache.cxf.interceptor.LoggingInInterceptor" level="WARN" />
-
   <root level="INFO">
     <appender-ref ref="CONSOLE"/>
   </root>
