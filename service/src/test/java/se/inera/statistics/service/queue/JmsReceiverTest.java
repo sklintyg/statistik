@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.queue;
 
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -26,6 +27,7 @@ import jakarta.jms.Message;
 import jakarta.jms.MessageNotWriteableException;
 import java.io.IOException;
 import org.apache.activemq.command.ActiveMQTextMessage;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -55,6 +57,12 @@ public class JmsReceiverTest {
     private MdcHelper mdcHelper;
     @InjectMocks
     private JmsReceiver jmsReceiver;
+
+    @Before
+    public void setUp() throws Exception {
+        doReturn("traceId").when(mdcHelper).traceId();
+        doReturn("sessionId").when(mdcHelper).spanId();
+    }
 
     @Test
     public void testOnMessageIntygUnknowType() throws MessageNotWriteableException, IOException {
