@@ -32,6 +32,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import se.inera.intyg.statistik.logging.MdcHelper;
 import se.inera.statistics.service.monitoring.MonitoringLogService;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.Receiver;
@@ -50,6 +51,8 @@ public class JmsReceiverTest {
     private ProcessIntygsentLog processIntygsentLog;
     @Mock
     private ProcessMessageLog processMessageLog;
+    @Mock
+    private MdcHelper mdcHelper;
     @InjectMocks
     private JmsReceiver jmsReceiver;
 
