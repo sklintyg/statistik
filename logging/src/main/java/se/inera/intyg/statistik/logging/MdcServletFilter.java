@@ -39,7 +39,7 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 public class MdcServletFilter implements Filter {
 
     @Autowired
-    private se.inera.intyg.statistik.logging.MdcHelper mdcHelper;
+    private MdcHelper mdcHelper;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
