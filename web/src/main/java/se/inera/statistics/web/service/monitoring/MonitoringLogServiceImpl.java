@@ -127,7 +127,7 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
     }
 
 
-    private static String getValue(String hsaUserId) {
-        return hsaUserId != null ? hsaUserId : "-";
+    private static String getValue(String value) {
+        return value != null ? value : "-";
     }
 }
