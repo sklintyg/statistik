@@ -30,6 +30,8 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
 import se.inera.intyg.infra.security.filter.SessionTimeoutFilter;
+import se.inera.intyg.statistik.logging.MdcLogConstants;
+import se.inera.intyg.statistik.logging.PerformanceLogging;
 import se.inera.statistics.web.api.dto.SessionStatusResponse;
 
 /**
@@ -56,6 +58,7 @@ public class SessionStatusService {
     @GET
     @Path(SESSION_STATUS_PING)
     @Produces(MediaType.APPLICATION_JSON + UTF_8_CHARSET)
+    @PerformanceLogging(eventAction = "session-status-ping", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getSessionStatus(@Context HttpServletRequest request) {
         return Response.ok().entity(createStatusResponse(request)).build();
     }

@@ -19,6 +19,9 @@
 
 package se.inera.statistics.scheduler.active;
 
+import static se.inera.intyg.statistik.logging.MdcLogConstants.SPAN_ID_KEY;
+import static se.inera.intyg.statistik.logging.MdcLogConstants.TRACE_ID_KEY;
+
 import java.util.List;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.slf4j.Logger;
@@ -26,6 +29,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import se.inera.intyg.statistik.logging.MdcCloseableMap;
+import se.inera.intyg.statistik.logging.MdcHelper;
+import se.inera.intyg.statistik.logging.MdcLogConstants;
+import se.inera.intyg.statistik.logging.PerformanceLogging;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.warehouse.Warehouse;
 
@@ -36,22 +43,32 @@ public class PreCacheCareProviderJob {
     private static final String JOB_NAME = "PreCacheCareProviderJob.run";
     private final Warehouse warehouse;
     private final List<String> precacheCareProviderIds;
+    private final MdcHelper mdcHelper;
 
     public PreCacheCareProviderJob(Warehouse warehouse,
-        @Value("#{'${job.precache.careprovider.ids}'.split(',')}") List<String> precacheCareProviderIds) {
+        @Value("#{'${job.precache.careprovider.ids}'.split(',')}") List<String> precacheCareProviderIds, MdcHelper mdcHelper) {
         this.warehouse = warehouse;
         this.precacheCareProviderIds = precacheCareProviderIds;
+        this.mdcHelper = mdcHelper;
     }
 
     @Scheduled(cron = "${job.precache.careprovider.cron}")
     @SchedulerLock(name = JOB_NAME)
+    @PerformanceLogging(eventAction = "pre-cache-careprovider-job", eventType = MdcLogConstants.EVENT_TYPE_INFO)
     public void run() {
-        LOG.info("Started job to precache the following careproviders: {}", precacheCareProviderIds);
+        try (MdcCloseableMap mdc =
+            MdcCloseableMap.builder()
+                .put(TRACE_ID_KEY, mdcHelper.traceId())
+                .put(SPAN_ID_KEY, mdcHelper.spanId())
+                .build()
+        ) {
+            LOG.info("Started job to precache the following careproviders: {}", precacheCareProviderIds);
 
-        precacheCareProviderIds.stream()
-            .filter(id -> id != null && !id.isBlank())
-            .forEach(id -> warehouse.get(new HsaIdVardgivare(id)));
+            precacheCareProviderIds.stream()
+                .filter(id -> id != null && !id.isBlank())
+                .forEach(id -> warehouse.get(new HsaIdVardgivare(id)));
 
-        LOG.info("Completed job to precache the following careproviders: {}", precacheCareProviderIds);
+            LOG.info("Completed job to precache the following careproviders: {}", precacheCareProviderIds);
+        }
     }
 }

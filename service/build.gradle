@@ -15,7 +15,9 @@ jar.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
 dependencies {
     implementation project(':hsa-integration')
+    implementation project(':logging')
 
+    implementation "co.elastic.logging:logback-ecs-encoder:${logbackEcsEncoderVersion}"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
     implementation "com.h2database:h2"
     implementation "net.javacrumbs.shedlock:shedlock-provider-redis-spring:${shedlockSpringVersion}"

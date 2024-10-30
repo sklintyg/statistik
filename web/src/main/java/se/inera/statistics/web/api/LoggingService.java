@@ -37,6 +37,8 @@ import org.springframework.stereotype.Service;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.intyg.infra.monitoring.logging.UserAgentInfo;
 import se.inera.intyg.infra.monitoring.logging.UserAgentParser;
+import se.inera.intyg.statistik.logging.MdcLogConstants;
+import se.inera.intyg.statistik.logging.PerformanceLogging;
 import se.inera.statistics.integration.hsa.model.HsaIdUser;
 import se.inera.statistics.web.api.dto.MonitoringRequest;
 import se.inera.statistics.web.model.LogData;
@@ -66,6 +68,7 @@ public class LoggingService {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @PrometheusTimeMethod(help = "API-tjänst för att logga från frontend app")
+    @PerformanceLogging(eventAction = "frontend-logging", eventType = MdcLogConstants.EVENT_TYPE_CREATION)
     public Response frontendLogging(LogData logData) {
         String user = loginServiceUtil.isLoggedIn() ? getHsaIdForLoggedInUser().getId() : "Anonymous";
         LOG.info(user + " : " + logData.getMessage() + " [" + logData.getUrl() + "]");
@@ -81,6 +84,7 @@ public class LoggingService {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @PrometheusTimeMethod(help = "API-tjänst för att monitoreringslogga från frontend app")
+    @PerformanceLogging(eventAction = "frontend-monitor-logging", eventType = MdcLogConstants.EVENT_TYPE_CREATION)
     public Response monitoring(MonitoringRequest request, @HeaderParam(HttpHeaders.USER_AGENT) String userAgent) {
         if (request == null || !request.isValid()) {
             return status(BAD_REQUEST).build();

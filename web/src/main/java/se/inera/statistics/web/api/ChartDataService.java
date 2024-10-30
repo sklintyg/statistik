@@ -18,12 +18,9 @@
  */
 package se.inera.statistics.web.api;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import static se.inera.intyg.statistik.logging.MdcLogConstants.SPAN_ID_KEY;
+import static se.inera.intyg.statistik.logging.MdcLogConstants.TRACE_ID_KEY;
+
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -32,6 +29,12 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,19 +46,22 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
-import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
+import se.inera.intyg.statistik.logging.MdcCloseableMap;
+import se.inera.intyg.statistik.logging.MdcHelper;
+import se.inera.intyg.statistik.logging.MdcLogConstants;
+import se.inera.intyg.statistik.logging.PerformanceLogging;
 import se.inera.statistics.service.caching.Cache;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.web.api.dto.DiagnosisKapitelAndAvsnittAndKategoriResponse;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.overview.OverviewData;
-import se.inera.statistics.web.api.dto.DiagnosisKapitelAndAvsnittAndKategoriResponse;
-import se.inera.statistics.web.service.exception.FilterException;
 import se.inera.statistics.web.service.FilterHashHandler;
 import se.inera.statistics.web.service.NationellDataCalculator;
+import se.inera.statistics.web.service.ResponseHandler;
 import se.inera.statistics.web.service.dto.NationellDataResult;
 import se.inera.statistics.web.service.dto.Report;
-import se.inera.statistics.web.service.ResponseHandler;
+import se.inera.statistics.web.service.exception.FilterException;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
 /**
@@ -89,7 +95,7 @@ public class ChartDataService {
     private NationellDataCalculator nationellDataCalculator;
 
     @Autowired
-    private LogMDCHelper logMDCHelper;
+    private MdcHelper mdcHelper;
 
     @Autowired
     private Cache cache;
@@ -112,9 +118,15 @@ public class ChartDataService {
     }
 
     @PrometheusTimeMethod(help = "Jobb för att uppdatera information i cache")
+    @PerformanceLogging(eventAction = "build-national-data-cache-job", eventType = MdcLogConstants.EVENT_TYPE_CHANGE)
     public NationellDataResult buildNationalDataCache() {
         final List<NationellDataResult> nationalData = new ArrayList<>();
-        logMDCHelper.run(() -> {
+        try (MdcCloseableMap mdc =
+            MdcCloseableMap.builder()
+                .put(TRACE_ID_KEY, mdcHelper.traceId())
+                .put(SPAN_ID_KEY, mdcHelper.spanId())
+                .build()
+        ) {
             LOG.info("National data requested");
             if (!cache.getAndSetNationaldataCalculationOngoing(true)) {
                 try {
@@ -131,18 +143,9 @@ public class ChartDataService {
             } else {
                 LOG.info("National cache population is already ongoing. This population request is therefore skipped.");
             }
-        });
-        return nationalData.isEmpty() ? new NationellDataResult() : nationalData.get(0);
+            return nationalData.isEmpty() ? new NationellDataResult() : nationalData.get(0);
+        }
     }
-
-    /*
-     * private void buildNumberOfMeddelandenPerMonth() {
-     * final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS, clock);
-     * SimpleKonResponse casesPerMonth = data.getMeddelandenPerMonth(range);
-     * final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
-     * numberOfMeddelandenPerMonth = new MessagePeriodConverter().convert(casesPerMonth, filterSettings);
-     * }
-     */
 
     private Response getResponse(TableDataReport result, String format, Report report) {
         if (format == null || format.isEmpty()) {

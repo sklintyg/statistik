@@ -28,17 +28,19 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import se.inera.intyg.statistik.logging.MdcHelper;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.warehouse.Warehouse;
 
 class PreCacheCareProviderJobTest {
 
     private Warehouse warehouse = mock(Warehouse.class);
+    private MdcHelper mdcHelper = mock(MdcHelper.class);
     private PreCacheCareProviderJob preCacheCareProviderJob;
 
     @Test
     void shallNotPrecacheAnyCareProviders() {
-        preCacheCareProviderJob = new PreCacheCareProviderJob(warehouse, Collections.emptyList());
+        preCacheCareProviderJob = new PreCacheCareProviderJob(warehouse, Collections.emptyList(), mdcHelper);
         preCacheCareProviderJob.run();
         verifyNoInteractions(warehouse);
     }
@@ -46,7 +48,7 @@ class PreCacheCareProviderJobTest {
     @Test
     void shallPrecacheOneCareProvider() {
         final var careProviderIds = List.of("ID1");
-        preCacheCareProviderJob = new PreCacheCareProviderJob(warehouse, careProviderIds);
+        preCacheCareProviderJob = new PreCacheCareProviderJob(warehouse, careProviderIds, mdcHelper);
         preCacheCareProviderJob.run();
         verify(warehouse, times(1)).get(new HsaIdVardgivare("ID1"));
         verifyNoMoreInteractions(warehouse);
@@ -55,7 +57,7 @@ class PreCacheCareProviderJobTest {
     @Test
     void shallPrecacheMultipleCareProviders() {
         final var careProviderIds = List.of("ID1", "ID2", "ID3");
-        preCacheCareProviderJob = new PreCacheCareProviderJob(warehouse, careProviderIds);
+        preCacheCareProviderJob = new PreCacheCareProviderJob(warehouse, careProviderIds, mdcHelper);
         preCacheCareProviderJob.run();
         verify(warehouse, times(1)).get(new HsaIdVardgivare("ID1"));
         verify(warehouse, times(1)).get(new HsaIdVardgivare("ID2"));
@@ -66,7 +68,7 @@ class PreCacheCareProviderJobTest {
     @Test
     void shallSkipEmptyCareProviders() {
         final var careProviderIds = List.of("ID1", "", "ID3");
-        preCacheCareProviderJob = new PreCacheCareProviderJob(warehouse, careProviderIds);
+        preCacheCareProviderJob = new PreCacheCareProviderJob(warehouse, careProviderIds, mdcHelper);
         preCacheCareProviderJob.run();
         verify(warehouse, times(1)).get(new HsaIdVardgivare("ID1"));
         verify(warehouse, times(1)).get(new HsaIdVardgivare("ID3"));

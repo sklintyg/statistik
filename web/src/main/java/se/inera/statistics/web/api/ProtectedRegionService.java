@@ -50,6 +50,8 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
+import se.inera.intyg.statistik.logging.MdcLogConstants;
+import se.inera.intyg.statistik.logging.PerformanceLogging;
 import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Enhet;
@@ -140,6 +142,7 @@ public class ProtectedRegionService {
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till uppladdning av filer.")
+    @PerformanceLogging(eventAction = "file-upload", eventType = MdcLogConstants.EVENT_TYPE_CREATION)
     public Response fileupload(@Context HttpServletRequest request, MultipartBody body) {
         LoginInfo info = loginServiceUtil.getLoginInfo();
         final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
@@ -183,6 +186,7 @@ public class ProtectedRegionService {
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till borttagning av enhet.")
+    @PerformanceLogging(eventAction = "delete-region-units", eventType = MdcLogConstants.EVENT_TYPE_DELETION)
     public Response clearRegionEnhets(@Context HttpServletRequest request) {
         LoginInfo info = loginServiceUtil.getLoginInfo();
         final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
@@ -203,6 +207,7 @@ public class ProtectedRegionService {
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till excel fil med regionsdata.")
+    @PerformanceLogging(eventAction = "get-region-file", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getPrepopulatedRegionFile(@Context HttpServletRequest request) {
         final HsaIdVardgivare vardgivarId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final List<Enhet> enhets = enhetManager.getAllVardenhetsForVardgivareId(vardgivarId);
@@ -223,6 +228,7 @@ public class ProtectedRegionService {
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till en tom excel fil (mall).")
+    @PerformanceLogging(eventAction = "get-empty-region-file", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getEmptyRegionFile(@Context HttpServletRequest request) {
         try {
             final ByteArrayOutputStream generatedFile = regionFileWriter.generateExcelFile(Collections.<Enhet>emptyList());
@@ -241,6 +247,7 @@ public class ProtectedRegionService {
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till senaste uppdateringar för region.")
+    @PerformanceLogging(eventAction = "get-last-region-update-info", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getLastRegionUpdateInfo(@Context HttpServletRequest request) {
         final HsaIdVardgivare vardgivarId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final HashMap<String, Object> result = new HashMap<>();
@@ -305,6 +312,7 @@ public class ProtectedRegionService {
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till antal sjukfall per månad och region.")
+    @PerformanceLogging(eventAction = "get-number-of-sick-leaves-per-month-by-region", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getNumberOfCasesPerMonthRegion(@Context HttpServletRequest request, @QueryParam("regionfilter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 18);
@@ -321,6 +329,7 @@ public class ProtectedRegionService {
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till antal sjukfall per enhet och region.")
+    @PerformanceLogging(eventAction = "get-number-of-sick-leaves-per-unit-by-region", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getNumberOfCasesPerEnhetRegion(@Context HttpServletRequest request, @QueryParam("regionfilter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 12);
@@ -349,6 +358,7 @@ public class ProtectedRegionService {
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till antal sjukfall per patienter, enhet och region.")
+    @PerformanceLogging(eventAction = "get-number-of-sick-leaves-per-patient-by-region", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getNumberOfCasesPerPatientsPerEnhetRegion(@Context HttpServletRequest request,
         @QueryParam("regionfilter") String filterHash, @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 12);
@@ -368,6 +378,7 @@ public class ProtectedRegionService {
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till intyg per sjukfall per region")
+    @PerformanceLogging(eventAction = "get-number-of-sick-leaves-by-region-cross-section", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getIntygPerSjukfallTvarsnitt(@Context HttpServletRequest request, @QueryParam("regionfilter") String filterHash,
         @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 12);
@@ -385,6 +396,7 @@ public class ProtectedRegionService {
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till antal meddelanden per ämne och region.")
+    @PerformanceLogging(eventAction = "get-number-of-messages-by-subject-on-region", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getMeddelandenPerAmneRegion(@Context HttpServletRequest request,
         @QueryParam("regionfilter") String filterHash,
         @QueryParam("format") String format) {
@@ -404,6 +416,7 @@ public class ProtectedRegionService {
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till ett tvärsnitt av antal meddelanden per ämne och region.")
+    @PerformanceLogging(eventAction = "get-number-of-messages-by-subject-on-region-cross-section", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getMeddelandenPerAmnePerEnhetTvarsnitt(@Context HttpServletRequest request,
         @QueryParam("regionfilter") String filterHash,
         @QueryParam("format") String format) {
@@ -423,6 +436,7 @@ public class ProtectedRegionService {
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till antal intyg per type, månad och region.")
+    @PerformanceLogging(eventAction = "get-number-of-certificates-by-type-by-month-on-region", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getNumberOfIntygPerTypePerMonthRegion(@Context HttpServletRequest request,
         @QueryParam("regionfilter") String filterHash,
         @QueryParam("format") String format) {
@@ -442,6 +456,7 @@ public class ProtectedRegionService {
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till andel kompletteringar per region.")
+    @PerformanceLogging(eventAction = "get-number-of-complements-by-region", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getAndelKompletteringarRegion(@Context HttpServletRequest request,
         @QueryParam("regionfilter") String filterHash,
         @QueryParam("format") String format) {
@@ -460,6 +475,7 @@ public class ProtectedRegionService {
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till andel kompletteringar per fråga för region.")
+    @PerformanceLogging(eventAction = "get-number-of-complements-by-question-on-region", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getKompletteringarPerFragaRegion(@Context HttpServletRequest request,
         @QueryParam("regionfilter") String filterHash,
         @QueryParam("format") String format) {
@@ -477,6 +493,7 @@ public class ProtectedRegionService {
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till filter-info för region.")
+    @PerformanceLogging(eventAction = "get-region-filter-info", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
     public Response getRegionfilterInfo(@Context HttpServletRequest request) {
         List<Verksamhet> businesses = filterHandler.getAllVerksamhetsForLoggedInRegionsUser(request);
         final Map<String, Object> result = new HashMap<>();
@@ -491,6 +508,7 @@ public class ProtectedRegionService {
     @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
     @PrometheusTimeMethod(
         help = "API-tjänst för skyddad åtkomst till att spara filter-info för region.")
+    @PerformanceLogging(eventAction = "accept-file-upload-agreement", eventType = MdcLogConstants.EVENT_TYPE_CHANGE)
     public Response acceptFileUploadAgreement(@Context HttpServletRequest request) {
         final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
         final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
@@ -505,37 +523,6 @@ public class ProtectedRegionService {
         Map<String, Object> extras = new HashMap<>();
         extras.put("fileUploadDate", fileUploadDate);
         return responseHandler.getResponse(result, format, allEnhets, new ReportInfo(report, reportType), extras);
-    }
-
-    public boolean hasAccessToRegionAdmin(HttpServletRequest request) {
-        if (request == null) {
-            return false;
-        }
-        final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        return loginServiceUtil.getLoginInfo().getLoginInfoForVg(vg).map(LoginInfoVg::isRegionAdmin).orElse(false);
-    }
-
-    public boolean hasAccessToRegion(HttpServletRequest request) {
-        if (request == null) {
-            return false;
-        }
-        final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        return loginServiceUtil.getLoginInfo().getLoginInfoForVg(vg).map(LoginInfoVg::isRegionsvardgivare).orElse(false);
-    }
-
-    public boolean userAccess(HttpServletRequest request) {
-        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
-        final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        LOG.info("User " + loginInfo.getHsaId() + " accessed vg " + vgId + " (" + getUriSafe(request) + ") session "
-            + request.getSession().getId());
-        return true;
-    }
-
-    private String getUriSafe(HttpServletRequest request) {
-        if (request == null) {
-            return "!NoRequest!";
-        }
-        return request.getRequestURI();
     }
 
     private enum UploadResultFormat {

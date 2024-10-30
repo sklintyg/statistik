@@ -33,7 +33,7 @@
   <context:property-placeholder location="classpath*:application-context-test.properties" order="2"
       ignore-resource-not-found="false" ignore-unresolvable="false"/>
 
-  <bean class="se.inera.intyg.infra.monitoring.logging.LogMDCHelper"/>
+  <bean class="se.inera.intyg.statistik.logging.MdcHelper"/>
   <bean class="se.inera.statistics.config.jpa.JpaConfigDev"/>
   <bean class="se.inera.statistics.service.warehouse.EnhetLoader"/>
   <bean class="se.inera.statistics.service.caching.NoOpRedisTemplate" id="rediscache"/>

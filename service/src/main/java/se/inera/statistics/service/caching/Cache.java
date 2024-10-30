@@ -18,6 +18,9 @@
  */
 package se.inera.statistics.service.caching;
 
+import static se.inera.intyg.statistik.logging.MdcLogConstants.SPAN_ID_KEY;
+import static se.inera.intyg.statistik.logging.MdcLogConstants.TRACE_ID_KEY;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import java.time.LocalDate;
@@ -36,7 +39,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
-import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
+import se.inera.intyg.statistik.logging.MdcCloseableMap;
+import se.inera.intyg.statistik.logging.MdcHelper;
 import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Enhet;
@@ -75,7 +79,7 @@ public class Cache {
     private RedisTemplate<Object, Object> template;
 
     @Autowired
-    private LogMDCHelper logMDCHelper;
+    private MdcHelper mdcHelper;
 
     // All keys for the application in redis will be cleared by cron every night, so the ttl set
     // on each key is just an extra safety and also a way for redis to know that the keys can be
@@ -93,11 +97,16 @@ public class Cache {
     }
 
     public void clearCaches() {
-        logMDCHelper.run(() -> {
+        try (MdcCloseableMap mdc =
+            MdcCloseableMap.builder()
+                .put(TRACE_ID_KEY, mdcHelper.traceId())
+                .put(SPAN_ID_KEY, mdcHelper.spanId())
+                .build()
+        ) {
             LOG.info("Clear Redis Cache Keys");
             final Set<Object> keys = template.keys(REDIS_KEY_PREFIX + "*");
             template.delete(keys);
-        });
+        }
     }
 
     public List<SjukfallGroup> getSjukfallGroups(SjukfallGroupCacheKey key) {

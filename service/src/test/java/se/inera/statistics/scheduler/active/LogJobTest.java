@@ -20,7 +20,7 @@ package se.inera.statistics.scheduler.active;
 
 import org.junit.Test;
 import org.mockito.Mockito;
-import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
+import se.inera.intyg.statistik.logging.MdcHelper;
 import se.inera.statistics.service.monitoring.MonitoringLogService;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.processlog.intygsent.IntygsentLogConsumer;
@@ -35,7 +35,7 @@ public class LogJobTest {
         LogConsumer logConsumer = Mockito.mock(LogConsumer.class);
         IntygsentLogConsumer intygsentLogConsumer = Mockito.mock(IntygsentLogConsumer.class);
         MessageLogConsumer messageLogConsumer = Mockito.mock(MessageLogConsumer.class);
-        LogMDCHelper mdcHelper = new LogMDCHelper();
+        final var mdcHelper = new MdcHelper();
 
         Mockito.when(logConsumer.processBatch()).thenReturn(100).thenReturn(0);
         Mockito.when(intygsentLogConsumer.processBatch()).thenReturn(100).thenReturn(100).thenReturn(100).thenReturn(100).thenReturn(0);
