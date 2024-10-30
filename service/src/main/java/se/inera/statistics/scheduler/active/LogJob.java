@@ -18,12 +18,16 @@
  */
 package se.inera.statistics.scheduler.active;
 
+import static se.inera.intyg.statistik.logging.MdcLogConstants.SPAN_ID_KEY;
+import static se.inera.intyg.statistik.logging.MdcLogConstants.TRACE_ID_KEY;
+
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
-import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
+import se.inera.intyg.statistik.logging.MdcCloseableMap;
+import se.inera.intyg.statistik.logging.MdcHelper;
 import se.inera.intyg.statistik.logging.MdcLogConstants;
 import se.inera.intyg.statistik.logging.PerformanceLogging;
 import se.inera.statistics.service.monitoring.MonitoringLogService;
@@ -41,15 +45,15 @@ public class LogJob {
     private LogConsumer consumer;
     private MessageLogConsumer messageLogConsumer;
     private IntygsentLogConsumer intygsentLogConsumer;
-    private LogMDCHelper logMDCHelper;
+    private MdcHelper mdcHelper;
 
     public LogJob(MonitoringLogService monitoringLogService, LogConsumer consumer, IntygsentLogConsumer intygsentLogConsumer,
-        MessageLogConsumer messageLogConsumer, LogMDCHelper logMDCHelper) {
+        MessageLogConsumer messageLogConsumer, MdcHelper mdcHelper) {
         this.monitoringLogService = monitoringLogService;
         this.consumer = consumer;
         this.intygsentLogConsumer = intygsentLogConsumer;
         this.messageLogConsumer = messageLogConsumer;
-        this.logMDCHelper = logMDCHelper;
+        this.mdcHelper = mdcHelper;
     }
 
     @Scheduled(cron = "${scheduler.logJob.cron}")
@@ -57,7 +61,14 @@ public class LogJob {
     @PrometheusTimeMethod(help = "Jobb för att hantera inkomna intyg och meddelanden från kön")
     @PerformanceLogging(eventAction = "process-sent-certificates-and-messages-batch-job", eventType = MdcLogConstants.EVENT_TYPE_INFO)
     public void run() {
-        logMDCHelper.run(this::process);
+        try (MdcCloseableMap mdc =
+            MdcCloseableMap.builder()
+                .put(TRACE_ID_KEY, mdcHelper.traceId())
+                .put(SPAN_ID_KEY, mdcHelper.spanId())
+                .build()
+        ) {
+            process();
+        }
     }
 
     public void process() {

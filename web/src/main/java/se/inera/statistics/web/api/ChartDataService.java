@@ -18,6 +18,9 @@
  */
 package se.inera.statistics.web.api;
 
+import static se.inera.intyg.statistik.logging.MdcLogConstants.SPAN_ID_KEY;
+import static se.inera.intyg.statistik.logging.MdcLogConstants.TRACE_ID_KEY;
+
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -43,7 +46,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
-import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
+import se.inera.intyg.statistik.logging.MdcCloseableMap;
+import se.inera.intyg.statistik.logging.MdcHelper;
 import se.inera.intyg.statistik.logging.MdcLogConstants;
 import se.inera.intyg.statistik.logging.PerformanceLogging;
 import se.inera.statistics.service.caching.Cache;
@@ -91,7 +95,7 @@ public class ChartDataService {
     private NationellDataCalculator nationellDataCalculator;
 
     @Autowired
-    private LogMDCHelper logMDCHelper;
+    private MdcHelper mdcHelper;
 
     @Autowired
     private Cache cache;
@@ -117,7 +121,12 @@ public class ChartDataService {
     @PerformanceLogging(eventAction = "build-national-data-cache-job", eventType = MdcLogConstants.EVENT_TYPE_CHANGE)
     public NationellDataResult buildNationalDataCache() {
         final List<NationellDataResult> nationalData = new ArrayList<>();
-        logMDCHelper.run(() -> {
+        try (MdcCloseableMap mdc =
+            MdcCloseableMap.builder()
+                .put(TRACE_ID_KEY, mdcHelper.traceId())
+                .put(SPAN_ID_KEY, mdcHelper.spanId())
+                .build()
+        ) {
             LOG.info("National data requested");
             if (!cache.getAndSetNationaldataCalculationOngoing(true)) {
                 try {
@@ -134,18 +143,9 @@ public class ChartDataService {
             } else {
                 LOG.info("National cache population is already ongoing. This population request is therefore skipped.");
             }
-        });
-        return nationalData.isEmpty() ? new NationellDataResult() : nationalData.get(0);
+            return nationalData.isEmpty() ? new NationellDataResult() : nationalData.get(0);
+        }
     }
-
-    /*
-     * private void buildNumberOfMeddelandenPerMonth() {
-     * final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS, clock);
-     * SimpleKonResponse casesPerMonth = data.getMeddelandenPerMonth(range);
-     * final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
-     * numberOfMeddelandenPerMonth = new MessagePeriodConverter().convert(casesPerMonth, filterSettings);
-     * }
-     */
 
     private Response getResponse(TableDataReport result, String format, Report report) {
         if (format == null || format.isEmpty()) {

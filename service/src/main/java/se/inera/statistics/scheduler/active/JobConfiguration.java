@@ -20,16 +20,16 @@ package se.inera.statistics.scheduler.active;
 
 import net.javacrumbs.shedlock.core.LockProvider;
 import net.javacrumbs.shedlock.provider.redis.spring.RedisLockProvider;
-
 import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
+import se.inera.intyg.statistik.logging.MdcHelper;
 import se.inera.statistics.fileservice.UpdateEnhetNamnFromHsaFileService;
 import se.inera.statistics.service.monitoring.MonitoringLogService;
 import se.inera.statistics.service.processlog.EnhetManager;
@@ -40,9 +40,10 @@ import se.inera.statistics.service.processlog.message.MessageLogConsumer;
 /**
  * Jobs depends on external redis for locking, and the same instance as for caching (see infra) is used.
  */
-@Profile("caching-enabled")
 @Configuration
 @EnableScheduling
+@Profile("caching-enabled")
+@ComponentScan({"se.inera.intyg.statistik"})
 @EnableSchedulerLock(defaultLockAtMostFor = "PT20M")
 public class JobConfiguration {
 
@@ -59,7 +60,7 @@ public class JobConfiguration {
     private IntygsentLogConsumer intygsentLogConsumer;
 
     @Autowired
-    private LogMDCHelper logMDCHelper;
+    private MdcHelper mdcHelper;
 
     @Autowired
     @Qualifier("serviceMonitoringLogService")
@@ -75,11 +76,11 @@ public class JobConfiguration {
 
     @Bean
     public LogJob logJob() {
-        return new LogJob(monitoringLogService, consumer, intygsentLogConsumer, messageLogConsumer, logMDCHelper);
+        return new LogJob(monitoringLogService, consumer, intygsentLogConsumer, messageLogConsumer, mdcHelper);
     }
 
     @Bean
     public UpdateEnhetNamnFromHsaFileService updateEnhetNamnFromHsaFileService() {
-        return new UpdateEnhetNamnFromHsaFileService(enhetManager);
+        return new UpdateEnhetNamnFromHsaFileService(enhetManager, mdcHelper);
     }
 }
