@@ -8,7 +8,7 @@
   <div data-ng-if="(errorUrlParam == 'loginfailed')" class="alert alert-danger">
     <strong message key="login.alert-loginfailed.title"></strong> <span message key="login.alert-loginfailed.body"></span>
   </div>
-  <div data-ng-if="hasActiveStatUrl" class="alert alert-danger">
+  <div data-ng-if="(hasActiveStatUrl || errorUrlParam == 'loginRequired')" class="alert alert-danger">
     <strong message key="login.alert-loginrequired.title"></strong> <span message key="login.alert-loginrequired.body"></span>
   </div>
 

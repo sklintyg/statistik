@@ -38,4 +38,5 @@ angular.module('StatisticsApp').config(
       $compileProvider.debugInfoEnabled(debugInfoState);
 
       $locationProvider.hashPrefix('');
+      $httpProvider.interceptors.push('redirectInterceptor');
     });
