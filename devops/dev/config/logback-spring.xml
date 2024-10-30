@@ -6,4 +6,9 @@
     <appender-ref ref="CONSOLE"/>
   </root>
 
+  <!-- Enable this to test ecs logging in json.
+  <root level="INFO">
+    <appender-ref ref="ECS_JSON_CONSOLE"/>
+  </root> -->
+
 </configuration>
