@@ -18,6 +18,9 @@
  */
 package se.inera.statistics.service.queue;
 
+import static se.inera.intyg.statistik.logging.MdcLogConstants.SPAN_ID_KEY;
+import static se.inera.intyg.statistik.logging.MdcLogConstants.TRACE_ID_KEY;
+
 import jakarta.jms.JMSException;
 import jakarta.jms.Message;
 import jakarta.jms.MessageListener;
@@ -26,6 +29,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import se.inera.intyg.statistik.logging.MdcCloseableMap;
+import se.inera.intyg.statistik.logging.MdcHelper;
 import se.inera.statistics.service.monitoring.MonitoringLogService;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.Receiver;
@@ -61,28 +66,38 @@ public class JmsReceiver implements MessageListener {
     @Qualifier("serviceMonitoringLogService")
     private MonitoringLogService monitoringLogService;
 
+    @Autowired
+    private MdcHelper mdcHelper;
+
     @Override
     public void onMessage(Message rawMessage) {
-        if (rawMessage instanceof TextMessage) {
-            try {
-                String doc = ((TextMessage) rawMessage).getText();
-                long timestamp = rawMessage.getJMSTimestamp();
-                String typeName = rawMessage.getStringProperty(ACTION);
+        try (MdcCloseableMap mdc =
+            MdcCloseableMap.builder()
+                .put(TRACE_ID_KEY, mdcHelper.traceId())
+                .put(SPAN_ID_KEY, mdcHelper.spanId())
+                .build()
+        ) {
+            if (rawMessage instanceof TextMessage) {
+                try {
+                    String doc = ((TextMessage) rawMessage).getText();
+                    long timestamp = rawMessage.getJMSTimestamp();
+                    String typeName = rawMessage.getStringProperty(ACTION);
 
-                if (ACTION_TYPE_MESSAGE_SENT.equals(typeName)) {
-                    handleMessage(rawMessage, doc, typeName, timestamp);
-                } else if (ACTION_TYPE_CERTIFICATE_SENT.equals(typeName)) {
-                    handleIntygSent(rawMessage, timestamp);
-                } else {
-                    handleIntyg(rawMessage, doc, typeName, timestamp);
+                    if (ACTION_TYPE_MESSAGE_SENT.equals(typeName)) {
+                        handleMessage(rawMessage, doc, typeName, timestamp);
+                    } else if (ACTION_TYPE_CERTIFICATE_SENT.equals(typeName)) {
+                        handleIntygSent(rawMessage, timestamp);
+                    } else {
+                        handleIntyg(rawMessage, doc, typeName, timestamp);
+                    }
+                } catch (JMSException e) {
+                    throw new StatisticsJMSException("JMS error", e);
                 }
-            } catch (JMSException e) {
-                throw new StatisticsJMSException("JMS error", e);
+            } else {
+                LOG.error("Unrecognized message type " + rawMessage.getClass().getCanonicalName());
             }
-        } else {
-            LOG.error("Unrecognized message type " + rawMessage.getClass().getCanonicalName());
+            LOG.debug("Received intyg " + rawMessage + " .");
         }
-        LOG.debug("Received intyg " + rawMessage + " .");
     }
 
     private void handleIntygSent(Message rawMessage, long timestamp) throws JMSException {
