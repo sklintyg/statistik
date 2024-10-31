@@ -284,7 +284,7 @@ var stMessages = {
 
     //Intygsskolan
     'intygsskolan.modal.title': 'Om Intygsstatistik',
-    'intygsskolan.link.text': 'Hitta svar på dina frågor i Ineras intygsskola',
+    'intygsskolan.link.text': 'Hitta svar på dina frågor i Intygstjänsters informationsyta',
 
     //error messages
     'error.unsignedcerts.couldnotbeloaded': '<strong>Kunde inte hämta ej signerade intyg.</strong>',
