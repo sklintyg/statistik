@@ -40,7 +40,7 @@
   </div>
 
   <div class="main-container">
-    <div class="left-container" data-ng-show="AppModel.get().isLoggedIn">
+    <div class="left-container" data-ng-show="!AppModel.get().loginVisible">
       <navigation-menu login-visible="AppModel.get().loginVisible" query-string="queryString"></navigation-menu>
     </div>
     <div class="right-container">

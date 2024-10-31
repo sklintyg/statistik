@@ -72,6 +72,13 @@ angular.module('StatisticsApp').controller('pageCtrl',
               $scope.isRegionInfoFetched = true;
             });
           }
+          AppModel.set({
+            isLoggedIn: true,
+            loginVisible: false,
+            loginUrl: AppModel.get().loginUrl,
+            projectVersion: AppModel.get().projectVersion,
+            driftbanners: AppModel.get().driftbanners,
+          });
         } else {
           UserModel.resetUserAccessInfo();
           $scope.showBusinessesDetails = false;

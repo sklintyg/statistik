@@ -1,4 +1,5 @@
 describe('redirectInterceptor', function() {
+    'use strict';
     var $q, $location, redirectInterceptor;
     
     beforeEach(module('StatisticsApp'));
