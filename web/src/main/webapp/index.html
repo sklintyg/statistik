@@ -40,7 +40,7 @@
   </div>
 
   <div class="main-container">
-    <div class="left-container">
+    <div class="left-container" data-ng-show="AppModel.get().isLoggedIn">
       <navigation-menu login-visible="AppModel.get().loginVisible" query-string="queryString"></navigation-menu>
     </div>
     <div class="right-container">
@@ -136,7 +136,6 @@
   <script src="/components/directives/navigationMenu/navigationMenu.directive.js"></script>
   <script src="/components/directives/navigationTabs/navigationTabs.directive.js"></script>
   <script src="/components/directives/onFinishRender/onFinishRender.directive.js"></script>
-  <script src="/components/interceptor/redirectInterceptor.js"></script>
   <script src="/components/directives/overviewWidget/overviewWidget.directive.js"></script>
   <script src="/components/directives/selectVardgivare/selectVardgivare.directive.js"></script>
   <script src="/components/directives/selectVardgivareModal/modal/modal.controller.js"></script>
@@ -160,6 +159,7 @@
   <script src="/components/filters/messageFilter/message.filter.js"></script>
   <script src="/components/filters/replaceEmpty/replaceEmpty.filter.js"></script>
   <script src="/components/filters/thousandseparated/thousandseparated.filter.js"></script>
+  <script src="/components/interceptor/redirectInterceptor.js"></script>
   <script src="/components/models/app.model.js"></script>
   <script src="/components/models/staticData.model.js"></script>
   <script src="/components/models/user.model.js"></script>

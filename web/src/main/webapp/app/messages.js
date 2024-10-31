@@ -265,6 +265,8 @@ var stMessages = {
     'login.alert-loginfailed.body': 'Detta kan bero på att du saknar behörighet till Intygsstatistik.',
     'login.alert-loginrequired.title': 'Inloggning krävs.',
     'login.alert-loginrequired.body': 'Du försöker nå en sida som kräver inloggning. Vänligen logga in för att komma vidare.',
+    'login.alert-info.loginrequired.title': 'Observera! Inloggning krävs.',
+    'login.alert-info.loginrequired.body': 'Framöver kommer du behöva logga in i Intygsstatistik med SITHS för att kunna se nationell statistik. Du kan läsa mer om Intygsstatistik på ',
     'login.alert-danger': 'Ajdå!',
     'login.btn.siths-login': 'Logga in med SITHS',
 

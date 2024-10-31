@@ -20,16 +20,9 @@ angular.module('StatisticsApp')
 .factory('redirectInterceptor',
     /** @ngInject */
     function($q, $location) {
+    'use strict';
     return {
-        response: function(response) {
-            if (response.status === 302) {
-                console.log("yo?")
-                $location.path('/login');
-            }
-            return response;
-        },
         responseError: function(rejection) {
-            console.log(rejection.status)
             if (rejection.status === 403) {
                 $location.path('/login').search({ error: 'loginRequired' });
             }
