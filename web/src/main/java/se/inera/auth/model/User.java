@@ -37,7 +37,6 @@ public class User implements Serializable, Saml2AuthenticatedPrincipal {
     private final String name;
     private final List<Vardgivare> vgsWithProcessledarStatus;
     private final List<Vardenhet> vardenhetList;
-
     private final LoginMethod loginMethod;
 
     public User(HsaIdUser hsaId, String name, List<Vardgivare> vgsWithProcessledarStatus, List<Vardenhet> vardenhetsList,

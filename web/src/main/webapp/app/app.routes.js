@@ -499,7 +499,7 @@ var app = angular.module('StatisticsApp')
       }).when('/sso', {
         redirectTo: '/verksamhet/oversikt'
       }).when('/', {
-        redirectTo: '/nationell/oversikt'
+        redirectTo: '/login'
       }).when('/tooManyRequests', {
         templateUrl: '/app/views/error/tooManyRequests.html',
         title: 'För många samtidiga anrop'

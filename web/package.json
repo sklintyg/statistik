@@ -8,7 +8,7 @@
     "bower": "^1.8.14",
     "compass-mixins": "0.12.12",
     "connect-livereload": "^0.6.1",
-    "grunt": "1.6.1",
+    "grunt": "^1.6.1",
     "grunt-angular-templates": "^1.2.0",
     "grunt-bower-install-simple": "^1.2.8",
     "grunt-cli": "^1.5.0",

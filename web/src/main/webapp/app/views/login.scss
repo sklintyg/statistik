@@ -1,35 +1,47 @@
 .login-view {
   display: inline-block;
   h1 {
-    font-size: 26px;
-    font-weight: 500;
-    margin-bottom: 15px;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 20px;
     margin-top: 0;
+  }
+
+  h2 {
+    font-size:20px;
+    font-weight:700;
+    margin-bottom:15px;
+    margin-top:20px;
+  }
+
+  .st-color-29-a {
+    font-weight: 700;
+    color: #3B759D;
+    text-decoration: underline;
+  }
+
+  .margin-bottom-20 {
+    margin-bottom: 20px;
   }
 
   .st-kn-04 {
     @extend %st-typo-04;
-    border-width: 1px;
-    border-color: $st-color-46;
-    color: $st-color-46;
-    width: 275px;
-    height: 50px;
-    padding: 15px;
-    &:after {
-      font-family: 'Font Awesome 5 Free';
-      content: $st-ikon-24;
-      margin-left: 15px;
-    }
+    background:$st-color-15;
+    width:200px;
+    color:$st-color-17;
+    font-weight:700;
+    height:50px;
+    padding:15px;;
     &:active {
-      background-color: $st-color-17;
-      color: $st-color-46;
+      background-color: $st-color-15;
+      color: $st-color-17;
     }
     &:hover {
-      background-color: $st-color-31;
+      background-color: $st-color-29;
       color: $st-color-17;
     }
     &:focus {
-      color: $st-color-32;
+      color: $st-color-17;
     }
   }
 

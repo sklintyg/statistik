@@ -47,7 +47,7 @@
     $scope.isCollapsed = true;
     $scope.isMenuOpen = false;
     var oldValue = $scope.isLoggedIn;
-
+    
     // Nationell
     var sjukfallNationell = {
       id: 'sjukfall-statistics-toggle',

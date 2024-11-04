@@ -91,8 +91,8 @@
   },
   {
     "key": "st-lank-001",
-    "url": "https://inera.atlassian.net/wiki/x/ogNkFQ",
-    "text": "Hitta svar på dina frågor i Ineras intygsskola",
+    "url": "https://inera.atlassian.net/l/cp/e83xrU1p",
+    "text": "Intygstjänsters informationsyta",
     "target": "_blank"
   },
   {
@@ -117,6 +117,12 @@
     "key": "st-lank-005",
     "url": "https://www.sambi.se/",
     "text": "Lär dig mer om inloggning via Sambi",
+    "target": "_blank"
+  },
+  {
+    "key": "st-lank-006",
+    "url": "https://inera.atlassian.net/l/cp/e83xrU1p",
+    "text": "Hitta svar på dina frågor i Intygstjänsters informationsyta",
     "target": "_blank"
   }
 ]
