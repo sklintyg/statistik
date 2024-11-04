@@ -165,9 +165,8 @@ angular.module('StatisticsApp').controller('pageCtrl',
         if ($rootScope.isLoggedIn && !$scope.loggedInWithoutStatistikuppdrag) {
           $location.path('valjVardgivare');
         } else {
-          $location.path(AppModel.get().loginUrl);
+          $window.location.href = '/saml2/authenticate/siths';
         }
       };
-
     }
 );
