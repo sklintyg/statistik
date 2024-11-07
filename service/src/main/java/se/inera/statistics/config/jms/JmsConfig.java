@@ -20,27 +20,21 @@ package se.inera.statistics.config.jms;
 
 
 import jakarta.jms.ConnectionFactory;
-import jakarta.jms.MessageListener;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
-import org.springframework.jms.annotation.JmsListenerConfigurer;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
-import org.springframework.jms.config.JmsListenerEndpointRegistrar;
-import org.springframework.jms.config.SimpleJmsListenerEndpoint;
 import org.springframework.jms.connection.JmsTransactionManager;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.destination.DestinationResolver;
 import org.springframework.jms.support.destination.DynamicDestinationResolver;
-import se.inera.statistics.service.processlog.Receiver;
-import se.inera.statistics.service.queue.JmsReceiver;
 
 @Configuration
 @EnableJms
-public class JmsConfig implements JmsListenerConfigurer {
+public class JmsConfig {
 
     @Value("${activemq.broker.url}")
     private String brokerUrl;
@@ -84,24 +78,5 @@ public class JmsConfig implements JmsListenerConfigurer {
     @Bean
     public JmsTemplate jmsTemplate(ConnectionFactory connectionFactory) {
         return new JmsTemplate(connectionFactory);
-    }
-
-    @Bean
-    MessageListener jmsReceiver() {
-        return new JmsReceiver();
-    }
-
-    @Bean
-    Receiver receiver() {
-        return new Receiver();
-    }
-
-    @Override
-    public void configureJmsListeners(JmsListenerEndpointRegistrar registrar) {
-        final SimpleJmsListenerEndpoint endpoint = new SimpleJmsListenerEndpoint();
-        endpoint.setId("jmsEndpoint");
-        endpoint.setDestination(queueName);
-        endpoint.setMessageListener(jmsReceiver());
-        registrar.registerEndpoint(endpoint);
     }
 }

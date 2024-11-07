@@ -23,12 +23,13 @@ import static se.inera.intyg.statistik.logging.MdcLogConstants.TRACE_ID_KEY;
 
 import jakarta.jms.JMSException;
 import jakarta.jms.Message;
-import jakarta.jms.MessageListener;
 import jakarta.jms.TextMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jms.annotation.JmsListener;
+import org.springframework.stereotype.Component;
 import se.inera.intyg.statistik.logging.MdcCloseableMap;
 import se.inera.intyg.statistik.logging.MdcHelper;
 import se.inera.statistics.service.monitoring.MonitoringLogService;
@@ -39,7 +40,8 @@ import se.inera.statistics.service.processlog.message.MessageEventType;
 import se.inera.statistics.service.processlog.message.ProcessMessageLog;
 import se.inera.statistics.service.warehouse.IntygType;
 
-public class JmsReceiver implements MessageListener {
+@Component
+public class JmsReceiver {
 
     private static final Logger LOG = LoggerFactory.getLogger(JmsReceiver.class);
 
@@ -69,7 +71,7 @@ public class JmsReceiver implements MessageListener {
     @Autowired
     private MdcHelper mdcHelper;
 
-    @Override
+    @JmsListener(destination = "${activemq.receiver.queue.name}")
     public void onMessage(Message rawMessage) {
         try (MdcCloseableMap mdc =
             MdcCloseableMap.builder()
