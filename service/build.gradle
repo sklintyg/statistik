@@ -42,11 +42,10 @@ dependencies {
     implementation "jakarta.persistence:jakarta.persistence-api"
     implementation 'org.glassfish.jaxb:jaxb-runtime'
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api'
+    implementation "org.apache.activemq:activemq-spring"
 
-    compileOnly "org.apache.activemq:activemq-client"
     compileOnly "jakarta.jms:jakarta.jms-api:${jakartaMessagingApiVersion}"
 
-    testImplementation "org.apache.activemq:activemq-spring"
     testImplementation "org.aspectj:aspectjweaver"
     testImplementation "org.apache.groovy:groovy-all:${groovyAllVersion}"
     testImplementation "org.eclipse.jetty:jetty-server"

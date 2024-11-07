@@ -112,7 +112,6 @@ dependencies {
     compileOnly "jakarta.ws.rs:jakarta.ws.rs-api"
 
     runtimeOnly "com.mysql:mysql-connector-j"
-    runtimeOnly "org.apache.activemq:activemq-spring"
     runtimeOnly "se.inera.intyg.infra:hsa-integration-intyg-proxy-service:${infraVersion}"
 
     testImplementation "jakarta.transaction:jakarta.transaction-api"
