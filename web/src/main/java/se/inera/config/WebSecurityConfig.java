@@ -187,8 +187,11 @@ public class WebSecurityConfig {
             .authorizeHttpRequests(request -> request
                 .requestMatchers(TESTABILITY_API).permitAll()
             )
+            .authorizeHttpRequests(request -> request
+                .requestMatchers("/api/testsupport/**").permitAll()
+            )
             .csrf(csrfConfigurer -> csrfConfigurer
-                .ignoringRequestMatchers(TESTABILITY_API)
+                .ignoringRequestMatchers(TESTABILITY_API, "/api/testsupport/**")
             );
     }
 

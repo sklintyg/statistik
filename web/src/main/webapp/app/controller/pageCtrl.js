@@ -73,7 +73,7 @@ angular.module('StatisticsApp').controller('pageCtrl',
             });
           }
           AppModel.set({
-            isLoggedIn: true,
+            loggedIn: true,
             loginVisible: false,
             loginUrl: AppModel.get().loginUrl,
             projectVersion: AppModel.get().projectVersion,
