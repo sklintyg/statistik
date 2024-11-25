@@ -23,7 +23,7 @@
     "ngstorage": "^0.3.11",
     "highcharts": "^11.4.8",
     "font-awesome": "^6.6.0",
-    "pdfmake": "^0.2.14"
+    "pdfmake": "0.1.59"
   },
   "devDependencies": {
     "angular-mocks": "^1.8.3",
@@ -63,6 +63,6 @@
     "canvg-canvg": "v1.5.3",
     "dropzone": "^5.9.3",
     "font-awesome": "^6.6.0",
-    "pdfmake": "^0.2.14"
+    "pdfmake": "0.1.59"
   }
 }
