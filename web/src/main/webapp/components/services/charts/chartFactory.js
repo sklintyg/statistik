@@ -143,8 +143,7 @@ angular.module('StatisticsApp').factory('chartFactory',
           padding: 9,
           style: {
             whiteSpace: 'nowrap',
-            width: '600px',
-            fontSize: '12px'
+            width: '600px'
           },
           responsiveWidthPercentage: maxWidth || null,
           useHTML: false,
