@@ -67,6 +67,7 @@ import se.inera.intyg.infra.security.common.cookie.IneraCookieSerializer;
 @ComponentScan({"se.inera.auth", "se.inera.statistics.web.service.monitoring"})
 public class WebSecurityConfig {
 
+    private static final String REGION_FILEUPLOAD = "/api/region/fileupload";
     private final Environment environment;
     private final UserDetailsService userDetailsService;
     private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
@@ -174,6 +175,7 @@ public class WebSecurityConfig {
             )
             .csrf(
                 csrfConfigurer -> csrfConfigurer
+                    .ignoringRequestMatchers(REGION_FILEUPLOAD)
                     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                     .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler())
             )

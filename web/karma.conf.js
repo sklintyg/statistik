@@ -48,6 +48,7 @@ module.exports = function(config) {
       'src/main/webapp/bower_components/rgb-color/dist/rgb-color.js',
       'src/main/webapp/bower_components/canvg-canvg/dist/browser/canvg.js',
       'src/main/webapp/bower_components/momentjs/moment.js',
+      'src/main/webapp/bower_components/dropzone/dist/min/dropzone.min.js',
       'src/main/webapp/bower_components/ngstorage/ngStorage.js',
       'src/main/webapp/bower_components/highcharts/highcharts.js',
       'src/main/webapp/bower_components/highcharts/modules/exporting.js',
