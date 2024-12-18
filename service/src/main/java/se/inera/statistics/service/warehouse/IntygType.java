@@ -49,7 +49,9 @@ public enum IntygType {
     FK7210("IGRAV", "fk7210", "FK 7210", "FK 7210 Intyg om graviditet", true),
     FK7472("ITFP", "fk7472", "FK 7472", "FK 7472 Intyg om tillfällig föräldrapenning", true),
     FK3226("LUNSP", "fk3226", "FK 3226", "FK 3226 Läkarutlåtande för närståendepenning", true),
-    FK7809("LUMEK", "fk7809", "FK 7809", "FK 7809 Läkarutlåtande för merkostnadsersättning", true);
+    FK7809("LUMEK", "fk7809", "FK 7809", "FK 7809 Läkarutlåtande för merkostnadsersättning", true),
+    TS8071("TS8071", "ts8071", "TS8071",
+        "TS8071 Läkarintyg för högre körkortsbehörigheter, taxiförarlegitimation och på begäran av Transportstyrelsen", true);
 
     private static final ImmutableSet<IntygType> INCLUDED_IN_KOMPLETTERING_REPORT = ImmutableSet.of(LISJP, LUSE, LUAE_NA, LUAE_FS,
         FK7472, FK3226, FK7809);
@@ -58,7 +60,7 @@ public enum IntygType {
 
     private static final ImmutableList<IntygType> INCLUDED_IN_INTYG_TOTALT_REPORT = ImmutableList.of(
         AF00213, AF00251, AG114, AG7804, DB, DOI, LISJP, LUSE, LUAE_NA, LUAE_FS, TSTRK1009, TSTRK1007, TSTRK1031, TSTRK1062, FK7210,
-        FK7472, FK3226, FK7809);
+        FK7472, FK3226, FK7809, TS8071);
 
     private static final ImmutableList<IntygType> INCLUDED_IN_INTYG_FILTER = ImmutableList.of(SJUKPENNING, LUSE, LUAE_NA, LUAE_FS, FK3226,
         FK7809);
