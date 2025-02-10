@@ -1,6 +1,7 @@
 package se.inera.config;
 
 import static org.springframework.security.config.Customizer.withDefaults;
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 import static se.inera.auth.AuthenticationConstants.EMPLOYEE_HSA_ID;
 import static se.inera.auth.AuthenticationConstants.RELYING_PARTY_REGISTRATION_ID;
 
@@ -142,7 +143,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/bower_components/**").permitAll()
                 .requestMatchers("/assets/**").permitAll()
                 .requestMatchers("/api/links/**").permitAll()
-                .requestMatchers("/internalapi/**").permitAll()
+                .requestMatchers("/api/internalapi/**").permitAll()
                 .requestMatchers("/services/api/ia-api/**").permitAll()
                 .requestMatchers("/api/logging/monitorlog").permitAll()
                 .requestMatchers("/api/login/getAppSettings").permitAll()
@@ -175,7 +176,10 @@ public class WebSecurityConfig {
             )
             .csrf(
                 csrfConfigurer -> csrfConfigurer
-                    .ignoringRequestMatchers(REGION_FILEUPLOAD)
+                    .ignoringRequestMatchers(
+                        antMatcher(REGION_FILEUPLOAD),
+                        antMatcher("/api/internalapi/**")
+                    )
                     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                     .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler())
             )
