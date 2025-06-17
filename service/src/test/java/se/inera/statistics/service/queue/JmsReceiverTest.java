@@ -282,4 +282,18 @@ public class JmsReceiverTest {
             .accept(Mockito.eq(EventType.CREATED), Mockito.eq(intyg), Mockito.eq(correlationId), Mockito.anyLong());
     }
 
+    @Test
+    public void testOnMessageIntygKnowTypeFK3221() throws MessageNotWriteableException, IOException {
+        String intyg = "intyg";
+        String correlationId = "123";
+        String certificateType = "fk3221";
+
+        Message rawMessage = getIntygMessage(intyg, correlationId, certificateType, JmsReceiver.CREATED);
+
+        jmsReceiver.onMessage(rawMessage);
+
+        verify(receiver, times(1))
+            .accept(Mockito.eq(EventType.CREATED), Mockito.eq(intyg), Mockito.eq(correlationId), Mockito.anyLong());
+    }
+
 }
