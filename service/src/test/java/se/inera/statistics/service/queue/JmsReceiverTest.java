@@ -27,13 +27,15 @@ import jakarta.jms.Message;
 import jakarta.jms.MessageNotWriteableException;
 import java.io.IOException;
 import org.apache.activemq.command.ActiveMQTextMessage;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import se.inera.intyg.statistik.logging.MdcHelper;
 import se.inera.statistics.service.monitoring.MonitoringLogService;
 import se.inera.statistics.service.processlog.EventType;
@@ -42,8 +44,8 @@ import se.inera.statistics.service.processlog.intygsent.ProcessIntygsentLog;
 import se.inera.statistics.service.processlog.message.MessageEventType;
 import se.inera.statistics.service.processlog.message.ProcessMessageLog;
 
-@RunWith(MockitoJUnitRunner.class)
-public class JmsReceiverTest {
+@ExtendWith(MockitoExtension.class)
+ class JmsReceiverTest {
 
     @Mock
     private Receiver receiver;
@@ -58,14 +60,14 @@ public class JmsReceiverTest {
     @InjectMocks
     private JmsReceiver jmsReceiver;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+     void setUp()  {
         doReturn("traceId").when(mdcHelper).traceId();
         doReturn("sessionId").when(mdcHelper).spanId();
     }
 
     @Test
-    public void testOnMessageIntygUnknowType() throws MessageNotWriteableException, IOException {
+     void testOnMessageIntygUnknowType() throws MessageNotWriteableException, IOException {
         String intyg = "intyg";
         String correlationId = "123";
         String certificateType = "not_existing";
@@ -79,7 +81,7 @@ public class JmsReceiverTest {
     }
 
     @Test
-    public void testOnMessageIntygMissingType() throws MessageNotWriteableException, IOException {
+     void testOnMessageIntygMissingType() throws MessageNotWriteableException, IOException {
         String intyg = "intyg";
         String correlationId = "123";
         String certificateType = null;
@@ -92,11 +94,11 @@ public class JmsReceiverTest {
             .accept(Mockito.any(EventType.class), Mockito.eq(intyg), Mockito.eq(correlationId), Mockito.anyLong());
     }
 
-    @Test
-    public void testOnMessageIntygKnowType() throws MessageNotWriteableException, IOException {
+    @ParameterizedTest
+    @ValueSource(strings = {"luae_na","fk7210","fk7472","fk3226","fk7809","ts8071","fk7427","fk7426","fk3221","fk7810"})
+     void testOnMessageIntygKnowType(String certificateType) throws MessageNotWriteableException, IOException {
         String intyg = "intyg";
         String correlationId = "123";
-        String certificateType = "luae_na";
 
         Message rawMessage = getIntygMessage(intyg, correlationId, certificateType, JmsReceiver.CREATED);
 
@@ -106,11 +108,11 @@ public class JmsReceiverTest {
             .accept(Mockito.eq(EventType.CREATED), Mockito.eq(intyg), Mockito.eq(correlationId), Mockito.anyLong());
     }
 
-    @Test
-    public void testOnMessageRevokedIntygKnowType() throws MessageNotWriteableException, IOException {
+    @ParameterizedTest
+    @ValueSource(strings = {"luae_na","fk7210","fk7472","fk3226","fk7809","ts8071","fk7427","fk7426","fk3221","fk7810"})
+    void testOnMessageRevokedIntygKnowType(String certificateType) throws MessageNotWriteableException, IOException {
         String intyg = "intyg";
         String correlationId = "123";
-        String certificateType = "luae_na";
 
         Message rawMessage = getIntygMessage(intyg, correlationId, certificateType, JmsReceiver.REVOKED);
 
@@ -121,7 +123,7 @@ public class JmsReceiverTest {
     }
 
     @Test
-    public void onMessageIntygSent() throws MessageNotWriteableException, IOException {
+    void onMessageIntygSent() throws MessageNotWriteableException, IOException {
         String correlationId = "123";
         String recipient = "FK";
 
@@ -134,7 +136,7 @@ public class JmsReceiverTest {
     }
 
     @Test
-    public void onMessageMessageSent() throws MessageNotWriteableException, IOException {
+    void onMessageMessageSent() throws MessageNotWriteableException, IOException {
         String messageText = "message";
         String messageId = "m123";
 
@@ -183,117 +185,4 @@ public class JmsReceiverTest {
 
         return message;
     }
-
-    @Test
-    public void testOnMessageIntygKnowTypeFK7210() throws MessageNotWriteableException, IOException {
-        String intyg = "intyg";
-        String correlationId = "123";
-        String certificateType = "fk7210";
-
-        Message rawMessage = getIntygMessage(intyg, correlationId, certificateType, JmsReceiver.CREATED);
-
-        jmsReceiver.onMessage(rawMessage);
-
-        verify(receiver, times(1))
-            .accept(Mockito.eq(EventType.CREATED), Mockito.eq(intyg), Mockito.eq(correlationId), Mockito.anyLong());
-    }
-
-    @Test
-    public void testOnMessageIntygKnowTypeFK7472() throws MessageNotWriteableException, IOException {
-        String intyg = "intyg";
-        String correlationId = "123";
-        String certificateType = "fk7472";
-
-        Message rawMessage = getIntygMessage(intyg, correlationId, certificateType, JmsReceiver.CREATED);
-
-        jmsReceiver.onMessage(rawMessage);
-
-        verify(receiver, times(1))
-            .accept(Mockito.eq(EventType.CREATED), Mockito.eq(intyg), Mockito.eq(correlationId), Mockito.anyLong());
-    }
-
-    @Test
-    public void testOnMessageIntygKnowTypeFK3226() throws MessageNotWriteableException, IOException {
-        String intyg = "intyg";
-        String correlationId = "123";
-        String certificateType = "fk3226";
-
-        Message rawMessage = getIntygMessage(intyg, correlationId, certificateType, JmsReceiver.CREATED);
-
-        jmsReceiver.onMessage(rawMessage);
-
-        verify(receiver, times(1))
-            .accept(Mockito.eq(EventType.CREATED), Mockito.eq(intyg), Mockito.eq(correlationId), Mockito.anyLong());
-    }
-
-    @Test
-    public void testOnMessageIntygKnowTypeFK7809() throws MessageNotWriteableException, IOException {
-        String intyg = "intyg";
-        String correlationId = "123";
-        String certificateType = "fk7809";
-
-        Message rawMessage = getIntygMessage(intyg, correlationId, certificateType, JmsReceiver.CREATED);
-
-        jmsReceiver.onMessage(rawMessage);
-
-        verify(receiver, times(1))
-            .accept(Mockito.eq(EventType.CREATED), Mockito.eq(intyg), Mockito.eq(correlationId), Mockito.anyLong());
-    }
-
-    @Test
-    public void testOnMessageIntygKnowTypeTS8071() throws MessageNotWriteableException, IOException {
-        String intyg = "intyg";
-        String correlationId = "123";
-        String certificateType = "ts8071";
-
-        Message rawMessage = getIntygMessage(intyg, correlationId, certificateType, JmsReceiver.CREATED);
-
-        jmsReceiver.onMessage(rawMessage);
-
-        verify(receiver, times(1))
-            .accept(Mockito.eq(EventType.CREATED), Mockito.eq(intyg), Mockito.eq(correlationId), Mockito.anyLong());
-    }
-
-    @Test
-    public void testOnMessageIntygKnowTypeFK7427() throws MessageNotWriteableException, IOException {
-        String intyg = "intyg";
-        String correlationId = "123";
-        String certificateType = "fk7427";
-
-        Message rawMessage = getIntygMessage(intyg, correlationId, certificateType, JmsReceiver.CREATED);
-
-        jmsReceiver.onMessage(rawMessage);
-
-        verify(receiver, times(1))
-            .accept(Mockito.eq(EventType.CREATED), Mockito.eq(intyg), Mockito.eq(correlationId), Mockito.anyLong());
-    }
-
-    @Test
-    public void testOnMessageIntygKnowTypeFK7426() throws MessageNotWriteableException, IOException {
-        final var intyg = "intyg";
-        final var correlationId = "123";
-        final var certificateType = "fk7426";
-
-        final var rawMessage = getIntygMessage(intyg, correlationId, certificateType, JmsReceiver.CREATED);
-
-        jmsReceiver.onMessage(rawMessage);
-
-        verify(receiver, times(1))
-            .accept(Mockito.eq(EventType.CREATED), Mockito.eq(intyg), Mockito.eq(correlationId), Mockito.anyLong());
-    }
-
-    @Test
-    public void testOnMessageIntygKnowTypeFK3221() throws MessageNotWriteableException, IOException {
-        String intyg = "intyg";
-        String correlationId = "123";
-        String certificateType = "fk3221";
-
-        Message rawMessage = getIntygMessage(intyg, correlationId, certificateType, JmsReceiver.CREATED);
-
-        jmsReceiver.onMessage(rawMessage);
-
-        verify(receiver, times(1))
-            .accept(Mockito.eq(EventType.CREATED), Mockito.eq(intyg), Mockito.eq(correlationId), Mockito.anyLong());
-    }
-
 }
