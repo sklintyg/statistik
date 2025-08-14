@@ -128,6 +128,8 @@ dependencyCheck {
     analyzers.setAssemblyEnabled(false)
     analyzers.getNodeAudit().setYarnEnabled(false)
     analyzers.getNodeAudit().setPnpmEnabled(false)
+    analyzers.setRubygemsEnabled(false)
+    analyzers.setBundleAuditEnabled(false)
 }
 
 reporting {
