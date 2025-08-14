@@ -126,6 +126,8 @@ dependencyCheck {
     formats = List.of("HTML", "JSON")
     nvd.setDatafeedUrl(nvdMirror)
     analyzers.setAssemblyEnabled(false)
+    analyzers.getNodeAudit().setYarnEnabled(false)
+    analyzers.getNodeAudit().setPnpmEnabled(false)
 }
 
 reporting {
