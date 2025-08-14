@@ -92,10 +92,12 @@ dependencies {
     implementation "io.jsonwebtoken:jjwt-impl:${jsonwebtokenVersion}"
     implementation "io.jsonwebtoken:jjwt-jackson:${jsonwebtokenVersion}"
     implementation "io.prometheus:simpleclient_servlet"
+    implementation "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api"
     implementation "net.javacrumbs.shedlock:shedlock-spring:${shedlockSpringVersion}"
     implementation "org.apache.commons:commons-text:${commonsTextVersion}"
     implementation "org.apache.cxf:cxf-rt-frontend-jaxrs:${cxfVersion}"
     implementation "org.apache.poi:poi-ooxml:${poiVersion}"
+    implementation "org.glassfish.web:jakarta.servlet.jsp.jstl"
     implementation "org.liquibase:liquibase-core"
     implementation "org.springframework:spring-jms"
     implementation 'org.opensaml:opensaml-core'
