@@ -36,7 +36,6 @@ dependencies {
     implementation "se.inera.intyg.infra:common-redis-cache-core:${infraVersion}"
     implementation "se.inera.intyg.infra:monitoring:${infraVersion}"
     implementation "se.inera.intyg.infra:security-common:${infraVersion}"
-    implementation "se.inera.intyg.clinicalprocess.healthcond.certificate:intyg-clinicalprocess-healthcond-certificate-schematron:${intygSchematronVersion}"
     implementation "se.inera.intyg.transportstyrelsen:intyg-transportstyrelsen-schemas:${intygTransportstyrelsenSchemasVersion}"
     implementation "se.riv.clinicalprocess.healthcond.certificate:clinicalprocess-healthcond-certificate-schemas:${rivtaClinicalprocessSchemasVersion}"
     implementation "jakarta.persistence:jakarta.persistence-api"

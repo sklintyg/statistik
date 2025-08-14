@@ -12,7 +12,6 @@ plugins {
 ext {
     infraVersion = System.properties['infraVersion'] ?: '4.0.0-SNAPSHOT'
 
-    intygSchematronVersion = "1.0.57.2"
     rivtaClinicalprocessSchemasVersion = "4.0.5.3"
     internalMonitoringSchemaVersion = "1.0.4.3"
     intygTransportstyrelsenSchemasVersion = "1.0.5.3"
