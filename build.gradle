@@ -145,8 +145,3 @@ configure(subprojects.findAll { ['statistik-service', 'web'].contains(it.name) }
         include '**/*IT*'
     }
 }
-
-gretty {
-    springLoadedEnabled = false
-    servletContainer = 'tomcat10'
-}

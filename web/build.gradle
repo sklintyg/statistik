@@ -23,6 +23,7 @@ gretty {
     reloadOnConfigChange = false
     reloadOnLibChange = false
     serverConfigFile = "tomcat-gretty.xml"
+    springLoadedEnabled = false
 
     jvmArgs = ["-Dcatalina.base=${project.layout.buildDirectory.get().asFile}/catalina.base",
                "-Dspring.profiles.active=dev,caching-enabled,hsa-caching-disabled,testapi,hsa-stub,wc-hsa-stub,security-both,noprocessing,ia-stub,request-caching-enabled,hsa-integration-intyg-proxy-service,testability",
