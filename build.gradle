@@ -115,8 +115,8 @@ allprojects {
 
 sonar {
     properties {
-        property "sonar.projectKey", "intyg-rehabstod"
-        property "sonar.projectName", "intyg-rehabstod"
+        property "sonar.projectKey", "intyg-statistik"
+        property "sonar.projectName", "intyg-statistik"
         property "sonar.dependencyCheck.jsonReportPath", "${layout.buildDirectory.get()}/reports/dependency-check-report.json" as String
         property "sonar.dependencyCheck.htmlReportPath", "${layout.buildDirectory.get()}/reports/dependency-check-report.html" as String
     }
