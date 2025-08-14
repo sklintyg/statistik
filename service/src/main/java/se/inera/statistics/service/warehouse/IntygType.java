@@ -155,7 +155,7 @@ public enum IntygType {
                 return intygType;
             }
         }
-        return UNKNOWN;
+        return itIntygType.equals("fk7804") ? LISJP : UNKNOWN;
     }
 
     public static List<IntygType> getInIntygtypFilter() {
