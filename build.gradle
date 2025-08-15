@@ -12,7 +12,6 @@ plugins {
 ext {
     infraVersion = System.properties['infraVersion'] ?: '4.0.0-SNAPSHOT'
 
-    intygSchematronVersion = "1.0.57.2"
     rivtaClinicalprocessSchemasVersion = "4.0.5.3"
     internalMonitoringSchemaVersion = "1.0.4.3"
     intygTransportstyrelsenSchemasVersion = "1.0.5.3"
@@ -116,8 +115,8 @@ allprojects {
 
 sonar {
     properties {
-        property "sonar.projectKey", "intyg-rehabstod"
-        property "sonar.projectName", "intyg-rehabstod"
+        property "sonar.projectKey", "intyg-statistik"
+        property "sonar.projectName", "intyg-statistik"
         property "sonar.dependencyCheck.jsonReportPath", "${layout.buildDirectory.get()}/reports/dependency-check-report.json" as String
         property "sonar.dependencyCheck.htmlReportPath", "${layout.buildDirectory.get()}/reports/dependency-check-report.html" as String
     }
@@ -127,6 +126,10 @@ dependencyCheck {
     formats = List.of("HTML", "JSON")
     nvd.setDatafeedUrl(nvdMirror)
     analyzers.setAssemblyEnabled(false)
+    analyzers.getNodeAudit().setYarnEnabled(false)
+    analyzers.getNodeAudit().setPnpmEnabled(false)
+    analyzers.setRubygemsEnabled(false)
+    analyzers.setBundleAuditEnabled(false)
 }
 
 reporting {
