@@ -196,6 +196,7 @@ public class VerksamhetsTyp implements Iterable<String> {
         longKodToName.put("1354", "Amningsmottagning");
         longKodToName.put("1355", "Ultraljudsverksamhet, gynekologisk");
         longKodToName.put("1361", "Ögononkologi, NHV");
+        longKodToName.put("1364", "Malign hypertermiverksamhet, NHV");
         longKodToName.put("1366", "Fosterterapi, NHV");
         longKodToName.put("1368", "Endometriosverksamhet, NHV");
         longKodToName.put("1369", "Kraniofacial kirurgi, NHV");
