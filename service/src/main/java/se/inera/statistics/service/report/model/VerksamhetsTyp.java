@@ -128,6 +128,8 @@ public class VerksamhetsTyp implements Iterable<String> {
         longKodToName.put("1154", "Postoperativ uppvakningsverksamhet");
         longKodToName.put("1155", "Neurologisk rehabilitering");
         longKodToName.put("1161", "Specialiserad rehabilitering");
+        longKodToName.put("1173", "Högisoleringsvård vid högsmittsam allvarlig infektion, NHV");
+        longKodToName.put("1174", "Medicinsk obesitasvård");
         longKodToName.put("1202", "Blodverksamhet");
         longKodToName.put("1205", "Koagulationsverksamhet");
         longKodToName.put("1207", "Klinisk bakteriologi");
@@ -181,7 +183,6 @@ public class VerksamhetsTyp implements Iterable<String> {
         longKodToName.put("1338", "Inkontinensvård");
         longKodToName.put("1340", "Reproduktionsmedicin");
         longKodToName.put("1342", "Stomi, stödverksamhet");
-        longKodToName.put("1343", "Överviktsvård");
         longKodToName.put("1344", "Övre gastroenterologisk kirurgi");
         longKodToName.put("1345", "Rekonstruktiv plastikkirurgi");
         longKodToName.put("1346", "Estetisk plastikkirurgi");
@@ -195,10 +196,12 @@ public class VerksamhetsTyp implements Iterable<String> {
         longKodToName.put("1354", "Amningsmottagning");
         longKodToName.put("1355", "Ultraljudsverksamhet, gynekologisk");
         longKodToName.put("1361", "Ögononkologi, NHV");
+        longKodToName.put("1364", "Malign hypertermiverksamhet, NHV");
         longKodToName.put("1366", "Fosterterapi, NHV");
         longKodToName.put("1368", "Endometriosverksamhet, NHV");
         longKodToName.put("1369", "Kraniofacial kirurgi, NHV");
         longKodToName.put("1370", "Kraniofacial kirurgi");
+        longKodToName.put("1371", "Obesitaskirurg");
         longKodToName.put("1402", "Arbetsterapi");
         longKodToName.put("1403", "Dietistverksamhet");
         longKodToName.put("1404", "Habilitering, vuxna ");
