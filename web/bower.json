@@ -16,7 +16,7 @@
     "outdated-browser": "^1.1.5",
     "lodash": "^4.17.21",
     "stackblur-canvas": "^2.7.0",
-    "rgb-color": "^2.1.2",
+    "rgbcolor": "^1.0.1",
     "canvg-canvg": "v1.5.3",
     "momentjs": "2.24.0",
     "dropzone": "4.3.0",
@@ -32,9 +32,6 @@
   "overrides": {
     "angular-i18n": {
       "main": "angular-locale_sv-se.js"
-    },
-    "rgb-color": {
-      "main": "dist/rgb-color.js"
     },
     "canvg-canvg": {
       "main": "dist/browser/canvg.js"

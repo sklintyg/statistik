@@ -45,7 +45,7 @@ module.exports = function(config) {
       'src/main/webapp/bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect.js',
       'src/main/webapp/bower_components/outdated-browser/outdatedbrowser/outdatedbrowser.min.js',
       'src/main/webapp/bower_components/lodash/lodash.js',
-      'src/main/webapp/bower_components/rgb-color/dist/rgb-color.js',
+      'src/main/webapp/bower_components/rgbcolor/index.js',
       'src/main/webapp/bower_components/canvg-canvg/dist/browser/canvg.js',
       'src/main/webapp/bower_components/momentjs/moment.js',
       'src/main/webapp/bower_components/dropzone/dist/min/dropzone.min.js',
