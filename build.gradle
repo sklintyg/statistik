@@ -1,95 +1,81 @@
 plugins {
-    id "io.spring.dependency-management" version "1.1.6" apply false
-    id "se.inera.intyg.plugin.fitnesse" version "1.2.1" apply false
+    alias(libs.plugins.com.github.ben.manes.versions)
+    alias(libs.plugins.org.cyclonedx.bom)
+    alias(libs.plugins.org.sonarqube)
     id "com.netflix.nebula.node" version "3.0.0" apply false
-    id "org.gretty" version "4.1.5" apply false
-    id 'test-report-aggregation'
-    id 'org.sonarqube' version '6.3.1.5724'
-    id "org.owasp.dependencycheck" version "12.1.6"
-    id 'jacoco'
-    id 'org.cyclonedx.bom' version '3.0.2'
+    id "org.gretty" version "4.1.10" apply false
 }
 
 ext {
-    infraVersion = System.properties['infraVersion'] ?: '4.0.0-SNAPSHOT'
+    infraVersion = System.properties['infraVersion'] ?: '4.1.0-SNAPSHOT'
 
-    rivtaClinicalprocessSchemasVersion = "4.0.5.3"
-    internalMonitoringSchemaVersion = "1.0.4.3"
-    intygTransportstyrelsenSchemasVersion = "1.0.5.3"
+    rivtaClinicalprocessSchemasVersion = "4.0.5.4"
+    intygTransportstyrelsenSchemasVersion = "1.1.0.1"
 
-    auth0JwksVersion = "0.22.1"
-    commonsIoVersion = "2.14.0"
-    commonsLoggingVersion = "1.3.4"
-    commonsTextVersion = "1.12.0"
-    cxfVersion = "4.0.5"
-    jakartaMessagingApiVersion = "3.1.0"
-    logbackEcsEncoderVersion = "1.6.0"
-    googleGuavaVersion = "33.0.0-jre"
-    gparsVersion = "1.2.1"
-    guavaVersion = '33.0.0-jre'
-    groovyAllVersion = "4.0.23"
-    jsonwebtokenVersion = "0.11.5"
-    picocliVersion = "4.7.6"
-    poiVersion = "5.3.0"
-    shedlockSpringVersion = "5.16.0"
-
-    nodeJsVersion = "20.9.0"
-    npmVersion = "6.14.16"
-
-    springbootMavenBomVersion = "3.3.4"
-
-    nvdMirror = 'https://vulnz-nvd-mirror-devtest.intyg.nordicmedtest.se'
+    nodeJsVersion = "22.22.0"
+    npmVersion = "10.9.2"
 }
 
+apply from: 'gradle/configureIntygBom.gradle'
+
 allprojects {
-    apply plugin: "io.spring.dependency-management"
     apply plugin: 'java'
-    apply plugin: 'jacoco'
+    apply plugin: 'test-report-aggregation'
 
     group = 'se.inera.statistik'
     version = System.properties['buildVersion'] ?: '4.0.1-SNAPSHOT'
-
-    java {
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(21)
-        }
-    }
-
-    dependencyManagement {
-        imports {
-            mavenBom "org.springframework.boot:spring-boot-dependencies:${springbootMavenBomVersion}"
-        }
-    }
-
-    dependencies {
-        implementation "ch.qos.logback:logback-classic"
-        implementation "com.google.guava:guava:${googleGuavaVersion}"
-
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
-
-        testImplementation "org.junit.jupiter:junit-jupiter-api"
-        testImplementation "org.junit.jupiter:junit-jupiter-params"
-        testImplementation "org.mockito:mockito-junit-jupiter"
-        testImplementation "org.mockito:mockito-core"
-        testImplementation "org.springframework:spring-test"
-
-        testCompileOnly 'org.projectlombok:lombok'
-        testAnnotationProcessor 'org.projectlombok:lombok'
-    }
-
-    tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
-
-    compileJava.dependsOn processResources
-    test { exclude '**/*FunctionalTest.*' }
 
     repositories {
         mavenLocal()
         maven { url "https://nexus.drift.inera.se/repository/it-public/" }
         maven { url 'https://build.shibboleth.net/nexus/content/repositories/releases/' }
-        mavenCentral {
-            content {
-                excludeGroupByRegex "se\\.inera.*"
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'jacoco'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(javaVersion)
+        }
+    }
+
+    configurations {
+        mockitoAgent
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    compileJava {
+        options.encoding = "UTF-8"
+        options.compilerArgs.add("-parameters")
+    }
+    compileJava.dependsOn processResources
+
+    dependencies {
+        implementation platform("se.inera.intyg.bom:platform:${intygBomVersion}")
+        annotationProcessor platform("se.inera.intyg.bom:platform:${intygBomVersion}")
+        testImplementation platform("se.inera.intyg.bom:platform:${intygBomVersion}")
+        testAnnotationProcessor platform("se.inera.intyg.bom:platform:${intygBomVersion}")
+        mockitoAgent platform("se.inera.intyg.bom:platform:${intygBomVersion}")
+        mockitoAgent("org.mockito:mockito-core") { transitive = false }
+    }
+
+    test {
+        exclude '**/*FunctionalTest.*'
+        jvmArgs += [
+                "-javaagent:${configurations.mockitoAgent.asPath}",
+                "-Xshare:off"
+        ]
+    }
+
+    testing {
+        suites {
+            test {
+                useJUnitJupiter()
             }
         }
     }
@@ -112,37 +98,21 @@ allprojects {
         }
     }
 
-    // Spotbugs does not work very well with groovy code. Hence we exclude groovy projects.
-    // Errorprone has no mechanism (yet) for excluding generated code. We therefore disable it for hsa-integration.
-    ext.spotbugsExclude = "(fileservice|.*groovy)\$"
-    ext.errorproneExclude = "hsa-integration"
+    tasks.matching { it.name == "cyclonedxDirectBom" }.configureEach { t ->
+        t.includeConfigs = ['^runtimeClasspath$']
+    }
+}
+
+reporting {
+    subprojects.collect { subproject -> subproject.name }.each { subprojectName ->
+        dependencies { testReportAggregation project(":${subprojectName}") }
+    }
 }
 
 sonar {
     properties {
         property "sonar.projectKey", "intyg-statistik"
         property "sonar.projectName", "intyg-statistik"
-        property "sonar.dependencyCheck.jsonReportPath", "${layout.buildDirectory.get()}/reports/dependency-check-report.json" as String
-        property "sonar.dependencyCheck.htmlReportPath", "${layout.buildDirectory.get()}/reports/dependency-check-report.html" as String
-    }
-}
-
-dependencyCheck {
-    formats = ['HTML', 'JSON']
-    nvd.setDatafeedUrl(nvdMirror)
-    analyzers.setAssemblyEnabled(false)
-    analyzers.setCentralEnabled(false)
-    analyzers.getNodeAudit().setYarnEnabled(false)
-    analyzers.getNodeAudit().setPnpmEnabled(false)
-    analyzers.setRubygemsEnabled(false)
-    analyzers.setBundleAuditEnabled(false)
-    analyzers.ossIndex.setUsername(project.properties.get('ossIndexUsername') as String)
-    analyzers.ossIndex.setPassword(project.properties.get('ossIndexPassword') as String)
-}
-
-reporting {
-    subprojects.collect { subproject -> subproject.name }.each { subprojectName ->
-        dependencies { testReportAggregation project(":${subprojectName}") }
     }
 }
 

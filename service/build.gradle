@@ -1,13 +1,3 @@
-apply plugin: 'groovy'
-
-sourceSets {
-    test {
-        // compile everything in src/test with groovy (enables cross-compiling)
-        java { srcDirs = [] }
-        groovy { srcDirs = ["src/test/groovy", "src/test/java"] }
-    }
-}
-
 // JPA expects classes and configuration files to be in the same directory.
 sourceSets.main.output.resourcesDir = sourceSets.main.java.destinationDirectory
 // B/c of the above, we create duplicates within the JAR. This configuration excludes the duplicates.
@@ -17,13 +7,15 @@ dependencies {
     implementation project(':hsa-integration')
     implementation project(':logging')
 
-    implementation "co.elastic.logging:logback-ecs-encoder:${logbackEcsEncoderVersion}"
+    implementation "ch.qos.logback:logback-classic"
+    implementation "co.elastic.logging:logback-ecs-encoder"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
+    implementation "com.google.guava:guava"
     implementation "com.h2database:h2"
-    implementation "net.javacrumbs.shedlock:shedlock-provider-redis-spring:${shedlockSpringVersion}"
-    implementation "net.javacrumbs.shedlock:shedlock-spring:${shedlockSpringVersion}"
-    implementation "org.apache.cxf:cxf-rt-features-logging:${cxfVersion}"
-    implementation "org.apache.cxf:cxf-rt-frontend-jaxws:${cxfVersion}"
+    implementation "net.javacrumbs.shedlock:shedlock-provider-redis-spring"
+    implementation "net.javacrumbs.shedlock:shedlock-spring"
+    implementation "org.apache.cxf:cxf-rt-features-logging"
+    implementation "org.apache.cxf:cxf-rt-frontend-jaxws"
     implementation "org.apache.httpcomponents.client5:httpclient5"
     implementation "org.hibernate.orm:hibernate-hikaricp"
     implementation "com.zaxxer:HikariCP"
@@ -43,14 +35,16 @@ dependencies {
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api'
     implementation "org.apache.activemq:activemq-spring"
 
-    compileOnly "jakarta.jms:jakarta.jms-api:${jakartaMessagingApiVersion}"
-
+    testImplementation "commons-io:commons-io"
+    testImplementation "junit:junit"
     testImplementation "org.aspectj:aspectjweaver"
-    testImplementation "org.apache.groovy:groovy-all:${groovyAllVersion}"
     testImplementation "org.eclipse.jetty:jetty-server"
-    testImplementation "commons-io:commons-io:${commonsIoVersion}"
+    testImplementation "org.mockito:mockito-junit-jupiter"
+    testImplementation "org.springframework:spring-test"
 
     // This will make sure we use the liquibase patch in the web module.
     // It needs to be in this module to make sure it ends up before the jar version on the classpath in Tomcat
     testImplementation files(project(':statistik-web').sourceSets.main.output)
+
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine"
 }

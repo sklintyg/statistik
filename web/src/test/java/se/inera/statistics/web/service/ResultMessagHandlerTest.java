@@ -21,17 +21,17 @@ package se.inera.statistics.web.service;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.lenient;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10RangeType;
@@ -47,7 +47,7 @@ public class ResultMessagHandlerTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        Mockito.when(icd10.findIcd10FromNumericId(anyInt())).thenReturn(new Icd10.Id("180108190", "A00-B99") {
+        lenient().when(icd10.findIcd10FromNumericId(anyInt())).thenReturn(new Icd10.Id("180108190", "A00-B99") {
             @Override
             public int toInt() {
                 return 180108190;
