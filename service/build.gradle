@@ -11,7 +11,6 @@ dependencies {
     implementation "co.elastic.logging:logback-ecs-encoder"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
     implementation "com.google.guava:guava"
-    implementation "com.h2database:h2"
     implementation "net.javacrumbs.shedlock:shedlock-provider-redis-spring"
     implementation "net.javacrumbs.shedlock:shedlock-spring"
     implementation "org.apache.cxf:cxf-rt-features-logging"
@@ -35,6 +34,7 @@ dependencies {
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api'
     implementation "org.apache.activemq:activemq-spring"
 
+    testImplementation "com.h2database:h2"
     testImplementation "commons-io:commons-io"
     testImplementation "junit:junit"
     testImplementation "org.aspectj:aspectjweaver"
