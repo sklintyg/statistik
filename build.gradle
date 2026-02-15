@@ -7,6 +7,7 @@ plugins {
     id 'org.sonarqube' version '6.3.1.5724'
     id "org.owasp.dependencycheck" version "12.1.6"
     id 'jacoco'
+    id 'org.cyclonedx.bom' version '3.0.2'
 }
 
 ext {
@@ -46,9 +47,13 @@ allprojects {
     apply plugin: 'jacoco'
 
     group = 'se.inera.statistik'
-    version = System.properties['buildVersion'] ?: '4.0.0-SNAPSHOT'
-    sourceCompatibility = 21
-    targetCompatibility = 21
+    version = System.properties['buildVersion'] ?: '4.0.1-SNAPSHOT'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
 
     dependencyManagement {
         imports {
