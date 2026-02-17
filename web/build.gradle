@@ -1,6 +1,6 @@
 apply plugin: 'com.netflix.nebula.grunt'
+apply plugin: 'org.cyclonedx.bom'
 apply plugin: 'org.gretty'
-apply plugin: 'idea'
 apply plugin: 'war'
 
 gretty {
@@ -38,13 +38,6 @@ gretty {
     ]
 }
 
-idea {
-    module {
-        excludeDirs += file('node_modules')
-        excludeDirs += file('src/main/webapp/bower_components')
-    }
-}
-
 node {
     version = "${nodeJsVersion}"
     npmVersion = "${npmVersion}"
@@ -76,8 +69,6 @@ dependencies {
     implementation project(':statistik-service')
     implementation project(':logging')
 
-    implementation "se.riv.clinicalprocess.healthcond.monitoring:clinicalprocess-healthcond-monitoring-schemas:${internalMonitoringSchemaVersion}"
-
     implementation "se.inera.intyg.infra:driftbanner-dto:${infraVersion}"
     implementation "se.inera.intyg.infra:dynamiclink:${infraVersion}"
     implementation "se.inera.intyg.infra:ia-integration:${infraVersion}"
@@ -85,18 +76,15 @@ dependencies {
     implementation "se.inera.intyg.infra:security-filter:${infraVersion}"
     implementation "se.inera.intyg.infra:security-common:${infraVersion}"
 
-    implementation "co.elastic.logging:logback-ecs-encoder:${logbackEcsEncoderVersion}"
-    implementation "com.auth0:jwks-rsa:${auth0JwksVersion}"
+    implementation "ch.qos.logback:logback-classic"
+    implementation "co.elastic.logging:logback-ecs-encoder"
     implementation "com.fasterxml.jackson.core:jackson-databind"
     implementation 'jakarta.servlet:jakarta.servlet-api'
-    implementation "io.jsonwebtoken:jjwt-impl:${jsonwebtokenVersion}"
-    implementation "io.jsonwebtoken:jjwt-jackson:${jsonwebtokenVersion}"
     implementation "io.prometheus:simpleclient_servlet"
     implementation "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api"
-    implementation "net.javacrumbs.shedlock:shedlock-spring:${shedlockSpringVersion}"
-    implementation "org.apache.commons:commons-text:${commonsTextVersion}"
-    implementation "org.apache.cxf:cxf-rt-frontend-jaxrs:${cxfVersion}"
-    implementation "org.apache.poi:poi-ooxml:${poiVersion}"
+    implementation "net.javacrumbs.shedlock:shedlock-spring"
+    implementation "org.apache.cxf:cxf-rt-frontend-jaxrs"
+    implementation "org.apache.poi:poi-ooxml"
     implementation "org.glassfish.web:jakarta.servlet.jsp.jstl"
     implementation "org.liquibase:liquibase-core"
     implementation "org.springframework:spring-jms"
@@ -110,6 +98,8 @@ dependencies {
     implementation 'org.springframework.session:spring-session-core'
     implementation 'org.springframework:spring-webmvc'
 
+    annotationProcessor 'org.projectlombok:lombok'
+
     compileOnly "jakarta.persistence:jakarta.persistence-api"
     compileOnly "jakarta.ws.rs:jakarta.ws.rs-api"
 
@@ -117,5 +107,8 @@ dependencies {
     runtimeOnly "se.inera.intyg.infra:hsa-integration-intyg-proxy-service:${infraVersion}"
 
     testImplementation "jakarta.transaction:jakarta.transaction-api"
+    testImplementation "org.mockito:mockito-junit-jupiter"
+    testImplementation "org.springframework:spring-test"
+
     testCompileOnly "jakarta.persistence:jakarta.persistence-api"
 }

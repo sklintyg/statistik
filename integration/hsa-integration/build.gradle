@@ -11,9 +11,15 @@ if (project.hasProperty("codeQuality")) {
 
 dependencies {
     implementation project(':logging')
+
+    implementation "ch.qos.logback:logback-classic"
     implementation "com.fasterxml.jackson.jakarta.rs:jackson-jakarta-rs-json-provider"
-    implementation "org.apache.cxf:cxf-rt-frontend-jaxws:${cxfVersion}"
+    implementation "com.google.guava:guava"
+    implementation "org.apache.cxf:cxf-rt-frontend-jaxws"
     implementation "org.springframework:spring-context"
     implementation "se.inera.intyg.infra:hsa-integration-api:${infraVersion}"
 
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation "org.mockito:mockito-junit-jupiter"
 }

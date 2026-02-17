@@ -29,6 +29,7 @@ import org.springframework.data.redis.connection.BitFieldSubCommands;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.lang.Nullable;
 
 /**
  * Used when caching is not enabled.
@@ -72,7 +73,22 @@ public class NoOpRedisTemplate extends RedisTemplate<Object, Object> {
             }
 
             @Override
+            public Object setGet(Object key, Object value, long timeout, TimeUnit unit) {
+                return null;
+            }
+
+            @Override
+            public Object setGet(Object key, Object value, Duration duration) {
+                return null;
+            }
+
+            @Override
             public void set(Object key, Object value, long timeout, TimeUnit unit) {
+            }
+
+            @Override
+            public void set(Object key, Object value, Duration timeout) {
+                ValueOperations.super.set(key, value, timeout);
             }
 
             @Override
@@ -85,6 +101,12 @@ public class NoOpRedisTemplate extends RedisTemplate<Object, Object> {
                 return null;
             }
 
+            @Nullable
+            @Override
+            public Boolean setIfAbsent(Object key, Object value, Duration timeout) {
+                return ValueOperations.super.setIfAbsent(key, value, timeout);
+            }
+
             @Override
             public Boolean setIfPresent(Object key, Object value) {
                 return null;
@@ -93,6 +115,12 @@ public class NoOpRedisTemplate extends RedisTemplate<Object, Object> {
             @Override
             public Boolean setIfPresent(Object key, Object value, long timeout, TimeUnit unit) {
                 return null;
+            }
+
+            @Nullable
+            @Override
+            public Boolean setIfPresent(Object key, Object value, Duration timeout) {
+                return ValueOperations.super.setIfPresent(key, value, timeout);
             }
 
             @Override

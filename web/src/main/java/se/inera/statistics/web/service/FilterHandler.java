@@ -19,6 +19,7 @@
 package se.inera.statistics.web.service;
 
 import com.google.common.collect.Sets;
+import jakarta.servlet.http.HttpServletRequest;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -35,7 +36,6 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
-import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +54,6 @@ import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
-import se.inera.statistics.web.service.dto.Messages;
-import se.inera.statistics.web.service.dto.MessagesText;
 import se.inera.statistics.web.error.ErrorSeverity;
 import se.inera.statistics.web.error.ErrorType;
 import se.inera.statistics.web.error.Message;
@@ -66,6 +64,8 @@ import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.service.dto.Filter;
 import se.inera.statistics.web.service.dto.FilterData;
 import se.inera.statistics.web.service.dto.FilterSettings;
+import se.inera.statistics.web.service.dto.Messages;
+import se.inera.statistics.web.service.dto.MessagesText;
 import se.inera.statistics.web.service.exception.FilterException;
 import se.inera.statistics.web.service.exception.FilterHashException;
 import se.inera.statistics.web.service.exception.TooEarlyEndDateException;
@@ -180,8 +180,7 @@ public class FilterHandler {
     private FilterSettings getFilterSettings(HttpServletRequest request, String filterHash, int defaultRangeValue, FilterData inFilter,
         List<HsaIdEnhet> enhetsInFilter, boolean veDepth) throws FilterException, TooEarlyEndDateException, TooLateStartDateException {
         Set<HsaIdEnhet> enheter = getEnhetNameMapInclusive(request, enhetsInFilter, veDepth).keySet();
-        final Predicate<Fact> enhetFilter = sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaIdEnhet[enheter.size()]))
-            .getIntygFilter();
+        final Predicate<Fact> enhetFilter = sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaIdEnhet[0])).getIntygFilter();
         return getFilterSettings(filterHash, defaultRangeValue, inFilter, enheter, enhetFilter, veDepth);
     }
 
@@ -189,8 +188,7 @@ public class FilterHandler {
         FilterData inFilter, ArrayList<HsaIdEnhet> enhetsInFilter) throws FilterException, TooEarlyEndDateException,
         TooLateStartDateException {
         Set<HsaIdEnhet> enheter = getEnhetNameMapRegion(request, enhetsInFilter).keySet();
-        final Predicate<Fact> enhetFilter = sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaIdEnhet[enheter.size()]))
-            .getIntygFilter();
+        final Predicate<Fact> enhetFilter = sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaIdEnhet[0])).getIntygFilter();
         return getFilterSettings(filterHash, defaultRangeValue, inFilter, enheter, enhetFilter, true);
     }
 

@@ -24,9 +24,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import se.inera.intyg.statistik.logging.MdcHelper;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
@@ -37,6 +39,12 @@ class PreCacheCareProviderJobTest {
     private Warehouse warehouse = mock(Warehouse.class);
     private MdcHelper mdcHelper = mock(MdcHelper.class);
     private PreCacheCareProviderJob preCacheCareProviderJob;
+
+    @BeforeEach
+    void setUp() {
+        when(mdcHelper.traceId()).thenReturn("trace-id");
+        when(mdcHelper.spanId()).thenReturn("span-id");
+    }
 
     @Test
     void shallNotPrecacheAnyCareProviders() {

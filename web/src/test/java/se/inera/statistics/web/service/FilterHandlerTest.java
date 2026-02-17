@@ -18,12 +18,11 @@
  */
 package se.inera.statistics.web.service;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 import com.google.common.collect.Lists;
 import jakarta.servlet.http.HttpServletRequest;
@@ -61,7 +60,7 @@ import se.inera.statistics.web.service.dto.FilterSettings;
 import se.inera.statistics.web.service.dto.Messages;
 import se.inera.statistics.web.util.SpyableClock;
 
-public class FilterHandlerTest {
+class FilterHandlerTest {
 
     @Mock
     private LoginServiceUtil loginServiceUtil;
@@ -85,12 +84,12 @@ public class FilterHandlerTest {
     private FilterHandler filterHandler;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    public void testGetFilterSelectingAllSjukfallLenghtsWillMakeAllLengthsMatch() throws Exception {
+    void testGetFilterSelectingAllSjukfallLenghtsWillMakeAllLengthsMatch() throws Exception {
         // Given
         final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
         final String filterHash = "abc";
@@ -105,12 +104,12 @@ public class FilterHandlerTest {
         for (int days = 0; days < 1000; days++) {
             final Sjukfall sjukfall = Mockito.mock(Sjukfall.class);
             Mockito.when(sjukfall.getRealDays()).thenReturn(days);
-            assertTrue(days + " days is not matching", filter.getFilter().getPredicate().getSjukfallFilter().test(sjukfall));
+            assertTrue(filter.getFilter().getPredicate().getSjukfallFilter().test(sjukfall), days + " days is not matching");
         }
     }
 
     @Test
-    public void testGetFilterSelectingAllAgeGroupsWillMakeAllAgesMatch() throws Exception {
+    void testGetFilterSelectingAllAgeGroupsWillMakeAllAgesMatch() throws Exception {
         // Given
         final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
         final String filterHash = "abc";
@@ -124,12 +123,12 @@ public class FilterHandlerTest {
         for (int days = 0; days < 200; days++) {
             final Fact fact = Mockito.mock(Fact.class);
             Mockito.when(fact.getAlder()).thenReturn(days);
-            assertTrue(days + " days is not matching", filter.getFilter().getPredicate().getIntygFilter().test(fact));
+            assertTrue(filter.getFilter().getPredicate().getIntygFilter().test(fact), days + " days is not matching");
         }
     }
 
     @Test
-    public void testGetFilterSelectingNoneSjukfallLenghtsWillMakeAllLengthsMatch() throws Exception {
+    void testGetFilterSelectingNoneSjukfallLenghtsWillMakeAllLengthsMatch() throws Exception {
         // Given
         final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
         final String filterHash = "abc";
@@ -142,12 +141,12 @@ public class FilterHandlerTest {
         for (int days = 0; days < 1000; days++) {
             final Sjukfall sjukfall = Mockito.mock(Sjukfall.class);
             Mockito.when(sjukfall.getRealDays()).thenReturn(days);
-            assertTrue(days + " days is not matching", filter.getFilter().getPredicate().getSjukfallFilter().test(sjukfall));
+            assertTrue(filter.getFilter().getPredicate().getSjukfallFilter().test(sjukfall), days + " days is not matching");
         }
     }
 
     @Test
-    public void testGetFilterNonExistingSjukfallsLengthWillBeIgnored() throws Exception {
+    void testGetFilterNonExistingSjukfallsLengthWillBeIgnored() throws Exception {
         // Given
         final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
         final String filterHash = "abc";
@@ -164,12 +163,12 @@ public class FilterHandlerTest {
         for (int days = 0; days < 1000; days++) {
             final Sjukfall sjukfall = Mockito.mock(Sjukfall.class);
             Mockito.when(sjukfall.getRealDays()).thenReturn(days);
-            assertTrue(days + " days is not matching", filter.getFilter().getPredicate().getSjukfallFilter().test(sjukfall));
+            assertTrue(filter.getFilter().getPredicate().getSjukfallFilter().test(sjukfall), days + " days is not matching");
         }
     }
 
     @Test
-    public void testGetFilterDateBeforeFirstAndAfterToday() {
+    void testGetFilterDateBeforeFirstAndAfterToday() {
         // Given
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
         String filterHash = "abc";
@@ -189,7 +188,7 @@ public class FilterHandlerTest {
     }
 
     @Test
-    public void testGetFilterPredicatesFilterIncludesEnhetsIntyg3486() {
+    void testGetFilterPredicatesFilterIncludesEnhetsIntyg3486() {
         // Given
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
         final HsaIdVardgivare vgid = new HsaIdVardgivare("vgid");
@@ -220,7 +219,7 @@ public class FilterHandlerTest {
     }
 
     @Test
-    public void testGetFilterStartAndEndDateOutOfScopeIntyg4472() {
+    void testGetFilterStartAndEndDateOutOfScopeIntyg4472() {
         // Given
         final String fromDate = "2013-09-01";
         final String toDate = LocalDate.now().plusMonths(2).toString();
@@ -247,7 +246,7 @@ public class FilterHandlerTest {
     }
 
     @Test
-    public void testGetFilterStartAndEndDateTooEarlyIntygfv11329() {
+    void testGetFilterStartAndEndDateTooEarlyIntygfv11329() {
         // Given
         final String fromDate = "2013-08-01";
         final String toDate = "2013-09-01";
@@ -272,7 +271,7 @@ public class FilterHandlerTest {
     }
 
     @Test
-    public void testGetFilterStartAndEndDateTooLateIntygfv11329() {
+    void testGetFilterStartAndEndDateTooLateIntygfv11329() {
         // Given
         final String fromDate = LocalDate.now().plusMonths(1).toString();
         final String toDate = LocalDate.now().plusMonths(2).toString();
@@ -312,7 +311,7 @@ public class FilterHandlerTest {
     }
 
     private void setupSjukfallUtilMock(String filterHash) {
-        Mockito.when(sjukfallUtil.createEnhetFilter(any()))
+        Mockito.when(sjukfallUtil.createEnhetFilter(any(HsaIdEnhet[].class)))
             .thenReturn(new FilterPredicates(f -> true, s -> true, filterHash, false));
     }
 
