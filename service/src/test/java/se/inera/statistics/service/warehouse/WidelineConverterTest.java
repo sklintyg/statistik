@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -38,144 +38,165 @@ import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:warehouse-integration-test.xml", "classpath:icd10.xml"})
+@ContextConfiguration(
+    locations = {"classpath:warehouse-integration-test.xml", "classpath:icd10.xml"})
 @DirtiesContext
 public class WidelineConverterTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(WidelineConverterTest.class);
+  private static final Logger LOG = LoggerFactory.getLogger(WidelineConverterTest.class);
 
-    WideLine wideLine = new WideLine(1, "{id}", "256002", new HsaIdEnhet("enhet"), 1, EventType.CREATED, "19121212-1212", 4000, 4021, 0, 45,
-        "A00", "A00-A09", "A00-B99", "A0000", 100, 0, 32, "201010",
-        new HsaIdVardgivare("vardgivare"), new HsaIdLakare("lakare"), true, new HsaIdEnhet("vardenhet"));
-    @Autowired
-    private WidelineConverter converter;
+  WideLine wideLine =
+      new WideLine(
+          1,
+          "{id}",
+          "256002",
+          new HsaIdEnhet("enhet"),
+          1,
+          EventType.CREATED,
+          "19121212-1212",
+          4000,
+          4021,
+          0,
+          45,
+          "A00",
+          "A00-A09",
+          "A00-B99",
+          "A0000",
+          100,
+          0,
+          32,
+          "201010",
+          new HsaIdVardgivare("vardgivare"),
+          new HsaIdLakare("lakare"),
+          true,
+          new HsaIdEnhet("vardenhet"));
+  @Autowired private WidelineConverter converter;
 
-    @Test
-    @Ignore
-    public void noErrorsOnValidLine() throws Exception {
-        List<String> errors = converter.validate(wideLine);
-        assertEquals(0, errors.size());
-    }
+  @Test
+  @Ignore
+  public void noErrorsOnValidLine() throws Exception {
+    List<String> errors = converter.validate(wideLine);
+    assertEquals(0, errors.size());
+  }
 
-    @Test
-    @Ignore
-    public void errorOnIncorrectSjukskrivningsgrad() throws Exception {
-        wideLine.setSjukskrivningsgrad(0);
-        List<String> errors = converter.validate(wideLine);
+  @Test
+  @Ignore
+  public void errorOnIncorrectSjukskrivningsgrad() throws Exception {
+    wideLine.setSjukskrivningsgrad(0);
+    List<String> errors = converter.validate(wideLine);
 
-        LOG.error("Error message: {}", errors);
-        assertEquals(1, errors.size());
-    }
+    LOG.error("Error message: {}", errors);
+    assertEquals(1, errors.size());
+  }
 
-    @Test
-    @Ignore
-    public void errorOnMissingVardgivare() throws Exception {
-        wideLine.setVardgivareId(new HsaIdVardgivare(""));
-        List<String> errors = converter.validate(wideLine);
+  @Test
+  @Ignore
+  public void errorOnMissingVardgivare() throws Exception {
+    wideLine.setVardgivareId(new HsaIdVardgivare(""));
+    List<String> errors = converter.validate(wideLine);
 
-        LOG.error("Error message: {}", errors);
-        assertEquals(1, errors.size());
-    }
+    LOG.error("Error message: {}", errors);
+    assertEquals(1, errors.size());
+  }
 
-    @Test
-    @Ignore
-    public void errorOnMissingEnhet() throws Exception {
-        wideLine.setVardenhet(null);
-        List<String> errors = converter.validate(wideLine);
+  @Test
+  @Ignore
+  public void errorOnMissingEnhet() throws Exception {
+    wideLine.setVardenhet(null);
+    List<String> errors = converter.validate(wideLine);
 
-        LOG.error("Error message: {}", errors);
-        assertEquals(1, errors.size());
-    }
+    LOG.error("Error message: {}", errors);
+    assertEquals(1, errors.size());
+  }
 
-    @Test
-    @Ignore
-    public void errorOnMissingLkf() throws Exception {
-        wideLine.setLkf("");
-        List<String> errors = converter.validate(wideLine);
+  @Test
+  @Ignore
+  public void errorOnMissingLkf() throws Exception {
+    wideLine.setLkf("");
+    List<String> errors = converter.validate(wideLine);
 
-        LOG.error("Error message: {}", errors);
-        assertEquals(1, errors.size());
-    }
+    LOG.error("Error message: {}", errors);
+    assertEquals(1, errors.size());
+  }
 
-    @Test
-    @Ignore
-    public void errorOnPatientId() throws Exception {
-        wideLine.setPatientid("");
-        List<String> errors = converter.validate(wideLine);
+  @Test
+  @Ignore
+  public void errorOnPatientId() throws Exception {
+    wideLine.setPatientid("");
+    List<String> errors = converter.validate(wideLine);
 
-        LOG.error("Error message: {}", errors);
-        assertEquals(1, errors.size());
-    }
+    LOG.error("Error message: {}", errors);
+    assertEquals(1, errors.size());
+  }
 
-    @Test
-    @Ignore
-    public void errorOnEarlyDate() throws Exception {
-        wideLine.setStartdatum(0);
-        List<String> errors = converter.validate(wideLine);
+  @Test
+  @Ignore
+  public void errorOnEarlyDate() throws Exception {
+    wideLine.setStartdatum(0);
+    List<String> errors = converter.validate(wideLine);
 
-        LOG.error("Error message: {}", errors);
-        assertEquals(1, errors.size());
-    }
+    LOG.error("Error message: {}", errors);
+    assertEquals(1, errors.size());
+  }
 
-    @Test
-    @Ignore
-    public void errorOnLateDate() throws Exception {
-        wideLine.setSlutdatum(1000000);
-        List<String> errors = converter.validate(wideLine);
+  @Test
+  @Ignore
+  public void errorOnLateDate() throws Exception {
+    wideLine.setSlutdatum(1000000);
+    List<String> errors = converter.validate(wideLine);
 
-        LOG.error("Error message: {}", errors);
-        assertEquals("N:o of errors: " + errors.size(), 1, errors.size());
-    }
+    LOG.error("Error message: {}", errors);
+    assertEquals("N:o of errors: " + errors.size(), 1, errors.size());
+  }
 
-    @Test
-    @Ignore
-    public void errorOnEndDateBeforeStartDateIntyg2943() throws Exception {
-        wideLine.setStartdatum(7001);
-        wideLine.setSlutdatum(7000);
-        List<String> errors = converter.validate(wideLine);
+  @Test
+  @Ignore
+  public void errorOnEndDateBeforeStartDateIntyg2943() throws Exception {
+    wideLine.setStartdatum(7001);
+    wideLine.setSlutdatum(7000);
+    List<String> errors = converter.validate(wideLine);
 
-        LOG.error("Error message: {}", errors);
-        assertEquals("N:o of errors: " + errors.size(), 1, errors.size());
-    }
+    LOG.error("Error message: {}", errors);
+    assertEquals("N:o of errors: " + errors.size(), 1, errors.size());
+  }
 
-    @Test
-    @Ignore
-    public void errorOnLongCorrelationId() throws Exception {
-        wideLine.setCorrelationId("012345678901234567890123456789012345678901234567890");
-        List<String> errors = converter.validate(wideLine);
+  @Test
+  @Ignore
+  public void errorOnLongCorrelationId() throws Exception {
+    wideLine.setCorrelationId("012345678901234567890123456789012345678901234567890");
+    List<String> errors = converter.validate(wideLine);
 
-        LOG.error("Error message: {}", errors);
-        assertEquals("N:o of errors: " + errors.size(), 1, errors.size());
-    }
+    LOG.error("Error message: {}", errors);
+    assertEquals("N:o of errors: " + errors.size(), 1, errors.size());
+  }
 
-    @Test
-    @Ignore
-    public void allErrorsAreReported() throws Exception {
-        List<String> errors = converter.validate(new WideLine());
+  @Test
+  @Ignore
+  public void allErrorsAreReported() throws Exception {
+    List<String> errors = converter.validate(new WideLine());
 
-        LOG.error("Error message: {}", errors);
-        assertEquals(7, errors.size());
-    }
+    LOG.error("Error message: {}", errors);
+    assertEquals(7, errors.size());
+  }
 
-    @Test
-    @Ignore
-    public void testToDay() throws Exception {
-        //Given
-        final int day = 5538;
+  @Test
+  @Ignore
+  public void testToDay() throws Exception {
+    // Given
+    final int day = 5538;
 
-        //When
-        final LocalDate localDate = WidelineConverter.toDate(day);
+    // When
+    final LocalDate localDate = WidelineConverter.toDate(day);
 
-        //Then
-        assertEquals(2015, localDate.getYear());
-        assertEquals(3, localDate.getMonthValue());
-        assertEquals(1, localDate.getDayOfMonth());
+    // Then
+    assertEquals(2015, localDate.getYear());
+    assertEquals(3, localDate.getMonthValue());
+    assertEquals(1, localDate.getDayOfMonth());
 
-        //When
-        final int convertedDay = WidelineConverter.toDay(localDate);
+    // When
+    final int convertedDay = WidelineConverter.toDay(localDate);
 
-        //Then
-        assertEquals(day, convertedDay);
-    }
-
+    // Then
+    assertEquals(day, convertedDay);
+  }
 }

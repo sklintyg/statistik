@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -29,41 +29,44 @@ import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 
 public class KonDataResponsesTest {
 
-    @Test
-    public void testChangeIdGroupsToNamesAndAddIdsToDuplicatesWithEmptyInput() {
-        //Given
-        final ArrayList<String> groups = new ArrayList<>();
-        final ArrayList<KonDataRow> rows = new ArrayList<>();
-        final KonDataResponse response = new KonDataResponse(AvailableFilters.getForIntyg(), groups, rows);
-        final HashMap<HsaIdEnhet, String> idsToNames = new HashMap<>();
+  @Test
+  public void testChangeIdGroupsToNamesAndAddIdsToDuplicatesWithEmptyInput() {
+    // Given
+    final ArrayList<String> groups = new ArrayList<>();
+    final ArrayList<KonDataRow> rows = new ArrayList<>();
+    final KonDataResponse response =
+        new KonDataResponse(AvailableFilters.getForIntyg(), groups, rows);
+    final HashMap<HsaIdEnhet, String> idsToNames = new HashMap<>();
 
-        //When
-        final KonDataResponse result = KonDataResponses.changeIdGroupsToNamesAndAddIdsToDuplicates(response, idsToNames);
+    // When
+    final KonDataResponse result =
+        KonDataResponses.changeIdGroupsToNamesAndAddIdsToDuplicates(response, idsToNames);
 
-        //Then
-        assertEquals(0, result.getGroups().size());
-        assertEquals(rows, result.getRows());
-    }
+    // Then
+    assertEquals(0, result.getGroups().size());
+    assertEquals(rows, result.getRows());
+  }
 
-    @Test
-    public void testChangeIdGroupsToNamesAndAddIdsToDuplicatesWithInputWithDuplicates() {
-        //Given
-        final List<String> groups = Arrays.asList("1", "2", "3");
-        final List<KonDataRow> rows = new ArrayList<>();
-        final KonDataResponse response = new KonDataResponse(AvailableFilters.getForIntyg(), groups, rows);
-        final HashMap<HsaIdEnhet, String> idsToNames = new HashMap<>();
-        idsToNames.put(new HsaIdEnhet("1"), "abc");
-        idsToNames.put(new HsaIdEnhet("2"), "Abc");
-        idsToNames.put(new HsaIdEnhet("3"), "Abcd");
+  @Test
+  public void testChangeIdGroupsToNamesAndAddIdsToDuplicatesWithInputWithDuplicates() {
+    // Given
+    final List<String> groups = Arrays.asList("1", "2", "3");
+    final List<KonDataRow> rows = new ArrayList<>();
+    final KonDataResponse response =
+        new KonDataResponse(AvailableFilters.getForIntyg(), groups, rows);
+    final HashMap<HsaIdEnhet, String> idsToNames = new HashMap<>();
+    idsToNames.put(new HsaIdEnhet("1"), "abc");
+    idsToNames.put(new HsaIdEnhet("2"), "Abc");
+    idsToNames.put(new HsaIdEnhet("3"), "Abcd");
 
-        //When
-        final KonDataResponse result = KonDataResponses.changeIdGroupsToNamesAndAddIdsToDuplicates(response, idsToNames);
+    // When
+    final KonDataResponse result =
+        KonDataResponses.changeIdGroupsToNamesAndAddIdsToDuplicates(response, idsToNames);
 
-        //Then
-        assertEquals(3, result.getGroups().size());
-        assertEquals("abc 1", result.getGroups().get(0));
-        assertEquals("Abc 2", result.getGroups().get(1));
-        assertEquals("Abcd", result.getGroups().get(2));
-    }
-
+    // Then
+    assertEquals(3, result.getGroups().size());
+    assertEquals("abc 1", result.getGroups().get(0));
+    assertEquals("Abc 2", result.getGroups().get(1));
+    assertEquals("Abcd", result.getGroups().get(2));
+  }
 }

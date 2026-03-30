@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,8 +22,7 @@ import se.inera.statistics.web.service.dto.MessagesText;
 
 public class PeriodConverter extends SimpleDualSexConverter {
 
-    public PeriodConverter() {
-        super(MessagesText.REPORT_PERIOD, "%1$s");
-    }
-
+  public PeriodConverter() {
+    super(MessagesText.REPORT_PERIOD, "%1$s");
+  }
 }

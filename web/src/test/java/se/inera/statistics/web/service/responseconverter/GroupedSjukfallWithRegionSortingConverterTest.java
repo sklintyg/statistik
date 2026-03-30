@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -39,46 +39,51 @@ import se.inera.statistics.web.service.dto.Filter;
 import se.inera.statistics.web.service.dto.FilterSettings;
 
 public class GroupedSjukfallWithRegionSortingConverterTest {
-    // CHECKSTYLE:OFF MagicNumber
+  // CHECKSTYLE:OFF MagicNumber
 
-    @Test
-    public void convertTest() {
-        //Given
-        GroupedSjukfallWithRegionSortingConverter converter = new GroupedSjukfallWithRegionSortingConverter("Vårdenhet",
-            Collections.<HsaIdEnhet>emptyList());
-        List<SimpleKonDataRow> businessRows = new ArrayList<>();
-        businessRows.add(new SimpleKonDataRow("enhet1", 12, 13));
-        businessRows.add(new SimpleKonDataRow("enhet2", 20, 30));
-        businessRows.add(new SimpleKonDataRow("enhet3", 5, 25));
-        SimpleKonResponse casesPerUnit = new SimpleKonResponse(AvailableFilters.getForSjukfall(), businessRows);
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(),
+  @Test
+  public void convertTest() {
+    // Given
+    GroupedSjukfallWithRegionSortingConverter converter =
+        new GroupedSjukfallWithRegionSortingConverter(
+            "Vårdenhet", Collections.<HsaIdEnhet>emptyList());
+    List<SimpleKonDataRow> businessRows = new ArrayList<>();
+    businessRows.add(new SimpleKonDataRow("enhet1", 12, 13));
+    businessRows.add(new SimpleKonDataRow("enhet2", 20, 30));
+    businessRows.add(new SimpleKonDataRow("enhet3", 5, 25));
+    SimpleKonResponse casesPerUnit =
+        new SimpleKonResponse(AvailableFilters.getForSjukfall(), businessRows);
+    final FilterSettings filterSettings =
+        new FilterSettings(
+            Filter.empty(),
             Range.createForLastMonthsExcludingCurrent(1, Clock.systemDefaultZone()));
 
-        //When
-        SimpleDetailsData result = converter.convert(casesPerUnit, filterSettings);
+    // When
+    SimpleDetailsData result = converter.convert(casesPerUnit, filterSettings);
 
-        //Then
-        //STATISTIK-1034: Table sorted by name
-        TableData tableData = result.getTableData();
-        assertEquals("[[Vårdenhet;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]",
-            tableData.getHeaders().toString());
-        List<NamedData> tableRows = tableData.getRows();
-        assertEquals(3, tableRows.size());
-        assertEquals("enhet1", tableRows.get(0).getName());
-        assertEquals("enhet2", tableRows.get(1).getName());
-        assertEquals("enhet3", tableRows.get(2).getName());
-        assertEquals("[25, 12, 13]", tableRows.get(0).getData().toString());
-        assertEquals("[50, 20, 30]", tableRows.get(1).getData().toString());
-        assertEquals("[30, 5, 25]", tableRows.get(2).getData().toString());
+    // Then
+    // STATISTIK-1034: Table sorted by name
+    TableData tableData = result.getTableData();
+    assertEquals(
+        "[[Vårdenhet;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]",
+        tableData.getHeaders().toString());
+    List<NamedData> tableRows = tableData.getRows();
+    assertEquals(3, tableRows.size());
+    assertEquals("enhet1", tableRows.get(0).getName());
+    assertEquals("enhet2", tableRows.get(1).getName());
+    assertEquals("enhet3", tableRows.get(2).getName());
+    assertEquals("[25, 12, 13]", tableRows.get(0).getData().toString());
+    assertEquals("[50, 20, 30]", tableRows.get(1).getData().toString());
+    assertEquals("[30, 5, 25]", tableRows.get(2).getData().toString());
 
-        //STATISTIK-1034: Chart sorted by highest bar
-        ChartData chartData = result.getChartData();
-        final List<ChartCategory> categories = chartData.getCategories();
-        assertEquals(3, categories.size());
-        assertEquals("enhet2", categories.get(0).getName());
-        assertEquals("enhet3", categories.get(1).getName());
-        assertEquals("enhet1", categories.get(2).getName());
-    }
+    // STATISTIK-1034: Chart sorted by highest bar
+    ChartData chartData = result.getChartData();
+    final List<ChartCategory> categories = chartData.getCategories();
+    assertEquals(3, categories.size());
+    assertEquals("enhet2", categories.get(0).getName());
+    assertEquals("enhet3", categories.get(1).getName());
+    assertEquals("enhet1", categories.get(2).getName());
+  }
 
-    // CHECKSTYLE:ON MagicNumber
+  // CHECKSTYLE:ON MagicNumber
 }

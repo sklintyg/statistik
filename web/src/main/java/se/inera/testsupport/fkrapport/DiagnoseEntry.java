@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -19,24 +19,24 @@
 package se.inera.testsupport.fkrapport;
 
 /**
- * Holds a diagnose entry consisting of a diagnose code and a matcher regexp string used to match any sub diagnose
- * codes.
+ * Holds a diagnose entry consisting of a diagnose code and a matcher regexp string used to match
+ * any sub diagnose codes.
  */
 public class DiagnoseEntry {
 
-    private final String diagnoseValue;
-    private final String diagnoseMatcher;
+  private final String diagnoseValue;
+  private final String diagnoseMatcher;
 
-    public DiagnoseEntry(String diagnoseValue, String diagnoseMatcher) {
-        this.diagnoseValue = diagnoseValue;
-        this.diagnoseMatcher = diagnoseMatcher;
-    }
+  public DiagnoseEntry(String diagnoseValue, String diagnoseMatcher) {
+    this.diagnoseValue = diagnoseValue;
+    this.diagnoseMatcher = diagnoseMatcher;
+  }
 
-    public String getDiagnoseValue() {
-        return diagnoseValue;
-    }
+  public String getDiagnoseValue() {
+    return diagnoseValue;
+  }
 
-    public String getDiagnoseMatcher() {
-        return diagnoseMatcher;
-    }
+  public String getDiagnoseMatcher() {
+    return diagnoseMatcher;
+  }
 }

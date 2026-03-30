@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -36,60 +36,85 @@ import se.inera.statistics.web.model.overview.SjukfallPerManadOverview;
 
 public class OverviewConverter {
 
-    public OverviewData convert(OverviewResponse resp, Range range) {
-        final Range previousPeriod = ReportUtil.getPreviousOverviewPeriod(range);
-        SjukfallPerManadOverview casesPerMonth = new SjukfallPerManadOverview(
-            resp.getCasesPerMonthSexProportion().getMaleProportion(), resp.getCasesPerMonthSexProportion().getFemaleProportion(),
+  public OverviewData convert(OverviewResponse resp, Range range) {
+    final Range previousPeriod = ReportUtil.getPreviousOverviewPeriod(range);
+    SjukfallPerManadOverview casesPerMonth =
+        new SjukfallPerManadOverview(
+            resp.getCasesPerMonthSexProportion().getMaleProportion(),
+                resp.getCasesPerMonthSexProportion().getFemaleProportion(),
             resp.getCasesPerMonthAlteration(), previousPeriod.toString());
 
-        List<DonutChartData> diagnosisGroups = new DiagnosisGroupsConverter().convert(resp.getDiagnosisGroups()).stream()
-            .map(mapOverviewRowData()).collect(Collectors.toList());
+    List<DonutChartData> diagnosisGroups =
+        new DiagnosisGroupsConverter()
+            .convert(resp.getDiagnosisGroups()).stream()
+                .map(mapOverviewRowData())
+                .collect(Collectors.toList());
 
-        List<DonutChartData> ageGroups = new AldersGroupsConverter().convert(resp.getAgeGroups()).stream().map(mapOverviewRowData())
+    List<DonutChartData> ageGroups =
+        new AldersGroupsConverter()
+            .convert(resp.getAgeGroups()).stream()
+                .map(mapOverviewRowData())
+                .collect(Collectors.toList());
+
+    List<DonutChartData> degreeOfSickLeaveGroups =
+        resp.getDegreeOfSickLeaveGroups().stream()
+            .sorted((o1, o2) -> getNameAsNumber(o2) - getNameAsNumber(o1))
+            .map(mapOverviewRowData())
             .collect(Collectors.toList());
 
-        List<DonutChartData> degreeOfSickLeaveGroups = resp.getDegreeOfSickLeaveGroups().stream()
-            .sorted((o1, o2) -> getNameAsNumber(o2) - getNameAsNumber(o1))
-            .map(mapOverviewRowData()).collect(Collectors.toList());
+    List<DonutChartData> perCounty =
+        resp.getPerCounty().stream()
+            .map(mapRowDataMilli())
+            .sorted(comp())
+            .collect(Collectors.toList());
 
-        List<DonutChartData> perCounty = resp.getPerCounty().stream().map(mapRowDataMilli()).sorted(comp()).collect(Collectors.toList());
-
-        ArrayList<BarChartData> sickLeaveLengthData = new ArrayList<>();
-        for (OverviewChartRow row : resp.getSickLeaveLengthGroups()) {
-            sickLeaveLengthData.add(new BarChartData(row.getName(), row.getQuantity()));
-        }
-        SickLeaveLengthOverview sickLeaveLength = new SickLeaveLengthOverview(sickLeaveLengthData, resp.getLongSickLeavesTotal(),
+    ArrayList<BarChartData> sickLeaveLengthData = new ArrayList<>();
+    for (OverviewChartRow row : resp.getSickLeaveLengthGroups()) {
+      sickLeaveLengthData.add(new BarChartData(row.getName(), row.getQuantity()));
+    }
+    SickLeaveLengthOverview sickLeaveLength =
+        new SickLeaveLengthOverview(
+            sickLeaveLengthData,
+            resp.getLongSickLeavesTotal(),
             resp.getLongSickLeavesAlternation());
 
-        return new OverviewData(range.toString(), casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLength,
-            perCounty);
-    }
+    return new OverviewData(
+        range.toString(),
+        casesPerMonth,
+        diagnosisGroups,
+        ageGroups,
+        degreeOfSickLeaveGroups,
+        sickLeaveLength,
+        perCounty);
+  }
 
-    static int getNameAsNumber(OverviewChartRowExtended row) {
-        try {
-            return Integer.parseInt(row.getName().replaceAll("[^0-9]", ""));
-        } catch (NumberFormatException e) {
-            return -1;
-        }
+  static int getNameAsNumber(OverviewChartRowExtended row) {
+    try {
+      return Integer.parseInt(row.getName().replaceAll("[^0-9]", ""));
+    } catch (NumberFormatException e) {
+      return -1;
     }
+  }
 
-    private Comparator<DonutChartData> comp() {
-        return (o1, o2) -> Double.compare(o2.getQuantity().doubleValue(), o1.getQuantity().doubleValue());
-    }
+  private Comparator<DonutChartData> comp() {
+    return (o1, o2) ->
+        Double.compare(o2.getQuantity().doubleValue(), o1.getQuantity().doubleValue());
+  }
 
-    private Function<OverviewChartRowExtended, DonutChartData> mapOverviewRowData() {
-        return (r) -> new DonutChartData(r.getName(), r.getQuantity(), r.getAlternation(), r.getColor());
-    }
+  private Function<OverviewChartRowExtended, DonutChartData> mapOverviewRowData() {
+    return (r) ->
+        new DonutChartData(r.getName(), r.getQuantity(), r.getAlternation(), r.getColor());
+  }
 
-    /**
-     * The county report is calculated per million citizens but should be
-     * presented per thousand citizens. That conversion is performed here.
-     */
-    private Function<OverviewChartRowExtended, DonutChartData> mapRowDataMilli() {
-        return (r) -> {
-            final double thousand = 1000d;
-            return new DonutChartData(r.getName(), r.getQuantity() / thousand, r.getAlternation(), r.getColor());
-        };
-    }
-
+  /**
+   * The county report is calculated per million citizens but should be presented per thousand
+   * citizens. That conversion is performed here.
+   */
+  private Function<OverviewChartRowExtended, DonutChartData> mapRowDataMilli() {
+    return (r) -> {
+      final double thousand = 1000d;
+      return new DonutChartData(
+          r.getName(), r.getQuantity() / thousand, r.getAlternation(), r.getColor());
+    };
+  }
 }

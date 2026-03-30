@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -35,214 +35,235 @@ import se.inera.statistics.service.warehouse.IntygType;
 @Table(name = MessageWideLine.TABLE)
 public class MessageWideLine {
 
-    public static final String TABLE = "messagewideline";
+  public static final String TABLE = "messagewideline";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
-    private long logId;
-    private String meddelandeId;
-    private String intygId;
-    @Enumerated(EnumType.STRING)
-    private MessageEventType meddelandeTyp;
-    private String patientid;
-    private LocalDate skickatDate;
-    private LocalTime skickatTidpunkt;
-    private String amneCode;
-    private int kon;
-    private int alder;
-    private String enhet;
-    private String vardenhet;
-    private String vardgivareid;
-    @Enumerated(EnumType.STRING)
-    private IntygType intygstyp;
-    private LocalDate intygSigneringsdatum;
-    private String intygLakareId;
-    private String intygDx;
-    private String svarIds; //Msg with amne=komplettering will have a reference to svar-tags with these ids in the intyg
+  private long logId;
+  private String meddelandeId;
+  private String intygId;
 
-    public MessageWideLine() {
-        // Used by WidelineConverter
-    }
+  @Enumerated(EnumType.STRING)
+  private MessageEventType meddelandeTyp;
 
-    // CHECKSTYLE:OFF ParameterNumber
-    @SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
-    public MessageWideLine(long id, long logId, String meddelandeId, String intygId, MessageEventType meddelandeTyp,
-        String patientid, LocalDateTime skickatTidpunkt, String amneCode, int kon, int alder,
-        String enhet, String vardgivareid, IntygType intygstyp, LocalDate intygSigneringsdatum,
-        String intygLakareId, String intygDx, String svarIds) {
-        this.id = id;
-        this.logId = logId;
-        this.meddelandeId = meddelandeId;
-        this.intygId = intygId;
-        this.meddelandeTyp = meddelandeTyp;
-        this.patientid = patientid;
-        this.skickatTidpunkt = skickatTidpunkt.toLocalTime();
-        this.skickatDate = skickatTidpunkt.toLocalDate();
-        this.amneCode = amneCode;
-        this.kon = kon;
-        this.alder = alder;
-        this.enhet = enhet;
-        this.vardgivareid = vardgivareid;
-        this.intygstyp = intygstyp;
-        this.intygSigneringsdatum = intygSigneringsdatum;
-        this.intygLakareId = intygLakareId;
-        this.intygDx = intygDx;
-        this.svarIds = svarIds;
-    }
-    // CHECKSTYLE:ON ParameterNumber
+  private String patientid;
+  private LocalDate skickatDate;
+  private LocalTime skickatTidpunkt;
+  private String amneCode;
+  private int kon;
+  private int alder;
+  private String enhet;
+  private String vardenhet;
+  private String vardgivareid;
 
-    public long getId() {
-        return id;
-    }
+  @Enumerated(EnumType.STRING)
+  private IntygType intygstyp;
 
-    public void setId(long id) {
-        this.id = id;
-    }
+  private LocalDate intygSigneringsdatum;
+  private String intygLakareId;
+  private String intygDx;
+  private String
+      svarIds; // Msg with amne=komplettering will have a reference to svar-tags with these ids in
 
-    public long getLogId() {
-        return logId;
-    }
+  // the intyg
 
-    public void setLogId(long logId) {
-        this.logId = logId;
-    }
+  public MessageWideLine() {
+    // Used by WidelineConverter
+  }
 
-    public String getMeddelandeId() {
-        return meddelandeId;
-    }
+  // CHECKSTYLE:OFF ParameterNumber
+  @SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
+  public MessageWideLine(
+      long id,
+      long logId,
+      String meddelandeId,
+      String intygId,
+      MessageEventType meddelandeTyp,
+      String patientid,
+      LocalDateTime skickatTidpunkt,
+      String amneCode,
+      int kon,
+      int alder,
+      String enhet,
+      String vardgivareid,
+      IntygType intygstyp,
+      LocalDate intygSigneringsdatum,
+      String intygLakareId,
+      String intygDx,
+      String svarIds) {
+    this.id = id;
+    this.logId = logId;
+    this.meddelandeId = meddelandeId;
+    this.intygId = intygId;
+    this.meddelandeTyp = meddelandeTyp;
+    this.patientid = patientid;
+    this.skickatTidpunkt = skickatTidpunkt.toLocalTime();
+    this.skickatDate = skickatTidpunkt.toLocalDate();
+    this.amneCode = amneCode;
+    this.kon = kon;
+    this.alder = alder;
+    this.enhet = enhet;
+    this.vardgivareid = vardgivareid;
+    this.intygstyp = intygstyp;
+    this.intygSigneringsdatum = intygSigneringsdatum;
+    this.intygLakareId = intygLakareId;
+    this.intygDx = intygDx;
+    this.svarIds = svarIds;
+  }
 
-    public void setMeddelandeId(String meddelandeId) {
-        this.meddelandeId = meddelandeId;
-    }
+  // CHECKSTYLE:ON ParameterNumber
 
-    public String getIntygId() {
-        return intygId;
-    }
+  public long getId() {
+    return id;
+  }
 
-    public void setIntygId(String intygId) {
-        this.intygId = intygId;
-    }
+  public void setId(long id) {
+    this.id = id;
+  }
 
-    public MessageEventType getMeddelandeTyp() {
-        return meddelandeTyp;
-    }
+  public long getLogId() {
+    return logId;
+  }
 
-    public void setMeddelandeTyp(MessageEventType meddelandeTyp) {
-        this.meddelandeTyp = meddelandeTyp;
-    }
+  public void setLogId(long logId) {
+    this.logId = logId;
+  }
 
-    public String getPatientid() {
-        return patientid;
-    }
+  public String getMeddelandeId() {
+    return meddelandeId;
+  }
 
-    public void setPatientid(String patientid) {
-        this.patientid = patientid;
-    }
+  public void setMeddelandeId(String meddelandeId) {
+    this.meddelandeId = meddelandeId;
+  }
 
-    public LocalDate getSkickatDate() {
-        return skickatDate;
-    }
+  public String getIntygId() {
+    return intygId;
+  }
 
-    public void setSkickatDate(LocalDate skickatDate) {
-        this.skickatDate = skickatDate;
-    }
+  public void setIntygId(String intygId) {
+    this.intygId = intygId;
+  }
 
-    public LocalTime getSkickatTidpunkt() {
-        return skickatTidpunkt;
-    }
+  public MessageEventType getMeddelandeTyp() {
+    return meddelandeTyp;
+  }
 
-    public void setSkickatTidpunkt(LocalTime skickatTidpunkt) {
-        this.skickatTidpunkt = skickatTidpunkt;
-    }
+  public void setMeddelandeTyp(MessageEventType meddelandeTyp) {
+    this.meddelandeTyp = meddelandeTyp;
+  }
 
-    public String getAmneCode() {
-        return amneCode;
-    }
+  public String getPatientid() {
+    return patientid;
+  }
 
-    public void setAmneCode(String amneCode) {
-        this.amneCode = amneCode;
-    }
+  public void setPatientid(String patientid) {
+    this.patientid = patientid;
+  }
 
-    public int getKon() {
-        return kon;
-    }
+  public LocalDate getSkickatDate() {
+    return skickatDate;
+  }
 
-    public void setKon(int kon) {
-        this.kon = kon;
-    }
+  public void setSkickatDate(LocalDate skickatDate) {
+    this.skickatDate = skickatDate;
+  }
 
-    public int getAlder() {
-        return alder;
-    }
+  public LocalTime getSkickatTidpunkt() {
+    return skickatTidpunkt;
+  }
 
-    public void setAlder(int alder) {
-        this.alder = alder;
-    }
+  public void setSkickatTidpunkt(LocalTime skickatTidpunkt) {
+    this.skickatTidpunkt = skickatTidpunkt;
+  }
 
-    public String getEnhet() {
-        return enhet;
-    }
+  public String getAmneCode() {
+    return amneCode;
+  }
 
-    public void setEnhet(String enhet) {
-        this.enhet = enhet;
-    }
+  public void setAmneCode(String amneCode) {
+    this.amneCode = amneCode;
+  }
 
-    public String getVardenhet() {
-        return vardenhet;
-    }
+  public int getKon() {
+    return kon;
+  }
 
-    public void setVardenhet(String vardenhet) {
-        this.vardenhet = vardenhet;
-    }
+  public void setKon(int kon) {
+    this.kon = kon;
+  }
 
-    public String getVardgivareid() {
-        return vardgivareid;
-    }
+  public int getAlder() {
+    return alder;
+  }
 
-    public void setVardgivareid(String vardgivareid) {
-        this.vardgivareid = vardgivareid;
-    }
+  public void setAlder(int alder) {
+    this.alder = alder;
+  }
 
-    public IntygType getIntygstyp() {
-        return intygstyp;
-    }
+  public String getEnhet() {
+    return enhet;
+  }
 
-    public void setIntygstyp(IntygType intygstyp) {
-        this.intygstyp = intygstyp;
-    }
+  public void setEnhet(String enhet) {
+    this.enhet = enhet;
+  }
 
-    public LocalDate getIntygSigneringsdatum() {
-        return intygSigneringsdatum;
-    }
+  public String getVardenhet() {
+    return vardenhet;
+  }
 
-    public void setIntygSigneringsdatum(LocalDate intygSigneringsdatum) {
-        this.intygSigneringsdatum = intygSigneringsdatum;
-    }
+  public void setVardenhet(String vardenhet) {
+    this.vardenhet = vardenhet;
+  }
 
-    public String getIntygLakareId() {
-        return intygLakareId;
-    }
+  public String getVardgivareid() {
+    return vardgivareid;
+  }
 
-    public void setIntygLakareId(String intygLakareId) {
-        this.intygLakareId = intygLakareId;
-    }
+  public void setVardgivareid(String vardgivareid) {
+    this.vardgivareid = vardgivareid;
+  }
 
-    public String getIntygDx() {
-        return intygDx;
-    }
+  public IntygType getIntygstyp() {
+    return intygstyp;
+  }
 
-    public void setIntygDx(String intygDx) {
-        this.intygDx = intygDx;
-    }
+  public void setIntygstyp(IntygType intygstyp) {
+    this.intygstyp = intygstyp;
+  }
 
-    public String getSvarIds() {
-        return svarIds;
-    }
+  public LocalDate getIntygSigneringsdatum() {
+    return intygSigneringsdatum;
+  }
 
-    public void setSvarIds(String svarIds) {
-        this.svarIds = svarIds;
-    }
+  public void setIntygSigneringsdatum(LocalDate intygSigneringsdatum) {
+    this.intygSigneringsdatum = intygSigneringsdatum;
+  }
 
+  public String getIntygLakareId() {
+    return intygLakareId;
+  }
+
+  public void setIntygLakareId(String intygLakareId) {
+    this.intygLakareId = intygLakareId;
+  }
+
+  public String getIntygDx() {
+    return intygDx;
+  }
+
+  public void setIntygDx(String intygDx) {
+    this.intygDx = intygDx;
+  }
+
+  public String getSvarIds() {
+    return svarIds;
+  }
+
+  public void setSvarIds(String svarIds) {
+    this.svarIds = svarIds;
+  }
 }

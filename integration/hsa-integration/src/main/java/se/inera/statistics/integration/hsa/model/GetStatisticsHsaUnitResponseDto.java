@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,23 +20,22 @@ package se.inera.statistics.integration.hsa.model;
 
 public class GetStatisticsHsaUnitResponseDto {
 
-    private StatisticsHsaUnitDto statisticsUnit;
-    private StatisticsHsaUnitDto statisticsCareUnit;
+  private StatisticsHsaUnitDto statisticsUnit;
+  private StatisticsHsaUnitDto statisticsCareUnit;
 
-    public StatisticsHsaUnitDto getStatisticsUnit() {
-        return statisticsUnit;
-    }
+  public StatisticsHsaUnitDto getStatisticsUnit() {
+    return statisticsUnit;
+  }
 
-    public void setStatisticsUnit(StatisticsHsaUnitDto statisticsUnit) {
-        this.statisticsUnit = statisticsUnit;
-    }
+  public void setStatisticsUnit(StatisticsHsaUnitDto statisticsUnit) {
+    this.statisticsUnit = statisticsUnit;
+  }
 
-    public StatisticsHsaUnitDto getStatisticsCareUnit() {
-        return statisticsCareUnit;
-    }
+  public StatisticsHsaUnitDto getStatisticsCareUnit() {
+    return statisticsCareUnit;
+  }
 
-    public void setStatisticsCareUnit(StatisticsHsaUnitDto statisticsCareUnit) {
-        this.statisticsCareUnit = statisticsCareUnit;
-    }
-
+  public void setStatisticsCareUnit(StatisticsHsaUnitDto statisticsCareUnit) {
+    this.statisticsCareUnit = statisticsCareUnit;
+  }
 }

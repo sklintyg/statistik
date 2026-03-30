@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,12 +20,11 @@ package se.inera.statistics.service.countypopulation;
 
 class ScbPopulationException extends RuntimeException {
 
-    ScbPopulationException(String msg) {
-        super(msg);
-    }
+  ScbPopulationException(String msg) {
+    super(msg);
+  }
 
-    ScbPopulationException(String msg, Throwable cause) {
-        super(msg, cause);
-    }
-
+  ScbPopulationException(String msg, Throwable cause) {
+    super(msg, cause);
+  }
 }

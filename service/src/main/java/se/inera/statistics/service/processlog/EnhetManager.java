@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -38,62 +38,65 @@ import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 @Component
 public class EnhetManager {
 
-    private static final Logger LOG = LoggerFactory.getLogger(EnhetManager.class);
+  private static final Logger LOG = LoggerFactory.getLogger(EnhetManager.class);
 
-    @PersistenceContext(unitName = "IneraStatisticsLog")
-    private EntityManager manager;
+  @PersistenceContext(unitName = "IneraStatisticsLog")
+  private EntityManager manager;
 
-    public List<Enhet> getEnhets(Collection<HsaIdEnhet> enhetIds) {
-        if (enhetIds == null || enhetIds.isEmpty()) {
-            return Collections.emptyList();
-        }
-        final Query query = manager.createQuery("SELECT e FROM Enhet e WHERE e.enhetId IN :enhetids");
-        query.setParameter("enhetids", Collections2.transform(enhetIds, hsaId -> hsaId.getId()));
-        final List resultList = query.getResultList();
-        return getEnhetsFromResultList(resultList);
+  public List<Enhet> getEnhets(Collection<HsaIdEnhet> enhetIds) {
+    if (enhetIds == null || enhetIds.isEmpty()) {
+      return Collections.emptyList();
     }
+    final Query query = manager.createQuery("SELECT e FROM Enhet e WHERE e.enhetId IN :enhetids");
+    query.setParameter("enhetids", Collections2.transform(enhetIds, hsaId -> hsaId.getId()));
+    final List resultList = query.getResultList();
+    return getEnhetsFromResultList(resultList);
+  }
 
-    public List<Enhet> getAllVardenhetsForVardgivareId(HsaIdVardgivare vgId) {
-        final Query query = manager.createQuery("SELECT e FROM Enhet e WHERE e.vardgivareId = :vgId");
-        query.setParameter("vgId", vgId.getId());
-        final List resultList = query.getResultList();
-        return getEnhetsFromResultList(resultList);
-    }
+  public List<Enhet> getAllVardenhetsForVardgivareId(HsaIdVardgivare vgId) {
+    final Query query = manager.createQuery("SELECT e FROM Enhet e WHERE e.vardgivareId = :vgId");
+    query.setParameter("vgId", vgId.getId());
+    final List resultList = query.getResultList();
+    return getEnhetsFromResultList(resultList);
+  }
 
-    @Transactional
-    public int updateName(List<HsaUnit> hsaUnits) {
-        return hsaUnits.stream().reduce(0, (partialUpdateResultCount, hsaUnit) -> {
-            final Query query = manager.createQuery(
-                "UPDATE Enhet e SET e.namn = :namn WHERE e.enhetId = :id AND e.namn <> :namn");
-            final String name = hsaUnit.getName();
-            query.setParameter("namn", name);
-            final String hsaid = hsaUnit.getHsaIdentity();
-            query.setParameter("id", hsaid);
-            final int updateResultCount = query.executeUpdate();
-            if (updateResultCount > 0) {
+  @Transactional
+  public int updateName(List<HsaUnit> hsaUnits) {
+    return hsaUnits.stream()
+        .reduce(
+            0,
+            (partialUpdateResultCount, hsaUnit) -> {
+              final Query query =
+                  manager.createQuery(
+                      "UPDATE Enhet e SET e.namn = :namn WHERE e.enhetId = :id AND e.namn <> :namn");
+              final String name = hsaUnit.getName();
+              query.setParameter("namn", name);
+              final String hsaid = hsaUnit.getHsaIdentity();
+              query.setParameter("id", hsaid);
+              final int updateResultCount = query.executeUpdate();
+              if (updateResultCount > 0) {
                 LOG.info(String.format("Id: %s, Namn: %s", hsaid, name));
-            }
-            return partialUpdateResultCount + updateResultCount;
+              }
+              return partialUpdateResultCount + updateResultCount;
+            },
+            Integer::sum);
+  }
 
-        }, Integer::sum);
+  private List<Enhet> getEnhetsFromResultList(List resultList) {
+    if (resultList == null) {
+      return Collections.emptyList();
     }
-
-    private List<Enhet> getEnhetsFromResultList(List resultList) {
-        if (resultList == null) {
-            return Collections.emptyList();
+    final List<Enhet> enhets = new ArrayList<>();
+    for (Object o : resultList) {
+      if (o instanceof Enhet) {
+        final Enhet enhet = (Enhet) o;
+        if (enhet.isVardenhet()) {
+          enhets.add(enhet);
         }
-        final List<Enhet> enhets = new ArrayList<>();
-        for (Object o : resultList) {
-            if (o instanceof Enhet) {
-                final Enhet enhet = (Enhet) o;
-                if (enhet.isVardenhet()) {
-                    enhets.add(enhet);
-                }
-            } else {
-                LOG.error("Wrong enhet type found");
-            }
-        }
-        return ImmutableList.copyOf(enhets);
+      } else {
+        LOG.error("Wrong enhet type found");
+      }
     }
-
+    return ImmutableList.copyOf(enhets);
+  }
 }

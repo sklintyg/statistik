@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -27,37 +27,35 @@ import jakarta.persistence.Table;
 @Table(name = EventPointer.TABLE)
 public class EventPointer {
 
-    public static final String TABLE = "handelsepekare";
+  public static final String TABLE = "handelsepekare";
 
-    private static final int MAX_NAME_LENGTH = 50;
+  private static final int MAX_NAME_LENGTH = 50;
 
-    @Id
-    @Column(length = MAX_NAME_LENGTH)
-    private String name;
+  @Id
+  @Column(length = MAX_NAME_LENGTH)
+  private String name;
 
-    private long eventId;
+  private long eventId;
 
-    public EventPointer(String name, long id) {
-        this.name = name;
-        this.eventId = id;
-    }
+  public EventPointer(String name, long id) {
+    this.name = name;
+    this.eventId = id;
+  }
 
-    /**
-     * Empty constructor (as required by JPA spec).
-     */
-    public EventPointer() {
-        //Empty constructor (as required by JPA spec).
-    }
+  /** Empty constructor (as required by JPA spec). */
+  public EventPointer() {
+    // Empty constructor (as required by JPA spec).
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public long getEventId() {
-        return eventId;
-    }
+  public long getEventId() {
+    return eventId;
+  }
 
-    public void setEventId(long eventId) {
-        this.eventId = eventId;
-    }
+  public void setEventId(long eventId) {
+    this.eventId = eventId;
+  }
 }

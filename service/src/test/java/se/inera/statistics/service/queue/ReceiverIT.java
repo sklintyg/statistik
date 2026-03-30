@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -55,95 +55,118 @@ import se.inera.statistics.time.ChangableClock;
 
 // CHECKSTYLE:OFF MagicNumber
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:application-context-test.xml", "classpath:process-log-qm-test.xml", "classpath:icd10.xml"})
+@ContextConfiguration(
+    locations = {
+      "classpath:application-context-test.xml",
+      "classpath:process-log-qm-test.xml",
+      "classpath:icd10.xml"
+    })
 @DirtiesContext
 public class ReceiverIT {
 
-    @Value("${activemq.receiver.queue.name}")
-    private String queueName;
+  @Value("${activemq.receiver.queue.name}")
+  private String queueName;
 
-    @Autowired
-    private QueueAspect queueAspect;
+  @Autowired private QueueAspect queueAspect;
 
-    @Autowired
-    private JmsTemplate jmsTemplate;
+  @Autowired private JmsTemplate jmsTemplate;
 
-    @Autowired
-    private LogConsumer consumer;
+  @Autowired private LogConsumer consumer;
 
-    @Autowired
-    private WidelineManager wideLine;
+  @Autowired private WidelineManager wideLine;
 
-    @Autowired
-    private Warehouse warehouse;
+  @Autowired private Warehouse warehouse;
 
-    private SjukfallUtil sjukfallUtil = new SjukfallUtil();
+  private SjukfallUtil sjukfallUtil = new SjukfallUtil();
 
-    @Autowired
-    private SjukfallQuery sjukfallQuery;
+  @Autowired private SjukfallQuery sjukfallQuery;
 
-    @Autowired
-    private ChangableClock changableClock;
+  @Autowired private ChangableClock changableClock;
 
-    @Before
-    public void setup() {
-        changableClock.setCurrentClock(Clock.fixed(Instant.parse("2014-03-30T10:15:30.00Z"), ZoneId.systemDefault()));
+  @Before
+  public void setup() {
+    changableClock.setCurrentClock(
+        Clock.fixed(Instant.parse("2014-03-30T10:15:30.00Z"), ZoneId.systemDefault()));
+  }
+
+  @Test
+  public void deliver_document_from_in_queue_to_statistics_repository() {
+    populate();
+    SimpleKonResponse webData =
+        sjukfallQuery.getSjukfall(
+            warehouse.get(new HsaIdVardgivare("vg-verksamhet1")),
+            sjukfallUtil.createEnhetFilter(new HsaIdEnhet("verksamhet1")),
+            LocalDate.parse("2011-01-01"),
+            12,
+            1,
+            false);
+
+    assertEquals(12, webData.getRows().size());
+
+    for (int i = 0; i < 3; i++) {
+      assertEquals(0, webData.getRows().get(i).getFemale());
+      assertEquals(2, webData.getRows().get(i).getMale());
+    }
+    for (int i = 3; i < 12; i++) {
+      assertEquals(0, webData.getRows().get(i).getFemale());
+      assertEquals(0, webData.getRows().get(i).getMale());
     }
 
-    @Test
-    public void deliver_document_from_in_queue_to_statistics_repository() {
-        populate();
-        SimpleKonResponse webData = sjukfallQuery
-            .getSjukfall(warehouse.get(new HsaIdVardgivare("vg-verksamhet1")),
-                sjukfallUtil.createEnhetFilter(new HsaIdEnhet("verksamhet1")),
-                LocalDate.parse("2011-01-01"), 12, 1, false);
+    assertEquals(2, wideLine.count());
+  }
 
-        assertEquals(12, webData.getRows().size());
+  @Transactional
+  public void populate() {
+    CountDownLatch countDownLatch = new CountDownLatch(2);
+    queueAspect.setCountDownLatch(countDownLatch);
 
-        for (int i = 0; i < 3; i++) {
-            assertEquals(0, webData.getRows().get(i).getFemale());
-            assertEquals(2, webData.getRows().get(i).getMale());
-        }
-        for (int i = 3; i < 12; i++) {
-            assertEquals(0, webData.getRows().get(i).getFemale());
-            assertEquals(0, webData.getRows().get(i).getMale());
-        }
+    UtlatandeBuilder builder = new UtlatandeBuilder();
+    simpleSend(
+        builder
+            .build(
+                "19121212-0010",
+                LocalDate.parse("2011-01-20"),
+                LocalDate.parse("2011-03-11"),
+                new HsaIdEnhet("verksamhet1"),
+                "A00",
+                0)
+            .toString(),
+        "001",
+        IntygType.FK7263.getItIntygType());
+    simpleSend(
+        builder
+            .build(
+                "19121212-0110",
+                LocalDate.parse("2011-01-20"),
+                LocalDate.parse("2011-03-11"),
+                new HsaIdEnhet("verksamhet1"),
+                "A00",
+                0)
+            .toString(),
+        "002",
+        IntygType.FK7263.getItIntygType());
 
-        assertEquals(2, wideLine.count());
+    try {
+      countDownLatch.await(20, TimeUnit.SECONDS);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
     }
 
-    @Transactional
-    public void populate() {
-        CountDownLatch countDownLatch = new CountDownLatch(2);
-        queueAspect.setCountDownLatch(countDownLatch);
+    assertEquals(2, consumer.processBatch());
+  }
 
-        UtlatandeBuilder builder = new UtlatandeBuilder();
-        simpleSend(builder
-            .build("19121212-0010", LocalDate.parse("2011-01-20"), LocalDate.parse("2011-03-11"), new HsaIdEnhet("verksamhet1"), "A00", 0)
-            .toString(), "001", IntygType.FK7263.getItIntygType());
-        simpleSend(builder
-            .build("19121212-0110", LocalDate.parse("2011-01-20"), LocalDate.parse("2011-03-11"), new HsaIdEnhet("verksamhet1"), "A00", 0)
-            .toString(), "002", IntygType.FK7263.getItIntygType());
-
-        try {
-            countDownLatch.await(20, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        assertEquals(2, consumer.processBatch());
-    }
-
-    private void simpleSend(final String intyg, final String correlationId, String certificateType) {
-        this.jmsTemplate.send(queueName, new MessageCreator() {
-            public Message createMessage(Session session) throws JMSException {
-                TextMessage message = session.createTextMessage(intyg);
-                message.setStringProperty(JmsReceiver.ACTION, JmsReceiver.CREATED);
-                message.setStringProperty(JmsReceiver.CERTIFICATE_TYPE, certificateType);
-                message.setStringProperty(JmsReceiver.CERTIFICATE_ID, correlationId);
-                return message;
-            }
+  private void simpleSend(final String intyg, final String correlationId, String certificateType) {
+    this.jmsTemplate.send(
+        queueName,
+        new MessageCreator() {
+          public Message createMessage(Session session) throws JMSException {
+            TextMessage message = session.createTextMessage(intyg);
+            message.setStringProperty(JmsReceiver.ACTION, JmsReceiver.CREATED);
+            message.setStringProperty(JmsReceiver.CERTIFICATE_TYPE, certificateType);
+            message.setStringProperty(JmsReceiver.CERTIFICATE_ID, correlationId);
+            return message;
+          }
         });
-    }
+  }
 }
-//CHECKSTYLE:ON MagicNumber
+// CHECKSTYLE:ON MagicNumber

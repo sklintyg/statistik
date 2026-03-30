@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -18,68 +18,73 @@
  */
 package se.inera.testsupport.specialrapport.regionskane;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.Sjukfall;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-
 public class SpecialSkaneComputeRow {
 
-    private String dx;
-    private HsaIdEnhet enhet;
-    private LocalDate range;
-    private Kon kon;
-    private int sjukskrivningsgrad;
-    private Sjukfall sjukfall;
-    private long patient;
+  private String dx;
+  private HsaIdEnhet enhet;
+  private LocalDate range;
+  private Kon kon;
+  private int sjukskrivningsgrad;
+  private Sjukfall sjukfall;
+  private long patient;
 
-    public SpecialSkaneComputeRow(String dx, HsaIdEnhet enhet, LocalDate range, Kon kon,
-        int sjukskrivningsgrad, Sjukfall sjukfall, long patient) {
-        this.dx = dx;
-        this.enhet = enhet;
-        this.range = range;
-        this.kon = kon;
-        this.sjukskrivningsgrad = sjukskrivningsgrad;
-        this.sjukfall = sjukfall;
-        this.patient = patient;
-    }
+  public SpecialSkaneComputeRow(
+      String dx,
+      HsaIdEnhet enhet,
+      LocalDate range,
+      Kon kon,
+      int sjukskrivningsgrad,
+      Sjukfall sjukfall,
+      long patient) {
+    this.dx = dx;
+    this.enhet = enhet;
+    this.range = range;
+    this.kon = kon;
+    this.sjukskrivningsgrad = sjukskrivningsgrad;
+    this.sjukfall = sjukfall;
+    this.patient = patient;
+  }
 
-    public String getDx() {
-        return dx;
-    }
+  public String getDx() {
+    return dx;
+  }
 
-    public HsaIdEnhet getEnhet() {
-        return enhet;
-    }
+  public HsaIdEnhet getEnhet() {
+    return enhet;
+  }
 
-    public LocalDate getRange() {
-        return range;
-    }
+  public LocalDate getRange() {
+    return range;
+  }
 
-    public Kon getKon() {
-        return kon;
-    }
+  public Kon getKon() {
+    return kon;
+  }
 
-    public Sjukfall getSjukfall() {
-        return sjukfall;
-    }
+  public Sjukfall getSjukfall() {
+    return sjukfall;
+  }
 
-    public int getSjukskrivningsgrad() {
-        return sjukskrivningsgrad;
-    }
+  public int getSjukskrivningsgrad() {
+    return sjukskrivningsgrad;
+  }
 
-    public long getPatient() {
-        return patient;
-    }
+  public long getPatient() {
+    return patient;
+  }
 
-    // CHECKSTYLE:OFF MagicNumber
-    public String getFormattedDate() {
-        String out = range.format(DateTimeFormatter.ofPattern("MMM yyyy", new Locale("sv")));
-        return out.substring(0, 3) + out.substring(out.indexOf(" "));
-    }
-    // CHECKSTYLE:ON MagicNumber
+  // CHECKSTYLE:OFF MagicNumber
+  public String getFormattedDate() {
+    String out = range.format(DateTimeFormatter.ofPattern("MMM yyyy", new Locale("sv")));
+    return out.substring(0, 3) + out.substring(out.indexOf(" "));
+  }
+  // CHECKSTYLE:ON MagicNumber
 
 }

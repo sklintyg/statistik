@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -28,43 +28,43 @@ import se.riv.clinicalprocess.healthcond.certificate.v3.Svar;
 @Component
 public class Ag114RegisterCertificateHelper extends AbstractRegisterCertificateHelper {
 
-    public static final String DIAGNOS_SVAR_ID_4 = "4";
-    public static final String DIAGNOS_DELSVAR_ID_4 = "4.2";
+  public static final String DIAGNOS_SVAR_ID_4 = "4";
+  public static final String DIAGNOS_DELSVAR_ID_4 = "4.2";
 
-    @Override
-    public LocalDate getDateForPatientAge(RegisterCertificateType intyg) {
-        return getSigneringsTidpunkt(intyg).toLocalDate();
-    }
+  @Override
+  public LocalDate getDateForPatientAge(RegisterCertificateType intyg) {
+    return getSigneringsTidpunkt(intyg).toLocalDate();
+  }
 
-    @SuppressWarnings("squid:S134") //I can't see a better way to write this with fewer nested statements
-    private String getDx(RegisterCertificateType intyg) {
+  @SuppressWarnings(
+      "squid:S134") // I can't see a better way to write this with fewer nested statements
+  private String getDx(RegisterCertificateType intyg) {
 
-        for (Svar svar : intyg.getIntyg().getSvar()) {
-            if (DIAGNOS_SVAR_ID_4.equals(svar.getId())) {
-                for (Svar.Delsvar delsvar : svar.getDelsvar()) {
-                    if (DIAGNOS_DELSVAR_ID_4.equals(delsvar.getId())) {
-                        CVType diagnos = getCVSvarContent(delsvar);
-                        return diagnos.getCode();
-                    }
-                }
-            }
+    for (Svar svar : intyg.getIntyg().getSvar()) {
+      if (DIAGNOS_SVAR_ID_4.equals(svar.getId())) {
+        for (Svar.Delsvar delsvar : svar.getDelsvar()) {
+          if (DIAGNOS_DELSVAR_ID_4.equals(delsvar.getId())) {
+            CVType diagnos = getCVSvarContent(delsvar);
+            return diagnos.getCode();
+          }
         }
-        return null;
+      }
+    }
+    return null;
+  }
+
+  @Override
+  public IntygDTO convertToDTO(RegisterCertificateType intyg) {
+    IntygDTO dto = super.convertToDTO(intyg);
+
+    if (dto == null) {
+      return null;
     }
 
-    @Override
-    public IntygDTO convertToDTO(RegisterCertificateType intyg) {
-        IntygDTO dto = super.convertToDTO(intyg);
+    String diagnos = getDx(intyg);
 
-        if (dto == null) {
-            return null;
-        }
+    dto.setDiagnoskod(diagnos);
 
-        String diagnos = getDx(intyg);
-
-        dto.setDiagnoskod(diagnos);
-
-        return dto;
-    }
-
+    return dto;
+  }
 }

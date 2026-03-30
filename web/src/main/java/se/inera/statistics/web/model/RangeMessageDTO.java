@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,19 +23,19 @@ import se.inera.statistics.web.error.Message;
 
 public class RangeMessageDTO {
 
-    private Range range;
-    private Message message;
+  private Range range;
+  private Message message;
 
-    public RangeMessageDTO(Range range, Message message) {
-        this.range = range;
-        this.message = message;
-    }
+  public RangeMessageDTO(Range range, Message message) {
+    this.range = range;
+    this.message = message;
+  }
 
-    public Range getRange() {
-        return range;
-    }
+  public Range getRange() {
+    return range;
+  }
 
-    public Message getMessage() {
-        return message;
-    }
+  public Message getMessage() {
+    return message;
+  }
 }

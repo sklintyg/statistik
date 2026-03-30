@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -26,39 +26,38 @@ import jakarta.persistence.Table;
 @Table(name = HSAStore.TABLE)
 public class HSAStore {
 
-    public static final String TABLE = "hsa";
+  public static final String TABLE = "hsa";
 
-    @Id
-    private String id;
+  @Id private String id;
 
-    private String data;
+  private String data;
 
-    HSAStore() {
-        //Not know why/if this is needed
+  HSAStore() {
+    // Not know why/if this is needed
+  }
+
+  HSAStore(String id, String data) {
+    this.id = id;
+    this.data = data;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    if (this.id == null) {
+      this.id = id;
+    } else if (!this.id.equals(id)) {
+      throw new IllegalStateException("Can not change id from " + this.id + " to " + id);
     }
+  }
 
-    HSAStore(String id, String data) {
-        this.id = id;
-        this.data = data;
-    }
+  public String getData() {
+    return data;
+  }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        if (this.id == null) {
-            this.id = id;
-        } else if (!this.id.equals(id)) {
-            throw new IllegalStateException("Can not change id from " + this.id + " to " + id);
-        }
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
+  public void setData(String data) {
+    this.data = data;
+  }
 }

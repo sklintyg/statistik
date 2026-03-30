@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,31 +25,30 @@ import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
 public class MutableAisle {
 
-    private final List<Fact> lines = new ArrayList<>();
-    private final HsaIdVardgivare vardgivareId;
+  private final List<Fact> lines = new ArrayList<>();
+  private final HsaIdVardgivare vardgivareId;
 
-    public MutableAisle(HsaIdVardgivare vardgivareId) {
-        this.vardgivareId = vardgivareId;
-    }
+  public MutableAisle(HsaIdVardgivare vardgivareId) {
+    this.vardgivareId = vardgivareId;
+  }
 
-    public void addLine(Fact line) {
-        lines.add(line);
-    }
+  public void addLine(Fact line) {
+    lines.add(line);
+  }
 
-    public Aisle createAisle() {
-        return new Aisle(vardgivareId, lines);
-    }
+  public Aisle createAisle() {
+    return new Aisle(vardgivareId, lines);
+  }
 
-    public int getSize() {
-        return lines.size();
-    }
+  public int getSize() {
+    return lines.size();
+  }
 
-    List<Fact> getLines() {
-        return Collections.unmodifiableList(lines);
-    }
+  List<Fact> getLines() {
+    return Collections.unmodifiableList(lines);
+  }
 
-    public HsaIdVardgivare getVardgivareId() {
-        return vardgivareId;
-    }
-
+  public HsaIdVardgivare getVardgivareId() {
+    return vardgivareId;
+  }
 }

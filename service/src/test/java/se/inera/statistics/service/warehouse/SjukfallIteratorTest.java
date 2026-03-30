@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -30,60 +30,71 @@ import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
 public class SjukfallIteratorTest {
 
-    @Test
-    public void testNext() throws Exception {
-        //Given
-        final LocalDate fromDate = LocalDate.of(2015, 1, 1);
-        final int periodSize = 1;
-        final SjukfallIterator sjukfallIterator = new SjukfallIterator(fromDate, 2, periodSize,
-            new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), SjukfallUtil.ALL_ENHETER);
+  @Test
+  public void testNext() throws Exception {
+    // Given
+    final LocalDate fromDate = LocalDate.of(2015, 1, 1);
+    final int periodSize = 1;
+    final SjukfallIterator sjukfallIterator =
+        new SjukfallIterator(
+            fromDate,
+            2,
+            periodSize,
+            new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()),
+            SjukfallUtil.ALL_ENHETER);
 
-        //When
-        final SjukfallGroup group = sjukfallIterator.next();
+    // When
+    final SjukfallGroup group = sjukfallIterator.next();
 
-        //Then
-        assertEquals(fromDate, group.getRange().getFrom());
-        assertEquals(fromDate.plusMonths(periodSize).minusDays(1), group.getRange().getTo());
+    // Then
+    assertEquals(fromDate, group.getRange().getFrom());
+    assertEquals(fromDate.plusMonths(periodSize).minusDays(1), group.getRange().getTo());
 
-        //When
-        final SjukfallGroup group2 = sjukfallIterator.next();
+    // When
+    final SjukfallGroup group2 = sjukfallIterator.next();
 
-        //Then
-        assertEquals(fromDate.plusMonths(periodSize).withDayOfMonth(1), group2.getRange().getFrom());
-        assertEquals(fromDate.plusMonths(periodSize * 2).minusDays(1), group2.getRange().getTo());
+    // Then
+    assertEquals(fromDate.plusMonths(periodSize).withDayOfMonth(1), group2.getRange().getFrom());
+    assertEquals(fromDate.plusMonths(periodSize * 2).minusDays(1), group2.getRange().getTo());
 
-        //When
-        final boolean hasNext = sjukfallIterator.hasNext();
+    // When
+    final boolean hasNext = sjukfallIterator.hasNext();
 
-        //Then
-        assertFalse(hasNext);
+    // Then
+    assertFalse(hasNext);
+  }
+
+  @Test
+  public void
+      testNextThrowsNoSuchElementExceptionIfTheIterationHasNoMoreElementsAccordingToContract()
+          throws Exception {
+    // Given
+    final LocalDate fromDate = LocalDate.of(2015, 1, 1);
+    final int periodSize = 1;
+    final SjukfallIterator sjukfallIterator =
+        new SjukfallIterator(
+            fromDate,
+            2,
+            periodSize,
+            new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()),
+            SjukfallUtil.ALL_ENHETER);
+
+    // When and then
+    try {
+      sjukfallIterator.next();
+    } catch (NoSuchElementException e) {
+      fail("Should not fail yet, there are still elements left");
     }
-
-    @Test
-    public void testNextThrowsNoSuchElementExceptionIfTheIterationHasNoMoreElementsAccordingToContract() throws Exception {
-        //Given
-        final LocalDate fromDate = LocalDate.of(2015, 1, 1);
-        final int periodSize = 1;
-        final SjukfallIterator sjukfallIterator = new SjukfallIterator(fromDate, 2, periodSize,
-            new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), SjukfallUtil.ALL_ENHETER);
-
-        //When and then
-        try {
-            sjukfallIterator.next();
-        } catch (NoSuchElementException e) {
-            fail("Should not fail yet, there are still elements left");
-        }
-        try {
-            sjukfallIterator.next();
-        } catch (NoSuchElementException e) {
-            fail("Should not fail yet, there are still elements left");
-        }
-        try {
-            sjukfallIterator.next();
-        } catch (NoSuchElementException e) {
-            return; //Success, there are no more elements left
-        }
-        fail("Should have failed at last call to next(), there are no elements left");
+    try {
+      sjukfallIterator.next();
+    } catch (NoSuchElementException e) {
+      fail("Should not fail yet, there are still elements left");
     }
-
+    try {
+      sjukfallIterator.next();
+    } catch (NoSuchElementException e) {
+      return; // Success, there are no more elements left
+    }
+    fail("Should have failed at last call to next(), there are no elements left");
+  }
 }

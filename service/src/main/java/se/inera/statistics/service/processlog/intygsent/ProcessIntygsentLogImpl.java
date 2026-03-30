@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -27,39 +27,38 @@ import se.inera.statistics.service.processlog.AbstractProcessLog;
 @Component
 public class ProcessIntygsentLogImpl extends AbstractProcessLog implements ProcessIntygsentLog {
 
-    public ProcessIntygsentLogImpl() {
-        super("PROCESSED_INTYGSENT");
-    }
+  public ProcessIntygsentLogImpl() {
+    super("PROCESSED_INTYGSENT");
+  }
 
-    @Override
-    @Transactional
-    public long store(String certificateId, String certificateRecipient, long timestamp) {
-        final IntygSentEvent event = new IntygSentEvent(certificateId, certificateRecipient, timestamp);
-        getManager().merge(event);
-        return event.getId();
-    }
+  @Override
+  @Transactional
+  public long store(String certificateId, String certificateRecipient, long timestamp) {
+    final IntygSentEvent event = new IntygSentEvent(certificateId, certificateRecipient, timestamp);
+    getManager().merge(event);
+    return event.getId();
+  }
 
-    @Override
-    @Transactional
-    public long update(IntygSentEvent event) {
-        getManager().persist(event);
-        return event.getId();
-    }
+  @Override
+  @Transactional
+  public long update(IntygSentEvent event) {
+    getManager().persist(event);
+    return event.getId();
+  }
 
-    @Override
-    @Transactional
-    public List<IntygSentEvent> getPending(int max) {
-        String query = "SELECT e FROM IntygSentEvent e WHERE e.id > :lastId ORDER BY e.id ASC";
+  @Override
+  @Transactional
+  public List<IntygSentEvent> getPending(int max) {
+    String query = "SELECT e FROM IntygSentEvent e WHERE e.id > :lastId ORDER BY e.id ASC";
 
-        TypedQuery<IntygSentEvent> allQuery = getManager().createQuery(query, IntygSentEvent.class);
-        allQuery.setParameter("lastId", getLastId());
-        allQuery.setMaxResults(max);
-        return allQuery.getResultList();
-    }
+    TypedQuery<IntygSentEvent> allQuery = getManager().createQuery(query, IntygSentEvent.class);
+    allQuery.setParameter("lastId", getLastId());
+    allQuery.setMaxResults(max);
+    return allQuery.getResultList();
+  }
 
-    @Override
-    public void confirm(long id) {
-        confirmId(id);
-    }
-
+  @Override
+  public void confirm(long id) {
+    confirmId(id);
+  }
 }

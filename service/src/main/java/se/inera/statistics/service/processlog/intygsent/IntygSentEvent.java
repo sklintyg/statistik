@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.service.processlog.intygsent;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,55 +28,55 @@ import jakarta.persistence.Table;
 @Table(name = IntygSentEvent.TABLE)
 public class IntygSentEvent {
 
-    public static final String TABLE = "intygsenthandelse";
+  public static final String TABLE = "intygsenthandelse";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private String correlationId;
-    private String recipient;
-    private long timestamp;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
-    IntygSentEvent() {
-        // Empty constructor (as required by JPA spec).
-    }
+  private String correlationId;
+  private String recipient;
+  private long timestamp;
 
-    public IntygSentEvent(String correlationId, String recipient, long timestamp) {
-        this.correlationId = correlationId;
-        this.recipient = recipient;
-        this.timestamp = timestamp;
-    }
+  IntygSentEvent() {
+    // Empty constructor (as required by JPA spec).
+  }
 
-    public long getId() {
-        return id;
-    }
+  public IntygSentEvent(String correlationId, String recipient, long timestamp) {
+    this.correlationId = correlationId;
+    this.recipient = recipient;
+    this.timestamp = timestamp;
+  }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+  public long getId() {
+    return id;
+  }
 
-    public String getCorrelationId() {
-        return correlationId;
-    }
+  public void setId(long id) {
+    this.id = id;
+  }
 
-    public void setCorrelationId(String correlationId) {
-        this.correlationId = correlationId;
-    }
+  public String getCorrelationId() {
+    return correlationId;
+  }
 
-    public String getRecipient() {
-        return recipient;
-    }
+  public void setCorrelationId(String correlationId) {
+    this.correlationId = correlationId;
+  }
 
-    public void setRecipient(String recipient) {
-        this.recipient = recipient;
-    }
+  public String getRecipient() {
+    return recipient;
+  }
 
-    public long getTimestamp() {
-        return timestamp;
-    }
+  public void setRecipient(String recipient) {
+    this.recipient = recipient;
+  }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
+  public long getTimestamp() {
+    return timestamp;
+  }
 
+  public void setTimestamp(long timestamp) {
+    this.timestamp = timestamp;
+  }
 }

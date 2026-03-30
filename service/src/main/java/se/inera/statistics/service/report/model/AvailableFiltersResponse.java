@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,13 +20,13 @@ package se.inera.statistics.service.report.model;
 
 public abstract class AvailableFiltersResponse {
 
-    private AvailableFilters availableFilters;
+  private AvailableFilters availableFilters;
 
-    public AvailableFiltersResponse(AvailableFilters availableFilters) {
-        this.availableFilters = availableFilters;
-    }
+  public AvailableFiltersResponse(AvailableFilters availableFilters) {
+    this.availableFilters = availableFilters;
+  }
 
-    public AvailableFilters getAvailableFilters() {
-        return availableFilters;
-    }
+  public AvailableFilters getAvailableFilters() {
+    return availableFilters;
+  }
 }

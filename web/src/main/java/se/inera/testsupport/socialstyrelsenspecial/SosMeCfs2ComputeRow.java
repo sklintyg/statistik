@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,25 +22,25 @@ import se.inera.statistics.service.report.model.Kon;
 
 public class SosMeCfs2ComputeRow {
 
-    private Kon kon;
-    private String ageGroup;
-    private int length;
+  private Kon kon;
+  private String ageGroup;
+  private int length;
 
-    public SosMeCfs2ComputeRow(Kon kon, String ageGroup, int length) {
-        this.kon = kon;
-        this.ageGroup = ageGroup;
-        this.length = length;
-    }
+  public SosMeCfs2ComputeRow(Kon kon, String ageGroup, int length) {
+    this.kon = kon;
+    this.ageGroup = ageGroup;
+    this.length = length;
+  }
 
-    public Kon getKon() {
-        return kon;
-    }
+  public Kon getKon() {
+    return kon;
+  }
 
-    public String getAgeGroup() {
-        return ageGroup;
-    }
+  public String getAgeGroup() {
+    return ageGroup;
+  }
 
-    public int getLength() {
-        return length;
-    }
+  public int getLength() {
+    return length;
+  }
 }

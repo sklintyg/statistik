@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,35 +23,34 @@ import java.util.Locale;
 
 public class CaseInsensiviteString {
 
-    private String string;
+  private String string;
 
-    public CaseInsensiviteString(String string) {
-        this.string = string;
+  public CaseInsensiviteString(String string) {
+    this.string = string;
+  }
+
+  public String getString() {
+    return string;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
-
-    public String getString() {
-        return string;
+    if (!(o instanceof CaseInsensiviteString)) {
+      return false;
     }
+    CaseInsensiviteString that = (CaseInsensiviteString) o;
+    return Objects.equal(getUpperString(), that.getUpperString());
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof CaseInsensiviteString)) {
-            return false;
-        }
-        CaseInsensiviteString that = (CaseInsensiviteString) o;
-        return Objects.equal(getUpperString(), that.getUpperString());
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(getUpperString());
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getUpperString());
-    }
-
-    private String getUpperString() {
-        return string.toUpperCase(Locale.ENGLISH);
-    }
-
+  private String getUpperString() {
+    return string.toUpperCase(Locale.ENGLISH);
+  }
 }

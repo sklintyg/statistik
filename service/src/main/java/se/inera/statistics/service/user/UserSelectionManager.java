@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -26,24 +26,24 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class UserSelectionManager {
 
-    @PersistenceContext(unitName = "IneraStatisticsLog")
-    private EntityManager manager;
+  @PersistenceContext(unitName = "IneraStatisticsLog")
+  private EntityManager manager;
 
-    @Transactional
-    public void persist(String key, String value) {
-        final UserSelection userSelection = new UserSelection(key, value);
-        manager.persist(userSelection);
-    }
+  @Transactional
+  public void persist(String key, String value) {
+    final UserSelection userSelection = new UserSelection(key, value);
+    manager.persist(userSelection);
+  }
 
-    @Transactional
-    public UserSelection find(String key) {
-        return manager.find(UserSelection.class, key);
-    }
+  @Transactional
+  public UserSelection find(String key) {
+    return manager.find(UserSelection.class, key);
+  }
 
-    @Transactional
-    public void register(String key, String value) {
-        if (manager.find(UserSelection.class, key) == null) {
-            manager.persist(new UserSelection(key, value));
-        }
+  @Transactional
+  public void register(String key, String value) {
+    if (manager.find(UserSelection.class, key) == null) {
+      manager.persist(new UserSelection(key, value));
     }
+  }
 }

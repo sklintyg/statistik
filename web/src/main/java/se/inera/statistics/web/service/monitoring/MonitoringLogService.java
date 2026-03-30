@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,19 +23,28 @@ import se.inera.statistics.integration.hsa.model.HsaIdUser;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
 /**
- * Interface used when logging to monitoring file. Used to ensure that the log entries are uniform and easy to parse.
+ * Interface used when logging to monitoring file. Used to ensure that the log entries are uniform
+ * and easy to parse.
  */
 public interface MonitoringLogService {
 
-    void logUserLogin(HsaIdUser hsaUser, LoginMethod loginMethod);
+  void logUserLogin(HsaIdUser hsaUser, LoginMethod loginMethod);
 
-    void logFileUpload(HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, String fileName, Integer rows);
+  void logFileUpload(
+      HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, String fileName, Integer rows);
 
-    void logTrackAccessProtectedChartData(HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, String uri);
+  void logTrackAccessProtectedChartData(
+      HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, String uri);
 
-    void logTrackAccessAnonymousChartData(String uri);
+  void logTrackAccessAnonymousChartData(String uri);
 
-    void logBrowserInfo(String browserName, String browserVersion, String osFamily, String osVersion, String width, String height);
+  void logBrowserInfo(
+      String browserName,
+      String browserVersion,
+      String osFamily,
+      String osVersion,
+      String width,
+      String height);
 
-    void logUserLoginFailed(String exception);
+  void logUserLoginFailed(String exception);
 }

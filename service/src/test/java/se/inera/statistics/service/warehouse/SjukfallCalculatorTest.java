@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -33,44 +33,53 @@ import se.inera.statistics.service.warehouse.sjukfallcalc.SjukfallPerPeriodCalcu
 
 public class SjukfallCalculatorTest {
 
-    @Test
-    public void testExtendSjukfallIsCorrectlySetWhenUsingAllEnheterFilterConstant() throws Exception {
-        //Given
-        final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 4, 1), 2, 1);
+  @Test
+  public void testExtendSjukfallIsCorrectlySetWhenUsingAllEnheterFilterConstant() throws Exception {
+    // Given
+    final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 4, 1), 2, 1);
 
-        //When
-        final Aisle aisle = new Aisle(new HsaIdVardgivare(""), Collections.emptyList());
-        final Predicate<Fact> intygFilter = SjukfallUtil.ALL_ENHETER.getIntygFilter();
-        final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(aisle, intygFilter, ranges);
+    // When
+    final Aisle aisle = new Aisle(new HsaIdVardgivare(""), Collections.emptyList());
+    final Predicate<Fact> intygFilter = SjukfallUtil.ALL_ENHETER.getIntygFilter();
+    final SjukfallCalculator sjukfallCalculator =
+        new SjukfallCalculator(aisle, intygFilter, ranges);
 
-        //Then
-        final SjukfallPerPeriodCalculator sjukfallPerPeriodCalculator = (SjukfallPerPeriodCalculator) getField(
-            "sjukfallPerPeriodCalculator", SjukfallCalculator.class, sjukfallCalculator);
-        final Boolean extendSjukfall = (Boolean) getField("extendSjukfall", SjukfallPerPeriodCalculator.class, sjukfallPerPeriodCalculator);
-        assertEquals(false, extendSjukfall);
-    }
+    // Then
+    final SjukfallPerPeriodCalculator sjukfallPerPeriodCalculator =
+        (SjukfallPerPeriodCalculator)
+            getField("sjukfallPerPeriodCalculator", SjukfallCalculator.class, sjukfallCalculator);
+    final Boolean extendSjukfall =
+        (Boolean)
+            getField(
+                "extendSjukfall", SjukfallPerPeriodCalculator.class, sjukfallPerPeriodCalculator);
+    assertEquals(false, extendSjukfall);
+  }
 
-    private Object getField(String name, Class clazz, Object obj) throws NoSuchFieldException {
-        final Field declaredField = clazz.getDeclaredField(name);
-        declaredField.setAccessible(true);
-        return ReflectionUtils.getField(declaredField, obj);
-    }
+  private Object getField(String name, Class clazz, Object obj) throws NoSuchFieldException {
+    final Field declaredField = clazz.getDeclaredField(name);
+    declaredField.setAccessible(true);
+    return ReflectionUtils.getField(declaredField, obj);
+  }
 
-    @Test
-    public void testExtendSjukfallIsCorrectlySetWhenUsingCustomFilter() throws Exception {
-        //Given
-        final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 4, 1), 2, 1);
-        final Predicate<Fact> filter = fact -> true;
+  @Test
+  public void testExtendSjukfallIsCorrectlySetWhenUsingCustomFilter() throws Exception {
+    // Given
+    final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 4, 1), 2, 1);
+    final Predicate<Fact> filter = fact -> true;
 
-        //When
-        final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(
+    // When
+    final SjukfallCalculator sjukfallCalculator =
+        new SjukfallCalculator(
             new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), filter, ranges);
 
-        //Then
-        final SjukfallPerPeriodCalculator sjukfallPerPeriodCalculator = (SjukfallPerPeriodCalculator) getField(
-            "sjukfallPerPeriodCalculator", SjukfallCalculator.class, sjukfallCalculator);
-        final Boolean extendSjukfall = (Boolean) getField("extendSjukfall", SjukfallPerPeriodCalculator.class, sjukfallPerPeriodCalculator);
-        assertEquals(true, extendSjukfall);
-    }
-
+    // Then
+    final SjukfallPerPeriodCalculator sjukfallPerPeriodCalculator =
+        (SjukfallPerPeriodCalculator)
+            getField("sjukfallPerPeriodCalculator", SjukfallCalculator.class, sjukfallCalculator);
+    final Boolean extendSjukfall =
+        (Boolean)
+            getField(
+                "extendSjukfall", SjukfallPerPeriodCalculator.class, sjukfallPerPeriodCalculator);
+    assertEquals(true, extendSjukfall);
+  }
 }

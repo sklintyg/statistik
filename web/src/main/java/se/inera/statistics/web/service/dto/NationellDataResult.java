@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -28,135 +28,133 @@ import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.overview.OverviewData;
 
-/**
- * Contains the final reports for national statistics.
- */
+/** Contains the final reports for national statistics. */
 public class NationellDataResult implements Serializable {
 
-    private SimpleDetailsData numberOfCasesPerMonth;
-    private DualSexStatisticsData diagnosgrupper;
-    private Map<String, DiagnosisSubGroupStatisticsData> diagnoskapitel = new HashMap<>();
-    private OverviewData overview;
-    private SimpleDetailsData aldersgrupper;
-    private DualSexStatisticsData sjukskrivningsgrad;
-    private SimpleDetailsData sjukfallslangd;
-    private CasesPerCountyData sjukfallPerLan;
-    private SimpleDetailsData konsfordelningPerLan;
-    private DualSexStatisticsData meddelandenPerAmne;
-    private TableDataReport intygPerTyp;
-    private SimpleDetailsData intygPerSjukfall;
-    private TableDataReport andelKompletteringar;
-    private TableDataReport kompletteringarPerFraga;
+  private SimpleDetailsData numberOfCasesPerMonth;
+  private DualSexStatisticsData diagnosgrupper;
+  private Map<String, DiagnosisSubGroupStatisticsData> diagnoskapitel = new HashMap<>();
+  private OverviewData overview;
+  private SimpleDetailsData aldersgrupper;
+  private DualSexStatisticsData sjukskrivningsgrad;
+  private SimpleDetailsData sjukfallslangd;
+  private CasesPerCountyData sjukfallPerLan;
+  private SimpleDetailsData konsfordelningPerLan;
+  private DualSexStatisticsData meddelandenPerAmne;
+  private TableDataReport intygPerTyp;
+  private SimpleDetailsData intygPerSjukfall;
+  private TableDataReport andelKompletteringar;
+  private TableDataReport kompletteringarPerFraga;
 
-    public SimpleDetailsData getNumberOfCasesPerMonth() {
-        return numberOfCasesPerMonth;
-    }
+  public SimpleDetailsData getNumberOfCasesPerMonth() {
+    return numberOfCasesPerMonth;
+  }
 
-    public void setNumberOfCasesPerMonth(SimpleDetailsData numberOfCasesPerMonth) {
-        this.numberOfCasesPerMonth = numberOfCasesPerMonth;
-    }
+  public void setNumberOfCasesPerMonth(SimpleDetailsData numberOfCasesPerMonth) {
+    this.numberOfCasesPerMonth = numberOfCasesPerMonth;
+  }
 
-    public DualSexStatisticsData getDiagnosgrupper() {
-        return diagnosgrupper;
-    }
+  public DualSexStatisticsData getDiagnosgrupper() {
+    return diagnosgrupper;
+  }
 
-    public void setDiagnosgrupper(DualSexStatisticsData diagnosgrupper) {
-        this.diagnosgrupper = diagnosgrupper;
-    }
+  public void setDiagnosgrupper(DualSexStatisticsData diagnosgrupper) {
+    this.diagnosgrupper = diagnosgrupper;
+  }
 
-    public Map<String, DiagnosisSubGroupStatisticsData> getDiagnoskapitel() {
-        return diagnoskapitel;
-    }
+  public Map<String, DiagnosisSubGroupStatisticsData> getDiagnoskapitel() {
+    return diagnoskapitel;
+  }
 
-    public void setDiagnoskapitel(Map<String, DiagnosisSubGroupStatisticsData> diagnoskapitel) {
-        this.diagnoskapitel = diagnoskapitel;
-    }
+  public void setDiagnoskapitel(Map<String, DiagnosisSubGroupStatisticsData> diagnoskapitel) {
+    this.diagnoskapitel = diagnoskapitel;
+  }
 
-    public OverviewData getOverview() {
-        return overview;
-    }
+  public OverviewData getOverview() {
+    return overview;
+  }
 
-    public void setOverview(OverviewData overview) {
-        this.overview = overview;
-    }
+  public void setOverview(OverviewData overview) {
+    this.overview = overview;
+  }
 
-    public SimpleDetailsData getAldersgrupper() {
-        return aldersgrupper;
-    }
+  public SimpleDetailsData getAldersgrupper() {
+    return aldersgrupper;
+  }
 
-    public void setAldersgrupper(SimpleDetailsData aldersgrupper) {
-        this.aldersgrupper = aldersgrupper;
-    }
+  public void setAldersgrupper(SimpleDetailsData aldersgrupper) {
+    this.aldersgrupper = aldersgrupper;
+  }
 
-    public DualSexStatisticsData getSjukskrivningsgrad() {
-        return sjukskrivningsgrad;
-    }
+  public DualSexStatisticsData getSjukskrivningsgrad() {
+    return sjukskrivningsgrad;
+  }
 
-    public void setSjukskrivningsgrad(DualSexStatisticsData sjukskrivningsgrad) {
-        this.sjukskrivningsgrad = sjukskrivningsgrad;
-    }
+  public void setSjukskrivningsgrad(DualSexStatisticsData sjukskrivningsgrad) {
+    this.sjukskrivningsgrad = sjukskrivningsgrad;
+  }
 
-    public SimpleDetailsData getSjukfallslangd() {
-        return sjukfallslangd;
-    }
+  public SimpleDetailsData getSjukfallslangd() {
+    return sjukfallslangd;
+  }
 
-    public void setSjukfallslangd(SimpleDetailsData sjukfallslangd) {
-        this.sjukfallslangd = sjukfallslangd;
-    }
+  public void setSjukfallslangd(SimpleDetailsData sjukfallslangd) {
+    this.sjukfallslangd = sjukfallslangd;
+  }
 
-    public CasesPerCountyData getSjukfallPerLan() {
-        return sjukfallPerLan;
-    }
+  public CasesPerCountyData getSjukfallPerLan() {
+    return sjukfallPerLan;
+  }
 
-    public void setSjukfallPerLan(CasesPerCountyData sjukfallPerLan) {
-        this.sjukfallPerLan = sjukfallPerLan;
-    }
+  public void setSjukfallPerLan(CasesPerCountyData sjukfallPerLan) {
+    this.sjukfallPerLan = sjukfallPerLan;
+  }
 
-    public SimpleDetailsData getKonsfordelningPerLan() {
-        return konsfordelningPerLan;
-    }
+  public SimpleDetailsData getKonsfordelningPerLan() {
+    return konsfordelningPerLan;
+  }
 
-    public void setKonsfordelningPerLan(SimpleDetailsData konsfordelningPerLan) {
-        this.konsfordelningPerLan = konsfordelningPerLan;
-    }
+  public void setKonsfordelningPerLan(SimpleDetailsData konsfordelningPerLan) {
+    this.konsfordelningPerLan = konsfordelningPerLan;
+  }
 
-    public void setMeddelandenPerAmne(DualSexStatisticsData meddelandenPerAmne) {
-        this.meddelandenPerAmne = meddelandenPerAmne;
-    }
+  public void setMeddelandenPerAmne(DualSexStatisticsData meddelandenPerAmne) {
+    this.meddelandenPerAmne = meddelandenPerAmne;
+  }
 
-    public DualSexStatisticsData getMeddelandenPerAmne() {
-        return meddelandenPerAmne;
-    }
+  public DualSexStatisticsData getMeddelandenPerAmne() {
+    return meddelandenPerAmne;
+  }
 
-    public TableDataReport getIntygPerTyp() {
-        return intygPerTyp;
-    }
+  public TableDataReport getIntygPerTyp() {
+    return intygPerTyp;
+  }
 
-    public void setIntygPerTyp(TableDataReport intygPerTyp) {
-        this.intygPerTyp = intygPerTyp;
-    }
+  public void setIntygPerTyp(TableDataReport intygPerTyp) {
+    this.intygPerTyp = intygPerTyp;
+  }
 
-    public SimpleDetailsData getIntygPerSjukfall() {
-        return intygPerSjukfall;
-    }
+  public SimpleDetailsData getIntygPerSjukfall() {
+    return intygPerSjukfall;
+  }
 
-    public void setIntygPerSjukfall(SimpleDetailsData intygPerSjukfall) {
-        this.intygPerSjukfall = intygPerSjukfall;
-    }
+  public void setIntygPerSjukfall(SimpleDetailsData intygPerSjukfall) {
+    this.intygPerSjukfall = intygPerSjukfall;
+  }
 
-    public TableDataReport getAndelKompletteringar() {
-        return andelKompletteringar;
-    }
+  public TableDataReport getAndelKompletteringar() {
+    return andelKompletteringar;
+  }
 
-    public void setAndelKompletteringar(TableDataReport andelKompletteringar) {
-        this.andelKompletteringar = andelKompletteringar;
-    }
+  public void setAndelKompletteringar(TableDataReport andelKompletteringar) {
+    this.andelKompletteringar = andelKompletteringar;
+  }
 
-    public TableDataReport getKompletteringarPerFraga() {
-        return kompletteringarPerFraga;
-    }
+  public TableDataReport getKompletteringarPerFraga() {
+    return kompletteringarPerFraga;
+  }
 
-    public void setKompletteringarPerFraga(TableDataReport kompletteringarPerFraga) {
-        this.kompletteringarPerFraga = kompletteringarPerFraga;
-    }
+  public void setKompletteringarPerFraga(TableDataReport kompletteringarPerFraga) {
+    this.kompletteringarPerFraga = kompletteringarPerFraga;
+  }
 }

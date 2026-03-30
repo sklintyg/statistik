@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -26,10 +26,11 @@ import se.inera.statistics.web.service.dto.FilterSettings;
 
 public class DegreeOfSickLeaveConverter extends MultiDualSexConverter {
 
-    private static final Map<String, String> COLORS = SickLeaveDegree.getColors();
+  private static final Map<String, String> COLORS = SickLeaveDegree.getColors();
 
-    public DualSexStatisticsData convert(KonDataResponse degreeOfSickLeave, FilterSettings filterSettings) {
-        return super.convert(degreeOfSickLeave, filterSettings, null, "%1$s sjukskrivningsgrad", COLORS);
-    }
-
+  public DualSexStatisticsData convert(
+      KonDataResponse degreeOfSickLeave, FilterSettings filterSettings) {
+    return super.convert(
+        degreeOfSickLeave, filterSettings, null, "%1$s sjukskrivningsgrad", COLORS);
+  }
 }

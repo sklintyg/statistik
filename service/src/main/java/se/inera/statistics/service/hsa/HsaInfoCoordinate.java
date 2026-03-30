@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -24,47 +24,43 @@ import com.google.common.base.MoreObjects;
 
 public class HsaInfoCoordinate {
 
-    @JsonProperty("typ")
-    private String typ;
-    @JsonProperty("x")
-    private String x;
-    @JsonProperty("y")
-    private String y;
+  @JsonProperty("typ")
+  private String typ;
 
-    //Default constructor required by json mapper
-    private HsaInfoCoordinate() {
-    }
+  @JsonProperty("x")
+  private String x;
 
-    public HsaInfoCoordinate(String typ, String x, String y) {
-        this.typ = typ;
-        this.x = x;
-        this.y = y;
-    }
+  @JsonProperty("y")
+  private String y;
 
-    public String getTyp() {
-        return typ;
-    }
+  // Default constructor required by json mapper
+  private HsaInfoCoordinate() {}
 
-    public String getX() {
-        return x;
-    }
+  public HsaInfoCoordinate(String typ, String x, String y) {
+    this.typ = typ;
+    this.x = x;
+    this.y = y;
+  }
 
-    public String getY() {
-        return y;
-    }
+  public String getTyp() {
+    return typ;
+  }
 
-    @JsonIgnore
-    public boolean isEmpty() {
-        return typ == null && x == null && y == null;
-    }
+  public String getX() {
+    return x;
+  }
 
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-            .add("typ", typ)
-            .add("x", x)
-            .add("y", y)
-            .toString();
-    }
+  public String getY() {
+    return y;
+  }
 
+  @JsonIgnore
+  public boolean isEmpty() {
+    return typ == null && x == null && y == null;
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this).add("typ", typ).add("x", x).add("y", y).toString();
+  }
 }

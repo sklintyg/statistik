@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package se.inera.statistics.service.caching;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -31,19 +30,20 @@ import se.inera.intyg.infra.rediscache.core.RedisCacheOptionsSetter;
 @Import({BasicCacheConfiguration.class})
 public class TaskCoordinatorCache {
 
-    @Value("${app.name:intygsstatistik}")
-    private String appName;
-    @Value("${task.cache.expiry}")
-    private String cacheExpiry;
-    private final RedisCacheOptionsSetter redisCacheOptionsSetter;
+  @Value("${app.name:intygsstatistik}")
+  private String appName;
 
-    public TaskCoordinatorCache(RedisCacheOptionsSetter redisCacheOptionsSetter) {
-        this.redisCacheOptionsSetter = redisCacheOptionsSetter;
-    }
+  @Value("${task.cache.expiry}")
+  private String cacheExpiry;
 
+  private final RedisCacheOptionsSetter redisCacheOptionsSetter;
 
-    @Bean(name = "taskCoordinatorRedisCache")
-    public Cache taskCoordinatorCache() {
-        return redisCacheOptionsSetter.createCache("taskCoordinator:" + appName, cacheExpiry);
-    }
+  public TaskCoordinatorCache(RedisCacheOptionsSetter redisCacheOptionsSetter) {
+    this.redisCacheOptionsSetter = redisCacheOptionsSetter;
+  }
+
+  @Bean(name = "taskCoordinatorRedisCache")
+  public Cache taskCoordinatorCache() {
+    return redisCacheOptionsSetter.createCache("taskCoordinator:" + appName, cacheExpiry);
+  }
 }

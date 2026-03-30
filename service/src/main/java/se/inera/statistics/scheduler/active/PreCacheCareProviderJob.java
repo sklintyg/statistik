@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package se.inera.statistics.scheduler.active;
 
 import static se.inera.intyg.statistik.logging.MdcLogConstants.SPAN_ID_KEY;
@@ -39,36 +38,41 @@ import se.inera.statistics.service.warehouse.Warehouse;
 @Component
 public class PreCacheCareProviderJob {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PreCacheCareProviderJob.class);
-    private static final String JOB_NAME = "PreCacheCareProviderJob.run";
-    private final Warehouse warehouse;
-    private final List<String> precacheCareProviderIds;
-    private final MdcHelper mdcHelper;
+  private static final Logger LOG = LoggerFactory.getLogger(PreCacheCareProviderJob.class);
+  private static final String JOB_NAME = "PreCacheCareProviderJob.run";
+  private final Warehouse warehouse;
+  private final List<String> precacheCareProviderIds;
+  private final MdcHelper mdcHelper;
 
-    public PreCacheCareProviderJob(Warehouse warehouse,
-        @Value("#{'${job.precache.careprovider.ids}'.split(',')}") List<String> precacheCareProviderIds, MdcHelper mdcHelper) {
-        this.warehouse = warehouse;
-        this.precacheCareProviderIds = precacheCareProviderIds;
-        this.mdcHelper = mdcHelper;
+  public PreCacheCareProviderJob(
+      Warehouse warehouse,
+      @Value("#{'${job.precache.careprovider.ids}'.split(',')}")
+          List<String> precacheCareProviderIds,
+      MdcHelper mdcHelper) {
+    this.warehouse = warehouse;
+    this.precacheCareProviderIds = precacheCareProviderIds;
+    this.mdcHelper = mdcHelper;
+  }
+
+  @Scheduled(cron = "${job.precache.careprovider.cron}")
+  @SchedulerLock(name = JOB_NAME)
+  @PerformanceLogging(
+      eventAction = "pre-cache-careprovider-job",
+      eventType = MdcLogConstants.EVENT_TYPE_INFO)
+  public void run() {
+    try (MdcCloseableMap mdc =
+        MdcCloseableMap.builder()
+            .put(TRACE_ID_KEY, mdcHelper.traceId())
+            .put(SPAN_ID_KEY, mdcHelper.spanId())
+            .build()) {
+      LOG.info("Started job to precache the following careproviders: {}", precacheCareProviderIds);
+
+      precacheCareProviderIds.stream()
+          .filter(id -> id != null && !id.isBlank())
+          .forEach(id -> warehouse.get(new HsaIdVardgivare(id)));
+
+      LOG.info(
+          "Completed job to precache the following careproviders: {}", precacheCareProviderIds);
     }
-
-    @Scheduled(cron = "${job.precache.careprovider.cron}")
-    @SchedulerLock(name = JOB_NAME)
-    @PerformanceLogging(eventAction = "pre-cache-careprovider-job", eventType = MdcLogConstants.EVENT_TYPE_INFO)
-    public void run() {
-        try (MdcCloseableMap mdc =
-            MdcCloseableMap.builder()
-                .put(TRACE_ID_KEY, mdcHelper.traceId())
-                .put(SPAN_ID_KEY, mdcHelper.spanId())
-                .build()
-        ) {
-            LOG.info("Started job to precache the following careproviders: {}", precacheCareProviderIds);
-
-            precacheCareProviderIds.stream()
-                .filter(id -> id != null && !id.isBlank())
-                .forEach(id -> warehouse.get(new HsaIdVardgivare(id)));
-
-            LOG.info("Completed job to precache the following careproviders: {}", precacheCareProviderIds);
-        }
-    }
+  }
 }

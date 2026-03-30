@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -38,47 +38,46 @@ import se.inera.statistics.service.warehouse.model.db.MessageWideLine;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class MessageWidelineManagerTest {
 
-    @Autowired
-    private MessageWidelineManager messageWidelineManager;
+  @Autowired private MessageWidelineManager messageWidelineManager;
 
-    @Test
-    @Ignore
-    public void countLinesWhenEmpty() {
-        int result = messageWidelineManager.count();
+  @Test
+  @Ignore
+  public void countLinesWhenEmpty() {
+    int result = messageWidelineManager.count();
 
-        assertEquals(0, result);
-    }
+    assertEquals(0, result);
+  }
 
-    @Test
-    @Ignore
-    public void count3Lines() {
-        insertLine(MessageEventType.SENT, ":1");
-        insertLine(MessageEventType.SENT, ":2");
-        insertLine(MessageEventType.SENT, ":3");
+  @Test
+  @Ignore
+  public void count3Lines() {
+    insertLine(MessageEventType.SENT, ":1");
+    insertLine(MessageEventType.SENT, ":2");
+    insertLine(MessageEventType.SENT, ":3");
 
-        int result = messageWidelineManager.count();
+    int result = messageWidelineManager.count();
 
-        assertEquals(3, result);
-    }
+    assertEquals(3, result);
+  }
 
-    private void insertLine(MessageEventType event, String correlationId) {
-        MessageWideLine line1 = new MessageWideLine();
-        String patientId = "19121212-1212";
-        line1.setAlder(23);
-        line1.setEnhet("e1");
-        line1.setKon(1);
-        line1.setMeddelandeTyp(event);
-        line1.setPatientid(patientId);
-        line1.setVardgivareid("v1");
-        line1.setSkickatDate(LocalDate.now());
-        line1.setSkickatTidpunkt(LocalTime.now());
-        line1.setIntygId("i-123");
-        line1.setMeddelandeId(correlationId);
-        line1.setIntygstyp(IntygType.LISJP);
-        line1.setIntygSigneringsdatum(LocalDate.now());
-        line1.setIntygLakareId("123");
-        line1.setIntygDx("");
+  private void insertLine(MessageEventType event, String correlationId) {
+    MessageWideLine line1 = new MessageWideLine();
+    String patientId = "19121212-1212";
+    line1.setAlder(23);
+    line1.setEnhet("e1");
+    line1.setKon(1);
+    line1.setMeddelandeTyp(event);
+    line1.setPatientid(patientId);
+    line1.setVardgivareid("v1");
+    line1.setSkickatDate(LocalDate.now());
+    line1.setSkickatTidpunkt(LocalTime.now());
+    line1.setIntygId("i-123");
+    line1.setMeddelandeId(correlationId);
+    line1.setIntygstyp(IntygType.LISJP);
+    line1.setIntygSigneringsdatum(LocalDate.now());
+    line1.setIntygLakareId("123");
+    line1.setIntygDx("");
 
-        messageWidelineManager.saveWideline(line1);
-    }
+    messageWidelineManager.saveWideline(line1);
+  }
 }

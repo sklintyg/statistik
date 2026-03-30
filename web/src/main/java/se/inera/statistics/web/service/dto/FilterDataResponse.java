@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -28,64 +28,81 @@ import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 
 public class FilterDataResponse implements Serializable {
 
-    private String filterhash;
-    private List<String> diagnoser;
-    private List<String> enheter;
-    private List<String> sjukskrivningslangd;
-    private List<String> aldersgrupp;
-    private List<String> intygstyper;
-    private boolean useDefaultPeriod;
+  private String filterhash;
+  private List<String> diagnoser;
+  private List<String> enheter;
+  private List<String> sjukskrivningslangd;
+  private List<String> aldersgrupp;
+  private List<String> intygstyper;
+  private boolean useDefaultPeriod;
 
-    // To be used by json converter
-    private FilterDataResponse() {
-    }
+  // To be used by json converter
+  private FilterDataResponse() {}
 
-    public FilterDataResponse(String filterhash, Collection<String> diagnoser, Collection<HsaIdEnhet> enheter,
-        Collection<String> sjukskrivningslangd, Collection<String> aldersgrupp, Collection<String> intygstyper,
-        boolean useDefaultPeriod) {
-        this.filterhash = filterhash;
-        this.diagnoser = diagnoser == null ? null : Collections.unmodifiableList(new ArrayList<>(diagnoser));
-        this.sjukskrivningslangd = sjukskrivningslangd == null ? null : Collections.unmodifiableList(new ArrayList<>(sjukskrivningslangd));
-        this.aldersgrupp = aldersgrupp == null ? null : Collections.unmodifiableList(new ArrayList<>(aldersgrupp));
-        this.intygstyper = intygstyper == null ? null : Collections.unmodifiableList(new ArrayList<>(intygstyper));
-        this.enheter = enheter == null ? null : Lists.transform(new ArrayList<>(enheter), hsaId -> hsaId.getId());
-        this.useDefaultPeriod = useDefaultPeriod;
-    }
+  public FilterDataResponse(
+      String filterhash,
+      Collection<String> diagnoser,
+      Collection<HsaIdEnhet> enheter,
+      Collection<String> sjukskrivningslangd,
+      Collection<String> aldersgrupp,
+      Collection<String> intygstyper,
+      boolean useDefaultPeriod) {
+    this.filterhash = filterhash;
+    this.diagnoser =
+        diagnoser == null ? null : Collections.unmodifiableList(new ArrayList<>(diagnoser));
+    this.sjukskrivningslangd =
+        sjukskrivningslangd == null
+            ? null
+            : Collections.unmodifiableList(new ArrayList<>(sjukskrivningslangd));
+    this.aldersgrupp =
+        aldersgrupp == null ? null : Collections.unmodifiableList(new ArrayList<>(aldersgrupp));
+    this.intygstyper =
+        intygstyper == null ? null : Collections.unmodifiableList(new ArrayList<>(intygstyper));
+    this.enheter =
+        enheter == null ? null : Lists.transform(new ArrayList<>(enheter), hsaId -> hsaId.getId());
+    this.useDefaultPeriod = useDefaultPeriod;
+  }
 
-    public FilterDataResponse(Filter filter) {
-        this(filter.getFilterHash(), filter.getDiagnoser(), filter.getEnheter(), filter.getSjukskrivningslangd(),
-            filter.getAldersgrupp(), filter.getIntygstyper(), filter.isUseDefaultPeriod());
-    }
+  public FilterDataResponse(Filter filter) {
+    this(
+        filter.getFilterHash(),
+        filter.getDiagnoser(),
+        filter.getEnheter(),
+        filter.getSjukskrivningslangd(),
+        filter.getAldersgrupp(),
+        filter.getIntygstyper(),
+        filter.isUseDefaultPeriod());
+  }
 
-    public static FilterDataResponse empty() {
-        return new FilterDataResponse(null, null, null, null, null, null, true);
-    }
+  public static FilterDataResponse empty() {
+    return new FilterDataResponse(null, null, null, null, null, null, true);
+  }
 
-    public List<String> getDiagnoser() {
-        return diagnoser;
-    }
+  public List<String> getDiagnoser() {
+    return diagnoser;
+  }
 
-    public List<String> getEnheter() {
-        return enheter;
-    }
+  public List<String> getEnheter() {
+    return enheter;
+  }
 
-    public List<String> getSjukskrivningslangd() {
-        return sjukskrivningslangd;
-    }
+  public List<String> getSjukskrivningslangd() {
+    return sjukskrivningslangd;
+  }
 
-    public List<String> getAldersgrupp() {
-        return aldersgrupp;
-    }
+  public List<String> getAldersgrupp() {
+    return aldersgrupp;
+  }
 
-    public List<String> getIntygstyper() {
-        return intygstyper;
-    }
+  public List<String> getIntygstyper() {
+    return intygstyper;
+  }
 
-    public String getFilterhash() {
-        return filterhash;
-    }
+  public String getFilterhash() {
+    return filterhash;
+  }
 
-    public boolean isUseDefaultPeriod() {
-        return useDefaultPeriod;
-    }
+  public boolean isUseDefaultPeriod() {
+    return useDefaultPeriod;
+  }
 }

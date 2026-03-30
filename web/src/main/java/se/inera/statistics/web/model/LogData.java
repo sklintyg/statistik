@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,24 +20,23 @@ package se.inera.statistics.web.model;
 
 public class LogData {
 
-    private String message;
-    private String url;
+  private String message;
+  private String url;
 
-    LogData() {
-        //Used by jackson
-    }
+  LogData() {
+    // Used by jackson
+  }
 
-    public LogData(String message, String url) {
-        this.message = message;
-        this.url = url;
-    }
+  public LogData(String message, String url) {
+    this.message = message;
+    this.url = url;
+  }
 
-    public String getMessage() {
-        return message;
-    }
+  public String getMessage() {
+    return message;
+  }
 
-    public String getUrl() {
-        return url;
-    }
-
+  public String getUrl() {
+    return url;
+  }
 }

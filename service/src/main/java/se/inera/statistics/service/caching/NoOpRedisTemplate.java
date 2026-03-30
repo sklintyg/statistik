@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -31,206 +31,195 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.lang.Nullable;
 
-/**
- * Used when caching is not enabled.
- */
+/** Used when caching is not enabled. */
 public class NoOpRedisTemplate extends RedisTemplate<Object, Object> {
 
-    public NoOpRedisTemplate() {
-    }
+  public NoOpRedisTemplate() {}
 
-    @Override
-    public void afterPropertiesSet() {
-    }
+  @Override
+  public void afterPropertiesSet() {}
 
-    @Override
-    public Set keys(Object pattern) {
-        return Collections.emptySet();
-    }
+  @Override
+  public Set keys(Object pattern) {
+    return Collections.emptySet();
+  }
 
-    @Override
-    public Boolean delete(Object key) {
+  @Override
+  public Boolean delete(Object key) {
+    return null;
+  }
+
+  @Override
+  public Long delete(Collection<Object> keys) {
+    return null;
+  }
+
+  @Override
+  public Boolean expire(Object key, final long timeout, final TimeUnit unit) {
+    return false;
+  }
+
+  @Override
+  public ValueOperations opsForValue() {
+
+    return new ValueOperations<>() {
+
+      @Override
+      public void set(Object key, Object value) {}
+
+      @Override
+      public Object setGet(Object key, Object value, long timeout, TimeUnit unit) {
         return null;
-    }
+      }
 
-    @Override
-    public Long delete(Collection<Object> keys) {
+      @Override
+      public Object setGet(Object key, Object value, Duration duration) {
         return null;
-    }
+      }
 
-    @Override
-    public Boolean expire(Object key, final long timeout, final TimeUnit unit) {
+      @Override
+      public void set(Object key, Object value, long timeout, TimeUnit unit) {}
+
+      @Override
+      public void set(Object key, Object value, Duration timeout) {
+        ValueOperations.super.set(key, value, timeout);
+      }
+
+      @Override
+      public Boolean setIfAbsent(Object key, Object value) {
         return false;
-    }
+      }
 
-    @Override
-    public ValueOperations opsForValue() {
+      @Override
+      public Boolean setIfAbsent(Object key, Object value, long timeout, TimeUnit unit) {
+        return null;
+      }
 
-        return new ValueOperations<>() {
+      @Nullable @Override
+      public Boolean setIfAbsent(Object key, Object value, Duration timeout) {
+        return ValueOperations.super.setIfAbsent(key, value, timeout);
+      }
 
-            @Override
-            public void set(Object key, Object value) {
-            }
+      @Override
+      public Boolean setIfPresent(Object key, Object value) {
+        return null;
+      }
 
-            @Override
-            public Object setGet(Object key, Object value, long timeout, TimeUnit unit) {
-                return null;
-            }
+      @Override
+      public Boolean setIfPresent(Object key, Object value, long timeout, TimeUnit unit) {
+        return null;
+      }
 
-            @Override
-            public Object setGet(Object key, Object value, Duration duration) {
-                return null;
-            }
+      @Nullable @Override
+      public Boolean setIfPresent(Object key, Object value, Duration timeout) {
+        return ValueOperations.super.setIfPresent(key, value, timeout);
+      }
 
-            @Override
-            public void set(Object key, Object value, long timeout, TimeUnit unit) {
-            }
+      @Override
+      public void multiSet(Map<?, ?> map) {}
 
-            @Override
-            public void set(Object key, Object value, Duration timeout) {
-                ValueOperations.super.set(key, value, timeout);
-            }
+      @Override
+      public Boolean multiSetIfAbsent(Map<?, ?> map) {
+        return false;
+      }
 
-            @Override
-            public Boolean setIfAbsent(Object key, Object value) {
-                return false;
-            }
+      @Override
+      public Object get(Object key) {
+        return null;
+      }
 
-            @Override
-            public Boolean setIfAbsent(Object key, Object value, long timeout, TimeUnit unit) {
-                return null;
-            }
+      @Override
+      public Object getAndDelete(Object key) {
+        return null;
+      }
 
-            @Nullable
-            @Override
-            public Boolean setIfAbsent(Object key, Object value, Duration timeout) {
-                return ValueOperations.super.setIfAbsent(key, value, timeout);
-            }
+      @Override
+      public Object getAndExpire(Object key, long timeout, TimeUnit unit) {
+        return null;
+      }
 
-            @Override
-            public Boolean setIfPresent(Object key, Object value) {
-                return null;
-            }
+      @Override
+      public Object getAndExpire(Object key, Duration timeout) {
+        return null;
+      }
 
-            @Override
-            public Boolean setIfPresent(Object key, Object value, long timeout, TimeUnit unit) {
-                return null;
-            }
+      @Override
+      public Object getAndPersist(Object key) {
+        return null;
+      }
 
-            @Nullable
-            @Override
-            public Boolean setIfPresent(Object key, Object value, Duration timeout) {
-                return ValueOperations.super.setIfPresent(key, value, timeout);
-            }
+      @Override
+      public Object getAndSet(Object key, Object value) {
+        return null;
+      }
 
-            @Override
-            public void multiSet(Map<?, ?> map) {
-            }
+      @Override
+      public List<Object> multiGet(Collection<Object> keys) {
+        return Collections.emptyList();
+      }
 
-            @Override
-            public Boolean multiSetIfAbsent(Map<?, ?> map) {
-                return false;
-            }
+      @Override
+      public Long increment(Object key) {
+        return null;
+      }
 
-            @Override
-            public Object get(Object key) {
-                return null;
-            }
+      @Override
+      public Long increment(Object key, long delta) {
+        return null;
+      }
 
-            @Override
-            public Object getAndDelete(Object key) {
-                return null;
-            }
+      @Override
+      public Double increment(Object key, double delta) {
+        return null;
+      }
 
-            @Override
-            public Object getAndExpire(Object key, long timeout, TimeUnit unit) {
-                return null;
-            }
+      @Override
+      public Long decrement(Object key) {
+        return null;
+      }
 
-            @Override
-            public Object getAndExpire(Object key, Duration timeout) {
-                return null;
-            }
+      @Override
+      public Long decrement(Object key, long delta) {
+        return null;
+      }
 
-            @Override
-            public Object getAndPersist(Object key) {
-                return null;
-            }
+      @Override
+      public Integer append(Object key, String value) {
+        return null;
+      }
 
-            @Override
-            public Object getAndSet(Object key, Object value) {
-                return null;
-            }
+      @Override
+      public String get(Object key, long start, long end) {
+        return null;
+      }
 
-            @Override
-            public List<Object> multiGet(Collection<Object> keys) {
-                return Collections.emptyList();
-            }
+      @Override
+      public void set(Object key, Object value, long offset) {}
 
-            @Override
-            public Long increment(Object key) {
-                return null;
-            }
+      @Override
+      public Long size(Object key) {
+        return null;
+      }
 
-            @Override
-            public Long increment(Object key, long delta) {
-                return null;
-            }
+      @Override
+      public Boolean setBit(Object key, long offset, boolean value) {
+        return null;
+      }
 
-            @Override
-            public Double increment(Object key, double delta) {
-                return null;
-            }
+      @Override
+      public Boolean getBit(Object key, long offset) {
+        return null;
+      }
 
-            @Override
-            public Long decrement(Object key) {
-                return null;
-            }
+      @Override
+      public List<Long> bitField(Object key, BitFieldSubCommands subCommands) {
+        return null;
+      }
 
-            @Override
-            public Long decrement(Object key, long delta) {
-                return null;
-            }
-
-            @Override
-            public Integer append(Object key, String value) {
-                return null;
-            }
-
-            @Override
-            public String get(Object key, long start, long end) {
-                return null;
-            }
-
-            @Override
-            public void set(Object key, Object value, long offset) {
-            }
-
-            @Override
-            public Long size(Object key) {
-                return null;
-            }
-
-            @Override
-            public Boolean setBit(Object key, long offset, boolean value) {
-                return null;
-            }
-
-            @Override
-            public Boolean getBit(Object key, long offset) {
-                return null;
-            }
-
-            @Override
-            public List<Long> bitField(Object key, BitFieldSubCommands subCommands) {
-                return null;
-            }
-
-            @Override
-            public RedisOperations<Object, Object> getOperations() {
-                return NoOpRedisTemplate.this;
-            }
-        };
-    }
-
+      @Override
+      public RedisOperations<Object, Object> getOperations() {
+        return NoOpRedisTemplate.this;
+      }
+    };
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -36,80 +36,89 @@ import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 @Component
 public class IntygCommonConverter {
 
-    private static final int MAX_LENGTH_CORRELATION_ID = 50;
-    private static final int MAX_YEARS_INTO_FUTURE = 5;
+  private static final int MAX_LENGTH_CORRELATION_ID = 50;
+  private static final int MAX_YEARS_INTO_FUTURE = 5;
 
-    @Autowired
-    private Clock clock;
+  @Autowired private Clock clock;
 
-    @Autowired
-    private Icd10 icd10;
+  @Autowired private Icd10 icd10;
 
-    IntygCommon toIntygCommon(IntygDTO dto, HsaInfo hsa, String correlationId, EventType eventType, boolean sentToFk) {
-        String vardenhet = HSAServiceHelper.getHuvudEnhetId(hsa);
-        String underenhet = HSAServiceHelper.getUnderenhetId(hsa);
-        HsaIdVardgivare vardgivare = HSAServiceHelper.getVardgivarId(hsa);
-        if (vardenhet == null && underenhet == null) {
-            vardenhet = dto.getEnhet();
-            underenhet = dto.getEnhet();
-        }
-        String patient = dto.getPatientid();
-        Patientdata patientData = dto.getPatientData();
-        int kon = patientData.getKon().getNumberRepresentation();
-        IntygType intygTyp = dto.getIntygtyp();
-        LocalDate signeringsDatum = dto.getSigneringsdatum();
-        final String diagnoskod = parseDiagnos(dto.getDiagnoskod());
-        final String lakareId = dto.getLakareId();
-
-        final String vgid = vardgivare.getId();
-        return new IntygCommon(correlationId, patient, signeringsDatum, intygTyp, underenhet, vardenhet,
-            vgid, kon, eventType, diagnoskod, sentToFk, lakareId);
+  IntygCommon toIntygCommon(
+      IntygDTO dto, HsaInfo hsa, String correlationId, EventType eventType, boolean sentToFk) {
+    String vardenhet = HSAServiceHelper.getHuvudEnhetId(hsa);
+    String underenhet = HSAServiceHelper.getUnderenhetId(hsa);
+    HsaIdVardgivare vardgivare = HSAServiceHelper.getVardgivarId(hsa);
+    if (vardenhet == null && underenhet == null) {
+      vardenhet = dto.getEnhet();
+      underenhet = dto.getEnhet();
     }
+    String patient = dto.getPatientid();
+    Patientdata patientData = dto.getPatientData();
+    int kon = patientData.getKon().getNumberRepresentation();
+    IntygType intygTyp = dto.getIntygtyp();
+    LocalDate signeringsDatum = dto.getSigneringsdatum();
+    final String diagnoskod = parseDiagnos(dto.getDiagnoskod());
+    final String lakareId = dto.getLakareId();
 
-    String parseDiagnos(String diagnoskod) {
-        try {
-            return icd10.findFromIcd10Code(diagnoskod).getVisibleId();
-        } catch (Exception e) {
-            return WidelineConverter.UNKNOWN_DIAGNOS;
-        }
+    final String vgid = vardgivare.getId();
+    return new IntygCommon(
+        correlationId,
+        patient,
+        signeringsDatum,
+        intygTyp,
+        underenhet,
+        vardenhet,
+        vgid,
+        kon,
+        eventType,
+        diagnoskod,
+        sentToFk,
+        lakareId);
+  }
+
+  String parseDiagnos(String diagnoskod) {
+    try {
+      return icd10.findFromIcd10Code(diagnoskod).getVisibleId();
+    } catch (Exception e) {
+      return WidelineConverter.UNKNOWN_DIAGNOS;
     }
+  }
 
-    public List<String> validate(IntygCommon line) {
-        List<String> errors = new ArrayList<>();
-        checkField(errors, line.getEnhet(), "Enhet");
-        checkField(errors, line.getPatientid(), "Patient");
-        checkField(errors, line.getIntygtyp(), "IntygTyp");
-        checkField(errors, line.getVardgivareId(), "VardgivareId");
-        checkField(errors, line.getIntygid(), "IntygId", MAX_LENGTH_CORRELATION_ID);
-        checkSigneringsdatum(errors, line.getSigneringsdatum());
-        return errors;
+  public List<String> validate(IntygCommon line) {
+    List<String> errors = new ArrayList<>();
+    checkField(errors, line.getEnhet(), "Enhet");
+    checkField(errors, line.getPatientid(), "Patient");
+    checkField(errors, line.getIntygtyp(), "IntygTyp");
+    checkField(errors, line.getVardgivareId(), "VardgivareId");
+    checkField(errors, line.getIntygid(), "IntygId", MAX_LENGTH_CORRELATION_ID);
+    checkSigneringsdatum(errors, line.getSigneringsdatum());
+    return errors;
+  }
+
+  private void checkField(List<String> errors, String field, String fieldName) {
+    if (field == null || field.isEmpty()) {
+      errors.add(fieldName + " not found.");
     }
+  }
 
-    private void checkField(List<String> errors, String field, String fieldName) {
-        if (field == null || field.isEmpty()) {
-            errors.add(fieldName + " not found.");
-        }
+  private void checkField(List<String> errors, IntygType field, String fieldName) {
+    if (field == null) {
+      errors.add(fieldName + " not found.");
     }
+  }
 
-    private void checkField(List<String> errors, IntygType field, String fieldName) {
-        if (field == null) {
-            errors.add(fieldName + " not found.");
-        }
+  private void checkField(List<String> errors, String field, String fieldName, int max) {
+    checkField(errors, field, fieldName);
+    if (field != null && field.length() > max) {
+      errors.add(fieldName + " input too long");
     }
+  }
 
-    private void checkField(List<String> errors, String field, String fieldName, int max) {
-        checkField(errors, field, fieldName);
-        if (field != null && field.length() > max) {
-            errors.add(fieldName + " input too long");
-        }
+  private void checkSigneringsdatum(List<String> errors, LocalDate startdatum) {
+    final int earliestYear = 2010;
+    final boolean tooEarly = startdatum.isBefore(LocalDate.of(earliestYear, 1, 1));
+    if (tooEarly || startdatum.isAfter(LocalDate.now(clock).plusYears(MAX_YEARS_INTO_FUTURE))) {
+      errors.add("Illegal startdatum: " + startdatum);
     }
-
-    private void checkSigneringsdatum(List<String> errors, LocalDate startdatum) {
-        final int earliestYear = 2010;
-        final boolean tooEarly = startdatum.isBefore(LocalDate.of(earliestYear, 1, 1));
-        if (tooEarly || startdatum.isAfter(LocalDate.now(clock).plusYears(MAX_YEARS_INTO_FUTURE))) {
-            errors.add("Illegal startdatum: " + startdatum);
-        }
-    }
-
+  }
 }

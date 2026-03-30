@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -29,78 +29,100 @@ import se.inera.statistics.service.warehouse.SjukfallExtended;
 
 public class CounterTest {
 
-    @Test
-    public void testGet() throws Exception {
-        //Given
-        final String testKey = "1";
-        final Counter<String> counter = new Counter<>(testKey);
+  @Test
+  public void testGet() throws Exception {
+    // Given
+    final String testKey = "1";
+    final Counter<String> counter = new Counter<>(testKey);
 
-        //When
-        counter.increase(createSjukfall(Kon.FEMALE));
-        counter.increase(createSjukfall(Kon.MALE));
-        counter.increase(createSjukfall(Kon.MALE));
-        counter.increase(createSjukfall(Kon.MALE));
+    // When
+    counter.increase(createSjukfall(Kon.FEMALE));
+    counter.increase(createSjukfall(Kon.MALE));
+    counter.increase(createSjukfall(Kon.MALE));
+    counter.increase(createSjukfall(Kon.MALE));
 
-        //Then
-        assertEquals(4, counter.getCount());
-        assertEquals(3, counter.getCountMale());
-        assertEquals(1, counter.getCountFemale());
-        assertEquals(testKey, counter.getKey());
-    }
+    // Then
+    assertEquals(4, counter.getCount());
+    assertEquals(3, counter.getCountMale());
+    assertEquals(1, counter.getCountFemale());
+    assertEquals(testKey, counter.getKey());
+  }
 
-    @Test
-    public void testByTotalCount1() throws Exception {
-        //Given
-        final Counter<String> counter1 = new Counter<>("1");
-        counter1.increase(createSjukfall(Kon.FEMALE));
-        final Counter<String> counter2 = new Counter<>("2");
-        counter2.increase(createSjukfall(Kon.MALE));
-        counter2.increase(createSjukfall(Kon.MALE));
-        counter2.increase(createSjukfall(Kon.MALE));
+  @Test
+  public void testByTotalCount1() throws Exception {
+    // Given
+    final Counter<String> counter1 = new Counter<>("1");
+    counter1.increase(createSjukfall(Kon.FEMALE));
+    final Counter<String> counter2 = new Counter<>("2");
+    counter2.increase(createSjukfall(Kon.MALE));
+    counter2.increase(createSjukfall(Kon.MALE));
+    counter2.increase(createSjukfall(Kon.MALE));
 
-        //When
-        final int i = Counter.byTotalCount().compare(counter1, counter2);
+    // When
+    final int i = Counter.byTotalCount().compare(counter1, counter2);
 
-        //Then
-        assertTrue(i > 0);
-    }
+    // Then
+    assertTrue(i > 0);
+  }
 
-    @Test
-    public void testByTotalCount2() throws Exception {
-        //Given
-        final Counter<String> counter1 = new Counter<>("1");
-        counter1.increase(createSjukfall(Kon.FEMALE));
-        final Counter<String> counter2 = new Counter<>("2");
-        counter2.increase(createSjukfall(Kon.MALE));
-        counter2.increase(createSjukfall(Kon.MALE));
-        counter2.increase(createSjukfall(Kon.MALE));
+  @Test
+  public void testByTotalCount2() throws Exception {
+    // Given
+    final Counter<String> counter1 = new Counter<>("1");
+    counter1.increase(createSjukfall(Kon.FEMALE));
+    final Counter<String> counter2 = new Counter<>("2");
+    counter2.increase(createSjukfall(Kon.MALE));
+    counter2.increase(createSjukfall(Kon.MALE));
+    counter2.increase(createSjukfall(Kon.MALE));
 
-        //When
-        final int i = Counter.byTotalCount().compare(counter2, counter1);
+    // When
+    final int i = Counter.byTotalCount().compare(counter2, counter1);
 
-        //Then
-        assertTrue(i < 0);
-    }
+    // Then
+    assertTrue(i < 0);
+  }
 
-    @Test
-    public void testByTotalCountSameEquals() throws Exception {
-        //Given
-        final Counter<String> counter = new Counter<>("2");
-        counter.increase(createSjukfall(Kon.FEMALE));
-        counter.increase(createSjukfall(Kon.MALE));
-        counter.increase(createSjukfall(Kon.MALE));
-        counter.increase(createSjukfall(Kon.MALE));
+  @Test
+  public void testByTotalCountSameEquals() throws Exception {
+    // Given
+    final Counter<String> counter = new Counter<>("2");
+    counter.increase(createSjukfall(Kon.FEMALE));
+    counter.increase(createSjukfall(Kon.MALE));
+    counter.increase(createSjukfall(Kon.MALE));
+    counter.increase(createSjukfall(Kon.MALE));
 
-        //When
-        final int i = Counter.byTotalCount().compare(counter, counter);
+    // When
+    final int i = Counter.byTotalCount().compare(counter, counter);
 
-        //Then
-        assertTrue(i == 0);
-    }
+    // Then
+    assertTrue(i == 0);
+  }
 
-    private Sjukfall createSjukfall(Kon kon) {
-        final SjukfallExtended sjukfall = new SjukfallExtended(
-            FactBuilder.newFact(1L, 1, 1, 1, 1, 1, 1, 1, 1, 1, kon.getNumberRepresentation(), 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1));
-        return Sjukfall.create(sjukfall);
-    }
+  private Sjukfall createSjukfall(Kon kon) {
+    final SjukfallExtended sjukfall =
+        new SjukfallExtended(
+            FactBuilder.newFact(
+                1L,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                kon.getNumberRepresentation(),
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                new int[0],
+                1));
+    return Sjukfall.create(sjukfall);
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -24,103 +24,103 @@ import se.inera.statistics.service.report.model.Kon;
 
 public class CountDTOAmne {
 
-    private int count;
-    private LocalDate date;
-    private Kon kon;
-    private MsgAmne amne;
-    private String enhet;
-    private int patientAge;
-    private String intygTyp;
-    private String dx;
-    private String intygid;
-    private HsaIdLakare lakareId;
-    private String svarIds;
+  private int count;
+  private LocalDate date;
+  private Kon kon;
+  private MsgAmne amne;
+  private String enhet;
+  private int patientAge;
+  private String intygTyp;
+  private String dx;
+  private String intygid;
+  private HsaIdLakare lakareId;
+  private String svarIds;
 
-    public int getCount() {
-        return count;
-    }
+  public int getCount() {
+    return count;
+  }
 
-    public void setCount(int count) {
-        this.count = count;
-    }
+  public void setCount(int count) {
+    this.count = count;
+  }
 
-    public LocalDate getDate() {
-        return date;
-    }
+  public LocalDate getDate() {
+    return date;
+  }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
+  public void setDate(LocalDate date) {
+    this.date = date;
+  }
 
-    public Kon getKon() {
-        return kon;
-    }
+  public Kon getKon() {
+    return kon;
+  }
 
-    public void setKon(Kon kon) {
-        this.kon = kon;
-    }
+  public void setKon(Kon kon) {
+    this.kon = kon;
+  }
 
-    public MsgAmne getAmne() {
-        return amne;
-    }
+  public MsgAmne getAmne() {
+    return amne;
+  }
 
-    public void setAmne(MsgAmne amne) {
-        this.amne = amne;
-    }
+  public void setAmne(MsgAmne amne) {
+    this.amne = amne;
+  }
 
-    public void setEnhet(String enhet) {
-        this.enhet = enhet;
-    }
+  public void setEnhet(String enhet) {
+    this.enhet = enhet;
+  }
 
-    public String getEnhet() {
-        return enhet;
-    }
+  public String getEnhet() {
+    return enhet;
+  }
 
-    public void setPatientAge(int patientAge) {
-        this.patientAge = patientAge;
-    }
+  public void setPatientAge(int patientAge) {
+    this.patientAge = patientAge;
+  }
 
-    public int getPatientAge() {
-        return patientAge;
-    }
+  public int getPatientAge() {
+    return patientAge;
+  }
 
-    public void setIntygTyp(String intygTyp) {
-        this.intygTyp = intygTyp;
-    }
+  public void setIntygTyp(String intygTyp) {
+    this.intygTyp = intygTyp;
+  }
 
-    public String getIntygTyp() {
-        return intygTyp;
-    }
+  public String getIntygTyp() {
+    return intygTyp;
+  }
 
-    public String getDx() {
-        return dx;
-    }
+  public String getDx() {
+    return dx;
+  }
 
-    public void setDx(String dx) {
-        this.dx = dx;
-    }
+  public void setDx(String dx) {
+    this.dx = dx;
+  }
 
-    public void setIntygid(String intygid) {
-        this.intygid = intygid;
-    }
+  public void setIntygid(String intygid) {
+    this.intygid = intygid;
+  }
 
-    public String getIntygid() {
-        return intygid;
-    }
+  public String getIntygid() {
+    return intygid;
+  }
 
-    public HsaIdLakare getLakareId() {
-        return lakareId;
-    }
+  public HsaIdLakare getLakareId() {
+    return lakareId;
+  }
 
-    public void setLakareId(HsaIdLakare lakareId) {
-        this.lakareId = lakareId;
-    }
+  public void setLakareId(HsaIdLakare lakareId) {
+    this.lakareId = lakareId;
+  }
 
-    public void setSvarIds(String svarIds) {
-        this.svarIds = svarIds;
-    }
+  public void setSvarIds(String svarIds) {
+    this.svarIds = svarIds;
+  }
 
-    public String getSvarIds() {
-        return svarIds;
-    }
+  public String getSvarIds() {
+    return svarIds;
+  }
 }

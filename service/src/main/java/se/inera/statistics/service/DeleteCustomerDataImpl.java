@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -29,48 +29,48 @@ import se.inera.statistics.service.warehouse.db.DeleteCustomerDataDB;
 @Service
 public class DeleteCustomerDataImpl implements DeleteCustomerData {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DeleteCustomerDataImpl.class);
+  private static final Logger LOG = LoggerFactory.getLogger(DeleteCustomerDataImpl.class);
 
-    private DeleteCustomerDataDB deleteCustomerDataDB;
+  private DeleteCustomerDataDB deleteCustomerDataDB;
 
-    @Autowired
-    public DeleteCustomerDataImpl(DeleteCustomerDataDB deleteCustomerDataDB) {
-        this.deleteCustomerDataDB = deleteCustomerDataDB;
+  @Autowired
+  public DeleteCustomerDataImpl(DeleteCustomerDataDB deleteCustomerDataDB) {
+    this.deleteCustomerDataDB = deleteCustomerDataDB;
+  }
+
+  @Override
+  public List<String> deleteCustomerDataByIntygsId(List<String> intygsIdList) {
+    List<String> deletedIntygsIdList = new ArrayList<>();
+    for (String intygsId : intygsIdList) {
+      try {
+        deleteCustomerDataDB.deleteFromHsa(intygsId);
+        deleteCustomerDataDB.deleteFromIntygcommon(intygsId);
+        deleteCustomerDataDB.deleteFromIntyghandelse(intygsId);
+        deleteCustomerDataDB.deleteFromMeddelandehandelseAndMessagewideline(intygsId);
+        deleteCustomerDataDB.deleteFromWideline(intygsId);
+        deleteCustomerDataDB.deleteFromIntygsenthandelse(intygsId);
+      } catch (Exception e) {
+        LOG.error(e.getMessage());
+        continue;
+      }
+      deletedIntygsIdList.add(intygsId);
     }
+    return deletedIntygsIdList;
+  }
 
-    @Override
-    public List<String> deleteCustomerDataByIntygsId(List<String> intygsIdList) {
-        List<String> deletedIntygsIdList = new ArrayList<>();
-        for (String intygsId : intygsIdList) {
-            try {
-                deleteCustomerDataDB.deleteFromHsa(intygsId);
-                deleteCustomerDataDB.deleteFromIntygcommon(intygsId);
-                deleteCustomerDataDB.deleteFromIntyghandelse(intygsId);
-                deleteCustomerDataDB.deleteFromMeddelandehandelseAndMessagewideline(intygsId);
-                deleteCustomerDataDB.deleteFromWideline(intygsId);
-                deleteCustomerDataDB.deleteFromIntygsenthandelse(intygsId);
-            } catch (Exception e) {
-                LOG.error(e.getMessage());
-                continue;
-            }
-            deletedIntygsIdList.add(intygsId);
-        }
-        return deletedIntygsIdList;
+  @Override
+  public List<String> deleteCustomerDataByVardgivarId(List<String> vardgivareIdList) {
+    List<String> deletedVardgivareIdList = new ArrayList<>();
+    for (String vardgivarId : vardgivareIdList) {
+      try {
+        deleteCustomerDataDB.deleteFromLakare(vardgivarId);
+        deleteCustomerDataDB.deleteFromEnhet(vardgivarId);
+      } catch (Exception e) {
+        LOG.error(e.getMessage());
+        continue;
+      }
+      deletedVardgivareIdList.add(vardgivarId);
     }
-
-    @Override
-    public List<String> deleteCustomerDataByVardgivarId(List<String> vardgivareIdList) {
-        List<String> deletedVardgivareIdList = new ArrayList<>();
-        for (String vardgivarId : vardgivareIdList) {
-            try {
-                deleteCustomerDataDB.deleteFromLakare(vardgivarId);
-                deleteCustomerDataDB.deleteFromEnhet(vardgivarId);
-            } catch (Exception e) {
-                LOG.error(e.getMessage());
-                continue;
-            }
-            deletedVardgivareIdList.add(vardgivarId);
-        }
-        return deletedVardgivareIdList;
-    }
+    return deletedVardgivareIdList;
+  }
 }

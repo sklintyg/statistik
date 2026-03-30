@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -19,19 +19,17 @@
 package se.inera.statistics.web.service.dto;
 
 public enum StatisticsLevel {
+  NATIONELL(MessagesText.STATISTICS_LEVEL_NATIONELL),
+  VERKSAMHET(MessagesText.STATISTICS_LEVEL_VERKSAMHET),
+  REGION(MessagesText.STATISTICS_LEVEL_REGION);
 
-    NATIONELL(MessagesText.STATISTICS_LEVEL_NATIONELL),
-    VERKSAMHET(MessagesText.STATISTICS_LEVEL_VERKSAMHET),
-    REGION(MessagesText.STATISTICS_LEVEL_REGION);
+  private final String text;
 
-    private final String text;
+  StatisticsLevel(String text) {
+    this.text = text;
+  }
 
-    StatisticsLevel(String text) {
-        this.text = text;
-    }
-
-    public String getText() {
-        return text;
-    }
-
+  public String getText() {
+    return text;
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,20 +22,19 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 
 public class EnhetWithPatients {
 
-    private SimpleKonDataRow row;
-    private float sjukfallPerThousandListadePatienter;
+  private SimpleKonDataRow row;
+  private float sjukfallPerThousandListadePatienter;
 
-    public EnhetWithPatients(SimpleKonDataRow row, float sjukfallPerThousandListadePatienter) {
-        this.row = row;
-        this.sjukfallPerThousandListadePatienter = sjukfallPerThousandListadePatienter;
-    }
+  public EnhetWithPatients(SimpleKonDataRow row, float sjukfallPerThousandListadePatienter) {
+    this.row = row;
+    this.sjukfallPerThousandListadePatienter = sjukfallPerThousandListadePatienter;
+  }
 
-    public SimpleKonDataRow getRow() {
-        return row;
-    }
+  public SimpleKonDataRow getRow() {
+    return row;
+  }
 
-    public float getSjukfallPerThousandListadePatienter() {
-        return sjukfallPerThousandListadePatienter;
-    }
-
+  public float getSjukfallPerThousandListadePatienter() {
+    return sjukfallPerThousandListadePatienter;
+  }
 }

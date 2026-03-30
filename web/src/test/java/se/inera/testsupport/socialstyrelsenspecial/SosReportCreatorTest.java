@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -28,30 +28,33 @@ import org.junit.jupiter.api.Test;
 
 public class SosReportCreatorTest {
 
-    @Test
-    public void testGetFirstDateOfYear() throws Exception {
-        //Given
-        final Clock clock = Clock.fixed(Instant.parse("2016-05-11T10:15:30.00Z"), ZoneId.systemDefault());
-        final SosReportCreator sosReportCreator = new SosReportCreator(null, null, null, null, false, clock, 2015, 2015);
+  @Test
+  public void testGetFirstDateOfYear() throws Exception {
+    // Given
+    final Clock clock =
+        Clock.fixed(Instant.parse("2016-05-11T10:15:30.00Z"), ZoneId.systemDefault());
+    final SosReportCreator sosReportCreator =
+        new SosReportCreator(null, null, null, null, false, clock, 2015, 2015);
 
-        //When
-        final LocalDate firstDateOfLastYear = sosReportCreator.getFirstDateOfYear();
+    // When
+    final LocalDate firstDateOfLastYear = sosReportCreator.getFirstDateOfYear();
 
-        //Then
-        assertEquals(LocalDate.parse("2015-01-01"), firstDateOfLastYear);
-    }
+    // Then
+    assertEquals(LocalDate.parse("2015-01-01"), firstDateOfLastYear);
+  }
 
-    @Test
-    public void testGetLastDateOfYear() throws Exception {
-        //Given
-        final Clock clock = Clock.fixed(Instant.parse("2015-05-11T10:15:30.00Z"), ZoneId.systemDefault());
-        final SosReportCreator sosReportCreator = new SosReportCreator(null, null, null, null, false, clock, 2014, 2014);
+  @Test
+  public void testGetLastDateOfYear() throws Exception {
+    // Given
+    final Clock clock =
+        Clock.fixed(Instant.parse("2015-05-11T10:15:30.00Z"), ZoneId.systemDefault());
+    final SosReportCreator sosReportCreator =
+        new SosReportCreator(null, null, null, null, false, clock, 2014, 2014);
 
-        //When
-        final LocalDate lastDateOfLastYear = sosReportCreator.getLastDateOfYear();
+    // When
+    final LocalDate lastDateOfLastYear = sosReportCreator.getLastDateOfYear();
 
-        //Then
-        assertEquals(LocalDate.parse("2014-12-31"), lastDateOfLastYear);
-    }
-
+    // Then
+    assertEquals(LocalDate.parse("2014-12-31"), lastDateOfLastYear);
+  }
 }

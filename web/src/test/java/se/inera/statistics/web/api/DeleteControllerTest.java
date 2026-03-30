@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -35,31 +35,30 @@ import se.inera.statistics.service.DeleteCustomerData;
 @ExtendWith(MockitoExtension.class)
 public class DeleteControllerTest {
 
-    @Mock
-    private DeleteCustomerData deleteCustomerData;
+  @Mock private DeleteCustomerData deleteCustomerData;
 
-    @InjectMocks
-    private DeleteController deleteController;
+  @InjectMocks private DeleteController deleteController;
 
-    @Test
-    public void testDeleteIntygsIdList() {
-        List<String> strings = new ArrayList<>();
-        List<String> dataByIntygsIdResult = new ArrayList<>();
-        when(deleteCustomerData.deleteCustomerDataByIntygsId(strings)).thenReturn(dataByIntygsIdResult);
+  @Test
+  public void testDeleteIntygsIdList() {
+    List<String> strings = new ArrayList<>();
+    List<String> dataByIntygsIdResult = new ArrayList<>();
+    when(deleteCustomerData.deleteCustomerDataByIntygsId(strings)).thenReturn(dataByIntygsIdResult);
 
-        assertNotNull(deleteController.deleteIntygsIdList(strings));
+    assertNotNull(deleteController.deleteIntygsIdList(strings));
 
-        verify(deleteCustomerData, times(1)).deleteCustomerDataByIntygsId(strings);
-    }
+    verify(deleteCustomerData, times(1)).deleteCustomerDataByIntygsId(strings);
+  }
 
-    @Test
-    public void testDeleteVardgivareIdList() {
-        List<String> strings = new ArrayList<>();
-        List<String> deletedVardgivares = new ArrayList<>();
-        when(deleteCustomerData.deleteCustomerDataByVardgivarId(strings)).thenReturn(deletedVardgivares);
+  @Test
+  public void testDeleteVardgivareIdList() {
+    List<String> strings = new ArrayList<>();
+    List<String> deletedVardgivares = new ArrayList<>();
+    when(deleteCustomerData.deleteCustomerDataByVardgivarId(strings))
+        .thenReturn(deletedVardgivares);
 
-        assertNotNull(deleteController.deleteVardgivareIdList(strings));
+    assertNotNull(deleteController.deleteVardgivareIdList(strings));
 
-        verify(deleteCustomerData, times(1)).deleteCustomerDataByVardgivarId(strings);
-    }
+    verify(deleteCustomerData, times(1)).deleteCustomerDataByVardgivarId(strings);
+  }
 }

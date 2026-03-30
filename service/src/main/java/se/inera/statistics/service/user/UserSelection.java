@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -26,24 +26,21 @@ import jakarta.persistence.Table;
 @Table(name = "userselection")
 public class UserSelection {
 
-    @Id
-    private String selectionkey;
-    private String value;
+  @Id private String selectionkey;
+  private String value;
 
-    public UserSelection(String key, String value) {
-        this.selectionkey = key;
-        this.value = value;
-    }
+  public UserSelection(String key, String value) {
+    this.selectionkey = key;
+    this.value = value;
+  }
 
-    UserSelection() {
-    }
+  UserSelection() {}
 
-    public String getSelectionkey() {
-        return selectionkey;
-    }
+  public String getSelectionkey() {
+    return selectionkey;
+  }
 
-    public String getValue() {
-        return value;
-    }
-
+  public String getValue() {
+    return value;
+  }
 }

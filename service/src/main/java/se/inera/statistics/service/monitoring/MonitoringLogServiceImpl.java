@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -26,41 +26,41 @@ import se.inera.intyg.infra.monitoring.logging.MarkerFilter;
 @Service("serviceMonitoringLogService")
 public class MonitoringLogServiceImpl implements MonitoringLogService {
 
-    private static final Object SPACE = " ";
-    private static final Logger LOG = LoggerFactory.getLogger(MonitoringLogService.class);
+  private static final Object SPACE = " ";
+  private static final Logger LOG = LoggerFactory.getLogger(MonitoringLogService.class);
 
-    @Override
-    public void logInFromQueue(String certificateId) {
-        logEvent(MonitoringEvent.IN_FROM_QUEUE, certificateId);
+  @Override
+  public void logInFromQueue(String certificateId) {
+    logEvent(MonitoringEvent.IN_FROM_QUEUE, certificateId);
+  }
+
+  @Override
+  public void logInFromTable(int nbrCertificates) {
+    logEvent(MonitoringEvent.IN_FROM_TABLE, nbrCertificates);
+  }
+
+  private void logEvent(MonitoringEvent logEvent, Object... logMsgArgs) {
+    LOG.info(MarkerFilter.MONITORING, buildMessage(logEvent), logMsgArgs);
+  }
+
+  private String buildMessage(MonitoringEvent logEvent) {
+    StringBuilder logMsg = new StringBuilder();
+    logMsg.append(logEvent.name()).append(SPACE).append(logEvent.getMessage());
+    return logMsg.toString();
+  }
+
+  private enum MonitoringEvent {
+    IN_FROM_QUEUE("Received certificateId '{}' from queue"),
+    IN_FROM_TABLE("Processed batch with '{}' certificates");
+
+    private final String message;
+
+    MonitoringEvent(String msg) {
+      this.message = msg;
     }
 
-    @Override
-    public void logInFromTable(int nbrCertificates) {
-        logEvent(MonitoringEvent.IN_FROM_TABLE, nbrCertificates);
+    public String getMessage() {
+      return message;
     }
-
-    private void logEvent(MonitoringEvent logEvent, Object... logMsgArgs) {
-        LOG.info(MarkerFilter.MONITORING, buildMessage(logEvent), logMsgArgs);
-    }
-
-    private String buildMessage(MonitoringEvent logEvent) {
-        StringBuilder logMsg = new StringBuilder();
-        logMsg.append(logEvent.name()).append(SPACE).append(logEvent.getMessage());
-        return logMsg.toString();
-    }
-
-    private enum MonitoringEvent {
-        IN_FROM_QUEUE("Received certificateId '{}' from queue"),
-        IN_FROM_TABLE("Processed batch with '{}' certificates");
-
-        private final String message;
-
-        MonitoringEvent(String msg) {
-            this.message = msg;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-    }
+  }
 }

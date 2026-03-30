@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -41,186 +41,188 @@ import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.Regi
 @Component
 public class LogConsumerImpl implements LogConsumer {
 
-    private static final Logger LOG = LoggerFactory.getLogger(LogConsumerImpl.class);
-    public static final int BATCH_SIZE = 100;
+  private static final Logger LOG = LoggerFactory.getLogger(LogConsumerImpl.class);
+  public static final int BATCH_SIZE = 100;
 
-    @Autowired
-    private ProcessLog processLog;
+  @Autowired private ProcessLog processLog;
 
-    @Autowired
-    private Processor processor;
+  @Autowired private Processor processor;
 
-    @Autowired
-    private HSADecorator hsa;
+  @Autowired private HSADecorator hsa;
 
-    @Autowired
-    private RegisterCertificateResolver registerCertificateResolver;
+  @Autowired private RegisterCertificateResolver registerCertificateResolver;
 
-    @Autowired
-    private TsBasHelper tsBasHelper;
+  @Autowired private TsBasHelper tsBasHelper;
 
-    @Autowired
-    private TsDiabetesHelper tsDiabetesHelper;
+  @Autowired private TsDiabetesHelper tsDiabetesHelper;
 
-    private volatile boolean isRunning = false;
+  private volatile boolean isRunning = false;
 
-    @Transactional
-    @Override
-    public synchronized int processBatch() {
+  @Transactional
+  @Override
+  public synchronized int processBatch() {
+    try {
+      setRunning(true);
+      List<IntygEvent> result = processLog.getPending(BATCH_SIZE);
+      if (result.isEmpty()) {
+        return 0;
+      }
+      int processed = 0;
+      for (IntygEvent event : result) {
+        final IntygFormat format = event.getFormat();
         try {
-            setRunning(true);
-            List<IntygEvent> result = processLog.getPending(BATCH_SIZE);
-            if (result.isEmpty()) {
-                return 0;
-            }
-            int processed = 0;
-            for (IntygEvent event : result) {
-                final IntygFormat format = event.getFormat();
-                try {
-                    final boolean eventSuccessfullyHandled = handleEvent(event, format);
-                    if (!eventSuccessfullyHandled) {
-                        LOG.error("Failed to process intyg {} ({})", event.getId(), event.getCorrelationId());
-                    }
-                } catch (HsaCommunicationException e) {
-                    LOG.error("Could not process intyg {} ({}). {}", event.getId(), event.getCorrelationId(), e.getMessage());
-                    return processed;
-                } catch (Exception e) {
-                    LOG.error("Could not process intyg {} ({}). {}", event.getId(), event.getCorrelationId(), e.getMessage());
-                } finally {
-                    processLog.confirm(event.getId());
-                    processed++;
-                    LOG.info("Processed log id {}", event.getId());
-                }
-            }
-            return processed;
+          final boolean eventSuccessfullyHandled = handleEvent(event, format);
+          if (!eventSuccessfullyHandled) {
+            LOG.error("Failed to process intyg {} ({})", event.getId(), event.getCorrelationId());
+          }
+        } catch (HsaCommunicationException e) {
+          LOG.error(
+              "Could not process intyg {} ({}). {}",
+              event.getId(),
+              event.getCorrelationId(),
+              e.getMessage());
+          return processed;
+        } catch (Exception e) {
+          LOG.error(
+              "Could not process intyg {} ({}). {}",
+              event.getId(),
+              event.getCorrelationId(),
+              e.getMessage());
         } finally {
-            setRunning(false);
+          processLog.confirm(event.getId());
+          processed++;
+          LOG.info("Processed log id {}", event.getId());
         }
+      }
+      return processed;
+    } finally {
+      setRunning(false);
+    }
+  }
+
+  @SuppressWarnings("UnnecessaryDefaultInEnumSwitch")
+  private boolean handleEvent(IntygEvent event, IntygFormat format) {
+    switch (format) {
+      case REGISTER_MEDICAL_CERTIFICATE:
+        return processJsonMedicalCertificate(event);
+      case REGISTER_CERTIFICATE:
+        return processRegisterCertificate(event);
+      case REGISTER_TS_BAS:
+        return processTsBas(event);
+      case REGISTER_TS_DIABETES:
+        return processTsDiabetes(event);
+      default:
+        LOG.warn("Unhandled intyg format: " + format);
+        return false;
+    }
+  }
+
+  private boolean processRegisterCertificate(IntygEvent event) {
+    try {
+      final RegisterCertificateType rc = registerCertificateResolver.unmarshalXml(event.getData());
+      final IntygType certificateType = registerCertificateResolver.getIntygtyp(rc);
+      final boolean successfullyProcessedXml = processXmlCertificate(event, rc, certificateType);
+      if (!successfullyProcessedXml) {
+        return false;
+      }
+    } catch (Exception e) {
+      LOG.warn("Failed to unmarshal intyg xml");
+      LOG.debug("Failed to unmarshal intyg xml", e);
+      return false;
+    }
+    return true;
+  }
+
+  private boolean processTsBas(IntygEvent event) {
+    try {
+      final RegisterTSBasType rc = tsBasHelper.unmarshalXml(event.getData());
+
+      EventType type = event.getType();
+      HsaInfo hsaInfo = hsa.populateHsaData(rc, event.getCorrelationId());
+      if (hsaInfo == null && !type.equals(EventType.REVOKED)) {
+        return false;
+      }
+
+      IntygDTO dto = tsBasHelper.convertToDTO(rc);
+      processIntyg(event, dto, hsaInfo);
+
+      return true;
+    } catch (Exception e) {
+      LOG.warn("Failed to unmarshal intyg xml");
+      LOG.debug("Failed to unmarshal intyg xml", e);
+      return false;
+    }
+  }
+
+  private boolean processTsDiabetes(IntygEvent event) {
+    try {
+      final RegisterTSDiabetesType rc = tsDiabetesHelper.unmarshalXml(event.getData());
+
+      EventType type = event.getType();
+      HsaInfo hsaInfo = hsa.populateHsaData(rc, event.getCorrelationId());
+      if (hsaInfo == null && !type.equals(EventType.REVOKED)) {
+        return false;
+      }
+
+      IntygDTO dto = tsDiabetesHelper.convertToDTO(rc);
+      processIntyg(event, dto, hsaInfo);
+
+      return true;
+    } catch (Exception e) {
+      LOG.warn("Failed to unmarshal intyg xml");
+      LOG.debug("Failed to unmarshal intyg xml", e);
+      return false;
+    }
+  }
+
+  /**
+   * @return true for success, otherwise false
+   */
+  private boolean processJsonMedicalCertificate(IntygEvent event) {
+    EventType type = event.getType();
+    JsonNode intyg = JSONParser.parse(event.getData());
+    HsaInfo hsaInfo = hsa.decorate(intyg, event.getCorrelationId());
+    if (hsaInfo == null && !type.equals(EventType.REVOKED)) {
+      return false;
     }
 
-    @SuppressWarnings("UnnecessaryDefaultInEnumSwitch")
-    private boolean handleEvent(IntygEvent event, IntygFormat format) {
-        switch (format) {
-            case REGISTER_MEDICAL_CERTIFICATE:
-                return processJsonMedicalCertificate(event);
-            case REGISTER_CERTIFICATE:
-                return processRegisterCertificate(event);
-            case REGISTER_TS_BAS:
-                return processTsBas(event);
-            case REGISTER_TS_DIABETES:
-                return processTsDiabetes(event);
-            default:
-                LOG.warn("Unhandled intyg format: " + format);
-                return false;
-        }
+    IntygDTO dto = JsonDocumentHelper.convertToDTO(intyg);
+    processIntyg(event, dto, hsaInfo);
+
+    return true;
+  }
+
+  /**
+   * @return true for success, otherwise false
+   */
+  private boolean processXmlCertificate(
+      IntygEvent event, RegisterCertificateType rc, IntygType intygType) {
+    EventType type = event.getType();
+    HsaInfo hsaInfo = hsa.populateHsaData(rc, event.getCorrelationId());
+    if (hsaInfo == null && !type.equals(EventType.REVOKED)) {
+      return false;
     }
 
-    private boolean processRegisterCertificate(IntygEvent event) {
-        try {
-            final RegisterCertificateType rc = registerCertificateResolver.unmarshalXml(event.getData());
-            final IntygType certificateType = registerCertificateResolver.getIntygtyp(rc);
-            final boolean successfullyProcessedXml = processXmlCertificate(event, rc, certificateType);
-            if (!successfullyProcessedXml) {
-                return false;
-            }
-        } catch (Exception e) {
-            LOG.warn("Failed to unmarshal intyg xml");
-            LOG.debug("Failed to unmarshal intyg xml", e);
-            return false;
-        }
-        return true;
-    }
+    IntygDTO dto = registerCertificateResolver.resolveIntygHelper(intygType).convertToDTO(rc);
 
-    private boolean processTsBas(IntygEvent event) {
-        try {
-            final RegisterTSBasType rc = tsBasHelper.unmarshalXml(event.getData());
+    processIntyg(event, dto, hsaInfo);
 
-            EventType type = event.getType();
-            HsaInfo hsaInfo = hsa.populateHsaData(rc, event.getCorrelationId());
-            if (hsaInfo == null && !type.equals(EventType.REVOKED)) {
-                return false;
-            }
+    return true;
+  }
 
-            IntygDTO dto = tsBasHelper.convertToDTO(rc);
-            processIntyg(event, dto, hsaInfo);
+  private boolean processIntyg(IntygEvent event, IntygDTO dto, HsaInfo hsaInfo) {
+    EventType type = event.getType();
 
-            return true;
-        } catch (Exception e) {
-            LOG.warn("Failed to unmarshal intyg xml");
-            LOG.debug("Failed to unmarshal intyg xml", e);
-            return false;
-        }
-    }
+    processor.accept(dto, hsaInfo, event.getId(), event.getCorrelationId(), type);
 
-    private boolean processTsDiabetes(IntygEvent event) {
-        try {
-            final RegisterTSDiabetesType rc = tsDiabetesHelper.unmarshalXml(event.getData());
+    return true;
+  }
 
-            EventType type = event.getType();
-            HsaInfo hsaInfo = hsa.populateHsaData(rc, event.getCorrelationId());
-            if (hsaInfo == null && !type.equals(EventType.REVOKED)) {
-                return false;
-            }
+  public synchronized boolean isRunning() {
+    return isRunning;
+  }
 
-            IntygDTO dto = tsDiabetesHelper.convertToDTO(rc);
-            processIntyg(event, dto, hsaInfo);
-
-            return true;
-        } catch (Exception e) {
-            LOG.warn("Failed to unmarshal intyg xml");
-            LOG.debug("Failed to unmarshal intyg xml", e);
-            return false;
-        }
-    }
-
-    /**
-     * @return true for success, otherwise false
-     */
-    private boolean processJsonMedicalCertificate(IntygEvent event) {
-        EventType type = event.getType();
-        JsonNode intyg = JSONParser.parse(event.getData());
-        HsaInfo hsaInfo = hsa.decorate(intyg, event.getCorrelationId());
-        if (hsaInfo == null && !type.equals(EventType.REVOKED)) {
-            return false;
-        }
-
-        IntygDTO dto = JsonDocumentHelper.convertToDTO(intyg);
-        processIntyg(event, dto, hsaInfo);
-
-        return true;
-    }
-
-    /**
-     * @return true for success, otherwise false
-     */
-    private boolean processXmlCertificate(IntygEvent event, RegisterCertificateType rc, IntygType intygType) {
-        EventType type = event.getType();
-        HsaInfo hsaInfo = hsa.populateHsaData(rc, event.getCorrelationId());
-        if (hsaInfo == null && !type.equals(EventType.REVOKED)) {
-            return false;
-        }
-
-        IntygDTO dto = registerCertificateResolver.resolveIntygHelper(intygType).convertToDTO(rc);
-
-        processIntyg(event, dto, hsaInfo);
-
-        return true;
-    }
-
-    private boolean processIntyg(IntygEvent event, IntygDTO dto, HsaInfo hsaInfo) {
-        EventType type = event.getType();
-
-        processor.accept(dto, hsaInfo, event.getId(), event.getCorrelationId(), type);
-
-        return true;
-    }
-
-    public synchronized boolean isRunning() {
-        return isRunning;
-    }
-
-    private synchronized void setRunning(boolean b) {
-        isRunning = b;
-    }
-
+  private synchronized void setRunning(boolean b) {
+    isRunning = b;
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -57,130 +57,156 @@ import se.inera.statistics.web.util.SpyableClock;
 
 public class WarehouseServiceTest {
 
-    @Mock
-    private Warehouse warehouse;
+  @Mock private Warehouse warehouse;
 
-    @Mock
-    private DiagnosgruppQuery query;
+  @Mock private DiagnosgruppQuery query;
 
-    @Mock
-    private OverviewQuery overviewQuery;
+  @Mock private OverviewQuery overviewQuery;
 
-    @Mock
-    private SjukfallQuery sjukfallQuery;
+  @Mock private SjukfallQuery sjukfallQuery;
 
-    @Mock
-    private SjukfallUtil sjukfallUtil;
+  @Mock private SjukfallUtil sjukfallUtil;
 
-    @Mock
-    private EnhetManager enhetManager;
+  @Mock private EnhetManager enhetManager;
 
-    @Spy
-    private SpyableClock clock;
+  @Spy private SpyableClock clock;
 
-    @InjectMocks
-    private WarehouseService warehouseService;
+  @InjectMocks private WarehouseService warehouseService;
 
-    @BeforeEach
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-    }
+  @BeforeEach
+  public void setUp() throws Exception {
+    MockitoAnnotations.initMocks(this);
+  }
 
-    @Test
-    public void testGetCasesPerEnhetIsExtendingNameWithIdIfDuplicateSTATISTIK1121() {
-        //Given
-        final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
-        rows.add(new SimpleKonDataRow("ABC", 0, 0, 1));
-        rows.add(new SimpleKonDataRow("abc", 0, 0, 2));
-        rows.add(new SimpleKonDataRow("CBA", 0, 0, 3));
-        final SimpleKonResponse response = new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
-        final Range range = new Range(clock);
-        Mockito.when(sjukfallQuery
-                .getSjukfallPerEnhet(null, null, range.getFrom(), 1, range.getNumberOfMonths(),
-                    null, CutoffUsage.DO_NOT_APPLY_CUTOFF, true))
-            .thenReturn(response);
+  @Test
+  public void testGetCasesPerEnhetIsExtendingNameWithIdIfDuplicateSTATISTIK1121() {
+    // Given
+    final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
+    rows.add(new SimpleKonDataRow("ABC", 0, 0, 1));
+    rows.add(new SimpleKonDataRow("abc", 0, 0, 2));
+    rows.add(new SimpleKonDataRow("CBA", 0, 0, 3));
+    final SimpleKonResponse response =
+        new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
+    final Range range = new Range(clock);
+    Mockito.when(
+            sjukfallQuery.getSjukfallPerEnhet(
+                null,
+                null,
+                range.getFrom(),
+                1,
+                range.getNumberOfMonths(),
+                null,
+                CutoffUsage.DO_NOT_APPLY_CUTOFF,
+                true))
+        .thenReturn(response);
 
-        //When
-        final SimpleKonResponse casesPerEnhet = warehouseService.getCasesPerEnhet(null,
-            null, range, null, true);
+    // When
+    final SimpleKonResponse casesPerEnhet =
+        warehouseService.getCasesPerEnhet(null, null, range, null, true);
 
-        //Then
-        assertEquals(3, casesPerEnhet.getGroups().size());
-        assertEquals("ABC 1", casesPerEnhet.getGroups().get(0));
-        assertEquals("abc 2", casesPerEnhet.getGroups().get(1));
-        assertEquals("CBA", casesPerEnhet.getGroups().get(2));
-    }
+    // Then
+    assertEquals(3, casesPerEnhet.getGroups().size());
+    assertEquals("ABC 1", casesPerEnhet.getGroups().get(0));
+    assertEquals("abc 2", casesPerEnhet.getGroups().get(1));
+    assertEquals("CBA", casesPerEnhet.getGroups().get(2));
+  }
 
-    @Test
-    public void testGetCasesPerEnhetRegionIsExtendingNameWithIdIfDuplicateSTATISTIK1121() {
-        //Given
-        final Predicate predicate = Mockito.mock(Predicate.class);
-        final String testhash = "testhash";
-        final FilterPredicates predicate1 = new FilterPredicates(predicate, sjukfall -> true, testhash, false);
-        final ArrayList<HsaIdEnhet> enheter = new ArrayList<>();
-        final ArrayList<String> diagnoser = new ArrayList<>();
-        final Filter filter = new Filter(predicate1, enheter, diagnoser, null,
-            null, testhash, null, true);
-        final Range range = new Range(clock);
-        final FilterSettings filterSettings = new FilterSettings(filter, range);
-        final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
-        rows.add(new SimpleKonDataRow("ABC", 0, 0, 1));
-        rows.add(new SimpleKonDataRow("abc", 0, 0, 2));
-        rows.add(new SimpleKonDataRow("CBA", 0, 0, 3));
-        final SimpleKonResponse simpleKonResponse = new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
+  @Test
+  public void testGetCasesPerEnhetRegionIsExtendingNameWithIdIfDuplicateSTATISTIK1121() {
+    // Given
+    final Predicate predicate = Mockito.mock(Predicate.class);
+    final String testhash = "testhash";
+    final FilterPredicates predicate1 =
+        new FilterPredicates(predicate, sjukfall -> true, testhash, false);
+    final ArrayList<HsaIdEnhet> enheter = new ArrayList<>();
+    final ArrayList<String> diagnoser = new ArrayList<>();
+    final Filter filter =
+        new Filter(predicate1, enheter, diagnoser, null, null, testhash, null, true);
+    final Range range = new Range(clock);
+    final FilterSettings filterSettings = new FilterSettings(filter, range);
+    final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
+    rows.add(new SimpleKonDataRow("ABC", 0, 0, 1));
+    rows.add(new SimpleKonDataRow("abc", 0, 0, 2));
+    rows.add(new SimpleKonDataRow("CBA", 0, 0, 3));
+    final SimpleKonResponse simpleKonResponse =
+        new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
 
-        Mockito.doReturn(simpleKonResponse)
-            .when(sjukfallQuery).getSjukfallPerEnhet(nullable(Aisle.class), eq(predicate1), eq(range.getFrom()), anyInt(),
-                eq(range.getNumberOfMonths()), any(Map.class), eq(CutoffUsage.APPLY_CUTOFF_PER_SEX), eq(true));
+    Mockito.doReturn(simpleKonResponse)
+        .when(sjukfallQuery)
+        .getSjukfallPerEnhet(
+            nullable(Aisle.class),
+            eq(predicate1),
+            eq(range.getFrom()),
+            anyInt(),
+            eq(range.getNumberOfMonths()),
+            any(Map.class),
+            eq(CutoffUsage.APPLY_CUTOFF_PER_SEX),
+            eq(true));
 
-        Mockito.doReturn(Arrays.asList(new Enhet(new HsaIdVardgivare("1"), HsaIdEnhet.empty(),
-                "namne1", "1", "1", "", "ve1")))
-            .when(enhetManager).getEnhets(enheter);
+    Mockito.doReturn(
+            Arrays.asList(
+                new Enhet(
+                    new HsaIdVardgivare("1"), HsaIdEnhet.empty(), "namne1", "1", "1", "", "ve1")))
+        .when(enhetManager)
+        .getEnhets(enheter);
 
-        //When
-        final SimpleKonResponse result = warehouseService.getCasesPerEnhetRegion(filterSettings);
+    // When
+    final SimpleKonResponse result = warehouseService.getCasesPerEnhetRegion(filterSettings);
 
-        //Then
-        assertEquals(3, result.getGroups().size());
-        assertEquals("ABC 1", result.getGroups().get(0));
-        assertEquals("abc 2", result.getGroups().get(1));
-        assertEquals("CBA", result.getGroups().get(2));
-    }
+    // Then
+    assertEquals(3, result.getGroups().size());
+    assertEquals("ABC 1", result.getGroups().get(0));
+    assertEquals("abc 2", result.getGroups().get(1));
+    assertEquals("CBA", result.getGroups().get(2));
+  }
 
-    @Test
-    public void testGetCasesPerPatientsPerEnhetRegionIsExtendingNameWithIdIfDuplicateSTATISTIK1121() {
-        //Given
-        final Predicate predicate = Mockito.mock(Predicate.class);
-        final String testhash = "testhash";
-        final FilterPredicates predicate1 = new FilterPredicates(predicate, sjukfall -> true, testhash, false);
-        final ArrayList<HsaIdEnhet> enheter = new ArrayList<>();
-        final ArrayList<String> diagnoser = new ArrayList<>();
-        final Filter filter = new Filter(predicate1, enheter, diagnoser, null,
-            null, testhash, null, true);
-        final Range range = new Range(clock);
-        final FilterSettings filterSettings = new FilterSettings(filter, range);
-        final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
-        rows.add(new SimpleKonDataRow("ABC", 0, 0, 1));
-        rows.add(new SimpleKonDataRow("abc", 0, 0, 2));
-        rows.add(new SimpleKonDataRow("CBA", 0, 0, 3));
-        final SimpleKonResponse simpleKonResponse = new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
+  @Test
+  public void testGetCasesPerPatientsPerEnhetRegionIsExtendingNameWithIdIfDuplicateSTATISTIK1121() {
+    // Given
+    final Predicate predicate = Mockito.mock(Predicate.class);
+    final String testhash = "testhash";
+    final FilterPredicates predicate1 =
+        new FilterPredicates(predicate, sjukfall -> true, testhash, false);
+    final ArrayList<HsaIdEnhet> enheter = new ArrayList<>();
+    final ArrayList<String> diagnoser = new ArrayList<>();
+    final Filter filter =
+        new Filter(predicate1, enheter, diagnoser, null, null, testhash, null, true);
+    final Range range = new Range(clock);
+    final FilterSettings filterSettings = new FilterSettings(filter, range);
+    final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
+    rows.add(new SimpleKonDataRow("ABC", 0, 0, 1));
+    rows.add(new SimpleKonDataRow("abc", 0, 0, 2));
+    rows.add(new SimpleKonDataRow("CBA", 0, 0, 3));
+    final SimpleKonResponse simpleKonResponse =
+        new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
 
-        Mockito.doReturn(simpleKonResponse)
-            .when(sjukfallQuery).getSjukfallPerEnhet(nullable(Aisle.class), eq(predicate1), eq(range.getFrom()), anyInt(),
-                eq(range.getNumberOfMonths()), any(Map.class), eq(CutoffUsage.APPLY_CUTOFF_ON_TOTAL), eq(true));
+    Mockito.doReturn(simpleKonResponse)
+        .when(sjukfallQuery)
+        .getSjukfallPerEnhet(
+            nullable(Aisle.class),
+            eq(predicate1),
+            eq(range.getFrom()),
+            anyInt(),
+            eq(range.getNumberOfMonths()),
+            any(Map.class),
+            eq(CutoffUsage.APPLY_CUTOFF_ON_TOTAL),
+            eq(true));
 
-        Mockito.doReturn(Arrays.asList(new Enhet(new HsaIdVardgivare("1"), HsaIdEnhet.empty(),
-                "namne1", "1", "1", "", "ve1")))
-            .when(enhetManager).getEnhets(enheter);
+    Mockito.doReturn(
+            Arrays.asList(
+                new Enhet(
+                    new HsaIdVardgivare("1"), HsaIdEnhet.empty(), "namne1", "1", "1", "", "ve1")))
+        .when(enhetManager)
+        .getEnhets(enheter);
 
-        //When
-        final SimpleKonResponse result = warehouseService.getCasesPerPatientsPerEnhetRegion(filterSettings);
+    // When
+    final SimpleKonResponse result =
+        warehouseService.getCasesPerPatientsPerEnhetRegion(filterSettings);
 
-        //Then
-        assertEquals(3, result.getGroups().size());
-        assertEquals("ABC 1", result.getGroups().get(0));
-        assertEquals("abc 2", result.getGroups().get(1));
-        assertEquals("CBA", result.getGroups().get(2));
-    }
-
+    // Then
+    assertEquals(3, result.getGroups().size());
+    assertEquals("ABC 1", result.getGroups().get(0));
+    assertEquals("abc 2", result.getGroups().get(1));
+    assertEquals("CBA", result.getGroups().get(2));
+  }
 }

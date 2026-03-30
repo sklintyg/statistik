@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,20 +22,19 @@ import se.inera.statistics.service.report.model.Kon;
 
 public class Patientdata {
 
-    private final int alder;
-    private final Kon kon;
+  private final int alder;
+  private final Kon kon;
 
-    public Patientdata(int alder, Kon kon) {
-        this.alder = alder;
-        this.kon = kon;
-    }
+  public Patientdata(int alder, Kon kon) {
+    this.alder = alder;
+    this.kon = kon;
+  }
 
-    public int getAlder() {
-        return alder;
-    }
+  public int getAlder() {
+    return alder;
+  }
 
-    public Kon getKon() {
-        return kon;
-    }
-
+  public Kon getKon() {
+    return kon;
+  }
 }

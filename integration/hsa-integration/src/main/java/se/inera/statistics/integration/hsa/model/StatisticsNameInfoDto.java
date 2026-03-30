@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,31 +20,31 @@ package se.inera.statistics.integration.hsa.model;
 
 public class StatisticsNameInfoDto {
 
-    private String hsaIdentity;
-    private String personMiddleAndSurName;
-    private String personGivenName;
+  private String hsaIdentity;
+  private String personMiddleAndSurName;
+  private String personGivenName;
 
-    public String getHsaIdentity() {
-        return hsaIdentity;
-    }
+  public String getHsaIdentity() {
+    return hsaIdentity;
+  }
 
-    public void setHsaIdentity(String hsaIdentity) {
-        this.hsaIdentity = hsaIdentity;
-    }
+  public void setHsaIdentity(String hsaIdentity) {
+    this.hsaIdentity = hsaIdentity;
+  }
 
-    public String getPersonMiddleAndSurName() {
-        return personMiddleAndSurName;
-    }
+  public String getPersonMiddleAndSurName() {
+    return personMiddleAndSurName;
+  }
 
-    public void setPersonMiddleAndSurName(String personMiddleAndSurName) {
-        this.personMiddleAndSurName = personMiddleAndSurName;
-    }
+  public void setPersonMiddleAndSurName(String personMiddleAndSurName) {
+    this.personMiddleAndSurName = personMiddleAndSurName;
+  }
 
-    public String getPersonGivenName() {
-        return personGivenName;
-    }
+  public String getPersonGivenName() {
+    return personGivenName;
+  }
 
-    public void setPersonGivenName(String personGivenName) {
-        this.personGivenName = personGivenName;
-    }
+  public void setPersonGivenName(String personGivenName) {
+    this.personGivenName = personGivenName;
+  }
 }

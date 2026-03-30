@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,39 +23,51 @@ import java.util.stream.Collectors;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.message.MsgAmne;
-import se.inera.statistics.web.service.dto.MessagesText;
 import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.service.dto.FilterSettings;
+import se.inera.statistics.web.service.dto.MessagesText;
 
 public final class MessageAmneTvarsnittConverter extends SimpleDualSexConverter {
 
-    private MessageAmneTvarsnittConverter(String tableGroupTitle, String seriesNameTemplate, String totalColumnName,
-        String femaleColumnName, String maleColumnName) {
-        super(tableGroupTitle, seriesNameTemplate, totalColumnName, femaleColumnName, maleColumnName);
-    }
+  private MessageAmneTvarsnittConverter(
+      String tableGroupTitle,
+      String seriesNameTemplate,
+      String totalColumnName,
+      String femaleColumnName,
+      String maleColumnName) {
+    super(tableGroupTitle, seriesNameTemplate, totalColumnName, femaleColumnName, maleColumnName);
+  }
 
-    public static MessageAmneTvarsnittConverter newTvarsnitt() {
-        return new MessageAmneTvarsnittConverter("",
-            "%1$s",
-            MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_TOTALT,
-            MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_FEMALE,
-            MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_MALE);
-    }
+  public static MessageAmneTvarsnittConverter newTvarsnitt() {
+    return new MessageAmneTvarsnittConverter(
+        "",
+        "%1$s",
+        MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_TOTALT,
+        MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_FEMALE,
+        MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_MALE);
+  }
 
-    @Override
-    public SimpleDetailsData convert(SimpleKonResponse casesPerMonth, FilterSettings filterSettings, Message message) {
-        List<SimpleKonDataRow> rowsToShow = casesPerMonth.getRows().stream().filter(simpleKonDataRow -> {
-            if (simpleKonDataRow.getFemale() + simpleKonDataRow.getMale() <= 0) {
-                final Object amne = simpleKonDataRow.getExtras();
-                if (amne instanceof MsgAmne) {
-                    return ((MsgAmne) amne).isShowEmpty();
-                }
-            }
-            return true;
-        }).collect(Collectors.toList());
+  @Override
+  public SimpleDetailsData convert(
+      SimpleKonResponse casesPerMonth, FilterSettings filterSettings, Message message) {
+    List<SimpleKonDataRow> rowsToShow =
+        casesPerMonth.getRows().stream()
+            .filter(
+                simpleKonDataRow -> {
+                  if (simpleKonDataRow.getFemale() + simpleKonDataRow.getMale() <= 0) {
+                    final Object amne = simpleKonDataRow.getExtras();
+                    if (amne instanceof MsgAmne) {
+                      return ((MsgAmne) amne).isShowEmpty();
+                    }
+                  }
+                  return true;
+                })
+            .collect(Collectors.toList());
 
-        return super.convert(new SimpleKonResponse(casesPerMonth.getAvailableFilters(), rowsToShow), filterSettings, message);
-    }
-
+    return super.convert(
+        new SimpleKonResponse(casesPerMonth.getAvailableFilters(), rowsToShow),
+        filterSettings,
+        message);
+  }
 }

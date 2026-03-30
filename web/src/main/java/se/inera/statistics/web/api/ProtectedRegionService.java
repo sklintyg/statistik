@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -96,438 +96,586 @@ import se.inera.statistics.web.service.responseconverter.SjukfallPerPatientsPerE
 
 /**
  * Statistics services that requires authorization to use. Unless otherwise noted, the data returned
- * contains two data sets, one suitable for chart display, and one suited for tables. Csv and xlsx variants
- * only contains one data set.
- * <p/>
- * They all return 403 if called outside of a session or if authorization fails.
+ * contains two data sets, one suitable for chart display, and one suited for tables. Csv and xlsx
+ * variants only contains one data set.
+ *
+ * <p>They all return 403 if called outside of a session or if authorization fails.
  */
 @Service("protectedRegionService")
 @Path("/region")
 public class ProtectedRegionService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ProtectedRegionService.class);
-    public static final int YEAR = 12;
+  private static final Logger LOG = LoggerFactory.getLogger(ProtectedRegionService.class);
+  public static final int YEAR = 12;
 
-    @Autowired
-    private WarehouseService warehouse;
+  @Autowired private WarehouseService warehouse;
 
-    @Autowired
-    private LoginServiceUtil loginServiceUtil;
+  @Autowired private LoginServiceUtil loginServiceUtil;
 
-    @Autowired
-    private RegionEnhetHandler regionEnhetHandler;
+  @Autowired private RegionEnhetHandler regionEnhetHandler;
 
-    @Autowired
-    private FilterHandler filterHandler;
+  @Autowired private FilterHandler filterHandler;
 
-    @Autowired
-    private EnhetManager enhetManager;
+  @Autowired private EnhetManager enhetManager;
 
-    @Autowired
-    @Qualifier("webMonitoringLogService")
-    private MonitoringLogService monitoringLogService;
+  @Autowired
+  @Qualifier("webMonitoringLogService") private MonitoringLogService monitoringLogService;
 
-    @Autowired
-    private ResponseHandler responseHandler;
+  @Autowired private ResponseHandler responseHandler;
 
-    private RegionFileReader regionFileReader = new RegionFileReader();
+  private RegionFileReader regionFileReader = new RegionFileReader();
 
-    private RegionFileWriter regionFileWriter = new RegionFileWriter();
+  private RegionFileWriter regionFileWriter = new RegionFileWriter();
 
-    @POST
-    @Path("fileupload")
-    @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_HTML})
-    @Consumes({"multipart/form-data"})
-    @PreAuthorize(value = "@protectedRegionService.hasAccessToRegionAdmin(#request)")
-    @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
-    @PrometheusTimeMethod(
-        help = "API-tjänst för skyddad åtkomst till uppladdning av filer.")
-    @PerformanceLogging(eventAction = "file-upload", eventType = MdcLogConstants.EVENT_TYPE_CREATION)
-    public Response fileupload(@Context HttpServletRequest request, MultipartBody body) {
-        LoginInfo info = loginServiceUtil.getLoginInfo();
-        final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        final LoginInfoVg loginInfoVg = info.getLoginInfoForVg(vgId).orElse(LoginInfoVg.empty());
-        final String fallbackUpload = body.getAttachmentObject("fallbackUpload", String.class);
-        final boolean isUsingClassicFormFileUpload = fallbackUpload != null;
-        final UploadResultFormat resultFormat = isUsingClassicFormFileUpload ? UploadResultFormat.HTML : UploadResultFormat.JSON;
-        if (!loginInfoVg.isProcessledare()) {
-            final String msg = "A user without processledar-status tried to update regionsdata";
-            LOG.warn(msg + " : " + info.getHsaId());
-            return createFileUploadResponse(Response.Status.FORBIDDEN, msg, resultFormat);
-        }
-        final DataSource dataSource = body.getAttachment("file").getDataHandler().getDataSource();
-        if (dataSource.getName() == null) {
-            return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR, "Fil saknas", resultFormat);
-        }
-        try {
-            final List<RegionEnhetFileDataRow> regionFileRows = regionFileReader.readExcelData(dataSource);
-            final HsaIdVardgivare vardgivarId = loginInfoVg.getHsaId();
-            final RegionEnhetFileData fileData = new RegionEnhetFileData(vardgivarId, regionFileRows, info.getName(),
-                info.getHsaId(), dataSource.getName());
-            regionEnhetHandler.update(fileData);
+  @POST
+  @Path("fileupload")
+  @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_HTML})
+  @Consumes({"multipart/form-data"})
+  @PreAuthorize(value = "@protectedRegionService.hasAccessToRegionAdmin(#request)")
+  @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
+  @PrometheusTimeMethod(help = "API-tjänst för skyddad åtkomst till uppladdning av filer.")
+  @PerformanceLogging(eventAction = "file-upload", eventType = MdcLogConstants.EVENT_TYPE_CREATION)
+  public Response fileupload(@Context HttpServletRequest request, MultipartBody body) {
+    LoginInfo info = loginServiceUtil.getLoginInfo();
+    final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+    final LoginInfoVg loginInfoVg = info.getLoginInfoForVg(vgId).orElse(LoginInfoVg.empty());
+    final String fallbackUpload = body.getAttachmentObject("fallbackUpload", String.class);
+    final boolean isUsingClassicFormFileUpload = fallbackUpload != null;
+    final UploadResultFormat resultFormat =
+        isUsingClassicFormFileUpload ? UploadResultFormat.HTML : UploadResultFormat.JSON;
+    if (!loginInfoVg.isProcessledare()) {
+      final String msg = "A user without processledar-status tried to update regionsdata";
+      LOG.warn(msg + " : " + info.getHsaId());
+      return createFileUploadResponse(Response.Status.FORBIDDEN, msg, resultFormat);
+    }
+    final DataSource dataSource = body.getAttachment("file").getDataHandler().getDataSource();
+    if (dataSource.getName() == null) {
+      return createFileUploadResponse(
+          Response.Status.INTERNAL_SERVER_ERROR, "Fil saknas", resultFormat);
+    }
+    try {
+      final List<RegionEnhetFileDataRow> regionFileRows =
+          regionFileReader.readExcelData(dataSource);
+      final HsaIdVardgivare vardgivarId = loginInfoVg.getHsaId();
+      final RegionEnhetFileData fileData =
+          new RegionEnhetFileData(
+              vardgivarId, regionFileRows, info.getName(), info.getHsaId(), dataSource.getName());
+      regionEnhetHandler.update(fileData);
 
-            monitoringLogService.logFileUpload(info.getHsaId(), vardgivarId, dataSource.getName(), regionFileRows.size());
+      monitoringLogService.logFileUpload(
+          info.getHsaId(), vardgivarId, dataSource.getName(), regionFileRows.size());
 
-            return createFileUploadResponse(Response.Status.OK, "Data updated ok", resultFormat);
-        } catch (RegionEnhetFileParseException e) {
-            LOG.warn("Failed to parse regions file", e);
-            return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR, e.getMessage(), resultFormat);
-        } catch (NoRegionSetForVgException e) {
-            LOG.warn("Failed to update region settings", e);
-            return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR,
-                "Din vårdgivare har inte tillgång till regionstatistik", resultFormat);
-        }
+      return createFileUploadResponse(Response.Status.OK, "Data updated ok", resultFormat);
+    } catch (RegionEnhetFileParseException e) {
+      LOG.warn("Failed to parse regions file", e);
+      return createFileUploadResponse(
+          Response.Status.INTERNAL_SERVER_ERROR, e.getMessage(), resultFormat);
+    } catch (NoRegionSetForVgException e) {
+      LOG.warn("Failed to update region settings", e);
+      return createFileUploadResponse(
+          Response.Status.INTERNAL_SERVER_ERROR,
+          "Din vårdgivare har inte tillgång till regionstatistik",
+          resultFormat);
+    }
+  }
+
+  @DELETE
+  @Path("regionEnhets")
+  @Consumes({MediaType.WILDCARD})
+  @PreAuthorize(value = "@protectedRegionService.hasAccessToRegionAdmin(#request)")
+  @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
+  @PrometheusTimeMethod(help = "API-tjänst för skyddad åtkomst till borttagning av enhet.")
+  @PerformanceLogging(
+      eventAction = "delete-region-units",
+      eventType = MdcLogConstants.EVENT_TYPE_DELETION)
+  public Response clearRegionEnhets(@Context HttpServletRequest request) {
+    LoginInfo info = loginServiceUtil.getLoginInfo();
+    final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+    try {
+      regionEnhetHandler.clear(vgId, info.getName(), info.getHsaId());
+      return Response.ok().build();
+    } catch (NoRegionSetForVgException e) {
+      LOG.warn("Failed to clear region settings", e);
+      return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+          .entity("Din vårdgivare har inte tillgång till regionstatistik")
+          .build();
+    }
+  }
+
+  @GET
+  @Path("prepopulatedRegionFile")
+  @Produces(MediaType.APPLICATION_OCTET_STREAM)
+  @PreAuthorize(value = "@protectedRegionService.hasAccessToRegionAdmin(#request)")
+  @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
+  @PrometheusTimeMethod(help = "API-tjänst för skyddad åtkomst till excel fil med regionsdata.")
+  @PerformanceLogging(
+      eventAction = "get-region-file",
+      eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
+  public Response getPrepopulatedRegionFile(@Context HttpServletRequest request) {
+    final HsaIdVardgivare vardgivarId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+    final List<Enhet> enhets = enhetManager.getAllVardenhetsForVardgivareId(vardgivarId);
+    try {
+      final ByteArrayOutputStream generatedFile = regionFileWriter.generateExcelFile(enhets);
+      return Response.ok(generatedFile.toByteArray(), MediaType.APPLICATION_OCTET_STREAM)
+          .header("Content-Disposition", "attachment; filename=\"" + vardgivarId + "_region.xlsx\"")
+          .build();
+    } catch (RegionFileGenerationException e) {
+      LOG.debug("File generation failed", e);
+      return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+          .entity("Could not generate excel file")
+          .build();
+    }
+  }
+
+  @GET
+  @Path("emptyRegionFile")
+  @Produces(MediaType.APPLICATION_OCTET_STREAM)
+  @PreAuthorize(value = "@protectedRegionService.hasAccessToRegionAdmin(#request)")
+  @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
+  @PrometheusTimeMethod(help = "API-tjänst för skyddad åtkomst till en tom excel fil (mall).")
+  @PerformanceLogging(
+      eventAction = "get-empty-region-file",
+      eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
+  public Response getEmptyRegionFile(@Context HttpServletRequest request) {
+    try {
+      final ByteArrayOutputStream generatedFile =
+          regionFileWriter.generateExcelFile(Collections.<Enhet>emptyList());
+      return Response.ok(generatedFile.toByteArray(), MediaType.APPLICATION_OCTET_STREAM)
+          .header("Content-Disposition", "attachment; filename=\"mall_region.xlsx\"")
+          .build();
+    } catch (RegionFileGenerationException e) {
+      LOG.debug("Empty file generation failed", e);
+      return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+          .entity("Could generate empty region excel file")
+          .build();
+    }
+  }
+
+  @GET
+  @Path("lastUpdateInfo")
+  @Produces({MediaType.APPLICATION_JSON})
+  @PreAuthorize(value = "@protectedRegionService.hasAccessToRegionAdmin(#request)")
+  @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
+  @PrometheusTimeMethod(
+      help = "API-tjänst för skyddad åtkomst till senaste uppdateringar för region.")
+  @PerformanceLogging(
+      eventAction = "get-last-region-update-info",
+      eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
+  public Response getLastRegionUpdateInfo(@Context HttpServletRequest request) {
+    final HsaIdVardgivare vardgivarId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+    final HashMap<String, Object> result = new HashMap<>();
+
+    result.put("infoMessage", getLastRegionUpdateInfoMessage(vardgivarId));
+
+    final List<RegionEnhet> regionEnhets =
+        regionEnhetHandler.getAllRegionEnhetsForVardgivare(vardgivarId);
+    final List<String> parsedRowsStrings =
+        regionEnhets.stream()
+            .map(
+                regionEnhetFileDataRow -> {
+                  final Integer listadePatienter = regionEnhetFileDataRow.getListadePatienter();
+                  final String listadePatienterString =
+                      listadePatienter != null ? String.valueOf(listadePatienter) : "inte angivet";
+                  return "HSA-id: "
+                      + regionEnhetFileDataRow.getEnhetensHsaId()
+                      + " -> Listade patienter: "
+                      + listadePatienterString;
+                })
+            .collect(Collectors.toList());
+    result.put("parsedRows", parsedRowsStrings);
+
+    return Response.ok(result).build();
+  }
+
+  private String getLastRegionUpdateInfoMessage(HsaIdVardgivare vardgivarId) {
+    final Optional<RegionEnhetUpdate> lastUpdateInfo =
+        regionEnhetHandler.getLastUpdateInfo(vardgivarId);
+    if (lastUpdateInfo.isPresent()) {
+      final RegionEnhetUpdate update = lastUpdateInfo.get();
+      final RegionEnhetUpdateOperation operation = update.getOperation();
+      String dateTime =
+          new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+              .format(new java.util.Date(update.getTimestamp().getTime()));
+      return operation.getMessage()
+          + (RegionEnhetUpdateOperation.UPDATE.equals(operation)
+              ? " (" + update.getFilename() + ")"
+              : "")
+          + " - "
+          + dateTime
+          + " av "
+          + update.getUpdatedByName()
+          + " ("
+          + update.getUpdatedByHsaid()
+          + ")";
+    }
+    return "Ingen";
+  }
+
+  private String getLastRegionUpdateDate(HsaIdVardgivare vardgivarId) {
+    final Optional<RegionEnhetUpdate> lastUpdateInfo =
+        regionEnhetHandler.getLastUpdateInfo(vardgivarId);
+    if (lastUpdateInfo.isPresent()) {
+      final RegionEnhetUpdate update = lastUpdateInfo.get();
+      return new java.text.SimpleDateFormat("yyyy-MM-dd")
+          .format(new java.util.Date(update.getTimestamp().getTime()));
+    }
+    return "";
+  }
+
+  private Response createFileUploadResponse(
+      Response.Status status, String message, UploadResultFormat format) {
+    switch (format) {
+      case HTML:
+        final String statusText =
+            Response.Status.OK.equals(status)
+                ? "Uppladdningen lyckades"
+                : "Uppladdningen misslyckades";
+        String html =
+            "<html><body><h1>"
+                + statusText
+                + "</h1><div>"
+                + message
+                + "</div><br/><input type='button' onclick='history.back();' value='Åter till intygsstatistik'></body></html>";
+        return Response.status(Response.Status.OK)
+            .type(MediaType.TEXT_HTML + "; charset=utf-8")
+            .entity(html)
+            .build();
+      case JSON:
+        final HashMap<String, Object> map = new HashMap<>();
+        map.put("message", message);
+        return Response.status(status).entity(map).build();
     }
 
-    @DELETE
-    @Path("regionEnhets")
-    @Consumes({MediaType.WILDCARD})
-    @PreAuthorize(value = "@protectedRegionService.hasAccessToRegionAdmin(#request)")
-    @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
-    @PrometheusTimeMethod(
-        help = "API-tjänst för skyddad åtkomst till borttagning av enhet.")
-    @PerformanceLogging(eventAction = "delete-region-units", eventType = MdcLogConstants.EVENT_TYPE_DELETION)
-    public Response clearRegionEnhets(@Context HttpServletRequest request) {
-        LoginInfo info = loginServiceUtil.getLoginInfo();
-        final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        try {
-            regionEnhetHandler.clear(vgId, info.getName(), info.getHsaId());
-            return Response.ok().build();
-        } catch (NoRegionSetForVgException e) {
-            LOG.warn("Failed to clear region settings", e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                .entity("Din vårdgivare har inte tillgång till regionstatistik").build();
-        }
-    }
+    throw new RuntimeException("Unhandled upload result format: " + format);
+  }
 
-    @GET
-    @Path("prepopulatedRegionFile")
-    @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    @PreAuthorize(value = "@protectedRegionService.hasAccessToRegionAdmin(#request)")
-    @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
-    @PrometheusTimeMethod(
-        help = "API-tjänst för skyddad åtkomst till excel fil med regionsdata.")
-    @PerformanceLogging(eventAction = "get-region-file", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
-    public Response getPrepopulatedRegionFile(@Context HttpServletRequest request) {
-        final HsaIdVardgivare vardgivarId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        final List<Enhet> enhets = enhetManager.getAllVardenhetsForVardgivareId(vardgivarId);
-        try {
-            final ByteArrayOutputStream generatedFile = regionFileWriter.generateExcelFile(enhets);
-            return Response.ok(generatedFile.toByteArray(), MediaType.APPLICATION_OCTET_STREAM)
-                .header("Content-Disposition", "attachment; filename=\"" + vardgivarId + "_region.xlsx\"").build();
-        } catch (RegionFileGenerationException e) {
-            LOG.debug("File generation failed", e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not generate excel file").build();
-        }
-    }
+  @GET
+  @Path("getNumberOfCasesPerMonthRegion")
+  @Produces({MediaType.APPLICATION_JSON})
+  @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
+  @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
+  @PrometheusTimeMethod(
+      help = "API-tjänst för skyddad åtkomst till antal sjukfall per månad och region.")
+  @PerformanceLogging(
+      eventAction = "get-number-of-sick-leaves-per-month-by-region",
+      eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
+  public Response getNumberOfCasesPerMonthRegion(
+      @Context HttpServletRequest request,
+      @QueryParam("regionfilter") String filterHash,
+      @QueryParam("format") String format) {
+    final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 18);
+    SimpleKonResponse casesPerMonth = warehouse.getCasesPerMonthRegion(filterSettings);
+    final HsaIdVardgivare vgIdForLoggedInUser =
+        loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+    final SimpleDetailsData data = new PeriodConverter().convert(casesPerMonth, filterSettings);
+    return getResponse(
+        data,
+        format,
+        request,
+        Report.L_SJUKFALLTOTALT,
+        TIDSSERIE,
+        getLastRegionUpdateDate(vgIdForLoggedInUser));
+  }
 
-    @GET
-    @Path("emptyRegionFile")
-    @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    @PreAuthorize(value = "@protectedRegionService.hasAccessToRegionAdmin(#request)")
-    @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
-    @PrometheusTimeMethod(
-        help = "API-tjänst för skyddad åtkomst till en tom excel fil (mall).")
-    @PerformanceLogging(eventAction = "get-empty-region-file", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
-    public Response getEmptyRegionFile(@Context HttpServletRequest request) {
-        try {
-            final ByteArrayOutputStream generatedFile = regionFileWriter.generateExcelFile(Collections.<Enhet>emptyList());
-            return Response.ok(generatedFile.toByteArray(), MediaType.APPLICATION_OCTET_STREAM)
-                .header("Content-Disposition", "attachment; filename=\"mall_region.xlsx\"").build();
-        } catch (RegionFileGenerationException e) {
-            LOG.debug("Empty file generation failed", e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could generate empty region excel file").build();
-        }
-    }
-
-    @GET
-    @Path("lastUpdateInfo")
-    @Produces({MediaType.APPLICATION_JSON})
-    @PreAuthorize(value = "@protectedRegionService.hasAccessToRegionAdmin(#request)")
-    @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
-    @PrometheusTimeMethod(
-        help = "API-tjänst för skyddad åtkomst till senaste uppdateringar för region.")
-    @PerformanceLogging(eventAction = "get-last-region-update-info", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
-    public Response getLastRegionUpdateInfo(@Context HttpServletRequest request) {
-        final HsaIdVardgivare vardgivarId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        final HashMap<String, Object> result = new HashMap<>();
-
-        result.put("infoMessage", getLastRegionUpdateInfoMessage(vardgivarId));
-
-        final List<RegionEnhet> regionEnhets = regionEnhetHandler.getAllRegionEnhetsForVardgivare(vardgivarId);
-        final List<String> parsedRowsStrings = regionEnhets.stream().map(regionEnhetFileDataRow -> {
-            final Integer listadePatienter = regionEnhetFileDataRow.getListadePatienter();
-            final String listadePatienterString = listadePatienter != null ? String.valueOf(listadePatienter) : "inte angivet";
-            return "HSA-id: " + regionEnhetFileDataRow.getEnhetensHsaId() + " -> Listade patienter: " + listadePatienterString;
-        }).collect(Collectors.toList());
-        result.put("parsedRows", parsedRowsStrings);
-
-        return Response.ok(result).build();
-    }
-
-    private String getLastRegionUpdateInfoMessage(HsaIdVardgivare vardgivarId) {
-        final Optional<RegionEnhetUpdate> lastUpdateInfo = regionEnhetHandler.getLastUpdateInfo(vardgivarId);
-        if (lastUpdateInfo.isPresent()) {
-            final RegionEnhetUpdate update = lastUpdateInfo.get();
-            final RegionEnhetUpdateOperation operation = update.getOperation();
-            String dateTime = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-                .format(new java.util.Date(update.getTimestamp().getTime()));
-            return operation.getMessage()
-                + (RegionEnhetUpdateOperation.UPDATE.equals(operation) ? " (" + update.getFilename() + ")" : "") + " - " + dateTime
-                + " av " + update.getUpdatedByName() + " (" + update.getUpdatedByHsaid() + ")";
-        }
-        return "Ingen";
-    }
-
-    private String getLastRegionUpdateDate(HsaIdVardgivare vardgivarId) {
-        final Optional<RegionEnhetUpdate> lastUpdateInfo = regionEnhetHandler.getLastUpdateInfo(vardgivarId);
-        if (lastUpdateInfo.isPresent()) {
-            final RegionEnhetUpdate update = lastUpdateInfo.get();
-            return new java.text.SimpleDateFormat("yyyy-MM-dd")
-                .format(new java.util.Date(update.getTimestamp().getTime()));
-        }
-        return "";
-    }
-
-    private Response createFileUploadResponse(Response.Status status, String message, UploadResultFormat format) {
-        switch (format) {
-            case HTML:
-                final String statusText = Response.Status.OK.equals(status) ? "Uppladdningen lyckades" : "Uppladdningen misslyckades";
-                String html = "<html><body><h1>" + statusText + "</h1><div>" + message
-                    + "</div><br/><input type='button' onclick='history.back();' value='Åter till intygsstatistik'></body></html>";
-                return Response.status(Response.Status.OK).type(MediaType.TEXT_HTML + "; charset=utf-8").entity(html).build();
-            case JSON:
-                final HashMap<String, Object> map = new HashMap<>();
-                map.put("message", message);
-                return Response.status(status).entity(map).build();
-        }
-
-        throw new RuntimeException("Unhandled upload result format: " + format);
-    }
-
-    @GET
-    @Path("getNumberOfCasesPerMonthRegion")
-    @Produces({MediaType.APPLICATION_JSON})
-    @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
-    @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
-    @PrometheusTimeMethod(
-        help = "API-tjänst för skyddad åtkomst till antal sjukfall per månad och region.")
-    @PerformanceLogging(eventAction = "get-number-of-sick-leaves-per-month-by-region", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
-    public Response getNumberOfCasesPerMonthRegion(@Context HttpServletRequest request, @QueryParam("regionfilter") String filterHash,
-        @QueryParam("format") String format) {
-        final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 18);
-        SimpleKonResponse casesPerMonth = warehouse.getCasesPerMonthRegion(filterSettings);
-        final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        final SimpleDetailsData data = new PeriodConverter().convert(casesPerMonth, filterSettings);
-        return getResponse(data, format, request, Report.L_SJUKFALLTOTALT, TIDSSERIE, getLastRegionUpdateDate(vgIdForLoggedInUser));
-    }
-
-    @GET
-    @Path("getNumberOfCasesPerEnhetRegion")
-    @Produces({MediaType.APPLICATION_JSON})
-    @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
-    @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
-    @PrometheusTimeMethod(
-        help = "API-tjänst för skyddad åtkomst till antal sjukfall per enhet och region.")
-    @PerformanceLogging(eventAction = "get-number-of-sick-leaves-per-unit-by-region", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
-    public Response getNumberOfCasesPerEnhetRegion(@Context HttpServletRequest request, @QueryParam("regionfilter") String filterHash,
-        @QueryParam("format") String format) {
-        final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 12);
-        final List<HsaIdEnhet> connectedEnhetIds = getEnhetIdsToMark(request);
-        SimpleKonResponse casesPerEnhet = warehouse.getCasesPerEnhetRegion(filterSettings);
-        final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        final SimpleDetailsData data = new GroupedSjukfallWithRegionSortingConverter(MessagesText.REPORT_VARDENHET, connectedEnhetIds)
+  @GET
+  @Path("getNumberOfCasesPerEnhetRegion")
+  @Produces({MediaType.APPLICATION_JSON})
+  @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
+  @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
+  @PrometheusTimeMethod(
+      help = "API-tjänst för skyddad åtkomst till antal sjukfall per enhet och region.")
+  @PerformanceLogging(
+      eventAction = "get-number-of-sick-leaves-per-unit-by-region",
+      eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
+  public Response getNumberOfCasesPerEnhetRegion(
+      @Context HttpServletRequest request,
+      @QueryParam("regionfilter") String filterHash,
+      @QueryParam("format") String format) {
+    final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 12);
+    final List<HsaIdEnhet> connectedEnhetIds = getEnhetIdsToMark(request);
+    SimpleKonResponse casesPerEnhet = warehouse.getCasesPerEnhetRegion(filterSettings);
+    final HsaIdVardgivare vgIdForLoggedInUser =
+        loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+    final SimpleDetailsData data =
+        new GroupedSjukfallWithRegionSortingConverter(
+                MessagesText.REPORT_VARDENHET, connectedEnhetIds)
             .convert(casesPerEnhet, filterSettings);
-        return getResponse(data, format, request, Report.L_VARDENHET, TVARSNITT, getLastRegionUpdateDate(vgIdForLoggedInUser));
-    }
+    return getResponse(
+        data,
+        format,
+        request,
+        Report.L_VARDENHET,
+        TVARSNITT,
+        getLastRegionUpdateDate(vgIdForLoggedInUser));
+  }
 
-    private List<HsaIdEnhet> getEnhetIdsToMark(@Context HttpServletRequest request) {
-        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
-        final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        if (loginInfo.getLoginInfoForVg(vgId).map(LoginInfoVg::isProcessledare).orElse(false)) {
-            return Collections.emptyList();
-        }
-        final List<Verksamhet> businesses = loginInfo.getBusinessesForVg(loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        return businesses.stream().map(Verksamhet::getId).collect(Collectors.toList());
+  private List<HsaIdEnhet> getEnhetIdsToMark(@Context HttpServletRequest request) {
+    final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
+    final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+    if (loginInfo.getLoginInfoForVg(vgId).map(LoginInfoVg::isProcessledare).orElse(false)) {
+      return Collections.emptyList();
     }
+    final List<Verksamhet> businesses =
+        loginInfo.getBusinessesForVg(loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+    return businesses.stream().map(Verksamhet::getId).collect(Collectors.toList());
+  }
 
-    @GET
-    @Path("getNumberOfCasesPerPatientsPerEnhetRegion")
-    @Produces({MediaType.APPLICATION_JSON})
-    @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
-    @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
-    @PrometheusTimeMethod(
-        help = "API-tjänst för skyddad åtkomst till antal sjukfall per patienter, enhet och region.")
-    @PerformanceLogging(eventAction = "get-number-of-sick-leaves-per-patient-by-region", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
-    public Response getNumberOfCasesPerPatientsPerEnhetRegion(@Context HttpServletRequest request,
-        @QueryParam("regionfilter") String filterHash, @QueryParam("format") String format) {
-        final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 12);
-        SimpleKonResponse casesPerEnhet = warehouse.getCasesPerPatientsPerEnhetRegion(filterSettings);
-        final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        final List<HsaIdEnhet> connectedEnhetIds = getEnhetIdsToMark(request);
-        final List<RegionEnhet> regionEnhets = regionEnhetHandler.getAllRegionEnhetsForVardgivare(vgIdForLoggedInUser);
-        final SimpleDetailsData data = new SjukfallPerPatientsPerEnhetConverter(regionEnhets, connectedEnhetIds)
+  @GET
+  @Path("getNumberOfCasesPerPatientsPerEnhetRegion")
+  @Produces({MediaType.APPLICATION_JSON})
+  @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
+  @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
+  @PrometheusTimeMethod(
+      help = "API-tjänst för skyddad åtkomst till antal sjukfall per patienter, enhet och region.")
+  @PerformanceLogging(
+      eventAction = "get-number-of-sick-leaves-per-patient-by-region",
+      eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
+  public Response getNumberOfCasesPerPatientsPerEnhetRegion(
+      @Context HttpServletRequest request,
+      @QueryParam("regionfilter") String filterHash,
+      @QueryParam("format") String format) {
+    final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 12);
+    SimpleKonResponse casesPerEnhet = warehouse.getCasesPerPatientsPerEnhetRegion(filterSettings);
+    final HsaIdVardgivare vgIdForLoggedInUser =
+        loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+    final List<HsaIdEnhet> connectedEnhetIds = getEnhetIdsToMark(request);
+    final List<RegionEnhet> regionEnhets =
+        regionEnhetHandler.getAllRegionEnhetsForVardgivare(vgIdForLoggedInUser);
+    final SimpleDetailsData data =
+        new SjukfallPerPatientsPerEnhetConverter(regionEnhets, connectedEnhetIds)
             .convert(casesPerEnhet, filterSettings, null);
-        return getResponse(data, format, request, Report.L_VARDENHETLISTNINGAR, TVARSNITT, getLastRegionUpdateDate(vgIdForLoggedInUser));
-    }
+    return getResponse(
+        data,
+        format,
+        request,
+        Report.L_VARDENHETLISTNINGAR,
+        TVARSNITT,
+        getLastRegionUpdateDate(vgIdForLoggedInUser));
+  }
 
-    @GET
-    @Path("getIntygPerSjukfallTvarsnitt")
-    @Produces({MediaType.APPLICATION_JSON})
-    @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
-    @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
-    @PrometheusTimeMethod(
-        help = "API-tjänst för skyddad åtkomst till intyg per sjukfall per region")
-    @PerformanceLogging(eventAction = "get-number-of-sick-leaves-by-region-cross-section", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
-    public Response getIntygPerSjukfallTvarsnitt(@Context HttpServletRequest request, @QueryParam("regionfilter") String filterHash,
-        @QueryParam("format") String format) {
-        final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 12);
-        SimpleKonResponse intygPerSjukfall = warehouse.getIntygPerSjukfallTvarsnittRegion(filterSettings);
-        final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        final SimpleDetailsData data = new PeriodConverter().convert(intygPerSjukfall, filterSettings);
-        return getResponse(data, format, request, Report.L_INTYGPERSJUKFALL, TVARSNITT, getLastRegionUpdateDate(vgIdForLoggedInUser));
-    }
+  @GET
+  @Path("getIntygPerSjukfallTvarsnitt")
+  @Produces({MediaType.APPLICATION_JSON})
+  @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
+  @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
+  @PrometheusTimeMethod(help = "API-tjänst för skyddad åtkomst till intyg per sjukfall per region")
+  @PerformanceLogging(
+      eventAction = "get-number-of-sick-leaves-by-region-cross-section",
+      eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
+  public Response getIntygPerSjukfallTvarsnitt(
+      @Context HttpServletRequest request,
+      @QueryParam("regionfilter") String filterHash,
+      @QueryParam("format") String format) {
+    final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 12);
+    SimpleKonResponse intygPerSjukfall =
+        warehouse.getIntygPerSjukfallTvarsnittRegion(filterSettings);
+    final HsaIdVardgivare vgIdForLoggedInUser =
+        loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+    final SimpleDetailsData data = new PeriodConverter().convert(intygPerSjukfall, filterSettings);
+    return getResponse(
+        data,
+        format,
+        request,
+        Report.L_INTYGPERSJUKFALL,
+        TVARSNITT,
+        getLastRegionUpdateDate(vgIdForLoggedInUser));
+  }
 
-    @GET
-    @Path("getMeddelandenPerAmneRegion")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
-    @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
-    @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
-    @PrometheusTimeMethod(
-        help = "API-tjänst för skyddad åtkomst till antal meddelanden per ämne och region.")
-    @PerformanceLogging(eventAction = "get-number-of-messages-by-subject-on-region", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
-    public Response getMeddelandenPerAmneRegion(@Context HttpServletRequest request,
-        @QueryParam("regionfilter") String filterHash,
-        @QueryParam("format") String format) {
-        final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 18);
-        KonDataResponse casesPerMonth = warehouse.getMessagesPerAmneRegion(filterSettings);
-        DualSexStatisticsData result = new MessageAmneConverter().convert(casesPerMonth, filterSettings);
-        final String lastRegionUpdateDate = getLastRegionUpdateDate(vgIdForLoggedInUser);
-        return getResponse(result, format, request, Report.L_MEDDELANDENPERAMNE, TIDSSERIE, lastRegionUpdateDate);
-    }
+  @GET
+  @Path("getMeddelandenPerAmneRegion")
+  @Produces({MediaType.APPLICATION_JSON})
+  @Consumes({MediaType.APPLICATION_JSON})
+  @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
+  @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
+  @PrometheusTimeMethod(
+      help = "API-tjänst för skyddad åtkomst till antal meddelanden per ämne och region.")
+  @PerformanceLogging(
+      eventAction = "get-number-of-messages-by-subject-on-region",
+      eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
+  public Response getMeddelandenPerAmneRegion(
+      @Context HttpServletRequest request,
+      @QueryParam("regionfilter") String filterHash,
+      @QueryParam("format") String format) {
+    final HsaIdVardgivare vgIdForLoggedInUser =
+        loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+    final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 18);
+    KonDataResponse casesPerMonth = warehouse.getMessagesPerAmneRegion(filterSettings);
+    DualSexStatisticsData result =
+        new MessageAmneConverter().convert(casesPerMonth, filterSettings);
+    final String lastRegionUpdateDate = getLastRegionUpdateDate(vgIdForLoggedInUser);
+    return getResponse(
+        result, format, request, Report.L_MEDDELANDENPERAMNE, TIDSSERIE, lastRegionUpdateDate);
+  }
 
-    @GET
-    @Path("getMeddelandenPerAmnePerEnhetRegion")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
-    @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
-    @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
-    @PrometheusTimeMethod(
-        help = "API-tjänst för skyddad åtkomst till ett tvärsnitt av antal meddelanden per ämne och region.")
-    @PerformanceLogging(eventAction = "get-number-of-messages-by-subject-on-region-cross-section", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
-    public Response getMeddelandenPerAmnePerEnhetTvarsnitt(@Context HttpServletRequest request,
-        @QueryParam("regionfilter") String filterHash,
-        @QueryParam("format") String format) {
-        final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 12);
-        KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerEnhetRegion(filterSettings);
-        SimpleDetailsData result = new MessageAmnePerEnhetTvarsnittConverter().convert(casesPerMonth, filterSettings);
-        final String lastRegionUpdateDate = getLastRegionUpdateDate(vgIdForLoggedInUser);
-        return getResponse(result, format, request, Report.L_MEDDELANDENPERAMNEPERENHET, TIDSSERIE, lastRegionUpdateDate);
-    }
+  @GET
+  @Path("getMeddelandenPerAmnePerEnhetRegion")
+  @Produces({MediaType.APPLICATION_JSON})
+  @Consumes({MediaType.APPLICATION_JSON})
+  @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
+  @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
+  @PrometheusTimeMethod(
+      help =
+          "API-tjänst för skyddad åtkomst till ett tvärsnitt av antal meddelanden per ämne och region.")
+  @PerformanceLogging(
+      eventAction = "get-number-of-messages-by-subject-on-region-cross-section",
+      eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
+  public Response getMeddelandenPerAmnePerEnhetTvarsnitt(
+      @Context HttpServletRequest request,
+      @QueryParam("regionfilter") String filterHash,
+      @QueryParam("format") String format) {
+    final HsaIdVardgivare vgIdForLoggedInUser =
+        loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+    final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 12);
+    KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerEnhetRegion(filterSettings);
+    SimpleDetailsData result =
+        new MessageAmnePerEnhetTvarsnittConverter().convert(casesPerMonth, filterSettings);
+    final String lastRegionUpdateDate = getLastRegionUpdateDate(vgIdForLoggedInUser);
+    return getResponse(
+        result,
+        format,
+        request,
+        Report.L_MEDDELANDENPERAMNEPERENHET,
+        TIDSSERIE,
+        lastRegionUpdateDate);
+  }
 
-    @GET
-    @Path("getIntygPerTypePerMonthRegion")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
-    @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
-    @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
-    @PrometheusTimeMethod(
-        help = "API-tjänst för skyddad åtkomst till antal intyg per type, månad och region.")
-    @PerformanceLogging(eventAction = "get-number-of-certificates-by-type-by-month-on-region", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
-    public Response getNumberOfIntygPerTypePerMonthRegion(@Context HttpServletRequest request,
-        @QueryParam("regionfilter") String filterHash,
-        @QueryParam("format") String format) {
-        final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 18);
-        KonDataResponse intygPerMonth = warehouse.getIntygPerTypeRegion(filterSettings);
-        final String header = "Antal intyg totalt";
-        final DualSexStatisticsData result = new SimpleMultiDualSexConverter(header).convert(intygPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.L_INTYGPERTYP, TIDSSERIE, getLastRegionUpdateDate(vg));
-    }
+  @GET
+  @Path("getIntygPerTypePerMonthRegion")
+  @Produces({MediaType.APPLICATION_JSON})
+  @Consumes({MediaType.APPLICATION_JSON})
+  @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
+  @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
+  @PrometheusTimeMethod(
+      help = "API-tjänst för skyddad åtkomst till antal intyg per type, månad och region.")
+  @PerformanceLogging(
+      eventAction = "get-number-of-certificates-by-type-by-month-on-region",
+      eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
+  public Response getNumberOfIntygPerTypePerMonthRegion(
+      @Context HttpServletRequest request,
+      @QueryParam("regionfilter") String filterHash,
+      @QueryParam("format") String format) {
+    final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+    final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 18);
+    KonDataResponse intygPerMonth = warehouse.getIntygPerTypeRegion(filterSettings);
+    final String header = "Antal intyg totalt";
+    final DualSexStatisticsData result =
+        new SimpleMultiDualSexConverter(header).convert(intygPerMonth, filterSettings);
+    return getResponse(
+        result, format, request, Report.L_INTYGPERTYP, TIDSSERIE, getLastRegionUpdateDate(vg));
+  }
 
-    @GET
-    @Path("getAndelKompletteringarRegion")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
-    @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
-    @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
-    @PrometheusTimeMethod(
-        help = "API-tjänst för skyddad åtkomst till andel kompletteringar per region.")
-    @PerformanceLogging(eventAction = "get-number-of-complements-by-region", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
-    public Response getAndelKompletteringarRegion(@Context HttpServletRequest request,
-        @QueryParam("regionfilter") String filterHash,
-        @QueryParam("format") String format) {
-        final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 18);
-        KonDataResponse casesPerMonth = warehouse.getAndelKompletteringarRegion(filterSettings);
-        DualSexStatisticsData result = new AndelKompletteringarConverter().convert(casesPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.L_ANDELKOMPLETTERINGAR, TIDSSERIE, getLastRegionUpdateDate(vg));
-    }
+  @GET
+  @Path("getAndelKompletteringarRegion")
+  @Produces({MediaType.APPLICATION_JSON})
+  @Consumes({MediaType.APPLICATION_JSON})
+  @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
+  @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
+  @PrometheusTimeMethod(
+      help = "API-tjänst för skyddad åtkomst till andel kompletteringar per region.")
+  @PerformanceLogging(
+      eventAction = "get-number-of-complements-by-region",
+      eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
+  public Response getAndelKompletteringarRegion(
+      @Context HttpServletRequest request,
+      @QueryParam("regionfilter") String filterHash,
+      @QueryParam("format") String format) {
+    final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+    final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 18);
+    KonDataResponse casesPerMonth = warehouse.getAndelKompletteringarRegion(filterSettings);
+    DualSexStatisticsData result =
+        new AndelKompletteringarConverter().convert(casesPerMonth, filterSettings);
+    return getResponse(
+        result,
+        format,
+        request,
+        Report.L_ANDELKOMPLETTERINGAR,
+        TIDSSERIE,
+        getLastRegionUpdateDate(vg));
+  }
 
-    @GET
-    @Path("getKompletteringarPerFragaRegion")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
-    @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
-    @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
-    @PrometheusTimeMethod(
-        help = "API-tjänst för skyddad åtkomst till andel kompletteringar per fråga för region.")
-    @PerformanceLogging(eventAction = "get-number-of-complements-by-question-on-region", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
-    public Response getKompletteringarPerFragaRegion(@Context HttpServletRequest request,
-        @QueryParam("regionfilter") String filterHash,
-        @QueryParam("format") String format) {
-        final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 18);
-        SimpleKonResponse casesPerMonth = warehouse.getKompletteringarPerFragaRegion(filterSettings);
-        SimpleDetailsData result = SimpleDualSexConverter.newGenericKompletteringarTvarsnitt().convert(casesPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.L_KOMPLETTERINGARPERFRAGA, ReportType.TVARSNITT, getLastRegionUpdateDate(vg));
-    }
+  @GET
+  @Path("getKompletteringarPerFragaRegion")
+  @Produces({MediaType.APPLICATION_JSON})
+  @Consumes({MediaType.APPLICATION_JSON})
+  @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
+  @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
+  @PrometheusTimeMethod(
+      help = "API-tjänst för skyddad åtkomst till andel kompletteringar per fråga för region.")
+  @PerformanceLogging(
+      eventAction = "get-number-of-complements-by-question-on-region",
+      eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
+  public Response getKompletteringarPerFragaRegion(
+      @Context HttpServletRequest request,
+      @QueryParam("regionfilter") String filterHash,
+      @QueryParam("format") String format) {
+    final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+    final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 18);
+    SimpleKonResponse casesPerMonth = warehouse.getKompletteringarPerFragaRegion(filterSettings);
+    SimpleDetailsData result =
+        SimpleDualSexConverter.newGenericKompletteringarTvarsnitt()
+            .convert(casesPerMonth, filterSettings);
+    return getResponse(
+        result,
+        format,
+        request,
+        Report.L_KOMPLETTERINGARPERFRAGA,
+        ReportType.TVARSNITT,
+        getLastRegionUpdateDate(vg));
+  }
 
-    @GET
-    @Path("regionFilterInfo")
-    @Produces({MediaType.APPLICATION_JSON})
-    @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
-    @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
-    @PrometheusTimeMethod(
-        help = "API-tjänst för skyddad åtkomst till filter-info för region.")
-    @PerformanceLogging(eventAction = "get-region-filter-info", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
-    public Response getRegionfilterInfo(@Context HttpServletRequest request) {
-        List<Verksamhet> businesses = filterHandler.getAllVerksamhetsForLoggedInRegionsUser(request);
-        final Map<String, Object> result = new HashMap<>();
-        result.put("businesses", businesses);
-        return Response.ok(result).build();
-    }
+  @GET
+  @Path("regionFilterInfo")
+  @Produces({MediaType.APPLICATION_JSON})
+  @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
+  @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
+  @PrometheusTimeMethod(help = "API-tjänst för skyddad åtkomst till filter-info för region.")
+  @PerformanceLogging(
+      eventAction = "get-region-filter-info",
+      eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
+  public Response getRegionfilterInfo(@Context HttpServletRequest request) {
+    List<Verksamhet> businesses = filterHandler.getAllVerksamhetsForLoggedInRegionsUser(request);
+    final Map<String, Object> result = new HashMap<>();
+    result.put("businesses", businesses);
+    return Response.ok(result).build();
+  }
 
-    @PUT
-    @Path("acceptFileUploadAgreement")
-    @Produces({MediaType.APPLICATION_JSON})
-    @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
-    @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
-    @PrometheusTimeMethod(
-        help = "API-tjänst för skyddad åtkomst till att spara filter-info för region.")
-    @PerformanceLogging(eventAction = "accept-file-upload-agreement", eventType = MdcLogConstants.EVENT_TYPE_CHANGE)
-    public Response acceptFileUploadAgreement(@Context HttpServletRequest request) {
-        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
-        final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        LOG.info("User accepted region file upload agreement. User: {}, vg: {}", loginInfo.getHsaId(), vgId);
-        return Response.ok().build();
-    }
+  @PUT
+  @Path("acceptFileUploadAgreement")
+  @Produces({MediaType.APPLICATION_JSON})
+  @PreAuthorize(value = "@protectedRegionService.hasAccessToRegion(#request)")
+  @PostAuthorize(value = "@protectedRegionService.userAccess(#request)")
+  @PrometheusTimeMethod(
+      help = "API-tjänst för skyddad åtkomst till att spara filter-info för region.")
+  @PerformanceLogging(
+      eventAction = "accept-file-upload-agreement",
+      eventType = MdcLogConstants.EVENT_TYPE_CHANGE)
+  public Response acceptFileUploadAgreement(@Context HttpServletRequest request) {
+    final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
+    final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+    LOG.info(
+        "User accepted region file upload agreement. User: {}, vg: {}", loginInfo.getHsaId(), vgId);
+    return Response.ok().build();
+  }
 
-    private Response getResponse(TableDataReport result, String format, HttpServletRequest request, Report report, ReportType reportType,
-        String fileUploadDate) {
-        final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        final List<HsaIdEnhet> allEnhets = regionEnhetHandler.getAllEnhetsForVardgivare(vgIdForLoggedInUser);
-        Map<String, Object> extras = new HashMap<>();
-        extras.put("fileUploadDate", fileUploadDate);
-        return responseHandler.getResponse(result, format, allEnhets, new ReportInfo(report, reportType), extras);
-    }
+  private Response getResponse(
+      TableDataReport result,
+      String format,
+      HttpServletRequest request,
+      Report report,
+      ReportType reportType,
+      String fileUploadDate) {
+    final HsaIdVardgivare vgIdForLoggedInUser =
+        loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+    final List<HsaIdEnhet> allEnhets =
+        regionEnhetHandler.getAllEnhetsForVardgivare(vgIdForLoggedInUser);
+    Map<String, Object> extras = new HashMap<>();
+    extras.put("fileUploadDate", fileUploadDate);
+    return responseHandler.getResponse(
+        result, format, allEnhets, new ReportInfo(report, reportType), extras);
+  }
 
-    private enum UploadResultFormat {
-        HTML,
-        JSON
-    }
-
+  private enum UploadResultFormat {
+    HTML,
+    JSON
+  }
 }

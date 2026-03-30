@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -30,28 +30,29 @@ import se.inera.statistics.service.warehouse.sjukfallcalc.SjukfallPerPeriodCalcu
 
 class SjukfallCalculator {
 
-    private int period = 0;
-    private final int maxPeriods;
-    private SjukfallPerPeriodCalculator sjukfallPerPeriodCalculator;
+  private int period = 0;
+  private final int maxPeriods;
+  private SjukfallPerPeriodCalculator sjukfallPerPeriodCalculator;
 
-    SjukfallCalculator(Aisle aisle, Predicate<Fact> filter, List<Range> ranges) {
-        final ArrayList<Fact> facts = new ArrayList<>(aisle.getLines());
-        boolean extendSjukfall = !SjukfallUtil.ALL_ENHETER.getIntygFilter().equals(filter);
-        final Iterable<Fact> filteredAisle = StreamSupport.stream(aisle.spliterator(), true)
-            .filter(filter).collect(Collectors.toList());
-        ArrayList<Range> rangeList = new ArrayList<>(ranges);
-        sjukfallPerPeriodCalculator = new SjukfallPerPeriodCalculator(extendSjukfall, rangeList, facts, filteredAisle);
-        maxPeriods = rangeList.size();
-    }
+  SjukfallCalculator(Aisle aisle, Predicate<Fact> filter, List<Range> ranges) {
+    final ArrayList<Fact> facts = new ArrayList<>(aisle.getLines());
+    boolean extendSjukfall = !SjukfallUtil.ALL_ENHETER.getIntygFilter().equals(filter);
+    final Iterable<Fact> filteredAisle =
+        StreamSupport.stream(aisle.spliterator(), true).filter(filter).collect(Collectors.toList());
+    ArrayList<Range> rangeList = new ArrayList<>(ranges);
+    sjukfallPerPeriodCalculator =
+        new SjukfallPerPeriodCalculator(extendSjukfall, rangeList, facts, filteredAisle);
+    maxPeriods = rangeList.size();
+  }
 
-    Collection<Sjukfall> getSjukfallsForNextPeriod() {
-        Multimap<Long, SjukfallExtended> result = sjukfallPerPeriodCalculator.getSjukfallsForPeriod(period);
-        period++;
-        return result.values().stream().map(Sjukfall::create).collect(Collectors.toList());
-    }
+  Collection<Sjukfall> getSjukfallsForNextPeriod() {
+    Multimap<Long, SjukfallExtended> result =
+        sjukfallPerPeriodCalculator.getSjukfallsForPeriod(period);
+    period++;
+    return result.values().stream().map(Sjukfall::create).collect(Collectors.toList());
+  }
 
-    boolean hasNextPeriod() {
-        return period < maxPeriods;
-    }
-
+  boolean hasNextPeriod() {
+    return period < maxPeriods;
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -18,50 +18,48 @@
  */
 package se.inera.testsupport.specialrapport.regionskane;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-
 public class SpecialSkaneAgeComputeRow {
 
-    private int age;
-    private HsaIdEnhet enhet;
-    private Range range;
-    private Kon kon;
+  private int age;
+  private HsaIdEnhet enhet;
+  private Range range;
+  private Kon kon;
 
-    public SpecialSkaneAgeComputeRow(int age, HsaIdEnhet enhet, Range range, Kon kon) {
-        this.age = age;
-        this.enhet = enhet;
-        this.range = range;
-        this.kon = kon;
-    }
+  public SpecialSkaneAgeComputeRow(int age, HsaIdEnhet enhet, Range range, Kon kon) {
+    this.age = age;
+    this.enhet = enhet;
+    this.range = range;
+    this.kon = kon;
+  }
 
-    public int getAge() {
-        return age;
-    }
+  public int getAge() {
+    return age;
+  }
 
-    public HsaIdEnhet getEnhet() {
-        return enhet;
-    }
+  public HsaIdEnhet getEnhet() {
+    return enhet;
+  }
 
-    public Range getRange() {
-        return range;
-    }
+  public Range getRange() {
+    return range;
+  }
 
-    public Kon getKon() {
-        return kon;
-    }
+  public Kon getKon() {
+    return kon;
+  }
 
-    public String getFormattedRange() {
-        return getDateFormatted(range.getFrom()) + " - " + getDateFormatted(range.getTo());
-    }
+  public String getFormattedRange() {
+    return getDateFormatted(range.getFrom()) + " - " + getDateFormatted(range.getTo());
+  }
 
-    private String getDateFormatted(LocalDate date) {
-        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd", new Locale("sv")));
-    }
-
+  private String getDateFormatted(LocalDate date) {
+    return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd", new Locale("sv")));
+  }
 }

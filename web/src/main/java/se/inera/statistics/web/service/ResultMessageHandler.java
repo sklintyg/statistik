@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -30,57 +30,56 @@ import se.inera.statistics.service.report.util.Icd10;
 
 public class ResultMessageHandler {
 
-    @Autowired
-    private Icd10 icd10;
+  @Autowired private Icd10 icd10;
 
-    public boolean isDxFilterDisableAllSelectedDxs(List<String> selectedDxs, Collection<String> filterDiagnoser) {
-        if (filterDiagnoser == null || filterDiagnoser.isEmpty()) {
+  public boolean isDxFilterDisableAllSelectedDxs(
+      List<String> selectedDxs, Collection<String> filterDiagnoser) {
+    if (filterDiagnoser == null || filterDiagnoser.isEmpty()) {
+      return false;
+    }
+    for (String dx : selectedDxs) {
+      List<String> leaves = getAllLeavesForDx(dx);
+      for (String leaf : leaves) {
+        List<String> hirarcicalDx = getDxPlusHigherLevelIcd10(leaf);
+        for (String dxIntCode : hirarcicalDx) {
+          if (filterDiagnoser.contains(dxIntCode)) {
             return false;
+          }
         }
-        for (String dx : selectedDxs) {
-            List<String> leaves = getAllLeavesForDx(dx);
-            for (String leaf : leaves) {
-                List<String> hirarcicalDx = getDxPlusHigherLevelIcd10(leaf);
-                for (String dxIntCode : hirarcicalDx) {
-                    if (filterDiagnoser.contains(dxIntCode)) {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
+      }
     }
+    return true;
+  }
 
-    private List<String> getAllLeavesForDx(String dx) {
-        final Icd10.Id icd = icd10.findIcd10FromNumericId(Integer.valueOf(dx));
-        if (icd.getSubItems().isEmpty()) {
-            return Arrays.asList(String.valueOf(icd.toInt()));
-        }
-        List<String> icd10Ints = new ArrayList<>();
-        for (Icd10.Id id : icd.getSubItems()) {
-            icd10Ints.addAll(getAllLeavesForDx(String.valueOf(id.toInt())));
-        }
-        return icd10Ints;
+  private List<String> getAllLeavesForDx(String dx) {
+    final Icd10.Id icd = icd10.findIcd10FromNumericId(Integer.valueOf(dx));
+    if (icd.getSubItems().isEmpty()) {
+      return Arrays.asList(String.valueOf(icd.toInt()));
     }
-
-    private List<String> getDxPlusHigherLevelIcd10(String dx) {
-        List<String> icd10Ints = new ArrayList<>();
-        icd10Ints.add(dx);
-        final Icd10.Id icd = icd10.findIcd10FromNumericId(Integer.valueOf(dx));
-        icd10Ints.addAll(getAllParents(icd));
-        return icd10Ints;
+    List<String> icd10Ints = new ArrayList<>();
+    for (Icd10.Id id : icd.getSubItems()) {
+      icd10Ints.addAll(getAllLeavesForDx(String.valueOf(id.toInt())));
     }
+    return icd10Ints;
+  }
 
-    private Collection<String> getAllParents(Icd10.Id icd) {
-        final Optional<? extends Icd10.Id> parent = icd.getParent();
-        if (!parent.isPresent()) {
-            return Collections.emptyList();
-        }
-        final ArrayList<String> icd10Ints = new ArrayList<>();
-        final Icd10.Id id = parent.get();
-        icd10Ints.add(String.valueOf(id.toInt()));
-        icd10Ints.addAll(getAllParents(id));
-        return ImmutableList.copyOf(icd10Ints);
+  private List<String> getDxPlusHigherLevelIcd10(String dx) {
+    List<String> icd10Ints = new ArrayList<>();
+    icd10Ints.add(dx);
+    final Icd10.Id icd = icd10.findIcd10FromNumericId(Integer.valueOf(dx));
+    icd10Ints.addAll(getAllParents(icd));
+    return icd10Ints;
+  }
+
+  private Collection<String> getAllParents(Icd10.Id icd) {
+    final Optional<? extends Icd10.Id> parent = icd.getParent();
+    if (!parent.isPresent()) {
+      return Collections.emptyList();
     }
-
+    final ArrayList<String> icd10Ints = new ArrayList<>();
+    final Icd10.Id id = parent.get();
+    icd10Ints.add(String.valueOf(id.toInt()));
+    icd10Ints.addAll(getAllParents(id));
+    return ImmutableList.copyOf(icd10Ints);
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -30,62 +30,69 @@ import se.inera.statistics.service.processlog.AbstractProcessLog;
 @Component
 public class ProcessMessageLogImpl extends AbstractProcessLog implements ProcessMessageLog {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ProcessMessageLogImpl.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ProcessMessageLogImpl.class);
 
-    public ProcessMessageLogImpl() {
-        super("PROCESSED_MESSAGE");
-    }
+  public ProcessMessageLogImpl() {
+    super("PROCESSED_MESSAGE");
+  }
 
-    @Override
-    @Transactional
-    public long store(MessageEventType type, String data, String messageId, long timestamp) {
-        TypedQuery<MessageEvent> select = getManager()
-            .createQuery("SELECT e FROM MessageEvent e WHERE e.correlationId = :correlationId AND e.type = :type",
+  @Override
+  @Transactional
+  public long store(MessageEventType type, String data, String messageId, long timestamp) {
+    TypedQuery<MessageEvent> select =
+        getManager()
+            .createQuery(
+                "SELECT e FROM MessageEvent e WHERE e.correlationId = :correlationId AND e.type = :type",
                 MessageEvent.class);
-        select.setParameter("correlationId", messageId).setParameter("type", type);
-        List<MessageEvent> result = select.getResultList();
-        if (result.isEmpty()) {
-            MessageEvent event = new MessageEvent(type, data, messageId, timestamp);
-            getManager().persist(event);
-            return event.getId();
-        } else {
-            LOG.info("Message already exists, ignoring: " + messageId);
-            return result.get(0).getId();
-        }
+    select.setParameter("correlationId", messageId).setParameter("type", type);
+    List<MessageEvent> result = select.getResultList();
+    if (result.isEmpty()) {
+      MessageEvent event = new MessageEvent(type, data, messageId, timestamp);
+      getManager().persist(event);
+      return event.getId();
+    } else {
+      LOG.info("Message already exists, ignoring: " + messageId);
+      return result.get(0).getId();
     }
+  }
 
-    @Override
-    @Transactional
-    public long update(MessageEvent event) {
-        getManager().persist(event);
-        return event.getId();
-    }
+  @Override
+  @Transactional
+  public long update(MessageEvent event) {
+    getManager().persist(event);
+    return event.getId();
+  }
 
-    @Override
-    @Transactional(noRollbackFor = Exception.class)
-    public long increaseNumberOfTries(long logid) {
-        Query select = getManager().createQuery("UPDATE MessageEvent e SET e.tries = e.tries + 1 WHERE e.id = :logId");
-        select.setParameter("logId", logid);
-        return select.executeUpdate();
-    }
+  @Override
+  @Transactional(noRollbackFor = Exception.class)
+  public long increaseNumberOfTries(long logid) {
+    Query select =
+        getManager()
+            .createQuery("UPDATE MessageEvent e SET e.tries = e.tries + 1 WHERE e.id = :logId");
+    select.setParameter("logId", logid);
+    return select.executeUpdate();
+  }
 
-    @Override
-    public long setProcessed(long logId) {
-        Query select = getManager().createQuery("UPDATE MessageEvent e SET e.processed = true WHERE e.id = :logId");
-        select.setParameter("logId", logId);
-        return select.executeUpdate();
-    }
+  @Override
+  public long setProcessed(long logId) {
+    Query select =
+        getManager()
+            .createQuery("UPDATE MessageEvent e SET e.processed = true WHERE e.id = :logId");
+    select.setParameter("logId", logId);
+    return select.executeUpdate();
+  }
 
-    @Override
-    @Transactional
-    public List<MessageEvent> getPending(int max, long firstId, int maxNumberOfTries) {
-        String query = "SELECT e FROM MessageEvent e WHERE e.id > :lastId AND e.tries <= :maxTries AND e.processed = false ORDER BY e.id ASC";
+  @Override
+  @Transactional
+  public List<MessageEvent> getPending(int max, long firstId, int maxNumberOfTries) {
+    String query =
+        "SELECT e FROM MessageEvent e WHERE e.id > :lastId AND e.tries <= :maxTries AND e.processed = false ORDER BY e.id ASC";
 
-        TypedQuery<MessageEvent> allQuery = getManager().createQuery(query, MessageEvent.class);
-        allQuery.setParameter("lastId", firstId);
-        allQuery.setParameter("maxTries", maxNumberOfTries);
+    TypedQuery<MessageEvent> allQuery = getManager().createQuery(query, MessageEvent.class);
+    allQuery.setParameter("lastId", firstId);
+    allQuery.setParameter("maxTries", maxNumberOfTries);
 
-        allQuery.setMaxResults(max);
-        return allQuery.getResultList();
-    }
+    allQuery.setMaxResults(max);
+    return allQuery.getResultList();
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -27,31 +27,30 @@ import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
 public class Aisle implements Iterable<Fact>, Serializable {
 
-    private final List<Fact> lines;
-    private final HsaIdVardgivare vardgivareId;
+  private final List<Fact> lines;
+  private final HsaIdVardgivare vardgivareId;
 
-    public Aisle(HsaIdVardgivare vardgivareId, List<Fact> lines) {
-        this.vardgivareId = vardgivareId;
-        final ArrayList<Fact> facts = new ArrayList<>(lines);
-        Collections.sort(facts, Fact.TIME_ORDER);
-        this.lines = Collections.unmodifiableList(facts);
-    }
+  public Aisle(HsaIdVardgivare vardgivareId, List<Fact> lines) {
+    this.vardgivareId = vardgivareId;
+    final ArrayList<Fact> facts = new ArrayList<>(lines);
+    Collections.sort(facts, Fact.TIME_ORDER);
+    this.lines = Collections.unmodifiableList(facts);
+  }
 
-    @Override
-    public Iterator<Fact> iterator() {
-        return lines.iterator();
-    }
+  @Override
+  public Iterator<Fact> iterator() {
+    return lines.iterator();
+  }
 
-    public int getSize() {
-        return lines.size();
-    }
+  public int getSize() {
+    return lines.size();
+  }
 
-    List<Fact> getLines() {
-        return lines;
-    }
+  List<Fact> getLines() {
+    return lines;
+  }
 
-    public HsaIdVardgivare getVardgivareId() {
-        return vardgivareId;
-    }
-
+  public HsaIdVardgivare getVardgivareId() {
+    return vardgivareId;
+  }
 }

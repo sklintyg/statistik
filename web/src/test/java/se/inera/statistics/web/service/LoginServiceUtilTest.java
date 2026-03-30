@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -55,125 +55,126 @@ import se.inera.statistics.web.util.VersionUtil;
 
 public class LoginServiceUtilTest {
 
-    @Mock
-    private Warehouse warehouse;
+  @Mock private Warehouse warehouse;
 
-    @Mock
-    private RegionEnhetHandler regionEnhetHandler;
+  @Mock private RegionEnhetHandler regionEnhetHandler;
 
-    @Mock
-    private LoginVisibility loginVisibility;
+  @Mock private LoginVisibility loginVisibility;
 
-    @Mock
-    private UserSettingsManager userSettingsManager;
+  @Mock private UserSettingsManager userSettingsManager;
 
-    @Mock
-    private Icd10 icd10;
+  @Mock private Icd10 icd10;
 
-    @Mock
-    private IABannerService iaBannerService;
+  @Mock private IABannerService iaBannerService;
 
-    @Mock
-    private VersionUtil versionUtil;
+  @Mock private VersionUtil versionUtil;
 
-    @InjectMocks
-    private LoginServiceUtil loginServiceUtilInjected;
+  @InjectMocks private LoginServiceUtil loginServiceUtilInjected;
 
-    private LoginServiceUtil loginServiceUtil;
+  private LoginServiceUtil loginServiceUtil;
 
-    private final Random rand = new Random();
+  private final Random rand = new Random();
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        loginServiceUtil = Mockito.spy(loginServiceUtilInjected);
-        Mockito.doReturn(true).when(loginServiceUtil).isLoggedIn();
-    }
+  @BeforeEach
+  public void setUp() {
+    MockitoAnnotations.initMocks(this);
+    loginServiceUtil = Mockito.spy(loginServiceUtilInjected);
+    Mockito.doReturn(true).when(loginServiceUtil).isLoggedIn();
+  }
 
-    @Test
-    public void testGetStaticData() {
-        // When
-        final StaticData staticData = loginServiceUtil.getStaticData();
+  @Test
+  public void testGetStaticData() {
+    // When
+    final StaticData staticData = loginServiceUtil.getStaticData();
 
-        // Then
-        assertEquals(8, staticData.getSjukskrivningLengths().size());
-        assertEquals("Under 15 dagar", staticData.getSjukskrivningLengths().get("GROUP1_0TO14"));
-    }
+    // Then
+    assertEquals(8, staticData.getSjukskrivningLengths().size());
+    assertEquals("Under 15 dagar", staticData.getSjukskrivningLengths().get("GROUP1_0TO14"));
+  }
 
-    @Test
-    public void testGetLoginInfoSeveralVgsNotProcessledare() {
-        // Given
-        final HsaIdUser userId = new HsaIdUser("testuserid");
-        final Vardenhet enhet1 = newVardenhet("e1", "vg1");
-        final Vardenhet enhet2 = newVardenhet("e2", "vg1");
-        final Vardenhet enhet3 = newVardenhet("e3", "vg2");
-        final List<Vardenhet> vardenhetsList = Arrays.asList(enhet1, enhet2, enhet3);
-        final User user = new User(userId, "testname", null, vardenhetsList, LoginMethod.SITHS);
-        AuthUtil.setUserToSecurityContext(user);
+  @Test
+  public void testGetLoginInfoSeveralVgsNotProcessledare() {
+    // Given
+    final HsaIdUser userId = new HsaIdUser("testuserid");
+    final Vardenhet enhet1 = newVardenhet("e1", "vg1");
+    final Vardenhet enhet2 = newVardenhet("e2", "vg1");
+    final Vardenhet enhet3 = newVardenhet("e3", "vg2");
+    final List<Vardenhet> vardenhetsList = Arrays.asList(enhet1, enhet2, enhet3);
+    final User user = new User(userId, "testname", null, vardenhetsList, LoginMethod.SITHS);
+    AuthUtil.setUserToSecurityContext(user);
 
-        // When
-        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
+    // When
+    final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
 
-        // Then
-        assertEquals(userId, loginInfo.getHsaId());
-        assertEquals(2, loginInfo.getBusinessesForVg(enhet1.getVardgivarId()).size());
-        assertEquals(1, loginInfo.getBusinessesForVg(enhet3.getVardgivarId()).size());
+    // Then
+    assertEquals(userId, loginInfo.getHsaId());
+    assertEquals(2, loginInfo.getBusinessesForVg(enhet1.getVardgivarId()).size());
+    assertEquals(1, loginInfo.getBusinessesForVg(enhet3.getVardgivarId()).size());
 
-        assertEquals(enhet1.getVardgivarId(), loginInfo.getLoginInfoForVg(enhet1.getVardgivarId()).get().getHsaId());
-        assertFalse(loginInfo.getLoginInfoForVg(enhet1.getVardgivarId()).get().isProcessledare());
-        assertFalse(loginInfo.getLoginInfoForVg(enhet3.getVardgivarId()).get().isProcessledare());
+    assertEquals(
+        enhet1.getVardgivarId(),
+        loginInfo.getLoginInfoForVg(enhet1.getVardgivarId()).get().getHsaId());
+    assertFalse(loginInfo.getLoginInfoForVg(enhet1.getVardgivarId()).get().isProcessledare());
+    assertFalse(loginInfo.getLoginInfoForVg(enhet3.getVardgivarId()).get().isProcessledare());
+  }
 
-    }
-
-    @Test
-    public void testGetLoginInfoSeveralVgsWhenProcessledare() {
-        // Given
-        final HsaIdUser userId = new HsaIdUser("testuserid");
-        final Vardenhet enhet1 = newVardenhet("e1", "vg1");
-        final Vardenhet enhet2 = newVardenhet("e2", "vg1");
-        final Vardenhet enhet3 = newVardenhet("e3", "vg2");
-        final List<Vardenhet> vardenhetsList = Arrays.asList(enhet1, enhet2, enhet3);
-        final User user = new User(userId, "testname", Arrays.asList(new Vardgivare("vg2", "Vårdgivare 2")), vardenhetsList,
+  @Test
+  public void testGetLoginInfoSeveralVgsWhenProcessledare() {
+    // Given
+    final HsaIdUser userId = new HsaIdUser("testuserid");
+    final Vardenhet enhet1 = newVardenhet("e1", "vg1");
+    final Vardenhet enhet2 = newVardenhet("e2", "vg1");
+    final Vardenhet enhet3 = newVardenhet("e3", "vg2");
+    final List<Vardenhet> vardenhetsList = Arrays.asList(enhet1, enhet2, enhet3);
+    final User user =
+        new User(
+            userId,
+            "testname",
+            Arrays.asList(new Vardgivare("vg2", "Vårdgivare 2")),
+            vardenhetsList,
             LoginMethod.SITHS);
-        AuthUtil.setUserToSecurityContext(user);
+    AuthUtil.setUserToSecurityContext(user);
 
-        when(warehouse.getEnhets(any())).thenAnswer(invocationOnMock -> {
-            final HsaIdVardgivare vg = (HsaIdVardgivare) invocationOnMock.getArguments()[0];
-            return Arrays.asList(newEnhet(vg), newEnhet(vg), newEnhet(vg), newEnhet(vg));
-        });
+    when(warehouse.getEnhets(any()))
+        .thenAnswer(
+            invocationOnMock -> {
+              final HsaIdVardgivare vg = (HsaIdVardgivare) invocationOnMock.getArguments()[0];
+              return Arrays.asList(newEnhet(vg), newEnhet(vg), newEnhet(vg), newEnhet(vg));
+            });
 
-        // When
-        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
+    // When
+    final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
 
-        // Then
-        assertEquals(userId, loginInfo.getHsaId());
-        assertEquals(2, loginInfo.getBusinessesForVg(enhet1.getVardgivarId()).size());
-        assertEquals(4, loginInfo.getBusinessesForVg(enhet3.getVardgivarId()).size());
+    // Then
+    assertEquals(userId, loginInfo.getHsaId());
+    assertEquals(2, loginInfo.getBusinessesForVg(enhet1.getVardgivarId()).size());
+    assertEquals(4, loginInfo.getBusinessesForVg(enhet3.getVardgivarId()).size());
 
-        assertEquals(enhet1.getVardgivarId(), loginInfo.getLoginInfoForVg(enhet1.getVardgivarId()).get().getHsaId());
-        assertFalse(loginInfo.getLoginInfoForVg(enhet1.getVardgivarId()).get().isProcessledare());
-        assertTrue(loginInfo.getLoginInfoForVg(enhet3.getVardgivarId()).get().isProcessledare());
-    }
+    assertEquals(
+        enhet1.getVardgivarId(),
+        loginInfo.getLoginInfoForVg(enhet1.getVardgivarId()).get().getHsaId());
+    assertFalse(loginInfo.getLoginInfoForVg(enhet1.getVardgivarId()).get().isProcessledare());
+    assertTrue(loginInfo.getLoginInfoForVg(enhet3.getVardgivarId()).get().isProcessledare());
+  }
 
-    private Enhet newEnhet(HsaIdVardgivare vg) {
-        return new Enhet(vg, new HsaIdEnhet(String.valueOf(rand.nextInt())), "", "", "", "", "veid");
-    }
+  private Enhet newEnhet(HsaIdVardgivare vg) {
+    return new Enhet(vg, new HsaIdEnhet(String.valueOf(rand.nextInt())), "", "", "", "", "veid");
+  }
 
-    private Vardenhet newVardenhet(String enhetId, String vgId) {
-        return new Vardenhet(new HsaIdEnhet(enhetId), enhetId + "name", new HsaIdVardgivare(vgId));
-    }
+  private Vardenhet newVardenhet(String enhetId, String vgId) {
+    return new Vardenhet(new HsaIdEnhet(enhetId), enhetId + "name", new HsaIdVardgivare(vgId));
+  }
 
-    @Test
-    public void testGetAppSettingsContainsCorrectProjectVersion() {
-        // Given
-        String projectVersion = "TestversionXXX";
-        when(versionUtil.getProjectVersion()).thenReturn(projectVersion);
+  @Test
+  public void testGetAppSettingsContainsCorrectProjectVersion() {
+    // Given
+    String projectVersion = "TestversionXXX";
+    when(versionUtil.getProjectVersion()).thenReturn(projectVersion);
 
-        // When
-        AppSettings settings = loginServiceUtil.getSettings();
+    // When
+    AppSettings settings = loginServiceUtil.getSettings();
 
-        // Then
-        assertEquals(projectVersion, settings.getProjectVersion());
-    }
-
+    // Then
+    assertEquals(projectVersion, settings.getProjectVersion());
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -31,28 +31,27 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class UserSettingsManagerTest {
 
-    @Mock
-    private EntityManager entityManager;
+  @Mock private EntityManager entityManager;
 
-    @InjectMocks
-    private UserSettingsManager userSettingsManager;
+  @InjectMocks private UserSettingsManager userSettingsManager;
 
-    @Test
-    public void findMissingSetting() {
-        Mockito.when(entityManager.find(Mockito.eq(UserSettings.class), Mockito.anyString())).thenReturn(null);
+  @Test
+  public void findMissingSetting() {
+    Mockito.when(entityManager.find(Mockito.eq(UserSettings.class), Mockito.anyString()))
+        .thenReturn(null);
 
-        UserSettings settings = userSettingsManager.find("notFound");
+    UserSettings settings = userSettingsManager.find("notFound");
 
-        assertNull(settings);
-    }
+    assertNull(settings);
+  }
 
-    @Test
-    public void save() {
-        UserSettings userSettings = new UserSettings();
-        userSettings.setHsaId("test");
+  @Test
+  public void save() {
+    UserSettings userSettings = new UserSettings();
+    userSettings.setHsaId("test");
 
-        userSettingsManager.save(userSettings);
+    userSettingsManager.save(userSettings);
 
-        Mockito.verify(entityManager, Mockito.times(1)).merge(Mockito.any());
-    }
+    Mockito.verify(entityManager, Mockito.times(1)).merge(Mockito.any());
+  }
 }

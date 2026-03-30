@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,20 +20,19 @@ package se.inera.statistics.web.model;
 
 public class UserSettingsDTO {
 
-    private boolean showMessagesPerLakare;
+  private boolean showMessagesPerLakare;
 
-    public UserSettingsDTO() {
-    }
+  public UserSettingsDTO() {}
 
-    public UserSettingsDTO(boolean showMessagesPerLakare) {
-        this.showMessagesPerLakare = showMessagesPerLakare;
-    }
+  public UserSettingsDTO(boolean showMessagesPerLakare) {
+    this.showMessagesPerLakare = showMessagesPerLakare;
+  }
 
-    public boolean isShowMessagesPerLakare() {
-        return showMessagesPerLakare;
-    }
+  public boolean isShowMessagesPerLakare() {
+    return showMessagesPerLakare;
+  }
 
-    public void setShowMessagesPerLakare(boolean showMessagesPerLakare) {
-        this.showMessagesPerLakare = showMessagesPerLakare;
-    }
+  public void setShowMessagesPerLakare(boolean showMessagesPerLakare) {
+    this.showMessagesPerLakare = showMessagesPerLakare;
+  }
 }

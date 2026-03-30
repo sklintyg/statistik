@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -41,80 +41,86 @@ import se.inera.statistics.service.demo.LargeTestDataGenerator;
 
 // CHECKSTYLE:OFF MagicNumber
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:warehouse-integration-test.xml", "classpath:icd10.xml"})
+@ContextConfiguration(
+    locations = {"classpath:warehouse-integration-test.xml", "classpath:icd10.xml"})
 @DirtiesContext
 public class WarehouseIT {
 
-    @Autowired
-    private Warehouse warehouse;
+  @Autowired private Warehouse warehouse;
 
-    @Autowired
-    private LargeTestDataGenerator dataGenerator;
+  @Autowired private LargeTestDataGenerator dataGenerator;
 
-    private SjukfallUtil sjukfallUtil = new SjukfallUtil();
+  private SjukfallUtil sjukfallUtil = new SjukfallUtil();
 
-    @Before
-    public void setUp() throws Exception {
-        dataGenerator.setMaxIntyg(15);
+  @Before
+  public void setUp() throws Exception {
+    dataGenerator.setMaxIntyg(15);
+  }
+
+  @Test
+  public void addingManyIntyg() throws InterruptedException {
+    dataGenerator.publishUtlatanden();
+    final Aisle aisle = warehouse.get(new HsaIdVardgivare("vardgivare1"));
+
+    ExecutorService pool = Executors.newFixedThreadPool(10);
+    for (int i = 0; i < 100; i++) {
+      pool.submit(
+          new Runnable() {
+            @Override
+            public void run() {
+              measureSjukfall(aisle);
+            }
+          });
     }
 
-    @Test
-    public void addingManyIntyg() throws InterruptedException {
-        dataGenerator.publishUtlatanden();
-        final Aisle aisle = warehouse.get(new HsaIdVardgivare("vardgivare1"));
+    pool.shutdown();
+    pool.awaitTermination(30, TimeUnit.SECONDS);
+    showMem();
+  }
 
-        ExecutorService pool = Executors.newFixedThreadPool(10);
-        for (int i = 0; i < 100; i++) {
-            pool.submit(new Runnable() {
-                @Override
-                public void run() {
-                    measureSjukfall(aisle);
-                }
-            });
-        }
+  @Test
+  public void exportManyIntyg() throws FileNotFoundException {
+    dataGenerator.publishUtlatanden();
 
-        pool.shutdown();
-        pool.awaitTermination(30, TimeUnit.SECONDS);
-        showMem();
+    String result = dataGenerator.exportUtlatanden();
+
+    // System.setOut(new PrintStream("intyg.txt"));
+    assertTrue(result.length() > 0);
+  }
+
+  private Collection<Sjukfall> calculateSjukfallsHelper(Aisle aisle) {
+    return sjukfallUtil
+        .sjukfallGrupper(LocalDate.of(2000, 1, 1), 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER)
+        .iterator()
+        .next()
+        .getSjukfall();
+  }
+
+  private void measureSjukfall(Aisle aisle) {
+    Collection<Sjukfall> sjukfalls = calculateSjukfallsHelper(aisle);
+    int realDays = 0;
+    StopWatch stopWatch = new StopWatch();
+    stopWatch.start();
+    for (Sjukfall sjukfall : sjukfalls) {
+      realDays += sjukfall.getRealDays();
+    }
+    stopWatch.stop();
+    System.err.format(
+        "Sjukfall %1$s Real days %2$s %4$sms%n",
+        sjukfalls.size(), realDays, stopWatch.getTotalTimeMillis());
+  }
+
+  private void showMem() {
+    StringBuilder gc = new StringBuilder();
+    for (GarbageCollectorMXBean bean : ManagementFactory.getGarbageCollectorMXBeans()) {
+      gc.append(bean.getCollectionCount()).append(" ").append(bean.getCollectionTime()).append(" ");
     }
 
-    @Test
-    public void exportManyIntyg() throws FileNotFoundException {
-        dataGenerator.publishUtlatanden();
-
-        String result = dataGenerator.exportUtlatanden();
-
-        //System.setOut(new PrintStream("intyg.txt"));
-        assertTrue(result.length() > 0);
-    }
-
-    private Collection<Sjukfall> calculateSjukfallsHelper(Aisle aisle) {
-        return sjukfallUtil.sjukfallGrupper(LocalDate.of(2000, 1, 1), 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next()
-            .getSjukfall();
-    }
-
-    private void measureSjukfall(Aisle aisle) {
-        Collection<Sjukfall> sjukfalls = calculateSjukfallsHelper(aisle);
-        int realDays = 0;
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-        for (Sjukfall sjukfall : sjukfalls) {
-            realDays += sjukfall.getRealDays();
-        }
-        stopWatch.stop();
-        System.err.format("Sjukfall %1$s Real days %2$s %4$sms%n", sjukfalls.size(), realDays, stopWatch.getTotalTimeMillis());
-    }
-
-    private void showMem() {
-        StringBuilder gc = new StringBuilder();
-        for (GarbageCollectorMXBean bean : ManagementFactory.getGarbageCollectorMXBeans()) {
-            gc.append(bean.getCollectionCount())
-                .append(" ").append(bean.getCollectionTime()).append(" ");
-        }
-
-        Runtime r = Runtime.getRuntime();
-        long used = r.totalMemory() - r.freeMemory();
-        System.err.format("Memory total %1$s free %2$s used %3$s %4$s%n", r.totalMemory(), r.freeMemory(), used, gc.toString());
-    }
+    Runtime r = Runtime.getRuntime();
+    long used = r.totalMemory() - r.freeMemory();
+    System.err.format(
+        "Memory total %1$s free %2$s used %3$s %4$s%n",
+        r.totalMemory(), r.freeMemory(), used, gc.toString());
+  }
 }
 // CHECKSTYLE:ON MagicNumber

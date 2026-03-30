@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -27,32 +27,34 @@ import se.inera.statistics.service.warehouse.sjukfallcalc.perpatient.SjukfallPer
 
 public class SjukfallPerPeriodCalculator {
 
-    private final boolean extendSjukfall;
-    private final List<Range> ranges;
-    private final SjukfallPerPatientCalculator sjukfallPerPatientCalculator;
-    private SjukfallCalculatorExtender sjukfallCalculatorExtender;
+  private final boolean extendSjukfall;
+  private final List<Range> ranges;
+  private final SjukfallPerPatientCalculator sjukfallPerPatientCalculator;
+  private SjukfallCalculatorExtender sjukfallCalculatorExtender;
 
-    /**
-     * @param extendSjukfall true = försök att komplettera sjukfall från andra enheter än de man har tillgång till,
-     * false = titta bara på tillgängliga enheter, lämplig att använda t ex om man vet att man
-     * har tillgång till alla enheter
-     */
-    public SjukfallPerPeriodCalculator(boolean extendSjukfall, List<Range> ranges, List<Fact> aisle,
-        Iterable<Fact> filteredAisle) {
-        this.extendSjukfall = extendSjukfall;
-        this.ranges = ranges;
-        sjukfallPerPatientCalculator = new SjukfallPerPatientCalculator(ranges, filteredAisle);
-        if (this.extendSjukfall) {
-            sjukfallCalculatorExtender = new SjukfallCalculatorExtender(aisle);
-        }
+  /**
+   * @param extendSjukfall true = försök att komplettera sjukfall från andra enheter än de man har
+   *     tillgång till, false = titta bara på tillgängliga enheter, lämplig att använda t ex om man
+   *     vet att man har tillgång till alla enheter
+   */
+  public SjukfallPerPeriodCalculator(
+      boolean extendSjukfall, List<Range> ranges, List<Fact> aisle, Iterable<Fact> filteredAisle) {
+    this.extendSjukfall = extendSjukfall;
+    this.ranges = ranges;
+    sjukfallPerPatientCalculator = new SjukfallPerPatientCalculator(ranges, filteredAisle);
+    if (this.extendSjukfall) {
+      sjukfallCalculatorExtender = new SjukfallCalculatorExtender(aisle);
     }
+  }
 
-    public Multimap<Long, SjukfallExtended> getSjukfallsForPeriod(int period) {
-        Multimap<Long, SjukfallExtended> sjukfallsPerPatient = sjukfallPerPatientCalculator.getSjukfallsPerPatient(period);
-        if (this.extendSjukfall) {
-            this.sjukfallCalculatorExtender.extendSjukfallConnectedByIntygOnOtherEnhets(sjukfallsPerPatient);
-        }
-        return SjukfallCalculatorHelper.filterPersonifiedSjukfallsFromDate(ranges.get(period).getFrom(), sjukfallsPerPatient);
+  public Multimap<Long, SjukfallExtended> getSjukfallsForPeriod(int period) {
+    Multimap<Long, SjukfallExtended> sjukfallsPerPatient =
+        sjukfallPerPatientCalculator.getSjukfallsPerPatient(period);
+    if (this.extendSjukfall) {
+      this.sjukfallCalculatorExtender.extendSjukfallConnectedByIntygOnOtherEnhets(
+          sjukfallsPerPatient);
     }
-
+    return SjukfallCalculatorHelper.filterPersonifiedSjukfallsFromDate(
+        ranges.get(period).getFrom(), sjukfallsPerPatient);
+  }
 }

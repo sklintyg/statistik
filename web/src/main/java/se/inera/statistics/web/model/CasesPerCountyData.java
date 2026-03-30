@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,16 +23,20 @@ import se.inera.statistics.web.service.dto.FilterDataResponse;
 
 public class CasesPerCountyData extends SimpleDetailsData {
 
-    private String sourceDate;
+  private String sourceDate;
 
-    public CasesPerCountyData(TableData tableData, ChartData chartData, String period, AvailableFilters availableFilters,
-        FilterDataResponse filter, String sourceDate) {
-        super(tableData, chartData, period, availableFilters, filter);
-        this.sourceDate = sourceDate;
-    }
+  public CasesPerCountyData(
+      TableData tableData,
+      ChartData chartData,
+      String period,
+      AvailableFilters availableFilters,
+      FilterDataResponse filter,
+      String sourceDate) {
+    super(tableData, chartData, period, availableFilters, filter);
+    this.sourceDate = sourceDate;
+  }
 
-    public String getSourceDate() {
-        return sourceDate;
-    }
-
+  public String getSourceDate() {
+    return sourceDate;
+  }
 }

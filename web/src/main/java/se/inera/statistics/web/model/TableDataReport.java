@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -24,41 +24,40 @@ import se.inera.statistics.web.service.dto.FilterDataResponse;
 
 public abstract class TableDataReport implements FilteredDataReport {
 
-    private static final double MAX_DIFF_FOR_EQUALITY = 0.00001D;
+  private static final double MAX_DIFF_FOR_EQUALITY = 0.00001D;
 
-    public abstract TableData getTableData();
+  public abstract TableData getTableData();
 
-    public abstract String getPeriod();
+  public abstract String getPeriod();
 
-    @Override
-    public abstract FilterDataResponse getFilter();
+  @Override
+  public abstract FilterDataResponse getFilter();
 
-    @JsonIgnore
-    public abstract List<ChartData> getChartDatas();
+  @JsonIgnore
+  public abstract List<ChartData> getChartDatas();
 
-    @Override
-    public boolean isEmpty() {
-        final List<ChartData> chartDatas = getChartDatas();
-        if (chartDatas == null) {
-            return true;
-        }
-        double sum = 0;
-        for (ChartData chartData : chartDatas) {
-            if (chartData != null) {
-                sum += sum(chartData.getSeries());
-            }
-        }
-        return Math.abs(sum) < MAX_DIFF_FOR_EQUALITY;
+  @Override
+  public boolean isEmpty() {
+    final List<ChartData> chartDatas = getChartDatas();
+    if (chartDatas == null) {
+      return true;
     }
-
-    private double sum(List<ChartSeries> series) {
-        double sum = 0;
-        for (ChartSeries serie : series) {
-            for (Number number : serie.getData()) {
-                sum += number.doubleValue();
-            }
-        }
-        return sum;
+    double sum = 0;
+    for (ChartData chartData : chartDatas) {
+      if (chartData != null) {
+        sum += sum(chartData.getSeries());
+      }
     }
+    return Math.abs(sum) < MAX_DIFF_FOR_EQUALITY;
+  }
 
+  private double sum(List<ChartSeries> series) {
+    double sum = 0;
+    for (ChartSeries serie : series) {
+      for (Number number : serie.getData()) {
+        sum += number.doubleValue();
+      }
+    }
+    return sum;
+  }
 }

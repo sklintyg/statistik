@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -37,70 +37,82 @@ import se.inera.statistics.service.processlog.EnhetManager;
 
 public class UpdateEnhetNamnFromHsaFileService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UpdateEnhetNamnFromHsaFileService.class);
+  private static final Logger LOG =
+      LoggerFactory.getLogger(UpdateEnhetNamnFromHsaFileService.class);
 
-    private static final String JOB_NAME = "FileserviceJob.run";
+  private static final String JOB_NAME = "FileserviceJob.run";
 
-    @Value("${hsa.ws.certificate.file}")
-    private String hsaCertificateFile;
+  @Value("${hsa.ws.certificate.file}")
+  private String hsaCertificateFile;
 
-    @Value("${hsa.ws.certificate.password}")
-    private String hsaCertificatePassword;
+  @Value("${hsa.ws.certificate.password}")
+  private String hsaCertificatePassword;
 
-    @Value("${hsa.ws.truststore.file}")
-    private String hsaTruststoreFile;
+  @Value("${hsa.ws.truststore.file}")
+  private String hsaTruststoreFile;
 
-    @Value("${hsa.ws.truststore.password}")
-    private String hsaTruststorePassword;
+  @Value("${hsa.ws.truststore.password}")
+  private String hsaTruststorePassword;
 
-    @Value("${hsaunits.url}")
-    private String hsaunitsUrl;
+  @Value("${hsaunits.url}")
+  private String hsaunitsUrl;
 
-    private final EnhetManager enhetManager;
-    private final MdcHelper mdcHelper;
+  private final EnhetManager enhetManager;
+  private final MdcHelper mdcHelper;
 
-    public UpdateEnhetNamnFromHsaFileService(EnhetManager enhetManager, MdcHelper mdcHelper) {
-        this.enhetManager = enhetManager;
-        this.mdcHelper = mdcHelper;
+  public UpdateEnhetNamnFromHsaFileService(EnhetManager enhetManager, MdcHelper mdcHelper) {
+    this.enhetManager = enhetManager;
+    this.mdcHelper = mdcHelper;
+  }
+
+  @Scheduled(cron = "${scheduler.fileservice.cron}")
+  @SchedulerLock(name = JOB_NAME)
+  @PrometheusTimeMethod(help = "Jobb för att uppdatera enhetsnamn från HSAs fileservice")
+  @PerformanceLogging(
+      eventAction = "update-unit-names-fropm-hsa-file-job",
+      eventType = MdcLogConstants.EVENT_TYPE_CHANGE)
+  public void doUpdateEnhetnamesFromHsaFileService() {
+    try (MdcCloseableMap mdc =
+        MdcCloseableMap.builder()
+            .put(TRACE_ID_KEY, mdcHelper.traceId())
+            .put(SPAN_ID_KEY, mdcHelper.spanId())
+            .build()) {
+      LOG.info("Starting UpdateEnhetNamnFromHsaFileService");
+      final long start = System.currentTimeMillis();
+      LOG.info("Fetching unit names from HSA fileservice");
+      InputStream units =
+          HsaUnitSource.getUnits(
+              hsaCertificateFile,
+              hsaCertificatePassword,
+              hsaTruststoreFile,
+              hsaTruststorePassword,
+              hsaunitsUrl);
+      doUpdateEnhetnamesFromHsaFileServiceInputstream(units);
+      final long end = System.currentTimeMillis();
+      LOG.info("Updated from fileservice in " + String.valueOf(end - start) + " milliseconds");
     }
+  }
 
-    @Scheduled(cron = "${scheduler.fileservice.cron}")
-    @SchedulerLock(name = JOB_NAME)
-    @PrometheusTimeMethod(help = "Jobb för att uppdatera enhetsnamn från HSAs fileservice")
-    @PerformanceLogging(eventAction = "update-unit-names-fropm-hsa-file-job", eventType = MdcLogConstants.EVENT_TYPE_CHANGE)
-    public void doUpdateEnhetnamesFromHsaFileService() {
-        try (MdcCloseableMap mdc =
-            MdcCloseableMap.builder()
-                .put(TRACE_ID_KEY, mdcHelper.traceId())
-                .put(SPAN_ID_KEY, mdcHelper.spanId())
-                .build()
-        ) {
-            LOG.info("Starting UpdateEnhetNamnFromHsaFileService");
-            final long start = System.currentTimeMillis();
-            LOG.info("Fetching unit names from HSA fileservice");
-            InputStream units = HsaUnitSource.getUnits(hsaCertificateFile, hsaCertificatePassword,
-                hsaTruststoreFile, hsaTruststorePassword, hsaunitsUrl);
-            doUpdateEnhetnamesFromHsaFileServiceInputstream(units);
-            final long end = System.currentTimeMillis();
-            LOG.info("Updated from fileservice in " + String.valueOf(end - start) + " milliseconds");
-        }
-    }
+  void doUpdateEnhetnamesFromHsaFileServiceInputstream(InputStream inputStream) {
+    final long start = System.currentTimeMillis();
+    final FileGetHsaUnitsResponse resp = unmarshalXml(inputStream);
 
-    void doUpdateEnhetnamesFromHsaFileServiceInputstream(InputStream inputStream) {
-        final long start = System.currentTimeMillis();
-        final FileGetHsaUnitsResponse resp = unmarshalXml(inputStream);
+    LOG.info("Updating enhet names");
+    int updateCount = enhetManager.updateName(resp.getHsaUnits().getHsaUnit());
 
-        LOG.info("Updating enhet names");
-        int updateCount = enhetManager.updateName(resp.getHsaUnits().getHsaUnit());
+    final int enheterCount = resp.getHsaUnits().getHsaUnit().size();
+    final long end = System.currentTimeMillis();
+    final String totTime = String.valueOf(end - start);
+    LOG.info(
+        updateCount
+            + " enheter uppdated of "
+            + enheterCount
+            + " enheter in "
+            + totTime
+            + " milliseconds");
+  }
 
-        final int enheterCount = resp.getHsaUnits().getHsaUnit().size();
-        final long end = System.currentTimeMillis();
-        final String totTime = String.valueOf(end - start);
-        LOG.info(updateCount + " enheter uppdated of " + enheterCount + " enheter in " + totTime + " milliseconds");
-    }
-
-    static FileGetHsaUnitsResponse unmarshalXml(InputStream inputStream) {
-        return unmarshal(inputStream, FileGetHsaUnitsResponse.class);
-    }
-
+  static FileGetHsaUnitsResponse unmarshalXml(InputStream inputStream) {
+    return unmarshal(inputStream, FileGetHsaUnitsResponse.class);
+  }
 }

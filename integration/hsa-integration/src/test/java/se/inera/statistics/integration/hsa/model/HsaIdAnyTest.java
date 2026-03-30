@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -16,21 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package se.inera.statistics.integration.hsa.model;
-
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-
 public class HsaIdAnyTest {
 
-    @Test
-    public void testNewConvertsToUpperAndRemovesBlanks() throws Exception {
-        final HsaIdAny hsaIdAny = new HsaIdAny("asd f");
-        assertEquals("ASDF", hsaIdAny.getId());
-    }
-
+  @Test
+  public void testNewConvertsToUpperAndRemovesBlanks() throws Exception {
+    final HsaIdAny hsaIdAny = new HsaIdAny("asd f");
+    assertEquals("ASDF", hsaIdAny.getId());
+  }
 }

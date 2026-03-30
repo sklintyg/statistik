@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -82,248 +82,295 @@ import se.inera.statistics.web.service.region.RegionFileWriter;
 @ExtendWith(MockitoExtension.class)
 public class ProtectedRegionServiceTest {
 
-    @Mock
-    private WarehouseService warehouse;
+  @Mock private WarehouseService warehouse;
 
-    @Mock
-    private HttpServletRequest request;
+  @Mock private HttpServletRequest request;
 
-    @Mock
-    private LoginServiceUtil loginServiceUtil;
+  @Mock private LoginServiceUtil loginServiceUtil;
 
-    @Mock
-    private RegionEnhetHandler regionEnhetHandler;
+  @Mock private RegionEnhetHandler regionEnhetHandler;
 
-    @Mock
-    private RegionFileReader regionFileReader;
+  @Mock private RegionFileReader regionFileReader;
 
-    @Mock
-    private RegionFileWriter regionFileWriter;
+  @Mock private RegionFileWriter regionFileWriter;
 
-    @Mock
-    private EnhetManager enhetManager;
+  @Mock private EnhetManager enhetManager;
 
-    @Mock
-    private MonitoringLogService monitoringLogService;
+  @Mock private MonitoringLogService monitoringLogService;
 
-    @InjectMocks
-    private ProtectedRegionService chartDataService = new ProtectedRegionService();
+  @InjectMocks private ProtectedRegionService chartDataService = new ProtectedRegionService();
 
-    @BeforeEach
-    public void init() {
-        final Vardenhet vardenhet1 = new Vardenhet(new HsaIdEnhet("verksamhet1"), "Närhälsan i Småmåla", new HsaIdVardgivare("VG1"));
-        final Vardenhet vardenhet2 = new Vardenhet(new HsaIdEnhet("verksamhet2"), "Småmålas akutmottagning", new HsaIdVardgivare("VG2"));
-        List<Vardenhet> vardenhets = Arrays.asList(vardenhet1, vardenhet2);
+  @BeforeEach
+  public void init() {
+    final Vardenhet vardenhet1 =
+        new Vardenhet(
+            new HsaIdEnhet("verksamhet1"), "Närhälsan i Småmåla", new HsaIdVardgivare("VG1"));
+    final Vardenhet vardenhet2 =
+        new Vardenhet(
+            new HsaIdEnhet("verksamhet2"), "Småmålas akutmottagning", new HsaIdVardgivare("VG2"));
+    List<Vardenhet> vardenhets = Arrays.asList(vardenhet1, vardenhet2);
 
-        User user = new User(new HsaIdUser("hsaId"), "name", Collections.emptyList(), vardenhets, LoginMethod.SITHS);
-        UsernamePasswordAuthenticationToken principal = Mockito.mock(UsernamePasswordAuthenticationToken.class);
-    }
+    User user =
+        new User(
+            new HsaIdUser("hsaId"), "name", Collections.emptyList(), vardenhets, LoginMethod.SITHS);
+    UsernamePasswordAuthenticationToken principal =
+        Mockito.mock(UsernamePasswordAuthenticationToken.class);
+  }
 
-    @Test
-    public void testFileUploadWhenUserNotProcessledareShouldFail() throws Exception {
-        // Given
-        final MultipartBody mb = Mockito.mock(MultipartBody.class);
-        final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(loginServiceUtil.getLoginInfo())
-            .thenReturn(new LoginInfo(new HsaIdUser(""), "", new ArrayList<>(), new ArrayList<>(), new UserSettingsDTO(), "FAKE"));
-
-        // When
-        final Response response = chartDataService.fileupload(req, mb);
-
-        // Then
-        assertEquals(Response.Status.FORBIDDEN.getStatusCode(), response.getStatus());
-        Mockito.verify(regionEnhetHandler, times(0)).update(any(RegionEnhetFileData.class));
-    }
-
-    @Test
-    public void testFileUploadWhenFileParseFailsThenNoUpdateShouldBeDone() throws Exception {
-        // Given
-        final MultipartBody mb = Mockito.mock(MultipartBody.class);
-        final Attachment attachment = Mockito.mock(Attachment.class);
-        Mockito.when(mb.getAttachment(anyString())).thenReturn(attachment);
-        final DataHandler dh = Mockito.mock(DataHandler.class);
-        Mockito.when(attachment.getDataHandler()).thenReturn(dh);
-        final DataSource ds = Mockito.mock(DataSource.class);
-        Mockito.when(dh.getDataSource()).thenReturn(ds);
-        final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
-        final HsaIdVardgivare vg = new HsaIdVardgivare("TestVg");
-        Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vg);
-        final LoginInfoVg loginInfoVg = new LoginInfoVg(vg, "", RegionsVardgivareStatus.NO_REGIONSVARDGIVARE, new UserAccessLevel(true, 1));
-        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(
-            new LoginInfo(new HsaIdUser(""), "", new ArrayList<>(), Lists.newArrayList(loginInfoVg), new UserSettingsDTO(), "FAKE"));
-
-        // When
-        final Response response = chartDataService.fileupload(req, mb);
-
-        // Then
-        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-        Mockito.verify(regionEnhetHandler, times(0)).update(any(RegionEnhetFileData.class));
-    }
-
-    @Test
-    public void testFileUploadIsReturningAnHtmlPageWithCorrectMessageWhenRequired() throws Exception {
-        // Given
-        final MultipartBody mb = Mockito.mock(MultipartBody.class);
-        final Attachment attachment = Mockito.mock(Attachment.class);
-        Mockito.when(mb.getAttachment(anyString())).thenReturn(attachment);
-        Mockito.when(mb.getAttachmentObject(anyString(), any(Class.class))).thenReturn("true");
-        final DataHandler dh = Mockito.mock(DataHandler.class);
-        Mockito.when(attachment.getDataHandler()).thenReturn(dh);
-        final DataSource ds = Mockito.mock(DataSource.class);
-        Mockito.when(ds.getName()).thenReturn("testfilename");
-        Mockito.when(dh.getDataSource()).thenReturn(ds);
-        final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
-        final HsaIdVardgivare vg = new HsaIdVardgivare("TestVg");
-        Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vg);
-        final LoginInfoVg loginInfoVg = new LoginInfoVg(vg, "", RegionsVardgivareStatus.NO_REGIONSVARDGIVARE, new UserAccessLevel(true, 1));
-        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(
-            new LoginInfo(new HsaIdUser(""), "", new ArrayList<>(), Lists.newArrayList(loginInfoVg), new UserSettingsDTO(), "FAKE"));
-        final String msg = "This is a test message";
-        Mockito.when(regionFileReader.readExcelData(any(DataSource.class))).thenThrow(new RegionEnhetFileParseException(msg));
-
-        // When
-        final Response response = chartDataService.fileupload(req, mb);
-
-        // Then
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus()); // Returns OK even for failures since IE9 will not show the
-        // html-page when status code is 500
-        assertTrue(((String) response.getEntity()).startsWith("<html>"));
-        assertTrue(((String) response.getEntity()).contains(msg));
-        Mockito.verify(regionEnhetHandler, times(0)).update(any(RegionEnhetFileData.class));
-    }
-
-    @Test
-    public void testFileUploadUpdateIsUsingResultFromFileParsingAndCorrectVgId() throws Exception {
-        // Given
-        final MultipartBody mb = Mockito.mock(MultipartBody.class);
-        final Attachment attachment = Mockito.mock(Attachment.class);
-        Mockito.when(mb.getAttachment(anyString())).thenReturn(attachment);
-        final DataHandler dh = Mockito.mock(DataHandler.class);
-        Mockito.when(attachment.getDataHandler()).thenReturn(dh);
-        final DataSource ds = Mockito.mock(DataSource.class);
-        Mockito.when(ds.getName()).thenReturn("testfilename");
-        Mockito.when(dh.getDataSource()).thenReturn(ds);
-        final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
-        final User user = new User(new HsaIdUser(""), "", new ArrayList<>(), new ArrayList<>(), LoginMethod.SITHS);
-        final HsaIdVardgivare vg = new HsaIdVardgivare("TestVg");
-        Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vg);
-        final LoginInfoVg loginInfoVg = new LoginInfoVg(vg, "", RegionsVardgivareStatus.NO_REGIONSVARDGIVARE, new UserAccessLevel(true, 1));
-        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(
-            new LoginInfo(user.getHsaId(), user.getName(), new ArrayList<>(), Lists.newArrayList(loginInfoVg), new UserSettingsDTO(),
+  @Test
+  public void testFileUploadWhenUserNotProcessledareShouldFail() throws Exception {
+    // Given
+    final MultipartBody mb = Mockito.mock(MultipartBody.class);
+    final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
+    Mockito.when(loginServiceUtil.getLoginInfo())
+        .thenReturn(
+            new LoginInfo(
+                new HsaIdUser(""),
+                "",
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new UserSettingsDTO(),
                 "FAKE"));
-        final ArrayList<RegionEnhetFileDataRow> parseResult = new ArrayList<>();
-        Mockito.when(regionFileReader.readExcelData(any(DataSource.class))).thenReturn(parseResult);
 
-        // When
-        final Response response = chartDataService.fileupload(req, mb);
+    // When
+    final Response response = chartDataService.fileupload(req, mb);
 
-        // Then
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-        final ArgumentCaptor<RegionEnhetFileData> captor = ArgumentCaptor.forClass(RegionEnhetFileData.class);
-        Mockito.verify(regionEnhetHandler, times(1)).update(captor.capture());
-        assertEquals(parseResult, captor.getValue().getRows());
-        assertEquals(vg, captor.getValue().getVgId());
-    }
+    // Then
+    assertEquals(Response.Status.FORBIDDEN.getStatusCode(), response.getStatus());
+    Mockito.verify(regionEnhetHandler, times(0)).update(any(RegionEnhetFileData.class));
+  }
 
-    @Test
-    public void testGetPrepopulatedRegionFileHappyPath() throws Exception {
-        // Given
-        final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
+  @Test
+  public void testFileUploadWhenFileParseFailsThenNoUpdateShouldBeDone() throws Exception {
+    // Given
+    final MultipartBody mb = Mockito.mock(MultipartBody.class);
+    final Attachment attachment = Mockito.mock(Attachment.class);
+    Mockito.when(mb.getAttachment(anyString())).thenReturn(attachment);
+    final DataHandler dh = Mockito.mock(DataHandler.class);
+    Mockito.when(attachment.getDataHandler()).thenReturn(dh);
+    final DataSource ds = Mockito.mock(DataSource.class);
+    Mockito.when(dh.getDataSource()).thenReturn(ds);
+    final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
+    final HsaIdVardgivare vg = new HsaIdVardgivare("TestVg");
+    Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vg);
+    final LoginInfoVg loginInfoVg =
+        new LoginInfoVg(
+            vg, "", RegionsVardgivareStatus.NO_REGIONSVARDGIVARE, new UserAccessLevel(true, 1));
+    Mockito.when(loginServiceUtil.getLoginInfo())
+        .thenReturn(
+            new LoginInfo(
+                new HsaIdUser(""),
+                "",
+                new ArrayList<>(),
+                Lists.newArrayList(loginInfoVg),
+                new UserSettingsDTO(),
+                "FAKE"));
 
-        final HsaIdVardgivare vgid = new HsaIdVardgivare("VgidTest");
-        Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vgid);
+    // When
+    final Response response = chartDataService.fileupload(req, mb);
 
-        final ArrayList<Enhet> enhets = new ArrayList<>();
-        Mockito.when(enhetManager.getAllVardenhetsForVardgivareId(vgid)).thenReturn(enhets);
+    // Then
+    assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+    Mockito.verify(regionEnhetHandler, times(0)).update(any(RegionEnhetFileData.class));
+  }
 
-        final ByteArrayOutputStream outputStream = Mockito.mock(ByteArrayOutputStream.class);
-        Mockito.when(regionFileWriter.generateExcelFile(enhets)).thenReturn(outputStream);
+  @Test
+  public void testFileUploadIsReturningAnHtmlPageWithCorrectMessageWhenRequired() throws Exception {
+    // Given
+    final MultipartBody mb = Mockito.mock(MultipartBody.class);
+    final Attachment attachment = Mockito.mock(Attachment.class);
+    Mockito.when(mb.getAttachment(anyString())).thenReturn(attachment);
+    Mockito.when(mb.getAttachmentObject(anyString(), any(Class.class))).thenReturn("true");
+    final DataHandler dh = Mockito.mock(DataHandler.class);
+    Mockito.when(attachment.getDataHandler()).thenReturn(dh);
+    final DataSource ds = Mockito.mock(DataSource.class);
+    Mockito.when(ds.getName()).thenReturn("testfilename");
+    Mockito.when(dh.getDataSource()).thenReturn(ds);
+    final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
+    final HsaIdVardgivare vg = new HsaIdVardgivare("TestVg");
+    Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vg);
+    final LoginInfoVg loginInfoVg =
+        new LoginInfoVg(
+            vg, "", RegionsVardgivareStatus.NO_REGIONSVARDGIVARE, new UserAccessLevel(true, 1));
+    Mockito.when(loginServiceUtil.getLoginInfo())
+        .thenReturn(
+            new LoginInfo(
+                new HsaIdUser(""),
+                "",
+                new ArrayList<>(),
+                Lists.newArrayList(loginInfoVg),
+                new UserSettingsDTO(),
+                "FAKE"));
+    final String msg = "This is a test message";
+    Mockito.when(regionFileReader.readExcelData(any(DataSource.class)))
+        .thenThrow(new RegionEnhetFileParseException(msg));
 
-        final String resultContent = "TestResultContent";
-        Mockito.when(outputStream.toByteArray()).thenReturn(resultContent.getBytes());
+    // When
+    final Response response = chartDataService.fileupload(req, mb);
 
-        // When
-        final Response response = chartDataService.getPrepopulatedRegionFile(req);
+    // Then
+    assertEquals(
+        Response.Status.OK.getStatusCode(),
+        response.getStatus()); // Returns OK even for failures since IE9 will not show the
+    // html-page when status code is 500
+    assertTrue(((String) response.getEntity()).startsWith("<html>"));
+    assertTrue(((String) response.getEntity()).contains(msg));
+    Mockito.verify(regionEnhetHandler, times(0)).update(any(RegionEnhetFileData.class));
+  }
 
-        // Then
-        assertArrayEquals(resultContent.getBytes(), (byte[]) response.getEntity());
-        assertEquals("attachment; filename=\"" + vgid + "_region.xlsx\"", response.getHeaderString("Content-Disposition"));
-        assertEquals(MediaType.APPLICATION_OCTET_STREAM_TYPE, response.getMediaType());
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-    }
+  @Test
+  public void testFileUploadUpdateIsUsingResultFromFileParsingAndCorrectVgId() throws Exception {
+    // Given
+    final MultipartBody mb = Mockito.mock(MultipartBody.class);
+    final Attachment attachment = Mockito.mock(Attachment.class);
+    Mockito.when(mb.getAttachment(anyString())).thenReturn(attachment);
+    final DataHandler dh = Mockito.mock(DataHandler.class);
+    Mockito.when(attachment.getDataHandler()).thenReturn(dh);
+    final DataSource ds = Mockito.mock(DataSource.class);
+    Mockito.when(ds.getName()).thenReturn("testfilename");
+    Mockito.when(dh.getDataSource()).thenReturn(ds);
+    final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
+    final User user =
+        new User(new HsaIdUser(""), "", new ArrayList<>(), new ArrayList<>(), LoginMethod.SITHS);
+    final HsaIdVardgivare vg = new HsaIdVardgivare("TestVg");
+    Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vg);
+    final LoginInfoVg loginInfoVg =
+        new LoginInfoVg(
+            vg, "", RegionsVardgivareStatus.NO_REGIONSVARDGIVARE, new UserAccessLevel(true, 1));
+    Mockito.when(loginServiceUtil.getLoginInfo())
+        .thenReturn(
+            new LoginInfo(
+                user.getHsaId(),
+                user.getName(),
+                new ArrayList<>(),
+                Lists.newArrayList(loginInfoVg),
+                new UserSettingsDTO(),
+                "FAKE"));
+    final ArrayList<RegionEnhetFileDataRow> parseResult = new ArrayList<>();
+    Mockito.when(regionFileReader.readExcelData(any(DataSource.class))).thenReturn(parseResult);
 
-    @Test
-    public void testGetPrepopulatedRegionFileGenerationFailure() throws Exception {
-        // Given
-        final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
+    // When
+    final Response response = chartDataService.fileupload(req, mb);
 
-        final HsaIdVardgivare vgid = new HsaIdVardgivare("VgidTest");
-        Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vgid);
+    // Then
+    assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+    final ArgumentCaptor<RegionEnhetFileData> captor =
+        ArgumentCaptor.forClass(RegionEnhetFileData.class);
+    Mockito.verify(regionEnhetHandler, times(1)).update(captor.capture());
+    assertEquals(parseResult, captor.getValue().getRows());
+    assertEquals(vg, captor.getValue().getVgId());
+  }
 
-        final ArrayList<Enhet> enhets = new ArrayList<>();
-        Mockito.when(enhetManager.getAllVardenhetsForVardgivareId(vgid)).thenReturn(enhets);
+  @Test
+  public void testGetPrepopulatedRegionFileHappyPath() throws Exception {
+    // Given
+    final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
 
-        Mockito.when(regionFileWriter.generateExcelFile(enhets)).thenThrow(new RegionFileGenerationException());
+    final HsaIdVardgivare vgid = new HsaIdVardgivare("VgidTest");
+    Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vgid);
 
-        // When
-        final Response response = chartDataService.getPrepopulatedRegionFile(req);
+    final ArrayList<Enhet> enhets = new ArrayList<>();
+    Mockito.when(enhetManager.getAllVardenhetsForVardgivareId(vgid)).thenReturn(enhets);
 
-        // Then
-        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-    }
+    final ByteArrayOutputStream outputStream = Mockito.mock(ByteArrayOutputStream.class);
+    Mockito.when(regionFileWriter.generateExcelFile(enhets)).thenReturn(outputStream);
 
-    @Test
-    public void testGetLastRegionUpdateInfo() throws Exception {
-        // Given
-        final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
+    final String resultContent = "TestResultContent";
+    Mockito.when(outputStream.toByteArray()).thenReturn(resultContent.getBytes());
 
-        final HsaIdVardgivare vgid = new HsaIdVardgivare("VgidTest");
-        Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vgid);
+    // When
+    final Response response = chartDataService.getPrepopulatedRegionFile(req);
 
-        final RegionEnhetUpdate regionEnhetUpdate = new RegionEnhetUpdate(123L, "Test Name", new HsaIdUser("TESTHSAID"), new Timestamp(5L),
-            "TestFile.xls", RegionEnhetUpdateOperation.UPDATE);
-        Mockito.when(regionEnhetHandler.getLastUpdateInfo(vgid)).thenReturn(Optional.of(regionEnhetUpdate));
+    // Then
+    assertArrayEquals(resultContent.getBytes(), (byte[]) response.getEntity());
+    assertEquals(
+        "attachment; filename=\"" + vgid + "_region.xlsx\"",
+        response.getHeaderString("Content-Disposition"));
+    assertEquals(MediaType.APPLICATION_OCTET_STREAM_TYPE, response.getMediaType());
+    assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+  }
 
-        final ArrayList<RegionEnhet> regionEnhets = new ArrayList<>();
-        regionEnhets.add(new RegionEnhet(3L, new HsaIdEnhet("HSAID3"), 73));
-        regionEnhets.add(new RegionEnhet(9L, new HsaIdEnhet("HSAID9"), 79));
-        Mockito.when(regionEnhetHandler.getAllRegionEnhetsForVardgivare(vgid)).thenReturn(regionEnhets);
+  @Test
+  public void testGetPrepopulatedRegionFileGenerationFailure() throws Exception {
+    // Given
+    final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
 
-        // When
-        final Response response = chartDataService.getLastRegionUpdateInfo(req);
+    final HsaIdVardgivare vgid = new HsaIdVardgivare("VgidTest");
+    Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vgid);
 
-        // Then
-        final HashMap<String, Object> entity = (HashMap<String, Object>) response.getEntity();
+    final ArrayList<Enhet> enhets = new ArrayList<>();
+    Mockito.when(enhetManager.getAllVardenhetsForVardgivareId(vgid)).thenReturn(enhets);
 
-        final List<String> parsedRows = (List<String>) entity.get("parsedRows");
-        assertEquals(2, parsedRows.size());
-        assertEquals("HSA-id: HSAID3 -> Listade patienter: 73", parsedRows.get(0));
-        assertEquals("HSA-id: HSAID9 -> Listade patienter: 79", parsedRows.get(1));
+    Mockito.when(regionFileWriter.generateExcelFile(enhets))
+        .thenThrow(new RegionFileGenerationException());
 
-        final String infoMessage = (String) entity.get("infoMessage");
-        assertTrue(infoMessage.contains("TestFile.xls"));
-        assertTrue(infoMessage.contains("Test Name"));
-        assertTrue(infoMessage.contains("TESTHSAID"));
-    }
+    // When
+    final Response response = chartDataService.getPrepopulatedRegionFile(req);
 
-    @Test
-    public void testClearRegionEnhets() throws Exception {
-        // Given
-        final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
+    // Then
+    assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+  }
 
-        final HsaIdVardgivare vgId = new HsaIdVardgivare("testvgid");
-        final HsaIdUser hsaId = new HsaIdUser("testhsaid");
-        final String name = "test name";
-        final LoginInfo loginInfo = new LoginInfo(hsaId, name, new ArrayList<>(), new ArrayList<>(), new UserSettingsDTO(), "FAKE");
-        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(loginInfo);
-        Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vgId);
+  @Test
+  public void testGetLastRegionUpdateInfo() throws Exception {
+    // Given
+    final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
 
-        // When
-        final Response response = chartDataService.clearRegionEnhets(req);
+    final HsaIdVardgivare vgid = new HsaIdVardgivare("VgidTest");
+    Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vgid);
 
-        // Then
-        assertEquals(200, response.getStatus());
-        verify(regionEnhetHandler, times(1)).clear(vgId, name, hsaId);
-    }
+    final RegionEnhetUpdate regionEnhetUpdate =
+        new RegionEnhetUpdate(
+            123L,
+            "Test Name",
+            new HsaIdUser("TESTHSAID"),
+            new Timestamp(5L),
+            "TestFile.xls",
+            RegionEnhetUpdateOperation.UPDATE);
+    Mockito.when(regionEnhetHandler.getLastUpdateInfo(vgid))
+        .thenReturn(Optional.of(regionEnhetUpdate));
 
+    final ArrayList<RegionEnhet> regionEnhets = new ArrayList<>();
+    regionEnhets.add(new RegionEnhet(3L, new HsaIdEnhet("HSAID3"), 73));
+    regionEnhets.add(new RegionEnhet(9L, new HsaIdEnhet("HSAID9"), 79));
+    Mockito.when(regionEnhetHandler.getAllRegionEnhetsForVardgivare(vgid)).thenReturn(regionEnhets);
+
+    // When
+    final Response response = chartDataService.getLastRegionUpdateInfo(req);
+
+    // Then
+    final HashMap<String, Object> entity = (HashMap<String, Object>) response.getEntity();
+
+    final List<String> parsedRows = (List<String>) entity.get("parsedRows");
+    assertEquals(2, parsedRows.size());
+    assertEquals("HSA-id: HSAID3 -> Listade patienter: 73", parsedRows.get(0));
+    assertEquals("HSA-id: HSAID9 -> Listade patienter: 79", parsedRows.get(1));
+
+    final String infoMessage = (String) entity.get("infoMessage");
+    assertTrue(infoMessage.contains("TestFile.xls"));
+    assertTrue(infoMessage.contains("Test Name"));
+    assertTrue(infoMessage.contains("TESTHSAID"));
+  }
+
+  @Test
+  public void testClearRegionEnhets() throws Exception {
+    // Given
+    final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
+
+    final HsaIdVardgivare vgId = new HsaIdVardgivare("testvgid");
+    final HsaIdUser hsaId = new HsaIdUser("testhsaid");
+    final String name = "test name";
+    final LoginInfo loginInfo =
+        new LoginInfo(
+            hsaId, name, new ArrayList<>(), new ArrayList<>(), new UserSettingsDTO(), "FAKE");
+    Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(loginInfo);
+    Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vgId);
+
+    // When
+    final Response response = chartDataService.clearRegionEnhets(req);
+
+    // Then
+    assertEquals(200, response.getStatus());
+    verify(regionEnhetHandler, times(1)).clear(vgId, name, hsaId);
+  }
 }

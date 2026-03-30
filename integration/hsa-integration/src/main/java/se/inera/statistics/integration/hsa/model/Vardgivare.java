@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -18,59 +18,58 @@
  */
 package se.inera.statistics.integration.hsa.model;
 
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class Vardgivare implements Comparable<Vardgivare>, Serializable {
 
-    private static final long serialVersionUID = 4462766290949153158L;
+  private static final long serialVersionUID = 4462766290949153158L;
 
-    private String id;
-    private String namn;
+  private String id;
+  private String namn;
 
-    private List<Vardenhet> vardenheter = new ArrayList<>();
+  private List<Vardenhet> vardenheter = new ArrayList<>();
 
-    public Vardgivare() {
-        // Needed for deserialization
+  public Vardgivare() {
+    // Needed for deserialization
+  }
+
+  public Vardgivare(String id, String namn) {
+    this.id = id;
+    this.namn = namn;
+  }
+
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    } else if (!(o instanceof Vardgivare)) {
+      return false;
+    } else {
+      Vardgivare that = (Vardgivare) o;
+
+      if (id == null) {
+        return that.id == null;
+      } else {
+        return id.equals(that.id);
+      }
     }
+  }
 
-    public Vardgivare(String id, String namn) {
-        this.id = id;
-        this.namn = namn;
-    }
+  @Override
+  public int hashCode() {
+    return id != null ? id.hashCode() : 0;
+  }
 
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        } else if (!(o instanceof Vardgivare)) {
-            return false;
-        } else {
-            Vardgivare that = (Vardgivare) o;
+  @Override
+  public int compareTo(Vardgivare annanVardgivare) {
+    return getNamn().compareTo(annanVardgivare.getNamn());
+  }
 
-            if (id == null) {
-                return that.id == null;
-            } else {
-                return id.equals(that.id);
-            }
-        }
-    }
-
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
-    }
-
-    @Override
-    public int compareTo(Vardgivare annanVardgivare) {
-        return getNamn().compareTo(annanVardgivare.getNamn());
-    }
-
-    @Override
-    public String toString() {
-        return new StringBuilder(getNamn()).append(":").append(getId()).toString();
-    }
+  @Override
+  public String toString() {
+    return new StringBuilder(getNamn()).append(":").append(getId()).toString();
+  }
 }

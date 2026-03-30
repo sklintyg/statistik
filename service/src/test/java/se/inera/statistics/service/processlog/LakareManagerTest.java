@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -39,54 +39,53 @@ import se.inera.statistics.service.hsa.HsaInfo;
 @DirtiesContext
 public class LakareManagerTest {
 
-    @Autowired
-    LakareManager lakareManager;
+  @Autowired LakareManager lakareManager;
 
-    @Autowired
-    HSAService hsaService;
+  @Autowired HSAService hsaService;
 
-    @Test
-    @Ignore
-    public void saveOneLakare() {
-        HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey("vg-verksamhet1", "verksamhet1", "lakare_my"));
+  @Test
+  @Ignore
+  public void saveOneLakare() {
+    HsaInfo hsaInfo =
+        hsaService.getHSAInfo(new HSAKey("vg-verksamhet1", "verksamhet1", "lakare_my"));
 
-        lakareManager.saveLakare(hsaInfo);
+    lakareManager.saveLakare(hsaInfo);
 
-        List<Lakare> allLakares = lakareManager.getAllLakares();
-        assertEquals(1, allLakares.size());
-        assertEquals("LAKARE_MY", allLakares.get(0).getLakareId().getId());
-        assertEquals("My", allLakares.get(0).getTilltalsNamn());
-        assertEquals("Åsgren", allLakares.get(0).getEfterNamn());
-    }
+    List<Lakare> allLakares = lakareManager.getAllLakares();
+    assertEquals(1, allLakares.size());
+    assertEquals("LAKARE_MY", allLakares.get(0).getLakareId().getId());
+    assertEquals("My", allLakares.get(0).getTilltalsNamn());
+    assertEquals("Åsgren", allLakares.get(0).getEfterNamn());
+  }
 
-    @Test
-    @Ignore
-    public void saveOneLakareWithoutVGFailsWithoutError() {
-        HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey(null, "verksamhet1", "lakare_my"));
-        hsaInfo = new HsaInfo(hsaInfo.getEnhet(), hsaInfo.getHuvudenhet(), null, hsaInfo.getPersonal());
+  @Test
+  @Ignore
+  public void saveOneLakareWithoutVGFailsWithoutError() {
+    HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey(null, "verksamhet1", "lakare_my"));
+    hsaInfo = new HsaInfo(hsaInfo.getEnhet(), hsaInfo.getHuvudenhet(), null, hsaInfo.getPersonal());
 
-        lakareManager.saveLakare(hsaInfo);
+    lakareManager.saveLakare(hsaInfo);
 
-        List<Lakare> allLakares = lakareManager.getAllLakares();
-        assertEquals(0, allLakares.size());
-    }
+    List<Lakare> allLakares = lakareManager.getAllLakares();
+    assertEquals(0, allLakares.size());
+  }
 
-    @Test
-    @Ignore
-    public void getAllLakares() {
-        HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey("vg-verksamhet1", "verksamhet1", "lakare_my"));
-        lakareManager.saveLakare(hsaInfo);
-        hsaInfo = hsaService.getHSAInfo(new HSAKey("vg-verksamhet2", "verksamhet3", "lakare_vieux"));
-        lakareManager.saveLakare(hsaInfo);
+  @Test
+  @Ignore
+  public void getAllLakares() {
+    HsaInfo hsaInfo =
+        hsaService.getHSAInfo(new HSAKey("vg-verksamhet1", "verksamhet1", "lakare_my"));
+    lakareManager.saveLakare(hsaInfo);
+    hsaInfo = hsaService.getHSAInfo(new HSAKey("vg-verksamhet2", "verksamhet3", "lakare_vieux"));
+    lakareManager.saveLakare(hsaInfo);
 
-        List<Lakare> allLakares = lakareManager.getAllLakares();
-        assertEquals(2, allLakares.size());
-        assertEquals("LAKARE_MY", allLakares.get(0).getLakareId().getId());
-        assertEquals("My", allLakares.get(0).getTilltalsNamn());
-        assertEquals("Åsgren", allLakares.get(0).getEfterNamn());
-        assertEquals("LAKARE_VIEUX", allLakares.get(1).getLakareId().getId());
-        assertEquals("Vieux", allLakares.get(1).getTilltalsNamn());
-        assertEquals("En", allLakares.get(1).getEfterNamn());
-    }
-
+    List<Lakare> allLakares = lakareManager.getAllLakares();
+    assertEquals(2, allLakares.size());
+    assertEquals("LAKARE_MY", allLakares.get(0).getLakareId().getId());
+    assertEquals("My", allLakares.get(0).getTilltalsNamn());
+    assertEquals("Åsgren", allLakares.get(0).getEfterNamn());
+    assertEquals("LAKARE_VIEUX", allLakares.get(1).getLakareId().getId());
+    assertEquals("Vieux", allLakares.get(1).getTilltalsNamn());
+    assertEquals("En", allLakares.get(1).getEfterNamn());
+  }
 }

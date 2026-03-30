@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -38,49 +38,51 @@ import se.inera.statistics.web.service.dto.FilterSettings;
 
 public class AldersgruppConverterTest {
 
-    // CHECKSTYLE:OFF MagicNumber
+  // CHECKSTYLE:OFF MagicNumber
 
-    @Test
-    public void convertCasesPerMonthDataTest() {
-        //Given
-        SimpleDualSexConverter converter = SimpleDualSexConverter.newGenericTvarsnitt();
-        ArrayList<SimpleKonDataRow> ageGroupsRows = new ArrayList<>();
-        ageGroupsRows.add(new SimpleKonDataRow("<20", 13, 14));
-        ageGroupsRows.add(new SimpleKonDataRow("20-50", 24, 15));
-        ageGroupsRows.add(new SimpleKonDataRow(">50", 3, 9));
-        SimpleKonResponse ageGroupsResponse = new SimpleKonResponse(AvailableFilters.getForSjukfall(), ageGroupsRows);
+  @Test
+  public void convertCasesPerMonthDataTest() {
+    // Given
+    SimpleDualSexConverter converter = SimpleDualSexConverter.newGenericTvarsnitt();
+    ArrayList<SimpleKonDataRow> ageGroupsRows = new ArrayList<>();
+    ageGroupsRows.add(new SimpleKonDataRow("<20", 13, 14));
+    ageGroupsRows.add(new SimpleKonDataRow("20-50", 24, 15));
+    ageGroupsRows.add(new SimpleKonDataRow(">50", 3, 9));
+    SimpleKonResponse ageGroupsResponse =
+        new SimpleKonResponse(AvailableFilters.getForSjukfall(), ageGroupsRows);
 
-        //When
-        final Range range = Range.createForLastMonthsExcludingCurrent(7, Clock.systemDefaultZone());
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
-        SimpleDetailsData result = converter.convert(ageGroupsResponse, filterSettings);
+    // When
+    final Range range = Range.createForLastMonthsExcludingCurrent(7, Clock.systemDefaultZone());
+    final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
+    SimpleDetailsData result = converter.convert(ageGroupsResponse, filterSettings);
 
-        //Then
-        TableData tableDataResult = result.getTableData();
-        assertEquals("[[;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]",
-            tableDataResult.getHeaders().toString());
-        List<NamedData> rows = tableDataResult.getRows();
-        assertEquals(3, rows.size());
-        assertEquals("<20", rows.get(0).getName());
-        assertEquals("20-50", rows.get(1).getName());
-        assertEquals(">50", rows.get(2).getName());
-        assertEquals("[27, 13, 14]", rows.get(0).getData().toString());
-        assertEquals("[39, 24, 15]", rows.get(1).getData().toString());
-        assertEquals("[12, 3, 9]", rows.get(2).getData().toString());
+    // Then
+    TableData tableDataResult = result.getTableData();
+    assertEquals(
+        "[[;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]",
+        tableDataResult.getHeaders().toString());
+    List<NamedData> rows = tableDataResult.getRows();
+    assertEquals(3, rows.size());
+    assertEquals("<20", rows.get(0).getName());
+    assertEquals("20-50", rows.get(1).getName());
+    assertEquals(">50", rows.get(2).getName());
+    assertEquals("[27, 13, 14]", rows.get(0).getData().toString());
+    assertEquals("[39, 24, 15]", rows.get(1).getData().toString());
+    assertEquals("[12, 3, 9]", rows.get(2).getData().toString());
 
-        ChartData chartDataResult = result.getChartData();
-        assertEquals("[<20, 20-50, >50]", chartDataResult.getCategories().toString());
-        List<ChartSeries> series = chartDataResult.getSeries();
-        assertEquals(3, series.size());
-        assertEquals("Totalt", series.get(0).getName());
-        assertEquals("Kvinnor", series.get(1).getName());
-        assertEquals("Män", series.get(2).getName());
-        assertEquals("[27, 39, 12]", series.get(0).getData().toString());
-        assertEquals("[13, 24, 3]", series.get(1).getData().toString());
-        assertEquals("[14, 15, 9]", series.get(2).getData().toString());
+    ChartData chartDataResult = result.getChartData();
+    assertEquals("[<20, 20-50, >50]", chartDataResult.getCategories().toString());
+    List<ChartSeries> series = chartDataResult.getSeries();
+    assertEquals(3, series.size());
+    assertEquals("Totalt", series.get(0).getName());
+    assertEquals("Kvinnor", series.get(1).getName());
+    assertEquals("Män", series.get(2).getName());
+    assertEquals("[27, 39, 12]", series.get(0).getData().toString());
+    assertEquals("[13, 24, 3]", series.get(1).getData().toString());
+    assertEquals("[14, 15, 9]", series.get(2).getData().toString());
 
-        assertEquals(range.toString(), result.getPeriod());
-    }
+    assertEquals(range.toString(), result.getPeriod());
+  }
 
-    // CHECKSTYLE:ON MagicNumber
+  // CHECKSTYLE:ON MagicNumber
 }

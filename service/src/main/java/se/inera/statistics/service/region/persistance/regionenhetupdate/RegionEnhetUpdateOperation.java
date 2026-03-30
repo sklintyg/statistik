@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -19,17 +19,16 @@
 package se.inera.statistics.service.region.persistance.regionenhetupdate;
 
 public enum RegionEnhetUpdateOperation {
+  UPDATE("Uppdaterat information"),
+  REMOVE("Tagit bort information");
 
-    UPDATE("Uppdaterat information"), REMOVE("Tagit bort information");
+  private final String message;
 
-    private final String message;
+  RegionEnhetUpdateOperation(String message) {
+    this.message = message;
+  }
 
-    RegionEnhetUpdateOperation(String message) {
-        this.message = message;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
+  public String getMessage() {
+    return message;
+  }
 }

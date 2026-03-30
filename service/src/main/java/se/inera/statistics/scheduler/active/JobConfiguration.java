@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -38,7 +38,8 @@ import se.inera.statistics.service.processlog.intygsent.IntygsentLogConsumer;
 import se.inera.statistics.service.processlog.message.MessageLogConsumer;
 
 /**
- * Jobs depends on external redis for locking, and the same instance as for caching (see infra) is used.
+ * Jobs depends on external redis for locking, and the same instance as for caching (see infra) is
+ * used.
  */
 @Configuration
 @EnableScheduling
@@ -47,40 +48,34 @@ import se.inera.statistics.service.processlog.message.MessageLogConsumer;
 @EnableSchedulerLock(defaultLockAtMostFor = "PT20M")
 public class JobConfiguration {
 
-    @Autowired
-    private JedisConnectionFactory jedisConnectionFactory;
+  @Autowired private JedisConnectionFactory jedisConnectionFactory;
 
-    @Autowired
-    private MessageLogConsumer messageLogConsumer;
+  @Autowired private MessageLogConsumer messageLogConsumer;
 
-    @Autowired
-    private LogConsumer consumer;
+  @Autowired private LogConsumer consumer;
 
-    @Autowired
-    private IntygsentLogConsumer intygsentLogConsumer;
+  @Autowired private IntygsentLogConsumer intygsentLogConsumer;
 
-    @Autowired
-    private MdcHelper mdcHelper;
+  @Autowired private MdcHelper mdcHelper;
 
-    @Autowired
-    @Qualifier("serviceMonitoringLogService")
-    private MonitoringLogService monitoringLogService;
+  @Autowired
+  @Qualifier("serviceMonitoringLogService") private MonitoringLogService monitoringLogService;
 
-    @Autowired
-    private EnhetManager enhetManager;
+  @Autowired private EnhetManager enhetManager;
 
-    @Bean
-    public LockProvider lockProvider() {
-        return new RedisLockProvider(jedisConnectionFactory, "statistik");
-    }
+  @Bean
+  public LockProvider lockProvider() {
+    return new RedisLockProvider(jedisConnectionFactory, "statistik");
+  }
 
-    @Bean
-    public LogJob logJob() {
-        return new LogJob(monitoringLogService, consumer, intygsentLogConsumer, messageLogConsumer, mdcHelper);
-    }
+  @Bean
+  public LogJob logJob() {
+    return new LogJob(
+        monitoringLogService, consumer, intygsentLogConsumer, messageLogConsumer, mdcHelper);
+  }
 
-    @Bean
-    public UpdateEnhetNamnFromHsaFileService updateEnhetNamnFromHsaFileService() {
-        return new UpdateEnhetNamnFromHsaFileService(enhetManager, mdcHelper);
-    }
+  @Bean
+  public UpdateEnhetNamnFromHsaFileService updateEnhetNamnFromHsaFileService() {
+    return new UpdateEnhetNamnFromHsaFileService(enhetManager, mdcHelper);
+  }
 }

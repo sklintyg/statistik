@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -39,90 +39,95 @@ import se.inera.statistics.service.report.util.Icd10RangeType;
 @ExtendWith(MockitoExtension.class)
 public class ResultMessagHandlerTest {
 
-    @InjectMocks
-    private ResultMessageHandler resultMessageHandler;
+  @InjectMocks private ResultMessageHandler resultMessageHandler;
 
-    @Mock
-    private Icd10 icd10;
+  @Mock private Icd10 icd10;
 
-    @BeforeEach
-    public void setUp() throws Exception {
-        lenient().when(icd10.findIcd10FromNumericId(anyInt())).thenReturn(new Icd10.Id("180108190", "A00-B99") {
-            @Override
-            public int toInt() {
+  @BeforeEach
+  public void setUp() throws Exception {
+    lenient()
+        .when(icd10.findIcd10FromNumericId(anyInt()))
+        .thenReturn(
+            new Icd10.Id("180108190", "A00-B99") {
+              @Override
+              public int toInt() {
                 return 180108190;
-            }
+              }
 
-            @Override
-            public List<Icd10.Id> getSubItems() {
+              @Override
+              public List<Icd10.Id> getSubItems() {
                 return new ArrayList<>();
-            }
+              }
 
-            @Override
-            public Optional<Icd10.Id> getParent() {
+              @Override
+              public Optional<Icd10.Id> getParent() {
                 return Optional.empty();
-            }
+              }
 
-            @Override
-            public Icd10RangeType getRangeType() {
+              @Override
+              public Icd10RangeType getRangeType() {
                 return null;
-            }
-        });
-    }
+              }
+            });
+  }
 
-    @Test
-    public void testEmptyFilter() {
-        //Given
-        List<String> selectedDxs = new ArrayList<>();
-        Collection<String> filterDiagnoser = new ArrayList<>();
+  @Test
+  public void testEmptyFilter() {
+    // Given
+    List<String> selectedDxs = new ArrayList<>();
+    Collection<String> filterDiagnoser = new ArrayList<>();
 
-        //When
-        final boolean isDxFilterDisableAllSelectedDxs = resultMessageHandler.isDxFilterDisableAllSelectedDxs(selectedDxs, filterDiagnoser);
+    // When
+    final boolean isDxFilterDisableAllSelectedDxs =
+        resultMessageHandler.isDxFilterDisableAllSelectedDxs(selectedDxs, filterDiagnoser);
 
-        //Then
-        assertFalse(isDxFilterDisableAllSelectedDxs);
-    }
+    // Then
+    assertFalse(isDxFilterDisableAllSelectedDxs);
+  }
 
-    @Test
-    public void testNullFilter() {
-        //Given
-        List<String> selectedDxs = new ArrayList<>();
-        Collection<String> filterDiagnoser = null;
+  @Test
+  public void testNullFilter() {
+    // Given
+    List<String> selectedDxs = new ArrayList<>();
+    Collection<String> filterDiagnoser = null;
 
-        //When
-        final boolean isDxFilterDisableAllSelectedDxs = resultMessageHandler.isDxFilterDisableAllSelectedDxs(selectedDxs, filterDiagnoser);
+    // When
+    final boolean isDxFilterDisableAllSelectedDxs =
+        resultMessageHandler.isDxFilterDisableAllSelectedDxs(selectedDxs, filterDiagnoser);
 
-        //Then
-        assertFalse(isDxFilterDisableAllSelectedDxs);
-    }
+    // Then
+    assertFalse(isDxFilterDisableAllSelectedDxs);
+  }
 
-    @Test
-    public void testValidDxsSelected() {
-        //Given
-        List<String> selectedDxs = new ArrayList<>();
-        selectedDxs.add("180108190");
-        Collection<String> filterDiagnoser = new ArrayList<>();
-        filterDiagnoser.add("180108190");
+  @Test
+  public void testValidDxsSelected() {
+    // Given
+    List<String> selectedDxs = new ArrayList<>();
+    selectedDxs.add("180108190");
+    Collection<String> filterDiagnoser = new ArrayList<>();
+    filterDiagnoser.add("180108190");
 
-        //When
-        final boolean isDxFilterDisableAllSelectedDxs = resultMessageHandler.isDxFilterDisableAllSelectedDxs(selectedDxs, filterDiagnoser);
+    // When
+    final boolean isDxFilterDisableAllSelectedDxs =
+        resultMessageHandler.isDxFilterDisableAllSelectedDxs(selectedDxs, filterDiagnoser);
 
-        //Then
-        assertFalse(isDxFilterDisableAllSelectedDxs);
-    }
+    // Then
+    assertFalse(isDxFilterDisableAllSelectedDxs);
+  }
 
-    @Test
-    public void testNotPresentDxsSelected() {
-        //Given
-        List<String> selectedDxs = new ArrayList<>();
-        selectedDxs.add("180108190");
-        Collection<String> filterDiagnoser = new ArrayList<>();
-        filterDiagnoser.add("180108192");
+  @Test
+  public void testNotPresentDxsSelected() {
+    // Given
+    List<String> selectedDxs = new ArrayList<>();
+    selectedDxs.add("180108190");
+    Collection<String> filterDiagnoser = new ArrayList<>();
+    filterDiagnoser.add("180108192");
 
-        //When
-        final boolean isDxFilterDisableAllSelectedDxs = resultMessageHandler.isDxFilterDisableAllSelectedDxs(selectedDxs, filterDiagnoser);
+    // When
+    final boolean isDxFilterDisableAllSelectedDxs =
+        resultMessageHandler.isDxFilterDisableAllSelectedDxs(selectedDxs, filterDiagnoser);
 
-        //Then
-        assertTrue(isDxFilterDisableAllSelectedDxs);
-    }
+    // Then
+    assertTrue(isDxFilterDisableAllSelectedDxs);
+  }
 }

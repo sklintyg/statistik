@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -39,73 +39,87 @@ import se.inera.statistics.service.warehouse.SjukfallUtil;
 @Component
 public class OverviewQuery {
 
-    public static final int PERCENT = 100;
+  public static final int PERCENT = 100;
 
-    @Autowired
-    private DiagnosgruppQuery query;
+  @Autowired private DiagnosgruppQuery query;
 
-    @Autowired
-    private MessagesQuery messagesQuery;
+  @Autowired private MessagesQuery messagesQuery;
 
-    @Autowired
-    private SjukfallUtil sjukfallUtil;
+  @Autowired private SjukfallUtil sjukfallUtil;
 
-    public VerksamhetOverviewResponse getOverview(Aisle aisle, FilterPredicates filter, Range currentPeriod,
-        Range previousPeriod, MessagesFilter messagesFilterWithoutRange) {
-        SjukfallGroup currentSjukfall = getSjukfallGroup(aisle, filter, currentPeriod);
-        SjukfallGroup previousSjukfall = getSjukfallGroup(aisle, filter, previousPeriod);
+  public VerksamhetOverviewResponse getOverview(
+      Aisle aisle,
+      FilterPredicates filter,
+      Range currentPeriod,
+      Range previousPeriod,
+      MessagesFilter messagesFilterWithoutRange) {
+    SjukfallGroup currentSjukfall = getSjukfallGroup(aisle, filter, currentPeriod);
+    SjukfallGroup previousSjukfall = getSjukfallGroup(aisle, filter, previousPeriod);
 
-        OverviewKonsfordelning currentKonsfordelning = getOverviewKonsfordelning(currentSjukfall.getRange(), currentSjukfall.getSjukfall());
+    OverviewKonsfordelning currentKonsfordelning =
+        getOverviewKonsfordelning(currentSjukfall.getRange(), currentSjukfall.getSjukfall());
 
-        int currentLongSjukfall = SjukskrivningslangdQuery.getLong(currentSjukfall.getSjukfall());
-        int previousLongSjukfall = SjukskrivningslangdQuery.getLong(previousSjukfall.getSjukfall());
+    int currentLongSjukfall = SjukskrivningslangdQuery.getLong(currentSjukfall.getSjukfall());
+    int previousLongSjukfall = SjukskrivningslangdQuery.getLong(previousSjukfall.getSjukfall());
 
-        List<OverviewChartRowExtended> aldersgrupper = AldersgruppQuery.getOverviewAldersgrupper(currentSjukfall.getSjukfall(),
-            previousSjukfall.getSjukfall());
-        List<OverviewChartRowExtended> diagnosgrupper = query.getOverviewDiagnosgrupper(currentSjukfall.getSjukfall(),
-            previousSjukfall.getSjukfall(), Integer.MAX_VALUE);
-        List<OverviewChartRowExtended> sjukskrivningsgrad = SjukskrivningsgradQuery
-            .getOverviewSjukskrivningsgrad(currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall());
-        List<OverviewChartRow> sjukskrivningslangd = SjukskrivningslangdQuery
-            .getOverviewSjukskrivningslangd(currentSjukfall.getSjukfall(), Integer.MAX_VALUE);
+    List<OverviewChartRowExtended> aldersgrupper =
+        AldersgruppQuery.getOverviewAldersgrupper(
+            currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall());
+    List<OverviewChartRowExtended> diagnosgrupper =
+        query.getOverviewDiagnosgrupper(
+            currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall(), Integer.MAX_VALUE);
+    List<OverviewChartRowExtended> sjukskrivningsgrad =
+        SjukskrivningsgradQuery.getOverviewSjukskrivningsgrad(
+            currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall());
+    List<OverviewChartRow> sjukskrivningslangd =
+        SjukskrivningslangdQuery.getOverviewSjukskrivningslangd(
+            currentSjukfall.getSjukfall(), Integer.MAX_VALUE);
 
-        List<OverviewChartRowExtended> kompletteringar = messagesQuery.getOverviewKompletteringar(
+    List<OverviewChartRowExtended> kompletteringar =
+        messagesQuery.getOverviewKompletteringar(
             messagesFilterWithoutRange, currentPeriod, previousPeriod);
 
-        return new VerksamhetOverviewResponse(AvailableFilters.getForSjukfall(), currentSjukfall.getSjukfall().size(),
-            currentKonsfordelning, diagnosgrupper, aldersgrupper, sjukskrivningsgrad,
-            sjukskrivningslangd, currentLongSjukfall, percentChange(currentLongSjukfall, previousLongSjukfall), kompletteringar);
+    return new VerksamhetOverviewResponse(
+        AvailableFilters.getForSjukfall(),
+        currentSjukfall.getSjukfall().size(),
+        currentKonsfordelning,
+        diagnosgrupper,
+        aldersgrupper,
+        sjukskrivningsgrad,
+        sjukskrivningslangd,
+        currentLongSjukfall,
+        percentChange(currentLongSjukfall, previousLongSjukfall),
+        kompletteringar);
+  }
+
+  private SjukfallGroup getSjukfallGroup(Aisle aisle, FilterPredicates filter, Range range) {
+    final LocalDate from = range.getFrom();
+    final int periodLength = range.getNumberOfMonths();
+    return sjukfallUtil.sjukfallGrupper(from, 1, periodLength, aisle, filter).iterator().next();
+  }
+
+  private static int percentChange(int current, int previous) {
+    if (previous == 0) {
+      return 0;
+    } else {
+      return (current - previous) * PERCENT / previous;
     }
+  }
 
-    private SjukfallGroup getSjukfallGroup(Aisle aisle, FilterPredicates filter, Range range) {
-        final LocalDate from = range.getFrom();
-        final int periodLength = range.getNumberOfMonths();
-        return sjukfallUtil.sjukfallGrupper(from, 1, periodLength, aisle, filter).iterator().next();
+  OverviewKonsfordelning getOverviewKonsfordelning(Range range, Collection<Sjukfall> sjukfalls) {
+    int male = countMale(sjukfalls);
+    int female = sjukfalls.size() - male;
+
+    return new OverviewKonsfordelning(male, female, range);
+  }
+
+  public static int countMale(Collection<Sjukfall> sjukfalls) {
+    int count = 0;
+    for (Sjukfall sjukfall : sjukfalls) {
+      if (sjukfall.getKon() == Kon.MALE) {
+        count++;
+      }
     }
-
-    private static int percentChange(int current, int previous) {
-        if (previous == 0) {
-            return 0;
-        } else {
-            return (current - previous) * PERCENT / previous;
-        }
-    }
-
-    OverviewKonsfordelning getOverviewKonsfordelning(Range range, Collection<Sjukfall> sjukfalls) {
-        int male = countMale(sjukfalls);
-        int female = sjukfalls.size() - male;
-
-        return new OverviewKonsfordelning(male, female, range);
-    }
-
-    public static int countMale(Collection<Sjukfall> sjukfalls) {
-        int count = 0;
-        for (Sjukfall sjukfall : sjukfalls) {
-            if (sjukfall.getKon() == Kon.MALE) {
-                count++;
-            }
-        }
-        return count;
-    }
-
+    return count;
+  }
 }

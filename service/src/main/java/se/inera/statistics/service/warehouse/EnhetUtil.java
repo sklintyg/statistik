@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -26,19 +26,20 @@ import se.inera.statistics.service.processlog.Enhet;
 
 public final class EnhetUtil {
 
-    private EnhetUtil() {
+  private EnhetUtil() {}
+
+  public static Collection<HsaIdEnhet> getAllEnheterInVardenheter(
+      Collection<HsaIdEnhet> enheter, Warehouse warehouse) {
+    if (enheter == null || enheter.isEmpty()) {
+      return enheter;
     }
 
-    public static Collection<HsaIdEnhet> getAllEnheterInVardenheter(Collection<HsaIdEnhet> enheter, Warehouse warehouse) {
-        if (enheter == null || enheter.isEmpty()) {
-            return enheter;
-        }
-
-        return Stream.concat(enheter.stream(),
-                warehouse.getEnhetsWithHsaId(enheter).stream()
-                    .filter(Enhet::isVardenhet)
-                    .flatMap(enhet -> warehouse.getEnhetsOfVardenhet(enhet.getEnhetId()).stream())
-                    .map(Enhet::getEnhetId))
-            .collect(Collectors.toSet());
-    }
+    return Stream.concat(
+            enheter.stream(),
+            warehouse.getEnhetsWithHsaId(enheter).stream()
+                .filter(Enhet::isVardenhet)
+                .flatMap(enhet -> warehouse.getEnhetsOfVardenhet(enhet.getEnhetId()).stream())
+                .map(Enhet::getEnhetId))
+        .collect(Collectors.toSet());
+  }
 }

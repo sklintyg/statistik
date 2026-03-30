@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -30,70 +30,69 @@ import se.inera.statistics.web.model.NamedData;
 
 public class ServiceUtilTest {
 
+  @Test
+  public void testGetRowSumEmpty() {
+    // Arrange
+    List<KonField> data = new ArrayList<>();
+    KonDataRow row = new KonDataRow("Test", data);
 
-    @Test
-    public void testGetRowSumEmpty() {
-        // Arrange
-        List<KonField> data = new ArrayList<>();
-        KonDataRow row = new KonDataRow("Test", data);
+    // Act
+    int sum = ServiceUtil.getRowSum(row);
 
-        // Act
-        int sum = ServiceUtil.getRowSum(row);
+    // Assert
+    assertEquals(0, sum);
+  }
 
-        // Assert
-        assertEquals(0, sum);
-    }
+  @Test
+  public void testGetRowSum() {
+    // Arrange
+    List<KonField> data = new ArrayList<>();
+    data.add(new KonField(1, 5));
+    data.add(new KonField(0, 0));
+    data.add(new KonField(10, 0));
+    KonDataRow row = new KonDataRow("Test", data);
 
-    @Test
-    public void testGetRowSum() {
-        // Arrange
-        List<KonField> data = new ArrayList<>();
-        data.add(new KonField(1, 5));
-        data.add(new KonField(0, 0));
-        data.add(new KonField(10, 0));
-        KonDataRow row = new KonDataRow("Test", data);
+    // Act
+    int sum = ServiceUtil.getRowSum(row);
 
-        // Act
-        int sum = ServiceUtil.getRowSum(row);
+    // Assert
+    assertEquals(16, sum);
+  }
 
-        // Assert
-        assertEquals(16, sum);
-    }
+  @Test
+  public void testGetMergedSexData() {
+    // Arrange
+    List<KonField> data = new ArrayList<>();
+    data.add(new KonField(1, 5));
+    data.add(new KonField(0, 0));
+    data.add(new KonField(10, 0));
+    KonDataRow row = new KonDataRow("Test", data);
 
-    @Test
-    public void testGetMergedSexData() {
-        // Arrange
-        List<KonField> data = new ArrayList<>();
-        data.add(new KonField(1, 5));
-        data.add(new KonField(0, 0));
-        data.add(new KonField(10, 0));
-        KonDataRow row = new KonDataRow("Test", data);
+    List<Integer> expected = Arrays.asList(6, 1, 5, 0, 0, 0, 10, 10, 0);
 
-        List<Integer> expected = Arrays.asList(6, 1, 5, 0, 0, 0, 10, 10, 0);
+    // Act
+    List<Object> rows = ServiceUtil.getMergedSexData(row);
 
-        // Act
-        List<Object> rows = ServiceUtil.getMergedSexData(row);
+    // Assert
+    assertEquals(expected, rows);
+  }
 
-        // Assert
-        assertEquals(expected, rows);
-    }
+  @Test
+  public void testGetSumRow() {
+    // Arrange
+    List<NamedData> data = new ArrayList<>();
+    data.add(new NamedData("Test", Arrays.asList(0, 1)));
+    data.add(new NamedData("Test", Arrays.asList(0, 5)));
+    data.add(new NamedData("Test", Arrays.asList(0, 1)));
+    data.add(new NamedData("Test", Arrays.asList(0, 3)));
 
-    @Test
-    public void testGetSumRow() {
-        // Arrange
-        List<NamedData> data = new ArrayList<>();
-        data.add(new NamedData("Test", Arrays.asList(0, 1)));
-        data.add(new NamedData("Test", Arrays.asList(0, 5)));
-        data.add(new NamedData("Test", Arrays.asList(0, 1)));
-        data.add(new NamedData("Test", Arrays.asList(0, 3)));
+    List<Integer> sumData = Arrays.asList(0, 10);
+    NamedData expected = new NamedData("Totalt", sumData);
 
-        List<Integer> sumData = Arrays.asList(0, 10);
-        NamedData expected = new NamedData("Totalt", sumData);
+    // Act
+    NamedData row = ServiceUtil.getSumRow(data, true);
 
-        // Act
-        NamedData row = ServiceUtil.getSumRow(data, true);
-
-        // Assert
-        assertEquals(expected, row);
-    }
+    // Assert
+    assertEquals(expected, row);
+  }
 }

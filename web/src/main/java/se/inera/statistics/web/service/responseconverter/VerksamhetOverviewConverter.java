@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -39,39 +39,63 @@ import se.inera.statistics.web.service.dto.FilterDataResponse;
 
 public class VerksamhetOverviewConverter {
 
-    public VerksamhetOverviewData convert(VerksamhetOverviewResponse resp, Range range, Filter filter, Message message) {
-        final OverviewKonsfordelning casesPerMonthNew = resp.getCasesPerMonthSexProportionPreviousPeriod();
+  public VerksamhetOverviewData convert(
+      VerksamhetOverviewResponse resp, Range range, Filter filter, Message message) {
+    final OverviewKonsfordelning casesPerMonthNew =
+        resp.getCasesPerMonthSexProportionPreviousPeriod();
 
-        VerksamhetNumberOfCasesPerMonthOverview casesPerMonth = new VerksamhetNumberOfCasesPerMonthOverview(
-            casesPerMonthNew.getMaleProportion(), casesPerMonthNew.getFemaleProportion(), resp.getTotalCases());
+    VerksamhetNumberOfCasesPerMonthOverview casesPerMonth =
+        new VerksamhetNumberOfCasesPerMonthOverview(
+            casesPerMonthNew.getMaleProportion(),
+            casesPerMonthNew.getFemaleProportion(),
+            resp.getTotalCases());
 
-        List<DonutChartData> diagnosisGroups = resp.getDiagnosisGroups().stream().map(mapOverviewRowData()).collect(Collectors.toList());
+    List<DonutChartData> diagnosisGroups =
+        resp.getDiagnosisGroups().stream().map(mapOverviewRowData()).collect(Collectors.toList());
 
-        List<DonutChartData> ageGroups = resp.getAgeGroups().stream().map(mapOverviewRowData()).collect(Collectors.toList());
+    List<DonutChartData> ageGroups =
+        resp.getAgeGroups().stream().map(mapOverviewRowData()).collect(Collectors.toList());
 
-        List<DonutChartData> degreeOfSickLeaveGroups = resp.getDegreeOfSickLeaveGroups().stream()
-            .sorted((o1, o2) -> OverviewConverter.getNameAsNumber(o2) - OverviewConverter.getNameAsNumber(o1))
+    List<DonutChartData> degreeOfSickLeaveGroups =
+        resp.getDegreeOfSickLeaveGroups().stream()
+            .sorted(
+                (o1, o2) ->
+                    OverviewConverter.getNameAsNumber(o2) - OverviewConverter.getNameAsNumber(o1))
             .map(mapOverviewRowData())
             .collect(Collectors.toList());
 
-        ArrayList<BarChartData> sickLeaveLengthData = new ArrayList<>();
-        for (OverviewChartRow row : resp.getSickLeaveLengthGroups()) {
-            sickLeaveLengthData.add(new BarChartData(row.getName(), row.getQuantity()));
-        }
-        SickLeaveLengthOverview sickLeaveLength = new SickLeaveLengthOverview(sickLeaveLengthData, resp.getLongSickLeavesTotal(),
+    ArrayList<BarChartData> sickLeaveLengthData = new ArrayList<>();
+    for (OverviewChartRow row : resp.getSickLeaveLengthGroups()) {
+      sickLeaveLengthData.add(new BarChartData(row.getName(), row.getQuantity()));
+    }
+    SickLeaveLengthOverview sickLeaveLength =
+        new SickLeaveLengthOverview(
+            sickLeaveLengthData,
+            resp.getLongSickLeavesTotal(),
             resp.getLongSickLeavesAlternation());
 
-        List<DonutChartData> kompletteringar = resp.getKompletteringar().stream().map(mapOverviewRowData()).collect(Collectors.toList());
+    List<DonutChartData> kompletteringar =
+        resp.getKompletteringar().stream().map(mapOverviewRowData()).collect(Collectors.toList());
 
-        final FilterDataResponse filterResponse = new FilterDataResponse(filter);
-        List<Message> messages = message == null ? new ArrayList<>() : Arrays.asList(message);
+    final FilterDataResponse filterResponse = new FilterDataResponse(filter);
+    List<Message> messages = message == null ? new ArrayList<>() : Arrays.asList(message);
 
-        return new VerksamhetOverviewData(range.toString(), casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
-            sickLeaveLength, kompletteringar, resp.getAvailableFilters(), filterResponse, messages);
-    }
+    return new VerksamhetOverviewData(
+        range.toString(),
+        casesPerMonth,
+        diagnosisGroups,
+        ageGroups,
+        degreeOfSickLeaveGroups,
+        sickLeaveLength,
+        kompletteringar,
+        resp.getAvailableFilters(),
+        filterResponse,
+        messages);
+  }
 
-    private Function<OverviewChartRowExtended, DonutChartData> mapOverviewRowData() {
-        return (r) -> new DonutChartData(r.getName(), r.getQuantity(), r.getAlternation(), r.getColor(), r.isHideInTable());
-    }
-
+  private Function<OverviewChartRowExtended, DonutChartData> mapOverviewRowData() {
+    return (r) ->
+        new DonutChartData(
+            r.getName(), r.getQuantity(), r.getAlternation(), r.getColor(), r.isHideInTable());
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,61 +25,61 @@ import java.util.List;
 
 public class Sjukskrivningsperiod {
 
-    private int start;
-    private int length;
+  private int start;
+  private int length;
 
-    Sjukskrivningsperiod(int start, int length) {
-        this.start = start;
-        this.length = length;
+  Sjukskrivningsperiod(int start, int length) {
+    this.start = start;
+    this.length = length;
+  }
+
+  public int getStart() {
+    return start;
+  }
+
+  public int getLength() {
+    return length;
+  }
+
+  public int getEnd() {
+    return start + length;
+  }
+
+  static int getLengthOfJoinedPeriods(Collection<Sjukskrivningsperiod> periods) {
+    List<Sjukskrivningsperiod> mergedPeriods = mergePeriods(periods);
+    int sum = 0;
+    final int size = mergedPeriods.size();
+    //noinspection ForLoopReplaceableByForEach
+    for (int i = 0; i < size; i++) {
+      final int length = mergedPeriods.get(i).length;
+      sum += length > 0 ? length : 0;
     }
+    return sum;
+  }
 
-    public int getStart() {
-        return start;
+  private static List<Sjukskrivningsperiod> mergePeriods(
+      Collection<Sjukskrivningsperiod> periodsIn) {
+    if (periodsIn.size() < 2) {
+      return new ArrayList<>(periodsIn);
     }
-
-    public int getLength() {
-        return length;
+    final List<Sjukskrivningsperiod> periods = new ArrayList<>(periodsIn);
+    periods.sort(Comparator.comparingInt(Sjukskrivningsperiod::getStart));
+    for (int i = 1; i < periods.size(); i++) {
+      final Sjukskrivningsperiod p1 = periods.get(i - 1);
+      final Sjukskrivningsperiod p2 = periods.get(i);
+      if (p1.getEnd() >= p2.getStart()) {
+        final int mergedLength = Math.max(p1.getEnd(), p2.getEnd()) - p1.getStart();
+        final Sjukskrivningsperiod mergedPeriod =
+            new Sjukskrivningsperiod(p1.getStart(), mergedLength);
+        periods.remove(i);
+        periods.remove(i - 1);
+        periods.add(i - 1, mergedPeriod);
+        i--;
+      }
+      if (periods.size() == 1) {
+        break;
+      }
     }
-
-    public int getEnd() {
-        return start + length;
-    }
-
-    static int getLengthOfJoinedPeriods(Collection<Sjukskrivningsperiod> periods) {
-        List<Sjukskrivningsperiod> mergedPeriods = mergePeriods(periods);
-        int sum = 0;
-        final int size = mergedPeriods.size();
-        //noinspection ForLoopReplaceableByForEach
-        for (int i = 0; i < size; i++) {
-            final int length = mergedPeriods.get(i).length;
-            sum += length > 0 ? length : 0;
-
-        }
-        return sum;
-    }
-
-    private static List<Sjukskrivningsperiod> mergePeriods(Collection<Sjukskrivningsperiod> periodsIn) {
-        if (periodsIn.size() < 2) {
-            return new ArrayList<>(periodsIn);
-        }
-        final List<Sjukskrivningsperiod> periods = new ArrayList<>(periodsIn);
-        periods.sort(Comparator.comparingInt(Sjukskrivningsperiod::getStart));
-        for (int i = 1; i < periods.size(); i++) {
-            final Sjukskrivningsperiod p1 = periods.get(i - 1);
-            final Sjukskrivningsperiod p2 = periods.get(i);
-            if (p1.getEnd() >= p2.getStart()) {
-                final int mergedLength = Math.max(p1.getEnd(), p2.getEnd()) - p1.getStart();
-                final Sjukskrivningsperiod mergedPeriod = new Sjukskrivningsperiod(p1.getStart(), mergedLength);
-                periods.remove(i);
-                periods.remove(i - 1);
-                periods.add(i - 1, mergedPeriod);
-                i--;
-            }
-            if (periods.size() == 1) {
-                break;
-            }
-        }
-        return periods;
-    }
-
+    return periods;
+  }
 }

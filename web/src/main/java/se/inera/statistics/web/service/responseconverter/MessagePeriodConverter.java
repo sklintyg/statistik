@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,25 +22,30 @@ import se.inera.statistics.web.service.dto.MessagesText;
 
 public final class MessagePeriodConverter extends SimpleDualSexConverter {
 
-    private MessagePeriodConverter(String tableGroupTitle, String seriesNameTemplate, String totalColumnName,
-        String femaleColumnName, String maleColumnName) {
-        super(tableGroupTitle, seriesNameTemplate, totalColumnName, femaleColumnName, maleColumnName);
-    }
+  private MessagePeriodConverter(
+      String tableGroupTitle,
+      String seriesNameTemplate,
+      String totalColumnName,
+      String femaleColumnName,
+      String maleColumnName) {
+    super(tableGroupTitle, seriesNameTemplate, totalColumnName, femaleColumnName, maleColumnName);
+  }
 
-    public static MessagePeriodConverter newTidsserie() {
-        return new MessagePeriodConverter(MessagesText.REPORT_PERIOD,
-            "%1$s",
-            MessagesText.REPORT_ANTAL_MEDDELANDEN_TOTALT,
-            MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_FEMALE,
-            MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_MALE);
-    }
+  public static MessagePeriodConverter newTidsserie() {
+    return new MessagePeriodConverter(
+        MessagesText.REPORT_PERIOD,
+        "%1$s",
+        MessagesText.REPORT_ANTAL_MEDDELANDEN_TOTALT,
+        MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_FEMALE,
+        MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_MALE);
+  }
 
-    public static MessagePeriodConverter newTvarsnitt() {
-        return new MessagePeriodConverter("",
-            "%1$s",
-            MessagesText.REPORT_ANTAL_MEDDELANDEN_TOTALT,
-            MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_FEMALE,
-            MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_MALE);
-    }
-
+  public static MessagePeriodConverter newTvarsnitt() {
+    return new MessagePeriodConverter(
+        "",
+        "%1$s",
+        MessagesText.REPORT_ANTAL_MEDDELANDEN_TOTALT,
+        MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_FEMALE,
+        MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_MALE);
+  }
 }

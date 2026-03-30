@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -32,23 +32,39 @@ import se.inera.statistics.service.helper.certificate.JsonDocumentHelper;
 
 public class UtlatandeBuilderTest {
 
-    @Test
-    public void testgetSignerumsDatum() {
-        JsonNode result = new UtlatandeBuilder()
-            .build("19121212-1212", LocalDate.parse("2012-12-12"), LocalDate.parse("2012-12-12"), new HsaIdLakare("lakare"),
-                new HsaIdEnhet("vardenhet1"), new HsaIdVardgivare("vardgivare"), "A01", 50);
+  @Test
+  public void testgetSignerumsDatum() {
+    JsonNode result =
+        new UtlatandeBuilder()
+            .build(
+                "19121212-1212",
+                LocalDate.parse("2012-12-12"),
+                LocalDate.parse("2012-12-12"),
+                new HsaIdLakare("lakare"),
+                new HsaIdEnhet("vardenhet1"),
+                new HsaIdVardgivare("vardgivare"),
+                "A01",
+                50);
 
-        Assert.assertEquals("2012-12-12T07:07:00.000", result.path("grundData").get("signeringsdatum").textValue());
-    }
+    Assert.assertEquals(
+        "2012-12-12T07:07:00.000", result.path("grundData").get("signeringsdatum").textValue());
+  }
 
-    @Test
-    public void getAge() {
-        JsonNode result = new UtlatandeBuilder()
-            .build("19121212-1212", LocalDate.parse("2012-12-12"), LocalDate.parse("2012-12-12"), new HsaIdLakare("lakare"),
-                new HsaIdEnhet("vardenhet1"), new HsaIdVardgivare("vardgivare"), "A01", 50);
-        final Patientdata patientData = JsonDocumentHelper.getPatientData(result);
+  @Test
+  public void getAge() {
+    JsonNode result =
+        new UtlatandeBuilder()
+            .build(
+                "19121212-1212",
+                LocalDate.parse("2012-12-12"),
+                LocalDate.parse("2012-12-12"),
+                new HsaIdLakare("lakare"),
+                new HsaIdEnhet("vardenhet1"),
+                new HsaIdVardgivare("vardgivare"),
+                "A01",
+                50);
+    final Patientdata patientData = JsonDocumentHelper.getPatientData(result);
 
-        assertEquals(100, patientData.getAlder());
-    }
-
+    assertEquals(100, patientData.getAlder());
+  }
 }

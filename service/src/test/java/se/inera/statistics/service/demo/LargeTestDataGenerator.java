@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -54,130 +54,127 @@ import se.inera.statistics.service.warehouse.WidelineManager;
 
 public class LargeTestDataGenerator {
 
-    private static final int NUMBER_OF_UNITS = 3000;
+  private static final int NUMBER_OF_UNITS = 3000;
 
-    private static final int INTYG_PER_DAY = 666;
+  private static final int INTYG_PER_DAY = 666;
 
-    private static final int SEED = 1234;
+  private static final int SEED = 1234;
 
-    private static final Logger LOG = LoggerFactory.getLogger(LargeTestDataGenerator.class);
+  private static final Logger LOG = LoggerFactory.getLogger(LargeTestDataGenerator.class);
 
-    private static final int LONG_PERIOD_DAYS = 365;
-    private static final int SHORT_PERIOD_DAYS = 30;
-    private static final float LONG_PERIOD_FRACTION = 0.1f;
+  private static final int LONG_PERIOD_DAYS = 365;
+  private static final int SHORT_PERIOD_DAYS = 30;
+  private static final float LONG_PERIOD_FRACTION = 0.1f;
 
-    private static final int MONTHS = 20;
-    private int maxIntyg = INTYG_PER_DAY * MONTHS * (SHORT_PERIOD_DAYS + 1);
+  private static final int MONTHS = 20;
+  private int maxIntyg = INTYG_PER_DAY * MONTHS * (SHORT_PERIOD_DAYS + 1);
 
-    private static final LocalDate BASE = LocalDate.parse("2012-03-01");
-    private static final LocalDate BASE_AGE = LocalDate.parse("1930-01-01");
+  private static final LocalDate BASE = LocalDate.parse("2012-03-01");
+  private static final LocalDate BASE_AGE = LocalDate.parse("1930-01-01");
 
-    private static final int AGE_DAYS = 365 * 80;
+  private static final int AGE_DAYS = 365 * 80;
 
-    private static final List<String> DIAGNOSER = new ArrayList<>();
-    private static final List<Integer> ARBETSFORMAGOR = Arrays.asList(0, 0, 0, 25, 50, 75);
-    public static final int EXTENSION_LIMIT = 10000;
+  private static final List<String> DIAGNOSER = new ArrayList<>();
+  private static final List<Integer> ARBETSFORMAGOR = Arrays.asList(0, 0, 0, 25, 50, 75);
+  public static final int EXTENSION_LIMIT = 10000;
 
-    private static Random random = new Random(SEED);
+  private static Random random = new Random(SEED);
 
-    @Autowired
-    private Warehouse warehouse;
+  @Autowired private Warehouse warehouse;
 
-    @Autowired
-    private HSAService hsaService;
+  @Autowired private HSAService hsaService;
 
-    @Autowired
-    private WidelineConverter widelineConverter;
+  @Autowired private WidelineConverter widelineConverter;
 
-    @Autowired
-    private WidelineManager widelineManager;
+  @Autowired private WidelineManager widelineManager;
 
-    @Autowired
-    private Icd10 icd10;
+  @Autowired private Icd10 icd10;
 
-    @PostConstruct
-    public void init() {
-        for (Kapitel kapitel : icd10.getKapitel(true)) {
-            for (Avsnitt avsnitt : kapitel.getAvsnitt()) {
-                for (Kategori kategori : avsnitt.getKategori()) {
-                    DIAGNOSER.add(kategori.getId());
-                }
-            }
+  @PostConstruct
+  public void init() {
+    for (Kapitel kapitel : icd10.getKapitel(true)) {
+      for (Avsnitt avsnitt : kapitel.getAvsnitt()) {
+        for (Kategori kategori : avsnitt.getKategori()) {
+          DIAGNOSER.add(kategori.getId());
         }
-        maxIntyg = Integer.parseInt(System.getProperty("statistics.test.max.intyg", "" + maxIntyg));
-        LOG.info("Max intyg to insert: " + maxIntyg);
+      }
     }
+    maxIntyg = Integer.parseInt(System.getProperty("statistics.test.max.intyg", "" + maxIntyg));
+    LOG.info("Max intyg to insert: " + maxIntyg);
+  }
 
-    public void setMaxIntyg(int maxIntyg) {
-        this.maxIntyg = maxIntyg;
-    }
+  public void setMaxIntyg(int maxIntyg) {
+    this.maxIntyg = maxIntyg;
+  }
 
-    public void publishUtlatanden() {
-        UtlatandeBuilder builder = new UtlatandeBuilder();
-        int count = 0;
-        LocalDate lastDay = BASE.plusMonths(MONTHS);
-        maxIntyg:
-        for (LocalDate now = BASE; !now.isAfter(lastDay); now = now.plusDays(1)) {
-            for (int i = 0; i < INTYG_PER_DAY; i++) {
-                String id = randomPerson();
-                JsonNode utlatande = permutate(builder, id, now);
-                HSAKey hsaKey = extractHSAKey(utlatande);
-                HsaInfo hsaInfo = hsaService.getHSAInfo(hsaKey);
-                try {
-                    IntygDTO dto = JsonDocumentHelper.convertToDTO(utlatande);
-                    widelineManager.accept(dto, hsaInfo, count++, "" + count, EventType.CREATED);
-                    if (count > maxIntyg) {
-                        break maxIntyg;
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+  public void publishUtlatanden() {
+    UtlatandeBuilder builder = new UtlatandeBuilder();
+    int count = 0;
+    LocalDate lastDay = BASE.plusMonths(MONTHS);
+    maxIntyg:
+    for (LocalDate now = BASE; !now.isAfter(lastDay); now = now.plusDays(1)) {
+      for (int i = 0; i < INTYG_PER_DAY; i++) {
+        String id = randomPerson();
+        JsonNode utlatande = permutate(builder, id, now);
+        HSAKey hsaKey = extractHSAKey(utlatande);
+        HsaInfo hsaInfo = hsaService.getHSAInfo(hsaKey);
+        try {
+          IntygDTO dto = JsonDocumentHelper.convertToDTO(utlatande);
+          widelineManager.accept(dto, hsaInfo, count++, "" + count, EventType.CREATED);
+          if (count > maxIntyg) {
+            break maxIntyg;
+          }
+        } catch (Exception e) {
+          e.printStackTrace();
         }
-        LOG.info("Inserting certificates completed");
+      }
     }
+    LOG.info("Inserting certificates completed");
+  }
 
-    public String exportUtlatanden() {
-        List<VgNumber> allVardgivare = warehouse.getAllVardgivare();
-        StringBuilder result = new StringBuilder("vg;").append(Fact.HEADING).append('\n');
-        for (VgNumber vg : allVardgivare) {
-            for (Fact line : warehouse.get(vg.getVgid())) {
-                result.append(vg).append(line.toCSVString(';'));
-            }
-        }
-        return result.toString();
+  public String exportUtlatanden() {
+    List<VgNumber> allVardgivare = warehouse.getAllVardgivare();
+    StringBuilder result = new StringBuilder("vg;").append(Fact.HEADING).append('\n');
+    for (VgNumber vg : allVardgivare) {
+      for (Fact line : warehouse.get(vg.getVgid())) {
+        result.append(vg).append(line.toCSVString(';'));
+      }
     }
+    return result.toString();
+  }
 
-    protected HSAKey extractHSAKey(JsonNode document) {
-        String vardgivareId = getVardgivareId(document);
-        String enhetId = getEnhetId(document);
-        String lakareId = getLakarId(document);
-        return new HSAKey(vardgivareId, enhetId, lakareId);
-    }
+  protected HSAKey extractHSAKey(JsonNode document) {
+    String vardgivareId = getVardgivareId(document);
+    String enhetId = getEnhetId(document);
+    String lakareId = getLakarId(document);
+    return new HSAKey(vardgivareId, enhetId, lakareId);
+  }
 
-    private String randomPerson() {
-        LocalDate birthDate = BASE_AGE.plusDays(random.nextInt(AGE_DAYS));
-        return birthDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")) + String.format("%1$04d", random.nextInt(EXTENSION_LIMIT));
-    }
+  private String randomPerson() {
+    LocalDate birthDate = BASE_AGE.plusDays(random.nextInt(AGE_DAYS));
+    return birthDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+        + String.format("%1$04d", random.nextInt(EXTENSION_LIMIT));
+  }
 
-    public JsonNode permutate(UtlatandeBuilder builder, String patientId, LocalDate start) {
-        // CHECKSTYLE:OFF MagicNumber
-        LocalDate end = random.nextFloat() < LONG_PERIOD_FRACTION ?
-            start.plusDays(random.nextInt(LONG_PERIOD_DAYS) + 7) :
-            start.plusDays(random.nextInt(SHORT_PERIOD_DAYS) + 7);
-        // CHECKSTYLE:ON MagicNumber
+  public JsonNode permutate(UtlatandeBuilder builder, String patientId, LocalDate start) {
+    // CHECKSTYLE:OFF MagicNumber
+    LocalDate end =
+        random.nextFloat() < LONG_PERIOD_FRACTION
+            ? start.plusDays(random.nextInt(LONG_PERIOD_DAYS) + 7)
+            : start.plusDays(random.nextInt(SHORT_PERIOD_DAYS) + 7);
+    // CHECKSTYLE:ON MagicNumber
 
-        int vardId = random.nextInt(NUMBER_OF_UNITS);
-        HsaIdEnhet vardenhet = new HsaIdEnhet("verksamhet" + vardId);
-        HsaIdVardgivare vardgivare = new HsaIdVardgivare("vardgivare" + (vardId % 2));
+    int vardId = random.nextInt(NUMBER_OF_UNITS);
+    HsaIdEnhet vardenhet = new HsaIdEnhet("verksamhet" + vardId);
+    HsaIdVardgivare vardgivare = new HsaIdVardgivare("vardgivare" + (vardId % 2));
 
-        String diagnos = random(DIAGNOSER);
+    String diagnos = random(DIAGNOSER);
 
-        int arbetsformaga = random(ARBETSFORMAGOR);
-        return builder.build(patientId, start, end, vardenhet, vardgivare, diagnos, arbetsformaga);
-    }
+    int arbetsformaga = random(ARBETSFORMAGOR);
+    return builder.build(patientId, start, end, vardenhet, vardgivare, diagnos, arbetsformaga);
+  }
 
-    private static <T> T random(List<T> list) {
-        return list.get(random.nextInt(list.size()));
-    }
+  private static <T> T random(List<T> list) {
+    return list.get(random.nextInt(list.size()));
+  }
 }

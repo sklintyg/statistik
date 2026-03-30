@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,49 +20,46 @@ package se.inera.statistics.service.report.model;
 
 public class KonField {
 
-    private int female;
-    private int male;
-    private Object extras;
+  private int female;
+  private int male;
+  private Object extras;
 
-    /**
-     * Used by json parser.
-     */
-    private KonField() {
-    }
+  /** Used by json parser. */
+  private KonField() {}
 
-    public KonField(int female, int male) {
-        this.female = female;
-        this.male = male;
-    }
+  public KonField(int female, int male) {
+    this.female = female;
+    this.male = male;
+  }
 
-    public KonField(int female, int male, Object extras) {
-        this.female = female;
-        this.male = male;
-        this.extras = extras;
-    }
+  public KonField(int female, int male, Object extras) {
+    this.female = female;
+    this.male = male;
+    this.extras = extras;
+  }
 
-    public int getFemale() {
-        return female;
-    }
+  public int getFemale() {
+    return female;
+  }
 
-    public int getMale() {
-        return male;
-    }
+  public int getMale() {
+    return male;
+  }
 
-    public Object getExtras() {
-        return extras;
-    }
+  public Object getExtras() {
+    return extras;
+  }
 
-    public int getValue(Kon kon) {
-        if (Kon.FEMALE.equals(kon)) {
-            return female;
-        } else {
-            return male;
-        }
+  public int getValue(Kon kon) {
+    if (Kon.FEMALE.equals(kon)) {
+      return female;
+    } else {
+      return male;
     }
+  }
 
-    @Override
-    public String toString() {
-        return "{\"KonField\":{\"female\":" + female + ", \"male\":" + male + "}}";
-    }
+  @Override
+  public String toString() {
+    return "{\"KonField\":{\"female\":" + female + ", \"male\":" + male + "}}";
+  }
 }

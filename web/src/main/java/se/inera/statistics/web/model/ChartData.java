@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,20 +23,19 @@ import java.util.List;
 
 public class ChartData implements Serializable {
 
-    private final List<ChartSeries> series;
-    private final List<ChartCategory> categories;
+  private final List<ChartSeries> series;
+  private final List<ChartCategory> categories;
 
-    public ChartData(List<ChartSeries> series, List<ChartCategory> categories) {
-        this.series = series;
-        this.categories = categories;
-    }
+  public ChartData(List<ChartSeries> series, List<ChartCategory> categories) {
+    this.series = series;
+    this.categories = categories;
+  }
 
-    public List<ChartSeries> getSeries() {
-        return series;
-    }
+  public List<ChartSeries> getSeries() {
+    return series;
+  }
 
-    public List<ChartCategory> getCategories() {
-        return categories;
-    }
-
+  public List<ChartCategory> getCategories() {
+    return categories;
+  }
 }

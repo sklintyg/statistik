@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -24,47 +24,39 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(
-    name = "FileGetHsaUnitsResponse",
-    namespace = "urn:riv:hsa:HsaWsResponder:3"
-)
+@XmlType(name = "FileGetHsaUnitsResponse", namespace = "urn:riv:hsa:HsaWsResponder:3")
 public class FileGetHsaUnitsResponse {
 
-    @XmlElement(
-        namespace = "urn:riv:hsa:HsaWsResponder:3"
-    )
-    private String startDate;
-    @XmlElement(
-        namespace = "urn:riv:hsa:HsaWsResponder:3"
-    )
-    private String endDate;
-    @XmlElement(
-        namespace = "urn:riv:hsa:HsaWsResponder:3"
-    )
-    private HsaUnits hsaUnits;
+  @XmlElement(namespace = "urn:riv:hsa:HsaWsResponder:3")
+  private String startDate;
 
-    public String getStartDate() {
-        return startDate;
-    }
+  @XmlElement(namespace = "urn:riv:hsa:HsaWsResponder:3")
+  private String endDate;
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
+  @XmlElement(namespace = "urn:riv:hsa:HsaWsResponder:3")
+  private HsaUnits hsaUnits;
 
-    public String getEndDate() {
-        return endDate;
-    }
+  public String getStartDate() {
+    return startDate;
+  }
 
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
+  public void setStartDate(String startDate) {
+    this.startDate = startDate;
+  }
 
-    public HsaUnits getHsaUnits() {
-        return hsaUnits;
-    }
+  public String getEndDate() {
+    return endDate;
+  }
 
-    public void setHsaUnits(HsaUnits hsaUnits) {
-        this.hsaUnits = hsaUnits;
-    }
+  public void setEndDate(String endDate) {
+    this.endDate = endDate;
+  }
 
+  public HsaUnits getHsaUnits() {
+    return hsaUnits;
+  }
+
+  public void setHsaUnits(HsaUnits hsaUnits) {
+    this.hsaUnits = hsaUnits;
+  }
 }

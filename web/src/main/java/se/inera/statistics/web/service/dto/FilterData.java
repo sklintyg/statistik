@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,76 +23,108 @@ import java.util.List;
 
 public class FilterData {
 
-    public static final String DATE_FORMAT = "yyyy-MM-dd";
+  public static final String DATE_FORMAT = "yyyy-MM-dd";
 
-    private List<String> diagnoser;
-    private List<String> enheter;
-    private List<String> sjukskrivningslangd;
-    private List<String> aldersgrupp;
-    private List<String> intygstyper;
-    private String fromDate;
-    private String toDate;
-    private boolean useDefaultPeriod;
+  private List<String> diagnoser;
+  private List<String> enheter;
+  private List<String> sjukskrivningslangd;
+  private List<String> aldersgrupp;
+  private List<String> intygstyper;
+  private String fromDate;
+  private String toDate;
+  private boolean useDefaultPeriod;
 
-    // To be used by json converter
-    FilterData() {
-    }
+  // To be used by json converter
+  FilterData() {}
 
-    // CHECKSTYLE:OFF ParameterNumber
-    public FilterData(List<String> diagnoser, List<String> enheter, List<String> sjukskrivningslangd,
-        List<String> aldersgrupp, List<String> intygstyper, String fromDate, String toDate, boolean useDefaultPeriod) {
-        this.diagnoser = diagnoser == null ? Collections.<String>emptyList() : Collections.unmodifiableList(diagnoser);
-        this.enheter = enheter == null ? Collections.<String>emptyList() : Collections.unmodifiableList(enheter);
-        this.sjukskrivningslangd = sjukskrivningslangd == null ? Collections.<String>emptyList()
+  // CHECKSTYLE:OFF ParameterNumber
+  public FilterData(
+      List<String> diagnoser,
+      List<String> enheter,
+      List<String> sjukskrivningslangd,
+      List<String> aldersgrupp,
+      List<String> intygstyper,
+      String fromDate,
+      String toDate,
+      boolean useDefaultPeriod) {
+    this.diagnoser =
+        diagnoser == null
+            ? Collections.<String>emptyList()
+            : Collections.unmodifiableList(diagnoser);
+    this.enheter =
+        enheter == null ? Collections.<String>emptyList() : Collections.unmodifiableList(enheter);
+    this.sjukskrivningslangd =
+        sjukskrivningslangd == null
+            ? Collections.<String>emptyList()
             : Collections.unmodifiableList(sjukskrivningslangd);
-        this.aldersgrupp = aldersgrupp == null ? Collections.<String>emptyList() : Collections.unmodifiableList(aldersgrupp);
-        this.intygstyper = intygstyper == null ? Collections.<String>emptyList() : Collections.unmodifiableList(intygstyper);
-        this.useDefaultPeriod = useDefaultPeriod;
-        this.toDate = toDate;
-        this.fromDate = fromDate;
-    }
-    // CHECKSTYLE:ON ParameterNumber
+    this.aldersgrupp =
+        aldersgrupp == null
+            ? Collections.<String>emptyList()
+            : Collections.unmodifiableList(aldersgrupp);
+    this.intygstyper =
+        intygstyper == null
+            ? Collections.<String>emptyList()
+            : Collections.unmodifiableList(intygstyper);
+    this.useDefaultPeriod = useDefaultPeriod;
+    this.toDate = toDate;
+    this.fromDate = fromDate;
+  }
 
-    public static FilterData empty() {
-        return new FilterData(Collections.<String>emptyList(), Collections.<String>emptyList(),
-            Collections.<String>emptyList(), Collections.<String>emptyList(), Collections.<String>emptyList(), null, null, true);
-    }
+  // CHECKSTYLE:ON ParameterNumber
 
-    public static FilterData createForDxsOnly(List<String> diagnoser) {
-        return new FilterData(diagnoser, Collections.<String>emptyList(),
-            Collections.<String>emptyList(), Collections.<String>emptyList(), Collections.<String>emptyList(), null, null, true);
-    }
+  public static FilterData empty() {
+    return new FilterData(
+        Collections.<String>emptyList(),
+        Collections.<String>emptyList(),
+        Collections.<String>emptyList(),
+        Collections.<String>emptyList(),
+        Collections.<String>emptyList(),
+        null,
+        null,
+        true);
+  }
 
-    public List<String> getDiagnoser() {
-        return diagnoser;
-    }
+  public static FilterData createForDxsOnly(List<String> diagnoser) {
+    return new FilterData(
+        diagnoser,
+        Collections.<String>emptyList(),
+        Collections.<String>emptyList(),
+        Collections.<String>emptyList(),
+        Collections.<String>emptyList(),
+        null,
+        null,
+        true);
+  }
 
-    public List<String> getEnheter() {
-        return enheter;
-    }
+  public List<String> getDiagnoser() {
+    return diagnoser;
+  }
 
-    public List<String> getSjukskrivningslangd() {
-        return sjukskrivningslangd;
-    }
+  public List<String> getEnheter() {
+    return enheter;
+  }
 
-    public List<String> getAldersgrupp() {
-        return aldersgrupp;
-    }
+  public List<String> getSjukskrivningslangd() {
+    return sjukskrivningslangd;
+  }
 
-    public List<String> getIntygstyper() {
-        return intygstyper;
-    }
+  public List<String> getAldersgrupp() {
+    return aldersgrupp;
+  }
 
-    public String getFromDate() {
-        return fromDate;
-    }
+  public List<String> getIntygstyper() {
+    return intygstyper;
+  }
 
-    public String getToDate() {
-        return toDate;
-    }
+  public String getFromDate() {
+    return fromDate;
+  }
 
-    public boolean isUseDefaultPeriod() {
-        return useDefaultPeriod;
-    }
+  public String getToDate() {
+    return toDate;
+  }
 
+  public boolean isUseDefaultPeriod() {
+    return useDefaultPeriod;
+  }
 }

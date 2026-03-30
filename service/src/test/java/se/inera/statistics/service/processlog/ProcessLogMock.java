@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -26,53 +26,55 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class ProcessLogMock implements ProcessLog {
 
-    private static final String PROCESSED_HSA = "PROCESSED_HSA";
+  private static final String PROCESSED_HSA = "PROCESSED_HSA";
 
-    @PersistenceContext(unitName = "IneraStatisticsLog")
-    private EntityManager manager;
+  @PersistenceContext(unitName = "IneraStatisticsLog")
+  private EntityManager manager;
 
-    @Override
-    @Transactional
-    public long store(EventType type, String data, String correlationId, long timestamp) {
-        throw new RuntimeException("This is a runtime exception that causes a rollback of the jdbc transaction");
+  @Override
+  @Transactional
+  public long store(EventType type, String data, String correlationId, long timestamp) {
+    throw new RuntimeException(
+        "This is a runtime exception that causes a rollback of the jdbc transaction");
+  }
+
+  @Transactional
+  public IntygEvent get(long id) {
+    return manager.find(IntygEvent.class, id);
+  }
+
+  @Override
+  @Transactional
+  public List<IntygEvent> getPending(int max) {
+    TypedQuery<IntygEvent> allQuery =
+        manager.createQuery(
+            "SELECT e from IntygEvent e WHERE e.id > :lastId ORDER BY e.id ASC", IntygEvent.class);
+    allQuery.setParameter("lastId", getLastId());
+    allQuery.setMaxResults(max);
+    return allQuery.getResultList();
+  }
+
+  private long getLastId() {
+    EventPointer pointer = getPointerQuery();
+    if (pointer == null) {
+      return Long.MIN_VALUE;
+    } else {
+      return pointer.getEventId();
     }
+  }
 
-    @Transactional
-    public IntygEvent get(long id) {
-        return manager.find(IntygEvent.class, id);
+  public void confirm(long id) {
+    EventPointer pointer = getPointerQuery();
+    if (pointer == null) {
+      pointer = new EventPointer(PROCESSED_HSA, id);
+      manager.persist(pointer);
+    } else {
+      pointer.setEventId(id);
+      manager.merge(pointer);
     }
+  }
 
-    @Override
-    @Transactional
-    public List<IntygEvent> getPending(int max) {
-        TypedQuery<IntygEvent> allQuery = manager
-            .createQuery("SELECT e from IntygEvent e WHERE e.id > :lastId ORDER BY e.id ASC", IntygEvent.class);
-        allQuery.setParameter("lastId", getLastId());
-        allQuery.setMaxResults(max);
-        return allQuery.getResultList();
-    }
-
-    private long getLastId() {
-        EventPointer pointer = getPointerQuery();
-        if (pointer == null) {
-            return Long.MIN_VALUE;
-        } else {
-            return pointer.getEventId();
-        }
-    }
-
-    public void confirm(long id) {
-        EventPointer pointer = getPointerQuery();
-        if (pointer == null) {
-            pointer = new EventPointer(PROCESSED_HSA, id);
-            manager.persist(pointer);
-        } else {
-            pointer.setEventId(id);
-            manager.merge(pointer);
-        }
-    }
-
-    private EventPointer getPointerQuery() {
-        return manager.find(EventPointer.class, PROCESSED_HSA);
-    }
+  private EventPointer getPointerQuery() {
+    return manager.find(EventPointer.class, PROCESSED_HSA);
+  }
 }

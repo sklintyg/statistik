@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -24,29 +24,28 @@ import java.time.ZoneId;
 
 public class SpyableClock extends Clock {
 
-    private Clock clock;
+  private Clock clock;
 
-    public SpyableClock() {
-        this.clock = Clock.systemDefaultZone();
-    }
+  public SpyableClock() {
+    this.clock = Clock.systemDefaultZone();
+  }
 
-    public SpyableClock(Clock clock) {
-        this.clock = clock;
-    }
+  public SpyableClock(Clock clock) {
+    this.clock = clock;
+  }
 
-    @Override
-    public ZoneId getZone() {
-        return clock.getZone();
-    }
+  @Override
+  public ZoneId getZone() {
+    return clock.getZone();
+  }
 
-    @Override
-    public Clock withZone(ZoneId zone) {
-        return clock.withZone(zone);
-    }
+  @Override
+  public Clock withZone(ZoneId zone) {
+    return clock.withZone(zone);
+  }
 
-    @Override
-    public Instant instant() {
-        return clock.instant();
-    }
-
+  @Override
+  public Instant instant() {
+    return clock.instant();
+  }
 }

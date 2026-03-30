@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -35,156 +35,156 @@ import se.inera.statistics.service.warehouse.IntygType;
 
 public class JsonDocumentHelperTest {
 
-    private JsonNode document = JSONParser.parse(JSONSource.readTemplateAsString());
+  private JsonNode document = JSONParser.parse(JSONSource.readTemplateAsString());
 
-    @Test
-    public void prepare() {
-        final Patientdata patientData = JsonDocumentHelper.getPatientData(document);
+  @Test
+  public void prepare() {
+    final Patientdata patientData = JsonDocumentHelper.getPatientData(document);
 
-        assertEquals(98, patientData.getAlder());
-        assertEquals(Kon.MALE, patientData.getKon());
-    }
+    assertEquals(98, patientData.getAlder());
+    assertEquals(Kon.MALE, patientData.getKon());
+  }
 
-    @Test
-    public void getEnhet() {
-        assertEquals("VardenhetY", JsonDocumentHelper.getEnhetId(document));
-    }
+  @Test
+  public void getEnhet() {
+    assertEquals("VardenhetY", JsonDocumentHelper.getEnhetId(document));
+  }
 
-    @Test
-    public void getDiagnos() {
-        assertEquals("S47", JsonDocumentHelper.getDiagnos(document));
-    }
+  @Test
+  public void getDiagnos() {
+    assertEquals("S47", JsonDocumentHelper.getDiagnos(document));
+  }
 
-    @Test
-    public void getVardgivareId() {
-        assertEquals("VardgivarId", JsonDocumentHelper.getVardgivareId(document));
-    }
+  @Test
+  public void getVardgivareId() {
+    assertEquals("VardgivarId", JsonDocumentHelper.getVardgivareId(document));
+  }
 
-    @Test
-    public void getAge() {
-        final int age = JsonDocumentHelper.getPatientData(document).getAlder();
+  @Test
+  public void getAge() {
+    final int age = JsonDocumentHelper.getPatientData(document).getAlder();
 
-        assertEquals(98, age);
-    }
+    assertEquals(98, age);
+  }
 
-    @Test
-    public void processorExtractAlderFromIntyg() {
-        String personId = "19121212-1212";
-        LocalDate date = LocalDate.ofEpochDay(0L); // 1970
+  @Test
+  public void processorExtractAlderFromIntyg() {
+    String personId = "19121212-1212";
+    LocalDate date = LocalDate.ofEpochDay(0L); // 1970
 
-        int alder = ConversionHelper.extractAlder(personId, date);
+    int alder = ConversionHelper.extractAlder(personId, date);
 
-        assertEquals(57, alder);
-    }
+    assertEquals(57, alder);
+  }
 
-    @Test
-    public void processorExtractAlderFromIntygWithSamordningsnummer() {
-        String personId = "19121272-1212";
-        LocalDate date = LocalDate.ofEpochDay(0L); // 1970
+  @Test
+  public void processorExtractAlderFromIntygWithSamordningsnummer() {
+    String personId = "19121272-1212";
+    LocalDate date = LocalDate.ofEpochDay(0L); // 1970
 
-        int alder = ConversionHelper.extractAlder(personId, date);
+    int alder = ConversionHelper.extractAlder(personId, date);
 
-        assertEquals(57, alder);
-    }
+    assertEquals(57, alder);
+  }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void processorExtractAlderFromIntygWithOutOfRangeIdReturnsNoAge() {
-        String personId = "19121312-1212";
-        LocalDate date = LocalDate.ofEpochDay(0L); // 1970
+  @Test(expected = IllegalArgumentException.class)
+  public void processorExtractAlderFromIntygWithOutOfRangeIdReturnsNoAge() {
+    String personId = "19121312-1212";
+    LocalDate date = LocalDate.ofEpochDay(0L); // 1970
 
-        ConversionHelper.extractAlder(personId, date);
-        fail();
-    }
+    ConversionHelper.extractAlder(personId, date);
+    fail();
+  }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void processorExtractAlderFromIntygWithEmptyIdReturnsNoAge() {
-        String personId = "";
-        LocalDate date = LocalDate.ofEpochDay(0L); // 1970
+  @Test(expected = IllegalArgumentException.class)
+  public void processorExtractAlderFromIntygWithEmptyIdReturnsNoAge() {
+    String personId = "";
+    LocalDate date = LocalDate.ofEpochDay(0L); // 1970
 
-        ConversionHelper.extractAlder(personId, date);
-        fail();
-    }
+    ConversionHelper.extractAlder(personId, date);
+    fail();
+  }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void processorExtractAlderFromIntygWithErrenousIdReturnsNoAge() {
-        String personId = "xxxxxxxx";
-        LocalDate date = LocalDate.ofEpochDay(0L); // 1970
+  @Test(expected = IllegalArgumentException.class)
+  public void processorExtractAlderFromIntygWithErrenousIdReturnsNoAge() {
+    String personId = "xxxxxxxx";
+    LocalDate date = LocalDate.ofEpochDay(0L); // 1970
 
-        ConversionHelper.extractAlder(personId, date);
-        fail();
-    }
+    ConversionHelper.extractAlder(personId, date);
+    fail();
+  }
 
-    @Test
-    public void processorExtractKonManFromIntyg() {
-        String personId = "19121212-1212";
+  @Test
+  public void processorExtractKonManFromIntyg() {
+    String personId = "19121212-1212";
 
-        String kon = ConversionHelper.extractKon(personId);
+    String kon = ConversionHelper.extractKon(personId);
 
-        assertEquals(Kon.MALE.toString(), kon);
-    }
+    assertEquals(Kon.MALE.toString(), kon);
+  }
 
-    @Test
-    public void processorExtractKonKvinnaFromIntyg() {
-        String personId = "19790104-9283";
+  @Test
+  public void processorExtractKonKvinnaFromIntyg() {
+    String personId = "19790104-9283";
 
-        String kon = ConversionHelper.extractKon(personId);
+    String kon = ConversionHelper.extractKon(personId);
 
-        assertEquals(Kon.FEMALE.toString(), kon);
-    }
+    assertEquals(Kon.FEMALE.toString(), kon);
+  }
 
-    @Test
-    public void getForstaDag() {
-        String date = JsonDocumentHelper.getForstaNedsattningsdag(document);
+  @Test
+  public void getForstaDag() {
+    String date = JsonDocumentHelper.getForstaNedsattningsdag(document);
 
-        assertEquals("2011-01-26", date);
-    }
+    assertEquals("2011-01-26", date);
+  }
 
-    @Test
-    public void getSistaDag() {
-        String date = JsonDocumentHelper.getSistaNedsattningsdag(document);
+  @Test
+  public void getSistaDag() {
+    String date = JsonDocumentHelper.getSistaNedsattningsdag(document);
 
-        assertEquals("2011-05-31", date);
-    }
+    assertEquals("2011-05-31", date);
+  }
 
-    @Test
-    public void getIntygId() {
-        assertEquals("80832895-5a9c-450a-bd74-08af43750788", JsonDocumentHelper.getIntygId(document));
-    }
+  @Test
+  public void getIntygId() {
+    assertEquals("80832895-5a9c-450a-bd74-08af43750788", JsonDocumentHelper.getIntygId(document));
+  }
 
-    @Test
-    public void getPersonId() {
-        String id = JsonDocumentHelper.getPersonId(document);
+  @Test
+  public void getPersonId() {
+    String id = JsonDocumentHelper.getPersonId(document);
 
-        assertEquals("19121212-1212", id);
-    }
+    assertEquals("19121212-1212", id);
+  }
 
-    @Test
-    public void getLakarId() {
-        String id = JsonDocumentHelper.getLakarId(document);
+  @Test
+  public void getLakarId() {
+    String id = JsonDocumentHelper.getLakarId(document);
 
-        assertEquals("Personal HSA-ID", id);
-    }
+    assertEquals("Personal HSA-ID", id);
+  }
 
-    @Test
-    public void testConvertToDTONull() {
-        IntygDTO dto = JsonDocumentHelper.convertToDTO(null);
+  @Test
+  public void testConvertToDTONull() {
+    IntygDTO dto = JsonDocumentHelper.convertToDTO(null);
 
-        assertNull(dto);
-    }
+    assertNull(dto);
+  }
 
-    @Test
-    public void testConvertToDTO() {
-        IntygDTO dto = JsonDocumentHelper.convertToDTO(document);
+  @Test
+  public void testConvertToDTO() {
+    IntygDTO dto = JsonDocumentHelper.convertToDTO(document);
 
-        LocalDate signeringsdatum = LocalDate.of(2011, 1, 26);
+    LocalDate signeringsdatum = LocalDate.of(2011, 1, 26);
 
-        assertEquals("19121212-1212", dto.getPatientid());
-        assertEquals("VardenhetY", dto.getEnhet());
-        assertEquals(IntygType.getByItIntygType("FK7263"), dto.getIntygtyp());
-        assertEquals(98, dto.getPatientData().getAlder());
-        assertEquals(Kon.MALE, dto.getPatientData().getKon());
-        assertEquals(signeringsdatum, dto.getSigneringsdatum());
-    }
+    assertEquals("19121212-1212", dto.getPatientid());
+    assertEquals("VardenhetY", dto.getEnhet());
+    assertEquals(IntygType.getByItIntygType("FK7263"), dto.getIntygtyp());
+    assertEquals(98, dto.getPatientData().getAlder());
+    assertEquals(Kon.MALE, dto.getPatientData().getKon());
+    assertEquals(signeringsdatum, dto.getSigneringsdatum());
+  }
 
-    // CHECKSTYLE:ON MagicNumber
+  // CHECKSTYLE:ON MagicNumber
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -32,169 +32,175 @@ import se.inera.statistics.service.warehouse.SjukfallExtended;
 
 public class SjukfallMergeHelperTest {
 
-    @Test
-    public void testMergeAllSjukfallInListNullInput() throws Exception {
-        //Given
-        final List<SjukfallExtended> sjukfalls = null;
+  @Test
+  public void testMergeAllSjukfallInListNullInput() throws Exception {
+    // Given
+    final List<SjukfallExtended> sjukfalls = null;
 
-        //When
-        final Optional<SjukfallExtended> sjukfallExtended = SjukfallMergeHelper.mergeAllSjukfallInList(sjukfalls);
-
-        //Then
-        assertEquals(false, sjukfallExtended.isPresent());
-    }
-
-    @Test
-    public void testMergeAllSjukfallInListEmptyInput() throws Exception {
-        //Given
-        final List<SjukfallExtended> sjukfalls = new ArrayList<>();
-
-        //When
-        final Optional<SjukfallExtended> sjukfallExtended = SjukfallMergeHelper.mergeAllSjukfallInList(sjukfalls);
-
-        //Then
-        assertEquals(false, sjukfallExtended.isPresent());
-    }
-
-    @Test
-    public void testMergeAllSjukfallInListSingleInput() throws Exception {
-        //Given
-        final List<SjukfallExtended> sjukfalls = new ArrayList<>();
-        final SjukfallExtended input = new SjukfallExtended(createFact(2, 5));
-        sjukfalls.add(input);
-
-        //When
-        final SjukfallExtended sjukfallExtended = SjukfallMergeHelper.mergeAllSjukfallInList(sjukfalls).get();
-
-        //Then
-        assertSame(input, sjukfallExtended);
-    }
-
-    @Test
-    public void testMergeAllSjukfallInListMergeSeveral() throws Exception {
-        //Given
-        final List<SjukfallExtended> sjukfalls = new ArrayList<>();
-        sjukfalls.add(new SjukfallExtended(createFact(10, 15)));
-        sjukfalls.add(new SjukfallExtended(createFact(100, 112)));
-        sjukfalls.add(new SjukfallExtended(createFact(50, 51)));
-
-        //When
-        final SjukfallExtended result = SjukfallMergeHelper.mergeAllSjukfallInList(sjukfalls).get();
-
-        //Then
-        assertEquals(3, result.getFactCount());
-        assertEquals(10, result.getStart());
-        assertEquals(112, result.getEnd());
-        assertEquals(21, result.getRealDays());
-    }
-
-    @Test
-    public void testMergeAllSjukfallInListInputStaysTheSame() throws Exception {
-        //Given
-        final List<SjukfallExtended> sjukfalls = new ArrayList<>();
-        sjukfalls.add(new SjukfallExtended(createFact(100, 112)));
-        sjukfalls.add(new SjukfallExtended(createFact(10, 15)));
-        sjukfalls.add(new SjukfallExtended(createFact(50, 51)));
-        final List<SjukfallExtended> sjukfallsOriginal = new ArrayList<>(sjukfalls);
-
-        //When
+    // When
+    final Optional<SjukfallExtended> sjukfallExtended =
         SjukfallMergeHelper.mergeAllSjukfallInList(sjukfalls);
 
-        //Then
-        assertEquals(sjukfallsOriginal, sjukfalls);
-    }
+    // Then
+    assertEquals(false, sjukfallExtended.isPresent());
+  }
 
-    @Test
-    public void testGetFirstSjukfallNull() throws Exception {
-        //Given
-        final ArrayList<SjukfallExtended> sjukfalls = null;
+  @Test
+  public void testMergeAllSjukfallInListEmptyInput() throws Exception {
+    // Given
+    final List<SjukfallExtended> sjukfalls = new ArrayList<>();
 
-        //When
-        final Optional<SjukfallExtended> result = SjukfallMergeHelper.getFirstSjukfall(sjukfalls);
+    // When
+    final Optional<SjukfallExtended> sjukfallExtended =
+        SjukfallMergeHelper.mergeAllSjukfallInList(sjukfalls);
 
-        //Then
-        assertFalse(result.isPresent());
-    }
+    // Then
+    assertEquals(false, sjukfallExtended.isPresent());
+  }
 
-    @Test
-    public void testGetFirstSjukfallEmpty() throws Exception {
-        //Given
-        final ArrayList<SjukfallExtended> sjukfalls = new ArrayList<>();
+  @Test
+  public void testMergeAllSjukfallInListSingleInput() throws Exception {
+    // Given
+    final List<SjukfallExtended> sjukfalls = new ArrayList<>();
+    final SjukfallExtended input = new SjukfallExtended(createFact(2, 5));
+    sjukfalls.add(input);
 
-        //When
-        final Optional<SjukfallExtended> result = SjukfallMergeHelper.getFirstSjukfall(sjukfalls);
+    // When
+    final SjukfallExtended sjukfallExtended =
+        SjukfallMergeHelper.mergeAllSjukfallInList(sjukfalls).get();
 
-        //Then
-        assertFalse(result.isPresent());
-    }
+    // Then
+    assertSame(input, sjukfallExtended);
+  }
 
-    @Test
-    public void testGetFirstSjukfall() throws Exception {
-        //Given
-        final ArrayList<SjukfallExtended> sjukfalls = new ArrayList<>();
-        sjukfalls.add(new SjukfallExtended(createFact(2, 5)));
-        sjukfalls.add(new SjukfallExtended(createFact(2, 3)));
-        sjukfalls.add(new SjukfallExtended(createFact(1, 5))); //First sjukfall
-        sjukfalls.add(new SjukfallExtended(createFact(10, 15)));
+  @Test
+  public void testMergeAllSjukfallInListMergeSeveral() throws Exception {
+    // Given
+    final List<SjukfallExtended> sjukfalls = new ArrayList<>();
+    sjukfalls.add(new SjukfallExtended(createFact(10, 15)));
+    sjukfalls.add(new SjukfallExtended(createFact(100, 112)));
+    sjukfalls.add(new SjukfallExtended(createFact(50, 51)));
 
-        //When
-        final SjukfallExtended result = SjukfallMergeHelper.getFirstSjukfall(sjukfalls).get();
+    // When
+    final SjukfallExtended result = SjukfallMergeHelper.mergeAllSjukfallInList(sjukfalls).get();
 
-        //Then
-        assertEquals(1, result.getStart());
-        assertEquals(5, result.getEnd());
-    }
+    // Then
+    assertEquals(3, result.getFactCount());
+    assertEquals(10, result.getStart());
+    assertEquals(112, result.getEnd());
+    assertEquals(21, result.getRealDays());
+  }
 
-    @Test
-    public void testFilterSjukfallInPeriodNullSjukfalls() throws Exception {
-        //Given
-        final int start = 1;
-        final int end = 2;
-        final ArrayList<SjukfallExtended> sjukfalls = null;
+  @Test
+  public void testMergeAllSjukfallInListInputStaysTheSame() throws Exception {
+    // Given
+    final List<SjukfallExtended> sjukfalls = new ArrayList<>();
+    sjukfalls.add(new SjukfallExtended(createFact(100, 112)));
+    sjukfalls.add(new SjukfallExtended(createFact(10, 15)));
+    sjukfalls.add(new SjukfallExtended(createFact(50, 51)));
+    final List<SjukfallExtended> sjukfallsOriginal = new ArrayList<>(sjukfalls);
 
-        //When
-        final List<SjukfallExtended> result = SjukfallMergeHelper.filterSjukfallInPeriod(start, end, sjukfalls);
+    // When
+    SjukfallMergeHelper.mergeAllSjukfallInList(sjukfalls);
 
-        //Then
-        assertEquals(0, result.size());
-    }
+    // Then
+    assertEquals(sjukfallsOriginal, sjukfalls);
+  }
 
-    @Test
-    public void testFilterSjukfallInPeriodNoSjukfalls() throws Exception {
-        //Given
-        final int start = 1;
-        final int end = 2;
-        final ArrayList<SjukfallExtended> sjukfalls = new ArrayList<>();
+  @Test
+  public void testGetFirstSjukfallNull() throws Exception {
+    // Given
+    final ArrayList<SjukfallExtended> sjukfalls = null;
 
-        //When
-        final List<SjukfallExtended> result = SjukfallMergeHelper.filterSjukfallInPeriod(start, end, sjukfalls);
+    // When
+    final Optional<SjukfallExtended> result = SjukfallMergeHelper.getFirstSjukfall(sjukfalls);
 
-        //Then
-        assertEquals(0, result.size());
-    }
+    // Then
+    assertFalse(result.isPresent());
+  }
 
-    @Test
-    public void testFilterSjukfallInPeriod() throws Exception {
-        //Given
-        final int start = 10;
-        final int end = 20;
-        final ArrayList<SjukfallExtended> sjukfalls = new ArrayList<>();
-        sjukfalls.add(new SjukfallExtended(createFact(1, 5)));   // Not in period
-        sjukfalls.add(new SjukfallExtended(createFact(5, 10)));  // In period
-        sjukfalls.add(new SjukfallExtended(createFact(11, 15))); // In period
-        sjukfalls.add(new SjukfallExtended(createFact(16, 25))); // In period
-        sjukfalls.add(new SjukfallExtended(createFact(20, 21))); // In period
-        sjukfalls.add(new SjukfallExtended(createFact(21, 25))); // Not in period
+  @Test
+  public void testGetFirstSjukfallEmpty() throws Exception {
+    // Given
+    final ArrayList<SjukfallExtended> sjukfalls = new ArrayList<>();
 
-        //When
-        final List<SjukfallExtended> result = SjukfallMergeHelper.filterSjukfallInPeriod(start, end, sjukfalls);
+    // When
+    final Optional<SjukfallExtended> result = SjukfallMergeHelper.getFirstSjukfall(sjukfalls);
 
-        //Then
-        assertEquals(4, result.size());
-    }
+    // Then
+    assertFalse(result.isPresent());
+  }
 
-    private Fact createFact(int startdatum, int slutdatum) {
-        return FactBuilder.newFact(1L, 1, 1, 1, 1, 1, 1, 1, startdatum, slutdatum, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
-    }
+  @Test
+  public void testGetFirstSjukfall() throws Exception {
+    // Given
+    final ArrayList<SjukfallExtended> sjukfalls = new ArrayList<>();
+    sjukfalls.add(new SjukfallExtended(createFact(2, 5)));
+    sjukfalls.add(new SjukfallExtended(createFact(2, 3)));
+    sjukfalls.add(new SjukfallExtended(createFact(1, 5))); // First sjukfall
+    sjukfalls.add(new SjukfallExtended(createFact(10, 15)));
 
+    // When
+    final SjukfallExtended result = SjukfallMergeHelper.getFirstSjukfall(sjukfalls).get();
+
+    // Then
+    assertEquals(1, result.getStart());
+    assertEquals(5, result.getEnd());
+  }
+
+  @Test
+  public void testFilterSjukfallInPeriodNullSjukfalls() throws Exception {
+    // Given
+    final int start = 1;
+    final int end = 2;
+    final ArrayList<SjukfallExtended> sjukfalls = null;
+
+    // When
+    final List<SjukfallExtended> result =
+        SjukfallMergeHelper.filterSjukfallInPeriod(start, end, sjukfalls);
+
+    // Then
+    assertEquals(0, result.size());
+  }
+
+  @Test
+  public void testFilterSjukfallInPeriodNoSjukfalls() throws Exception {
+    // Given
+    final int start = 1;
+    final int end = 2;
+    final ArrayList<SjukfallExtended> sjukfalls = new ArrayList<>();
+
+    // When
+    final List<SjukfallExtended> result =
+        SjukfallMergeHelper.filterSjukfallInPeriod(start, end, sjukfalls);
+
+    // Then
+    assertEquals(0, result.size());
+  }
+
+  @Test
+  public void testFilterSjukfallInPeriod() throws Exception {
+    // Given
+    final int start = 10;
+    final int end = 20;
+    final ArrayList<SjukfallExtended> sjukfalls = new ArrayList<>();
+    sjukfalls.add(new SjukfallExtended(createFact(1, 5))); // Not in period
+    sjukfalls.add(new SjukfallExtended(createFact(5, 10))); // In period
+    sjukfalls.add(new SjukfallExtended(createFact(11, 15))); // In period
+    sjukfalls.add(new SjukfallExtended(createFact(16, 25))); // In period
+    sjukfalls.add(new SjukfallExtended(createFact(20, 21))); // In period
+    sjukfalls.add(new SjukfallExtended(createFact(21, 25))); // Not in period
+
+    // When
+    final List<SjukfallExtended> result =
+        SjukfallMergeHelper.filterSjukfallInPeriod(start, end, sjukfalls);
+
+    // Then
+    assertEquals(4, result.size());
+  }
+
+  private Fact createFact(int startdatum, int slutdatum) {
+    return FactBuilder.newFact(
+        1L, 1, 1, 1, 1, 1, 1, 1, startdatum, slutdatum, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
+  }
 }

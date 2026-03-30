@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,42 +23,42 @@ import se.inera.statistics.integration.hsa.model.HsaIdAny;
 
 public abstract class AbstractWidlineConverter {
 
-    protected void checkField(List<String> errors, String field, String fieldName) {
-        if (field == null || field.isEmpty()) {
-            errors.add(fieldName + " not found.");
-        }
+  protected void checkField(List<String> errors, String field, String fieldName) {
+    if (field == null || field.isEmpty()) {
+      errors.add(fieldName + " not found.");
     }
+  }
 
-    protected void checkField(List<String> errors, IntygType field, String fieldName) {
-        if (field == null) {
-            errors.add(fieldName + " not found.");
-        }
+  protected void checkField(List<String> errors, IntygType field, String fieldName) {
+    if (field == null) {
+      errors.add(fieldName + " not found.");
     }
+  }
 
-    protected void checkField(List<String> errors, HsaIdAny field, String fieldName) {
-        if (field == null || field.getId().isEmpty()) {
-            errors.add(fieldName + " not found.");
-        }
+  protected void checkField(List<String> errors, HsaIdAny field, String fieldName) {
+    if (field == null || field.getId().isEmpty()) {
+      errors.add(fieldName + " not found.");
     }
+  }
 
-    protected void checkField(List<String> errors, String field, String fieldName, int max) {
-        checkField(errors, field, fieldName);
-        if (field != null && field.length() > max) {
-            errors.add(fieldName + " input too long");
-        }
+  protected void checkField(List<String> errors, String field, String fieldName, int max) {
+    checkField(errors, field, fieldName);
+    if (field != null && field.length() > max) {
+      errors.add(fieldName + " input too long");
     }
+  }
 
-    protected void checkField(List<String> errors, IntygType field, String fieldName, int max) {
-        checkField(errors, field, fieldName);
-        if (field != null && field.name().length() > max) {
-            errors.add(fieldName + " input too long");
-        }
+  protected void checkField(List<String> errors, IntygType field, String fieldName, int max) {
+    checkField(errors, field, fieldName);
+    if (field != null && field.name().length() > max) {
+      errors.add(fieldName + " input too long");
     }
+  }
 
-    protected void checkField(List<String> errors, HsaIdAny field, String fieldName, int max) {
-        checkField(errors, field, fieldName);
-        if (field != null && field.getId().length() > max) {
-            errors.add(fieldName + " input too long");
-        }
+  protected void checkField(List<String> errors, HsaIdAny field, String fieldName, int max) {
+    checkField(errors, field, fieldName);
+    if (field != null && field.getId().length() > max) {
+      errors.add(fieldName + " input too long");
     }
+  }
 }

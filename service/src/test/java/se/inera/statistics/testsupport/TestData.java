@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,19 +22,19 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public final class TestData {
 
-    private Object replyObject;
-    private JsonNode jsonNode;
+  private Object replyObject;
+  private JsonNode jsonNode;
 
-    TestData(Object replyObject, JsonNode jsonNode) {
-        this.replyObject = replyObject;
-        this.jsonNode = jsonNode;
-    }
+  TestData(Object replyObject, JsonNode jsonNode) {
+    this.replyObject = replyObject;
+    this.jsonNode = jsonNode;
+  }
 
-    public Object getReplyObject() {
-        return replyObject;
-    }
+  public Object getReplyObject() {
+    return replyObject;
+  }
 
-    public JsonNode getJsonNode() {
-        return jsonNode;
-    }
+  public JsonNode getJsonNode() {
+    return jsonNode;
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,24 +25,23 @@ import java.io.InputStream;
 
 public final class JSONParser {
 
-    private JSONParser() {
-    }
+  private JSONParser() {}
 
-    public static JsonNode parse(String doc) {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            return mapper.readTree(doc);
-        } catch (IOException e) {
-            throw new StatisticsMalformedDocument("Could not parse document", e);
-        }
+  public static JsonNode parse(String doc) {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+      return mapper.readTree(doc);
+    } catch (IOException e) {
+      throw new StatisticsMalformedDocument("Could not parse document", e);
     }
+  }
 
-    public static JsonNode parse(InputStream doc) {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            return mapper.readTree(doc);
-        } catch (IOException e) {
-            throw new StatisticsMalformedDocument("Could not parse document", e);
-        }
+  public static JsonNode parse(InputStream doc) {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+      return mapper.readTree(doc);
+    } catch (IOException e) {
+      throw new StatisticsMalformedDocument("Could not parse document", e);
     }
+  }
 }

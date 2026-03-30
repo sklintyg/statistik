@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -29,30 +29,27 @@ import org.slf4j.LoggerFactory;
 
 public class UnregisterServicesListener implements ServletContextListener {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UnregisterServicesListener.class);
+  private static final Logger LOG = LoggerFactory.getLogger(UnregisterServicesListener.class);
 
-    // Public constructor is required by servlet spec
-    public UnregisterServicesListener() {
+  // Public constructor is required by servlet spec
+  public UnregisterServicesListener() {}
+
+  @Override
+  public void contextInitialized(ServletContextEvent sce) {}
+
+  @Override
+  public void contextDestroyed(ServletContextEvent sce) {
+    // This manually deregisters JDBC driver, which prevents Tomcat 7 from complaining about memory
+    // leaks with respect to this class
+    Enumeration<Driver> drivers = DriverManager.getDrivers();
+    while (drivers.hasMoreElements()) {
+      Driver driver = drivers.nextElement();
+      try {
+        DriverManager.deregisterDriver(driver);
+        LOG.info(String.format("deregistering jdbc driver: %s", driver));
+      } catch (SQLException e) {
+        LOG.error(String.format("Error deregistering driver %s", driver), e);
+      }
     }
-
-    @Override
-    public void contextInitialized(ServletContextEvent sce) {
-    }
-
-    @Override
-    public void contextDestroyed(ServletContextEvent sce) {
-        // This manually deregisters JDBC driver, which prevents Tomcat 7 from complaining about memory leaks with respect to this class
-        Enumeration<Driver> drivers = DriverManager.getDrivers();
-        while (drivers.hasMoreElements()) {
-            Driver driver = drivers.nextElement();
-            try {
-                DriverManager.deregisterDriver(driver);
-                LOG.info(String.format("deregistering jdbc driver: %s", driver));
-            } catch (SQLException e) {
-                LOG.error(String.format("Error deregistering driver %s", driver), e);
-            }
-
-        }
-    }
-
+  }
 }

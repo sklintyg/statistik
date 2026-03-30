@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,37 +23,36 @@ import se.inera.statistics.service.report.model.Kon;
 
 public final class SosMeCfs2Tuple {
 
-    private Kon kon;
-    private String ageGroup;
+  private Kon kon;
+  private String ageGroup;
 
-    public SosMeCfs2Tuple(Kon kon, String ageGroup) {
-        this.kon = kon;
-        this.ageGroup = ageGroup;
+  public SosMeCfs2Tuple(Kon kon, String ageGroup) {
+    this.kon = kon;
+    this.ageGroup = ageGroup;
+  }
+
+  public Kon getKon() {
+    return kon;
+  }
+
+  public String getAgeGroup() {
+    return ageGroup;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
-
-    public Kon getKon() {
-        return kon;
+    if (o == null || getClass() != o.getClass()) {
+      return false;
     }
+    SosMeCfs2Tuple sosMeCfs2Tuple = (SosMeCfs2Tuple) o;
+    return kon == sosMeCfs2Tuple.kon && Objects.equals(ageGroup, sosMeCfs2Tuple.ageGroup);
+  }
 
-    public String getAgeGroup() {
-        return ageGroup;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        SosMeCfs2Tuple sosMeCfs2Tuple = (SosMeCfs2Tuple) o;
-        return kon == sosMeCfs2Tuple.kon && Objects.equals(ageGroup, sosMeCfs2Tuple.ageGroup);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(kon, ageGroup);
-    }
-
+  @Override
+  public int hashCode() {
+    return Objects.hash(kon, ageGroup);
+  }
 }

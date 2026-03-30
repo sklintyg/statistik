@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -26,35 +26,36 @@ import se.inera.statistics.service.warehouse.SjukfallExtended;
 
 public class FactsToSjukfallConverter {
 
-    ArrayListMultimap<Long, SjukfallExtended> getSjukfallsPerPatient(Iterable<Fact> facts) {
-        return getSjukfallsPerPatient(facts, null);
+  ArrayListMultimap<Long, SjukfallExtended> getSjukfallsPerPatient(Iterable<Fact> facts) {
+    return getSjukfallsPerPatient(facts, null);
+  }
+
+  ArrayListMultimap<Long, SjukfallExtended> getSjukfallsPerPatient(
+      Iterable<Fact> facts, Collection<Long> patientsFilter) {
+    final ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient =
+        ArrayListMultimap.create();
+    if (facts == null) {
+      return sjukfallsPerPatient;
     }
+    for (Fact line : facts) {
+      long key = line.getPatient();
+      if (patientsFilter != null && !patientsFilter.contains(key)) {
+        continue;
+      }
+      List<SjukfallExtended> sjukfallsForPatient = sjukfallsPerPatient.get(key);
 
-    ArrayListMultimap<Long, SjukfallExtended> getSjukfallsPerPatient(Iterable<Fact> facts, Collection<Long> patientsFilter) {
-        final ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient = ArrayListMultimap.create();
-        if (facts == null) {
-            return sjukfallsPerPatient;
+      if (sjukfallsForPatient.isEmpty()) {
+        SjukfallExtended sjukfall = new SjukfallExtended(line);
+        sjukfallsPerPatient.put(key, sjukfall);
+      } else {
+        final SjukfallExtended sjukfall = sjukfallsForPatient.get(sjukfallsForPatient.size() - 1);
+        SjukfallExtended nextSjukfall = sjukfall.join(line);
+        if (nextSjukfall.isExtended()) {
+          sjukfallsForPatient.remove(sjukfallsForPatient.size() - 1);
         }
-        for (Fact line : facts) {
-            long key = line.getPatient();
-            if (patientsFilter != null && !patientsFilter.contains(key)) {
-                continue;
-            }
-            List<SjukfallExtended> sjukfallsForPatient = sjukfallsPerPatient.get(key);
-
-            if (sjukfallsForPatient.isEmpty()) {
-                SjukfallExtended sjukfall = new SjukfallExtended(line);
-                sjukfallsPerPatient.put(key, sjukfall);
-            } else {
-                final SjukfallExtended sjukfall = sjukfallsForPatient.get(sjukfallsForPatient.size() - 1);
-                SjukfallExtended nextSjukfall = sjukfall.join(line);
-                if (nextSjukfall.isExtended()) {
-                    sjukfallsForPatient.remove(sjukfallsForPatient.size() - 1);
-                }
-                sjukfallsPerPatient.put(key, nextSjukfall);
-            }
-        }
-        return sjukfallsPerPatient;
+        sjukfallsPerPatient.put(key, nextSjukfall);
+      }
     }
-
+    return sjukfallsPerPatient;
+  }
 }

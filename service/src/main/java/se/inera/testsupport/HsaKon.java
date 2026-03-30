@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -19,17 +19,17 @@
 package se.inera.testsupport;
 
 public enum HsaKon {
+  MALE(1),
+  FEMALE(2),
+  UNKNOWN(0);
 
-    MALE(1), FEMALE(2), UNKNOWN(0);
+  private final int hsaRepresantation;
 
-    private final int hsaRepresantation;
+  HsaKon(int hsaRepresantation) {
+    this.hsaRepresantation = hsaRepresantation;
+  }
 
-    HsaKon(int hsaRepresantation) {
-        this.hsaRepresantation = hsaRepresantation;
-    }
-
-    public int getHsaRepresantation() {
-        return hsaRepresantation;
-    }
-
+  public int getHsaRepresantation() {
+    return hsaRepresantation;
+  }
 }

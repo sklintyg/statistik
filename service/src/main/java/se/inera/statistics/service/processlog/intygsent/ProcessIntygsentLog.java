@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,12 +22,11 @@ import java.util.List;
 
 public interface ProcessIntygsentLog {
 
-    long store(String certificateId, String certificateRecipient, long timestamp);
+  long store(String certificateId, String certificateRecipient, long timestamp);
 
-    long update(IntygSentEvent event);
+  long update(IntygSentEvent event);
 
-    List<IntygSentEvent> getPending(int max);
+  List<IntygSentEvent> getPending(int max);
 
-    void confirm(long id);
-
+  void confirm(long id);
 }

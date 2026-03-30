@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -29,42 +29,43 @@ import se.inera.statistics.service.processlog.Processor;
 @Component
 public class IntygsentLogConsumerImpl implements IntygsentLogConsumer {
 
-    private static final Logger LOG = LoggerFactory.getLogger(IntygsentLogConsumerImpl.class);
-    public static final int BATCH_SIZE = 100;
+  private static final Logger LOG = LoggerFactory.getLogger(IntygsentLogConsumerImpl.class);
+  public static final int BATCH_SIZE = 100;
 
-    @Autowired
-    private ProcessIntygsentLog processLog;
+  @Autowired private ProcessIntygsentLog processLog;
 
-    @Autowired
-    private Processor processor;
+  @Autowired private Processor processor;
 
-    @Transactional
-    @Override
-    public synchronized int processBatch() {
-        List<IntygSentEvent> result = processLog.getPending(BATCH_SIZE);
-        if (result.isEmpty()) {
-            return 0;
-        }
-        int processed = 0;
-        for (IntygSentEvent event : result) {
-            try {
-                final String recipient = event.getRecipient();
-                if (IntygSentHelper.isFkRecipient(recipient)) {
-                    final String correlationId = event.getCorrelationId();
-                    processor.acceptIntygSent(correlationId);
-                } else {
-                    LOG.info("Unknown intyg sent recipient: {}", recipient);
-                }
-                final long id = event.getId();
-                processLog.confirm(id);
-                LOG.info("Processed intyg sent id {}", id);
-            } catch (Exception e) {
-                LOG.error("Could not process 'intyg sent' event {} ({}). {}", event.getId(), event.getCorrelationId(), e.getMessage());
-            } finally {
-                processed++;
-            }
-        }
-        return processed;
+  @Transactional
+  @Override
+  public synchronized int processBatch() {
+    List<IntygSentEvent> result = processLog.getPending(BATCH_SIZE);
+    if (result.isEmpty()) {
+      return 0;
     }
-
+    int processed = 0;
+    for (IntygSentEvent event : result) {
+      try {
+        final String recipient = event.getRecipient();
+        if (IntygSentHelper.isFkRecipient(recipient)) {
+          final String correlationId = event.getCorrelationId();
+          processor.acceptIntygSent(correlationId);
+        } else {
+          LOG.info("Unknown intyg sent recipient: {}", recipient);
+        }
+        final long id = event.getId();
+        processLog.confirm(id);
+        LOG.info("Processed intyg sent id {}", id);
+      } catch (Exception e) {
+        LOG.error(
+            "Could not process 'intyg sent' event {} ({}). {}",
+            event.getId(),
+            event.getCorrelationId(),
+            e.getMessage());
+      } finally {
+        processed++;
+      }
+    }
+    return processed;
+  }
 }

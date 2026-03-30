@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -77,264 +77,307 @@ import se.inera.statistics.web.util.VersionUtil;
 @Component
 public class LoginServiceUtil {
 
-    private static final Logger LOG = LoggerFactory.getLogger(LoginServiceUtil.class);
+  private static final Logger LOG = LoggerFactory.getLogger(LoginServiceUtil.class);
 
-    @Autowired
-    private Warehouse warehouse;
+  @Autowired private Warehouse warehouse;
 
-    @Autowired
-    private RegionEnhetHandler regionEnhetHandler;
+  @Autowired private RegionEnhetHandler regionEnhetHandler;
 
-    @Autowired(required = false)
-    private LoginVisibility loginVisibility;
+  @Autowired(required = false)
+  private LoginVisibility loginVisibility;
 
-    @Autowired
-    private Icd10 icd10;
+  @Autowired private Icd10 icd10;
 
-    @Autowired
-    private VersionUtil versionUtil;
+  @Autowired private VersionUtil versionUtil;
 
-    @Autowired
-    private UserSettingsManager userSettingsManager;
+  @Autowired private UserSettingsManager userSettingsManager;
 
-    @Autowired
-    private IABannerService iaBannerService;
+  @Autowired private IABannerService iaBannerService;
 
-    @Value("${login.url}")
-    private String loginUrl;
-    @Value("${taskCoordinatorService.simultaneous.calls.allowed}")
-    private int simultaneousCallsAllowed;
-    private Kommun kommun = new Kommun();
+  @Value("${login.url}")
+  private String loginUrl;
 
-    private Lan lan = new Lan();
+  @Value("${taskCoordinatorService.simultaneous.calls.allowed}")
+  private int simultaneousCallsAllowed;
 
-    private VerksamhetsTyp verksamheter = new VerksamhetsTyp();
+  private Kommun kommun = new Kommun();
 
-    private static final Splitter ID_SPLITTER = Splitter.on(',').trimResults().omitEmptyStrings();
+  private Lan lan = new Lan();
 
-    public boolean isLoggedIn() {
-        try {
-            getCurrentUser();
-            return true;
-        } catch (Exception ignored) {
-            return false;
-        }
+  private VerksamhetsTyp verksamheter = new VerksamhetsTyp();
+
+  private static final Splitter ID_SPLITTER = Splitter.on(',').trimResults().omitEmptyStrings();
+
+  public boolean isLoggedIn() {
+    try {
+      getCurrentUser();
+      return true;
+    } catch (Exception ignored) {
+      return false;
     }
+  }
 
-    public LoginInfo getLoginInfo() {
-        User realUser;
-        try {
-            realUser = getCurrentUser();
-        } catch (IllegalStateException e) {
-            LOG.warn("Could not get current user", e);
-            return new LoginInfo();
-        }
-        Map<HsaIdVardgivare, String> allVgNames = realUser.getVardenhetList().stream()
+  public LoginInfo getLoginInfo() {
+    User realUser;
+    try {
+      realUser = getCurrentUser();
+    } catch (IllegalStateException e) {
+      LOG.warn("Could not get current user", e);
+      return new LoginInfo();
+    }
+    Map<HsaIdVardgivare, String> allVgNames =
+        realUser.getVardenhetList().stream()
             .collect(toMap(Vardenhet::getVardgivarId, Vardenhet::getVardgivarNamn, (p, q) -> p));
 
-        List<Verksamhet> verksamhets = getVerksamhetsList(realUser);
+    List<Verksamhet> verksamhets = getVerksamhetsList(realUser);
 
-        final List<LoginInfoVg> loginInfoVgs = allVgNames.entrySet().stream()
+    final List<LoginInfoVg> loginInfoVgs =
+        allVgNames.entrySet().stream()
             .map(vgidWithName -> toLoginInfoVg(realUser, vgidWithName))
             .collect(Collectors.toList());
 
-        // INTYG-3446: We create a LoginInfoVg entry for each item in vgWithProcessledarStatus
-        for (Vardgivare vardgivare : realUser.getVgsWithProcessledarStatus()) {
-            HsaIdVardgivare vgHsaId = new HsaIdVardgivare(vardgivare.getId());
-            RegionsVardgivareStatus regionsVardgivareStatus = regionEnhetHandler.getRegionsVardgivareStatus(vgHsaId);
+    // INTYG-3446: We create a LoginInfoVg entry for each item in vgWithProcessledarStatus
+    for (Vardgivare vardgivare : realUser.getVgsWithProcessledarStatus()) {
+      HsaIdVardgivare vgHsaId = new HsaIdVardgivare(vardgivare.getId());
+      RegionsVardgivareStatus regionsVardgivareStatus =
+          regionEnhetHandler.getRegionsVardgivareStatus(vgHsaId);
 
-            LoginInfoVg livg = new LoginInfoVg(vgHsaId, vardgivare.getNamn(), regionsVardgivareStatus, new UserAccessLevel(true, 0));
-            if (loginInfoVgs.contains(livg)) {
-                loginInfoVgs.remove(livg);
-            }
-            loginInfoVgs.add(livg);
-        }
-
-        String hsaId = realUser.getHsaId().getId();
-
-        UserSettingsDTO userSettingsDTO = getUserSettings(hsaId);
-
-        return new LoginInfo(realUser.getHsaId(), realUser.getName(), verksamhets, loginInfoVgs, userSettingsDTO,
-            getAuthenticationMethod());
+      LoginInfoVg livg =
+          new LoginInfoVg(
+              vgHsaId, vardgivare.getNamn(), regionsVardgivareStatus, new UserAccessLevel(true, 0));
+      if (loginInfoVgs.contains(livg)) {
+        loginInfoVgs.remove(livg);
+      }
+      loginInfoVgs.add(livg);
     }
 
-    private UserSettingsDTO getUserSettings(String hsaId) {
-        UserSettings userSettings = userSettingsManager.find(hsaId);
+    String hsaId = realUser.getHsaId().getId();
 
-        UserSettingsDTO userSettingsDTO;
+    UserSettingsDTO userSettingsDTO = getUserSettings(hsaId);
 
-        if (userSettings != null) {
-            userSettingsDTO = new UserSettingsDTO(userSettings.isShowMessagesPerLakare());
-        } else {
-            userSettingsDTO = new UserSettingsDTO();
-        }
+    return new LoginInfo(
+        realUser.getHsaId(),
+        realUser.getName(),
+        verksamhets,
+        loginInfoVgs,
+        userSettingsDTO,
+        getAuthenticationMethod());
+  }
 
-        return userSettingsDTO;
+  private UserSettingsDTO getUserSettings(String hsaId) {
+    UserSettings userSettings = userSettingsManager.find(hsaId);
+
+    UserSettingsDTO userSettingsDTO;
+
+    if (userSettings != null) {
+      userSettingsDTO = new UserSettingsDTO(userSettings.isShowMessagesPerLakare());
+    } else {
+      userSettingsDTO = new UserSettingsDTO();
     }
 
-    private LoginInfoVg toLoginInfoVg(User realUser, Map.Entry<HsaIdVardgivare, String> vgidWithName) {
-        final HsaIdVardgivare vgId = vgidWithName.getKey();
-        final boolean processledare = realUser.isProcessledareForVg(vgId);
-        final List<Vardenhet> vardenhetsForVg = realUser.getVardenhetsForVg(vgId);
-        final UserAccessLevel userAccessLevel = new UserAccessLevel(processledare, vardenhetsForVg.size());
-        final String vgName = vgidWithName.getValue();
-        final RegionsVardgivareStatus regionsVardgivareStatus = regionEnhetHandler.getRegionsVardgivareStatus(vgId);
-        return new LoginInfoVg(vgId, vgName, regionsVardgivareStatus, userAccessLevel);
-    }
+    return userSettingsDTO;
+  }
 
-    public User getCurrentUser() {
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) {
-            throw new IllegalStateException("Authentication object is null");
-        }
-        final Object details = authentication.getPrincipal();
-        if (!(details instanceof User)) {
-            throw new IllegalStateException("details object is of wrong type: " + details);
-        }
-        return (User) details;
-    }
+  private LoginInfoVg toLoginInfoVg(
+      User realUser, Map.Entry<HsaIdVardgivare, String> vgidWithName) {
+    final HsaIdVardgivare vgId = vgidWithName.getKey();
+    final boolean processledare = realUser.isProcessledareForVg(vgId);
+    final List<Vardenhet> vardenhetsForVg = realUser.getVardenhetsForVg(vgId);
+    final UserAccessLevel userAccessLevel =
+        new UserAccessLevel(processledare, vardenhetsForVg.size());
+    final String vgName = vgidWithName.getValue();
+    final RegionsVardgivareStatus regionsVardgivareStatus =
+        regionEnhetHandler.getRegionsVardgivareStatus(vgId);
+    return new LoginInfoVg(vgId, vgName, regionsVardgivareStatus, userAccessLevel);
+  }
 
-    private String getAuthenticationMethod() {
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) {
-            throw new IllegalStateException("Authentication object is null");
-        }
-        final var principal = (User) authentication.getPrincipal();
-        return principal.getLoginMethod().value();
+  public User getCurrentUser() {
+    final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null) {
+      throw new IllegalStateException("Authentication object is null");
     }
+    final Object details = authentication.getPrincipal();
+    if (!(details instanceof User)) {
+      throw new IllegalStateException("details object is of wrong type: " + details);
+    }
+    return (User) details;
+  }
 
-    private List<Verksamhet> getVerksamhetsList(User realUser) {
-        return Stream.concat(realUser.getVardenhetList().stream()
-                    .map(Vardenhet::getVardgivarId),
-                realUser.getVgsWithProcessledarStatus().stream()
-                    .map(vg -> new HsaIdVardgivare(vg.getId())))
-            .distinct()
-            .map(hsaIdVardgivare -> {
-                Collection<Enhet> allEnhetsForVg = warehouse.getEnhets(hsaIdVardgivare);
-                if (realUser.isProcessledareForVg(hsaIdVardgivare) && allEnhetsForVg != null && !allEnhetsForVg.isEmpty()) {
-                    return allEnhetsForVg.stream().map(this::enhetToVerksamhet);
-                } else {
-                    final List<Vardenhet> vardenhetsForVg = realUser.getVardenhetsForVg(hsaIdVardgivare);
-                    var enhetVerksamhetStream = vardenhetsForVg.stream()
+  private String getAuthenticationMethod() {
+    final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null) {
+      throw new IllegalStateException("Authentication object is null");
+    }
+    final var principal = (User) authentication.getPrincipal();
+    return principal.getLoginMethod().value();
+  }
+
+  private List<Verksamhet> getVerksamhetsList(User realUser) {
+    return Stream.concat(
+            realUser.getVardenhetList().stream().map(Vardenhet::getVardgivarId),
+            realUser.getVgsWithProcessledarStatus().stream()
+                .map(vg -> new HsaIdVardgivare(vg.getId())))
+        .distinct()
+        .map(
+            hsaIdVardgivare -> {
+              Collection<Enhet> allEnhetsForVg = warehouse.getEnhets(hsaIdVardgivare);
+              if (realUser.isProcessledareForVg(hsaIdVardgivare)
+                  && allEnhetsForVg != null
+                  && !allEnhetsForVg.isEmpty()) {
+                return allEnhetsForVg.stream().map(this::enhetToVerksamhet);
+              } else {
+                final List<Vardenhet> vardenhetsForVg =
+                    realUser.getVardenhetsForVg(hsaIdVardgivare);
+                var enhetVerksamhetStream =
+                    vardenhetsForVg.stream()
                         .flatMap(ve -> warehouse.getEnhetsOfVardenhet(ve.getId()).stream())
-                        .filter(e -> !e.isVardenhet()).map(this::enhetToVerksamhet);
-                    var vardenhetVerksamhetStream = vardenhetsForVg.stream().filter(this::vardenhetIsVardenhet)
+                        .filter(e -> !e.isVardenhet())
+                        .map(this::enhetToVerksamhet);
+                var vardenhetVerksamhetStream =
+                    vardenhetsForVg.stream()
+                        .filter(this::vardenhetIsVardenhet)
                         .map(vardenhet -> vardenhetToVerksamhet(vardenhet, allEnhetsForVg));
-                    return Stream.concat(vardenhetVerksamhetStream, enhetVerksamhetStream);
-                }
+                return Stream.concat(vardenhetVerksamhetStream, enhetVerksamhetStream);
+              }
             })
-            .flatMap(i -> i)
-            .collect(Collectors.toList());
-    }
+        .flatMap(i -> i)
+        .collect(Collectors.toList());
+  }
 
-    private boolean vardenhetIsVardenhet(Vardenhet vardenhet) {
-        Enhet enhet = warehouse.getEnhetWithHsaId(vardenhet.getId());
-        return enhet == null || enhet.isVardenhet();
-    }
+  private boolean vardenhetIsVardenhet(Vardenhet vardenhet) {
+    Enhet enhet = warehouse.getEnhetWithHsaId(vardenhet.getId());
+    return enhet == null || enhet.isVardenhet();
+  }
 
-    public Verksamhet enhetToVerksamhet(Enhet enhet) {
-        return new Verksamhet(enhet.getEnhetId(), enhet.getNamn(), enhet.getVardgivareId(), null, enhet.getLansId(),
-            lan.getNamn(enhet.getLansId()), enhet.getKommunId(), kommun.getNamn(enhet.getLansId() + enhet.getKommunId()),
-            getVerksamhetsTyper(enhet.getVerksamhetsTyper()), enhet.getVardenhetId());
-    }
+  public Verksamhet enhetToVerksamhet(Enhet enhet) {
+    return new Verksamhet(
+        enhet.getEnhetId(),
+        enhet.getNamn(),
+        enhet.getVardgivareId(),
+        null,
+        enhet.getLansId(),
+        lan.getNamn(enhet.getLansId()),
+        enhet.getKommunId(),
+        kommun.getNamn(enhet.getLansId() + enhet.getKommunId()),
+        getVerksamhetsTyper(enhet.getVerksamhetsTyper()),
+        enhet.getVardenhetId());
+  }
 
-    private Verksamhet vardenhetToVerksamhet(final Vardenhet vardEnhet, Collection<Enhet> enhetsList) {
-        Optional<Enhet> enhetOpt = enhetsList.stream()
-            .filter(enhet -> enhet.getEnhetId().equals(vardEnhet.getId()))
-            .findAny();
+  private Verksamhet vardenhetToVerksamhet(
+      final Vardenhet vardEnhet, Collection<Enhet> enhetsList) {
+    Optional<Enhet> enhetOpt =
+        enhetsList.stream().filter(enhet -> enhet.getEnhetId().equals(vardEnhet.getId())).findAny();
 
-        String vardenhetId = enhetOpt.map(Enhet::getVardenhetId).orElse(null);
-        String lansId = enhetOpt.map(Enhet::getLansId).orElse(Lan.OVRIGT_ID);
-        String lansNamn = lan.getNamn(lansId);
-        String kommunId = enhetOpt.map(enhet -> lansId + enhet.getKommunId()).orElse(Kommun.OVRIGT_ID);
-        String kommunNamn = kommun.getNamn(kommunId);
-        Set<Verksamhet.VerksamhetsTyp> verksamhetsTyper = enhetOpt
+    String vardenhetId = enhetOpt.map(Enhet::getVardenhetId).orElse(null);
+    String lansId = enhetOpt.map(Enhet::getLansId).orElse(Lan.OVRIGT_ID);
+    String lansNamn = lan.getNamn(lansId);
+    String kommunId = enhetOpt.map(enhet -> lansId + enhet.getKommunId()).orElse(Kommun.OVRIGT_ID);
+    String kommunNamn = kommun.getNamn(kommunId);
+    Set<Verksamhet.VerksamhetsTyp> verksamhetsTyper =
+        enhetOpt
             .map(enhet -> getVerksamhetsTyper(enhet.getVerksamhetsTyper()))
-            .orElseGet(() -> Collections.singleton(new Verksamhet.VerksamhetsTyp(VerksamhetsTyp.OVRIGT_ID, VerksamhetsTyp.OVRIGT)));
+            .orElseGet(
+                () ->
+                    Collections.singleton(
+                        new Verksamhet.VerksamhetsTyp(
+                            VerksamhetsTyp.OVRIGT_ID, VerksamhetsTyp.OVRIGT)));
 
-        return new Verksamhet(vardEnhet.getId(), vardEnhet.getNamn(), vardEnhet.getVardgivarId(), vardEnhet.getVardgivarNamn(), lansId,
-            lansNamn, kommunId,
-            kommunNamn, verksamhetsTyper, vardenhetId);
-    }
+    return new Verksamhet(
+        vardEnhet.getId(),
+        vardEnhet.getNamn(),
+        vardEnhet.getVardgivarId(),
+        vardEnhet.getVardgivarNamn(),
+        lansId,
+        lansNamn,
+        kommunId,
+        kommunNamn,
+        verksamhetsTyper,
+        vardenhetId);
+  }
 
-    private Set<Verksamhet.VerksamhetsTyp> getVerksamhetsTyper(String verksamhetsTyper) {
-        return ID_SPLITTER.splitToList(verksamhetsTyper).stream().map(verksamhetsId -> {
-            String groupId = verksamheter.getGruppId(verksamhetsId);
-            String verksamhetsName = verksamheter.getNamn(groupId);
-            return new Verksamhet.VerksamhetsTyp(groupId, verksamhetsName);
-        }).collect(Collectors.toSet());
-    }
+  private Set<Verksamhet.VerksamhetsTyp> getVerksamhetsTyper(String verksamhetsTyper) {
+    return ID_SPLITTER.splitToList(verksamhetsTyper).stream()
+        .map(
+            verksamhetsId -> {
+              String groupId = verksamheter.getGruppId(verksamhetsId);
+              String verksamhetsName = verksamheter.getNamn(groupId);
+              return new Verksamhet.VerksamhetsTyp(groupId, verksamhetsName);
+            })
+        .collect(Collectors.toSet());
+  }
 
-    public HsaIdVardgivare getSelectedVgIdForLoggedInUser(HttpServletRequest request) {
-        return new HsaIdVardgivare(request.getParameter("vgid"));
-    }
+  public HsaIdVardgivare getSelectedVgIdForLoggedInUser(HttpServletRequest request) {
+    return new HsaIdVardgivare(request.getParameter("vgid"));
+  }
 
-    public AppSettings getSettings() {
-        AppSettings settings = new AppSettings();
-        settings.setLoginVisible(loginVisibility.isLoginVisible());
-        settings.setLoginUrl(loginUrl);
-        settings.setLoggedIn(isLoggedIn());
-        settings.setProjectVersion(versionUtil.getProjectVersion());
-        settings.setDriftbanners(getBanners());
-        settings.setSimultaneousCallsAllowed(simultaneousCallsAllowed);
-        return settings;
-    }
+  public AppSettings getSettings() {
+    AppSettings settings = new AppSettings();
+    settings.setLoginVisible(loginVisibility.isLoginVisible());
+    settings.setLoginUrl(loginUrl);
+    settings.setLoggedIn(isLoggedIn());
+    settings.setProjectVersion(versionUtil.getProjectVersion());
+    settings.setDriftbanners(getBanners());
+    settings.setSimultaneousCallsAllowed(simultaneousCallsAllowed);
+    return settings;
+  }
 
-    private ErrorSeverity mapToSeverity(BannerPriority priority) {
-        switch (priority) {
-            case HOG:
-                return ErrorSeverity.ERROR;
-            case MEDEL:
-                return ErrorSeverity.WARN;
-            case LAG:
-                return ErrorSeverity.INFO;
-        }
-
+  private ErrorSeverity mapToSeverity(BannerPriority priority) {
+    switch (priority) {
+      case HOG:
+        return ErrorSeverity.ERROR;
+      case MEDEL:
+        return ErrorSeverity.WARN;
+      case LAG:
         return ErrorSeverity.INFO;
     }
 
-    private List<Message> getBanners() {
-        List<Banner> banners = iaBannerService.getCurrentBanners();
+    return ErrorSeverity.INFO;
+  }
 
-        return banners.stream()
-            .map(banner ->
-                Message.create(ErrorType.UNSET, mapToSeverity(banner.getPriority()), banner.getMessage()))
-            .collect(Collectors.toList());
-    }
+  private List<Message> getBanners() {
+    List<Banner> banners = iaBannerService.getCurrentBanners();
 
-    public StaticData getStaticData() {
-        final Map<String, String> sjukskrivningLengths = Arrays
-            .stream(SjukfallsLangdGroup.values())
+    return banners.stream()
+        .map(
+            banner ->
+                Message.create(
+                    ErrorType.UNSET, mapToSeverity(banner.getPriority()), banner.getMessage()))
+        .collect(Collectors.toList());
+  }
+
+  public StaticData getStaticData() {
+    final Map<String, String> sjukskrivningLengths =
+        Arrays.stream(SjukfallsLangdGroup.values())
             .collect(toMap(Enum::name, SjukfallsLangdGroup::getGroupName));
-        final Map<String, String> ageGroups = Arrays
-            .stream(AgeGroup.values())
-            .collect(toMap(Enum::name, AgeGroup::getGroupName));
-        final Map<String, String> intygTypes = IntygType.getInIntygtypFilter().stream()
-            .collect(toMap(Enum::name, IntygType::getText));
-        final Map<String, String> intygTypeTooltips = Arrays.stream(IntygType.values())
+    final Map<String, String> ageGroups =
+        Arrays.stream(AgeGroup.values()).collect(toMap(Enum::name, AgeGroup::getGroupName));
+    final Map<String, String> intygTypes =
+        IntygType.getInIntygtypFilter().stream().collect(toMap(Enum::name, IntygType::getText));
+    final Map<String, String> intygTypeTooltips =
+        Arrays.stream(IntygType.values())
             .collect(toMap(IntygType::getText, IntygType::getShortText));
 
-        final List<Icd> icdStructure = icd10.getIcdStructure();
-        return new StaticData(sjukskrivningLengths, ageGroups, intygTypes, intygTypeTooltips, icdStructure);
-    }
+    final List<Icd> icdStructure = icd10.getIcdStructure();
+    return new StaticData(
+        sjukskrivningLengths, ageGroups, intygTypes, intygTypeTooltips, icdStructure);
+  }
 
-    public UserAccessInfo getUserAccessInfoForVg(HsaIdVardgivare vgId) {
-        final LoginInfo loginInfo = getLoginInfo();
-        final HsaIdUser hsaId = loginInfo.getHsaId();
-        final LoginInfoVg vgInfo = loginInfo.getLoginInfoForVg(vgId).orElse(null);
-        final List<Verksamhet> businessesForVg = loginInfo.getBusinessesForVg(vgId);
-        return new UserAccessInfo(hsaId, vgInfo, businessesForVg);
-    }
+  public UserAccessInfo getUserAccessInfoForVg(HsaIdVardgivare vgId) {
+    final LoginInfo loginInfo = getLoginInfo();
+    final HsaIdUser hsaId = loginInfo.getHsaId();
+    final LoginInfoVg vgInfo = loginInfo.getLoginInfoForVg(vgId).orElse(null);
+    final List<Verksamhet> businessesForVg = loginInfo.getBusinessesForVg(vgId);
+    return new UserAccessInfo(hsaId, vgInfo, businessesForVg);
+  }
 
-    public UserSettingsDTO saveUserSettings(UserSettingsDTO userSettingsDTO) {
-        User realUser = getCurrentUser();
-        String hsaId = realUser.getHsaId().getId();
+  public UserSettingsDTO saveUserSettings(UserSettingsDTO userSettingsDTO) {
+    User realUser = getCurrentUser();
+    String hsaId = realUser.getHsaId().getId();
 
-        UserSettings userSettings = new UserSettings(hsaId, userSettingsDTO.isShowMessagesPerLakare());
+    UserSettings userSettings = new UserSettings(hsaId, userSettingsDTO.isShowMessagesPerLakare());
 
-        userSettingsManager.save(userSettings);
+    userSettingsManager.save(userSettings);
 
-        return userSettingsDTO;
-    }
-
+    return userSettingsDTO;
+  }
 }

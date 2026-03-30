@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -27,34 +27,33 @@ import jakarta.persistence.Table;
 @Table(name = "user_settings")
 public class UserSettings {
 
-    @Id
-    @Column(name = "hsaid")
-    private String hsaId;
+  @Id
+  @Column(name = "hsaid")
+  private String hsaId;
 
-    @Column(name = "show_messages_per_lakare")
-    private boolean showMessagesPerLakare;
+  @Column(name = "show_messages_per_lakare")
+  private boolean showMessagesPerLakare;
 
-    public UserSettings() {
-    }
+  public UserSettings() {}
 
-    public UserSettings(String hsaId, boolean showMessagesPerLakare) {
-        this.hsaId = hsaId;
-        this.showMessagesPerLakare = showMessagesPerLakare;
-    }
+  public UserSettings(String hsaId, boolean showMessagesPerLakare) {
+    this.hsaId = hsaId;
+    this.showMessagesPerLakare = showMessagesPerLakare;
+  }
 
-    public String getHsaId() {
-        return hsaId;
-    }
+  public String getHsaId() {
+    return hsaId;
+  }
 
-    public void setHsaId(String hsaId) {
-        this.hsaId = hsaId;
-    }
+  public void setHsaId(String hsaId) {
+    this.hsaId = hsaId;
+  }
 
-    public boolean isShowMessagesPerLakare() {
-        return showMessagesPerLakare;
-    }
+  public boolean isShowMessagesPerLakare() {
+    return showMessagesPerLakare;
+  }
 
-    public void setShowMessagesPerLakare(boolean showMessagesPerLakare) {
-        this.showMessagesPerLakare = showMessagesPerLakare;
-    }
+  public void setShowMessagesPerLakare(boolean showMessagesPerLakare) {
+    this.showMessagesPerLakare = showMessagesPerLakare;
+  }
 }

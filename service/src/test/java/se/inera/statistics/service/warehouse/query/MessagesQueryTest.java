@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -50,143 +50,161 @@ import se.inera.statistics.service.warehouse.message.MsgAmne;
 
 public class MessagesQueryTest {
 
-    @InjectMocks
-    private MessagesQuery messagesQuery;
+  @InjectMocks private MessagesQuery messagesQuery;
 
-    @Mock
-    private MessageWidelineLoader messageWidelineLoader;
+  @Mock private MessageWidelineLoader messageWidelineLoader;
 
-    @Mock
-    private LakareManager lakareManager;
+  @Mock private LakareManager lakareManager;
 
-    @Before
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-    }
+  @Before
+  public void setUp() throws Exception {
+    MockitoAnnotations.initMocks(this);
+  }
 
-    @Test
-    public void testGetMessagesTvarsnittPerAmnePerEnhetGroupsAreSortedAlphanumercallyINTYG5446() {
-        //Given
-        Locale la = new Locale("sv", "SE");
-        Collator coll = Collator.getInstance(la);
-        coll.setStrength(Collator.PRIMARY);
+  @Test
+  public void testGetMessagesTvarsnittPerAmnePerEnhetGroupsAreSortedAlphanumercallyINTYG5446() {
+    // Given
+    Locale la = new Locale("sv", "SE");
+    Collator coll = Collator.getInstance(la);
+    coll.setStrength(Collator.PRIMARY);
 
-        //When
-        final KonDataResponse response = messagesQuery.getMessagesTvarsnittPerAmnePerEnhet(null, new HashMap<>(), false);
-        final List<String> groups = response.getGroups().stream().map(a -> MsgAmne.parse(a).getText()).collect(Collectors.toList());
-        final List<String> sortedGroups = new ArrayList<>(groups);
-        sortedGroups.sort(coll);
+    // When
+    final KonDataResponse response =
+        messagesQuery.getMessagesTvarsnittPerAmnePerEnhet(null, new HashMap<>(), false);
+    final List<String> groups =
+        response.getGroups().stream()
+            .map(a -> MsgAmne.parse(a).getText())
+            .collect(Collectors.toList());
+    final List<String> sortedGroups = new ArrayList<>(groups);
+    sortedGroups.sort(coll);
 
-        //Then
-        assertEquals(MsgAmne.values().length, groups.size());
-        assertArrayEquals(sortedGroups.toArray(new String[0]), groups.toArray(new String[0]));
-    }
+    // Then
+    assertEquals(MsgAmne.values().length, groups.size());
+    assertArrayEquals(sortedGroups.toArray(new String[0]), groups.toArray(new String[0]));
+  }
 
-    @Test
-    public void testNamesAreTranslatedUsingTheIdToNameMap() {
-        //Given
-        final MessagesFilter filter = null;
-        final String enhetsidtest = "enhetsidtest";
-        final CountDTOAmne countDTOAmne = createCountDTOAmne(enhetsidtest);
-        Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter, true)).thenReturn(Arrays.asList(countDTOAmne));
-        final HashMap<HsaIdEnhet, String> idToNameMap = new HashMap<>();
-        final String testenhetsnamn = "testenhetsnamn";
-        idToNameMap.put(new HsaIdEnhet(enhetsidtest), testenhetsnamn);
+  @Test
+  public void testNamesAreTranslatedUsingTheIdToNameMap() {
+    // Given
+    final MessagesFilter filter = null;
+    final String enhetsidtest = "enhetsidtest";
+    final CountDTOAmne countDTOAmne = createCountDTOAmne(enhetsidtest);
+    Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter, true))
+        .thenReturn(Arrays.asList(countDTOAmne));
+    final HashMap<HsaIdEnhet, String> idToNameMap = new HashMap<>();
+    final String testenhetsnamn = "testenhetsnamn";
+    idToNameMap.put(new HsaIdEnhet(enhetsidtest), testenhetsnamn);
 
-        //When
-        final KonDataResponse resp = messagesQuery.getMessagesTvarsnittPerAmnePerEnhet(filter, idToNameMap, true);
+    // When
+    final KonDataResponse resp =
+        messagesQuery.getMessagesTvarsnittPerAmnePerEnhet(filter, idToNameMap, true);
 
-        //Then
-        assertEquals(1, resp.getRows().size());
-        resp.getRows().forEach(r -> assertEquals(testenhetsnamn, r.getName()));
-    }
+    // Then
+    assertEquals(1, resp.getRows().size());
+    resp.getRows().forEach(r -> assertEquals(testenhetsnamn, r.getName()));
+  }
 
-    private CountDTOAmne createCountDTOAmne(String enhetId) {
-        final CountDTOAmne countDTOAmne = new CountDTOAmne();
-        countDTOAmne.setEnhet(enhetId);
-        countDTOAmne.setAmne(MsgAmne.KOMPLT);
-        countDTOAmne.setKon(Kon.FEMALE);
-        return countDTOAmne;
-    }
+  private CountDTOAmne createCountDTOAmne(String enhetId) {
+    final CountDTOAmne countDTOAmne = new CountDTOAmne();
+    countDTOAmne.setEnhet(enhetId);
+    countDTOAmne.setAmne(MsgAmne.KOMPLT);
+    countDTOAmne.setKon(Kon.FEMALE);
+    return countDTOAmne;
+  }
 
-    @Test
-    public void testGetMessagesPerAmnePerLakareTomtNamn() {
-        //Given
-        final MessagesFilter filter = new MessagesFilter(null, LocalDate.now(), LocalDate.now(), null, null, null, null);
-        final CountDTOAmne countDTOAmne = new CountDTOAmne();
-        final HsaIdLakare lakare = new HsaIdLakare("lakareid");
-        countDTOAmne.setLakareId(lakare);
-        countDTOAmne.setDate(LocalDate.now());
-        Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter, true)).thenReturn(Collections.singletonList(countDTOAmne));
-        Mockito.doReturn(Collections.singletonList(new Lakare(HsaIdVardgivare.empty(), lakare, null, null)))
-            .when(lakareManager).getAllSpecifiedLakares(Mockito.anyCollection());
+  @Test
+  public void testGetMessagesPerAmnePerLakareTomtNamn() {
+    // Given
+    final MessagesFilter filter =
+        new MessagesFilter(null, LocalDate.now(), LocalDate.now(), null, null, null, null);
+    final CountDTOAmne countDTOAmne = new CountDTOAmne();
+    final HsaIdLakare lakare = new HsaIdLakare("lakareid");
+    countDTOAmne.setLakareId(lakare);
+    countDTOAmne.setDate(LocalDate.now());
+    Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter, true))
+        .thenReturn(Collections.singletonList(countDTOAmne));
+    Mockito.doReturn(
+            Collections.singletonList(new Lakare(HsaIdVardgivare.empty(), lakare, null, null)))
+        .when(lakareManager)
+        .getAllSpecifiedLakares(Mockito.anyCollection());
 
-        //When
-        final KonDataResponse resp = messagesQuery.getMessagesPerAmnePerLakare(filter);
+    // When
+    final KonDataResponse resp = messagesQuery.getMessagesPerAmnePerLakare(filter);
 
-        //Then
-        assertTrue(resp.getGroups().get(0).startsWith(lakare.getId()));
-    }
+    // Then
+    assertTrue(resp.getGroups().get(0).startsWith(lakare.getId()));
+  }
 
-    @Test
-    public void testGetMessagesPerAmnePerLakareSaknadLakare() {
-        //Given
-        final MessagesFilter filter = new MessagesFilter(null, LocalDate.now(), LocalDate.now(), null, null, null, null);
-        final CountDTOAmne countDTOAmne = new CountDTOAmne();
-        final HsaIdLakare lakare = new HsaIdLakare("lakareid");
-        countDTOAmne.setLakareId(lakare);
-        countDTOAmne.setDate(LocalDate.now());
-        Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter, true)).thenReturn(Collections.singletonList(countDTOAmne));
-        Mockito.doReturn(Collections.emptyList()).when(lakareManager).getAllSpecifiedLakares(Mockito.anyCollection());
+  @Test
+  public void testGetMessagesPerAmnePerLakareSaknadLakare() {
+    // Given
+    final MessagesFilter filter =
+        new MessagesFilter(null, LocalDate.now(), LocalDate.now(), null, null, null, null);
+    final CountDTOAmne countDTOAmne = new CountDTOAmne();
+    final HsaIdLakare lakare = new HsaIdLakare("lakareid");
+    countDTOAmne.setLakareId(lakare);
+    countDTOAmne.setDate(LocalDate.now());
+    Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter, true))
+        .thenReturn(Collections.singletonList(countDTOAmne));
+    Mockito.doReturn(Collections.emptyList())
+        .when(lakareManager)
+        .getAllSpecifiedLakares(Mockito.anyCollection());
 
-        //When
-        final KonDataResponse resp = messagesQuery.getMessagesPerAmnePerLakare(filter);
+    // When
+    final KonDataResponse resp = messagesQuery.getMessagesPerAmnePerLakare(filter);
 
-        //Then
-        assertTrue(resp.getGroups().get(0).startsWith(lakare.getId()));
-    }
+    // Then
+    assertTrue(resp.getGroups().get(0).startsWith(lakare.getId()));
+  }
 
-    @Test
-    public void testGetMessagesTvarsnittPerAmnePerLakareTomtNamn() {
-        //Given
-        final MessagesFilter filter = new MessagesFilter(null, LocalDate.now(), LocalDate.now(), null, null, null, null);
-        final CountDTOAmne countDTOAmne = new CountDTOAmne();
-        final HsaIdLakare lakare = new HsaIdLakare("lakareid");
-        countDTOAmne.setLakareId(lakare);
-        countDTOAmne.setKon(Kon.FEMALE);
-        countDTOAmne.setAmne(MsgAmne.KOMPLT);
-        countDTOAmne.setDate(LocalDate.now());
-        Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter, true)).thenReturn(Collections.singletonList(countDTOAmne));
-        Mockito.doReturn(Collections.singletonList(new Lakare(HsaIdVardgivare.empty(), lakare, null, null)))
-            .when(lakareManager).getAllSpecifiedLakares(Mockito.anyCollection());
+  @Test
+  public void testGetMessagesTvarsnittPerAmnePerLakareTomtNamn() {
+    // Given
+    final MessagesFilter filter =
+        new MessagesFilter(null, LocalDate.now(), LocalDate.now(), null, null, null, null);
+    final CountDTOAmne countDTOAmne = new CountDTOAmne();
+    final HsaIdLakare lakare = new HsaIdLakare("lakareid");
+    countDTOAmne.setLakareId(lakare);
+    countDTOAmne.setKon(Kon.FEMALE);
+    countDTOAmne.setAmne(MsgAmne.KOMPLT);
+    countDTOAmne.setDate(LocalDate.now());
+    Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter, true))
+        .thenReturn(Collections.singletonList(countDTOAmne));
+    Mockito.doReturn(
+            Collections.singletonList(new Lakare(HsaIdVardgivare.empty(), lakare, null, null)))
+        .when(lakareManager)
+        .getAllSpecifiedLakares(Mockito.anyCollection());
 
-        //When
-        final KonDataResponse resp = messagesQuery.getMessagesTvarsnittPerAmnePerLakare(filter);
+    // When
+    final KonDataResponse resp = messagesQuery.getMessagesTvarsnittPerAmnePerLakare(filter);
 
-        //Then
-        assertEquals(1, resp.getRows().size());
-        assertEquals(lakare.getId(), resp.getRows().get(0).getName());
-    }
+    // Then
+    assertEquals(1, resp.getRows().size());
+    assertEquals(lakare.getId(), resp.getRows().get(0).getName());
+  }
 
-    @Test
-    public void testGetMessagesTvarsnittPerAmnePerLakareSaknadLakare() {
-        //Given
-        final MessagesFilter filter = new MessagesFilter(null, LocalDate.now(), LocalDate.now(), null, null, null, null);
-        final CountDTOAmne countDTOAmne = new CountDTOAmne();
-        final HsaIdLakare lakare = new HsaIdLakare("lakareid");
-        countDTOAmne.setLakareId(lakare);
-        countDTOAmne.setKon(Kon.FEMALE);
-        countDTOAmne.setAmne(MsgAmne.KOMPLT);
-        countDTOAmne.setDate(LocalDate.now());
-        Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter, true)).thenReturn(Collections.singletonList(countDTOAmne));
-        Mockito.doReturn(Collections.emptyList()).when(lakareManager).getAllSpecifiedLakares(Mockito.anyCollection());
+  @Test
+  public void testGetMessagesTvarsnittPerAmnePerLakareSaknadLakare() {
+    // Given
+    final MessagesFilter filter =
+        new MessagesFilter(null, LocalDate.now(), LocalDate.now(), null, null, null, null);
+    final CountDTOAmne countDTOAmne = new CountDTOAmne();
+    final HsaIdLakare lakare = new HsaIdLakare("lakareid");
+    countDTOAmne.setLakareId(lakare);
+    countDTOAmne.setKon(Kon.FEMALE);
+    countDTOAmne.setAmne(MsgAmne.KOMPLT);
+    countDTOAmne.setDate(LocalDate.now());
+    Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter, true))
+        .thenReturn(Collections.singletonList(countDTOAmne));
+    Mockito.doReturn(Collections.emptyList())
+        .when(lakareManager)
+        .getAllSpecifiedLakares(Mockito.anyCollection());
 
-        //When
-        final KonDataResponse resp = messagesQuery.getMessagesTvarsnittPerAmnePerLakare(filter);
+    // When
+    final KonDataResponse resp = messagesQuery.getMessagesTvarsnittPerAmnePerLakare(filter);
 
-        //Then
-        assertEquals(1, resp.getRows().size());
-        assertEquals(lakare.getId(), resp.getRows().get(0).getName());
-    }
-
+    // Then
+    assertEquals(1, resp.getRows().size());
+    assertEquals(lakare.getId(), resp.getRows().get(0).getName());
+  }
 }

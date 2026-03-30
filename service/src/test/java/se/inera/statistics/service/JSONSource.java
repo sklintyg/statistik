@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -27,34 +27,33 @@ import java.util.stream.Collectors;
 
 public class JSONSource {
 
-    private JSONSource() {
-        // Utility class
-    }
+  private JSONSource() {
+    // Utility class
+  }
 
-    public static String readTemplateAsString() {
-        return readResource("/json/maximalt-fk7263-internal.json");
-    }
+  public static String readTemplateAsString() {
+    return readResource("/json/maximalt-fk7263-internal.json");
+  }
 
-    public static String readHSASample() {
-        return readHSASample("hsa_example");
-    }
+  public static String readHSASample() {
+    return readHSASample("hsa_example");
+  }
 
-    public static String readHSASample(String name) {
-        return readResource("/json/" + name + ".json");
-    }
+  public static String readHSASample(String name) {
+    return readResource("/json/" + name + ".json");
+  }
 
-    private static String readResource(String resourcePath) {
-        try (InputStream is = JSONSource.class.getResourceAsStream(resourcePath)) {
-            if (is == null) {
-                throw new RuntimeException("Resource not found: " + resourcePath);
-            }
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
-                return reader.lines().collect(Collectors.joining("\n"));
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to read resource: " + resourcePath, e);
-        }
+  private static String readResource(String resourcePath) {
+    try (InputStream is = JSONSource.class.getResourceAsStream(resourcePath)) {
+      if (is == null) {
+        throw new RuntimeException("Resource not found: " + resourcePath);
+      }
+      try (BufferedReader reader =
+          new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+        return reader.lines().collect(Collectors.joining("\n"));
+      }
+    } catch (IOException e) {
+      throw new RuntimeException("Failed to read resource: " + resourcePath, e);
     }
+  }
 }
-
-

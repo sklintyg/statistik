@@ -52,6 +52,11 @@ subprojects {
             removeUnusedImports()
             forbidWildcardImports()
             formatAnnotations()
+            replaceRegex(
+                    'normalize copyright years',
+                    'Copyright \\(C\\) \\d{4}(-\\d{4})?',
+                    "Copyright (C) ${java.time.Year.now().value}"
+            )
         }
     }
 

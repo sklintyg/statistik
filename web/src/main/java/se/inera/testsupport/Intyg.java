@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,84 +22,91 @@ import se.inera.statistics.service.processlog.EventType;
 
 public class Intyg {
 
-    private EventType type;
-    private String data;
-    private String documentId;
-    private long timestamp;
-    private String county;
-    private String kommun;
-    private String huvudenhetId;
-    private String enhetName;
-    private String vardgivareId;
-    private String enhetId;
-    private String lakareId;
+  private EventType type;
+  private String data;
+  private String documentId;
+  private long timestamp;
+  private String county;
+  private String kommun;
+  private String huvudenhetId;
+  private String enhetName;
+  private String vardgivareId;
+  private String enhetId;
+  private String lakareId;
 
-    // CHECKSTYLE:OFF ParameterNumberCheck
-    @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
-    public Intyg(EventType type, String data, String documentId, long timestamp, String county, String kommun, String huvudenhetId,
-        String enhetName, String vgId, String enhetId, String lakareId) {
-        this.type = type;
-        this.data = data;
-        this.documentId = documentId;
-        this.timestamp = timestamp;
-        this.county = county;
-        this.kommun = kommun;
-        this.huvudenhetId = huvudenhetId;
-        this.enhetName = enhetName;
-        this.vardgivareId = vgId;
-        this.enhetId = enhetId;
-        this.lakareId = lakareId;
-    }
-    // CHECKSTYLE:ON
+  // CHECKSTYLE:OFF ParameterNumberCheck
+  @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
+  public Intyg(
+      EventType type,
+      String data,
+      String documentId,
+      long timestamp,
+      String county,
+      String kommun,
+      String huvudenhetId,
+      String enhetName,
+      String vgId,
+      String enhetId,
+      String lakareId) {
+    this.type = type;
+    this.data = data;
+    this.documentId = documentId;
+    this.timestamp = timestamp;
+    this.county = county;
+    this.kommun = kommun;
+    this.huvudenhetId = huvudenhetId;
+    this.enhetName = enhetName;
+    this.vardgivareId = vgId;
+    this.enhetId = enhetId;
+    this.lakareId = lakareId;
+  }
 
-    /**
-     * For json mapper.
-     */
-    Intyg() {
-    }
+  // CHECKSTYLE:ON
 
-    public EventType getType() {
-        return type;
-    }
+  /** For json mapper. */
+  Intyg() {}
 
-    public String getData() {
-        return data;
-    }
+  public EventType getType() {
+    return type;
+  }
 
-    public String getDocumentId() {
-        return documentId;
-    }
+  public String getData() {
+    return data;
+  }
 
-    public long getTimestamp() {
-        return timestamp;
-    }
+  public String getDocumentId() {
+    return documentId;
+  }
 
-    public String getCounty() {
-        return county;
-    }
+  public long getTimestamp() {
+    return timestamp;
+  }
 
-    public String getKommun() {
-        return kommun;
-    }
+  public String getCounty() {
+    return county;
+  }
 
-    public String getHuvudenhetId() {
-        return huvudenhetId;
-    }
+  public String getKommun() {
+    return kommun;
+  }
 
-    public String getEnhetName() {
-        return enhetName;
-    }
+  public String getHuvudenhetId() {
+    return huvudenhetId;
+  }
 
-    public String getVardgivareId() {
-        return vardgivareId;
-    }
+  public String getEnhetName() {
+    return enhetName;
+  }
 
-    public String getEnhetId() {
-        return enhetId;
-    }
+  public String getVardgivareId() {
+    return vardgivareId;
+  }
 
-    public String getLakareId() {
-        return lakareId;
-    }
+  public String getEnhetId() {
+    return enhetId;
+  }
 
+  public String getLakareId() {
+    return lakareId;
+  }
 }

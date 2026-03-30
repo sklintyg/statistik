@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -18,25 +18,22 @@
  */
 package se.inera.statistics.web.handler;
 
-import java.util.HashMap;
-import java.util.Map;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.security.access.AccessDeniedException;
 
 @Provider
-public final class AccessDeniedExceptionHandler implements
-    ExceptionMapper<AccessDeniedException> {
+public final class AccessDeniedExceptionHandler implements ExceptionMapper<AccessDeniedException> {
 
-    @Override
-    public Response toResponse(final AccessDeniedException exception) {
+  @Override
+  public Response toResponse(final AccessDeniedException exception) {
 
-        Map<String, Object> mappedResult = new HashMap<>();
-        mappedResult.put("error", exception.getMessage());
+    Map<String, Object> mappedResult = new HashMap<>();
+    mappedResult.put("error", exception.getMessage());
 
-        return Response.status(Response.Status.FORBIDDEN)
-            .entity(mappedResult).build();
-    }
-
+    return Response.status(Response.Status.FORBIDDEN).entity(mappedResult).build();
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,18 +23,18 @@ import org.springframework.context.ApplicationContextAware;
 
 public class ApplicationContextProvider implements ApplicationContextAware {
 
-    private static ApplicationContext context = null;
+  private static ApplicationContext context = null;
 
-    public static ApplicationContext getApplicationContext() {
-        return context;
-    }
+  public static ApplicationContext getApplicationContext() {
+    return context;
+  }
 
-    @Override
-    public void setApplicationContext(ApplicationContext ctx) {
-        setContext(ctx);
-    }
+  @Override
+  public void setApplicationContext(ApplicationContext ctx) {
+    setContext(ctx);
+  }
 
-    private static void setContext(ApplicationContext ctx) {
-        context = ctx;
-    }
+  private static void setContext(ApplicationContext ctx) {
+    context = ctx;
+  }
 }

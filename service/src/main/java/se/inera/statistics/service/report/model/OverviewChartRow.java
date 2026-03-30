@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,55 +20,55 @@ package se.inera.statistics.service.report.model;
 
 public class OverviewChartRow {
 
-    private static final int HASH_CODE = 31;
-    private final String name;
-    private final int quantity;
+  private static final int HASH_CODE = 31;
+  private final String name;
+  private final int quantity;
 
-    public OverviewChartRow(String name, int quantity) {
-        this.name = name;
-        this.quantity = quantity;
+  public OverviewChartRow(String name, int quantity) {
+    this.name = name;
+    this.quantity = quantity;
+  }
+
+  public OverviewChartRow(String name, long quantity) {
+    this(name, (int) quantity);
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public int getQuantity() {
+    return quantity;
+  }
+
+  @Override
+  public String toString() {
+    return "{\"OverviewChartRow\":{\"name\":\"" + name + '"' + ", \"quantity\":" + quantity + "}}";
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
 
-    public OverviewChartRow(String name, long quantity) {
-        this(name, (int) quantity);
+    if (!(o instanceof OverviewChartRow)) {
+      return false;
     }
 
-    public String getName() {
-        return name;
+    OverviewChartRow that = (OverviewChartRow) o;
+
+    if (quantity != that.quantity) {
+      return false;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
+    return name != null ? name.equals(that.name) : that.name == null;
+  }
 
-    @Override
-    public String toString() {
-        return "{\"OverviewChartRow\":{\"name\":\"" + name + '"' + ", \"quantity\":" + quantity + "}}";
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (!(o instanceof OverviewChartRow)) {
-            return false;
-        }
-
-        OverviewChartRow that = (OverviewChartRow) o;
-
-        if (quantity != that.quantity) {
-            return false;
-        }
-
-        return name != null ? name.equals(that.name) : that.name == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = HASH_CODE * result + quantity;
-        return result;
-    }
+  @Override
+  public int hashCode() {
+    int result = name != null ? name.hashCode() : 0;
+    result = HASH_CODE * result + quantity;
+    return result;
+  }
 }

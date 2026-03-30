@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -32,253 +32,273 @@ import se.inera.statistics.service.processlog.EventType;
 @Table(name = WideLine.TABLE)
 public class WideLine {
 
-    public static final String TABLE = "wideline";
+  public static final String TABLE = "wideline";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
-    private String correlationId;
-    private String lkf;
-    private String enhet;
-    private long lakarintyg;
-    private EventType intygTyp;
-    private String patientid;
-    private int startdatum;
-    private int slutdatum;
-    private int kon;
-    private int alder;
-    private String diagnoskapitel;
-    private String diagnosavsnitt;
-    private String diagnoskategori;
-    private String diagnoskod;
-    private int sjukskrivningsgrad;
-    private int lakarkon;
-    private int lakaralder;
-    private String lakarbefattning;
-    private String vardgivareId;
-    private String lakareId;
-    private boolean active;
-    private String vardenhet;
+  private String correlationId;
+  private String lkf;
+  private String enhet;
+  private long lakarintyg;
+  private EventType intygTyp;
+  private String patientid;
+  private int startdatum;
+  private int slutdatum;
+  private int kon;
+  private int alder;
+  private String diagnoskapitel;
+  private String diagnosavsnitt;
+  private String diagnoskategori;
+  private String diagnoskod;
+  private int sjukskrivningsgrad;
+  private int lakarkon;
+  private int lakaralder;
+  private String lakarbefattning;
+  private String vardgivareId;
+  private String lakareId;
+  private boolean active;
+  private String vardenhet;
 
-    public WideLine() {
-        // Used by WidelineConverter
-    }
+  public WideLine() {
+    // Used by WidelineConverter
+  }
 
-    // CHECKSTYLE:OFF ParameterNumber
-    @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
-    public WideLine(long id, String correlationId, String lkf, HsaIdEnhet enhet, long lakarintyg, EventType intygTyp, String patientid,
-        int startdatum, int slutdatum, int kon, int alder, String diagnoskapitel, String diagnosavsnitt, String diagnoskategori,
-        String diagnoskod, int sjukskrivningsgrad, int lakarkon, int lakaralder, String lakarbefattning, HsaIdVardgivare vardgivareId,
-        HsaIdLakare lakareId, boolean active, HsaIdEnhet vardenhet) {
-        this.id = id;
-        this.correlationId = correlationId;
-        this.lkf = lkf;
-        setEnhet(enhet);
-        this.lakarintyg = lakarintyg;
-        this.intygTyp = intygTyp;
-        this.patientid = patientid;
-        this.startdatum = startdatum;
-        this.slutdatum = slutdatum;
-        this.kon = kon;
-        this.alder = alder;
-        this.diagnoskapitel = diagnoskapitel;
-        this.diagnosavsnitt = diagnosavsnitt;
-        this.diagnoskategori = diagnoskategori;
-        this.sjukskrivningsgrad = sjukskrivningsgrad;
-        this.diagnoskod = diagnoskod;
-        this.lakarkon = lakarkon;
-        this.lakaralder = lakaralder;
-        this.lakarbefattning = lakarbefattning;
-        this.active = active;
-        setVardgivareId(vardgivareId);
-        setLakareId(lakareId);
-        setVardenhet(vardenhet);
-    }
-    // CHECKSTYLE:ON ParameterNumber
+  // CHECKSTYLE:OFF ParameterNumber
+  @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
+  public WideLine(
+      long id,
+      String correlationId,
+      String lkf,
+      HsaIdEnhet enhet,
+      long lakarintyg,
+      EventType intygTyp,
+      String patientid,
+      int startdatum,
+      int slutdatum,
+      int kon,
+      int alder,
+      String diagnoskapitel,
+      String diagnosavsnitt,
+      String diagnoskategori,
+      String diagnoskod,
+      int sjukskrivningsgrad,
+      int lakarkon,
+      int lakaralder,
+      String lakarbefattning,
+      HsaIdVardgivare vardgivareId,
+      HsaIdLakare lakareId,
+      boolean active,
+      HsaIdEnhet vardenhet) {
+    this.id = id;
+    this.correlationId = correlationId;
+    this.lkf = lkf;
+    setEnhet(enhet);
+    this.lakarintyg = lakarintyg;
+    this.intygTyp = intygTyp;
+    this.patientid = patientid;
+    this.startdatum = startdatum;
+    this.slutdatum = slutdatum;
+    this.kon = kon;
+    this.alder = alder;
+    this.diagnoskapitel = diagnoskapitel;
+    this.diagnosavsnitt = diagnosavsnitt;
+    this.diagnoskategori = diagnoskategori;
+    this.sjukskrivningsgrad = sjukskrivningsgrad;
+    this.diagnoskod = diagnoskod;
+    this.lakarkon = lakarkon;
+    this.lakaralder = lakaralder;
+    this.lakarbefattning = lakarbefattning;
+    this.active = active;
+    setVardgivareId(vardgivareId);
+    setLakareId(lakareId);
+    setVardenhet(vardenhet);
+  }
 
-    public long getId() {
-        return id;
-    }
+  // CHECKSTYLE:ON ParameterNumber
 
-    public void setId(long id) {
-        this.id = id;
-    }
+  public long getId() {
+    return id;
+  }
 
-    public String getCorrelationId() {
-        return correlationId;
-    }
+  public void setId(long id) {
+    this.id = id;
+  }
 
-    public void setCorrelationId(String correlationId) {
-        this.correlationId = correlationId;
-    }
+  public String getCorrelationId() {
+    return correlationId;
+  }
 
-    public String getLkf() {
-        return lkf;
-    }
+  public void setCorrelationId(String correlationId) {
+    this.correlationId = correlationId;
+  }
 
-    public void setLkf(String lkf) {
-        this.lkf = lkf;
-    }
+  public String getLkf() {
+    return lkf;
+  }
 
-    public HsaIdEnhet getEnhet() {
-        return enhet == null ? HsaIdEnhet.empty() : new HsaIdEnhet(enhet);
-    }
+  public void setLkf(String lkf) {
+    this.lkf = lkf;
+  }
 
-    public void setEnhet(HsaIdEnhet enhet) {
-        this.enhet = enhet == null ? null : enhet.getId();
-    }
+  public HsaIdEnhet getEnhet() {
+    return enhet == null ? HsaIdEnhet.empty() : new HsaIdEnhet(enhet);
+  }
 
-    public HsaIdEnhet getVardenhet() {
-        return vardenhet == null ? HsaIdEnhet.empty() : new HsaIdEnhet(vardenhet);
-    }
+  public void setEnhet(HsaIdEnhet enhet) {
+    this.enhet = enhet == null ? null : enhet.getId();
+  }
 
-    public void setVardenhet(HsaIdEnhet vardenhet) {
-        this.vardenhet = vardenhet == null ? null : vardenhet.getId();
-    }
+  public HsaIdEnhet getVardenhet() {
+    return vardenhet == null ? HsaIdEnhet.empty() : new HsaIdEnhet(vardenhet);
+  }
 
-    public HsaIdVardgivare getVardgivareId() {
-        return vardgivareId == null ? HsaIdVardgivare.empty() : new HsaIdVardgivare(vardgivareId);
-    }
+  public void setVardenhet(HsaIdEnhet vardenhet) {
+    this.vardenhet = vardenhet == null ? null : vardenhet.getId();
+  }
 
-    public void setVardgivareId(HsaIdVardgivare vardgivareId) {
-        this.vardgivareId = vardgivareId == null ? null : vardgivareId.getId();
-    }
+  public HsaIdVardgivare getVardgivareId() {
+    return vardgivareId == null ? HsaIdVardgivare.empty() : new HsaIdVardgivare(vardgivareId);
+  }
 
-    public long getLakarintyg() {
-        return lakarintyg;
-    }
+  public void setVardgivareId(HsaIdVardgivare vardgivareId) {
+    this.vardgivareId = vardgivareId == null ? null : vardgivareId.getId();
+  }
 
-    public void setLakarintyg(long lakarintyg) {
-        this.lakarintyg = lakarintyg;
-    }
+  public long getLakarintyg() {
+    return lakarintyg;
+  }
 
-    public EventType getIntygTyp() {
-        return intygTyp;
-    }
+  public void setLakarintyg(long lakarintyg) {
+    this.lakarintyg = lakarintyg;
+  }
 
-    public void setIntygTyp(EventType intygTyp) {
-        this.intygTyp = intygTyp;
-    }
+  public EventType getIntygTyp() {
+    return intygTyp;
+  }
 
-    public String getPatientid() {
-        return patientid;
-    }
+  public void setIntygTyp(EventType intygTyp) {
+    this.intygTyp = intygTyp;
+  }
 
-    public void setPatientid(String patientid) {
-        this.patientid = patientid;
-    }
+  public String getPatientid() {
+    return patientid;
+  }
 
-    public int getStartdatum() {
-        return startdatum;
-    }
+  public void setPatientid(String patientid) {
+    this.patientid = patientid;
+  }
 
-    public void setStartdatum(int startdatum) {
-        this.startdatum = startdatum;
-    }
+  public int getStartdatum() {
+    return startdatum;
+  }
 
-    public int getSlutdatum() {
-        return slutdatum;
-    }
+  public void setStartdatum(int startdatum) {
+    this.startdatum = startdatum;
+  }
 
-    public void setSlutdatum(int slutdatum) {
-        this.slutdatum = slutdatum;
-    }
+  public int getSlutdatum() {
+    return slutdatum;
+  }
 
-    public int getKon() {
-        return kon;
-    }
+  public void setSlutdatum(int slutdatum) {
+    this.slutdatum = slutdatum;
+  }
 
-    public void setKon(int kon) {
-        this.kon = kon;
-    }
+  public int getKon() {
+    return kon;
+  }
 
-    public int getAlder() {
-        return alder;
-    }
+  public void setKon(int kon) {
+    this.kon = kon;
+  }
 
-    public void setAlder(int alder) {
-        this.alder = alder;
-    }
+  public int getAlder() {
+    return alder;
+  }
 
-    public String getDiagnoskapitel() {
-        return diagnoskapitel;
-    }
+  public void setAlder(int alder) {
+    this.alder = alder;
+  }
 
-    public void setDiagnoskapitel(String diagnoskapitel) {
-        this.diagnoskapitel = diagnoskapitel;
-    }
+  public String getDiagnoskapitel() {
+    return diagnoskapitel;
+  }
 
-    public String getDiagnosavsnitt() {
-        return diagnosavsnitt;
-    }
+  public void setDiagnoskapitel(String diagnoskapitel) {
+    this.diagnoskapitel = diagnoskapitel;
+  }
 
-    public void setDiagnosavsnitt(String diagnosavsnitt) {
-        this.diagnosavsnitt = diagnosavsnitt;
-    }
+  public String getDiagnosavsnitt() {
+    return diagnosavsnitt;
+  }
 
-    public String getDiagnoskategori() {
-        return diagnoskategori;
-    }
+  public void setDiagnosavsnitt(String diagnosavsnitt) {
+    this.diagnosavsnitt = diagnosavsnitt;
+  }
 
-    public void setDiagnoskategori(String diagnoskategori) {
-        this.diagnoskategori = diagnoskategori;
-    }
+  public String getDiagnoskategori() {
+    return diagnoskategori;
+  }
 
-    public String getDiagnoskod() {
-        return diagnoskod;
-    }
+  public void setDiagnoskategori(String diagnoskategori) {
+    this.diagnoskategori = diagnoskategori;
+  }
 
-    public void setDiagnoskod(String diagnoskod) {
-        this.diagnoskod = diagnoskod;
-    }
+  public String getDiagnoskod() {
+    return diagnoskod;
+  }
 
-    public int getSjukskrivningsgrad() {
-        return sjukskrivningsgrad;
-    }
+  public void setDiagnoskod(String diagnoskod) {
+    this.diagnoskod = diagnoskod;
+  }
 
-    public void setSjukskrivningsgrad(int sjukskrivningsgrad) {
-        this.sjukskrivningsgrad = sjukskrivningsgrad;
-    }
+  public int getSjukskrivningsgrad() {
+    return sjukskrivningsgrad;
+  }
 
-    public int getLakarkon() {
-        return lakarkon;
-    }
+  public void setSjukskrivningsgrad(int sjukskrivningsgrad) {
+    this.sjukskrivningsgrad = sjukskrivningsgrad;
+  }
 
-    public void setLakarkon(int lakarkon) {
-        this.lakarkon = lakarkon;
-    }
+  public int getLakarkon() {
+    return lakarkon;
+  }
 
-    public int getLakaralder() {
-        return lakaralder;
-    }
+  public void setLakarkon(int lakarkon) {
+    this.lakarkon = lakarkon;
+  }
 
-    public void setLakaralder(int lakaralder) {
-        this.lakaralder = lakaralder;
-    }
+  public int getLakaralder() {
+    return lakaralder;
+  }
 
-    public String getLakarbefattning() {
-        return lakarbefattning;
-    }
+  public void setLakaralder(int lakaralder) {
+    this.lakaralder = lakaralder;
+  }
 
-    public void setLakarbefattning(String lakarbefattning) {
-        this.lakarbefattning = lakarbefattning;
-    }
+  public String getLakarbefattning() {
+    return lakarbefattning;
+  }
 
-    public HsaIdLakare getLakareId() {
-        return lakareId == null ? HsaIdLakare.empty() : new HsaIdLakare(lakareId);
-    }
+  public void setLakarbefattning(String lakarbefattning) {
+    this.lakarbefattning = lakarbefattning;
+  }
 
-    public void setLakareId(HsaIdLakare lakareId) {
-        this.lakareId = lakareId == null ? null : lakareId.getId();
-    }
+  public HsaIdLakare getLakareId() {
+    return lakareId == null ? HsaIdLakare.empty() : new HsaIdLakare(lakareId);
+  }
 
-    public boolean isActive() {
-        return active;
-    }
+  public void setLakareId(HsaIdLakare lakareId) {
+    this.lakareId = lakareId == null ? null : lakareId.getId();
+  }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+  public boolean isActive() {
+    return active;
+  }
 
+  public void setActive(boolean active) {
+    this.active = active;
+  }
 }

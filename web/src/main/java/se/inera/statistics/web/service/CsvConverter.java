@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -28,46 +28,46 @@ import se.inera.statistics.web.model.TableHeader;
 
 final class CsvConverter {
 
-    private final StringBuilder csv = new StringBuilder();
+  private final StringBuilder csv = new StringBuilder();
 
-    private CsvConverter(TableData tableData) {
-        convert(tableData);
-    }
+  private CsvConverter(TableData tableData) {
+    convert(tableData);
+  }
 
-    private String getCsv() {
-        return csv.toString();
-    }
+  private String getCsv() {
+    return csv.toString();
+  }
 
-    private void convert(TableData tableData) {
-        for (List<TableHeader> list : tableData.getHeaders()) {
-            for (TableHeader tableHeader : list) {
-                for (int i = 0; i < tableHeader.getColspan(); i++) {
-                    addField(tableHeader.getText());
-                }
-            }
-            newRow();
+  private void convert(TableData tableData) {
+    for (List<TableHeader> list : tableData.getHeaders()) {
+      for (TableHeader tableHeader : list) {
+        for (int i = 0; i < tableHeader.getColspan(); i++) {
+          addField(tableHeader.getText());
         }
-        for (NamedData namedData : tableData.getRows()) {
-            addField(namedData.getName());
-            for (Object value : namedData.getData()) {
-                addField(value);
-            }
-            newRow();
-        }
+      }
+      newRow();
     }
-
-    private void newRow() {
-        csv.append("\n");
+    for (NamedData namedData : tableData.getRows()) {
+      addField(namedData.getName());
+      for (Object value : namedData.getData()) {
+        addField(value);
+      }
+      newRow();
     }
+  }
 
-    private void addField(Object value) {
-        csv.append(value.toString()).append(';');
-    }
+  private void newRow() {
+    csv.append("\n");
+  }
 
-    static Response getCsvResponse(final TableData tableData, final String fileName) {
-        ResponseBuilder response = Response.ok((Object) new CsvConverter(tableData).getCsv(), ChartDataService.TEXT_CP1252);
-        response.header("Content-Disposition", "attachment; filename=" + fileName);
-        return response.build();
-    }
+  private void addField(Object value) {
+    csv.append(value.toString()).append(';');
+  }
 
+  static Response getCsvResponse(final TableData tableData, final String fileName) {
+    ResponseBuilder response =
+        Response.ok((Object) new CsvConverter(tableData).getCsv(), ChartDataService.TEXT_CP1252);
+    response.header("Content-Disposition", "attachment; filename=" + fileName);
+    return response.build();
+  }
 }

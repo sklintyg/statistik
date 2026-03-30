@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -26,42 +26,41 @@ import org.apache.cxf.interceptor.LoggingMessage;
 
 public class LogInInterceptor extends LoggingInInterceptor {
 
-    private static final String LOOKUP_CONTENTTYPE = "Content-Type:";
-    private static final String LOOKUP_PDF = "pdf=";
-    private static final List<String> LOOKUP_LIST = Arrays.asList(LOOKUP_CONTENTTYPE, LOOKUP_PDF);
+  private static final String LOOKUP_CONTENTTYPE = "Content-Type:";
+  private static final String LOOKUP_PDF = "pdf=";
+  private static final List<String> LOOKUP_LIST = Arrays.asList(LOOKUP_CONTENTTYPE, LOOKUP_PDF);
 
-    @Override
-    protected String formatLoggingMessage(LoggingMessage loggingMessage) {
-        return removePayload(loggingMessage.toString());
+  @Override
+  protected String formatLoggingMessage(LoggingMessage loggingMessage) {
+    return removePayload(loggingMessage.toString());
+  }
+
+  private String removePayload(String str) {
+    StringBuilder builder = new StringBuilder(str);
+
+    int lookupIndex = lookupContentIndex(str);
+    if (lookupIndex > -1) {
+      builder.setLength(lookupIndex);
+      builder.append("<rest of content skipped>\n");
+      final int repeatTimes = 25;
+      builder.append(Strings.repeat("-", repeatTimes));
     }
+    return builder.toString();
+  }
 
-    private String removePayload(String str) {
-        StringBuilder builder = new StringBuilder(str);
+  private int lookupContentIndex(String payload) {
+    final int payloadIndex = payload.indexOf("Payload:");
 
-        int lookupIndex = lookupContentIndex(str);
-        if (lookupIndex > -1) {
-            builder.setLength(lookupIndex);
-            builder.append("<rest of content skipped>\n");
-            final int repeatTimes = 25;
-            builder.append(Strings.repeat("-", repeatTimes));
+    int index = -1;
+    if (payloadIndex > -1) {
+      for (String s : LOOKUP_LIST) {
+        index = payload.indexOf(s, payloadIndex);
+        if (index > -1) {
+          return index;
         }
-        return builder.toString();
+      }
     }
 
-    private int lookupContentIndex(String payload) {
-        final int payloadIndex = payload.indexOf("Payload:");
-
-        int index = -1;
-        if (payloadIndex > -1) {
-            for (String s : LOOKUP_LIST) {
-                index = payload.indexOf(s, payloadIndex);
-                if (index > -1) {
-                    return index;
-                }
-            }
-        }
-
-        return index;
-    }
-
+    return index;
+  }
 }

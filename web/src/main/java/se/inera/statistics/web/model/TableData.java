@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,35 +25,34 @@ import java.util.List;
 
 public class TableData implements Serializable {
 
-    private final List<NamedData> rows;
-    private final List<List<TableHeader>> headers;
+  private final List<NamedData> rows;
+  private final List<List<TableHeader>> headers;
 
-    public TableData(List<NamedData> rows, List<List<TableHeader>> headers) {
-        this.rows = rows;
-        this.headers = Collections.unmodifiableList(headers);
+  public TableData(List<NamedData> rows, List<List<TableHeader>> headers) {
+    this.rows = rows;
+    this.headers = Collections.unmodifiableList(headers);
+  }
+
+  public static TableData createWithSingleHeadersRow(List<NamedData> rows, List<String> headers) {
+    List<TableHeader> tableHeaders = toTableHeaderList(headers, 1);
+    List<List<TableHeader>> headerRows = new ArrayList<>();
+    headerRows.add(tableHeaders);
+    return new TableData(rows, headerRows);
+  }
+
+  public static List<TableHeader> toTableHeaderList(List<String> headers, int span) {
+    List<TableHeader> tableHeaders = new ArrayList<>();
+    for (String headerName : headers) {
+      tableHeaders.add(new TableHeader(headerName, span));
     }
+    return tableHeaders;
+  }
 
-    public static TableData createWithSingleHeadersRow(List<NamedData> rows, List<String> headers) {
-        List<TableHeader> tableHeaders = toTableHeaderList(headers, 1);
-        List<List<TableHeader>> headerRows = new ArrayList<>();
-        headerRows.add(tableHeaders);
-        return new TableData(rows, headerRows);
-    }
+  public List<NamedData> getRows() {
+    return rows;
+  }
 
-    public static List<TableHeader> toTableHeaderList(List<String> headers, int span) {
-        List<TableHeader> tableHeaders = new ArrayList<>();
-        for (String headerName : headers) {
-            tableHeaders.add(new TableHeader(headerName, span));
-        }
-        return tableHeaders;
-    }
-
-    public List<NamedData> getRows() {
-        return rows;
-    }
-
-    public List<List<TableHeader>> getHeaders() {
-        return headers;
-    }
-
+  public List<List<TableHeader>> getHeaders() {
+    return headers;
+  }
 }

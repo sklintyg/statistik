@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,12 +22,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Profile;
 
-/**
- * Activates infra cache configuration.
- */
+/** Activates infra cache configuration. */
 @Profile("!test")
 @Configuration
 @ImportResource({"classpath:basic-cache-config.xml"})
-public class CacheConfiguration {
-
-}
+public class CacheConfiguration {}

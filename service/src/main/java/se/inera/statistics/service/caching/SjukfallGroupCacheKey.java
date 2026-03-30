@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -26,90 +26,99 @@ import se.inera.statistics.service.warehouse.FilterPredicates;
 
 public class SjukfallGroupCacheKey {
 
-    private final LocalDate from;
-    private final int periods;
-    private final int periodSize;
-    private final Aisle aisle;
-    private final FilterPredicates filter;
-    private final String key;
+  private final LocalDate from;
+  private final int periods;
+  private final int periodSize;
+  private final Aisle aisle;
+  private final FilterPredicates filter;
+  private final String key;
 
-    public SjukfallGroupCacheKey(LocalDate from, int periods, int periodSize, Aisle aisle, FilterPredicates filter) {
-        this.from = from;
-        this.periods = periods;
-        this.periodSize = periodSize;
-        this.aisle = aisle;
-        this.filter = filter;
-        this.key = getToTimeNullSafe(from) + "_" + periods + "_" + periodSize + "_" + getVardgivareIdNullSafe(aisle) + "_"
+  public SjukfallGroupCacheKey(
+      LocalDate from, int periods, int periodSize, Aisle aisle, FilterPredicates filter) {
+    this.from = from;
+    this.periods = periods;
+    this.periodSize = periodSize;
+    this.aisle = aisle;
+    this.filter = filter;
+    this.key =
+        getToTimeNullSafe(from)
+            + "_"
+            + periods
+            + "_"
+            + periodSize
+            + "_"
+            + getVardgivareIdNullSafe(aisle)
+            + "_"
             + getHashNullSafe(filter);
+  }
+
+  private String getHashNullSafe(FilterPredicates filter) {
+    if (filter == null) {
+      return null;
+    }
+    return filter.getHash();
+  }
+
+  private HsaIdVardgivare getVardgivareIdNullSafe(Aisle aisle) {
+    if (aisle == null) {
+      return null;
+    }
+    return aisle.getVardgivareId();
+  }
+
+  private long getToTimeNullSafe(LocalDate from) {
+    if (from == null) {
+      return -1;
+    }
+    final Date date = new Date(from.toEpochDay());
+    return date.getTime();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof SjukfallGroupCacheKey)) {
+      return false;
     }
 
-    private String getHashNullSafe(FilterPredicates filter) {
-        if (filter == null) {
-            return null;
-        }
-        return filter.getHash();
-    }
+    SjukfallGroupCacheKey that = (SjukfallGroupCacheKey) o;
 
-    private HsaIdVardgivare getVardgivareIdNullSafe(Aisle aisle) {
-        if (aisle == null) {
-            return null;
-        }
-        return aisle.getVardgivareId();
-    }
+    return key.equals(that.key);
+  }
 
-    private long getToTimeNullSafe(LocalDate from) {
-        if (from == null) {
-            return -1;
-        }
-        final Date date = new Date(from.toEpochDay());
-        return date.getTime();
-    }
+  @Override
+  public int hashCode() {
+    return key.hashCode();
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof SjukfallGroupCacheKey)) {
-            return false;
-        }
+  public LocalDate getFrom() {
+    return from;
+  }
 
-        SjukfallGroupCacheKey that = (SjukfallGroupCacheKey) o;
+  public int getPeriods() {
+    return periods;
+  }
 
-        return key.equals(that.key);
-    }
+  public int getPeriodSize() {
+    return periodSize;
+  }
 
-    @Override
-    public int hashCode() {
-        return key.hashCode();
-    }
+  public Aisle getAisle() {
+    return aisle;
+  }
 
-    public LocalDate getFrom() {
-        return from;
-    }
+  public FilterPredicates getFilter() {
+    return filter;
+  }
 
-    public int getPeriods() {
-        return periods;
-    }
+  public String getKey() {
+    return key;
+  }
 
-    public int getPeriodSize() {
-        return periodSize;
-    }
-
-    public Aisle getAisle() {
-        return aisle;
-    }
-
-    public FilterPredicates getFilter() {
-        return filter;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    @Override
-    public String toString() {
-        return key;
-    }
+  @Override
+  public String toString() {
+    return key;
+  }
 }

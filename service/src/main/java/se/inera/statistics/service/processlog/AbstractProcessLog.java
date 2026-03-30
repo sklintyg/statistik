@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,40 +23,40 @@ import jakarta.persistence.PersistenceContext;
 
 public abstract class AbstractProcessLog {
 
-    private final String processedId;
+  private final String processedId;
 
-    @PersistenceContext(unitName = "IneraStatisticsLog")
-    private EntityManager manager;
+  @PersistenceContext(unitName = "IneraStatisticsLog")
+  private EntityManager manager;
 
-    protected AbstractProcessLog(String processId) {
-        this.processedId = processId;
+  protected AbstractProcessLog(String processId) {
+    this.processedId = processId;
+  }
+
+  protected long getLastId() {
+    EventPointer pointer = getPointerQuery();
+    if (pointer == null) {
+      return Long.MIN_VALUE;
+    } else {
+      return pointer.getEventId();
     }
+  }
 
-    protected long getLastId() {
-        EventPointer pointer = getPointerQuery();
-        if (pointer == null) {
-            return Long.MIN_VALUE;
-        } else {
-            return pointer.getEventId();
-        }
-    }
+  private EventPointer getPointerQuery() {
+    return manager.find(EventPointer.class, processedId);
+  }
 
-    private EventPointer getPointerQuery() {
-        return manager.find(EventPointer.class, processedId);
+  protected void confirmId(long id) {
+    EventPointer pointer = getPointerQuery();
+    if (pointer == null) {
+      pointer = new EventPointer(processedId, id);
+      manager.persist(pointer);
+    } else {
+      pointer.setEventId(id);
+      manager.merge(pointer);
     }
+  }
 
-    protected void confirmId(long id) {
-        EventPointer pointer = getPointerQuery();
-        if (pointer == null) {
-            pointer = new EventPointer(processedId, id);
-            manager.persist(pointer);
-        } else {
-            pointer.setEventId(id);
-            manager.merge(pointer);
-        }
-    }
-
-    protected EntityManager getManager() {
-        return manager;
-    }
+  protected EntityManager getManager() {
+    return manager;
+  }
 }

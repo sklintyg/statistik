@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -29,55 +29,68 @@ import se.inera.statistics.service.warehouse.IntygType;
 @Component
 public class TsBasHelper extends IntygHelper<RegisterTSBasType> {
 
-    @Override
-    protected Class<RegisterTSBasType> getIntygClass() {
-        return RegisterTSBasType.class;
-    }
+  @Override
+  protected Class<RegisterTSBasType> getIntygClass() {
+    return RegisterTSBasType.class;
+  }
 
-    @Override
-    public String getEnhetId(RegisterTSBasType utlatande) {
-        return utlatande.getIntyg().getGrundData().getSkapadAv().getVardenhet().getEnhetsId().getExtension();
-    }
+  @Override
+  public String getEnhetId(RegisterTSBasType utlatande) {
+    return utlatande
+        .getIntyg()
+        .getGrundData()
+        .getSkapadAv()
+        .getVardenhet()
+        .getEnhetsId()
+        .getExtension();
+  }
 
-    @Override
-    public String getLakareId(RegisterTSBasType document) {
-        return document.getIntyg().getGrundData().getSkapadAv().getPersonId().getExtension();
-    }
+  @Override
+  public String getLakareId(RegisterTSBasType document) {
+    return document.getIntyg().getGrundData().getSkapadAv().getPersonId().getExtension();
+  }
 
-    @Override
-    public String getVardgivareId(RegisterTSBasType document) {
-        return document.getIntyg().getGrundData().getSkapadAv().getVardenhet().getVardgivare().getVardgivarid().getExtension();
-    }
+  @Override
+  public String getVardgivareId(RegisterTSBasType document) {
+    return document
+        .getIntyg()
+        .getGrundData()
+        .getSkapadAv()
+        .getVardenhet()
+        .getVardgivare()
+        .getVardgivarid()
+        .getExtension();
+  }
 
-    @Override
-    public String getPatientId(RegisterTSBasType intyg) {
-        return intyg.getIntyg().getGrundData().getPatient().getPersonId().getExtension();
-    }
+  @Override
+  public String getPatientId(RegisterTSBasType intyg) {
+    return intyg.getIntyg().getGrundData().getPatient().getPersonId().getExtension();
+  }
 
-    @Override
-    public String getIntygId(RegisterTSBasType intyg) {
-        return intyg.getIntyg().getIntygsId();
-    }
+  @Override
+  public String getIntygId(RegisterTSBasType intyg) {
+    return intyg.getIntyg().getIntygsId();
+  }
 
-    @Override
-    public IntygType getIntygtyp(RegisterTSBasType intyg) {
-        return IntygType.getByItIntygType(intyg.getIntyg().getIntygsTyp().trim());
-    }
+  @Override
+  public IntygType getIntygtyp(RegisterTSBasType intyg) {
+    return IntygType.getByItIntygType(intyg.getIntyg().getIntygsTyp().trim());
+  }
 
-    @Override
-    public String getCertificateVersion(RegisterTSBasType certificate) {
-        return certificate.getIntyg().getVersion();
-    }
+  @Override
+  public String getCertificateVersion(RegisterTSBasType certificate) {
+    return certificate.getIntyg().getVersion();
+  }
 
-    @Override
-    public LocalDateTime getSigneringsTidpunkt(RegisterTSBasType intyg) {
-        String tidpunkt = intyg.getIntyg().getGrundData().getSigneringsTidstampel();
+  @Override
+  public LocalDateTime getSigneringsTidpunkt(RegisterTSBasType intyg) {
+    String tidpunkt = intyg.getIntyg().getGrundData().getSigneringsTidstampel();
 
-        return LocalDateTime.parse(tidpunkt, DateTimeFormatter.ISO_DATE_TIME);
-    }
+    return LocalDateTime.parse(tidpunkt, DateTimeFormatter.ISO_DATE_TIME);
+  }
 
-    @Override
-    public LocalDate getDateForPatientAge(RegisterTSBasType intyg) {
-        return getSigneringsTidpunkt(intyg).toLocalDate();
-    }
+  @Override
+  public LocalDate getDateForPatientAge(RegisterTSBasType intyg) {
+    return getSigneringsTidpunkt(intyg).toLocalDate();
+  }
 }

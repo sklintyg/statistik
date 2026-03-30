@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -33,115 +33,129 @@ import se.inera.statistics.service.warehouse.IntygType;
 @Table(name = IntygCommon.TABLE)
 public class IntygCommon {
 
-    public static final String TABLE = "intygcommon";
+  public static final String TABLE = "intygcommon";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
-    private String intygid;
-    private String enhet;
-    private String vardenhet;
-    private String patientid;
-    private LocalDate signeringsdatum;
-    @Enumerated(EnumType.STRING)
-    private IntygType intygtyp;
-    private String vardgivareId;
-    private int kon;
-    private EventType eventType;
-    private String dx;
-    private boolean sentToFk;
-    private String lakareId;
-    private boolean active;
+  private String intygid;
+  private String enhet;
+  private String vardenhet;
+  private String patientid;
+  private LocalDate signeringsdatum;
 
-    // CHECKSTYLE:OFF ParameterNumber
-    public IntygCommon(String intygid, String patientid, LocalDate signeringsdatum, IntygType intygtyp, String enhet, String vardenhet,
-        String vardgivareId, int kon, EventType eventType, String dx, boolean sentToFk, String lakareId) {
-        this.intygid = intygid;
-        this.patientid = patientid;
-        this.kon = kon;
-        this.signeringsdatum = signeringsdatum;
-        this.intygtyp = intygtyp;
-        this.enhet = enhet;
-        this.vardenhet = vardenhet;
-        this.vardgivareId = vardgivareId;
-        this.eventType = eventType;
-        this.dx = dx;
-        this.sentToFk = sentToFk;
-        this.lakareId = lakareId;
-        this.active = !EventType.REVOKED.equals(eventType);
-    }
-    // CHECKSTYLE:ON ParameterNumber
+  @Enumerated(EnumType.STRING)
+  private IntygType intygtyp;
 
-    private IntygCommon() {
-        // Must exist for an entity
-    }
+  private String vardgivareId;
+  private int kon;
+  private EventType eventType;
+  private String dx;
+  private boolean sentToFk;
+  private String lakareId;
+  private boolean active;
 
-    public long getId() {
-        return id;
-    }
+  // CHECKSTYLE:OFF ParameterNumber
+  public IntygCommon(
+      String intygid,
+      String patientid,
+      LocalDate signeringsdatum,
+      IntygType intygtyp,
+      String enhet,
+      String vardenhet,
+      String vardgivareId,
+      int kon,
+      EventType eventType,
+      String dx,
+      boolean sentToFk,
+      String lakareId) {
+    this.intygid = intygid;
+    this.patientid = patientid;
+    this.kon = kon;
+    this.signeringsdatum = signeringsdatum;
+    this.intygtyp = intygtyp;
+    this.enhet = enhet;
+    this.vardenhet = vardenhet;
+    this.vardgivareId = vardgivareId;
+    this.eventType = eventType;
+    this.dx = dx;
+    this.sentToFk = sentToFk;
+    this.lakareId = lakareId;
+    this.active = !EventType.REVOKED.equals(eventType);
+  }
 
-    public String getIntygid() {
-        return intygid;
-    }
+  // CHECKSTYLE:ON ParameterNumber
 
-    public String getPatientid() {
-        return patientid;
-    }
+  private IntygCommon() {
+    // Must exist for an entity
+  }
 
-    public LocalDate getSigneringsdatum() {
-        return signeringsdatum;
-    }
+  public long getId() {
+    return id;
+  }
 
-    public IntygType getIntygtyp() {
-        return intygtyp;
-    }
+  public String getIntygid() {
+    return intygid;
+  }
 
-    public String getEnhet() {
-        return enhet;
-    }
+  public String getPatientid() {
+    return patientid;
+  }
 
-    public String getVardenhet() {
-        return vardenhet;
-    }
+  public LocalDate getSigneringsdatum() {
+    return signeringsdatum;
+  }
 
-    public String getVardgivareId() {
-        return vardgivareId;
-    }
+  public IntygType getIntygtyp() {
+    return intygtyp;
+  }
 
-    public int getKon() {
-        return kon;
-    }
+  public String getEnhet() {
+    return enhet;
+  }
 
-    public EventType getEventType() {
-        return eventType;
-    }
+  public String getVardenhet() {
+    return vardenhet;
+  }
 
-    public String getDx() {
-        return dx;
-    }
+  public String getVardgivareId() {
+    return vardgivareId;
+  }
 
-    public void setDx(String dx) {
-        this.dx = dx;
-    }
+  public int getKon() {
+    return kon;
+  }
 
-    public boolean isSentToFk() {
-        return sentToFk;
-    }
+  public EventType getEventType() {
+    return eventType;
+  }
 
-    public void setSentToFk(boolean sentToFk) {
-        this.sentToFk = sentToFk;
-    }
+  public String getDx() {
+    return dx;
+  }
 
-    public String getLakareId() {
-        return lakareId;
-    }
+  public void setDx(String dx) {
+    this.dx = dx;
+  }
 
-    public boolean isActive() {
-        return active;
-    }
+  public boolean isSentToFk() {
+    return sentToFk;
+  }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+  public void setSentToFk(boolean sentToFk) {
+    this.sentToFk = sentToFk;
+  }
+
+  public String getLakareId() {
+    return lakareId;
+  }
+
+  public boolean isActive() {
+    return active;
+  }
+
+  public void setActive(boolean active) {
+    this.active = active;
+  }
 }

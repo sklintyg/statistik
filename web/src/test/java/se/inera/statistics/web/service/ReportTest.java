@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,17 +25,16 @@ import se.inera.statistics.web.service.dto.Report;
 
 public class ReportTest {
 
-    /**
-     * Short name is used as part of file name when exporting and is assumed to contain no spaces or
-     * "special" characters (e.g. swedish characters like "åäö").
-     */
-    @Test
-    public void testGetShortNameShouldContainNoSpaces() throws Exception {
-        final Report[] allReports = Report.values();
-        for (Report report : allReports) {
-            final String shortName = report.getShortName();
-            assertTrue(shortName.matches("[0-9a-zA-Z]*"), "Unexpected short name: " + shortName);
-        }
+  /**
+   * Short name is used as part of file name when exporting and is assumed to contain no spaces or
+   * "special" characters (e.g. swedish characters like "åäö").
+   */
+  @Test
+  public void testGetShortNameShouldContainNoSpaces() throws Exception {
+    final Report[] allReports = Report.values();
+    for (Report report : allReports) {
+      final String shortName = report.getShortName();
+      assertTrue(shortName.matches("[0-9a-zA-Z]*"), "Unexpected short name: " + shortName);
     }
-
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -33,102 +33,106 @@ import se.inera.statistics.service.processlog.Enhet;
 @Component
 public class Warehouse implements Iterable<Aisle> {
 
-    @Autowired
-    private WidelineLoader widelineLoader;
+  @Autowired private WidelineLoader widelineLoader;
 
-    @Autowired
-    private EnhetLoader enhetLoader;
+  @Autowired private EnhetLoader enhetLoader;
 
-    @Autowired
-    private Cache cache;
+  @Autowired private Cache cache;
 
-    @Autowired
-    private IntygCommonManager intygCommonManager;
+  @Autowired private IntygCommonManager intygCommonManager;
 
-    private Aisle loadAisle(HsaIdVardgivare vardgivarId) {
-        final List<Aisle> ailesForVgs = widelineLoader.getAilesForVgs(Collections.singletonList(vardgivarId));
-        return ailesForVgs.isEmpty() ? new Aisle(vardgivarId, Collections.emptyList()) : ailesForVgs.get(0);
-    }
+  private Aisle loadAisle(HsaIdVardgivare vardgivarId) {
+    final List<Aisle> ailesForVgs =
+        widelineLoader.getAilesForVgs(Collections.singletonList(vardgivarId));
+    return ailesForVgs.isEmpty()
+        ? new Aisle(vardgivarId, Collections.emptyList())
+        : ailesForVgs.get(0);
+  }
 
-    public Aisle get(HsaIdVardgivare vardgivarId) {
-        return cache.getAisle(vardgivarId, this::loadAisle);
-    }
+  public Aisle get(HsaIdVardgivare vardgivarId) {
+    return cache.getAisle(vardgivarId, this::loadAisle);
+  }
 
-    public Collection<Enhet> getEnhets(HsaIdVardgivare vardgivareId) {
-        final List<HsaIdEnhet> enhetIds = cache.getVgEnhets(vardgivareId, vgid -> enhetLoader.getAllEnhetsForVg(vgid));
-        return getEnhetsWithHsaId(enhetIds);
-    }
+  public Collection<Enhet> getEnhets(HsaIdVardgivare vardgivareId) {
+    final List<HsaIdEnhet> enhetIds =
+        cache.getVgEnhets(vardgivareId, vgid -> enhetLoader.getAllEnhetsForVg(vgid));
+    return getEnhetsWithHsaId(enhetIds);
+  }
 
-    public Collection<Enhet> getEnhetsOfVardenhet(HsaIdEnhet vardenhetId) {
-        final List<HsaIdEnhet> enhetIds = cache.getEnhetWithVardenhetsId(vardenhetId, veid -> enhetLoader.getAllEnhetsForVardenhet(veid));
-        return getEnhetsWithHsaId(enhetIds);
-    }
+  public Collection<Enhet> getEnhetsOfVardenhet(HsaIdEnhet vardenhetId) {
+    final List<HsaIdEnhet> enhetIds =
+        cache.getEnhetWithVardenhetsId(
+            vardenhetId, veid -> enhetLoader.getAllEnhetsForVardenhet(veid));
+    return getEnhetsWithHsaId(enhetIds);
+  }
 
-    public Collection<Enhet> getEnhetsWithHsaId(Collection<HsaIdEnhet> enhetIds) {
-        return cache.getEnhetsWithHsaId(enhetIds, ids -> enhetLoader.getEnhets(ids));
-    }
+  public Collection<Enhet> getEnhetsWithHsaId(Collection<HsaIdEnhet> enhetIds) {
+    return cache.getEnhetsWithHsaId(enhetIds, ids -> enhetLoader.getEnhets(ids));
+  }
 
-    public Enhet getEnhetWithHsaId(HsaIdEnhet enhetId) {
-        return cache.getEnhetWithHsaId(enhetId, id -> enhetLoader.getEnhet(id));
-    }
+  public Enhet getEnhetWithHsaId(HsaIdEnhet enhetId) {
+    return cache.getEnhetWithHsaId(enhetId, id -> enhetLoader.getEnhet(id));
+  }
 
-    public List<VgNumber> getAllVardgivare() {
-        return widelineLoader.getAllVgs();
-    }
+  public List<VgNumber> getAllVardgivare() {
+    return widelineLoader.getAllVgs();
+  }
 
-    @Override
-    public Iterator<Aisle> iterator() {
-        return new Iterator<Aisle>() {
-            private static final int BATCH_SIZE = 50000; //At which number of intyg to stop adding vgs and query the db
-            private int nextIndex = 0;
-            private List<VgNumber> allVardgivare = getAllVardgivare();
-            private Iterator<Aisle> batchedAisles = Collections.emptyIterator();
+  @Override
+  public Iterator<Aisle> iterator() {
+    return new Iterator<Aisle>() {
+      private static final int BATCH_SIZE =
+          50000; // At which number of intyg to stop adding vgs and query the db
+      private int nextIndex = 0;
+      private List<VgNumber> allVardgivare = getAllVardgivare();
+      private Iterator<Aisle> batchedAisles = Collections.emptyIterator();
 
-            @Override
-            public boolean hasNext() {
-                return allVardgivare.size() > nextIndex;
-            }
+      @Override
+      public boolean hasNext() {
+        return allVardgivare.size() > nextIndex;
+      }
 
-            @Override
-            public Aisle next() {
-                if (!batchedAisles.hasNext()) {
-                    batchedAisles = getNextBatch();
-                }
-                nextIndex++;
-                return batchedAisles.next();
-            }
+      @Override
+      public Aisle next() {
+        if (!batchedAisles.hasNext()) {
+          batchedAisles = getNextBatch();
+        }
+        nextIndex++;
+        return batchedAisles.next();
+      }
 
-            private Iterator<Aisle> getNextBatch() {
-                final int fromIndex = this.nextIndex;
-                final int toIndex = getToIndex(fromIndex);
-                final List<VgNumber> vgNumbers = allVardgivare.subList(fromIndex, toIndex);
-                final List<HsaIdVardgivare> vgids = vgNumbers.stream().map(VgNumber::getVgid).collect(Collectors.toList());
-                return widelineLoader.getAilesForVgs(vgids).iterator();
-            }
+      private Iterator<Aisle> getNextBatch() {
+        final int fromIndex = this.nextIndex;
+        final int toIndex = getToIndex(fromIndex);
+        final List<VgNumber> vgNumbers = allVardgivare.subList(fromIndex, toIndex);
+        final List<HsaIdVardgivare> vgids =
+            vgNumbers.stream().map(VgNumber::getVgid).collect(Collectors.toList());
+        return widelineLoader.getAilesForVgs(vgids).iterator();
+      }
 
-            /**
-             * Return the index in allVardgivare where a sublist will get at least BATCH_SIZE of intyg, but will
-             * also not add any more vgs as soon as BATCH_SIZE has been reached.
-             * @param fromIndex The start index
-             * @return The end index
-             */
-            private int getToIndex(int fromIndex) {
-                int toIndex = fromIndex;
-                final int size = allVardgivare.size();
-                for (int nrOfIntyg = 0; nrOfIntyg < BATCH_SIZE; ) {
-                    if (size <= toIndex) {
-                        break;
-                    }
-                    nrOfIntyg += allVardgivare.get(toIndex).getNumber();
-                    toIndex++;
-                }
-                return toIndex;
-            }
-        };
-    }
+      /**
+       * Return the index in allVardgivare where a sublist will get at least BATCH_SIZE of intyg,
+       * but will also not add any more vgs as soon as BATCH_SIZE has been reached.
+       *
+       * @param fromIndex The start index
+       * @return The end index
+       */
+      private int getToIndex(int fromIndex) {
+        int toIndex = fromIndex;
+        final int size = allVardgivare.size();
+        for (int nrOfIntyg = 0; nrOfIntyg < BATCH_SIZE; ) {
+          if (size <= toIndex) {
+            break;
+          }
+          nrOfIntyg += allVardgivare.get(toIndex).getNumber();
+          toIndex++;
+        }
+        return toIndex;
+      }
+    };
+  }
 
-    public Collection<IntygType> getAllExistingIntygTypes() {
-        return cache.getAllExistingIntygTypes(intygCommonManager::getAllExistingIntygTypes);
-    }
-
+  public Collection<IntygType> getAllExistingIntygTypes() {
+    return cache.getAllExistingIntygTypes(intygCommonManager::getAllExistingIntygTypes);
+  }
 }

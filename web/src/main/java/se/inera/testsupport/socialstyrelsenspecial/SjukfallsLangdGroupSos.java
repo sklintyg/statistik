@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,70 +25,71 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public enum SjukfallsLangdGroupSos {
+  GROUP1_0TO14("Under 15 dagar", 0, 14),
+  GROUP2_15TO30("15-30 dagar", 15, 30),
+  GROUP3_31TO60("31-60 dagar", 31, 60),
+  GROUP4_61TO90("61-90 dagar", 61, 90),
+  GROUP5_91TO180("91-180 dagar", 91, 180),
+  GROUP6_181TO365("181-365 dagar", 181, 365),
+  GROUP7_366PLUS("Över 365 dagar", 366, Integer.MAX_VALUE - 1);
 
-    GROUP1_0TO14("Under 15 dagar", 0, 14),
-    GROUP2_15TO30("15-30 dagar", 15, 30),
-    GROUP3_31TO60("31-60 dagar", 31, 60),
-    GROUP4_61TO90("61-90 dagar", 61, 90),
-    GROUP5_91TO180("91-180 dagar", 91, 180),
-    GROUP6_181TO365("181-365 dagar", 181, 365),
-    GROUP7_366PLUS("Över 365 dagar", 366, Integer.MAX_VALUE - 1);
+  private static final Logger LOG = LoggerFactory.getLogger(SjukfallsLangdGroupSos.class);
 
-    private static final Logger LOG = LoggerFactory.getLogger(SjukfallsLangdGroupSos.class);
+  private static final List<SjukfallsLangdGroupSos> LONG_SJUKFALLS =
+      Arrays.asList(GROUP5_91TO180, GROUP6_181TO365, GROUP7_366PLUS);
 
-    private static final List<SjukfallsLangdGroupSos> LONG_SJUKFALLS = Arrays.asList(GROUP5_91TO180, GROUP6_181TO365, GROUP7_366PLUS);
+  private final String groupName;
+  private final int from;
+  private final int to;
 
-    private final String groupName;
-    private final int from;
-    private final int to;
+  /**
+   * @param from Range start, inclusive
+   * @param to Range end, inclusive
+   */
+  SjukfallsLangdGroupSos(String groupName, int from, int to) {
+    this.groupName = groupName;
+    this.from = from;
+    this.to = to;
+  }
 
-    /**
-     * @param from Range start, inclusive
-     * @param to Range end, inclusive
-     */
-    SjukfallsLangdGroupSos(String groupName, int from, int to) {
-        this.groupName = groupName;
-        this.from = from;
-        this.to = to;
+  public String getGroupName() {
+    return groupName;
+  }
+
+  public int getFrom() {
+    return from;
+  }
+
+  public int getTo() {
+    return to;
+  }
+
+  public static Optional<SjukfallsLangdGroupSos> getByName(String name) {
+    return Arrays.stream(values())
+        .filter(group -> group.groupName.equalsIgnoreCase(name))
+        .findFirst();
+  }
+
+  public static Optional<SjukfallsLangdGroupSos> parse(String name) {
+    try {
+      final SjukfallsLangdGroupSos sjukfallsLangdGroup = valueOf(name);
+      return Optional.of(sjukfallsLangdGroup);
+    } catch (IllegalArgumentException e) {
+      LOG.debug("Failed to parse name: {}", name, e);
+      return Optional.empty();
     }
+  }
 
-    public String getGroupName() {
-        return groupName;
+  public static SjukfallsLangdGroupSos getByLength(int length) {
+    for (SjukfallsLangdGroupSos group : values()) {
+      if (group.from <= length && group.to >= length) {
+        return group;
+      }
     }
+    throw new IllegalArgumentException("Length could not be matched to a group: " + length);
+  }
 
-    public int getFrom() {
-        return from;
-    }
-
-    public int getTo() {
-        return to;
-    }
-
-    public static Optional<SjukfallsLangdGroupSos> getByName(String name) {
-        return Arrays.stream(values()).filter(group -> group.groupName.equalsIgnoreCase(name)).findFirst();
-    }
-
-    public static Optional<SjukfallsLangdGroupSos> parse(String name) {
-        try {
-            final SjukfallsLangdGroupSos sjukfallsLangdGroup = valueOf(name);
-            return Optional.of(sjukfallsLangdGroup);
-        } catch (IllegalArgumentException e) {
-            LOG.debug("Failed to parse name: {}", name, e);
-            return Optional.empty();
-        }
-    }
-
-    public static SjukfallsLangdGroupSos getByLength(int length) {
-        for (SjukfallsLangdGroupSos group : values()) {
-            if (group.from <= length && group.to >= length) {
-                return group;
-            }
-        }
-        throw new IllegalArgumentException("Length could not be matched to a group: " + length);
-    }
-
-    public boolean isLongSjukfallInOverview() {
-        return LONG_SJUKFALLS.contains(this);
-    }
-
+  public boolean isLongSjukfallInOverview() {
+    return LONG_SJUKFALLS.contains(this);
+  }
 }

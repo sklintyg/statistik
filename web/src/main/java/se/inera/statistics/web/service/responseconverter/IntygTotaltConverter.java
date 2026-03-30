@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -28,16 +28,16 @@ import se.inera.statistics.web.service.dto.FilterSettings;
 
 public class IntygTotaltConverter extends MultiDualSexConverter {
 
-    public IntygTotaltConverter(String tableHeader) {
-        super(tableHeader);
-    }
+  public IntygTotaltConverter(String tableHeader) {
+    super(tableHeader);
+  }
 
-    public DualSexStatisticsData convert(KonDataResponse data, FilterSettings filterSettings) {
-        final List<IntygType> intygTypes = data.getGroups().stream()
+  public DualSexStatisticsData convert(KonDataResponse data, FilterSettings filterSettings) {
+    final List<IntygType> intygTypes =
+        data.getGroups().stream()
             .map(s -> IntygType.getByName(s).orElse(IntygType.UNKNOWN))
             .collect(Collectors.toList());
-        final Map<String, String> colorMap = AndelKompletteringarConverter.getColorMap(intygTypes);
-        return super.convert(data, filterSettings, null, "%1$s", colorMap);
-    }
-
+    final Map<String, String> colorMap = AndelKompletteringarConverter.getColorMap(intygTypes);
+    return super.convert(data, filterSettings, null, "%1$s", colorMap);
+  }
 }

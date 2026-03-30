@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -33,61 +33,71 @@ import se.inera.statistics.integration.hsa.model.Vardgivare;
 
 public class User implements Serializable, Saml2AuthenticatedPrincipal {
 
-    private final HsaIdUser hsaId;
-    private final String name;
-    private final List<Vardgivare> vgsWithProcessledarStatus;
-    private final List<Vardenhet> vardenhetList;
-    private final LoginMethod loginMethod;
+  private final HsaIdUser hsaId;
+  private final String name;
+  private final List<Vardgivare> vgsWithProcessledarStatus;
+  private final List<Vardenhet> vardenhetList;
+  private final LoginMethod loginMethod;
 
-    public User(HsaIdUser hsaId, String name, List<Vardgivare> vgsWithProcessledarStatus, List<Vardenhet> vardenhetsList,
-        LoginMethod loginMethod) {
-        this.hsaId = hsaId;
-        this.name = name;
-        this.vgsWithProcessledarStatus = vgsWithProcessledarStatus != null ? Collections.unmodifiableList(vgsWithProcessledarStatus)
+  public User(
+      HsaIdUser hsaId,
+      String name,
+      List<Vardgivare> vgsWithProcessledarStatus,
+      List<Vardenhet> vardenhetsList,
+      LoginMethod loginMethod) {
+    this.hsaId = hsaId;
+    this.name = name;
+    this.vgsWithProcessledarStatus =
+        vgsWithProcessledarStatus != null
+            ? Collections.unmodifiableList(vgsWithProcessledarStatus)
             : Collections.emptyList();
-        this.vardenhetList = vardenhetsList != null ? Collections.unmodifiableList(vardenhetsList) : Collections.emptyList();
-        this.loginMethod = loginMethod;
-    }
+    this.vardenhetList =
+        vardenhetsList != null
+            ? Collections.unmodifiableList(vardenhetsList)
+            : Collections.emptyList();
+    this.loginMethod = loginMethod;
+  }
 
-    public boolean isProcessledareForVg(HsaIdVardgivare vardgivareId) {
-        if (vardgivareId == null) {
-            return false;
-        }
-        return vgsWithProcessledarStatus.stream().anyMatch(vg -> vg.getId().equalsIgnoreCase(vardgivareId.getId()));
+  public boolean isProcessledareForVg(HsaIdVardgivare vardgivareId) {
+    if (vardgivareId == null) {
+      return false;
     }
+    return vgsWithProcessledarStatus.stream()
+        .anyMatch(vg -> vg.getId().equalsIgnoreCase(vardgivareId.getId()));
+  }
 
-    public HsaIdUser getHsaId() {
-        return hsaId;
-    }
+  public HsaIdUser getHsaId() {
+    return hsaId;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public List<Vardenhet> getVardenhetList() {
-        return vardenhetList;
-    }
+  public List<Vardenhet> getVardenhetList() {
+    return vardenhetList;
+  }
 
-    public UserAccessLevel getUserAccessLevelForVg(HsaIdVardgivare vg) {
-        return new UserAccessLevel(isProcessledareForVg(vg), getVardenhetsForVg(vg).size());
-    }
+  public UserAccessLevel getUserAccessLevelForVg(HsaIdVardgivare vg) {
+    return new UserAccessLevel(isProcessledareForVg(vg), getVardenhetsForVg(vg).size());
+  }
 
-    public List<Vardgivare> getVgsWithProcessledarStatus() {
-        return vgsWithProcessledarStatus;
-    }
+  public List<Vardgivare> getVgsWithProcessledarStatus() {
+    return vgsWithProcessledarStatus;
+  }
 
-    public List<Vardenhet> getVardenhetsForVg(HsaIdVardgivare vardgivare) {
-        return vardenhetList.stream()
-            .filter(vardenhet -> vardenhet.getVardgivarId().equals(vardgivare))
-            .collect(Collectors.toList());
-    }
+  public List<Vardenhet> getVardenhetsForVg(HsaIdVardgivare vardgivare) {
+    return vardenhetList.stream()
+        .filter(vardenhet -> vardenhet.getVardgivarId().equals(vardgivare))
+        .collect(Collectors.toList());
+  }
 
-    public LoginMethod getLoginMethod() {
-        return loginMethod;
-    }
+  public LoginMethod getLoginMethod() {
+    return loginMethod;
+  }
 
-    @Override
-    public String getRelyingPartyRegistrationId() {
-        return RELYING_PARTY_REGISTRATION_ID;
-    }
+  @Override
+  public String getRelyingPartyRegistrationId() {
+    return RELYING_PARTY_REGISTRATION_ID;
+  }
 }

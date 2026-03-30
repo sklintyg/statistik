@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,9 +23,12 @@ import se.inera.statistics.web.service.dto.FilterDataResponse;
 
 public class AgeGroupsData extends SimpleDetailsData {
 
-    public AgeGroupsData(TableData tableData, ChartData chartData, String period, AvailableFilters availableFilters,
-        FilterDataResponse filter) {
-        super(tableData, chartData, period, availableFilters, filter);
-    }
-
+  public AgeGroupsData(
+      TableData tableData,
+      ChartData chartData,
+      String period,
+      AvailableFilters availableFilters,
+      FilterDataResponse filter) {
+    super(tableData, chartData, period, availableFilters, filter);
+  }
 }

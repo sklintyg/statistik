@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -26,12 +26,14 @@ import se.inera.statistics.service.report.model.Range;
 
 public class CountyPopulationManagerMock implements CountyPopulationManager {
 
-    @Override
-    public CountyPopulation getCountyPopulation(Range range) {
-        final HashMap<String, KonField> populationPerCountyCode = new HashMap<>();
-        final Iterator<String> iterator = new Lan().iterator();
-        iterator.forEachRemaining(s -> populationPerCountyCode.put(s, new KonField(Integer.parseInt(s) * 900, Integer.parseInt(s) * 500)));
-        return new CountyPopulation(populationPerCountyCode, range.getFrom());
-    }
-
+  @Override
+  public CountyPopulation getCountyPopulation(Range range) {
+    final HashMap<String, KonField> populationPerCountyCode = new HashMap<>();
+    final Iterator<String> iterator = new Lan().iterator();
+    iterator.forEachRemaining(
+        s ->
+            populationPerCountyCode.put(
+                s, new KonField(Integer.parseInt(s) * 900, Integer.parseInt(s) * 500)));
+    return new CountyPopulation(populationPerCountyCode, range.getFrom());
+  }
 }

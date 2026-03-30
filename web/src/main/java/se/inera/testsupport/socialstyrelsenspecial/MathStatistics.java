@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -21,46 +21,46 @@ package se.inera.testsupport.socialstyrelsenspecial;
 import java.util.Arrays;
 import java.util.List;
 
-// From http://stackoverflow.com/questions/7988486/how-do-you-calculate-the-variance-median-and-standard-deviation-in-c-or-java/7988556
+// From
+// http://stackoverflow.com/questions/7988486/how-do-you-calculate-the-variance-median-and-standard-deviation-in-c-or-java/7988556
 public class MathStatistics {
 
-    private Double[] data;
-    private int size;
+  private Double[] data;
+  private int size;
 
-    public MathStatistics(List<Double> data) {
-        this.data = data.toArray(new Double[data.size()]);
-        size = this.data.length;
+  public MathStatistics(List<Double> data) {
+    this.data = data.toArray(new Double[data.size()]);
+    size = this.data.length;
+  }
+
+  private double getMean() {
+    double sum = 0.0;
+    for (double a : data) {
+      sum += a;
     }
+    return sum / size;
+  }
 
-    private double getMean() {
-        double sum = 0.0;
-        for (double a : data) {
-            sum += a;
-        }
-        return sum / size;
+  private double getVariance() {
+    double mean = getMean();
+    double temp = 0;
+    for (double a : data) {
+      temp += (mean - a) * (mean - a);
     }
+    return temp / size;
+  }
 
-    private double getVariance() {
-        double mean = getMean();
-        double temp = 0;
-        for (double a : data) {
-            temp += (mean - a) * (mean - a);
-        }
-        return temp / size;
+  public double getStdDev() {
+    return Math.sqrt(getVariance());
+  }
+
+  public double median() {
+    Arrays.sort(data);
+
+    if (data.length % 2 == 0) {
+      return (data[(data.length / 2) - 1] + data[data.length / 2]) / 2.0;
+    } else {
+      return data[data.length / 2];
     }
-
-    public double getStdDev() {
-        return Math.sqrt(getVariance());
-    }
-
-    public double median() {
-        Arrays.sort(data);
-
-        if (data.length % 2 == 0) {
-            return (data[(data.length / 2) - 1] + data[data.length / 2]) / 2.0;
-        } else {
-            return data[data.length / 2];
-        }
-    }
-
+  }
 }

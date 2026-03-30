@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,13 +23,13 @@ import java.util.List;
 
 public class GetStatisticsNamesResponseDto {
 
-    private List<StatisticsNameInfoDto> statisticsNameInfos = Collections.emptyList();
+  private List<StatisticsNameInfoDto> statisticsNameInfos = Collections.emptyList();
 
-    public List<StatisticsNameInfoDto> getStatisticsNameInfos() {
-        return statisticsNameInfos;
-    }
+  public List<StatisticsNameInfoDto> getStatisticsNameInfos() {
+    return statisticsNameInfos;
+  }
 
-    public void setStatisticsNameInfos(List<StatisticsNameInfoDto> statisticsNameInfos) {
-        this.statisticsNameInfos = statisticsNameInfos;
-    }
+  public void setStatisticsNameInfos(List<StatisticsNameInfoDto> statisticsNameInfos) {
+    this.statisticsNameInfos = statisticsNameInfos;
+  }
 }

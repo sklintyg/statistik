@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -34,7 +34,6 @@ import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.DiagnosisGroup;
 import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.web.service.dto.MessagesText;
 import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
@@ -43,176 +42,194 @@ import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.service.dto.Filter;
 import se.inera.statistics.web.service.dto.FilterDataResponse;
 import se.inera.statistics.web.service.dto.FilterSettings;
+import se.inera.statistics.web.service.dto.MessagesText;
 
 public class DiagnosisGroupsConverter extends MultiDualSexConverter {
 
-    private static final Map<DiagnosisGroup, List<Integer>> DIAGNOSIS_GROUPS_WITH_UNKNOWN = createDiagnosisGroupsMap(true);
-    private static final Map<DiagnosisGroup, List<Integer>> DIAGNOSIS_GROUPS_WITHOUT_UNKNOWN = createDiagnosisGroupsMap(false);
-    private static final Map<DiagnosisGroup, List<Integer>> DIAGNOSIS_CHART_GROUPS = DIAGNOSIS_GROUPS_WITH_UNKNOWN;
-    static final Map<Integer, String> DIAGNOSKAPITEL_TO_DIAGNOSGRUPP = map(DIAGNOSIS_CHART_GROUPS);
-    private static final int DISPLAYED_DIAGNOSIS_GROUPS = 6;
-    static final String DIAGNOS_REST_NAME = MessagesText.REPORT_DIAGNOSIS_REST;
-    static final String DIAGNOS_REST_COLOR = "#5D5D5D";
+  private static final Map<DiagnosisGroup, List<Integer>> DIAGNOSIS_GROUPS_WITH_UNKNOWN =
+      createDiagnosisGroupsMap(true);
+  private static final Map<DiagnosisGroup, List<Integer>> DIAGNOSIS_GROUPS_WITHOUT_UNKNOWN =
+      createDiagnosisGroupsMap(false);
+  private static final Map<DiagnosisGroup, List<Integer>> DIAGNOSIS_CHART_GROUPS =
+      DIAGNOSIS_GROUPS_WITH_UNKNOWN;
+  static final Map<Integer, String> DIAGNOSKAPITEL_TO_DIAGNOSGRUPP = map(DIAGNOSIS_CHART_GROUPS);
+  private static final int DISPLAYED_DIAGNOSIS_GROUPS = 6;
+  static final String DIAGNOS_REST_NAME = MessagesText.REPORT_DIAGNOSIS_REST;
+  static final String DIAGNOS_REST_COLOR = "#5D5D5D";
 
-    private static Map<Integer, String> map(Map<DiagnosisGroup, List<Integer>> diagnosisChartGroups) {
-        Map<Integer, String> result = new HashMap<>();
-        for (Entry<DiagnosisGroup, List<Integer>> entry : diagnosisChartGroups.entrySet()) {
-            for (Integer kapitel : entry.getValue()) {
-                result.put(kapitel, entry.getKey().getName());
-            }
-        }
-        return result;
+  private static Map<Integer, String> map(Map<DiagnosisGroup, List<Integer>> diagnosisChartGroups) {
+    Map<Integer, String> result = new HashMap<>();
+    for (Entry<DiagnosisGroup, List<Integer>> entry : diagnosisChartGroups.entrySet()) {
+      for (Integer kapitel : entry.getValue()) {
+        result.put(kapitel, entry.getKey().getName());
+      }
+    }
+    return result;
+  }
+
+  private static Map<DiagnosisGroup, List<Integer>> createDiagnosisGroupsMap(
+      boolean includeUnknownGroup) {
+    final Map<DiagnosisGroup, List<Integer>> diagnosisGroups = new LinkedHashMap<>();
+
+    for (DiagnosisGroup group : DiagnosisGroup.values()) {
+      diagnosisGroups.put(group, Icd10.getKapitelIntIds(group.getChapters()));
     }
 
-    private static Map<DiagnosisGroup, List<Integer>> createDiagnosisGroupsMap(boolean includeUnknownGroup) {
-        final Map<DiagnosisGroup, List<Integer>> diagnosisGroups = new LinkedHashMap<>();
-
-        for (DiagnosisGroup group : DiagnosisGroup.values()) {
-            diagnosisGroups.put(group, Icd10.getKapitelIntIds(group.getChapters()));
-        }
-
-        if (!includeUnknownGroup) {
-            diagnosisGroups.remove(DiagnosisGroup.NO_GROUP);
-        }
-
-        return diagnosisGroups;
+    if (!includeUnknownGroup) {
+      diagnosisGroups.remove(DiagnosisGroup.NO_GROUP);
     }
 
-    static List<String> getDiagnosisChartGroupsAsList(boolean includeUnknownGroup) {
-        return (includeUnknownGroup ? DIAGNOSIS_GROUPS_WITH_UNKNOWN : DIAGNOSIS_GROUPS_WITHOUT_UNKNOWN)
-            .keySet()
-            .stream()
-            .map(DiagnosisGroup::getName)
-            .collect(Collectors.toList());
+    return diagnosisGroups;
+  }
+
+  static List<String> getDiagnosisChartGroupsAsList(boolean includeUnknownGroup) {
+    return (includeUnknownGroup ? DIAGNOSIS_GROUPS_WITH_UNKNOWN : DIAGNOSIS_GROUPS_WITHOUT_UNKNOWN)
+        .keySet().stream().map(DiagnosisGroup::getName).collect(Collectors.toList());
+  }
+
+  public DualSexStatisticsData convert(
+      DiagnosgruppResponse diagnosisGroups, FilterSettings filterSettings) {
+    TableData tableData = convertTable(diagnosisGroups, "%1$s");
+    ChartData maleChart = convertChart(diagnosisGroups, Kon.MALE);
+    ChartData femaleChart = convertChart(diagnosisGroups, Kon.FEMALE);
+    final Filter filter = filterSettings.getFilter();
+    final FilterDataResponse filterResponse = new FilterDataResponse(filter);
+    final Range range = filterSettings.getRange();
+    return new DualSexStatisticsData(
+        tableData,
+        maleChart,
+        femaleChart,
+        range.toString(),
+        diagnosisGroups.getAvailableFilters(),
+        filterResponse,
+        Converters.combineMessages(filterSettings.getMessage()));
+  }
+
+  public List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> diagnosisGroups) {
+    List<OverviewChartRowExtended> merged = mergeAndSortOverviewChartGroups(diagnosisGroups);
+    return Converters.convert(
+        merged, DISPLAYED_DIAGNOSIS_GROUPS, DIAGNOS_REST_NAME, DIAGNOS_REST_COLOR);
+  }
+
+  private List<OverviewChartRowExtended> mergeAndSortOverviewChartGroups(
+      List<OverviewChartRowExtended> allGroups) {
+    Map<String, OverviewChartRowExtended> mergedGroups =
+        new TreeMap<>(
+            new Comparator<String>() {
+              final List<String> orderedDiagnosisChartGroups = getDiagnosisChartGroupsAsList(true);
+
+              @Override
+              public int compare(String o1, String o2) {
+                return orderedDiagnosisChartGroups.indexOf(o1)
+                    - orderedDiagnosisChartGroups.indexOf(o2);
+              }
+            });
+
+    for (DiagnosisGroup group : DIAGNOSIS_GROUPS_WITH_UNKNOWN.keySet()) {
+      mergedGroups.put(
+          group.getName(), new OverviewChartRowExtended(group.getName(), 0, 0, group.getColor()));
+    }
+    for (OverviewChartRowExtended row : allGroups) {
+      String grupp = DIAGNOSKAPITEL_TO_DIAGNOSGRUPP.get(Integer.valueOf(row.getName()));
+      if (grupp != null) {
+        OverviewChartRowExtended mergedRow = mergedGroups.get(grupp);
+        int quantity = mergedRow.getQuantity() + row.getQuantity();
+        int alternation = mergedRow.getAlternation() + row.getAlternation();
+
+        OverviewChartRowExtended newRow =
+            new OverviewChartRowExtended(
+                mergedRow.getName(), quantity, alternation, mergedRow.getColor());
+        mergedGroups.put(newRow.getName(), newRow);
+      }
     }
 
-    public DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, FilterSettings filterSettings) {
-        TableData tableData = convertTable(diagnosisGroups, "%1$s");
-        ChartData maleChart = convertChart(diagnosisGroups, Kon.MALE);
-        ChartData femaleChart = convertChart(diagnosisGroups, Kon.FEMALE);
-        final Filter filter = filterSettings.getFilter();
-        final FilterDataResponse filterResponse = new FilterDataResponse(filter);
-        final Range range = filterSettings.getRange();
-        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(),
-            diagnosisGroups.getAvailableFilters(), filterResponse,
-            Converters.combineMessages(filterSettings.getMessage()));
+    List<OverviewChartRowExtended> result = new ArrayList<>();
+    result.addAll(mergedGroups.values());
+    return result;
+  }
+
+  private ChartData convertChart(DiagnosgruppResponse resp, Kon sex) {
+    Map<Integer, List<Integer>> allGroups = extractAllGroups(resp, sex);
+    Map<String, List<Integer>> mergedGroups = mergeChartGroups(allGroups);
+
+    Map<String, String> colors = DiagnosisGroup.getColors();
+
+    ArrayList<ChartSeries> rows = new ArrayList<>();
+    for (Entry<String, List<Integer>> entry : mergedGroups.entrySet()) {
+      rows.add(new ChartSeries(entry.getKey(), entry.getValue(), null, colors.get(entry.getKey())));
     }
 
-    public List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> diagnosisGroups) {
-        List<OverviewChartRowExtended> merged = mergeAndSortOverviewChartGroups(diagnosisGroups);
-        return Converters.convert(merged, DISPLAYED_DIAGNOSIS_GROUPS, DIAGNOS_REST_NAME, DIAGNOS_REST_COLOR);
+    final List<ChartCategory> categories =
+        resp.getPeriods().stream().map(ChartCategory::new).collect(Collectors.toList());
+    return new ChartData(rows, categories);
+  }
+
+  private Map<String, List<Integer>> mergeChartGroups(Map<Integer, List<Integer>> allGroups) {
+    Map<String, List<Integer>> mergedGroups =
+        new TreeMap<>(
+            new Comparator<String>() {
+
+              @Override
+              public int compare(String o1, String o2) {
+                return getDiagnosisChartGroupsAsList(true).indexOf(o1)
+                    - getDiagnosisChartGroupsAsList(true).indexOf(o2);
+              }
+            });
+    List<List<Integer>> values = new ArrayList<>(allGroups.values());
+    int listSize = values.isEmpty() ? 0 : values.get(0).toArray().length;
+    for (String groupName : getDiagnosisChartGroupsAsList(false)) {
+      mergedGroups.put(groupName, createZeroFilledList(listSize));
     }
-
-    private List<OverviewChartRowExtended> mergeAndSortOverviewChartGroups(List<OverviewChartRowExtended> allGroups) {
-        Map<String, OverviewChartRowExtended> mergedGroups = new TreeMap<>(new Comparator<String>() {
-            final List<String> orderedDiagnosisChartGroups = getDiagnosisChartGroupsAsList(true);
-
-            @Override
-            public int compare(String o1, String o2) {
-                return orderedDiagnosisChartGroups.indexOf(o1) - orderedDiagnosisChartGroups.indexOf(o2);
-            }
-
-        });
-
-        for (DiagnosisGroup group : DIAGNOSIS_GROUPS_WITH_UNKNOWN.keySet()) {
-            mergedGroups.put(group.getName(), new OverviewChartRowExtended(group.getName(), 0, 0, group.getColor()));
-        }
-        for (OverviewChartRowExtended row : allGroups) {
-            String grupp = DIAGNOSKAPITEL_TO_DIAGNOSGRUPP.get(Integer.valueOf(row.getName()));
-            if (grupp != null) {
-                OverviewChartRowExtended mergedRow = mergedGroups.get(grupp);
-                int quantity = mergedRow.getQuantity() + row.getQuantity();
-                int alternation = mergedRow.getAlternation() + row.getAlternation();
-
-                OverviewChartRowExtended newRow = new OverviewChartRowExtended(mergedRow.getName(),
-                    quantity, alternation, mergedRow.getColor());
-                mergedGroups.put(newRow.getName(), newRow);
-            }
-        }
-
-        List<OverviewChartRowExtended> result = new ArrayList<>();
-        result.addAll(mergedGroups.values());
-        return result;
+    for (Entry<Integer, List<Integer>> entry : allGroups.entrySet()) {
+      addGroupToMergedChartGroups(mergedGroups, entry.getKey(), entry.getValue());
     }
+    return mergedGroups;
+  }
 
-    private ChartData convertChart(DiagnosgruppResponse resp, Kon sex) {
-        Map<Integer, List<Integer>> allGroups = extractAllGroups(resp, sex);
-        Map<String, List<Integer>> mergedGroups = mergeChartGroups(allGroups);
-
-        Map<String, String> colors = DiagnosisGroup.getColors();
-
-        ArrayList<ChartSeries> rows = new ArrayList<>();
-        for (Entry<String, List<Integer>> entry : mergedGroups.entrySet()) {
-            rows.add(new ChartSeries(entry.getKey(), entry.getValue(), null, colors.get(entry.getKey())));
-        }
-
-        final List<ChartCategory> categories = resp.getPeriods().stream().map(ChartCategory::new).collect(Collectors.toList());
-        return new ChartData(rows, categories);
+  private List<Integer> createZeroFilledList(int listSize) {
+    ArrayList<Integer> listOfZeros = new ArrayList<>();
+    for (int i = 0; i < listSize; i++) {
+      listOfZeros.add(0);
     }
+    return listOfZeros;
+  }
 
-    private Map<String, List<Integer>> mergeChartGroups(Map<Integer, List<Integer>> allGroups) {
-        Map<String, List<Integer>> mergedGroups = new TreeMap<>(new Comparator<String>() {
-
-            @Override
-            public int compare(String o1, String o2) {
-                return getDiagnosisChartGroupsAsList(true).indexOf(o1) - getDiagnosisChartGroupsAsList(true).indexOf(o2);
-            }
-
-        });
-        List<List<Integer>> values = new ArrayList<>(allGroups.values());
-        int listSize = values.isEmpty() ? 0 : values.get(0).toArray().length;
-        for (String groupName : getDiagnosisChartGroupsAsList(false)) {
-            mergedGroups.put(groupName, createZeroFilledList(listSize));
-        }
-        for (Entry<Integer, List<Integer>> entry : allGroups.entrySet()) {
-            addGroupToMergedChartGroups(mergedGroups, entry.getKey(), entry.getValue());
-        }
-        return mergedGroups;
+  private Map<Integer, List<Integer>> extractAllGroups(DiagnosgruppResponse resp, Kon sex) {
+    Map<Integer, List<Integer>> allGroups = new HashMap<>();
+    for (int i = 0; i < resp.getIcdTyps().size(); i++) {
+      Icd groupName = resp.getIcdTyps().get(i);
+      allGroups.put(groupName.getNumericalId(), resp.getDataFromIndex(i, sex));
     }
+    return allGroups;
+  }
 
-    private List<Integer> createZeroFilledList(int listSize) {
-        ArrayList<Integer> listOfZeros = new ArrayList<>();
-        for (int i = 0; i < listSize; i++) {
-            listOfZeros.add(0);
-        }
-        return listOfZeros;
+  private void addGroupToMergedChartGroups(
+      Map<String, List<Integer>> mergedGroups, Integer groupId, List<Integer> values) {
+    String mergedName = getMergedChartGroupName(groupId);
+    if (mergedGroups.containsKey(mergedName) && mergedGroups.get(mergedName) != null) {
+      List<Integer> sumOfLists = sumLists(mergedGroups.get(mergedName), values);
+      mergedGroups.put(mergedName, sumOfLists);
+    } else {
+      mergedGroups.put(mergedName, values);
     }
+  }
 
-    private Map<Integer, List<Integer>> extractAllGroups(DiagnosgruppResponse resp, Kon sex) {
-        Map<Integer, List<Integer>> allGroups = new HashMap<>();
-        for (int i = 0; i < resp.getIcdTyps().size(); i++) {
-            Icd groupName = resp.getIcdTyps().get(i);
-            allGroups.put(groupName.getNumericalId(), resp.getDataFromIndex(i, sex));
-        }
-        return allGroups;
+  private List<Integer> sumLists(List<Integer> list, List<Integer> values) {
+    assert list.size() == values.size()
+        : "List size: " + list.size() + " and values size: " + values.size();
+    List<Integer> sum = new ArrayList<>();
+    for (int i = 0; i < values.size(); i++) {
+      sum.add(list.get(i) + values.get(i));
     }
+    return sum;
+  }
 
-    private void addGroupToMergedChartGroups(Map<String, List<Integer>> mergedGroups, Integer groupId, List<Integer> values) {
-        String mergedName = getMergedChartGroupName(groupId);
-        if (mergedGroups.containsKey(mergedName) && mergedGroups.get(mergedName) != null) {
-            List<Integer> sumOfLists = sumLists(mergedGroups.get(mergedName), values);
-            mergedGroups.put(mergedName, sumOfLists);
-        } else {
-            mergedGroups.put(mergedName, values);
-        }
+  private String getMergedChartGroupName(Integer groupId) {
+    for (Entry<DiagnosisGroup, List<Integer>> entry : DIAGNOSIS_CHART_GROUPS.entrySet()) {
+      if (entry.getValue().contains(groupId)) {
+        return entry.getKey().getName();
+      }
     }
-
-    private List<Integer> sumLists(List<Integer> list, List<Integer> values) {
-        assert list.size() == values.size() : "List size: " + list.size() + " and values size: " + values.size();
-        List<Integer> sum = new ArrayList<>();
-        for (int i = 0; i < values.size(); i++) {
-            sum.add(list.get(i) + values.get(i));
-        }
-        return sum;
-    }
-
-    private String getMergedChartGroupName(Integer groupId) {
-        for (Entry<DiagnosisGroup, List<Integer>> entry : DIAGNOSIS_CHART_GROUPS.entrySet()) {
-            if (entry.getValue().contains(groupId)) {
-                return entry.getKey().getName();
-            }
-        }
-        throw new RuntimeException("Unknown groupId: " + groupId);
-    }
-
+    throw new RuntimeException("Unknown groupId: " + groupId);
+  }
 }

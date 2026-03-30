@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -32,24 +32,20 @@ import se.inera.statistics.web.service.LoginServiceUtil;
 
 public class LoginInfoServiceTest {
 
-    @Mock
-    private LoginServiceUtil loginServiceUtil;
+  @Mock private LoginServiceUtil loginServiceUtil;
 
-    @InjectMocks
-    private LoginInfoService loginInfoService;
+  @InjectMocks private LoginInfoService loginInfoService;
 
+  @BeforeEach
+  public void init() {
+    MockitoAnnotations.initMocks(this);
+  }
 
-    @BeforeEach
-    public void init() {
-        MockitoAnnotations.initMocks(this);
-    }
-
-    @Test
-    public void getLoginInfoTest() {
-        final LoginInfo loginInfo = new LoginInfo();
-        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(loginInfo);
-        LoginInfo info = loginInfoService.getLoginInfo();
-        assertEquals(loginInfo, info);
-    }
-
+  @Test
+  public void getLoginInfoTest() {
+    final LoginInfo loginInfo = new LoginInfo();
+    Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(loginInfo);
+    LoginInfo info = loginInfoService.getLoginInfo();
+    assertEquals(loginInfo, info);
+  }
 }

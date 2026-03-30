@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -29,94 +29,109 @@ import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.web.service.dto.MessagesText;
 import se.inera.statistics.web.model.ChartData;
+import se.inera.statistics.web.service.dto.MessagesText;
 
 public class DiagnosisSubGroupsTvarsnittConverterTest {
 
-    @Test
-    public void testConvertedResponseDoesNotContainEmptyOvrigtGroupINTYG1821() {
-        //Given
-        ArrayList<KonField> data = new ArrayList<>();
-        data.add(new KonField(1, 0));
-        data.add(new KonField(0, 0));
-        data.add(new KonField(2, 0));
-        data.add(new KonField(1, 2));
-        data.add(new KonField(0, 0));
-        data.add(new KonField(2, 2));
-        data.add(new KonField(5, 0));
-        data.add(new KonField(0, 0));
-        data.add(new KonField(6, 0));
-        data.add(new KonField(0, 0));
-        final List<SimpleKonDataRow> simpleKonDataRows = toSimpleKonDataRows(data);
-        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForSjukfall(), simpleKonDataRows);
+  @Test
+  public void testConvertedResponseDoesNotContainEmptyOvrigtGroupINTYG1821() {
+    // Given
+    ArrayList<KonField> data = new ArrayList<>();
+    data.add(new KonField(1, 0));
+    data.add(new KonField(0, 0));
+    data.add(new KonField(2, 0));
+    data.add(new KonField(1, 2));
+    data.add(new KonField(0, 0));
+    data.add(new KonField(2, 2));
+    data.add(new KonField(5, 0));
+    data.add(new KonField(0, 0));
+    data.add(new KonField(6, 0));
+    data.add(new KonField(0, 0));
+    final List<SimpleKonDataRow> simpleKonDataRows = toSimpleKonDataRows(data);
+    final SimpleKonResponse casesPerMonth =
+        new SimpleKonResponse(AvailableFilters.getForSjukfall(), simpleKonDataRows);
 
-        //When
-        final ChartData result = new DiagnosisSubGroupsTvarsnittConverter().convertToChartData(casesPerMonth);
+    // When
+    final ChartData result =
+        new DiagnosisSubGroupsTvarsnittConverter().convertToChartData(casesPerMonth);
 
-        //Then
-        assertEquals(6, result.getCategories().size());
-        assertTrue(result.getCategories().stream().noneMatch(chartSeries -> MessagesText.REPORT_GROUP_OTHER.equals(chartSeries.getName())));
+    // Then
+    assertEquals(6, result.getCategories().size());
+    assertTrue(
+        result.getCategories().stream()
+            .noneMatch(
+                chartSeries -> MessagesText.REPORT_GROUP_OTHER.equals(chartSeries.getName())));
+  }
+
+  private List<SimpleKonDataRow> toSimpleKonDataRows(ArrayList<KonField> data) {
+    final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
+    for (int i = 0; i < data.size(); i++) {
+      KonField konField = data.get(i);
+      simpleKonDataRows.add(new SimpleKonDataRow("Name" + i, konField));
     }
+    return simpleKonDataRows;
+  }
 
-    private List<SimpleKonDataRow> toSimpleKonDataRows(ArrayList<KonField> data) {
-        final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
-        for (int i = 0; i < data.size(); i++) {
-            KonField konField = data.get(i);
-            simpleKonDataRows.add(new SimpleKonDataRow("Name" + i, konField));
-        }
-        return simpleKonDataRows;
-    }
+  @Test
+  public void
+      testConvertedResponseDoesNotContainOvrigtGroupWhenOnly7NoneEmptySeriesExistsINTYG1821() {
+    // Given
+    ArrayList<KonField> data = new ArrayList<>();
+    data.add(new KonField(1, 0));
+    data.add(new KonField(0, 0));
+    data.add(new KonField(2, 0));
+    data.add(new KonField(1, 2));
+    data.add(new KonField(0, 0));
+    data.add(new KonField(2, 2));
+    data.add(new KonField(5, 0));
+    data.add(new KonField(0, 0));
+    data.add(new KonField(6, 0));
+    data.add(new KonField(0, 1));
+    final List<SimpleKonDataRow> simpleKonDataRows = toSimpleKonDataRows(data);
+    final SimpleKonResponse casesPerMonth =
+        new SimpleKonResponse(AvailableFilters.getForSjukfall(), simpleKonDataRows);
 
-    @Test
-    public void testConvertedResponseDoesNotContainOvrigtGroupWhenOnly7NoneEmptySeriesExistsINTYG1821() {
-        //Given
-        ArrayList<KonField> data = new ArrayList<>();
-        data.add(new KonField(1, 0));
-        data.add(new KonField(0, 0));
-        data.add(new KonField(2, 0));
-        data.add(new KonField(1, 2));
-        data.add(new KonField(0, 0));
-        data.add(new KonField(2, 2));
-        data.add(new KonField(5, 0));
-        data.add(new KonField(0, 0));
-        data.add(new KonField(6, 0));
-        data.add(new KonField(0, 1));
-        final List<SimpleKonDataRow> simpleKonDataRows = toSimpleKonDataRows(data);
-        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForSjukfall(), simpleKonDataRows);
+    // When
+    final ChartData result =
+        new DiagnosisSubGroupsTvarsnittConverter().convertToChartData(casesPerMonth);
 
-        //When
-        final ChartData result = new DiagnosisSubGroupsTvarsnittConverter().convertToChartData(casesPerMonth);
+    // Then
+    assertEquals(7, result.getCategories().size());
+    assertTrue(
+        result.getCategories().stream()
+            .noneMatch(
+                chartSeries -> MessagesText.REPORT_GROUP_OTHER.equals(chartSeries.getName())));
+  }
 
-        //Then
-        assertEquals(7, result.getCategories().size());
-        assertTrue(result.getCategories().stream().noneMatch(chartSeries -> MessagesText.REPORT_GROUP_OTHER.equals(chartSeries.getName())));
-    }
+  @Test
+  public void testConvertedResponseDoesContainNoneEmptyOvrigtGroupINTYG1821() {
+    // Given
+    ArrayList<KonDataRow> rows = new ArrayList<>();
+    ArrayList<KonField> data = new ArrayList<>();
+    data.add(new KonField(1, 0));
+    data.add(new KonField(0, 0));
+    data.add(new KonField(2, 0));
+    data.add(new KonField(1, 2));
+    data.add(new KonField(0, 0));
+    data.add(new KonField(2, 2));
+    data.add(new KonField(5, 0));
+    data.add(new KonField(0, 2));
+    data.add(new KonField(6, 0));
+    data.add(new KonField(0, 1));
+    final List<SimpleKonDataRow> simpleKonDataRows = toSimpleKonDataRows(data);
+    final SimpleKonResponse casesPerMonth =
+        new SimpleKonResponse(AvailableFilters.getForSjukfall(), simpleKonDataRows);
 
-    @Test
-    public void testConvertedResponseDoesContainNoneEmptyOvrigtGroupINTYG1821() {
-        //Given
-        ArrayList<KonDataRow> rows = new ArrayList<>();
-        ArrayList<KonField> data = new ArrayList<>();
-        data.add(new KonField(1, 0));
-        data.add(new KonField(0, 0));
-        data.add(new KonField(2, 0));
-        data.add(new KonField(1, 2));
-        data.add(new KonField(0, 0));
-        data.add(new KonField(2, 2));
-        data.add(new KonField(5, 0));
-        data.add(new KonField(0, 2));
-        data.add(new KonField(6, 0));
-        data.add(new KonField(0, 1));
-        final List<SimpleKonDataRow> simpleKonDataRows = toSimpleKonDataRows(data);
-        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForSjukfall(), simpleKonDataRows);
+    // When
+    final ChartData result =
+        new DiagnosisSubGroupsTvarsnittConverter().convertToChartData(casesPerMonth);
 
-        //When
-        final ChartData result = new DiagnosisSubGroupsTvarsnittConverter().convertToChartData(casesPerMonth);
-
-        //Then
-        assertEquals(7, result.getCategories().size());
-        assertTrue(result.getCategories().stream().anyMatch(chartSeries -> MessagesText.REPORT_GROUP_OTHER.equals(chartSeries.getName())));
-    }
-
+    // Then
+    assertEquals(7, result.getCategories().size());
+    assertTrue(
+        result.getCategories().stream()
+            .anyMatch(
+                chartSeries -> MessagesText.REPORT_GROUP_OTHER.equals(chartSeries.getName())));
+  }
 }

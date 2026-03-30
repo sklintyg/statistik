@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -31,103 +31,115 @@ import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 @Service("webMonitoringLogService")
 public class MonitoringLogServiceImpl implements MonitoringLogService {
 
-    private static final Object SPACE = " ";
+  private static final Object SPACE = " ";
 
-    @Override
-    public void logUserLogin(HsaIdUser hsaUser, LoginMethod loginMethod) {
-        String hsaUserId = hsaUser != null ? hsaUser.getId() : null;
-        try (MdcCloseableMap mdc =
-            MdcCloseableMap.builder()
-                .put(MdcLogConstants.EVENT_TYPE, toEventType(MonitoringEvent.USER_LOGIN))
-                .put(MdcLogConstants.USER_ID, getValue(hsaUserId))
-                .put(MdcLogConstants.EVENT_LOGIN_METHOD, loginMethod.value())
-                .build()
-        ) {
-            logEvent(MonitoringEvent.USER_LOGIN, hsaUserId, loginMethod.value());
-        }
+  @Override
+  public void logUserLogin(HsaIdUser hsaUser, LoginMethod loginMethod) {
+    String hsaUserId = hsaUser != null ? hsaUser.getId() : null;
+    try (MdcCloseableMap mdc =
+        MdcCloseableMap.builder()
+            .put(MdcLogConstants.EVENT_TYPE, toEventType(MonitoringEvent.USER_LOGIN))
+            .put(MdcLogConstants.USER_ID, getValue(hsaUserId))
+            .put(MdcLogConstants.EVENT_LOGIN_METHOD, loginMethod.value())
+            .build()) {
+      logEvent(MonitoringEvent.USER_LOGIN, hsaUserId, loginMethod.value());
+    }
+  }
+
+  @Override
+  public void logUserLoginFailed(String exception) {
+    logEvent(MonitoringEvent.USER_LOGIN_FAILURE, exception);
+  }
+
+  @Override
+  public void logFileUpload(
+      HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, String fileName, Integer rows) {
+    String hsaUserId = hsaUser != null ? hsaUser.getId() : null;
+    String vardgivarId = hsaVardgivare != null ? hsaVardgivare.getId() : null;
+    try (MdcCloseableMap mdc =
+        MdcCloseableMap.builder()
+            .put(MdcLogConstants.EVENT_TYPE, toEventType(MonitoringEvent.FILE_UPLOAD))
+            .put(MdcLogConstants.USER_ID, getValue(hsaUserId))
+            .put(MdcLogConstants.EVENT_USER_CARE_PROVIDER_ID, getValue(vardgivarId))
+            .build()) {
+      logEvent(MonitoringEvent.FILE_UPLOAD, hsaUserId, vardgivarId, fileName, rows);
+    }
+  }
+
+  @Override
+  public void logTrackAccessProtectedChartData(
+      HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, String uri) {
+    String hsaUserId = hsaUser != null ? hsaUser.getId() : null;
+    String vardgivarId = hsaVardgivare != null ? hsaVardgivare.getId() : null;
+    try (MdcCloseableMap mdc =
+        MdcCloseableMap.builder()
+            .put(
+                MdcLogConstants.EVENT_TYPE,
+                toEventType(MonitoringEvent.TRACK_ACCESS_PROTECTED_CHART_DATA))
+            .put(MdcLogConstants.USER_ID, getValue(hsaUserId))
+            .put(MdcLogConstants.EVENT_USER_CARE_PROVIDER_ID, getValue(vardgivarId))
+            .build()) {
+      logEvent(MonitoringEvent.TRACK_ACCESS_PROTECTED_CHART_DATA, hsaUserId, vardgivarId, uri);
+    }
+  }
+
+  @Override
+  public void logTrackAccessAnonymousChartData(String uri) {
+    logEvent(MonitoringEvent.TRACK_ACCESS_ANONYMOUS_CHART_DATA, uri);
+  }
+
+  @Override
+  public void logBrowserInfo(
+      String browserName,
+      String browserVersion,
+      String osFamily,
+      String osVersion,
+      String width,
+      String height) {
+    logEvent(
+        MonitoringEvent.BROWSER_INFO,
+        browserName,
+        browserVersion,
+        osFamily,
+        osVersion,
+        width,
+        height);
+  }
+
+  private void logEvent(MonitoringEvent logEvent, Object... logMsgArgs) {
+    log.info(MarkerFilter.MONITORING, buildMessage(logEvent), logMsgArgs);
+  }
+
+  private String buildMessage(MonitoringEvent logEvent) {
+    StringBuilder logMsg = new StringBuilder();
+    logMsg.append(logEvent.name()).append(SPACE).append(logEvent.getMessage());
+    return logMsg.toString();
+  }
+
+  private enum MonitoringEvent {
+    USER_LOGIN("Login user hsaId '{}' using login method '{}'"),
+    FILE_UPLOAD("User hsaId '{}', vardgivarId '{}' uploaded file '{}' with '{}' rows"),
+    TRACK_ACCESS_PROTECTED_CHART_DATA("User hsaId '{}', vardgivarId '{}' accessed uri '{}'"),
+    TRACK_ACCESS_ANONYMOUS_CHART_DATA("Accessed uri '{}'"),
+    BROWSER_INFO("Name '{}' Version '{}' OSFamily '{}' OSVersion '{}' Width '{}' Height '{}'"),
+    USER_LOGIN_FAILURE("User failed to login, exception message '{}'");
+
+    private final String message;
+
+    MonitoringEvent(String msg) {
+      this.message = msg;
     }
 
-    @Override
-    public void logUserLoginFailed(String exception) {
-        logEvent(MonitoringEvent.USER_LOGIN_FAILURE, exception);
+    public String getMessage() {
+      return message;
     }
+  }
 
-    @Override
-    public void logFileUpload(HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, String fileName, Integer rows) {
-        String hsaUserId = hsaUser != null ? hsaUser.getId() : null;
-        String vardgivarId = hsaVardgivare != null ? hsaVardgivare.getId() : null;
-        try (MdcCloseableMap mdc =
-            MdcCloseableMap.builder()
-                .put(MdcLogConstants.EVENT_TYPE, toEventType(MonitoringEvent.FILE_UPLOAD))
-                .put(MdcLogConstants.USER_ID, getValue(hsaUserId))
-                .put(MdcLogConstants.EVENT_USER_CARE_PROVIDER_ID, getValue(vardgivarId))
-                .build()
-        ) {
-            logEvent(MonitoringEvent.FILE_UPLOAD, hsaUserId, vardgivarId, fileName, rows);
-        }
-    }
+  private String toEventType(MonitoringEvent monitoringEvent) {
+    return monitoringEvent.name().toLowerCase().replace("_", "-");
+  }
 
-    @Override
-    public void logTrackAccessProtectedChartData(HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, String uri) {
-        String hsaUserId = hsaUser != null ? hsaUser.getId() : null;
-        String vardgivarId = hsaVardgivare != null ? hsaVardgivare.getId() : null;
-        try (MdcCloseableMap mdc =
-            MdcCloseableMap.builder()
-                .put(MdcLogConstants.EVENT_TYPE, toEventType(MonitoringEvent.TRACK_ACCESS_PROTECTED_CHART_DATA))
-                .put(MdcLogConstants.USER_ID, getValue(hsaUserId))
-                .put(MdcLogConstants.EVENT_USER_CARE_PROVIDER_ID, getValue(vardgivarId))
-                .build()
-        ) {
-            logEvent(MonitoringEvent.TRACK_ACCESS_PROTECTED_CHART_DATA, hsaUserId, vardgivarId, uri);
-        }
-    }
-
-    @Override
-    public void logTrackAccessAnonymousChartData(String uri) {
-        logEvent(MonitoringEvent.TRACK_ACCESS_ANONYMOUS_CHART_DATA, uri);
-    }
-
-    @Override
-    public void logBrowserInfo(String browserName, String browserVersion, String osFamily, String osVersion, String width, String height) {
-        logEvent(MonitoringEvent.BROWSER_INFO, browserName, browserVersion, osFamily, osVersion, width, height);
-    }
-
-    private void logEvent(MonitoringEvent logEvent, Object... logMsgArgs) {
-        log.info(MarkerFilter.MONITORING, buildMessage(logEvent), logMsgArgs);
-    }
-
-    private String buildMessage(MonitoringEvent logEvent) {
-        StringBuilder logMsg = new StringBuilder();
-        logMsg.append(logEvent.name()).append(SPACE).append(logEvent.getMessage());
-        return logMsg.toString();
-    }
-
-    private enum MonitoringEvent {
-        USER_LOGIN("Login user hsaId '{}' using login method '{}'"),
-        FILE_UPLOAD("User hsaId '{}', vardgivarId '{}' uploaded file '{}' with '{}' rows"),
-        TRACK_ACCESS_PROTECTED_CHART_DATA("User hsaId '{}', vardgivarId '{}' accessed uri '{}'"),
-        TRACK_ACCESS_ANONYMOUS_CHART_DATA("Accessed uri '{}'"),
-        BROWSER_INFO("Name '{}' Version '{}' OSFamily '{}' OSVersion '{}' Width '{}' Height '{}'"),
-        USER_LOGIN_FAILURE(
-            "User failed to login, exception message '{}'");
-
-        private final String message;
-
-        MonitoringEvent(String msg) {
-            this.message = msg;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-    }
-
-    private String toEventType(MonitoringEvent monitoringEvent) {
-        return monitoringEvent.name().toLowerCase().replace("_", "-");
-    }
-
-
-    private static String getValue(String value) {
-        return value != null ? value : "-";
-    }
+  private static String getValue(String value) {
+    return value != null ? value : "-";
+  }
 }

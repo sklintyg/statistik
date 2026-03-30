@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -39,214 +39,221 @@ import se.inera.statistics.service.warehouse.query.LakarbefattningQuery;
 
 public final class HSAServiceHelper {
 
-    private static final Logger LOG = LoggerFactory.getLogger(HSAServiceHelper.class);
+  private static final Logger LOG = LoggerFactory.getLogger(HSAServiceHelper.class);
 
-    private static Joiner joiner = Joiner.on(",").skipNulls();
+  private static Joiner joiner = Joiner.on(",").skipNulls();
 
-    private HSAServiceHelper() {
+  private HSAServiceHelper() {}
+
+  public static String getHuvudEnhetId(HsaInfo hsaData) {
+    if (hsaData == null) {
+      return null;
     }
+    return getEnhetId(hsaData.getHuvudenhet());
+  }
 
-    public static String getHuvudEnhetId(HsaInfo hsaData) {
-        if (hsaData == null) {
-            return null;
-        }
-        return getEnhetId(hsaData.getHuvudenhet());
+  public static String getUnderenhetId(HsaInfo hsaData) {
+    if (hsaData == null) {
+      return null;
     }
-
-    public static String getUnderenhetId(HsaInfo hsaData) {
-        if (hsaData == null) {
-            return null;
-        }
-        String result = getEnhetId(hsaData.getHuvudenhet());
-        if (result != null) {
-            return getEnhetId(hsaData.getEnhet());
-        }
-        return null;
+    String result = getEnhetId(hsaData.getHuvudenhet());
+    if (result != null) {
+      return getEnhetId(hsaData.getEnhet());
     }
+    return null;
+  }
 
-    public static HsaIdVardgivare getVardgivarId(HsaInfo hsaData) {
-        if (hsaData == null) {
-            return HsaIdVardgivare.empty();
-        }
-        final HsaInfoVg vardgivare = hsaData.getVardgivare();
-        if (vardgivare == null) {
-            return HsaIdVardgivare.empty();
-        }
-        return new HsaIdVardgivare(vardgivare.getId());
+  public static HsaIdVardgivare getVardgivarId(HsaInfo hsaData) {
+    if (hsaData == null) {
+      return HsaIdVardgivare.empty();
     }
-
-    public static String getLan(HsaInfo hsaData) {
-        if (hsaData != null) {
-            String result = getLan(hsaData.getEnhet());
-            if (result == null) {
-                result = getLan(hsaData.getHuvudenhet());
-            }
-            try {
-                return result != null && result.length() <= 2 && Integer.parseInt(result) >= 0 ? result : Lan.OVRIGT_ID;
-            } catch (NumberFormatException e) {
-                return Lan.OVRIGT_ID;
-            }
-        } else {
-            return Lan.OVRIGT_ID;
-        }
+    final HsaInfoVg vardgivare = hsaData.getVardgivare();
+    if (vardgivare == null) {
+      return HsaIdVardgivare.empty();
     }
+    return new HsaIdVardgivare(vardgivare.getId());
+  }
 
-    private static String getLan(HsaInfoEnhet hsaData) {
-        if (hsaData == null) {
-            return null;
-        }
-        final HsaInfoEnhetGeo geografi = hsaData.getGeografi();
-        if (geografi == null) {
-            return null;
-        }
-        return geografi.getLan();
+  public static String getLan(HsaInfo hsaData) {
+    if (hsaData != null) {
+      String result = getLan(hsaData.getEnhet());
+      if (result == null) {
+        result = getLan(hsaData.getHuvudenhet());
+      }
+      try {
+        return result != null && result.length() <= 2 && Integer.parseInt(result) >= 0
+            ? result
+            : Lan.OVRIGT_ID;
+      } catch (NumberFormatException e) {
+        return Lan.OVRIGT_ID;
+      }
+    } else {
+      return Lan.OVRIGT_ID;
     }
+  }
 
-    public static String getKommun(HsaInfo hsaData) {
-        if (hsaData != null) {
-            String result = getKommun(hsaData.getEnhet());
-            if (result == null) {
-                result = getKommun(hsaData.getHuvudenhet());
-            }
-            try {
-                final boolean isValidKommunId = result != null
-                    && result.length() <= WidelineConverter.MAX_LENGTH_KOMMUN_ID
-                    && Integer.parseInt(result) >= 0;
-                return isValidKommunId ? result : Kommun.OVRIGT_ID.substring(2);
-            } catch (NumberFormatException e) {
-                return Kommun.OVRIGT_ID.substring(2);
-            }
-        } else {
-            return Kommun.OVRIGT_ID.substring(2);
-        }
+  private static String getLan(HsaInfoEnhet hsaData) {
+    if (hsaData == null) {
+      return null;
     }
-
-    private static String getKommun(HsaInfoEnhet hsaData) {
-        if (hsaData == null) {
-            return null;
-        }
-        final HsaInfoEnhetGeo geografi = hsaData.getGeografi();
-        if (geografi == null) {
-            return null;
-        }
-        return geografi.getKommun();
+    final HsaInfoEnhetGeo geografi = hsaData.getGeografi();
+    if (geografi == null) {
+      return null;
     }
+    return geografi.getLan();
+  }
 
-    public static int getLakaralder(HsaInfo hsaData) {
-        try {
-            final String result = hsaData.getPersonal().getAlder();
-            return result != null ? Integer.parseInt(result) : 0;
-        } catch (NullPointerException | NumberFormatException e) {
-            LOG.debug("Could not parse lakare age", e);
-            return 0;
-        }
+  public static String getKommun(HsaInfo hsaData) {
+    if (hsaData != null) {
+      String result = getKommun(hsaData.getEnhet());
+      if (result == null) {
+        result = getKommun(hsaData.getHuvudenhet());
+      }
+      try {
+        final boolean isValidKommunId =
+            result != null
+                && result.length() <= WidelineConverter.MAX_LENGTH_KOMMUN_ID
+                && Integer.parseInt(result) >= 0;
+        return isValidKommunId ? result : Kommun.OVRIGT_ID.substring(2);
+      } catch (NumberFormatException e) {
+        return Kommun.OVRIGT_ID.substring(2);
+      }
+    } else {
+      return Kommun.OVRIGT_ID.substring(2);
     }
+  }
 
-    public static int getLakarkon(HsaInfo hsaData) {
-        try {
-            final String result = hsaData.getPersonal().getKon();
-            return result != null ? Integer.parseInt(result) : Kon.UNKNOWN.getNumberRepresentation();
-        } catch (NullPointerException | NumberFormatException e) {
-            LOG.debug("Could not parse lakare gender", e);
-            return Kon.UNKNOWN.getNumberRepresentation();
-        }
+  private static String getKommun(HsaInfoEnhet hsaData) {
+    if (hsaData == null) {
+      return null;
     }
-
-    public static String getLakarbefattning(HsaInfo hsaData) {
-        final HsaInfoPersonal personal = getHsaInfoPersonalNullSafe(hsaData);
-        if (personal == null) {
-            return String.valueOf(LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE);
-        }
-        final List<String> befattning = personal.getBefattning();
-        if (befattning == null || befattning.isEmpty()) {
-            return String.valueOf(LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE);
-        }
-        return joiner.join(befattning);
+    final HsaInfoEnhetGeo geografi = hsaData.getGeografi();
+    if (geografi == null) {
+      return null;
     }
+    return geografi.getKommun();
+  }
 
-    private static HsaInfoPersonal getHsaInfoPersonalNullSafe(HsaInfo hsaData) {
-        if (hsaData == null) {
-            return null;
-        }
-        return hsaData.getPersonal();
+  public static int getLakaralder(HsaInfo hsaData) {
+    try {
+      final String result = hsaData.getPersonal().getAlder();
+      return result != null ? Integer.parseInt(result) : 0;
+    } catch (NullPointerException | NumberFormatException e) {
+      LOG.debug("Could not parse lakare age", e);
+      return 0;
     }
+  }
 
-    public static String getVerksamhetsTyper(HsaInfo hsaData, boolean forceHuvudenhet) {
-        if (hsaData == null) {
-            return VerksamhetsTyp.OVRIGT_ID;
-        }
-        String result = getVerksamhetsTyper(hsaData.getEnhet());
-        if (forceHuvudenhet || result == null) {
-            result = getVerksamhetsTyper(hsaData.getHuvudenhet());
-        }
-        final boolean isVardcentral = (!forceHuvudenhet && isVardcentral(hsaData.getEnhet())) || isVardcentral(hsaData.getHuvudenhet());
-        result = isVardcentral ? (result != null && !result.isEmpty() ? result + "," : "") + VerksamhetsTyp.VARDCENTRAL_ID : result;
-        return result != null && !result.isEmpty() ? result : VerksamhetsTyp.OVRIGT_ID;
+  public static int getLakarkon(HsaInfo hsaData) {
+    try {
+      final String result = hsaData.getPersonal().getKon();
+      return result != null ? Integer.parseInt(result) : Kon.UNKNOWN.getNumberRepresentation();
+    } catch (NullPointerException | NumberFormatException e) {
+      LOG.debug("Could not parse lakare gender", e);
+      return Kon.UNKNOWN.getNumberRepresentation();
     }
+  }
 
-    private static boolean isVardcentral(HsaInfoEnhet hsaData) {
-        final List<String> enhetstyper = getEnhetstyper(hsaData);
-        for (String enhetstyp : enhetstyper) {
-            if (VerksamhetsTyp.VARDCENTRAL_ID.equals(enhetstyp)) {
-                return true;
-            }
-        }
-        return false;
+  public static String getLakarbefattning(HsaInfo hsaData) {
+    final HsaInfoPersonal personal = getHsaInfoPersonalNullSafe(hsaData);
+    if (personal == null) {
+      return String.valueOf(LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE);
     }
-
-    public static List<String> getEnhetstyper(HsaInfoEnhet hsaData) {
-        if (hsaData == null) {
-            return Collections.emptyList();
-        }
-        final List<String> enhetsTyps = hsaData.getEnhetsTyp();
-        if (enhetsTyps == null) {
-            return Collections.emptyList();
-        }
-        return enhetsTyps;
+    final List<String> befattning = personal.getBefattning();
+    if (befattning == null || befattning.isEmpty()) {
+      return String.valueOf(LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE);
     }
+    return joiner.join(befattning);
+  }
 
-    private static String getVerksamhetsTyper(HsaInfoEnhet hsaData) {
-        if (hsaData == null) {
-            return null;
-        }
-        final List<String> verksamhets = hsaData.getVerksamhet();
-        if (verksamhets == null) {
-            return null;
-        }
-        return joiner.join(verksamhets);
+  private static HsaInfoPersonal getHsaInfoPersonalNullSafe(HsaInfo hsaData) {
+    if (hsaData == null) {
+      return null;
     }
+    return hsaData.getPersonal();
+  }
 
-    private static String getEnhetId(HsaInfoEnhet hsaData) {
-        if (hsaData == null) {
-            return null;
-        }
-        return hsaData.getId();
+  public static String getVerksamhetsTyper(HsaInfo hsaData, boolean forceHuvudenhet) {
+    if (hsaData == null) {
+      return VerksamhetsTyp.OVRIGT_ID;
     }
-
-    public static HsaIdLakare getLakareId(HsaInfo hsaData) {
-        final HsaInfoPersonal personal = getHsaInfoPersonalNullSafe(hsaData);
-        if (personal == null) {
-            return null;
-        }
-        return new HsaIdLakare(personal.getId());
+    String result = getVerksamhetsTyper(hsaData.getEnhet());
+    if (forceHuvudenhet || result == null) {
+      result = getVerksamhetsTyper(hsaData.getHuvudenhet());
     }
+    final boolean isVardcentral =
+        (!forceHuvudenhet && isVardcentral(hsaData.getEnhet()))
+            || isVardcentral(hsaData.getHuvudenhet());
+    result =
+        isVardcentral
+            ? (result != null && !result.isEmpty() ? result + "," : "")
+                + VerksamhetsTyp.VARDCENTRAL_ID
+            : result;
+    return result != null && !result.isEmpty() ? result : VerksamhetsTyp.OVRIGT_ID;
+  }
 
-    public static String getLakareTilltalsnamn(HsaInfo hsaData) {
-        final HsaInfoPersonal personal = getHsaInfoPersonalNullSafe(hsaData);
-        if (personal == null) {
-            return "";
-        }
-        final String result = personal.getTilltalsnamn();
-        return result != null ? result : "";
+  private static boolean isVardcentral(HsaInfoEnhet hsaData) {
+    final List<String> enhetstyper = getEnhetstyper(hsaData);
+    for (String enhetstyp : enhetstyper) {
+      if (VerksamhetsTyp.VARDCENTRAL_ID.equals(enhetstyp)) {
+        return true;
+      }
     }
+    return false;
+  }
 
-    public static String getLakareEfternamn(HsaInfo hsaData) {
-        final HsaInfoPersonal personal = getHsaInfoPersonalNullSafe(hsaData);
-        if (personal == null) {
-            return "";
-        }
-        final String result = personal.getEfternamn();
-        return result != null ? result : "";
+  public static List<String> getEnhetstyper(HsaInfoEnhet hsaData) {
+    if (hsaData == null) {
+      return Collections.emptyList();
     }
+    final List<String> enhetsTyps = hsaData.getEnhetsTyp();
+    if (enhetsTyps == null) {
+      return Collections.emptyList();
+    }
+    return enhetsTyps;
+  }
 
+  private static String getVerksamhetsTyper(HsaInfoEnhet hsaData) {
+    if (hsaData == null) {
+      return null;
+    }
+    final List<String> verksamhets = hsaData.getVerksamhet();
+    if (verksamhets == null) {
+      return null;
+    }
+    return joiner.join(verksamhets);
+  }
+
+  private static String getEnhetId(HsaInfoEnhet hsaData) {
+    if (hsaData == null) {
+      return null;
+    }
+    return hsaData.getId();
+  }
+
+  public static HsaIdLakare getLakareId(HsaInfo hsaData) {
+    final HsaInfoPersonal personal = getHsaInfoPersonalNullSafe(hsaData);
+    if (personal == null) {
+      return null;
+    }
+    return new HsaIdLakare(personal.getId());
+  }
+
+  public static String getLakareTilltalsnamn(HsaInfo hsaData) {
+    final HsaInfoPersonal personal = getHsaInfoPersonalNullSafe(hsaData);
+    if (personal == null) {
+      return "";
+    }
+    final String result = personal.getTilltalsnamn();
+    return result != null ? result : "";
+  }
+
+  public static String getLakareEfternamn(HsaInfo hsaData) {
+    final HsaInfoPersonal personal = getHsaInfoPersonalNullSafe(hsaData);
+    if (personal == null) {
+      return "";
+    }
+    final String result = personal.getEfternamn();
+    return result != null ? result : "";
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,32 +22,32 @@ import java.io.Serializable;
 
 public class SjukfallPerManadOverview implements Serializable {
 
-    private final int proportionMale;
-    private final int proportionFemale;
-    private final int alteration;
-    private final String previousPeriodText;
+  private final int proportionMale;
+  private final int proportionFemale;
+  private final int alteration;
+  private final String previousPeriodText;
 
-    public SjukfallPerManadOverview(int proportionMale, int proportionFemale, int alteration, String previousPeriodText) {
-        this.proportionMale = proportionMale;
-        this.proportionFemale = proportionFemale;
-        this.alteration = alteration;
-        this.previousPeriodText = previousPeriodText;
-    }
+  public SjukfallPerManadOverview(
+      int proportionMale, int proportionFemale, int alteration, String previousPeriodText) {
+    this.proportionMale = proportionMale;
+    this.proportionFemale = proportionFemale;
+    this.alteration = alteration;
+    this.previousPeriodText = previousPeriodText;
+  }
 
-    public int getProportionMale() {
-        return proportionMale;
-    }
+  public int getProportionMale() {
+    return proportionMale;
+  }
 
-    public int getProportionFemale() {
-        return proportionFemale;
-    }
+  public int getProportionFemale() {
+    return proportionFemale;
+  }
 
-    public int getAlteration() {
-        return alteration;
-    }
+  public int getAlteration() {
+    return alteration;
+  }
 
-    public String getPreviousPeriodText() {
-        return previousPeriodText;
-    }
-
+  public String getPreviousPeriodText() {
+    return previousPeriodText;
+  }
 }

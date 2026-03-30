@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -31,123 +31,127 @@ import se.inera.statistics.service.region.RegionEnhetFileDataRow;
 
 public class RegionFileReaderTest {
 
-    private RegionFileReader regionFileReader = new RegionFileReader();
+  private RegionFileReader regionFileReader = new RegionFileReader();
 
-    @Test
-    public void testReadExcelData() throws Exception {
-        //Given
-        URL url = RegionFileReader.class.getResource("/underlag-till-v3-vgr-listningar.xls");
-        File file = new File(url.getPath());
-        final FileDataSource dataSource = new FileDataSource(file);
+  @Test
+  public void testReadExcelData() throws Exception {
+    // Given
+    URL url = RegionFileReader.class.getResource("/underlag-till-v3-vgr-listningar.xls");
+    File file = new File(url.getPath());
+    final FileDataSource dataSource = new FileDataSource(file);
 
-        //When
-        final List<RegionEnhetFileDataRow> result = regionFileReader.readExcelData(dataSource);
+    // When
+    final List<RegionEnhetFileDataRow> result = regionFileReader.readExcelData(dataSource);
 
-        //Then
-        assertEquals(204, result.size());
+    // Then
+    assertEquals(204, result.size());
 
-        final RegionEnhetFileDataRow row0 = result.get(0);
-        assertEquals("SE2321000131-E000000000455", row0.getEnhetensHsaId().getId());
-        assertEquals(Integer.valueOf(0), row0.getListadePatienter());
+    final RegionEnhetFileDataRow row0 = result.get(0);
+    assertEquals("SE2321000131-E000000000455", row0.getEnhetensHsaId().getId());
+    assertEquals(Integer.valueOf(0), row0.getListadePatienter());
 
-        final RegionEnhetFileDataRow row3 = result.get(3);
-        assertEquals("SE2321000131-E000000007507", row3.getEnhetensHsaId().getId());
-        assertEquals(Integer.valueOf(1072), result.get(3).getListadePatienter());
+    final RegionEnhetFileDataRow row3 = result.get(3);
+    assertEquals("SE2321000131-E000000007507", row3.getEnhetensHsaId().getId());
+    assertEquals(Integer.valueOf(1072), result.get(3).getListadePatienter());
 
-        final RegionEnhetFileDataRow row192 = result.get(192);
-        assertEquals("SE2321000131-P000000015902", row192.getEnhetensHsaId().getId());
-        assertEquals(null, row192.getListadePatienter());
+    final RegionEnhetFileDataRow row192 = result.get(192);
+    assertEquals("SE2321000131-P000000015902", row192.getEnhetensHsaId().getId());
+    assertEquals(null, row192.getListadePatienter());
+  }
+
+  @Test
+  public void testReadExcelDataWithOneRow() throws Exception {
+    // Given
+    URL url = RegionFileReader.class.getResource("/region-test.xls");
+    File file = new File(url.getPath());
+    final FileDataSource dataSource = new FileDataSource(file);
+
+    // When
+    final List<RegionEnhetFileDataRow> result = regionFileReader.readExcelData(dataSource);
+
+    // Then
+    assertEquals(1, result.size());
+
+    final RegionEnhetFileDataRow row0 = result.get(0);
+    assertEquals("SE2321000131-E000000007507", row0.getEnhetensHsaId().getId());
+    assertEquals(Integer.valueOf(1072), row0.getListadePatienter());
+  }
+
+  @Test
+  public void testReadExcelDataWithListningarAsText() throws Exception {
+    // Given
+    URL url = RegionFileReader.class.getResource("/region-test-text-listning.xls");
+    File file = new File(url.getPath());
+    final FileDataSource dataSource = new FileDataSource(file);
+
+    // When
+    final List<RegionEnhetFileDataRow> result = regionFileReader.readExcelData(dataSource);
+
+    // Then
+    assertEquals(2, result.size());
+
+    final RegionEnhetFileDataRow row0 = result.get(0);
+    assertEquals("SE2321000131-E000000007507", row0.getEnhetensHsaId().getId());
+    assertEquals(Integer.valueOf(1072), row0.getListadePatienter());
+
+    final RegionEnhetFileDataRow row1 = result.get(1);
+    assertEquals("SE2321000131-E000000007508", row1.getEnhetensHsaId().getId());
+    assertEquals(Integer.valueOf(1073), row1.getListadePatienter());
+  }
+
+  @Test
+  public void
+      testReadExcelDataWithErrorInPatientsFieldThrowsErrorAndShowsCorrectRowNumberInMessage()
+          throws Exception {
+    // Given
+    URL url = RegionFileReader.class.getResource("/region-test-med-patientfel.xls");
+    File file = new File(url.getPath());
+    final FileDataSource dataSource = new FileDataSource(file);
+
+    // When
+    try {
+      regionFileReader.readExcelData(dataSource);
+      fail();
+    } catch (RegionEnhetFileParseException e) {
+      // Then
+      assertTrue(e.getMessage().startsWith("Rad 2"), e.getMessage());
     }
+  }
 
-    @Test
-    public void testReadExcelDataWithOneRow() throws Exception {
-        //Given
-        URL url = RegionFileReader.class.getResource("/region-test.xls");
-        File file = new File(url.getPath());
-        final FileDataSource dataSource = new FileDataSource(file);
+  @Test
+  public void testReadExcelDataWithErrorInHsaIdFieldThrowsErrorAndShowsCorrectRowNumberInMessage()
+      throws Exception {
+    // Given
+    URL url = RegionFileReader.class.getResource("/region-hsaid-felaktiga-tecken.xls");
+    File file = new File(url.getPath());
+    final FileDataSource dataSource = new FileDataSource(file);
 
-        //When
-        final List<RegionEnhetFileDataRow> result = regionFileReader.readExcelData(dataSource);
-
-        //Then
-        assertEquals(1, result.size());
-
-        final RegionEnhetFileDataRow row0 = result.get(0);
-        assertEquals("SE2321000131-E000000007507", row0.getEnhetensHsaId().getId());
-        assertEquals(Integer.valueOf(1072), row0.getListadePatienter());
+    // When
+    try {
+      regionFileReader.readExcelData(dataSource);
+      fail();
+    } catch (RegionEnhetFileParseException e) {
+      // Then
+      assertTrue(e.getMessage().startsWith("Rad 3"), e.getMessage());
     }
+  }
 
-    @Test
-    public void testReadExcelDataWithListningarAsText() throws Exception {
-        //Given
-        URL url = RegionFileReader.class.getResource("/region-test-text-listning.xls");
-        File file = new File(url.getPath());
-        final FileDataSource dataSource = new FileDataSource(file);
+  @Test
+  public void
+      testReadExcelDataWithNegativeNumberOfPatientsThrowsErrorAndShowsCorrectRowNumberInMessage()
+          throws Exception {
+    // Given
+    URL url = RegionFileReader.class.getResource("/region-negativa-patienter.xls");
+    File file = new File(url.getPath());
+    final FileDataSource dataSource = new FileDataSource(file);
 
-        //When
-        final List<RegionEnhetFileDataRow> result = regionFileReader.readExcelData(dataSource);
-
-        //Then
-        assertEquals(2, result.size());
-
-        final RegionEnhetFileDataRow row0 = result.get(0);
-        assertEquals("SE2321000131-E000000007507", row0.getEnhetensHsaId().getId());
-        assertEquals(Integer.valueOf(1072), row0.getListadePatienter());
-
-        final RegionEnhetFileDataRow row1 = result.get(1);
-        assertEquals("SE2321000131-E000000007508", row1.getEnhetensHsaId().getId());
-        assertEquals(Integer.valueOf(1073), row1.getListadePatienter());
+    // When
+    try {
+      regionFileReader.readExcelData(dataSource);
+      fail();
+    } catch (RegionEnhetFileParseException e) {
+      // Then
+      assertTrue(e.getMessage().startsWith("Rad 3"), e.getMessage());
     }
-
-    @Test
-    public void testReadExcelDataWithErrorInPatientsFieldThrowsErrorAndShowsCorrectRowNumberInMessage() throws Exception {
-        //Given
-        URL url = RegionFileReader.class.getResource("/region-test-med-patientfel.xls");
-        File file = new File(url.getPath());
-        final FileDataSource dataSource = new FileDataSource(file);
-
-        //When
-        try {
-            regionFileReader.readExcelData(dataSource);
-            fail();
-        } catch (RegionEnhetFileParseException e) {
-            //Then
-            assertTrue(e.getMessage().startsWith("Rad 2"), e.getMessage());
-        }
-    }
-
-    @Test
-    public void testReadExcelDataWithErrorInHsaIdFieldThrowsErrorAndShowsCorrectRowNumberInMessage() throws Exception {
-        //Given
-        URL url = RegionFileReader.class.getResource("/region-hsaid-felaktiga-tecken.xls");
-        File file = new File(url.getPath());
-        final FileDataSource dataSource = new FileDataSource(file);
-
-        //When
-        try {
-            regionFileReader.readExcelData(dataSource);
-            fail();
-        } catch (RegionEnhetFileParseException e) {
-            //Then
-            assertTrue(e.getMessage().startsWith("Rad 3"), e.getMessage());
-        }
-    }
-
-    @Test
-    public void testReadExcelDataWithNegativeNumberOfPatientsThrowsErrorAndShowsCorrectRowNumberInMessage() throws Exception {
-        //Given
-        URL url = RegionFileReader.class.getResource("/region-negativa-patienter.xls");
-        File file = new File(url.getPath());
-        final FileDataSource dataSource = new FileDataSource(file);
-
-        //When
-        try {
-            regionFileReader.readExcelData(dataSource);
-            fail();
-        } catch (RegionEnhetFileParseException e) {
-            //Then
-            assertTrue(e.getMessage().startsWith("Rad 3"), e.getMessage());
-        }
-    }
-
+  }
 }

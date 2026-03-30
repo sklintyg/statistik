@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -38,40 +38,47 @@ import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 public class SjukskrivningsgradQueryTest {
 
-    @Captor
-    private ArgumentCaptor<CounterFunction<Integer>> counterCaptor;
+  @Captor private ArgumentCaptor<CounterFunction<Integer>> counterCaptor;
 
+  @Before
+  public void setUp() throws Exception {
+    MockitoAnnotations.initMocks(this);
+  }
 
-    @Before
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-    }
+  @Test
+  public void testGetSjukskrivningsgradCountingAllDegreesOnlyCountDistinctDegrees()
+      throws Exception {
+    // Given
+    final Clock clock = Clock.systemDefaultZone();
+    final Aisle aisle = Mockito.mock(Aisle.class);
+    final SjukfallUtil sjukfallUtil = Mockito.mock(SjukfallUtil.class);
+    final FilterPredicates filter = SjukfallUtil.ALL_ENHETER;
+    final LocalDate start = LocalDate.now(clock);
+    final int periods = 1;
+    final int periodSize = 1;
+    Mockito.doReturn(null)
+        .when(sjukfallUtil)
+        .calculateKonDataResponse(
+            eq(aisle),
+            eq(filter),
+            eq(start),
+            eq(periods),
+            eq(periodSize),
+            eq(SjukskrivningsgradQuery.GRAD_LABEL),
+            eq(SjukskrivningsgradQuery.GRAD),
+            counterCaptor.capture());
 
-    @Test
-    public void testGetSjukskrivningsgradCountingAllDegreesOnlyCountDistinctDegrees() throws Exception {
-        //Given
-        final Clock clock = Clock.systemDefaultZone();
-        final Aisle aisle = Mockito.mock(Aisle.class);
-        final SjukfallUtil sjukfallUtil = Mockito.mock(SjukfallUtil.class);
-        final FilterPredicates filter = SjukfallUtil.ALL_ENHETER;
-        final LocalDate start = LocalDate.now(clock);
-        final int periods = 1;
-        final int periodSize = 1;
-        Mockito.doReturn(null).when(sjukfallUtil)
-            .calculateKonDataResponse(eq(aisle), eq(filter), eq(start), eq(periods), eq(periodSize), eq(SjukskrivningsgradQuery.GRAD_LABEL),
-                eq(SjukskrivningsgradQuery.GRAD), counterCaptor.capture());
+    final Sjukfall sjukfall = Mockito.mock(Sjukfall.class);
+    Mockito.when(sjukfall.getSjukskrivningsgrader()).thenReturn(Arrays.asList(1, 2, 3, 2, 1));
+    Mockito.when(sjukfall.getSjukskrivningsgrad()).thenReturn(6);
+    final HashMultiset<Integer> counter = HashMultiset.create();
 
-        final Sjukfall sjukfall = Mockito.mock(Sjukfall.class);
-        Mockito.when(sjukfall.getSjukskrivningsgrader()).thenReturn(Arrays.asList(1, 2, 3, 2, 1));
-        Mockito.when(sjukfall.getSjukskrivningsgrad()).thenReturn(6);
-        final HashMultiset<Integer> counter = HashMultiset.create();
+    // When
+    SjukskrivningsgradQuery.getSjukskrivningsgrad(
+        aisle, filter, start, periods, periodSize, sjukfallUtil, true);
+    counterCaptor.getValue().addCount(sjukfall, counter);
 
-        //When
-        SjukskrivningsgradQuery.getSjukskrivningsgrad(aisle, filter, start, periods, periodSize, sjukfallUtil, true);
-        counterCaptor.getValue().addCount(sjukfall, counter);
-
-        //Then
-        assertEquals(3, counter.size());
-    }
-
+    // Then
+    assertEquals(3, counter.size());
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -32,47 +32,53 @@ import se.inera.statistics.service.region.RegionEnhetFileDataRow;
 @Component
 public class RegionEnhetManager {
 
-    @PersistenceContext(unitName = "IneraStatisticsLog")
-    private EntityManager manager;
+  @PersistenceContext(unitName = "IneraStatisticsLog")
+  private EntityManager manager;
 
-    @Transactional
-    public List<RegionEnhet> getAll() {
-        TypedQuery<RegionEnhet> query = manager.createQuery("SELECT l FROM RegionEnhet l", RegionEnhet.class);
-        return query.getResultList();
-    }
+  @Transactional
+  public List<RegionEnhet> getAll() {
+    TypedQuery<RegionEnhet> query =
+        manager.createQuery("SELECT l FROM RegionEnhet l", RegionEnhet.class);
+    return query.getResultList();
+  }
 
-    @Transactional
-    public Optional<RegionEnhet> get(Long id) {
-        final RegionEnhet regionEnhet = manager.find(RegionEnhet.class, id);
-        return regionEnhet == null ? Optional.empty() : Optional.of(regionEnhet);
-    }
+  @Transactional
+  public Optional<RegionEnhet> get(Long id) {
+    final RegionEnhet regionEnhet = manager.find(RegionEnhet.class, id);
+    return regionEnhet == null ? Optional.empty() : Optional.of(regionEnhet);
+  }
 
-    @Transactional
-    public List<RegionEnhet> getByRegionId(Long regionId) {
-        TypedQuery<RegionEnhet> query = manager
-            .createQuery("SELECT l FROM RegionEnhet l where l.regionId = :regionId", RegionEnhet.class)
+  @Transactional
+  public List<RegionEnhet> getByRegionId(Long regionId) {
+    TypedQuery<RegionEnhet> query =
+        manager
+            .createQuery(
+                "SELECT l FROM RegionEnhet l where l.regionId = :regionId", RegionEnhet.class)
             .setParameter("regionId", regionId);
-        return query.getResultList();
-    }
+    return query.getResultList();
+  }
 
-    @Transactional
-    public void removeByRegionId(Long regionId) {
-        final List<RegionEnhet> regionEnhets = getByRegionId(regionId);
-        for (RegionEnhet regionEnhet : regionEnhets) {
-            manager.remove(regionEnhet);
-        }
+  @Transactional
+  public void removeByRegionId(Long regionId) {
+    final List<RegionEnhet> regionEnhets = getByRegionId(regionId);
+    for (RegionEnhet regionEnhet : regionEnhets) {
+      manager.remove(regionEnhet);
     }
+  }
 
-    @Transactional
-    public void update(final Long regionId, final List<RegionEnhetFileDataRow> newData) {
-        List<RegionEnhet> regionEnhets = newData.stream().map(data -> {
-            final HsaIdEnhet enhetensHsaId = data.getEnhetensHsaId();
-            return new RegionEnhet(regionId, enhetensHsaId, data.getListadePatienter());
-        }).collect(Collectors.toList());
-        removeByRegionId(regionId);
-        for (RegionEnhet regionEnhet : regionEnhets) {
-            manager.persist(regionEnhet);
-        }
+  @Transactional
+  public void update(final Long regionId, final List<RegionEnhetFileDataRow> newData) {
+    List<RegionEnhet> regionEnhets =
+        newData.stream()
+            .map(
+                data -> {
+                  final HsaIdEnhet enhetensHsaId = data.getEnhetensHsaId();
+                  return new RegionEnhet(regionId, enhetensHsaId, data.getListadePatienter());
+                })
+            .collect(Collectors.toList());
+    removeByRegionId(regionId);
+    for (RegionEnhet regionEnhet : regionEnhets) {
+      manager.persist(regionEnhet);
     }
-
+  }
 }

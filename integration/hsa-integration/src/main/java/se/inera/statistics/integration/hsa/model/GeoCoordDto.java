@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,31 +20,31 @@ package se.inera.statistics.integration.hsa.model;
 
 public class GeoCoordDto {
 
-    private GeoCoordType type;
-    private String x;
-    private String y;
+  private GeoCoordType type;
+  private String x;
+  private String y;
 
-    public GeoCoordType getType() {
-        return type;
-    }
+  public GeoCoordType getType() {
+    return type;
+  }
 
-    public void setType(GeoCoordType type) {
-        this.type = type;
-    }
+  public void setType(GeoCoordType type) {
+    this.type = type;
+  }
 
-    public String getX() {
-        return x;
-    }
+  public String getX() {
+    return x;
+  }
 
-    public void setX(String x) {
-        this.x = x;
-    }
+  public void setX(String x) {
+    this.x = x;
+  }
 
-    public String getY() {
-        return y;
-    }
+  public String getY() {
+    return y;
+  }
 
-    public void setY(String y) {
-        this.y = y;
-    }
+  public void setY(String y) {
+    this.y = y;
+  }
 }

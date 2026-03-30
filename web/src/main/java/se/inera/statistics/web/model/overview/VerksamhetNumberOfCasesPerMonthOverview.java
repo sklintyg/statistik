@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,25 +20,26 @@ package se.inera.statistics.web.model.overview;
 
 public class VerksamhetNumberOfCasesPerMonthOverview {
 
-    private final int proportionMale;
-    private final int proportionFemale;
-    private final int totalCases;
+  private final int proportionMale;
+  private final int proportionFemale;
+  private final int totalCases;
 
-    public VerksamhetNumberOfCasesPerMonthOverview(int proportionMale, int proportionFemale, int totalCases) {
-        this.proportionMale = proportionMale;
-        this.proportionFemale = proportionFemale;
-        this.totalCases = totalCases;
-    }
+  public VerksamhetNumberOfCasesPerMonthOverview(
+      int proportionMale, int proportionFemale, int totalCases) {
+    this.proportionMale = proportionMale;
+    this.proportionFemale = proportionFemale;
+    this.totalCases = totalCases;
+  }
 
-    public int getTotalCases() {
-        return totalCases;
-    }
+  public int getTotalCases() {
+    return totalCases;
+  }
 
-    public int getProportionMale() {
-        return proportionMale;
-    }
+  public int getProportionMale() {
+    return proportionMale;
+  }
 
-    public int getProportionFemale() {
-        return proportionFemale;
-    }
+  public int getProportionFemale() {
+    return proportionFemale;
+  }
 }

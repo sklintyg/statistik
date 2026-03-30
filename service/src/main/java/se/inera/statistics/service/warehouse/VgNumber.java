@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,20 +22,19 @@ import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
 public class VgNumber {
 
-    private HsaIdVardgivare vgid;
-    private int number;
+  private HsaIdVardgivare vgid;
+  private int number;
 
-    public VgNumber(HsaIdVardgivare vgid, int number) {
-        this.vgid = vgid;
-        this.number = number;
-    }
+  public VgNumber(HsaIdVardgivare vgid, int number) {
+    this.vgid = vgid;
+    this.number = number;
+  }
 
-    public HsaIdVardgivare getVgid() {
-        return vgid;
-    }
+  public HsaIdVardgivare getVgid() {
+    return vgid;
+  }
 
-    public int getNumber() {
-        return number;
-    }
-
+  public int getNumber() {
+    return number;
+  }
 }

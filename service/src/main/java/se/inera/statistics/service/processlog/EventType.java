@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -21,10 +21,12 @@ package se.inera.statistics.service.processlog;
 import java.io.Serializable;
 
 /**
- * Warning: The order of the enums in this class is important since the ordinal
- * number is used when mapped in the database (e.g. the "type" field in table "intygshandelse"
- * and "intygtyp" in "wideline").
+ * Warning: The order of the enums in this class is important since the ordinal number is used when
+ * mapped in the database (e.g. the "type" field in table "intygshandelse" and "intygtyp" in
+ * "wideline").
  */
 public enum EventType implements Serializable {
-    CREATED, REVOKED, TEST
+  CREATED,
+  REVOKED,
+  TEST
 }

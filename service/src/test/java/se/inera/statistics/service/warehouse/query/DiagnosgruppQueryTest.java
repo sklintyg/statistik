@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -63,116 +63,142 @@ import se.inera.statistics.service.warehouse.WidelineLoader;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class DiagnosgruppQueryTest {
 
-    private static final HsaIdVardgivare VARDGIVARE = new HsaIdVardgivare("vardgivare");
+  private static final HsaIdVardgivare VARDGIVARE = new HsaIdVardgivare("vardgivare");
 
-    @Autowired
-    private Icd10 icd10;
+  @Autowired private Icd10 icd10;
 
-    @Autowired
-    private DiagnosgruppQuery query;
+  @Autowired private DiagnosgruppQuery query;
 
-    @Autowired
-    private SjukfallUtil sjukfallUtil;
+  @Autowired private SjukfallUtil sjukfallUtil;
 
-    @InjectMocks
-    private Warehouse warehouse = new Warehouse();
+  @InjectMocks private Warehouse warehouse = new Warehouse();
 
-    @Mock
-    private WidelineLoader widelineLoader;
+  @Mock private WidelineLoader widelineLoader;
 
-    @Spy
-    private Cache cache = new Cache(new NoOpRedisTemplate());
+  @Spy private Cache cache = new Cache(new NoOpRedisTemplate());
 
-    private int intyg;
-    private int patient;
-    private ArrayList<Fact> facts = new ArrayList<>();
+  private int intyg;
+  private int patient;
+  private ArrayList<Fact> facts = new ArrayList<>();
 
-    @Before
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        facts.clear();
-    }
+  @Before
+  public void setUp() throws Exception {
+    MockitoAnnotations.initMocks(this);
+    facts.clear();
+  }
 
-    @Test
-    public void one() {
-        final String kapitelCode = "A00-B99";
-        fact(4010, Icd10.icd10ToInt(kapitelCode, Icd10RangeType.KAPITEL));
-        Mockito.when(widelineLoader.getAilesForVgs(any())).thenReturn(Collections.singletonList(new Aisle(VARDGIVARE, facts)));
-        final Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
-        final Map<Integer, Counter<Integer>> count = query.count(sjukfall);
-        final Icd10.Kapitel kapitel = icd10.getKapitel(kapitelCode);
-        final int kapitelInt = kapitel.toInt();
-        final Counter<Integer> kapitelCounter = count.get(kapitelInt);
-        final int kapitelCount = kapitelCounter.getCount();
-        assertEquals(1, kapitelCount);
-    }
+  @Test
+  public void one() {
+    final String kapitelCode = "A00-B99";
+    fact(4010, Icd10.icd10ToInt(kapitelCode, Icd10RangeType.KAPITEL));
+    Mockito.when(widelineLoader.getAilesForVgs(any()))
+        .thenReturn(Collections.singletonList(new Aisle(VARDGIVARE, facts)));
+    final Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
+    final Map<Integer, Counter<Integer>> count = query.count(sjukfall);
+    final Icd10.Kapitel kapitel = icd10.getKapitel(kapitelCode);
+    final int kapitelInt = kapitel.toInt();
+    final Counter<Integer> kapitelCounter = count.get(kapitelInt);
+    final int kapitelCount = kapitelCounter.getCount();
+    assertEquals(1, kapitelCount);
+  }
 
-    private Collection<Sjukfall> calculateSjukfallsHelper(Aisle aisle) {
-        final LocalDate fromDate = LocalDate.of(2000, 1, 1);
-        return sjukfallUtil.sjukfallGrupper(fromDate, 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next().getSjukfall();
-    }
+  private Collection<Sjukfall> calculateSjukfallsHelper(Aisle aisle) {
+    final LocalDate fromDate = LocalDate.of(2000, 1, 1);
+    return sjukfallUtil
+        .sjukfallGrupper(fromDate, 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER)
+        .iterator()
+        .next()
+        .getSjukfall();
+  }
 
-    @Test
-    public void useMax() {
-        fact(4010, 0);
-        fact(4010, 0);
-        fact(4010, 0);
-        fact(4010, 0);
-        fact(4010, 200);
-        fact(4010, 200);
-        fact(4010, 400);
-        fact(4010, 400);
-        fact(4010, 500);
-        fact(4010, 500);
-        fact(4010, 500);
-        fact(4010, 600);
-        Mockito.when(widelineLoader.getAilesForVgs(any())).thenReturn(Collections.singletonList(new Aisle(VARDGIVARE, facts)));
-        Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
-        List<Counter<Integer>> count = query.count(sjukfall, 4);
+  @Test
+  public void useMax() {
+    fact(4010, 0);
+    fact(4010, 0);
+    fact(4010, 0);
+    fact(4010, 0);
+    fact(4010, 200);
+    fact(4010, 200);
+    fact(4010, 400);
+    fact(4010, 400);
+    fact(4010, 500);
+    fact(4010, 500);
+    fact(4010, 500);
+    fact(4010, 600);
+    Mockito.when(widelineLoader.getAilesForVgs(any()))
+        .thenReturn(Collections.singletonList(new Aisle(VARDGIVARE, facts)));
+    Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
+    List<Counter<Integer>> count = query.count(sjukfall, 4);
 
-        assertEquals(4, count.size());
-        assertEquals(4, count.get(0).getCount());
-        assertEquals(3, count.get(1).getCount());
-        assertEquals(2, count.get(2).getCount());
-        assertEquals(2, count.get(3).getCount());
-    }
+    assertEquals(4, count.size());
+    assertEquals(4, count.get(0).getCount());
+    assertEquals(3, count.get(1).getCount());
+    assertEquals(2, count.get(2).getCount());
+    assertEquals(2, count.get(3).getCount());
+  }
 
-    private void fact(int startday, int diagnoskapitel) {
-        Fact fact = aFact().withId(1).withLan(3).withKommun(380).withForsamling(38002).
-            withEnhet(1).withLakarintyg(intyg++).
-            withPatient(patient++).withKon(Kon.FEMALE).withAlder(45).
-            withDiagnoskapitel(diagnoskapitel).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
-            withSjukskrivningsgrad(100).withStartdatum(startday).withSlutdatum(startday + 9).
-            withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).build();
-        facts.add(fact);
-    }
+  private void fact(int startday, int diagnoskapitel) {
+    Fact fact =
+        aFact()
+            .withId(1)
+            .withLan(3)
+            .withKommun(380)
+            .withForsamling(38002)
+            .withEnhet(1)
+            .withLakarintyg(intyg++)
+            .withPatient(patient++)
+            .withKon(Kon.FEMALE)
+            .withAlder(45)
+            .withDiagnoskapitel(diagnoskapitel)
+            .withDiagnosavsnitt(14)
+            .withDiagnoskategori(16)
+            .withDiagnoskod(18)
+            .withSjukskrivningsgrad(100)
+            .withStartdatum(startday)
+            .withSlutdatum(startday + 9)
+            .withLakarkon(Kon.FEMALE)
+            .withLakaralder(32)
+            .withLakarbefattning(new int[] {201010})
+            .withLakarid(1)
+            .build();
+    facts.add(fact);
+  }
 
-    @Test
-    public void testGetUnderdiagnosGrupperForKapitel() throws Exception {
-        //When
-        final LocalDate start = Instant.ofEpochMilli(1416223845652L).atZone(ZoneId.systemDefault()).toLocalDate();
-        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new MutableAisle(new HsaIdVardgivare("vgid")).createAisle(),
-            new FilterPredicates(fact -> false, sjukfall -> true, "hash", false), start, 1, 1, "A00-B99");
+  @Test
+  public void testGetUnderdiagnosGrupperForKapitel() throws Exception {
+    // When
+    final LocalDate start =
+        Instant.ofEpochMilli(1416223845652L).atZone(ZoneId.systemDefault()).toLocalDate();
+    DiagnosgruppResponse result =
+        query.getUnderdiagnosgrupper(
+            new MutableAisle(new HsaIdVardgivare("vgid")).createAisle(),
+            new FilterPredicates(fact -> false, sjukfall -> true, "hash", false),
+            start,
+            1,
+            1,
+            "A00-B99");
 
-        //Then
-        assertEquals(21, result.getIcdTyps().size());
-        assertEquals("A00-A09", result.getIcdTyps().get(0).getId());
-    }
+    // Then
+    assertEquals(21, result.getIcdTyps().size());
+    assertEquals("A00-A09", result.getIcdTyps().get(0).getId());
+  }
 
-    @Test
-    public void testGetUnderdiagnosGrupperForAvsnitt() throws Exception {
-        //When
-        final Aisle aisle = new MutableAisle(new HsaIdVardgivare("vgid")).createAisle();
-        final FilterPredicates filter = new FilterPredicates(fact -> false, sjukfall -> true, "hash", false);
-        final LocalDate start = Instant.ofEpochMilli(1416223845652L).atZone(ZoneId.systemDefault()).toLocalDate();
-        final int periods = 1;
-        final int periodLength = 1;
-        final String rangeId = "A00-A09";
-        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, rangeId);
+  @Test
+  public void testGetUnderdiagnosGrupperForAvsnitt() throws Exception {
+    // When
+    final Aisle aisle = new MutableAisle(new HsaIdVardgivare("vgid")).createAisle();
+    final FilterPredicates filter =
+        new FilterPredicates(fact -> false, sjukfall -> true, "hash", false);
+    final LocalDate start =
+        Instant.ofEpochMilli(1416223845652L).atZone(ZoneId.systemDefault()).toLocalDate();
+    final int periods = 1;
+    final int periodLength = 1;
+    final String rangeId = "A00-A09";
+    DiagnosgruppResponse result =
+        query.getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, rangeId);
 
-        //Then
-        assertEquals(10, result.getIcdTyps().size());
-        assertEquals("A00", result.getIcdTyps().get(0).getId());
-    }
-
+    // Then
+    assertEquals(10, result.getIcdTyps().size());
+    assertEquals("A00", result.getIcdTyps().get(0).getId());
+  }
 }

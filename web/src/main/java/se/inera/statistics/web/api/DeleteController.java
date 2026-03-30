@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -32,32 +32,35 @@ import se.inera.intyg.statistik.logging.PerformanceLogging;
 import se.inera.statistics.service.DeleteCustomerData;
 
 @Service
-@Path("/internalapi/v1")//DO NOT CHANGE THIS URL!
+@Path("/internalapi/v1") // DO NOT CHANGE THIS URL!
 public class DeleteController {
 
-    private final DeleteCustomerData deleteCustomerData;
+  private final DeleteCustomerData deleteCustomerData;
 
-    @Autowired
-    public DeleteController(DeleteCustomerData deleteCustomerData) {
-        this.deleteCustomerData = deleteCustomerData;
-    }
+  @Autowired
+  public DeleteController(DeleteCustomerData deleteCustomerData) {
+    this.deleteCustomerData = deleteCustomerData;
+  }
 
-    @DELETE
-    @Path("intygsidlist")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
-    @PerformanceLogging(eventAction = "delete-customer-data-by-certificate-id", eventType = MdcLogConstants.EVENT_TYPE_DELETION)
-    public List<String> deleteIntygsIdList(@RequestBody List<String> intygsIdList) {
-        return deleteCustomerData.deleteCustomerDataByIntygsId(intygsIdList);
-    }
+  @DELETE
+  @Path("intygsidlist")
+  @Consumes({MediaType.APPLICATION_JSON})
+  @Produces({MediaType.APPLICATION_JSON})
+  @PerformanceLogging(
+      eventAction = "delete-customer-data-by-certificate-id",
+      eventType = MdcLogConstants.EVENT_TYPE_DELETION)
+  public List<String> deleteIntygsIdList(@RequestBody List<String> intygsIdList) {
+    return deleteCustomerData.deleteCustomerDataByIntygsId(intygsIdList);
+  }
 
-
-    @DELETE
-    @Path("vardgivareidlist")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
-    @PerformanceLogging(eventAction = "delete-customer-data-by-caregiver-id", eventType = MdcLogConstants.EVENT_TYPE_DELETION)
-    public List<String> deleteVardgivareIdList(@RequestBody List<String> vardgivareIdList) {
-        return deleteCustomerData.deleteCustomerDataByVardgivarId(vardgivareIdList);
-    }
+  @DELETE
+  @Path("vardgivareidlist")
+  @Consumes({MediaType.APPLICATION_JSON})
+  @Produces({MediaType.APPLICATION_JSON})
+  @PerformanceLogging(
+      eventAction = "delete-customer-data-by-caregiver-id",
+      eventType = MdcLogConstants.EVENT_TYPE_DELETION)
+  public List<String> deleteVardgivareIdList(@RequestBody List<String> vardgivareIdList) {
+    return deleteCustomerData.deleteCustomerDataByVardgivarId(vardgivareIdList);
+  }
 }

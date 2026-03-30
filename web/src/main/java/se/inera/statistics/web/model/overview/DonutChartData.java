@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,44 +23,44 @@ import java.io.Serializable;
 
 public class DonutChartData implements Serializable {
 
-    private final String color;
-    private final String name;
-    private final Number quantity;
-    private final Number alternation;
+  private final String color;
+  private final String name;
+  private final Number quantity;
+  private final Number alternation;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private final Boolean hideInTable;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private final Boolean hideInTable;
 
-    public DonutChartData(String name, Number quantity, Number alternation, String color, Boolean hideInTable) {
-        this.color = color;
-        this.name = name;
-        this.quantity = quantity;
-        this.alternation = alternation;
-        this.hideInTable = hideInTable;
-    }
+  public DonutChartData(
+      String name, Number quantity, Number alternation, String color, Boolean hideInTable) {
+    this.color = color;
+    this.name = name;
+    this.quantity = quantity;
+    this.alternation = alternation;
+    this.hideInTable = hideInTable;
+  }
 
-    public DonutChartData(String name, Number quantity, Number alternation, String color) {
-        this(name, quantity, alternation, color, null);
-    }
+  public DonutChartData(String name, Number quantity, Number alternation, String color) {
+    this(name, quantity, alternation, color, null);
+  }
 
-    public String getColor() {
-        return color;
-    }
+  public String getColor() {
+    return color;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public Number getQuantity() {
-        return quantity;
-    }
+  public Number getQuantity() {
+    return quantity;
+  }
 
-    public Number getAlternation() {
-        return alternation;
-    }
+  public Number getAlternation() {
+    return alternation;
+  }
 
-    public Boolean getHideInTable() {
-        return hideInTable;
-    }
-
+  public Boolean getHideInTable() {
+    return hideInTable;
+  }
 }

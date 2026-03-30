@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -19,27 +19,25 @@
 package se.inera.statistics.integration.hsa.model;
 
 public enum GeoCoordType {
+  RT_90("RT90"),
+  SWEREF_99_TM("SWEREF99TM");
 
-    RT_90("RT90"),
-    SWEREF_99_TM("SWEREF99TM");
+  private final String value;
 
-    private final String value;
+  GeoCoordType(String v) {
+    value = v;
+  }
 
-    GeoCoordType(String v) {
-        value = v;
+  public String value() {
+    return value;
+  }
+
+  public static GeoCoordType fromValue(String v) {
+    for (GeoCoordType c : GeoCoordType.values()) {
+      if (c.value.equals(v)) {
+        return c;
+      }
     }
-
-    public String value() {
-        return value;
-    }
-
-    public static GeoCoordType fromValue(String v) {
-        for (GeoCoordType c : GeoCoordType.values()) {
-            if (c.value.equals(v)) {
-                return c;
-            }
-        }
-        throw new IllegalArgumentException(v);
-    }
-
+    throw new IllegalArgumentException(v);
+  }
 }

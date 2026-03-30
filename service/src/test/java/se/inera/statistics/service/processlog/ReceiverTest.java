@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -42,95 +42,93 @@ import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.Regi
 @RunWith(MockitoJUnitRunner.class)
 public class ReceiverTest {
 
-    @Mock
-    private RegisterCertificateResolver registerCertificateResolver;
+  @Mock private RegisterCertificateResolver registerCertificateResolver;
 
-    @Mock
-    private TsBasHelper tsBasHelper;
+  @Mock private TsBasHelper tsBasHelper;
 
-    @Mock
-    private TsDiabetesHelper tsDiabetesHelper;
+  @Mock private TsDiabetesHelper tsDiabetesHelper;
 
-    @Mock
-    private ProcessLog processLog;
+  @Mock private ProcessLog processLog;
 
-    @Mock
-    private HSADecorator hsaDecorator;
+  @Mock private HSADecorator hsaDecorator;
 
-    @InjectMocks
-    private Receiver receiver;
+  @InjectMocks private Receiver receiver;
 
-    @Test
-    public void testAcceptIncreaseAccepted() {
-        String intyg = "";
-        String documentId = "";
-        long timestamp = 0;
+  @Test
+  public void testAcceptIncreaseAccepted() {
+    String intyg = "";
+    String documentId = "";
+    long timestamp = 0;
 
-        long accepted = receiver.getAccepted();
+    long accepted = receiver.getAccepted();
 
-        receiver.accept(EventType.CREATED, intyg, documentId, timestamp);
+    receiver.accept(EventType.CREATED, intyg, documentId, timestamp);
 
-        assertEquals(accepted + 1, receiver.getAccepted());
-        Mockito.verify(hsaDecorator, times(0)).populateHsaData(Mockito.any(RegisterTSBasType.class), Mockito.anyString());
-    }
+    assertEquals(accepted + 1, receiver.getAccepted());
+    Mockito.verify(hsaDecorator, times(0))
+        .populateHsaData(Mockito.any(RegisterTSBasType.class), Mockito.anyString());
+  }
 
-    @Test
-    public void testAcceptTsBas() {
-        String intyg = IntygCreatorHelper.getTsBas();
-        String documentId = "123";
-        long timestamp = 0;
+  @Test
+  public void testAcceptTsBas() {
+    String intyg = IntygCreatorHelper.getTsBas();
+    String documentId = "123";
+    long timestamp = 0;
 
-        long accepted = receiver.getAccepted();
+    long accepted = receiver.getAccepted();
 
-        receiver.accept(EventType.CREATED, intyg, documentId, timestamp);
+    receiver.accept(EventType.CREATED, intyg, documentId, timestamp);
 
-        assertEquals(accepted + 1, receiver.getAccepted());
+    assertEquals(accepted + 1, receiver.getAccepted());
 
-        Mockito.verify(hsaDecorator, times(1)).populateHsaData(nullable(RegisterTSBasType.class), eq(documentId));
-    }
+    Mockito.verify(hsaDecorator, times(1))
+        .populateHsaData(nullable(RegisterTSBasType.class), eq(documentId));
+  }
 
-    @Test
-    public void testAcceptTsDiabetes() {
-        String intyg = IntygCreatorHelper.getTsDiabetes();
-        String documentId = "123";
-        long timestamp = 0;
+  @Test
+  public void testAcceptTsDiabetes() {
+    String intyg = IntygCreatorHelper.getTsDiabetes();
+    String documentId = "123";
+    long timestamp = 0;
 
-        long accepted = receiver.getAccepted();
+    long accepted = receiver.getAccepted();
 
-        receiver.accept(EventType.CREATED, intyg, documentId, timestamp);
+    receiver.accept(EventType.CREATED, intyg, documentId, timestamp);
 
-        assertEquals(accepted + 1, receiver.getAccepted());
+    assertEquals(accepted + 1, receiver.getAccepted());
 
-        Mockito.verify(hsaDecorator, times(1)).populateHsaData(nullable(RegisterTSDiabetesType.class), eq(documentId));
-    }
+    Mockito.verify(hsaDecorator, times(1))
+        .populateHsaData(nullable(RegisterTSDiabetesType.class), eq(documentId));
+  }
 
-    @Test
-    public void testAcceptJson() {
-        String intyg = IntygCreatorHelper.getFk7263Json();
-        String documentId = "123";
-        long timestamp = 0;
+  @Test
+  public void testAcceptJson() {
+    String intyg = IntygCreatorHelper.getFk7263Json();
+    String documentId = "123";
+    long timestamp = 0;
 
-        long accepted = receiver.getAccepted();
+    long accepted = receiver.getAccepted();
 
-        receiver.accept(EventType.CREATED, intyg, documentId, timestamp);
+    receiver.accept(EventType.CREATED, intyg, documentId, timestamp);
 
-        assertEquals(accepted + 1, receiver.getAccepted());
+    assertEquals(accepted + 1, receiver.getAccepted());
 
-        Mockito.verify(hsaDecorator, times(1)).decorate(Mockito.any(JsonNode.class), eq(documentId));
-    }
+    Mockito.verify(hsaDecorator, times(1)).decorate(Mockito.any(JsonNode.class), eq(documentId));
+  }
 
-    @Test
-    public void testAcceptRegisterCertificate() {
-        String intyg = IntygCreatorHelper.getFk7263Xml();
-        String documentId = "123";
-        long timestamp = 0;
+  @Test
+  public void testAcceptRegisterCertificate() {
+    String intyg = IntygCreatorHelper.getFk7263Xml();
+    String documentId = "123";
+    long timestamp = 0;
 
-        long accepted = receiver.getAccepted();
+    long accepted = receiver.getAccepted();
 
-        receiver.accept(EventType.CREATED, intyg, documentId, timestamp);
+    receiver.accept(EventType.CREATED, intyg, documentId, timestamp);
 
-        assertEquals(accepted + 1, receiver.getAccepted());
+    assertEquals(accepted + 1, receiver.getAccepted());
 
-        Mockito.verify(hsaDecorator, times(1)).populateHsaData(nullable(RegisterCertificateType.class), eq(documentId));
-    }
+    Mockito.verify(hsaDecorator, times(1))
+        .populateHsaData(nullable(RegisterCertificateType.class), eq(documentId));
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,67 +23,64 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-/**
- * Special age group list used for a report to socialstyrelsen, see INTYG-6994.
- */
+/** Special age group list used for a report to socialstyrelsen, see INTYG-6994. */
 public enum AgeGroupSoc {
+  GROUP1_0TO16("<=17", Integer.MIN_VALUE, 17),
+  GROUP2_16TO20("18-30", 18, 30),
+  GROUP2_21TO25("31-40", 31, 40),
+  GROUP5_41TO45("41-50", 41, 50),
+  GROUP5_65PLUS("51+", 51, Integer.MAX_VALUE - 1);
 
-    GROUP1_0TO16("<=17", Integer.MIN_VALUE, 17),
-    GROUP2_16TO20("18-30", 18, 30),
-    GROUP2_21TO25("31-40", 31, 40),
-    GROUP5_41TO45("41-50", 41, 50),
-    GROUP5_65PLUS("51+", 51, Integer.MAX_VALUE - 1);
+  private static final Logger LOG = LoggerFactory.getLogger(AgeGroupSoc.class);
 
-    private static final Logger LOG = LoggerFactory.getLogger(AgeGroupSoc.class);
+  private final String groupName;
+  private final int from;
+  private final int to;
 
-    private final String groupName;
-    private final int from;
-    private final int to;
+  /**
+   * @param from Range start, inclusive
+   * @param to Range end, inclusive
+   */
+  AgeGroupSoc(String groupName, int from, int to) {
+    this.groupName = groupName;
+    this.from = from;
+    this.to = to;
+  }
 
-    /**
-     * @param from Range start, inclusive
-     * @param to Range end, inclusive
-     */
-    AgeGroupSoc(String groupName, int from, int to) {
-        this.groupName = groupName;
-        this.from = from;
-        this.to = to;
+  public String getGroupName() {
+    return groupName;
+  }
+
+  public int getFrom() {
+    return from;
+  }
+
+  public int getTo() {
+    return to;
+  }
+
+  public static Optional<AgeGroupSoc> getByName(String name) {
+    return Arrays.stream(values())
+        .filter(group -> group.groupName.equalsIgnoreCase(name))
+        .findFirst();
+  }
+
+  public static Optional<AgeGroupSoc> parse(String name) {
+    try {
+      final AgeGroupSoc group = valueOf(name);
+      return Optional.of(group);
+    } catch (IllegalArgumentException e) {
+      LOG.debug("Failed to parse name: {}", name, e);
+      return Optional.empty();
     }
+  }
 
-    public String getGroupName() {
-        return groupName;
+  public static Optional<AgeGroupSoc> getGroupForAge(int age) {
+    for (AgeGroupSoc ageGroup : values()) {
+      if (age >= ageGroup.getFrom() && age <= ageGroup.getTo()) {
+        return Optional.of(ageGroup);
+      }
     }
-
-    public int getFrom() {
-        return from;
-    }
-
-    public int getTo() {
-        return to;
-    }
-
-    public static Optional<AgeGroupSoc> getByName(String name) {
-        return Arrays.stream(values()).filter(group -> group.groupName.equalsIgnoreCase(name)).findFirst();
-    }
-
-    public static Optional<AgeGroupSoc> parse(String name) {
-        try {
-            final AgeGroupSoc group = valueOf(name);
-            return Optional.of(group);
-        } catch (IllegalArgumentException e) {
-            LOG.debug("Failed to parse name: {}", name, e);
-            return Optional.empty();
-        }
-    }
-
-    public static Optional<AgeGroupSoc> getGroupForAge(int age) {
-        for (AgeGroupSoc ageGroup : values()) {
-            if (age >= ageGroup.getFrom() && age <= ageGroup.getTo()) {
-                return Optional.of(ageGroup);
-            }
-        }
-        return Optional.empty();
-    }
-
+    return Optional.empty();
+  }
 }

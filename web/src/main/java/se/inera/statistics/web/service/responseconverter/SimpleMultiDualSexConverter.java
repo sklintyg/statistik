@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -26,17 +26,15 @@ import se.inera.statistics.web.service.dto.FilterSettings;
 
 public class SimpleMultiDualSexConverter extends MultiDualSexConverter {
 
-    private static final Map<String, String> COLORS = AgeGroup.getColors();
+  private static final Map<String, String> COLORS = AgeGroup.getColors();
 
-    public SimpleMultiDualSexConverter() {
-    }
+  public SimpleMultiDualSexConverter() {}
 
-    public SimpleMultiDualSexConverter(String tableHeader) {
-        super(tableHeader);
-    }
+  public SimpleMultiDualSexConverter(String tableHeader) {
+    super(tableHeader);
+  }
 
-    public DualSexStatisticsData convert(KonDataResponse data, FilterSettings filterSettings) {
-        return super.convert(data, filterSettings, null, "%1$s", COLORS);
-    }
-
+  public DualSexStatisticsData convert(KonDataResponse data, FilterSettings filterSettings) {
+    return super.convert(data, filterSettings, null, "%1$s", COLORS);
+  }
 }

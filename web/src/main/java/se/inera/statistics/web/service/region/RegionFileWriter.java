@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -33,28 +33,29 @@ import se.inera.statistics.service.processlog.Enhet;
 
 public class RegionFileWriter {
 
-    private static final Logger LOG = LoggerFactory.getLogger(RegionFileWriter.class);
+  private static final Logger LOG = LoggerFactory.getLogger(RegionFileWriter.class);
 
-    public ByteArrayOutputStream generateExcelFile(List<Enhet> enhets) throws RegionFileGenerationException {
-        try {
-            final InputStream stream = RegionFileWriter.class.getResourceAsStream("/MALL_regionsstatistik.xlsx");
-            Workbook workbook = new XSSFWorkbook(stream);
-            Sheet sheet = workbook.getSheetAt(0);
-            final int startRow = 1;
-            for (int i = 0; i < enhets.size(); i++) {
-                final Enhet enhet = enhets.get(i);
-                final Row row = sheet.createRow(i + startRow);
-                row.createCell(0, CellType.STRING).setCellValue(enhet.getNamn());
-                row.createCell(1, CellType.STRING).setCellValue(enhet.getEnhetId().getId());
-            }
-            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            workbook.write(outputStream);
-            workbook.close();
-            return outputStream;
-        } catch (IOException e) {
-            LOG.error(e.getMessage(), e);
-            throw new RegionFileGenerationException();
-        }
+  public ByteArrayOutputStream generateExcelFile(List<Enhet> enhets)
+      throws RegionFileGenerationException {
+    try {
+      final InputStream stream =
+          RegionFileWriter.class.getResourceAsStream("/MALL_regionsstatistik.xlsx");
+      Workbook workbook = new XSSFWorkbook(stream);
+      Sheet sheet = workbook.getSheetAt(0);
+      final int startRow = 1;
+      for (int i = 0; i < enhets.size(); i++) {
+        final Enhet enhet = enhets.get(i);
+        final Row row = sheet.createRow(i + startRow);
+        row.createCell(0, CellType.STRING).setCellValue(enhet.getNamn());
+        row.createCell(1, CellType.STRING).setCellValue(enhet.getEnhetId().getId());
+      }
+      final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+      workbook.write(outputStream);
+      workbook.close();
+      return outputStream;
+    } catch (IOException e) {
+      LOG.error(e.getMessage(), e);
+      throw new RegionFileGenerationException();
     }
-
+  }
 }

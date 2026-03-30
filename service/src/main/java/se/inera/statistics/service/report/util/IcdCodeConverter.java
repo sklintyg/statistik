@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package se.inera.statistics.service.report.util;
 
 import java.util.Collection;
@@ -29,97 +28,105 @@ import se.inera.statistics.service.report.util.Icd10.Range;
 @Component
 public class IcdCodeConverter {
 
-    private static final String CODE_HEADING = "Kod";
-    private static final int DIAGNOSIS_CODE_INDEX = 0;
-    private static final int DIAGNOSIS_TITLE_INDEX = 3;
+  private static final String CODE_HEADING = "Kod";
+  private static final int DIAGNOSIS_CODE_INDEX = 0;
+  private static final int DIAGNOSIS_TITLE_INDEX = 3;
 
-    /**
-     * Convert to code handles Diagnosis codes. It ignores codes of length 3 since these are considered Diagnosis chapters
-     */
-    public Kod convertToCode(String line, Collection<Kategori> categories) {
-        return toCode(line, categories);
+  /**
+   * Convert to code handles Diagnosis codes. It ignores codes of length 3 since these are
+   * considered Diagnosis chapters
+   */
+  public Kod convertToCode(String line, Collection<Kategori> categories) {
+    return toCode(line, categories);
+  }
+
+  /**
+   * Convert to Category handles Diagnosis chapters. It only considers diagnosis codes with three
+   * characters.
+   */
+  public Kategori convertToCategory(String line, Collection<Avsnitt> episode) {
+    return toCategory(line, episode);
+  }
+
+  private Kod toCode(String line, Collection<Kategori> categories) {
+    final var text = line.replace("\"", "").split("\t");
+    if (isDiagnosisChapter(text)
+        || isDiagnosisGroup(text)
+        || isNotActive(text)
+        || isHeading(text)) {
+      return null;
     }
 
-    /**
-     * Convert to Category handles Diagnosis chapters. It only considers diagnosis codes with three characters.
-     */
-    public Kategori convertToCategory(String line, Collection<Avsnitt> episode) {
-        return toCategory(line, episode);
+    final var code = getCode(text);
+
+    if (code.length() == 3) {
+      return null;
     }
 
-    private Kod toCode(String line, Collection<Kategori> categories) {
-        final var text = line.replace("\"", "").split("\t");
-        if (isDiagnosisChapter(text) || isDiagnosisGroup(text) || isNotActive(text) || isHeading(text)) {
-            return null;
-        }
+    final var description = getDescription(text);
+    final var kategori = find(code, categories);
 
-        final var code = getCode(text);
-
-        if (code.length() == 3) {
-            return null;
-        }
-
-        final var description = getDescription(text);
-        final var kategori = find(code, categories);
-
-        if (kategori == null) {
-            return null;
-        }
-
-        return new Kod(code, description, kategori);
+    if (kategori == null) {
+      return null;
     }
 
-    private Kategori toCategory(String line, Collection<Avsnitt> episodes) {
-        final var text = line.replace("\"", "").split("\t");
-        if (isDiagnosisChapter(text) || isDiagnosisGroup(text) || isNotActive(text) || isHeading(text)) {
-            return null;
-        }
-        final var code = getCode(text);
+    return new Kod(code, description, kategori);
+  }
 
-        if (code.length() != 3) {
-            return null;
-        }
+  private Kategori toCategory(String line, Collection<Avsnitt> episodes) {
+    final var text = line.replace("\"", "").split("\t");
+    if (isDiagnosisChapter(text)
+        || isDiagnosisGroup(text)
+        || isNotActive(text)
+        || isHeading(text)) {
+      return null;
+    }
+    final var code = getCode(text);
 
-        final var description = getDescription(text);
-        final var episode = find(code, episodes);
-
-        if (episode == null) {
-            return null;
-        }
-
-        return new Kategori(code, description, episode);
+    if (code.length() != 3) {
+      return null;
     }
 
-    private static <T extends Range> T find(String id, Collection<T> ranges) {
-        for (T range : ranges) {
-            if (range.contains(id)) {
-                return range;
-            }
-        }
-        return null;
+    final var description = getDescription(text);
+    final var episode = find(code, episodes);
+
+    if (episode == null) {
+      return null;
     }
 
-    private static String getDescription(String[] text) {
-        return text[DIAGNOSIS_TITLE_INDEX];
-    }
+    return new Kategori(code, description, episode);
+  }
 
-    private static String getCode(String[] text) {
-        return text[DIAGNOSIS_CODE_INDEX].replace(".", "");
+  private static <T extends Range> T find(String id, Collection<T> ranges) {
+    for (T range : ranges) {
+      if (range.contains(id)) {
+        return range;
+      }
     }
+    return null;
+  }
 
-    private boolean isHeading(String[] text) {
-        return text[0].equals(CODE_HEADING);
-    }
+  private static String getDescription(String[] text) {
+    return text[DIAGNOSIS_TITLE_INDEX];
+  }
 
-    private boolean isNotActive(String[] line) {
-        return line[1].isEmpty();
-    }
+  private static String getCode(String[] text) {
+    return text[DIAGNOSIS_CODE_INDEX].replace(".", "");
+  }
 
-    private boolean isDiagnosisGroup(String[] line) {
-        return line[0].contains("-");
-    }
+  private boolean isHeading(String[] text) {
+    return text[0].equals(CODE_HEADING);
+  }
 
-    private boolean isDiagnosisChapter(String[] line) {
-        return Character.isDigit(line[0].charAt(0));
-    }
+  private boolean isNotActive(String[] line) {
+    return line[1].isEmpty();
+  }
+
+  private boolean isDiagnosisGroup(String[] line) {
+    return line[0].contains("-");
+  }
+
+  private boolean isDiagnosisChapter(String[] line) {
+    return Character.isDigit(line[0].charAt(0));
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -31,91 +31,91 @@ import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 @Table(name = Lakare.TABLE)
 public class Lakare {
 
-    public static final String TABLE = "lakare";
+  public static final String TABLE = "lakare";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
-    private String vardgivareId;
+  private String vardgivareId;
 
-    private String lakareId;
+  private String lakareId;
 
-    private String tilltalsNamn;
+  private String tilltalsNamn;
 
-    private String efterNamn;
+  private String efterNamn;
 
-    public Lakare(HsaIdVardgivare vardgivareId, HsaIdLakare lakareId, String tilltalsNamn, String efterNamn) {
-        setVardgivareId(vardgivareId);
-        setLakareId(lakareId);
-        this.tilltalsNamn = tilltalsNamn;
-        this.efterNamn = efterNamn;
+  public Lakare(
+      HsaIdVardgivare vardgivareId, HsaIdLakare lakareId, String tilltalsNamn, String efterNamn) {
+    setVardgivareId(vardgivareId);
+    setLakareId(lakareId);
+    this.tilltalsNamn = tilltalsNamn;
+    this.efterNamn = efterNamn;
+  }
+
+  Lakare() {
+    // Not sure why/if this is needed
+  }
+
+  public void setId(long id) {
+    this.id = id;
+  }
+
+  public long getId() {
+    return id;
+  }
+
+  public HsaIdVardgivare getVardgivareId() {
+    return new HsaIdVardgivare(vardgivareId);
+  }
+
+  public void setVardgivareId(HsaIdVardgivare vardgivareId) {
+    this.vardgivareId = vardgivareId.getId();
+  }
+
+  public HsaIdLakare getLakareId() {
+    return new HsaIdLakare(lakareId);
+  }
+
+  public void setLakareId(HsaIdLakare lakareId) {
+    this.lakareId = lakareId.getId();
+  }
+
+  public String getTilltalsNamn() {
+    return tilltalsNamn;
+  }
+
+  public void setTilltalsNamn(String tilltalsNamn) {
+    this.tilltalsNamn = tilltalsNamn;
+  }
+
+  public String getEfterNamn() {
+    return efterNamn;
+  }
+
+  public void setEfterNamn(String efterNamn) {
+    this.efterNamn = efterNamn;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null) {
+      return false;
+    }
+    if (!(o instanceof Lakare)) {
+      return false;
     }
 
-    Lakare() {
-        //Not sure why/if this is needed
-    }
+    final Lakare other = (Lakare) o;
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    return Objects.equals(this.vardgivareId, other.vardgivareId)
+        && Objects.equals(this.lakareId, other.lakareId)
+        && Objects.equals(this.tilltalsNamn, other.tilltalsNamn)
+        && Objects.equals(this.efterNamn, other.efterNamn);
+  }
 
-    public long getId() {
-        return id;
-    }
-
-    public HsaIdVardgivare getVardgivareId() {
-        return new HsaIdVardgivare(vardgivareId);
-    }
-
-    public void setVardgivareId(HsaIdVardgivare vardgivareId) {
-        this.vardgivareId = vardgivareId.getId();
-    }
-
-    public HsaIdLakare getLakareId() {
-        return new HsaIdLakare(lakareId);
-    }
-
-    public void setLakareId(HsaIdLakare lakareId) {
-        this.lakareId = lakareId.getId();
-    }
-
-    public String getTilltalsNamn() {
-        return tilltalsNamn;
-    }
-
-    public void setTilltalsNamn(String tilltalsNamn) {
-        this.tilltalsNamn = tilltalsNamn;
-    }
-
-    public String getEfterNamn() {
-        return efterNamn;
-    }
-
-    public void setEfterNamn(String efterNamn) {
-        this.efterNamn = efterNamn;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null) {
-            return false;
-        }
-        if (!(o instanceof Lakare)) {
-            return false;
-        }
-
-        final Lakare other = (Lakare) o;
-
-        return Objects.equals(this.vardgivareId, other.vardgivareId)
-            && Objects.equals(this.lakareId, other.lakareId)
-            && Objects.equals(this.tilltalsNamn, other.tilltalsNamn)
-            && Objects.equals(this.efterNamn, other.efterNamn);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(vardgivareId, lakareId, tilltalsNamn, efterNamn);
-    }
-
+  @Override
+  public int hashCode() {
+    return Objects.hash(vardgivareId, lakareId, tilltalsNamn, efterNamn);
+  }
 }

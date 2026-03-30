@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -27,7 +27,6 @@ import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.web.service.dto.MessagesText;
 import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
@@ -35,77 +34,97 @@ import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.service.dto.FilterDataResponse;
+import se.inera.statistics.web.service.dto.MessagesText;
 
 public class SjukfallPerSexConverter {
 
-    static final String SAMTLIGA_LAN = MessagesText.REPORT_SAMTLIGA_LAN;
+  static final String SAMTLIGA_LAN = MessagesText.REPORT_SAMTLIGA_LAN;
 
-    private TableData convertToTableData(SimpleKonResponse list) {
-        List<NamedData> data = new ArrayList<>();
-        data.add(getDataForAllCounties(list));
-        for (SimpleKonDataRow row : list.getRows()) {
-            int female = row.getFemale();
-            int male = row.getMale();
-            int rowSum = female + male;
-            data.add(new NamedData(row.getName(), Arrays.asList(rowSum, toTableString(female, rowSum), toTableString(male, rowSum))));
-        }
-
-        return TableData.createWithSingleHeadersRow(data,
-            Arrays.asList(MessagesText.REPORT_LAN,
-                MessagesText.REPORT_COLUMN_ANTAL_SJUKFALL_TOTALT,
-                MessagesText.REPORT_COLUMN_ANDEL_SJUKFALL_FEMALE,
-                MessagesText.REPORT_COLUMN_ANDEL_SJUKFALL_MALE));
+  private TableData convertToTableData(SimpleKonResponse list) {
+    List<NamedData> data = new ArrayList<>();
+    data.add(getDataForAllCounties(list));
+    for (SimpleKonDataRow row : list.getRows()) {
+      int female = row.getFemale();
+      int male = row.getMale();
+      int rowSum = female + male;
+      data.add(
+          new NamedData(
+              row.getName(),
+              Arrays.asList(rowSum, toTableString(female, rowSum), toTableString(male, rowSum))));
     }
 
-    private NamedData getDataForAllCounties(SimpleKonResponse list) {
-        final Integer sumForFemale = getSumForSex(list, Kon.FEMALE);
-        final Integer sumForMale = getSumForSex(list, Kon.MALE);
-        final int sum = sumForFemale + sumForMale;
-        return new NamedData(SAMTLIGA_LAN, Arrays.asList(sum, toTableString(sumForFemale, sum), toTableString(sumForMale, sum)));
+    return TableData.createWithSingleHeadersRow(
+        data,
+        Arrays.asList(
+            MessagesText.REPORT_LAN,
+            MessagesText.REPORT_COLUMN_ANTAL_SJUKFALL_TOTALT,
+            MessagesText.REPORT_COLUMN_ANDEL_SJUKFALL_FEMALE,
+            MessagesText.REPORT_COLUMN_ANDEL_SJUKFALL_MALE));
+  }
+
+  private NamedData getDataForAllCounties(SimpleKonResponse list) {
+    final Integer sumForFemale = getSumForSex(list, Kon.FEMALE);
+    final Integer sumForMale = getSumForSex(list, Kon.MALE);
+    final int sum = sumForFemale + sumForMale;
+    return new NamedData(
+        SAMTLIGA_LAN,
+        Arrays.asList(sum, toTableString(sumForFemale, sum), toTableString(sumForMale, sum)));
+  }
+
+  private String toTableString(int value, int rowSum) {
+    final DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+    symbols.setGroupingSeparator(' ');
+    final DecimalFormat formatter = new DecimalFormat("###,###", symbols);
+    final float toPercentFactor = 100.0F;
+    return Math.round(toPercentFactor * value / rowSum) + " % (" + formatter.format(value) + ")";
+  }
+
+  private ChartData convertToChartData(SimpleKonResponse casesPerMonth) {
+    final ArrayList<ChartCategory> categories = new ArrayList<>();
+    categories.add(new ChartCategory(SAMTLIGA_LAN));
+    for (SimpleKonDataRow casesPerMonthRow : casesPerMonth.getRows()) {
+      categories.add(new ChartCategory(casesPerMonthRow.getName()));
     }
 
-    private String toTableString(int value, int rowSum) {
-        final DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
-        symbols.setGroupingSeparator(' ');
-        final DecimalFormat formatter = new DecimalFormat("###,###", symbols);
-        final float toPercentFactor = 100.0F;
-        return Math.round(toPercentFactor * value / rowSum) + " % (" + formatter.format(value) + ")";
+    final ArrayList<ChartSeries> series = new ArrayList<>();
+    series.add(
+        new ChartSeries(
+            MessagesText.REPORT_GROUP_FEMALE,
+            getSeriesForSexWithTotal(casesPerMonth, Kon.FEMALE),
+            Kon.FEMALE));
+    series.add(
+        new ChartSeries(
+            MessagesText.REPORT_GROUP_MALE,
+            getSeriesForSexWithTotal(casesPerMonth, Kon.MALE),
+            Kon.MALE));
+
+    return new ChartData(series, categories);
+  }
+
+  private List<Integer> getSeriesForSexWithTotal(SimpleKonResponse casesPerMonth, final Kon kon) {
+    ArrayList<Integer> series = new ArrayList<>();
+    series.add(getSumForSex(casesPerMonth, kon));
+    series.addAll(casesPerMonth.getDataForSex(kon));
+    return series;
+  }
+
+  private Integer getSumForSex(SimpleKonResponse casesPerMonth, Kon kon) {
+    int sum = 0;
+    List<Integer> data = casesPerMonth.getDataForSex(kon);
+    for (Integer value : data) {
+      sum += value;
     }
+    return sum;
+  }
 
-    private ChartData convertToChartData(SimpleKonResponse casesPerMonth) {
-        final ArrayList<ChartCategory> categories = new ArrayList<>();
-        categories.add(new ChartCategory(SAMTLIGA_LAN));
-        for (SimpleKonDataRow casesPerMonthRow : casesPerMonth.getRows()) {
-            categories.add(new ChartCategory(casesPerMonthRow.getName()));
-        }
-
-        final ArrayList<ChartSeries> series = new ArrayList<>();
-        series.add(new ChartSeries(MessagesText.REPORT_GROUP_FEMALE, getSeriesForSexWithTotal(casesPerMonth, Kon.FEMALE), Kon.FEMALE));
-        series.add(new ChartSeries(MessagesText.REPORT_GROUP_MALE, getSeriesForSexWithTotal(casesPerMonth, Kon.MALE), Kon.MALE));
-
-        return new ChartData(series, categories);
-    }
-
-    private List<Integer> getSeriesForSexWithTotal(SimpleKonResponse casesPerMonth, final Kon kon) {
-        ArrayList<Integer> series = new ArrayList<>();
-        series.add(getSumForSex(casesPerMonth, kon));
-        series.addAll(casesPerMonth.getDataForSex(kon));
-        return series;
-    }
-
-    private Integer getSumForSex(SimpleKonResponse casesPerMonth, Kon kon) {
-        int sum = 0;
-        List<Integer> data = casesPerMonth.getDataForSex(kon);
-        for (Integer value : data) {
-            sum += value;
-        }
-        return sum;
-    }
-
-    public SimpleDetailsData convert(SimpleKonResponse casesPerMonth, Range range) {
-        TableData tableData = convertToTableData(casesPerMonth);
-        ChartData chartData = convertToChartData(casesPerMonth);
-        return new SimpleDetailsData(tableData, chartData, range.toString(), casesPerMonth.getAvailableFilters(),
-            FilterDataResponse.empty());
-    }
+  public SimpleDetailsData convert(SimpleKonResponse casesPerMonth, Range range) {
+    TableData tableData = convertToTableData(casesPerMonth);
+    ChartData chartData = convertToChartData(casesPerMonth);
+    return new SimpleDetailsData(
+        tableData,
+        chartData,
+        range.toString(),
+        casesPerMonth.getAvailableFilters(),
+        FilterDataResponse.empty());
+  }
 }

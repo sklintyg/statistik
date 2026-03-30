@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,7 +22,7 @@ package se.inera.statistics.web.error;
  * @author Magnus Ekstrand on 2016-11-09.
  */
 public enum ErrorType {
-
-    UNSET, FILTER, CHART
-
+  UNSET,
+  FILTER,
+  CHART
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,57 +25,56 @@ import se.inera.statistics.service.report.model.Kommun;
 
 public class EnhetTest {
 
-    @Test
-    public void testGetKommunIdIsNull() throws Exception {
-        //Given
-        final Enhet enhet = new Enhet();
-        enhet.setKommunId(null);
+  @Test
+  public void testGetKommunIdIsNull() throws Exception {
+    // Given
+    final Enhet enhet = new Enhet();
+    enhet.setKommunId(null);
 
-        //When
-        final String kommunId = enhet.getKommunId();
+    // When
+    final String kommunId = enhet.getKommunId();
 
-        //Then
-        assertEquals(Kommun.OVRIGT_ID.substring(2), kommunId);
-    }
+    // Then
+    assertEquals(Kommun.OVRIGT_ID.substring(2), kommunId);
+  }
 
-    @Test
-    public void testGetKommunIdIsTooShort() throws Exception {
-        //Given
-        final Enhet enhet = new Enhet();
-        enhet.setKommunId("3");
+  @Test
+  public void testGetKommunIdIsTooShort() throws Exception {
+    // Given
+    final Enhet enhet = new Enhet();
+    enhet.setKommunId("3");
 
-        //When
-        final String kommunId = enhet.getKommunId();
+    // When
+    final String kommunId = enhet.getKommunId();
 
-        //Then
-        assertEquals(Kommun.OVRIGT_ID.substring(2), kommunId);
-    }
+    // Then
+    assertEquals(Kommun.OVRIGT_ID.substring(2), kommunId);
+  }
 
-    @Test
-    public void testGetKommunIdIsTwoCharsAsExpected() throws Exception {
-        //Given
-        final Enhet enhet = new Enhet();
-        final String id = "34";
-        enhet.setKommunId(id);
+  @Test
+  public void testGetKommunIdIsTwoCharsAsExpected() throws Exception {
+    // Given
+    final Enhet enhet = new Enhet();
+    final String id = "34";
+    enhet.setKommunId(id);
 
-        //When
-        final String kommunId = enhet.getKommunId();
+    // When
+    final String kommunId = enhet.getKommunId();
 
-        //Then
-        assertEquals(id, kommunId);
-    }
+    // Then
+    assertEquals(id, kommunId);
+  }
 
-    @Test
-    public void testGetKommunIdIsTooLong() throws Exception {
-        //Given
-        final Enhet enhet = new Enhet();
-        enhet.setKommunId("345");
+  @Test
+  public void testGetKommunIdIsTooLong() throws Exception {
+    // Given
+    final Enhet enhet = new Enhet();
+    enhet.setKommunId("345");
 
-        //When
-        final String kommunId = enhet.getKommunId();
+    // When
+    final String kommunId = enhet.getKommunId();
 
-        //Then
-        assertEquals("45", kommunId);
-    }
-
+    // Then
+    assertEquals("45", kommunId);
+  }
 }

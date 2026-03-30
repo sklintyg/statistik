@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -30,60 +30,54 @@ import se.inera.statistics.service.warehouse.message.MessageWidelineManager;
 import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMessageToCareType;
 
 /**
- * Process and save information to database for intyg and messages, i.e. extract and save information
- * used by statistiktjansten.
+ * Process and save information to database for intyg and messages, i.e. extract and save
+ * information used by statistiktjansten.
  */
 @Component
 public class Processor {
 
-    @Autowired
-    private WidelineManager widelineManager;
+  @Autowired private WidelineManager widelineManager;
 
-    @Autowired
-    private IntygCommonManager intygCommonManager;
+  @Autowired private IntygCommonManager intygCommonManager;
 
-    @Autowired
-    private MessageWidelineManager messageWidelineManagar;
+  @Autowired private MessageWidelineManager messageWidelineManagar;
 
-    @Autowired
-    private VardgivareManager vardgivareManager;
+  @Autowired private VardgivareManager vardgivareManager;
 
-    @Autowired
-    private LakareManager lakareManager;
+  @Autowired private LakareManager lakareManager;
 
-    @Autowired
-    private SendMessageToCareHelper sendMessageToCareHelper;
+  @Autowired private SendMessageToCareHelper sendMessageToCareHelper;
 
-    public void accept(IntygDTO dto, HsaInfo hsa, long logId, String correlationId, EventType type) {
-        final String enhetId = dto.getEnhet();
-        if (type != EventType.REVOKED) {
-            saveEnhetAndLakare(hsa, enhetId);
-        }
-        intygCommonManager.accept(dto, hsa, logId, correlationId, type);
-        if (isSjukpenningIntyg(dto)) {
-            widelineManager.accept(dto, hsa, logId, correlationId, type);
-        }
+  public void accept(IntygDTO dto, HsaInfo hsa, long logId, String correlationId, EventType type) {
+    final String enhetId = dto.getEnhet();
+    if (type != EventType.REVOKED) {
+      saveEnhetAndLakare(hsa, enhetId);
     }
-
-    private boolean isSjukpenningIntyg(IntygDTO intyg) {
-        if (intyg == null) {
-            return false;
-        }
-        return intyg.getIntygtyp().isSjukpenningintyg();
+    intygCommonManager.accept(dto, hsa, logId, correlationId, type);
+    if (isSjukpenningIntyg(dto)) {
+      widelineManager.accept(dto, hsa, logId, correlationId, type);
     }
+  }
 
-    public void accept(SendMessageToCareType message, long logId, String messageId, MessageEventType type) {
-        final Patientdata patientData = sendMessageToCareHelper.getPatientData(message);
-        messageWidelineManagar.accept(message, patientData, logId, messageId, type);
+  private boolean isSjukpenningIntyg(IntygDTO intyg) {
+    if (intyg == null) {
+      return false;
     }
+    return intyg.getIntygtyp().isSjukpenningintyg();
+  }
 
-    private void saveEnhetAndLakare(HsaInfo hsa, String enhetId) {
-        vardgivareManager.saveEnhet(hsa, enhetId);
-        lakareManager.saveLakare(hsa);
-    }
+  public void accept(
+      SendMessageToCareType message, long logId, String messageId, MessageEventType type) {
+    final Patientdata patientData = sendMessageToCareHelper.getPatientData(message);
+    messageWidelineManagar.accept(message, patientData, logId, messageId, type);
+  }
 
-    public void acceptIntygSent(String correlationId) {
-        intygCommonManager.acceptIntygSentToFk(correlationId);
-    }
+  private void saveEnhetAndLakare(HsaInfo hsa, String enhetId) {
+    vardgivareManager.saveEnhet(hsa, enhetId);
+    lakareManager.saveLakare(hsa);
+  }
 
+  public void acceptIntygSent(String correlationId) {
+    intygCommonManager.acceptIntygSentToFk(correlationId);
+  }
 }

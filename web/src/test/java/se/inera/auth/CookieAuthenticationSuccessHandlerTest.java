@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -41,44 +41,43 @@ import org.springframework.security.web.RedirectStrategy;
 @ExtendWith(MockitoExtension.class)
 public class CookieAuthenticationSuccessHandlerTest {
 
-    @Mock
-    private RedirectStrategy redirectStrategy;
+  @Mock private RedirectStrategy redirectStrategy;
 
-    private Authentication authentication;
-    private HttpServletResponse resp = mock(HttpServletResponse.class);
+  private Authentication authentication;
+  private HttpServletResponse resp = mock(HttpServletResponse.class);
 
-    @InjectMocks
-    private CookieAuthenticationSuccessHandler cas = new CookieAuthenticationSuccessHandler();
+  @InjectMocks
+  private CookieAuthenticationSuccessHandler cas = new CookieAuthenticationSuccessHandler();
 
-    @BeforeEach
-    public void init() {
-        this.authentication = mock(Authentication.class);
-    }
+  @BeforeEach
+  public void init() {
+    this.authentication = mock(Authentication.class);
+  }
 
-    @Test
-    public void testOnAuthenticationSuccessRedirectDefault() throws IOException, ServletException {
-        final String defaultTargetUrl = "url";
+  @Test
+  public void testOnAuthenticationSuccessRedirectDefault() throws IOException, ServletException {
+    final String defaultTargetUrl = "url";
 
-        cas.setDefaultTargetUrl(defaultTargetUrl);
-        HttpServletRequest request = mock(HttpServletRequest.class);
+    cas.setDefaultTargetUrl(defaultTargetUrl);
+    HttpServletRequest request = mock(HttpServletRequest.class);
 
-        when(request.getCookies()).thenReturn(new Cookie[0]);
+    when(request.getCookies()).thenReturn(new Cookie[0]);
 
-        cas.onAuthenticationSuccess(request, resp, authentication);
+    cas.onAuthenticationSuccess(request, resp, authentication);
 
-        verify(redirectStrategy).sendRedirect(any(), any(), eq(defaultTargetUrl));
-    }
+    verify(redirectStrategy).sendRedirect(any(), any(), eq(defaultTargetUrl));
+  }
 
-    @Test
-    public void testOnAuthenticationSuccessRedirectCookie() throws IOException, ServletException {
-        final String targetUrl = "targetUrl";
+  @Test
+  public void testOnAuthenticationSuccessRedirectCookie() throws IOException, ServletException {
+    final String targetUrl = "targetUrl";
 
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        Cookie[] cookies = {new Cookie("statUrl", targetUrl)};
-        when(request.getCookies()).thenReturn(cookies);
+    HttpServletRequest request = mock(HttpServletRequest.class);
+    Cookie[] cookies = {new Cookie("statUrl", targetUrl)};
+    when(request.getCookies()).thenReturn(cookies);
 
-        cas.onAuthenticationSuccess(request, resp, authentication);
+    cas.onAuthenticationSuccess(request, resp, authentication);
 
-        verify(redirectStrategy).sendRedirect(any(), any(), eq(targetUrl));
-    }
+    verify(redirectStrategy).sendRedirect(any(), any(), eq(targetUrl));
+  }
 }

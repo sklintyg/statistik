@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -30,79 +30,75 @@ import jakarta.persistence.Transient;
 @Table(name = IntygEvent.TABLE)
 public class IntygEvent {
 
-    public static final String TABLE = "intyghandelse";
+  public static final String TABLE = "intyghandelse";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
-    @Enumerated
-    private EventType type;
+  @Enumerated private EventType type;
 
-    private String data;
+  private String data;
 
-    private String correlationId;
+  private String correlationId;
 
-    private long timestamp;
+  private long timestamp;
 
-    /**
-     * Empty constructor (as required by JPA spec).
-     */
-    public IntygEvent() {
-        // Empty constructor (as required by JPA spec).
+  /** Empty constructor (as required by JPA spec). */
+  public IntygEvent() {
+    // Empty constructor (as required by JPA spec).
+  }
+
+  public IntygEvent(EventType type, String data, String correlationId, long timestamp) {
+    this.type = type;
+    this.data = data;
+    this.correlationId = correlationId;
+    this.timestamp = timestamp;
+  }
+
+  public EventType getType() {
+    return type;
+  }
+
+  public String getData() {
+    return data;
+  }
+
+  public long getId() {
+    return id;
+  }
+
+  public String getCorrelationId() {
+    return correlationId;
+  }
+
+  public long getTimestamp() {
+    return timestamp;
+  }
+
+  @Transient
+  public IntygFormat getFormat() {
+    return getIntygFormat(data);
+  }
+
+  public static IntygFormat getIntygFormat(String intyg) {
+    if (intyg == null) {
+      return IntygFormat.REGISTER_MEDICAL_CERTIFICATE;
     }
 
-    public IntygEvent(EventType type, String data, String correlationId, long timestamp) {
-        this.type = type;
-        this.data = data;
-        this.correlationId = correlationId;
-        this.timestamp = timestamp;
+    final String trimmedIntyg = intyg.trim();
+    if (trimmedIntyg.endsWith("RegisterCertificate>")) {
+      return IntygFormat.REGISTER_CERTIFICATE;
     }
 
-    public EventType getType() {
-        return type;
+    if (trimmedIntyg.endsWith("RegisterTSBas>")) {
+      return IntygFormat.REGISTER_TS_BAS;
     }
 
-    public String getData() {
-        return data;
+    if (trimmedIntyg.endsWith("RegisterTSDiabetes>")) {
+      return IntygFormat.REGISTER_TS_DIABETES;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public String getCorrelationId() {
-        return correlationId;
-    }
-
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    @Transient
-    public IntygFormat getFormat() {
-        return getIntygFormat(data);
-    }
-
-    public static IntygFormat getIntygFormat(String intyg) {
-        if (intyg == null) {
-            return IntygFormat.REGISTER_MEDICAL_CERTIFICATE;
-        }
-
-        final String trimmedIntyg = intyg.trim();
-        if (trimmedIntyg.endsWith("RegisterCertificate>")) {
-            return IntygFormat.REGISTER_CERTIFICATE;
-        }
-
-        if (trimmedIntyg.endsWith("RegisterTSBas>")) {
-            return IntygFormat.REGISTER_TS_BAS;
-        }
-
-        if (trimmedIntyg.endsWith("RegisterTSDiabetes>")) {
-            return IntygFormat.REGISTER_TS_DIABETES;
-        }
-
-        return IntygFormat.REGISTER_MEDICAL_CERTIFICATE;
-    }
-
+    return IntygFormat.REGISTER_MEDICAL_CERTIFICATE;
+  }
 }

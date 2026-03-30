@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -32,36 +32,37 @@ import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 @Component
 public class RegionManager {
 
-    @PersistenceContext(unitName = "IneraStatisticsLog")
-    private EntityManager manager;
+  @PersistenceContext(unitName = "IneraStatisticsLog")
+  private EntityManager manager;
 
-    @Transactional
-    public List<Region> getAll() {
-        TypedQuery<Region> query = manager.createQuery("SELECT l FROM Region l", Region.class);
-        return query.getResultList();
-    }
+  @Transactional
+  public List<Region> getAll() {
+    TypedQuery<Region> query = manager.createQuery("SELECT l FROM Region l", Region.class);
+    return query.getResultList();
+  }
 
-    @Transactional
-    public Optional<Region> get(long id) {
-        final Region region = manager.find(Region.class, id);
-        return region == null ? Optional.<Region>empty() : Optional.of(region);
-    }
+  @Transactional
+  public Optional<Region> get(long id) {
+    final Region region = manager.find(Region.class, id);
+    return region == null ? Optional.<Region>empty() : Optional.of(region);
+  }
 
-    @Transactional
-    public void add(String name, HsaIdVardgivare vgId) {
-        final List<Region> all = getAll();
-        List<Long> allIds = Lists.transform(all, region -> region.getId());
-        final Long maxId = Collections.max(allIds);
-        final Region region = new Region(maxId + 1, name, vgId);
-        manager.persist(region);
-    }
+  @Transactional
+  public void add(String name, HsaIdVardgivare vgId) {
+    final List<Region> all = getAll();
+    List<Long> allIds = Lists.transform(all, region -> region.getId());
+    final Long maxId = Collections.max(allIds);
+    final Region region = new Region(maxId + 1, name, vgId);
+    manager.persist(region);
+  }
 
-    @Transactional
-    public Optional<Region> getForVg(HsaIdVardgivare vgId) {
-        TypedQuery<Region> query = manager.createQuery("SELECT l FROM Region l where l.vardgivareId = :vgId", Region.class)
+  @Transactional
+  public Optional<Region> getForVg(HsaIdVardgivare vgId) {
+    TypedQuery<Region> query =
+        manager
+            .createQuery("SELECT l FROM Region l where l.vardgivareId = :vgId", Region.class)
             .setParameter("vgId", vgId.getId());
-        final List<Region> resultList = query.getResultList();
-        return resultList.isEmpty() ? Optional.<Region>empty() : Optional.of(resultList.get(0));
-    }
-
+    final List<Region> resultList = query.getResultList();
+    return resultList.isEmpty() ? Optional.<Region>empty() : Optional.of(resultList.get(0));
+  }
 }

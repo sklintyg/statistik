@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,75 +25,74 @@ import se.inera.statistics.service.IntygCreatorHelper;
 
 public class IntygEventTest {
 
-    @Test
-    public void testGetIntygFormatXml() {
-        //Given
-        String data = IntygCreatorHelper.getFk7263Xml();
+  @Test
+  public void testGetIntygFormatXml() {
+    // Given
+    String data = IntygCreatorHelper.getFk7263Xml();
 
-        //When
-        final IntygFormat intygFormat = IntygEvent.getIntygFormat(data);
+    // When
+    final IntygFormat intygFormat = IntygEvent.getIntygFormat(data);
 
-        //Then
-        assertEquals(IntygFormat.REGISTER_CERTIFICATE, intygFormat);
-    }
+    // Then
+    assertEquals(IntygFormat.REGISTER_CERTIFICATE, intygFormat);
+  }
 
-    @Test
-    public void testGetIntygFormatJson() {
-        //Given
-        String data = IntygCreatorHelper.getFk7263Json();
+  @Test
+  public void testGetIntygFormatJson() {
+    // Given
+    String data = IntygCreatorHelper.getFk7263Json();
 
-        //When
-        final IntygFormat intygFormat = IntygEvent.getIntygFormat(data);
+    // When
+    final IntygFormat intygFormat = IntygEvent.getIntygFormat(data);
 
-        //Then
-        assertEquals(IntygFormat.REGISTER_MEDICAL_CERTIFICATE, intygFormat);
-    }
+    // Then
+    assertEquals(IntygFormat.REGISTER_MEDICAL_CERTIFICATE, intygFormat);
+  }
 
-    @Test
-    public void testGetIntygFormatIntygNull() {
-        //Given
-        String data = null;
+  @Test
+  public void testGetIntygFormatIntygNull() {
+    // Given
+    String data = null;
 
-        //When
-        final IntygFormat intygFormat = IntygEvent.getIntygFormat(data);
+    // When
+    final IntygFormat intygFormat = IntygEvent.getIntygFormat(data);
 
-        //Then
-        assertEquals(IntygFormat.REGISTER_MEDICAL_CERTIFICATE, intygFormat);
-    }
+    // Then
+    assertEquals(IntygFormat.REGISTER_MEDICAL_CERTIFICATE, intygFormat);
+  }
 
-    @Test
-    public void testGetIntygFormatTsDiabetes() {
-        //Given
-        String data = IntygCreatorHelper.getTsDiabetes();
+  @Test
+  public void testGetIntygFormatTsDiabetes() {
+    // Given
+    String data = IntygCreatorHelper.getTsDiabetes();
 
-        //When
-        final IntygFormat intygFormat = IntygEvent.getIntygFormat(data);
+    // When
+    final IntygFormat intygFormat = IntygEvent.getIntygFormat(data);
 
-        //Then
-        assertEquals(IntygFormat.REGISTER_TS_DIABETES, intygFormat);
-    }
+    // Then
+    assertEquals(IntygFormat.REGISTER_TS_DIABETES, intygFormat);
+  }
 
-    @Test
-    public void testGetIntygFormatTsDiabetesWithExtraNS_INTYGFV12378() {
-        //Given
-        String data = IntygCreatorHelper.getTsDiabetesWithExtraNS();
+  @Test
+  public void testGetIntygFormatTsDiabetesWithExtraNS_INTYGFV12378() {
+    // Given
+    String data = IntygCreatorHelper.getTsDiabetesWithExtraNS();
 
-        //When
-        final IntygFormat intygFormat = IntygEvent.getIntygFormat(data);
+    // When
+    final IntygFormat intygFormat = IntygEvent.getIntygFormat(data);
 
-        //Then
-        assertEquals(IntygFormat.REGISTER_TS_DIABETES, intygFormat);
-    }
+    // Then
+    assertEquals(IntygFormat.REGISTER_TS_DIABETES, intygFormat);
+  }
 
-    @Test
-    public void testGetIntygFormatTsBas() {
-        //Given
-        String data = IntygCreatorHelper.getTsBas();
-        //When
-        final IntygFormat intygFormat = IntygEvent.getIntygFormat(data);
+  @Test
+  public void testGetIntygFormatTsBas() {
+    // Given
+    String data = IntygCreatorHelper.getTsBas();
+    // When
+    final IntygFormat intygFormat = IntygEvent.getIntygFormat(data);
 
-        //Then
-        assertEquals(IntygFormat.REGISTER_TS_BAS, intygFormat);
-    }
-
+    // Then
+    assertEquals(IntygFormat.REGISTER_TS_BAS, intygFormat);
+  }
 }

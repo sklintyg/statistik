@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,107 +25,106 @@ import se.inera.statistics.service.warehouse.IntygType;
 
 public class IntygDTO {
 
-    // Common
-    private String intygid;
-    private String enhet;
-    private String patientid;
-    private LocalDate signeringsdatum;
-    private IntygType intygtyp;
-    private Patientdata patientData;
+  // Common
+  private String intygid;
+  private String enhet;
+  private String patientid;
+  private LocalDate signeringsdatum;
+  private IntygType intygtyp;
+  private Patientdata patientData;
 
-    // WideLine
-    private int startdatum;
-    private int slutdatum;
-    private String diagnoskod;
-    private String lakareId;
-    private List<Arbetsnedsattning> arbetsnedsattnings;
+  // WideLine
+  private int startdatum;
+  private int slutdatum;
+  private String diagnoskod;
+  private String lakareId;
+  private List<Arbetsnedsattning> arbetsnedsattnings;
 
+  public String getIntygid() {
+    return intygid;
+  }
 
-    public String getIntygid() {
-        return intygid;
-    }
+  public void setIntygid(String intygid) {
+    this.intygid = intygid;
+  }
 
-    public void setIntygid(String intygid) {
-        this.intygid = intygid;
-    }
+  public String getEnhet() {
+    return enhet;
+  }
 
-    public String getEnhet() {
-        return enhet;
-    }
+  public void setEnhet(String enhet) {
+    this.enhet = enhet;
+  }
 
-    public void setEnhet(String enhet) {
-        this.enhet = enhet;
-    }
+  public String getPatientid() {
+    return patientid;
+  }
 
-    public String getPatientid() {
-        return patientid;
-    }
+  public void setPatientid(String patientid) {
+    this.patientid = patientid;
+  }
 
-    public void setPatientid(String patientid) {
-        this.patientid = patientid;
-    }
+  public LocalDate getSigneringsdatum() {
+    return signeringsdatum;
+  }
 
-    public LocalDate getSigneringsdatum() {
-        return signeringsdatum;
-    }
+  public void setSigneringsdatum(LocalDate signeringsdatum) {
+    this.signeringsdatum = signeringsdatum;
+  }
 
-    public void setSigneringsdatum(LocalDate signeringsdatum) {
-        this.signeringsdatum = signeringsdatum;
-    }
+  public IntygType getIntygtyp() {
+    return intygtyp;
+  }
 
-    public IntygType getIntygtyp() {
-        return intygtyp;
-    }
+  public void setIntygtyp(IntygType intygtyp) {
+    this.intygtyp = intygtyp;
+  }
 
-    public void setIntygtyp(IntygType intygtyp) {
-        this.intygtyp = intygtyp;
-    }
+  public Patientdata getPatientData() {
+    return patientData;
+  }
 
-    public Patientdata getPatientData() {
-        return patientData;
-    }
+  public void setPatientData(Patientdata patientData) {
+    this.patientData = patientData;
+  }
 
-    public void setPatientData(Patientdata patientData) {
-        this.patientData = patientData;
-    }
+  public int getStartdatum() {
+    return startdatum;
+  }
 
-    public int getStartdatum() {
-        return startdatum;
-    }
+  public void setStartdatum(int startdatum) {
+    this.startdatum = startdatum;
+  }
 
-    public void setStartdatum(int startdatum) {
-        this.startdatum = startdatum;
-    }
+  public int getSlutdatum() {
+    return slutdatum;
+  }
 
-    public int getSlutdatum() {
-        return slutdatum;
-    }
+  public void setSlutdatum(int slutdatum) {
+    this.slutdatum = slutdatum;
+  }
 
-    public void setSlutdatum(int slutdatum) {
-        this.slutdatum = slutdatum;
-    }
+  public String getDiagnoskod() {
+    return diagnoskod;
+  }
 
-    public String getDiagnoskod() {
-        return diagnoskod;
-    }
+  public void setDiagnoskod(String diagnoskod) {
+    this.diagnoskod = diagnoskod;
+  }
 
-    public void setDiagnoskod(String diagnoskod) {
-        this.diagnoskod = diagnoskod;
-    }
+  public String getLakareId() {
+    return lakareId;
+  }
 
-    public String getLakareId() {
-        return lakareId;
-    }
+  public void setLakareId(String lakareId) {
+    this.lakareId = lakareId;
+  }
 
-    public void setLakareId(String lakareId) {
-        this.lakareId = lakareId;
-    }
+  public List<Arbetsnedsattning> getArbetsnedsattnings() {
+    return arbetsnedsattnings;
+  }
 
-    public List<Arbetsnedsattning> getArbetsnedsattnings() {
-        return arbetsnedsattnings;
-    }
-
-    public void setArbetsnedsattnings(List<Arbetsnedsattning> arbetsnedsattnings) {
-        this.arbetsnedsattnings = arbetsnedsattnings;
-    }
+  public void setArbetsnedsattnings(List<Arbetsnedsattning> arbetsnedsattnings) {
+    this.arbetsnedsattnings = arbetsnedsattnings;
+  }
 }

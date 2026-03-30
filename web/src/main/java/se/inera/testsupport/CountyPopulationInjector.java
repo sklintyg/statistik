@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,8 +23,7 @@ import se.inera.statistics.service.report.model.KonField;
 
 public interface CountyPopulationInjector {
 
-    void clearCountyPopulations();
+  void clearCountyPopulations();
 
-    void addCountyPopulation(Map<String, KonField> countyPopulation, int year);
-
+  void addCountyPopulation(Map<String, KonField> countyPopulation, int year);
 }

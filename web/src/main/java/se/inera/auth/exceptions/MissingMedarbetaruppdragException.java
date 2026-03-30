@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,7 +22,10 @@ import org.springframework.security.core.AuthenticationException;
 
 public class MissingMedarbetaruppdragException extends AuthenticationException {
 
-    public MissingMedarbetaruppdragException(String hsaId) {
-        super("User with HSA-ID " + hsaId + " does not have any medarbetaruppdrag with 'Vård och behandling'");
-    }
+  public MissingMedarbetaruppdragException(String hsaId) {
+    super(
+        "User with HSA-ID "
+            + hsaId
+            + " does not have any medarbetaruppdrag with 'Vård och behandling'");
+  }
 }

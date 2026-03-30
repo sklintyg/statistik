@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -29,57 +29,65 @@ import se.inera.statistics.service.report.model.Range;
 
 public class SjukfallIterator implements Iterator<SjukfallGroup> {
 
-    private final LocalDate from;
-    private final FilterPredicates sjukfallFilter;
-    private int period = 0;
-    private final int periodSize;
-    private final SjukfallCalculator sjukfallCalculator;
+  private final LocalDate from;
+  private final FilterPredicates sjukfallFilter;
+  private int period = 0;
+  private final int periodSize;
+  private final SjukfallCalculator sjukfallCalculator;
 
-    public SjukfallIterator(LocalDate from, int periods, int periodSize, Aisle aisle, FilterPredicates sjukfallFilter) {
-        this.from = from;
-        this.periodSize = periodSize;
-        this.sjukfallFilter = sjukfallFilter;
-        List<Range> ranges = getRanges(from, periods, periodSize);
-        sjukfallCalculator = getSjukfallCalculator(aisle, sjukfallFilter.getIntygFilter(), ranges);
+  public SjukfallIterator(
+      LocalDate from, int periods, int periodSize, Aisle aisle, FilterPredicates sjukfallFilter) {
+    this.from = from;
+    this.periodSize = periodSize;
+    this.sjukfallFilter = sjukfallFilter;
+    List<Range> ranges = getRanges(from, periods, periodSize);
+    sjukfallCalculator = getSjukfallCalculator(aisle, sjukfallFilter.getIntygFilter(), ranges);
+  }
+
+  SjukfallCalculator getSjukfallCalculator(
+      Aisle aisle, Predicate<Fact> filter, List<Range> ranges) {
+    return new SjukfallCalculator(aisle, filter, ranges);
+  }
+
+  public static List<Range> getRanges(LocalDate from, int periods, int periodSize) {
+    final ArrayList<Range> ranges = new ArrayList<>();
+    for (int i = 0; i < periods; i++) {
+      final LocalDate fromDate = from.plusMonths(i * periodSize).withDayOfMonth(1);
+      final LocalDate toDate = from.plusMonths((i + 1) * periodSize).withDayOfMonth(1).minusDays(1);
+      ranges.add(new Range(fromDate, toDate));
     }
+    return ranges;
+  }
 
-    SjukfallCalculator getSjukfallCalculator(Aisle aisle, Predicate<Fact> filter, List<Range> ranges) {
-        return new SjukfallCalculator(aisle, filter, ranges);
+  @Override
+  public boolean hasNext() {
+    return sjukfallCalculator.hasNextPeriod();
+  }
+
+  @Override
+  public SjukfallGroup next() {
+    if (!hasNext()) {
+      throw new NoSuchElementException();
     }
+    List<Sjukfall> result =
+        sjukfallCalculator.getSjukfallsForNextPeriod().stream()
+            .filter(t -> sjukfallFilter.getSjukfallFilter().test(t))
+            .collect(Collectors.toList());
+    final LocalDate fromDate = from.plusMonths(period * periodSize);
+    Range range =
+        new Range(
+            fromDate,
+            from.plusMonths(period * periodSize + periodSize - 1)
+                .plusMonths(1)
+                .withDayOfMonth(1)
+                .minusDays(1));
+    SjukfallGroup sjukfallGroup = new SjukfallGroup(range, result);
+    period++;
+    return sjukfallGroup;
+  }
 
-    public static List<Range> getRanges(LocalDate from, int periods, int periodSize) {
-        final ArrayList<Range> ranges = new ArrayList<>();
-        for (int i = 0; i < periods; i++) {
-            final LocalDate fromDate = from.plusMonths(i * periodSize).withDayOfMonth(1);
-            final LocalDate toDate = from.plusMonths((i + 1) * periodSize).withDayOfMonth(1).minusDays(1);
-            ranges.add(new Range(fromDate, toDate));
-        }
-        return ranges;
-    }
-
-    @Override
-    public boolean hasNext() {
-        return sjukfallCalculator.hasNextPeriod();
-    }
-
-    @Override
-    public SjukfallGroup next() {
-        if (!hasNext()) {
-            throw new NoSuchElementException();
-        }
-        List<Sjukfall> result = sjukfallCalculator.getSjukfallsForNextPeriod().stream()
-            .filter(t -> sjukfallFilter.getSjukfallFilter().test(t)).collect(Collectors.toList());
-        final LocalDate fromDate = from.plusMonths(period * periodSize);
-        Range range = new Range(fromDate,
-            from.plusMonths(period * periodSize + periodSize - 1).plusMonths(1).withDayOfMonth(1).minusDays(1));
-        SjukfallGroup sjukfallGroup = new SjukfallGroup(range, result);
-        period++;
-        return sjukfallGroup;
-    }
-
-    @Override
-    public void remove() {
-        throw new UnsupportedOperationException();
-    }
-
+  @Override
+  public void remove() {
+    throw new UnsupportedOperationException();
+  }
 }

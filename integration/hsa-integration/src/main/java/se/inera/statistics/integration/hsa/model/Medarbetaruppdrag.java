@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,49 +25,49 @@ import java.util.List;
  */
 public class Medarbetaruppdrag {
 
-    public static final String STATISTIK = "Statistik";
-    public static final String VARD_OCH_BEHANDLING = "Vård och behandling";
+  public static final String STATISTIK = "Statistik";
+  public static final String VARD_OCH_BEHANDLING = "Vård och behandling";
 
-    private HsaIdUser hsaId;
-    private List<HsaIdEnhet> enhetIds;
+  private HsaIdUser hsaId;
+  private List<HsaIdEnhet> enhetIds;
 
-    private String andamal = STATISTIK;
+  private String andamal = STATISTIK;
 
-    Medarbetaruppdrag() {
-        //Not sure why/if this is needed
-    }
+  Medarbetaruppdrag() {
+    // Not sure why/if this is needed
+  }
 
-    public Medarbetaruppdrag(HsaIdUser hsaId, List<HsaIdEnhet> enhetIds) {
-        this(hsaId, enhetIds, STATISTIK);
-    }
+  public Medarbetaruppdrag(HsaIdUser hsaId, List<HsaIdEnhet> enhetIds) {
+    this(hsaId, enhetIds, STATISTIK);
+  }
 
-    public Medarbetaruppdrag(HsaIdUser hsaId, List<HsaIdEnhet> enhetIds, String andamal) {
-        this.hsaId = hsaId;
-        this.enhetIds = enhetIds;
-        this.andamal = andamal;
-    }
+  public Medarbetaruppdrag(HsaIdUser hsaId, List<HsaIdEnhet> enhetIds, String andamal) {
+    this.hsaId = hsaId;
+    this.enhetIds = enhetIds;
+    this.andamal = andamal;
+  }
 
-    public HsaIdUser getHsaId() {
-        return hsaId;
-    }
+  public HsaIdUser getHsaId() {
+    return hsaId;
+  }
 
-    public void setHsaId(HsaIdUser hsaId) {
-        this.hsaId = hsaId;
-    }
+  public void setHsaId(HsaIdUser hsaId) {
+    this.hsaId = hsaId;
+  }
 
-    public List<HsaIdEnhet> getEnhetIds() {
-        return enhetIds;
-    }
+  public List<HsaIdEnhet> getEnhetIds() {
+    return enhetIds;
+  }
 
-    public void setEnhetIds(List<HsaIdEnhet> enhetIds) {
-        this.enhetIds = enhetIds;
-    }
+  public void setEnhetIds(List<HsaIdEnhet> enhetIds) {
+    this.enhetIds = enhetIds;
+  }
 
-    public String getAndamal() {
-        return andamal;
-    }
+  public String getAndamal() {
+    return andamal;
+  }
 
-    public void setAndamal(String andamal) {
-        this.andamal = andamal;
-    }
+  public void setAndamal(String andamal) {
+    this.andamal = andamal;
+  }
 }

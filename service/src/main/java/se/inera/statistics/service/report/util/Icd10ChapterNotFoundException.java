@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,10 +20,9 @@ package se.inera.statistics.service.report.util;
 
 public class Icd10ChapterNotFoundException extends Exception {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    public Icd10ChapterNotFoundException(String string) {
-        super(string);
-    }
-
+  public Icd10ChapterNotFoundException(String string) {
+    super(string);
+  }
 }

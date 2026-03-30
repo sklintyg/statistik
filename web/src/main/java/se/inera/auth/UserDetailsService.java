@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -36,48 +36,54 @@ import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 @Service
 public class UserDetailsService {
 
-    public static final String GLOBAL_VG_ACCESS_PREFIX = "INTYG;Statistik-";
+  public static final String GLOBAL_VG_ACCESS_PREFIX = "INTYG;Statistik-";
 
-    @Autowired
-    private HsaOrganizationsService hsaOrganizationsService;
+  @Autowired private HsaOrganizationsService hsaOrganizationsService;
 
-    @Autowired
-    private HsaPersonService hsaPersonService;
+  @Autowired private HsaPersonService hsaPersonService;
 
-    @Autowired
-    @Qualifier("webMonitoringLogService")
-    private MonitoringLogService monitoringLogService;
+  @Autowired
+  @Qualifier("webMonitoringLogService") private MonitoringLogService monitoringLogService;
 
-    public User buildUserPrincipal(String employeeHsaId, LoginMethod loginMethod) {
-        final HsaIdUser hsaId = new HsaIdUser(employeeHsaId);
-        List<StatisticsPersonInformation> hsaPersonInfo = hsaPersonService.getHsaPersonInfo(hsaId.getId());
-        UserAuthorization userAuthorization = hsaOrganizationsService.getAuthorizedEnheterForHosPerson(hsaId);
-        final List<Vardgivare> vardgivareWithProcessledarStatusList = getVgsWithProcessledarStatus(userAuthorization.getSystemRoles())
-            .stream().map(vgHsaId -> hsaOrganizationsService.getVardgivare(vgHsaId))
+  public User buildUserPrincipal(String employeeHsaId, LoginMethod loginMethod) {
+    final HsaIdUser hsaId = new HsaIdUser(employeeHsaId);
+    List<StatisticsPersonInformation> hsaPersonInfo =
+        hsaPersonService.getHsaPersonInfo(hsaId.getId());
+    UserAuthorization userAuthorization =
+        hsaOrganizationsService.getAuthorizedEnheterForHosPerson(hsaId);
+    final List<Vardgivare> vardgivareWithProcessledarStatusList =
+        getVgsWithProcessledarStatus(userAuthorization.getSystemRoles()).stream()
+            .map(vgHsaId -> hsaOrganizationsService.getVardgivare(vgHsaId))
             .toList();
 
-        monitoringLogService.logUserLogin(hsaId, loginMethod);
+    monitoringLogService.logUserLogin(hsaId, loginMethod);
 
-        final String name = extractPersonName(hsaPersonInfo);
-        return new User(hsaId, name, vardgivareWithProcessledarStatusList, userAuthorization.getVardenhetList(), loginMethod);
-    }
+    final String name = extractPersonName(hsaPersonInfo);
+    return new User(
+        hsaId,
+        name,
+        vardgivareWithProcessledarStatusList,
+        userAuthorization.getVardenhetList(),
+        loginMethod);
+  }
 
-    private String extractPersonName(List<StatisticsPersonInformation> hsaPersonInfo) {
-        if (hsaPersonInfo != null && !hsaPersonInfo.isEmpty()) {
-            return hsaPersonInfo.get(0).getGivenName() + " " + hsaPersonInfo.get(0).getMiddleAndSurName();
-        } else {
-            return "";
-        }
+  private String extractPersonName(List<StatisticsPersonInformation> hsaPersonInfo) {
+    if (hsaPersonInfo != null && !hsaPersonInfo.isEmpty()) {
+      return hsaPersonInfo.get(0).getGivenName() + " " + hsaPersonInfo.get(0).getMiddleAndSurName();
+    } else {
+      return "";
     }
+  }
 
-    private List<HsaIdVardgivare> getVgsWithProcessledarStatus(List<String> systemRoles) {
-        final ArrayList<HsaIdVardgivare> statistikRoles = new ArrayList<>();
-        for (String systemRole : systemRoles) {
-            if (systemRole.toLowerCase().startsWith(GLOBAL_VG_ACCESS_PREFIX.toLowerCase())) {
-                final HsaIdVardgivare vgId = new HsaIdVardgivare(systemRole.substring(GLOBAL_VG_ACCESS_PREFIX.length()));
-                statistikRoles.add(vgId);
-            }
-        }
-        return statistikRoles;
+  private List<HsaIdVardgivare> getVgsWithProcessledarStatus(List<String> systemRoles) {
+    final ArrayList<HsaIdVardgivare> statistikRoles = new ArrayList<>();
+    for (String systemRole : systemRoles) {
+      if (systemRole.toLowerCase().startsWith(GLOBAL_VG_ACCESS_PREFIX.toLowerCase())) {
+        final HsaIdVardgivare vgId =
+            new HsaIdVardgivare(systemRole.substring(GLOBAL_VG_ACCESS_PREFIX.length()));
+        statistikRoles.add(vgId);
+      }
     }
+    return statistikRoles;
+  }
 }

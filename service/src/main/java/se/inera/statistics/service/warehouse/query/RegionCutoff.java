@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -27,28 +27,29 @@ import org.springframework.stereotype.Component;
 @Component
 public class RegionCutoff {
 
-    private static final Logger LOG = LoggerFactory.getLogger(RegionCutoff.class);
+  private static final Logger LOG = LoggerFactory.getLogger(RegionCutoff.class);
 
-    private static final int DEFAULT_CUTOFF = 5;
-    private int cutoff = DEFAULT_CUTOFF;
+  private static final int DEFAULT_CUTOFF = 5;
+  private int cutoff = DEFAULT_CUTOFF;
 
-    @Autowired
-    public void initProperty(@Value("${reports.landsting.cutoff}") int cutoff) {
-        final int minimumCutoffValue = 3;
-        if (cutoff < minimumCutoffValue) {
-            LOG.warn(String.format("Region cutoff value is too low. Using minimum value: %d", minimumCutoffValue));
-            this.cutoff = minimumCutoffValue;
-            return;
-        }
-        this.cutoff = cutoff;
+  @Autowired
+  public void initProperty(@Value("${reports.landsting.cutoff}") int cutoff) {
+    final int minimumCutoffValue = 3;
+    if (cutoff < minimumCutoffValue) {
+      LOG.warn(
+          String.format(
+              "Region cutoff value is too low. Using minimum value: %d", minimumCutoffValue));
+      this.cutoff = minimumCutoffValue;
+      return;
     }
+    this.cutoff = cutoff;
+  }
 
-    public int getCutoff() {
-        return cutoff;
-    }
+  public int getCutoff() {
+    return cutoff;
+  }
 
-    public void setCutoff(int cutoff) {
-        this.cutoff = cutoff;
-    }
-
+  public void setCutoff(int cutoff) {
+    this.cutoff = cutoff;
+  }
 }

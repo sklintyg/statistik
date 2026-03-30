@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -24,65 +24,65 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public enum SjukfallsLangdGroupSpecial {
+  GROUP1_0TO7("Under 8 dagar", 0, 7),
+  GROUP2_8TO14("8-14 dagar", 8, 14),
+  GROUP3_15TO30("15-30 dagar", 15, 30),
+  GROUP4_31TO60("31-60 dagar", 31, 60),
+  GROUP5_61TO90("61-90 dagar", 61, 90),
+  GROUP6_91TO180("91-180 dagar", 91, 180),
+  GROUP7_181TO365("181-365 dagar", 181, 365),
+  GROUP8_366PLUS("Över 365 dagar", 366, Integer.MAX_VALUE - 1);
 
-    GROUP1_0TO7("Under 8 dagar", 0, 7),
-    GROUP2_8TO14("8-14 dagar", 8, 14),
-    GROUP3_15TO30("15-30 dagar", 15, 30),
-    GROUP4_31TO60("31-60 dagar", 31, 60),
-    GROUP5_61TO90("61-90 dagar", 61, 90),
-    GROUP6_91TO180("91-180 dagar", 91, 180),
-    GROUP7_181TO365("181-365 dagar", 181, 365),
-    GROUP8_366PLUS("Över 365 dagar", 366, Integer.MAX_VALUE - 1);
+  private static final Logger LOG = LoggerFactory.getLogger(SjukfallsLangdGroupSpecial.class);
 
-    private static final Logger LOG = LoggerFactory.getLogger(SjukfallsLangdGroupSpecial.class);
+  private final String groupName;
+  private final int from;
+  private final int to;
 
-    private final String groupName;
-    private final int from;
-    private final int to;
+  /**
+   * @param from Range start, inclusive
+   * @param to Range end, inclusive
+   */
+  SjukfallsLangdGroupSpecial(String groupName, int from, int to) {
+    this.groupName = groupName;
+    this.from = from;
+    this.to = to;
+  }
 
-    /**
-     * @param from Range start, inclusive
-     * @param to Range end, inclusive
-     */
-    SjukfallsLangdGroupSpecial(String groupName, int from, int to) {
-        this.groupName = groupName;
-        this.from = from;
-        this.to = to;
+  public String getGroupName() {
+    return groupName;
+  }
+
+  public int getFrom() {
+    return from;
+  }
+
+  public int getTo() {
+    return to;
+  }
+
+  public static Optional<SjukfallsLangdGroupSpecial> getByName(String name) {
+    return Arrays.stream(values())
+        .filter(group -> group.groupName.equalsIgnoreCase(name))
+        .findFirst();
+  }
+
+  public static Optional<SjukfallsLangdGroupSpecial> parse(String name) {
+    try {
+      final SjukfallsLangdGroupSpecial sjukfallsLangdGroup = valueOf(name);
+      return Optional.of(sjukfallsLangdGroup);
+    } catch (IllegalArgumentException e) {
+      LOG.debug("Failed to parse name: {}", name, e);
+      return Optional.empty();
     }
+  }
 
-    public String getGroupName() {
-        return groupName;
+  public static SjukfallsLangdGroupSpecial getByLength(int length) {
+    for (SjukfallsLangdGroupSpecial group : values()) {
+      if (group.from <= length && group.to >= length) {
+        return group;
+      }
     }
-
-    public int getFrom() {
-        return from;
-    }
-
-    public int getTo() {
-        return to;
-    }
-
-    public static Optional<SjukfallsLangdGroupSpecial> getByName(String name) {
-        return Arrays.stream(values()).filter(group -> group.groupName.equalsIgnoreCase(name)).findFirst();
-    }
-
-    public static Optional<SjukfallsLangdGroupSpecial> parse(String name) {
-        try {
-            final SjukfallsLangdGroupSpecial sjukfallsLangdGroup = valueOf(name);
-            return Optional.of(sjukfallsLangdGroup);
-        } catch (IllegalArgumentException e) {
-            LOG.debug("Failed to parse name: {}", name, e);
-            return Optional.empty();
-        }
-    }
-
-    public static SjukfallsLangdGroupSpecial getByLength(int length) {
-        for (SjukfallsLangdGroupSpecial group : values()) {
-            if (group.from <= length && group.to >= length) {
-                return group;
-            }
-        }
-        throw new IllegalArgumentException("Length could not be matched to a group: " + length);
-    }
-
+    throw new IllegalArgumentException("Length could not be matched to a group: " + length);
+  }
 }

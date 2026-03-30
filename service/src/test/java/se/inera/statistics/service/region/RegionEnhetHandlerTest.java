@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -50,155 +50,177 @@ import se.inera.statistics.service.region.persistance.regionenhetupdate.RegionEn
 
 public class RegionEnhetHandlerTest {
 
-    @InjectMocks
-    private RegionEnhetHandler regionEnhetHandler;
+  @InjectMocks private RegionEnhetHandler regionEnhetHandler;
 
-    @Mock
-    private RegionManager regionManager;
+  @Mock private RegionManager regionManager;
 
-    @Mock
-    private RegionEnhetManager regionEnhetManager;
+  @Mock private RegionEnhetManager regionEnhetManager;
 
-    @Mock
-    private RegionEnhetUpdateManager regionEnhetUpdateManager;
+  @Mock private RegionEnhetUpdateManager regionEnhetUpdateManager;
 
-    @Before
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+  @Before
+  public void setUp() throws Exception {
+    MockitoAnnotations.initMocks(this);
+  }
+
+  @Test
+  public void testUpdateWhenNoRegionIsFoundExceptionIsThrownAndNoUpdateIsPerformed()
+      throws Exception {
+    // Given
+    final RegionEnhetFileData data =
+        new RegionEnhetFileData(new HsaIdVardgivare("testName"), null, "", new HsaIdUser(""), "");
+    Mockito.when(regionManager.getForVg(any(HsaIdVardgivare.class))).thenReturn(Optional.empty());
+
+    // When
+    try {
+      regionEnhetHandler.update(data);
+      fail();
+    } catch (NoRegionSetForVgException e) {
+      // Expected - do nothing
     }
 
-    @Test
-    public void testUpdateWhenNoRegionIsFoundExceptionIsThrownAndNoUpdateIsPerformed() throws Exception {
-        //Given
-        final RegionEnhetFileData data = new RegionEnhetFileData(new HsaIdVardgivare("testName"), null, "", new HsaIdUser(""), "");
-        Mockito.when(regionManager.getForVg(any(HsaIdVardgivare.class))).thenReturn(Optional.empty());
+    // Then
+    Mockito.verify(regionEnhetManager, times(0)).update(anyLong(), anyList());
+    Mockito.verify(regionEnhetUpdateManager, times(0))
+        .update(
+            anyLong(),
+            anyString(),
+            any(HsaIdUser.class),
+            anyString(),
+            any(RegionEnhetUpdateOperation.class));
+  }
 
-        //When
-        try {
-            regionEnhetHandler.update(data);
-            fail();
-        } catch (NoRegionSetForVgException e) {
-            //Expected - do nothing
-        }
+  @Test
+  public void testUpdatesAreCalledWithCorrectParams() throws Exception {
+    // Given
+    final ArrayList<RegionEnhetFileDataRow> rows = new ArrayList<>();
+    final String userName = "testUserName";
+    final String fileName = "TestFileName";
+    final HsaIdUser userHsaId = new HsaIdUser("TestUserId");
+    final RegionEnhetFileData data =
+        new RegionEnhetFileData(
+            new HsaIdVardgivare("testVgId"), rows, userName, userHsaId, fileName);
+    final Region region = Mockito.mock(Region.class);
+    final Long landtingsId = 5L;
+    Mockito.when(region.getId()).thenReturn(landtingsId);
+    Mockito.when(regionManager.getForVg(any(HsaIdVardgivare.class)))
+        .thenReturn(Optional.of(region));
 
-        //Then
-        Mockito.verify(regionEnhetManager, times(0)).update(anyLong(), anyList());
-        Mockito.verify(regionEnhetUpdateManager, times(0))
-            .update(anyLong(), anyString(), any(HsaIdUser.class), anyString(), any(RegionEnhetUpdateOperation.class));
-    }
+    // When
+    regionEnhetHandler.update(data);
 
-    @Test
-    public void testUpdatesAreCalledWithCorrectParams() throws Exception {
-        //Given
-        final ArrayList<RegionEnhetFileDataRow> rows = new ArrayList<>();
-        final String userName = "testUserName";
-        final String fileName = "TestFileName";
-        final HsaIdUser userHsaId = new HsaIdUser("TestUserId");
-        final RegionEnhetFileData data = new RegionEnhetFileData(new HsaIdVardgivare("testVgId"), rows, userName, userHsaId, fileName);
-        final Region region = Mockito.mock(Region.class);
-        final Long landtingsId = 5L;
-        Mockito.when(region.getId()).thenReturn(landtingsId);
-        Mockito.when(regionManager.getForVg(any(HsaIdVardgivare.class))).thenReturn(Optional.of(region));
+    // Then
+    Mockito.verify(regionEnhetManager, times(1)).update(landtingsId, rows);
+    Mockito.verify(regionEnhetUpdateManager, times(1))
+        .update(landtingsId, userName, userHsaId, fileName, RegionEnhetUpdateOperation.UPDATE);
+  }
 
-        //When
-        regionEnhetHandler.update(data);
+  @Test
+  public void testClear() throws Exception {
+    // Given
+    final ArrayList<RegionEnhetFileDataRow> rows = new ArrayList<>();
+    final String userName = "testUserName";
+    final HsaIdUser userId = new HsaIdUser("TestUserId");
+    final String fileName = "TestFileName";
+    final HsaIdVardgivare vgId = new HsaIdVardgivare("testVgId");
+    final RegionEnhetFileData data =
+        new RegionEnhetFileData(vgId, rows, userName, userId, fileName);
+    final Region region = Mockito.mock(Region.class);
+    final Long landtingsId = 5L;
+    Mockito.when(region.getId()).thenReturn(landtingsId);
+    Mockito.when(regionManager.getForVg(any(HsaIdVardgivare.class)))
+        .thenReturn(Optional.of(region));
 
-        //Then
-        Mockito.verify(regionEnhetManager, times(1)).update(landtingsId, rows);
-        Mockito.verify(regionEnhetUpdateManager, times(1))
-            .update(landtingsId, userName, userHsaId, fileName, RegionEnhetUpdateOperation.UPDATE);
-    }
+    // When
+    regionEnhetHandler.clear(vgId, userName, userId);
 
-    @Test
-    public void testClear() throws Exception {
-        //Given
-        final ArrayList<RegionEnhetFileDataRow> rows = new ArrayList<>();
-        final String userName = "testUserName";
-        final HsaIdUser userId = new HsaIdUser("TestUserId");
-        final String fileName = "TestFileName";
-        final HsaIdVardgivare vgId = new HsaIdVardgivare("testVgId");
-        final RegionEnhetFileData data = new RegionEnhetFileData(vgId, rows, userName, userId, fileName);
-        final Region region = Mockito.mock(Region.class);
-        final Long landtingsId = 5L;
-        Mockito.when(region.getId()).thenReturn(landtingsId);
-        Mockito.when(regionManager.getForVg(any(HsaIdVardgivare.class))).thenReturn(Optional.of(region));
+    // Then
+    final ArgumentCaptor<List> listArgumentCaptor = ArgumentCaptor.forClass(List.class);
+    Mockito.verify(regionEnhetManager, times(1))
+        .update(eq(landtingsId), listArgumentCaptor.capture());
+    assertEquals(0, listArgumentCaptor.getValue().size());
+    Mockito.verify(regionEnhetUpdateManager, times(1))
+        .update(landtingsId, userName, userId, "-", RegionEnhetUpdateOperation.REMOVE);
+  }
 
-        //When
-        regionEnhetHandler.clear(vgId, userName, userId);
+  @Test
+  public void testIllegalCharactersAreRemovedFromFilenameBeforeDatabaseUpdate() throws Exception {
+    // Given
+    final ArrayList<RegionEnhetFileDataRow> rows = null;
+    final String fileName = "TestFile<Name.xls";
+    final RegionEnhetFileData data =
+        new RegionEnhetFileData(
+            new HsaIdVardgivare("testVgId"), rows, "", new HsaIdUser(""), fileName);
+    final Region region = Mockito.mock(Region.class);
+    final Long landtingsId = 5L;
+    Mockito.when(region.getId()).thenReturn(landtingsId);
+    Mockito.when(regionManager.getForVg(any(HsaIdVardgivare.class)))
+        .thenReturn(Optional.of(region));
 
-        //Then
-        final ArgumentCaptor<List> listArgumentCaptor = ArgumentCaptor.forClass(List.class);
-        Mockito.verify(regionEnhetManager, times(1)).update(eq(landtingsId), listArgumentCaptor.capture());
-        assertEquals(0, listArgumentCaptor.getValue().size());
-        Mockito.verify(regionEnhetUpdateManager, times(1)).update(landtingsId, userName, userId, "-", RegionEnhetUpdateOperation.REMOVE);
-    }
+    // When
+    regionEnhetHandler.update(data);
 
-    @Test
-    public void testIllegalCharactersAreRemovedFromFilenameBeforeDatabaseUpdate() throws Exception {
-        //Given
-        final ArrayList<RegionEnhetFileDataRow> rows = null;
-        final String fileName = "TestFile<Name.xls";
-        final RegionEnhetFileData data = new RegionEnhetFileData(new HsaIdVardgivare("testVgId"), rows, "", new HsaIdUser(""), fileName);
-        final Region region = Mockito.mock(Region.class);
-        final Long landtingsId = 5L;
-        Mockito.when(region.getId()).thenReturn(landtingsId);
-        Mockito.when(regionManager.getForVg(any(HsaIdVardgivare.class))).thenReturn(Optional.of(region));
+    // Then
+    Mockito.verify(regionEnhetUpdateManager, times(1))
+        .update(
+            anyLong(),
+            anyString(),
+            any(HsaIdUser.class),
+            eq("TestFile_Name.xls"),
+            any(RegionEnhetUpdateOperation.class));
+  }
 
-        //When
-        regionEnhetHandler.update(data);
+  @Test
+  public void testGetRegionsVardgivareStatusWhenVgidNotConnectedToAnyRegion() throws Exception {
+    // Given
+    final HsaIdVardgivare vgid = new HsaIdVardgivare("testvgid");
+    Mockito.when(regionManager.getForVg(vgid)).thenReturn(Optional.empty());
 
-        //Then
-        Mockito.verify(regionEnhetUpdateManager, times(1))
-            .update(anyLong(), anyString(), any(HsaIdUser.class), eq("TestFile_Name.xls"), any(RegionEnhetUpdateOperation.class));
-    }
+    // When
+    final RegionsVardgivareStatus status = regionEnhetHandler.getRegionsVardgivareStatus(vgid);
 
-    @Test
-    public void testGetRegionsVardgivareStatusWhenVgidNotConnectedToAnyRegion() throws Exception {
-        //Given
-        final HsaIdVardgivare vgid = new HsaIdVardgivare("testvgid");
-        Mockito.when(regionManager.getForVg(vgid)).thenReturn(Optional.empty());
+    // Then
+    assertEquals(RegionsVardgivareStatus.NO_REGIONSVARDGIVARE, status);
+  }
 
-        //When
-        final RegionsVardgivareStatus status = regionEnhetHandler.getRegionsVardgivareStatus(vgid);
+  @Test
+  public void
+      testGetRegionsVardgivareStatusWhenVgidIsConnectedToARegionButHasNoRegionsenhetsConnected()
+          throws Exception {
+    // Given
+    final HsaIdVardgivare vgid = new HsaIdVardgivare("testvgid");
+    final Region region = Mockito.mock(Region.class);
+    final long regionId = 4L;
+    Mockito.when(region.getId()).thenReturn(regionId);
+    final List<RegionEnhet> regionEnhets = Collections.emptyList();
+    Mockito.when(regionEnhetManager.getByRegionId(regionId)).thenReturn(regionEnhets);
+    Mockito.when(regionManager.getForVg(vgid)).thenReturn(Optional.of(region));
 
-        //Then
-        assertEquals(RegionsVardgivareStatus.NO_REGIONSVARDGIVARE, status);
-    }
+    // When
+    final RegionsVardgivareStatus status = regionEnhetHandler.getRegionsVardgivareStatus(vgid);
 
-    @Test
-    public void testGetRegionsVardgivareStatusWhenVgidIsConnectedToARegionButHasNoRegionsenhetsConnected() throws Exception {
-        //Given
-        final HsaIdVardgivare vgid = new HsaIdVardgivare("testvgid");
-        final Region region = Mockito.mock(Region.class);
-        final long regionId = 4L;
-        Mockito.when(region.getId()).thenReturn(regionId);
-        final List<RegionEnhet> regionEnhets = Collections.emptyList();
-        Mockito.when(regionEnhetManager.getByRegionId(regionId)).thenReturn(regionEnhets);
-        Mockito.when(regionManager.getForVg(vgid)).thenReturn(Optional.of(region));
+    // Then
+    assertEquals(RegionsVardgivareStatus.REGIONSVARDGIVARE_WITHOUT_UPLOAD, status);
+  }
 
-        //When
-        final RegionsVardgivareStatus status = regionEnhetHandler.getRegionsVardgivareStatus(vgid);
+  @Test
+  public void
+      testGetRegionsVardgivareStatusWhenVgidIsConnectedToARegionAndHasRegionsenhetsConnected()
+          throws Exception {
+    // Given
+    final HsaIdVardgivare vgid = new HsaIdVardgivare("testvgid");
+    final Region region = Mockito.mock(Region.class);
+    final long regionId = 4L;
+    Mockito.when(region.getId()).thenReturn(regionId);
+    final List<RegionEnhet> regionEnhets =
+        Collections.singletonList(new RegionEnhet(1L, new HsaIdEnhet(""), 2));
+    Mockito.when(regionEnhetManager.getByRegionId(regionId)).thenReturn(regionEnhets);
+    Mockito.when(regionManager.getForVg(vgid)).thenReturn(Optional.of(region));
 
-        //Then
-        assertEquals(RegionsVardgivareStatus.REGIONSVARDGIVARE_WITHOUT_UPLOAD, status);
-    }
+    // When
+    final RegionsVardgivareStatus status = regionEnhetHandler.getRegionsVardgivareStatus(vgid);
 
-    @Test
-    public void testGetRegionsVardgivareStatusWhenVgidIsConnectedToARegionAndHasRegionsenhetsConnected() throws Exception {
-        //Given
-        final HsaIdVardgivare vgid = new HsaIdVardgivare("testvgid");
-        final Region region = Mockito.mock(Region.class);
-        final long regionId = 4L;
-        Mockito.when(region.getId()).thenReturn(regionId);
-        final List<RegionEnhet> regionEnhets = Collections.singletonList(new RegionEnhet(1L, new HsaIdEnhet(""), 2));
-        Mockito.when(regionEnhetManager.getByRegionId(regionId)).thenReturn(regionEnhets);
-        Mockito.when(regionManager.getForVg(vgid)).thenReturn(Optional.of(region));
-
-        //When
-        final RegionsVardgivareStatus status = regionEnhetHandler.getRegionsVardgivareStatus(vgid);
-
-        //Then
-        assertEquals(RegionsVardgivareStatus.REGIONSVARDGIVARE_WITH_UPLOAD, status);
-    }
-
+    // Then
+    assertEquals(RegionsVardgivareStatus.REGIONSVARDGIVARE_WITH_UPLOAD, status);
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -27,54 +27,51 @@ import org.junit.Test;
 
 public class SjukskrivningsperiodTest {
 
-    @Test
-    public void testGetLengthOfJoinedPeriodsSingle() throws Exception {
-        //When
-        final Sjukskrivningsperiod sjukskrivningsperiod = new Sjukskrivningsperiod(4, 3);
+  @Test
+  public void testGetLengthOfJoinedPeriodsSingle() throws Exception {
+    // When
+    final Sjukskrivningsperiod sjukskrivningsperiod = new Sjukskrivningsperiod(4, 3);
 
-        //Then
-        final List<Sjukskrivningsperiod> periods = Collections.singletonList(sjukskrivningsperiod);
-        assertEquals(3, Sjukskrivningsperiod.getLengthOfJoinedPeriods(periods));
-    }
+    // Then
+    final List<Sjukskrivningsperiod> periods = Collections.singletonList(sjukskrivningsperiod);
+    assertEquals(3, Sjukskrivningsperiod.getLengthOfJoinedPeriods(periods));
+  }
 
-    @Test
-    public void testGetAllDatesInPeriodNegativeLength() throws Exception {
-        //When
-        final Sjukskrivningsperiod sjukskrivningsperiod = new Sjukskrivningsperiod(4, -1);
+  @Test
+  public void testGetAllDatesInPeriodNegativeLength() throws Exception {
+    // When
+    final Sjukskrivningsperiod sjukskrivningsperiod = new Sjukskrivningsperiod(4, -1);
 
-        //Then
-        final List<Sjukskrivningsperiod> periods = Collections.singletonList(sjukskrivningsperiod);
-        assertEquals(0, Sjukskrivningsperiod.getLengthOfJoinedPeriods(periods));
+    // Then
+    final List<Sjukskrivningsperiod> periods = Collections.singletonList(sjukskrivningsperiod);
+    assertEquals(0, Sjukskrivningsperiod.getLengthOfJoinedPeriods(periods));
+  }
 
-    }
+  @Test
+  public void testGetAllDatesInPeriodLengthIsZero() throws Exception {
+    // When
+    final Sjukskrivningsperiod sjukskrivningsperiod = new Sjukskrivningsperiod(4, 0);
 
-    @Test
-    public void testGetAllDatesInPeriodLengthIsZero() throws Exception {
-        //When
-        final Sjukskrivningsperiod sjukskrivningsperiod = new Sjukskrivningsperiod(4, 0);
+    // Then
+    final List<Sjukskrivningsperiod> periods = Collections.singletonList(sjukskrivningsperiod);
+    assertEquals(0, Sjukskrivningsperiod.getLengthOfJoinedPeriods(periods));
+  }
 
-        //Then
-        final List<Sjukskrivningsperiod> periods = Collections.singletonList(sjukskrivningsperiod);
-        assertEquals(0, Sjukskrivningsperiod.getLengthOfJoinedPeriods(periods));
-    }
+  @Test
+  public void testGetLengthOfJoinedPeriods() throws Exception {
+    // Given
+    final ArrayList<Sjukskrivningsperiod> periods = new ArrayList<>();
+    periods.add(new Sjukskrivningsperiod(10, 15));
+    periods.add(new Sjukskrivningsperiod(20, 30));
+    periods.add(new Sjukskrivningsperiod(12, 17));
+    periods.add(new Sjukskrivningsperiod(11, 13));
+    periods.add(new Sjukskrivningsperiod(20, 300));
+    periods.add(new Sjukskrivningsperiod(350, 1));
 
-    @Test
-    public void testGetLengthOfJoinedPeriods() throws Exception {
-        //Given
-        final ArrayList<Sjukskrivningsperiod> periods = new ArrayList<>();
-        periods.add(new Sjukskrivningsperiod(10, 15));
-        periods.add(new Sjukskrivningsperiod(20, 30));
-        periods.add(new Sjukskrivningsperiod(12, 17));
-        periods.add(new Sjukskrivningsperiod(11, 13));
-        periods.add(new Sjukskrivningsperiod(20, 300));
-        periods.add(new Sjukskrivningsperiod(350, 1));
+    // When
+    final int length = Sjukskrivningsperiod.getLengthOfJoinedPeriods(periods);
 
-        //When
-        final int length = Sjukskrivningsperiod.getLengthOfJoinedPeriods(periods);
-
-        //Then
-        assertEquals(311, length);
-    }
-
-
+    // Then
+    assertEquals(311, length);
+  }
 }

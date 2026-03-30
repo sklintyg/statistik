@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -24,101 +24,121 @@ import java.util.List;
 
 public class KonDataResponse extends AvailableFiltersResponse {
 
-    private final List<String> groups;
-    private final List<KonDataRow> rows;
+  private final List<String> groups;
+  private final List<KonDataRow> rows;
 
-    public KonDataResponse(AvailableFilters availableFilters, List<String> groups, List<KonDataRow> rows) {
-        super(availableFilters);
-        this.groups = groups;
-        this.rows = rows;
+  public KonDataResponse(
+      AvailableFilters availableFilters, List<String> groups, List<KonDataRow> rows) {
+    super(availableFilters);
+    this.groups = groups;
+    this.rows = rows;
+  }
+
+  public List<String> getGroups() {
+    return groups;
+  }
+
+  public List<KonDataRow> getRows() {
+    return rows;
+  }
+
+  public List<String> getPeriods() {
+    List<String> periods = new ArrayList<>();
+    for (KonDataRow row : rows) {
+      periods.add(row.getName());
     }
+    return periods;
+  }
 
-    public List<String> getGroups() {
-        return groups;
+  public List<Integer> getDataFromIndex(int index, Kon sex) {
+    List<Integer> indexData = new ArrayList<>();
+    for (KonDataRow row : rows) {
+      List<KonField> data = row.getData();
+      indexData.add(data.get(index).getValue(sex));
     }
+    return indexData;
+  }
 
-    public List<KonDataRow> getRows() {
-        return rows;
+  @Override
+  public String toString() {
+    return "{\"KonDataResponse\":{"
+        + "\"groups\":"
+        + "[\""
+        + String.join("\", \"", groups)
+        + "\"]"
+        + ", \"rows\":"
+        + rows
+        + "}}";
+  }
+
+  public static KonDataResponse createNewWithoutEmptyGroups(KonDataResponse konDataResponse) {
+    return createNewWithoutEmptyGroups(
+        konDataResponse.getAvailableFilters(),
+        konDataResponse.getGroups(),
+        konDataResponse.getRows(),
+        Collections.<String>emptyList());
+  }
+
+  public static KonDataResponse createNewWithoutEmptyGroups(
+      KonDataResponse konDataResponse, List<String> groupsToRetainEvenWhenEmpty) {
+    return createNewWithoutEmptyGroups(
+        konDataResponse.getAvailableFilters(),
+        konDataResponse.getGroups(),
+        konDataResponse.getRows(),
+        groupsToRetainEvenWhenEmpty);
+  }
+
+  public static KonDataResponse createNewWithoutEmptyGroups(
+      AvailableFilters availableFilters,
+      List<String> groups,
+      List<KonDataRow> rows,
+      List<String> groupsToRetainEvenWhenEmpty) {
+    if (groups == null || rows == null) {
+      return new KonDataResponse(
+          availableFilters, Collections.<String>emptyList(), Collections.<KonDataRow>emptyList());
     }
+    final List<String> groupsFiltered = new ArrayList<>();
+    final List<List<KonField>> rowsDataFiltered = initRowsDataFiltered(rows);
 
-    public List<String> getPeriods() {
-        List<String> periods = new ArrayList<>();
-        for (KonDataRow row : rows) {
-            periods.add(row.getName());
+    for (int i = 0; i < groups.size(); i++) {
+      if (groupsToRetainEvenWhenEmpty.contains(groups.get(i))
+          || calculateSumForIndex(rows, i) > 0) {
+        groupsFiltered.add(groups.get(i));
+        for (int j = 0; j < rows.size(); j++) {
+          final KonField konField = rows.get(j).getData().get(i);
+          rowsDataFiltered.get(j).add(konField);
         }
-        return periods;
+      }
     }
+    final ArrayList<KonDataRow> konDataRows = createKonDataRows(rows, rowsDataFiltered);
+    return new KonDataResponse(availableFilters, groupsFiltered, konDataRows);
+  }
 
-    public List<Integer> getDataFromIndex(int index, Kon sex) {
-        List<Integer> indexData = new ArrayList<>();
-        for (KonDataRow row : rows) {
-            List<KonField> data = row.getData();
-            indexData.add(data.get(index).getValue(sex));
-        }
-        return indexData;
+  private static List<List<KonField>> initRowsDataFiltered(List<KonDataRow> rows) {
+    final List<List<KonField>> rowsDataFiltered = new ArrayList<>();
+
+    for (int i = 0; i < rows.size(); i++) {
+      rowsDataFiltered.add(new ArrayList<>());
     }
+    return rowsDataFiltered;
+  }
 
-    @Override
-    public String toString() {
-        return "{\"KonDataResponse\":{" + "\"groups\":" + "[\"" + String.join("\", \"", groups) + "\"]" + ", \"rows\":" + rows + "}}";
+  private static int calculateSumForIndex(List<KonDataRow> rows, int index) {
+    int sum = 0;
+    for (KonDataRow row : rows) {
+      final KonField konField = row.getData().get(index);
+      sum += konField.getFemale() + konField.getMale();
     }
+    return sum;
+  }
 
-    public static KonDataResponse createNewWithoutEmptyGroups(KonDataResponse konDataResponse) {
-        return createNewWithoutEmptyGroups(konDataResponse.getAvailableFilters(), konDataResponse.getGroups(),
-            konDataResponse.getRows(), Collections.<String>emptyList());
+  private static ArrayList<KonDataRow> createKonDataRows(
+      List<KonDataRow> rows, List<List<KonField>> rowsDataFiltered) {
+    final ArrayList<KonDataRow> konDataRows = new ArrayList<>();
+    for (int i = 0; i < rows.size(); i++) {
+      final KonDataRow row = new KonDataRow(rows.get(i).getName(), rowsDataFiltered.get(i));
+      konDataRows.add(row);
     }
-
-    public static KonDataResponse createNewWithoutEmptyGroups(KonDataResponse konDataResponse, List<String> groupsToRetainEvenWhenEmpty) {
-        return createNewWithoutEmptyGroups(konDataResponse.getAvailableFilters(), konDataResponse.getGroups(),
-            konDataResponse.getRows(), groupsToRetainEvenWhenEmpty);
-    }
-
-    public static KonDataResponse createNewWithoutEmptyGroups(AvailableFilters availableFilters, List<String> groups, List<KonDataRow> rows,
-        List<String> groupsToRetainEvenWhenEmpty) {
-        if (groups == null || rows == null) {
-            return new KonDataResponse(availableFilters, Collections.<String>emptyList(), Collections.<KonDataRow>emptyList());
-        }
-        final List<String> groupsFiltered = new ArrayList<>();
-        final List<List<KonField>> rowsDataFiltered = initRowsDataFiltered(rows);
-
-        for (int i = 0; i < groups.size(); i++) {
-            if (groupsToRetainEvenWhenEmpty.contains(groups.get(i)) || calculateSumForIndex(rows, i) > 0) {
-                groupsFiltered.add(groups.get(i));
-                for (int j = 0; j < rows.size(); j++) {
-                    final KonField konField = rows.get(j).getData().get(i);
-                    rowsDataFiltered.get(j).add(konField);
-                }
-            }
-        }
-        final ArrayList<KonDataRow> konDataRows = createKonDataRows(rows, rowsDataFiltered);
-        return new KonDataResponse(availableFilters, groupsFiltered, konDataRows);
-    }
-
-    private static List<List<KonField>> initRowsDataFiltered(List<KonDataRow> rows) {
-        final List<List<KonField>> rowsDataFiltered = new ArrayList<>();
-
-        for (int i = 0; i < rows.size(); i++) {
-            rowsDataFiltered.add(new ArrayList<>());
-        }
-        return rowsDataFiltered;
-    }
-
-    private static int calculateSumForIndex(List<KonDataRow> rows, int index) {
-        int sum = 0;
-        for (KonDataRow row : rows) {
-            final KonField konField = row.getData().get(index);
-            sum += konField.getFemale() + konField.getMale();
-        }
-        return sum;
-    }
-
-    private static ArrayList<KonDataRow> createKonDataRows(List<KonDataRow> rows, List<List<KonField>> rowsDataFiltered) {
-        final ArrayList<KonDataRow> konDataRows = new ArrayList<>();
-        for (int i = 0; i < rows.size(); i++) {
-            final KonDataRow row = new KonDataRow(rows.get(i).getName(), rowsDataFiltered.get(i));
-            konDataRows.add(row);
-        }
-        return konDataRows;
-    }
-
+    return konDataRows;
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -33,99 +33,100 @@ import se.riv.clinicalprocess.healthcond.certificate.v3.Svar;
 @Component
 public class FkRegisterCertificateHelper extends AbstractRegisterCertificateHelper {
 
-    public static final String DIAGNOS_SVAR_ID_6 = "6";
-    public static final String DIAGNOS_DELSVAR_ID_6 = "6.2";
-    public static final String BEHOV_AV_SJUKSKRIVNING_SVAR_ID_32 = "32";
-    public static final String BEHOV_AV_SJUKSKRIVNING_NIVA_DELSVARSVAR_ID_32 = "32.1";
-    public static final String BEHOV_AV_SJUKSKRIVNING_PERIOD_DELSVARSVAR_ID_32 = "32.2";
+  public static final String DIAGNOS_SVAR_ID_6 = "6";
+  public static final String DIAGNOS_DELSVAR_ID_6 = "6.2";
+  public static final String BEHOV_AV_SJUKSKRIVNING_SVAR_ID_32 = "32";
+  public static final String BEHOV_AV_SJUKSKRIVNING_NIVA_DELSVARSVAR_ID_32 = "32.1";
+  public static final String BEHOV_AV_SJUKSKRIVNING_PERIOD_DELSVARSVAR_ID_32 = "32.2";
 
-    @Override
-    public LocalDate getDateForPatientAge(RegisterCertificateType intyg) {
-        LocalDate date = getSistaNedsattningsdag(intyg);
+  @Override
+  public LocalDate getDateForPatientAge(RegisterCertificateType intyg) {
+    LocalDate date = getSistaNedsattningsdag(intyg);
 
-        // Use signeringsTidpunkt when sistaNedsattningsdag is missing in intyg.
-        if (date == null) {
-            date = getSigneringsTidpunkt(intyg).toLocalDate();
-        }
-
-        return date;
+    // Use signeringsTidpunkt when sistaNedsattningsdag is missing in intyg.
+    if (date == null) {
+      date = getSigneringsTidpunkt(intyg).toLocalDate();
     }
 
-    @SuppressWarnings("squid:S134") //I can't see a better way to write this with fewer nested statements
-    private String getDx(RegisterCertificateType intyg) {
+    return date;
+  }
 
-        for (Svar svar : intyg.getIntyg().getSvar()) {
-            if (DIAGNOS_SVAR_ID_6.equals(svar.getId())) {
-                for (Svar.Delsvar delsvar : svar.getDelsvar()) {
-                    if (DIAGNOS_DELSVAR_ID_6.equals(delsvar.getId())) {
-                        CVType diagnos = getCVSvarContent(delsvar);
-                        return diagnos.getCode();
-                    }
-                }
-            }
-        }
-        return null;
-    }
+  @SuppressWarnings(
+      "squid:S134") // I can't see a better way to write this with fewer nested statements
+  private String getDx(RegisterCertificateType intyg) {
 
-    private Arbetsnedsattning getArbetsnedsattning(Svar svar) {
-        int nedsattning = -1;
-        DatePeriodType datePeriod = new DatePeriodType();
-
+    for (Svar svar : intyg.getIntyg().getSvar()) {
+      if (DIAGNOS_SVAR_ID_6.equals(svar.getId())) {
         for (Svar.Delsvar delsvar : svar.getDelsvar()) {
-            switch (delsvar.getId()) {
-                case BEHOV_AV_SJUKSKRIVNING_NIVA_DELSVARSVAR_ID_32:
-                    String sjukskrivningsnivaString = getCVSvarContent(delsvar).getCode();
-                    final SjukskrivningsGrad sjukskrivningsGrad = SjukskrivningsGrad.valueOf(sjukskrivningsnivaString);
-                    nedsattning = sjukskrivningsGrad.getNedsattning();
-                    break;
-                case BEHOV_AV_SJUKSKRIVNING_PERIOD_DELSVARSVAR_ID_32:
-                    datePeriod = getDatePeriodTypeContent(delsvar);
-                    break;
-                default:
-                    break;
-            }
+          if (DIAGNOS_DELSVAR_ID_6.equals(delsvar.getId())) {
+            CVType diagnos = getCVSvarContent(delsvar);
+            return diagnos.getCode();
+          }
         }
-        return new Arbetsnedsattning(nedsattning, datePeriod.getStart(), datePeriod.getEnd());
+      }
+    }
+    return null;
+  }
+
+  private Arbetsnedsattning getArbetsnedsattning(Svar svar) {
+    int nedsattning = -1;
+    DatePeriodType datePeriod = new DatePeriodType();
+
+    for (Svar.Delsvar delsvar : svar.getDelsvar()) {
+      switch (delsvar.getId()) {
+        case BEHOV_AV_SJUKSKRIVNING_NIVA_DELSVARSVAR_ID_32:
+          String sjukskrivningsnivaString = getCVSvarContent(delsvar).getCode();
+          final SjukskrivningsGrad sjukskrivningsGrad =
+              SjukskrivningsGrad.valueOf(sjukskrivningsnivaString);
+          nedsattning = sjukskrivningsGrad.getNedsattning();
+          break;
+        case BEHOV_AV_SJUKSKRIVNING_PERIOD_DELSVARSVAR_ID_32:
+          datePeriod = getDatePeriodTypeContent(delsvar);
+          break;
+        default:
+          break;
+      }
+    }
+    return new Arbetsnedsattning(nedsattning, datePeriod.getStart(), datePeriod.getEnd());
+  }
+
+  private LocalDate getSistaNedsattningsdag(RegisterCertificateType document) {
+    final List<Arbetsnedsattning> arbetsnedsattnings = getArbetsnedsattning(document);
+    LocalDate to = null;
+    for (Arbetsnedsattning arbetsnedsattning : arbetsnedsattnings) {
+      final LocalDate candidate = arbetsnedsattning.getSlut();
+      if (to == null || candidate.isAfter(to)) {
+        to = candidate;
+      }
+    }
+    return to;
+  }
+
+  private List<Arbetsnedsattning> getArbetsnedsattning(RegisterCertificateType intyg) {
+    final List<Arbetsnedsattning> arbetsnedsattnings = new ArrayList<>();
+    for (Svar svar : intyg.getIntyg().getSvar()) {
+      if (BEHOV_AV_SJUKSKRIVNING_SVAR_ID_32.equals(svar.getId())) {
+        final Arbetsnedsattning arbetsnedsattning = getArbetsnedsattning(svar);
+        arbetsnedsattnings.add(arbetsnedsattning);
+      }
+    }
+    return arbetsnedsattnings;
+  }
+
+  @Override
+  public IntygDTO convertToDTO(RegisterCertificateType intyg) {
+    IntygDTO dto = super.convertToDTO(intyg);
+
+    if (dto == null) {
+      return null;
     }
 
-    private LocalDate getSistaNedsattningsdag(RegisterCertificateType document) {
-        final List<Arbetsnedsattning> arbetsnedsattnings = getArbetsnedsattning(document);
-        LocalDate to = null;
-        for (Arbetsnedsattning arbetsnedsattning : arbetsnedsattnings) {
-            final LocalDate candidate = arbetsnedsattning.getSlut();
-            if (to == null || candidate.isAfter(to)) {
-                to = candidate;
-            }
-        }
-        return to;
-    }
+    String diagnos = getDx(intyg);
+    List<Arbetsnedsattning> arbetsnedsattnings = getArbetsnedsattning(intyg);
 
-    private List<Arbetsnedsattning> getArbetsnedsattning(RegisterCertificateType intyg) {
-        final List<Arbetsnedsattning> arbetsnedsattnings = new ArrayList<>();
-        for (Svar svar : intyg.getIntyg().getSvar()) {
-            if (BEHOV_AV_SJUKSKRIVNING_SVAR_ID_32.equals(svar.getId())) {
-                final Arbetsnedsattning arbetsnedsattning = getArbetsnedsattning(svar);
-                arbetsnedsattnings.add(arbetsnedsattning);
-            }
-        }
-        return arbetsnedsattnings;
-    }
+    dto.setDiagnoskod(diagnos);
+    dto.setArbetsnedsattnings(arbetsnedsattnings);
 
-    @Override
-    public IntygDTO convertToDTO(RegisterCertificateType intyg) {
-        IntygDTO dto = super.convertToDTO(intyg);
-
-        if (dto == null) {
-            return null;
-        }
-
-        String diagnos = getDx(intyg);
-        List<Arbetsnedsattning> arbetsnedsattnings = getArbetsnedsattning(intyg);
-
-        dto.setDiagnoskod(diagnos);
-        dto.setArbetsnedsattnings(arbetsnedsattnings);
-
-        return dto;
-    }
-
+    return dto;
+  }
 }

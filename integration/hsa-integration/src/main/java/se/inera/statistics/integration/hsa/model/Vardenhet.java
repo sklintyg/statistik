@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,64 +25,63 @@ import java.io.Serializable;
  */
 public class Vardenhet implements Serializable {
 
-    private HsaIdEnhet id;
-    private String namn;
-    private HsaIdVardgivare vardgivarId;
-    private String vardgivarNamn;
+  private HsaIdEnhet id;
+  private String namn;
+  private HsaIdVardgivare vardgivarId;
+  private String vardgivarNamn;
 
-    Vardenhet() {
-        //Not sure if/why this is needed
+  Vardenhet() {
+    // Not sure if/why this is needed
+  }
+
+  public Vardenhet(HsaIdEnhet id, String namn, HsaIdVardgivare vardgivarId) {
+    this(id, namn, vardgivarId, vardgivarId.getId());
+  }
+
+  public Vardenhet(HsaIdEnhet id, String namn, HsaIdVardgivare vardgivarId, String vardgivarNamn) {
+    this.id = id;
+    this.namn = namn;
+    this.vardgivarId = vardgivarId;
+    this.vardgivarNamn = vardgivarNamn;
+  }
+
+  public String getNamn() {
+    return namn;
+  }
+
+  public HsaIdEnhet getId() {
+    return id;
+  }
+
+  public HsaIdVardgivare getVardgivarId() {
+    return vardgivarId;
+  }
+
+  public String getVardgivarNamn() {
+    return vardgivarNamn;
+  }
+
+  @Override
+  public String toString() {
+    return "Vardenhet " + id + " " + namn + " " + vardgivarId;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Vardenhet)) {
+      return false;
     }
 
-    public Vardenhet(HsaIdEnhet id, String namn, HsaIdVardgivare vardgivarId) {
-        this(id, namn, vardgivarId, vardgivarId.getId());
-    }
+    Vardenhet vardenhet = (Vardenhet) o;
 
-    public Vardenhet(HsaIdEnhet id, String namn, HsaIdVardgivare vardgivarId, String vardgivarNamn) {
-        this.id = id;
-        this.namn = namn;
-        this.vardgivarId = vardgivarId;
-        this.vardgivarNamn = vardgivarNamn;
-    }
+    return id.equals(vardenhet.id);
+  }
 
-    public String getNamn() {
-        return namn;
-    }
-
-    public HsaIdEnhet getId() {
-        return id;
-    }
-
-    public HsaIdVardgivare getVardgivarId() {
-        return vardgivarId;
-    }
-
-    public String getVardgivarNamn() {
-        return vardgivarNamn;
-    }
-
-    @Override
-    public String toString() {
-        return "Vardenhet " + id + " " + namn + " " + vardgivarId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Vardenhet)) {
-            return false;
-        }
-
-        Vardenhet vardenhet = (Vardenhet) o;
-
-        return id.equals(vardenhet.id);
-
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
+  @Override
+  public int hashCode() {
+    return id.hashCode();
+  }
 }

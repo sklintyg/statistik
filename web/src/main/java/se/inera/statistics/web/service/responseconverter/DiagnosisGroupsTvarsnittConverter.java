@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -32,54 +32,57 @@ import se.inera.statistics.web.model.ChartData;
 
 public class DiagnosisGroupsTvarsnittConverter extends SimpleDualSexConverter {
 
-    public DiagnosisGroupsTvarsnittConverter() {
-        super("", "%1$s");
-    }
+  public DiagnosisGroupsTvarsnittConverter() {
+    super("", "%1$s");
+  }
 
-    @Override
-    protected ChartData convertToChartData(SimpleKonResponse inputData) {
-        HashMultimap<String, KonField> mergedGroups = getMergedGroups(inputData);
-        final ArrayList<SimpleKonDataRow> mergedGroupSums = calculateMergedGroupSums(mergedGroups);
-        final SimpleKonResponse merged = new SimpleKonResponse(inputData.getAvailableFilters(), mergedGroupSums);
-        return super.convertToChartData(merged);
-    }
+  @Override
+  protected ChartData convertToChartData(SimpleKonResponse inputData) {
+    HashMultimap<String, KonField> mergedGroups = getMergedGroups(inputData);
+    final ArrayList<SimpleKonDataRow> mergedGroupSums = calculateMergedGroupSums(mergedGroups);
+    final SimpleKonResponse merged =
+        new SimpleKonResponse(inputData.getAvailableFilters(), mergedGroupSums);
+    return super.convertToChartData(merged);
+  }
 
-    private ArrayList<SimpleKonDataRow> calculateMergedGroupSums(HashMultimap<String, KonField> mergedGroups) {
-        final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
-        final List<String> diagnosisChartGroupsAsList = DiagnosisGroupsConverter.getDiagnosisChartGroupsAsList(true);
-        for (String mergeGroupName : diagnosisChartGroupsAsList) {
-            final KonField sumOfMergedGroupData = sum(mergedGroups.get(mergeGroupName));
-            if (!Icd10.UNKNOWN_CODE_NAME.equals(mergeGroupName) || totalSum(sumOfMergedGroupData) > 0) {
-                simpleKonDataRows.add(new SimpleKonDataRow(mergeGroupName, sumOfMergedGroupData));
-            }
-        }
-        return simpleKonDataRows;
+  private ArrayList<SimpleKonDataRow> calculateMergedGroupSums(
+      HashMultimap<String, KonField> mergedGroups) {
+    final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
+    final List<String> diagnosisChartGroupsAsList =
+        DiagnosisGroupsConverter.getDiagnosisChartGroupsAsList(true);
+    for (String mergeGroupName : diagnosisChartGroupsAsList) {
+      final KonField sumOfMergedGroupData = sum(mergedGroups.get(mergeGroupName));
+      if (!Icd10.UNKNOWN_CODE_NAME.equals(mergeGroupName) || totalSum(sumOfMergedGroupData) > 0) {
+        simpleKonDataRows.add(new SimpleKonDataRow(mergeGroupName, sumOfMergedGroupData));
+      }
     }
+    return simpleKonDataRows;
+  }
 
-    private HashMultimap<String, KonField> getMergedGroups(SimpleKonResponse inputData) {
-        HashMultimap<String, KonField> mergedGroups = HashMultimap.create();
-        final Map<Integer, String> mergeGroupMapping = DiagnosisGroupsConverter.DIAGNOSKAPITEL_TO_DIAGNOSGRUPP;
-        for (SimpleKonDataRow row : inputData.getRows()) {
-            final int icdIntId = Icd10.icd10ToInt(row.getName(), Icd10RangeType.KAPITEL);
-            final String mergedGroup = mergeGroupMapping.get(icdIntId);
-            final String mergedGroupName = mergedGroup != null ? mergedGroup : row.getName();
-            mergedGroups.put(mergedGroupName, row.getData());
-        }
-        return mergedGroups;
+  private HashMultimap<String, KonField> getMergedGroups(SimpleKonResponse inputData) {
+    HashMultimap<String, KonField> mergedGroups = HashMultimap.create();
+    final Map<Integer, String> mergeGroupMapping =
+        DiagnosisGroupsConverter.DIAGNOSKAPITEL_TO_DIAGNOSGRUPP;
+    for (SimpleKonDataRow row : inputData.getRows()) {
+      final int icdIntId = Icd10.icd10ToInt(row.getName(), Icd10RangeType.KAPITEL);
+      final String mergedGroup = mergeGroupMapping.get(icdIntId);
+      final String mergedGroupName = mergedGroup != null ? mergedGroup : row.getName();
+      mergedGroups.put(mergedGroupName, row.getData());
     }
+    return mergedGroups;
+  }
 
-    private int totalSum(KonField konField) {
-        return konField.getFemale() + konField.getMale();
+  private int totalSum(KonField konField) {
+    return konField.getFemale() + konField.getMale();
+  }
+
+  private KonField sum(Set<KonField> konFields) {
+    int female = 0;
+    int male = 0;
+    for (KonField konField : konFields) {
+      female += konField.getFemale();
+      male += konField.getMale();
     }
-
-    private KonField sum(Set<KonField> konFields) {
-        int female = 0;
-        int male = 0;
-        for (KonField konField : konFields) {
-            female += konField.getFemale();
-            male += konField.getMale();
-        }
-        return new KonField(female, male);
-    }
-
+    return new KonField(female, male);
+  }
 }

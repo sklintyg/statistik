@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -26,86 +26,94 @@ import java.util.stream.Collectors;
 /**
  * Per INTYG-2782, the fake login works like this:
  *
- * hsaId is the identifier for the person.
- * vardgivarIdSomProcessLedare is an array of vårdgivare hsaId's that the user shall have role "processledare" for. However,
- * the boolean 'vardgivarniva' can be used to override this, e.g: If vardgivarniva is false that effectively stops the user
- * from becoming processledare on any of the hsaId's specified in vardgivarIdSomProcessLedare.
+ * <p>hsaId is the identifier for the person. vardgivarIdSomProcessLedare is an array of vårdgivare
+ * hsaId's that the user shall have role "processledare" for. However, the boolean 'vardgivarniva'
+ * can be used to override this, e.g: If vardgivarniva is false that effectively stops the user from
+ * becoming processledare on any of the hsaId's specified in vardgivarIdSomProcessLedare.
  *
- * The reason for the boolean override is to make it possible in the fake login page to list vgIds in the user objects
- * for easy editing and "flipping" the role assignments by changing the boolean rather than having to add/remove vg hsaId's
- * manually.
+ * <p>The reason for the boolean override is to make it possible in the fake login page to list
+ * vgIds in the user objects for easy editing and "flipping" the role assignments by changing the
+ * boolean rather than having to add/remove vg hsaId's manually.
  *
  * @author eriklupander
  */
 @SuppressWarnings("serial")
 public class FakeCredentials implements Serializable {
 
-    private String hsaId;
-    private String fornamn;
-    private String efternamn;
-    private List<String> vardgivarIdSomProcessLedare = new ArrayList<>();
-    private boolean vardgivarniva;
+  private String hsaId;
+  private String fornamn;
+  private String efternamn;
+  private List<String> vardgivarIdSomProcessLedare = new ArrayList<>();
+  private boolean vardgivarniva;
 
-    FakeCredentials() {
-        //Do nothing but is needed by json mapper
-    }
+  FakeCredentials() {
+    // Do nothing but is needed by json mapper
+  }
 
-    public FakeCredentials(String hsaId, String fornamn, String efternamn) {
-        this.hsaId = hsaId;
-        this.fornamn = fornamn;
-        this.efternamn = efternamn;
-    }
+  public FakeCredentials(String hsaId, String fornamn, String efternamn) {
+    this.hsaId = hsaId;
+    this.fornamn = fornamn;
+    this.efternamn = efternamn;
+  }
 
-    public String getHsaId() {
-        return hsaId;
-    }
+  public String getHsaId() {
+    return hsaId;
+  }
 
-    public String getFornamn() {
-        return fornamn;
-    }
+  public String getFornamn() {
+    return fornamn;
+  }
 
-    public String getEfternamn() {
-        return efternamn;
-    }
+  public String getEfternamn() {
+    return efternamn;
+  }
 
-    public List<String> getVardgivarIdSomProcessLedare() {
-        return vardgivarIdSomProcessLedare;
-    }
+  public List<String> getVardgivarIdSomProcessLedare() {
+    return vardgivarIdSomProcessLedare;
+  }
 
-    public boolean isVardgivarniva() {
-        return vardgivarniva;
-    }
+  public boolean isVardgivarniva() {
+    return vardgivarniva;
+  }
 
-    void setHsaId(String hsaId) {
-        this.hsaId = hsaId;
-    }
+  void setHsaId(String hsaId) {
+    this.hsaId = hsaId;
+  }
 
-    void setFornamn(String fornamn) {
-        this.fornamn = fornamn;
-    }
+  void setFornamn(String fornamn) {
+    this.fornamn = fornamn;
+  }
 
-    void setEfternamn(String efternamn) {
-        this.efternamn = efternamn;
-    }
+  void setEfternamn(String efternamn) {
+    this.efternamn = efternamn;
+  }
 
-    void setVardgivarIdSomProcessLedare(List<String> vardgivarIdSomProcessLedare) {
-        this.vardgivarIdSomProcessLedare = vardgivarIdSomProcessLedare;
-    }
+  void setVardgivarIdSomProcessLedare(List<String> vardgivarIdSomProcessLedare) {
+    this.vardgivarIdSomProcessLedare = vardgivarIdSomProcessLedare;
+  }
 
-    void setVardgivarniva(boolean vardgivarniva) {
-        this.vardgivarniva = vardgivarniva;
-    }
+  void setVardgivarniva(boolean vardgivarniva) {
+    this.vardgivarniva = vardgivarniva;
+  }
 
-
-    @Override
-    public String toString() {
-        return "FakeCredentials{"
-            + "hsaId='" + hsaId + '\''
-            + ", fornamn='" + fornamn + '\''
-            + ", efternamn='" + efternamn + '\''
-            + ", vardgivarIdSomProcessLedare='" + vardgivarIdSomProcessLedare.stream().collect(Collectors.joining()) + '\''
-            + ", vardgivarniva='" + vardgivarniva + '\''
-            + '}';
-    }
-
+  @Override
+  public String toString() {
+    return "FakeCredentials{"
+        + "hsaId='"
+        + hsaId
+        + '\''
+        + ", fornamn='"
+        + fornamn
+        + '\''
+        + ", efternamn='"
+        + efternamn
+        + '\''
+        + ", vardgivarIdSomProcessLedare='"
+        + vardgivarIdSomProcessLedare.stream().collect(Collectors.joining())
+        + '\''
+        + ", vardgivarniva='"
+        + vardgivarniva
+        + '\''
+        + '}';
+  }
 }

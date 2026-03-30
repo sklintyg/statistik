@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -39,74 +39,82 @@ import se.inera.statistics.web.service.exception.FilterHashParseException;
 
 public class FilterHashHandler {
 
-    private static final Logger LOG = LoggerFactory.getLogger(FilterHashHandler.class);
+  private static final Logger LOG = LoggerFactory.getLogger(FilterHashHandler.class);
 
-    @Autowired
-    private UserSelectionManager userSelectionManager;
+  @Autowired private UserSelectionManager userSelectionManager;
 
-    public String getHash(String filterData) throws FilterException {
-        try {
-            final JsonParser parser = new ObjectMapper().getFactory().createParser(filterData);
-            JsonToken token;
-            do {
-                token = parser.nextToken();
-            } while (token != null);
+  public String getHash(String filterData) throws FilterException {
+    try {
+      final JsonParser parser = new ObjectMapper().getFactory().createParser(filterData);
+      JsonToken token;
+      do {
+        token = parser.nextToken();
+      } while (token != null);
 
-            final String hash = DigestUtils.md5Hex(filterData);
-            userSelectionManager.register(hash, filterData);
-            return hash;
-        } catch (JsonParseException parseException) {
-            throw new FilterException("Attempt to store illegal json detected.", parseException);
-        } catch (Exception e) {
-            throw new FilterException("Illegal user selection", e);
-        }
+      final String hash = DigestUtils.md5Hex(filterData);
+      userSelectionManager.register(hash, filterData);
+      return hash;
+    } catch (JsonParseException parseException) {
+      throw new FilterException("Attempt to store illegal json detected.", parseException);
+    } catch (Exception e) {
+      throw new FilterException("Illegal user selection", e);
     }
+  }
 
-    public Optional<String> getFilterData(String hash) {
-        final UserSelection userSelection = userSelectionManager.find(hash);
-        if (userSelection == null) {
-            return Optional.empty();
-        }
-        return Optional.of(userSelection.getValue());
+  public Optional<String> getFilterData(String hash) {
+    final UserSelection userSelection = userSelectionManager.find(hash);
+    if (userSelection == null) {
+      return Optional.empty();
     }
+    return Optional.of(userSelection.getValue());
+  }
 
-    public FilterData getFilterFromHash(String filterHash) {
-        final Optional<String> filterData = getFilterData(filterHash);
-        if (!filterData.isPresent()) {
-            throw new FilterHashMissingException("Could not find filter with given hash: " + filterHash);
-        }
-        final String filterDataString = filterData.get();
-        return parseFilterData(filterDataString);
+  public FilterData getFilterFromHash(String filterHash) {
+    final Optional<String> filterData = getFilterData(filterHash);
+    if (!filterData.isPresent()) {
+      throw new FilterHashMissingException("Could not find filter with given hash: " + filterHash);
     }
+    final String filterDataString = filterData.get();
+    return parseFilterData(filterDataString);
+  }
 
-    private FilterData parseFilterData(String filterDataString) {
-        try {
-            ObjectMapper m = new ObjectMapper();
-            JsonNode rootNode = m.readTree(filterDataString);
-            final ArrayList<String> diagnoser = getJsonArray(rootNode.path("diagnoser"));
-            final ArrayList<String> enheter = getJsonArray(rootNode.path("enheter"));
-            final ArrayList<String> sjukskrivningslangd = getJsonArray(rootNode.path("sjukskrivningslangd"));
-            final ArrayList<String> aldersgrupp = getJsonArray(rootNode.path("aldersgrupp"));
-            final ArrayList<String> intygstyper = getJsonArray(rootNode.path("intygstyper"));
-            final String fromDate = rootNode.path("fromDate").asText().isEmpty() ? null : rootNode.path("fromDate").asText();
-            final String toDate = rootNode.path("toDate").asText().isEmpty() ? null : rootNode.path("toDate").asText();
-            final boolean useDefaultPeriod = rootNode.path("useDefaultPeriod").asBoolean(true);
-            return new FilterData(diagnoser, enheter, sjukskrivningslangd, aldersgrupp, intygstyper, fromDate, toDate,
-                useDefaultPeriod);
-        } catch (IOException e) {
-            LOG.error("Failed to parse filter data: " + filterDataString, e);
-            throw new FilterHashParseException("Filter data failed");
-        }
+  private FilterData parseFilterData(String filterDataString) {
+    try {
+      ObjectMapper m = new ObjectMapper();
+      JsonNode rootNode = m.readTree(filterDataString);
+      final ArrayList<String> diagnoser = getJsonArray(rootNode.path("diagnoser"));
+      final ArrayList<String> enheter = getJsonArray(rootNode.path("enheter"));
+      final ArrayList<String> sjukskrivningslangd =
+          getJsonArray(rootNode.path("sjukskrivningslangd"));
+      final ArrayList<String> aldersgrupp = getJsonArray(rootNode.path("aldersgrupp"));
+      final ArrayList<String> intygstyper = getJsonArray(rootNode.path("intygstyper"));
+      final String fromDate =
+          rootNode.path("fromDate").asText().isEmpty() ? null : rootNode.path("fromDate").asText();
+      final String toDate =
+          rootNode.path("toDate").asText().isEmpty() ? null : rootNode.path("toDate").asText();
+      final boolean useDefaultPeriod = rootNode.path("useDefaultPeriod").asBoolean(true);
+      return new FilterData(
+          diagnoser,
+          enheter,
+          sjukskrivningslangd,
+          aldersgrupp,
+          intygstyper,
+          fromDate,
+          toDate,
+          useDefaultPeriod);
+    } catch (IOException e) {
+      LOG.error("Failed to parse filter data: " + filterDataString, e);
+      throw new FilterHashParseException("Filter data failed");
     }
+  }
 
-    private ArrayList<String> getJsonArray(JsonNode jsonArrayNode) {
-        final ArrayList<String> values = new ArrayList<>();
-        if (jsonArrayNode.isArray()) {
-            for (JsonNode value : jsonArrayNode) {
-                values.add(value.asText());
-            }
-        }
-        return values;
+  private ArrayList<String> getJsonArray(JsonNode jsonArrayNode) {
+    final ArrayList<String> values = new ArrayList<>();
+    if (jsonArrayNode.isArray()) {
+      for (JsonNode value : jsonArrayNode) {
+        values.add(value.asText());
+      }
     }
-
+    return values;
+  }
 }

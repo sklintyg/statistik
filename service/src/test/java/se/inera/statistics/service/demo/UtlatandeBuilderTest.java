@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -29,16 +29,21 @@ import se.inera.statistics.service.testsupport.UtlatandeBuilder;
 
 public class UtlatandeBuilderTest {
 
-    @Test
-    public void permutateIntyg() {
-        UtlatandeBuilder builder = new UtlatandeBuilder();
+  @Test
+  public void permutateIntyg() {
+    UtlatandeBuilder builder = new UtlatandeBuilder();
 
-        final JsonNode result = builder
-            .build("19121212-1212", LocalDate.parse("2013-01-01"), LocalDate.parse("2013-01-21"), new HsaIdEnhet("vardenhet"), "diagnos",
-                50);
+    final JsonNode result =
+        builder.build(
+            "19121212-1212",
+            LocalDate.parse("2013-01-01"),
+            LocalDate.parse("2013-01-21"),
+            new HsaIdEnhet("vardenhet"),
+            "diagnos",
+            50);
 
-        assertEquals("19121212-1212", result.path("grundData").path("patient").path("personId").asText());
-        assertEquals("diagnos", JsonDocumentHelper.getDiagnos(result));
-    }
-
+    assertEquals(
+        "19121212-1212", result.path("grundData").path("patient").path("personId").asText());
+    assertEquals("diagnos", JsonDocumentHelper.getDiagnos(result));
+  }
 }

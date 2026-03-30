@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,20 +22,19 @@ import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 
 public class RegionEnhetFileDataRow {
 
-    private HsaIdEnhet enhetensHsaId;
-    private Integer listadePatienter;
+  private HsaIdEnhet enhetensHsaId;
+  private Integer listadePatienter;
 
-    public RegionEnhetFileDataRow(HsaIdEnhet enhetensHsaId, Integer listadePatienter) {
-        this.enhetensHsaId = enhetensHsaId;
-        this.listadePatienter = listadePatienter;
-    }
+  public RegionEnhetFileDataRow(HsaIdEnhet enhetensHsaId, Integer listadePatienter) {
+    this.enhetensHsaId = enhetensHsaId;
+    this.listadePatienter = listadePatienter;
+  }
 
-    public HsaIdEnhet getEnhetensHsaId() {
-        return enhetensHsaId;
-    }
+  public HsaIdEnhet getEnhetensHsaId() {
+    return enhetensHsaId;
+  }
 
-    public Integer getListadePatienter() {
-        return listadePatienter;
-    }
-
+  public Integer getListadePatienter() {
+    return listadePatienter;
+  }
 }

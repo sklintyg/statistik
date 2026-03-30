@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -27,11 +27,10 @@ import se.inera.auth.model.User;
 
 public class AuthUtil {
 
-    public static void setUserToSecurityContext(User user) {
-        Authentication auth = new UsernamePasswordAuthenticationToken(user, null);
-        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
-        Mockito.when(securityContext.getAuthentication()).thenReturn(auth);
-        SecurityContextHolder.setContext(securityContext);
-    }
-
+  public static void setUserToSecurityContext(User user) {
+    Authentication auth = new UsernamePasswordAuthenticationToken(user, null);
+    SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+    Mockito.when(securityContext.getAuthentication()).thenReturn(auth);
+    SecurityContextHolder.setContext(securityContext);
+  }
 }

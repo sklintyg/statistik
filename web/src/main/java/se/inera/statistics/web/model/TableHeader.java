@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -24,47 +24,46 @@ import java.io.Serializable;
 
 public class TableHeader implements Serializable {
 
-    private final String text;
-    private final int colspan;
-    private final String title;
-    private final String meta;
+  private final String text;
+  private final int colspan;
+  private final String title;
+  private final String meta;
 
-    public TableHeader(String text, int colspan, String title, String meta) {
-        this.text = text;
-        this.colspan = colspan;
-        this.title = title;
-        this.meta = meta;
-    }
+  public TableHeader(String text, int colspan, String title, String meta) {
+    this.text = text;
+    this.colspan = colspan;
+    this.title = title;
+    this.meta = meta;
+  }
 
-    public TableHeader(String text, int colspan) {
-        this(text, colspan, null, null);
-    }
+  public TableHeader(String text, int colspan) {
+    this(text, colspan, null, null);
+  }
 
-    public TableHeader(String text) {
-        this(text, 1);
-    }
+  public TableHeader(String text) {
+    this(text, 1);
+  }
 
-    public String getText() {
-        return text;
-    }
+  public String getText() {
+    return text;
+  }
 
-    public int getColspan() {
-        return colspan;
-    }
+  public int getColspan() {
+    return colspan;
+  }
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getTitle() {
-        return title;
-    }
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  public String getTitle() {
+    return title;
+  }
 
-    @JsonIgnore
-    public String getMeta() {
-        return meta;
-    }
+  @JsonIgnore
+  public String getMeta() {
+    return meta;
+  }
 
-    @Override
-    public String toString() {
-        return text + ";" + colspan;
-    }
-
+  @Override
+  public String toString() {
+    return text + ";" + colspan;
+  }
 }

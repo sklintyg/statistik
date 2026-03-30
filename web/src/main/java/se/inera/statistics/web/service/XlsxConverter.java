@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -19,13 +19,13 @@
 package se.inera.statistics.web.service;
 
 import com.google.common.annotations.VisibleForTesting;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
 import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -42,7 +42,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.web.service.dto.MessagesText;
 import se.inera.statistics.web.model.DiagnosisSubGroupStatisticsData;
 import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
@@ -50,225 +49,270 @@ import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.TableHeader;
 import se.inera.statistics.web.service.dto.FilterDataResponse;
 import se.inera.statistics.web.service.dto.FilterSelections;
+import se.inera.statistics.web.service.dto.MessagesText;
 import se.inera.statistics.web.service.dto.Report;
 import se.inera.statistics.web.service.exception.XslxFileGenerationException;
 
 final class XlsxConverter {
 
-    private static final Logger LOG = LoggerFactory.getLogger(XlsxConverter.class);
-    private static final int LAST_MERGE_COLUMN = 5;
+  private static final Logger LOG = LoggerFactory.getLogger(XlsxConverter.class);
+  private static final int LAST_MERGE_COLUMN = 5;
 
-    private final Icd10 icd10;
-    private final String dataSheetName = MessagesText.EXCEL_TABLE_SHEET_NAME;
+  private final Icd10 icd10;
+  private final String dataSheetName = MessagesText.EXCEL_TABLE_SHEET_NAME;
 
-    XlsxConverter(Icd10 icd10) {
-        this.icd10 = icd10;
+  XlsxConverter(Icd10 icd10) {
+    this.icd10 = icd10;
+  }
+
+  Response getXlsxResponse(
+      final TableDataReport tableData,
+      final String fileName,
+      FilterSelections filterSelections,
+      Report report) {
+    try {
+      final ByteArrayOutputStream generatedFile =
+          generateExcelFile(tableData, filterSelections, report);
+      return Response.ok(generatedFile.toByteArray(), MediaType.APPLICATION_OCTET_STREAM)
+          .header("Content-Disposition", "attachment; filename=" + fileName)
+          .build();
+    } catch (XslxFileGenerationException e) {
+      LOG.debug("Xlsx file generation failed", e);
+      return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+          .entity("Could not generate xlsx file")
+          .build();
+    }
+  }
+
+  private ByteArrayOutputStream generateExcelFile(
+      TableDataReport tableData, FilterSelections filterSelections, Report report)
+      throws XslxFileGenerationException {
+    try (Workbook workbook = new XSSFWorkbook()) {
+      addData(workbook, tableData, filterSelections, report);
+      final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+      workbook.write(outputStream);
+      return outputStream;
+    } catch (IOException e) {
+      LOG.error("Failed to generate xlsx export", e);
+      throw new XslxFileGenerationException();
+    }
+  }
+
+  private CellStyle getBoldStyle(Workbook workbook) {
+    CellStyle boldStyle = workbook.createCellStyle();
+    Font boldFont = workbook.createFont();
+    boldFont.setBold(true);
+    boldStyle.setFont(boldFont);
+    return boldStyle;
+  }
+
+  private CellStyle getHlinkStyle(Workbook workbook) {
+    CellStyle hlinkStyle = workbook.createCellStyle();
+    Font hlinkFont = workbook.createFont();
+    hlinkFont.setUnderline(Font.U_SINGLE);
+    hlinkFont.setColor(IndexedColors.BLUE.getIndex());
+    hlinkStyle.setFont(hlinkFont);
+    return hlinkStyle;
+  }
+
+  @VisibleForTesting
+  void addData(
+      Workbook workbook,
+      TableDataReport tableData,
+      FilterSelections filterSelections,
+      Report report) {
+    Sheet sheet = workbook.createSheet(dataSheetName);
+    int currentRow = 0;
+    currentRow = addReportHeader(tableData, report, sheet, currentRow);
+    sheet.createRow(currentRow++);
+    currentRow =
+        addFilters(
+            tableData.getAvailableFilters(),
+            tableData.getFilter(),
+            filterSelections,
+            sheet,
+            currentRow);
+    sheet.createRow(currentRow++);
+    currentRow = addDataTable(tableData.getTableData(), sheet, currentRow);
+    LOG.info(currentRow + " rows added to xlsx-export");
+  }
+
+  private int addFilters(
+      AvailableFilters availableFilters,
+      FilterDataResponse filter,
+      FilterSelections filterSelections,
+      Sheet dataSheet,
+      int startRow) {
+    final List<String> enheter = filterSelections.getEnhetNames();
+    final List<String> dxs =
+        filterSelections.isAllAvailableDxsSelectedInFilter()
+            ? Collections.emptyList()
+            : filter.getDiagnoser();
+    final List<String> sjukskrivningslangds =
+        filterSelections.isAllAvailableSjukskrivningslangdsSelectedInFilter()
+            ? Collections.emptyList()
+            : filter.getSjukskrivningslangd();
+    final List<String> aldersgrupps =
+        filterSelections.isAllAvailableAgeGroupsSelectedInFilter()
+            ? Collections.emptyList()
+            : filter.getAldersgrupp();
+    final List<String> intygstyper =
+        filterSelections.isAllAvailableIntygTypesSelectedInFilter()
+            ? Collections.emptyList()
+            : filter.getIntygstyper();
+
+    final boolean useSeparateSheetForFilters =
+        isUseSeparateSheetForFilters(enheter, dxs, sjukskrivningslangds, aldersgrupps, intygstyper);
+    String urvalSheetName = MessagesText.EXCEL_FILTER_SHEET_NAME;
+    final Sheet sheet =
+        useSeparateSheetForFilters
+            ? dataSheet.getWorkbook().createSheet(urvalSheetName)
+            : dataSheet;
+    int currentRow = useSeparateSheetForFilters ? 0 : startRow;
+
+    if (useSeparateSheetForFilters) {
+      final String linkText = MessagesText.EXCEL_TABLE_SHEET_LINK + " \"" + dataSheetName + "\"";
+      addLink(sheet, linkText, currentRow++, "'" + dataSheetName + "'!A1");
+      sheet.createRow(currentRow++);
     }
 
-    Response getXlsxResponse(final TableDataReport tableData, final String fileName, FilterSelections filterSelections, Report report) {
-        try {
-            final ByteArrayOutputStream generatedFile = generateExcelFile(tableData, filterSelections, report);
-            return Response.ok(generatedFile.toByteArray(), MediaType.APPLICATION_OCTET_STREAM)
-                .header("Content-Disposition", "attachment; filename=" + fileName).build();
-        } catch (XslxFileGenerationException e) {
-            LOG.debug("Xlsx file generation failed", e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not generate xlsx file").build();
-        }
+    if (availableFilters.isEnhets()) {
+      if (filterSelections.isAllAvailableEnhetsSelectedInFilter()) {
+        currentRow = addFilter(sheet, currentRow, enheter, MessagesText.EXCEL_FILTER_ENHET_ALL);
+      } else {
+        currentRow = addFilter(sheet, currentRow, enheter, MessagesText.EXCEL_FILTER_ENHETER);
+      }
     }
 
-    private ByteArrayOutputStream generateExcelFile(TableDataReport tableData, FilterSelections filterSelections,
-        Report report) throws XslxFileGenerationException {
-        try (Workbook workbook = new XSSFWorkbook()) {
-            addData(workbook, tableData, filterSelections, report);
-            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            workbook.write(outputStream);
-            return outputStream;
-        } catch (IOException e) {
-            LOG.error("Failed to generate xlsx export", e);
-            throw new XslxFileGenerationException();
-        }
+    if (availableFilters.isDiagnos()) {
+      currentRow =
+          addFilter(sheet, currentRow, getDxNames(dxs), MessagesText.EXCEL_FILTER_DIAGNOSER);
+    }
+    if (availableFilters.isSjukskrivningslangds()) {
+      currentRow =
+          addFilter(sheet, currentRow, sjukskrivningslangds, MessagesText.EXCEL_FILTER_LANGDER);
+    }
+    if (availableFilters.isAgeGroups()) {
+      currentRow = addFilter(sheet, currentRow, aldersgrupps, MessagesText.EXCEL_FILTER_AGEGROUPS);
+    }
+    if (availableFilters.isIntygTypes()) {
+      currentRow = addFilter(sheet, currentRow, intygstyper, MessagesText.EXCEL_FILTER_INTYGTYPES);
     }
 
-    private CellStyle getBoldStyle(Workbook workbook) {
-        CellStyle boldStyle = workbook.createCellStyle();
-        Font boldFont = workbook.createFont();
-        boldFont.setBold(true);
-        boldStyle.setFont(boldFont);
-        return boldStyle;
+    int currentRowDataSheet = useSeparateSheetForFilters ? startRow : currentRow;
+    if (useSeparateSheetForFilters) {
+      final String linkText = MessagesText.EXCEL_FILTER_SHEET_LINK + " \"" + urvalSheetName + "\"";
+      addLink(dataSheet, linkText, currentRowDataSheet++, "'" + urvalSheetName + "'!A1");
     }
 
-    private CellStyle getHlinkStyle(Workbook workbook) {
-        CellStyle hlinkStyle = workbook.createCellStyle();
-        Font hlinkFont = workbook.createFont();
-        hlinkFont.setUnderline(Font.U_SINGLE);
-        hlinkFont.setColor(IndexedColors.BLUE.getIndex());
-        hlinkStyle.setFont(hlinkFont);
-        return hlinkStyle;
-    }
+    return currentRowDataSheet;
+  }
 
-    @VisibleForTesting
-    void addData(Workbook workbook, TableDataReport tableData, FilterSelections filterSelections, Report report) {
-        Sheet sheet = workbook.createSheet(dataSheetName);
-        int currentRow = 0;
-        currentRow = addReportHeader(tableData, report, sheet, currentRow);
-        sheet.createRow(currentRow++);
-        currentRow = addFilters(tableData.getAvailableFilters(), tableData.getFilter(), filterSelections, sheet, currentRow);
-        sheet.createRow(currentRow++);
-        currentRow = addDataTable(tableData.getTableData(), sheet, currentRow);
-        LOG.info(currentRow + " rows added to xlsx-export");
-    }
+  private List<String> getDxNames(List<String> dxs) {
+    return dxs == null
+        ? null
+        : dxs.stream()
+            .map(
+                icdNumId -> {
+                  final Icd10.Id icd = icd10.findIcd10FromNumericId(Integer.parseInt(icdNumId));
+                  return (icd.getVisibleId() + " " + icd.getName()).trim();
+                })
+            .collect(Collectors.toList());
+  }
 
-    private int addFilters(AvailableFilters availableFilters, FilterDataResponse filter, FilterSelections filterSelections,
-        Sheet dataSheet, int startRow) {
-        final List<String> enheter = filterSelections.getEnhetNames();
-        final List<String> dxs = filterSelections.isAllAvailableDxsSelectedInFilter()
-            ? Collections.emptyList() : filter.getDiagnoser();
-        final List<String> sjukskrivningslangds = filterSelections.isAllAvailableSjukskrivningslangdsSelectedInFilter()
-            ? Collections.emptyList() : filter.getSjukskrivningslangd();
-        final List<String> aldersgrupps = filterSelections.isAllAvailableAgeGroupsSelectedInFilter()
-            ? Collections.emptyList() : filter.getAldersgrupp();
-        final List<String> intygstyper = filterSelections.isAllAvailableIntygTypesSelectedInFilter()
-            ? Collections.emptyList() : filter.getIntygstyper();
-
-        final boolean useSeparateSheetForFilters = isUseSeparateSheetForFilters(enheter, dxs, sjukskrivningslangds,
-            aldersgrupps, intygstyper);
-        String urvalSheetName = MessagesText.EXCEL_FILTER_SHEET_NAME;
-        final Sheet sheet = useSeparateSheetForFilters ? dataSheet.getWorkbook().createSheet(urvalSheetName) : dataSheet;
-        int currentRow = useSeparateSheetForFilters ? 0 : startRow;
-
-        if (useSeparateSheetForFilters) {
-            final String linkText = MessagesText.EXCEL_TABLE_SHEET_LINK + " \"" + dataSheetName + "\"";
-            addLink(sheet, linkText, currentRow++, "'" + dataSheetName + "'!A1");
-            sheet.createRow(currentRow++);
-        }
-
-        if (availableFilters.isEnhets()) {
-            if (filterSelections.isAllAvailableEnhetsSelectedInFilter()) {
-                currentRow = addFilter(sheet, currentRow, enheter, MessagesText.EXCEL_FILTER_ENHET_ALL);
-            } else {
-                currentRow = addFilter(sheet, currentRow, enheter, MessagesText.EXCEL_FILTER_ENHETER);
-            }
-        }
-
-        if (availableFilters.isDiagnos()) {
-            currentRow = addFilter(sheet, currentRow, getDxNames(dxs), MessagesText.EXCEL_FILTER_DIAGNOSER);
-        }
-        if (availableFilters.isSjukskrivningslangds()) {
-            currentRow = addFilter(sheet, currentRow, sjukskrivningslangds, MessagesText.EXCEL_FILTER_LANGDER);
-        }
-        if (availableFilters.isAgeGroups()) {
-            currentRow = addFilter(sheet, currentRow, aldersgrupps, MessagesText.EXCEL_FILTER_AGEGROUPS);
-        }
-        if (availableFilters.isIntygTypes()) {
-            currentRow = addFilter(sheet, currentRow, intygstyper, MessagesText.EXCEL_FILTER_INTYGTYPES);
-        }
-
-        int currentRowDataSheet = useSeparateSheetForFilters ? startRow : currentRow;
-        if (useSeparateSheetForFilters) {
-            final String linkText = MessagesText.EXCEL_FILTER_SHEET_LINK + " \"" + urvalSheetName + "\"";
-            addLink(dataSheet, linkText, currentRowDataSheet++, "'" + urvalSheetName + "'!A1");
-        }
-
-        return currentRowDataSheet;
-    }
-
-    private List<String> getDxNames(List<String> dxs) {
-        return dxs == null ? null : dxs.stream().map(icdNumId -> {
-            final Icd10.Id icd = icd10.findIcd10FromNumericId(Integer.parseInt(icdNumId));
-            return (icd.getVisibleId() + " " + icd.getName()).trim();
-        }).collect(Collectors.toList());
-    }
-
-    private boolean isUseSeparateSheetForFilters(List<String> enheter, List<String> dxs,
-        List<String> sjukskrivningslangds, List<String> aldersgrupps, List<String> intygstyper) {
-        final int totalFilters = (enheter == null ? 0 : enheter.size())
+  private boolean isUseSeparateSheetForFilters(
+      List<String> enheter,
+      List<String> dxs,
+      List<String> sjukskrivningslangds,
+      List<String> aldersgrupps,
+      List<String> intygstyper) {
+    final int totalFilters =
+        (enheter == null ? 0 : enheter.size())
             + (dxs == null ? 0 : dxs.size())
             + (sjukskrivningslangds == null ? 0 : sjukskrivningslangds.size())
             + (aldersgrupps == null ? 0 : aldersgrupps.size())
             + (intygstyper == null ? 0 : intygstyper.size());
-        final int maxFiltersOnDataSheet = 8;
-        return totalFilters > maxFiltersOnDataSheet;
+    final int maxFiltersOnDataSheet = 8;
+    return totalFilters > maxFiltersOnDataSheet;
+  }
+
+  private void addLink(Sheet sheet, String text, int rowToCreate, String address) {
+    final Row row = sheet.createRow(rowToCreate);
+    final Cell cell = row.createCell(0, CellType.STRING);
+    cell.setCellValue(text);
+    Hyperlink link =
+        sheet.getWorkbook().getCreationHelper().createHyperlink(HyperlinkType.DOCUMENT);
+    link.setAddress(address);
+    cell.setHyperlink(link);
+    cell.setCellStyle(getHlinkStyle(sheet.getWorkbook()));
+
+    sheet.addMergedRegion(
+        new CellRangeAddress(row.getRowNum(), row.getRowNum(), 0, LAST_MERGE_COLUMN));
+  }
+
+  private int addFilter(Sheet sheet, int row, List<String> filters, String title) {
+    int currentRow = row;
+    if (filters != null && !filters.isEmpty()) {
+      addTitle(sheet, currentRow++, title);
+      for (String filter : filters) {
+        addValue(sheet.createRow(currentRow++), 0, filter);
+      }
+      sheet.createRow(currentRow++);
     }
+    return currentRow;
+  }
 
-    private void addLink(Sheet sheet, String text, int rowToCreate, String address) {
-        final Row row = sheet.createRow(rowToCreate);
-        final Cell cell = row.createCell(0, CellType.STRING);
-        cell.setCellValue(text);
-        Hyperlink link = sheet.getWorkbook().getCreationHelper().createHyperlink(HyperlinkType.DOCUMENT);
-        link.setAddress(address);
-        cell.setHyperlink(link);
-        cell.setCellStyle(getHlinkStyle(sheet.getWorkbook()));
+  private void addTitle(Sheet sheet, int row, String text) {
+    addTitle(sheet.createRow(row), 0, text);
+  }
 
-        sheet.addMergedRegion(new CellRangeAddress(
-            row.getRowNum(),
-            row.getRowNum(),
-            0,
-            LAST_MERGE_COLUMN
-        ));
+  private void addTitle(Row row, int column, String text) {
+    final Cell cell = row.createCell(column, CellType.STRING);
+    cell.setCellStyle(getBoldStyle(row.getSheet().getWorkbook()));
+    cell.setCellValue(text);
+  }
+
+  private void addValue(Row row, int column, Object value) {
+    final boolean isNumber = value instanceof Number;
+    if (isNumber) {
+      final Cell cell = row.createCell(column, CellType.NUMERIC);
+      cell.setCellValue(((Number) value).doubleValue());
+    } else {
+      final Cell cell = row.createCell(column, CellType.STRING);
+      cell.setCellValue(String.valueOf(value));
     }
+  }
 
-    private int addFilter(Sheet sheet, int row, List<String> filters, String title) {
-        int currentRow = row;
-        if (filters != null && !filters.isEmpty()) {
-            addTitle(sheet, currentRow++, title);
-            for (String filter : filters) {
-                addValue(sheet.createRow(currentRow++), 0, filter);
-            }
-            sheet.createRow(currentRow++);
+  private int addReportHeader(TableDataReport tableData, Report report, Sheet sheet, int startRow) {
+    int currentRow = startRow;
+    addTitle(sheet, currentRow++, report.getStatisticsLevel().getText());
+    final String titleExtras =
+        tableData instanceof DiagnosisSubGroupStatisticsData
+            ? " " + ((DiagnosisSubGroupStatisticsData) tableData).getDxGroup()
+            : "";
+    addTitle(sheet, currentRow++, report.getLongName() + titleExtras + " " + tableData.getPeriod());
+    return currentRow;
+  }
+
+  private int addDataTable(TableData tableData, Sheet sheet, int startRow) {
+    int currentRow = startRow;
+    for (List<TableHeader> list : tableData.getHeaders()) {
+      int currentCol = 0;
+      final Row row = sheet.createRow(currentRow++);
+      for (TableHeader tableHeader : list) {
+        for (int i = 0; i < tableHeader.getColspan(); i++) {
+          addTitle(row, currentCol++, tableHeader.getText());
         }
-        return currentRow;
+      }
     }
-
-    private void addTitle(Sheet sheet, int row, String text) {
-        addTitle(sheet.createRow(row), 0, text);
+    for (NamedData namedData : tableData.getRows()) {
+      int currentCol = 0;
+      final Row row = sheet.createRow(currentRow++);
+      addValue(row, currentCol++, namedData.getName());
+      for (Object value : namedData.getData()) {
+        addValue(row, currentCol++, value);
+      }
     }
-
-    private void addTitle(Row row, int column, String text) {
-        final Cell cell = row.createCell(column, CellType.STRING);
-        cell.setCellStyle(getBoldStyle(row.getSheet().getWorkbook()));
-        cell.setCellValue(text);
-    }
-
-    private void addValue(Row row, int column, Object value) {
-        final boolean isNumber = value instanceof Number;
-        if (isNumber) {
-            final Cell cell = row.createCell(column, CellType.NUMERIC);
-            cell.setCellValue(((Number) value).doubleValue());
-        } else {
-            final Cell cell = row.createCell(column, CellType.STRING);
-            cell.setCellValue(String.valueOf(value));
-        }
-    }
-
-    private int addReportHeader(TableDataReport tableData, Report report, Sheet sheet, int startRow) {
-        int currentRow = startRow;
-        addTitle(sheet, currentRow++, report.getStatisticsLevel().getText());
-        final String titleExtras = tableData instanceof DiagnosisSubGroupStatisticsData
-            ? " " + ((DiagnosisSubGroupStatisticsData) tableData).getDxGroup() : "";
-        addTitle(sheet, currentRow++, report.getLongName() + titleExtras + " " + tableData.getPeriod());
-        return currentRow;
-    }
-
-    private int addDataTable(TableData tableData, Sheet sheet, int startRow) {
-        int currentRow = startRow;
-        for (List<TableHeader> list : tableData.getHeaders()) {
-            int currentCol = 0;
-            final Row row = sheet.createRow(currentRow++);
-            for (TableHeader tableHeader : list) {
-                for (int i = 0; i < tableHeader.getColspan(); i++) {
-                    addTitle(row, currentCol++, tableHeader.getText());
-                }
-            }
-        }
-        for (NamedData namedData : tableData.getRows()) {
-            int currentCol = 0;
-            final Row row = sheet.createRow(currentRow++);
-            addValue(row, currentCol++, namedData.getName());
-            for (Object value : namedData.getData()) {
-                addValue(row, currentCol++, value);
-            }
-        }
-        return currentRow;
-    }
-
+    return currentRow;
+  }
 }

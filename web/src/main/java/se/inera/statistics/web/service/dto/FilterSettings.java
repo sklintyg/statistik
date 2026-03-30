@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -21,38 +21,36 @@ package se.inera.statistics.web.service.dto;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.model.RangeMessageDTO;
-import se.inera.statistics.web.service.dto.Filter;
 
 public class FilterSettings {
 
-    private final Filter filter;
-    private final Range range;
-    private final Message message;
+  private final Filter filter;
+  private final Range range;
+  private final Message message;
 
-    public FilterSettings(Filter filter, Range range) {
-        this(filter, range, null);
-    }
+  public FilterSettings(Filter filter, Range range) {
+    this(filter, range, null);
+  }
 
-    public FilterSettings(Filter filter, RangeMessageDTO rangeMessageDTO) {
-        this(filter, rangeMessageDTO.getRange(), rangeMessageDTO.getMessage());
-    }
+  public FilterSettings(Filter filter, RangeMessageDTO rangeMessageDTO) {
+    this(filter, rangeMessageDTO.getRange(), rangeMessageDTO.getMessage());
+  }
 
-    public FilterSettings(Filter filter, Range range, Message message) {
-        this.filter = filter;
-        this.range = range;
-        this.message = message;
-    }
+  public FilterSettings(Filter filter, Range range, Message message) {
+    this.filter = filter;
+    this.range = range;
+    this.message = message;
+  }
 
-    public Filter getFilter() {
-        return filter;
-    }
+  public Filter getFilter() {
+    return filter;
+  }
 
-    public Range getRange() {
-        return range;
-    }
+  public Range getRange() {
+    return range;
+  }
 
-    public Message getMessage() {
-        return message;
-    }
-
+  public Message getMessage() {
+    return message;
+  }
 }

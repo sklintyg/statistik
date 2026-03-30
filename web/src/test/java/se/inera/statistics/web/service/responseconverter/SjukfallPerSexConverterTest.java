@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -34,33 +34,36 @@ import se.inera.statistics.web.model.TableData;
 
 public class SjukfallPerSexConverterTest {
 
-    // CHECKSTYLE:OFF MagicNumber
+  // CHECKSTYLE:OFF MagicNumber
 
-    @Test
-    public void convertTest() {
-        SjukfallPerSexConverter converter = new SjukfallPerSexConverter();
-        List<SimpleKonDataRow> dualSexRows = new ArrayList<>();
-        dualSexRows.add(new SimpleKonDataRow("län 1", 12, 13));
-        dualSexRows.add(new SimpleKonDataRow("län 2", 20, 30));
-        dualSexRows.add(new SimpleKonDataRow("län 3", 5, 25));
-        SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForSjukfall(), dualSexRows);
-        SimpleDetailsData result = converter
-            .convert(casesPerMonth, Range.createForLastMonthsExcludingCurrent(1, Clock.systemDefaultZone()));
-        TableData tableData = result.getTableData();
-        assertEquals("[[Län;1, Antal sjukfall totalt;1, Andel sjukfall för kvinnor;1, Andel sjukfall för män;1]]",
-            tableData.getHeaders().toString());
-        List<NamedData> rows = tableData.getRows();
-        assertEquals(4, rows.size());
-        assertEquals(SjukfallPerSexConverter.SAMTLIGA_LAN, rows.get(0).getName());
-        assertEquals("län 1", rows.get(1).getName());
-        assertEquals("län 2", rows.get(2).getName());
-        assertEquals("län 3", rows.get(3).getName());
-        assertEquals("[105, 35 % (37), 65 % (68)]", rows.get(0).getData().toString());
-        assertEquals("[25, 48 % (12), 52 % (13)]", rows.get(1).getData().toString());
-        assertEquals("[50, 40 % (20), 60 % (30)]", rows.get(2).getData().toString());
-        assertEquals("[30, 17 % (5), 83 % (25)]", rows.get(3).getData().toString());
-    }
+  @Test
+  public void convertTest() {
+    SjukfallPerSexConverter converter = new SjukfallPerSexConverter();
+    List<SimpleKonDataRow> dualSexRows = new ArrayList<>();
+    dualSexRows.add(new SimpleKonDataRow("län 1", 12, 13));
+    dualSexRows.add(new SimpleKonDataRow("län 2", 20, 30));
+    dualSexRows.add(new SimpleKonDataRow("län 3", 5, 25));
+    SimpleKonResponse casesPerMonth =
+        new SimpleKonResponse(AvailableFilters.getForSjukfall(), dualSexRows);
+    SimpleDetailsData result =
+        converter.convert(
+            casesPerMonth, Range.createForLastMonthsExcludingCurrent(1, Clock.systemDefaultZone()));
+    TableData tableData = result.getTableData();
+    assertEquals(
+        "[[Län;1, Antal sjukfall totalt;1, Andel sjukfall för kvinnor;1, Andel sjukfall för män;1]]",
+        tableData.getHeaders().toString());
+    List<NamedData> rows = tableData.getRows();
+    assertEquals(4, rows.size());
+    assertEquals(SjukfallPerSexConverter.SAMTLIGA_LAN, rows.get(0).getName());
+    assertEquals("län 1", rows.get(1).getName());
+    assertEquals("län 2", rows.get(2).getName());
+    assertEquals("län 3", rows.get(3).getName());
+    assertEquals("[105, 35 % (37), 65 % (68)]", rows.get(0).getData().toString());
+    assertEquals("[25, 48 % (12), 52 % (13)]", rows.get(1).getData().toString());
+    assertEquals("[50, 40 % (20), 60 % (30)]", rows.get(2).getData().toString());
+    assertEquals("[30, 17 % (5), 83 % (25)]", rows.get(3).getData().toString());
+  }
 
-    // CHECKSTYLE:ON MagicNumber
+  // CHECKSTYLE:ON MagicNumber
 
 }

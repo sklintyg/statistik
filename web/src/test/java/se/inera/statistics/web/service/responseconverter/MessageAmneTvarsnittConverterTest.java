@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -36,38 +36,43 @@ import se.inera.statistics.web.service.dto.FilterSettings;
 
 public class MessageAmneTvarsnittConverterTest {
 
-    @Test
-    public void testConvertEmptyDataWillRemoveOkantAmne() {
-        //Given
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.year(Clock.systemDefaultZone()));
-        final List<SimpleKonDataRow> simpleKonDataRows = Arrays.stream(MsgAmne.values())
+  @Test
+  public void testConvertEmptyDataWillRemoveOkantAmne() {
+    // Given
+    final FilterSettings filterSettings =
+        new FilterSettings(Filter.empty(), Range.year(Clock.systemDefaultZone()));
+    final List<SimpleKonDataRow> simpleKonDataRows =
+        Arrays.stream(MsgAmne.values())
             .map(msgAmne -> new SimpleKonDataRow(msgAmne.name(), 0, 0, msgAmne))
             .collect(Collectors.toList());
-        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForMeddelanden(), simpleKonDataRows);
+    final SimpleKonResponse casesPerMonth =
+        new SimpleKonResponse(AvailableFilters.getForMeddelanden(), simpleKonDataRows);
 
-        //When
-        final MessageAmneTvarsnittConverter converter = MessageAmneTvarsnittConverter.newTvarsnitt();
-        final SimpleDetailsData converted = converter.convert(casesPerMonth, filterSettings);
+    // When
+    final MessageAmneTvarsnittConverter converter = MessageAmneTvarsnittConverter.newTvarsnitt();
+    final SimpleDetailsData converted = converter.convert(casesPerMonth, filterSettings);
 
-        //Then
-        assertEquals(MsgAmne.values().length - 1, converted.getChartData().getCategories().size());
-    }
+    // Then
+    assertEquals(MsgAmne.values().length - 1, converted.getChartData().getCategories().size());
+  }
 
-    @Test
-    public void testConvertNonEmptyDataWillKeepOkantAmne() {
-        //Given
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.year(Clock.systemDefaultZone()));
-        final List<SimpleKonDataRow> simpleKonDataRows = Arrays.stream(MsgAmne.values())
+  @Test
+  public void testConvertNonEmptyDataWillKeepOkantAmne() {
+    // Given
+    final FilterSettings filterSettings =
+        new FilterSettings(Filter.empty(), Range.year(Clock.systemDefaultZone()));
+    final List<SimpleKonDataRow> simpleKonDataRows =
+        Arrays.stream(MsgAmne.values())
             .map(msgAmne -> new SimpleKonDataRow(msgAmne.name(), 1, 0, msgAmne))
             .collect(Collectors.toList());
-        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForMeddelanden(), simpleKonDataRows);
+    final SimpleKonResponse casesPerMonth =
+        new SimpleKonResponse(AvailableFilters.getForMeddelanden(), simpleKonDataRows);
 
-        //When
-        final MessageAmneTvarsnittConverter converter = MessageAmneTvarsnittConverter.newTvarsnitt();
-        final SimpleDetailsData converted = converter.convert(casesPerMonth, filterSettings);
+    // When
+    final MessageAmneTvarsnittConverter converter = MessageAmneTvarsnittConverter.newTvarsnitt();
+    final SimpleDetailsData converted = converter.convert(casesPerMonth, filterSettings);
 
-        //Then
-        assertEquals(MsgAmne.values().length, converted.getChartData().getCategories().size());
-    }
-
+    // Then
+    assertEquals(MsgAmne.values().length, converted.getChartData().getCategories().size());
+  }
 }
