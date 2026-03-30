@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -29,20 +29,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class QueueAspect {
 
-    private CountDownLatch countDownLatch;
+  private CountDownLatch countDownLatch;
 
-    public void setCountDownLatch(CountDownLatch countDownLatch) {
-        this.countDownLatch = countDownLatch;
-    }
+  public void setCountDownLatch(CountDownLatch countDownLatch) {
+    this.countDownLatch = countDownLatch;
+  }
 
-    @Pointcut("execution(* se.inera.statistics.service.queue.JmsReceiver.onMessage(..))")
-    public void aopPointcut() {
-    }
+  @Pointcut("execution(* se.inera.statistics.service.queue.JmsReceiver.onMessage(..))")
+  public void aopPointcut() {}
 
-    @After("aopPointcut()")
-    public void afterOnMessage(JoinPoint jp) {
-        if (countDownLatch != null) {
-            countDownLatch.countDown();
-        }
+  @After("aopPointcut()")
+  public void afterOnMessage(JoinPoint jp) {
+    if (countDownLatch != null) {
+      countDownLatch.countDown();
     }
+  }
 }

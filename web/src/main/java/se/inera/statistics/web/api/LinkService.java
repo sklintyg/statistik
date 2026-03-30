@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -18,10 +18,7 @@
  */
 package se.inera.statistics.web.api;
 
-/**
- * Created by eriklupander on 2017-05-31.
- */
-
+/** Created by eriklupander on 2017-05-31. */
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -38,17 +35,14 @@ import se.inera.intyg.statistik.logging.PerformanceLogging;
 @Component
 public class LinkService {
 
-    @Autowired
-    private DynamicLinkService dynamicLinkService;
+  @Autowired private DynamicLinkService dynamicLinkService;
 
-    @GET
-    @Path("/")
-    @Produces("application/json;charset=UTF-8")
-    @PrometheusTimeMethod(
-        help = "API-tjänst för åtkomst till dynamiska länkar")
-    @PerformanceLogging(eventAction = "get-links", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
-    public Map<String, DynamicLink> getLinks() {
-        return dynamicLinkService.getAllAsMap();
-    }
-
+  @GET
+  @Path("/")
+  @Produces("application/json;charset=UTF-8")
+  @PrometheusTimeMethod(help = "API-tjänst för åtkomst till dynamiska länkar")
+  @PerformanceLogging(eventAction = "get-links", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
+  public Map<String, DynamicLink> getLinks() {
+    return dynamicLinkService.getAllAsMap();
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -27,30 +27,29 @@ import se.inera.statistics.service.warehouse.SjukfallExtended;
 
 final class SjukfallMergeHelper {
 
-    private SjukfallMergeHelper() {
-    }
+  private SjukfallMergeHelper() {}
 
-    static Optional<SjukfallExtended> mergeAllSjukfallInList(List<SjukfallExtended> sjukfalls) {
-        if (sjukfalls == null) {
-            return Optional.empty();
-        }
-        return sjukfalls.stream().reduce(SjukfallExtended::extendSjukfall);
+  static Optional<SjukfallExtended> mergeAllSjukfallInList(List<SjukfallExtended> sjukfalls) {
+    if (sjukfalls == null) {
+      return Optional.empty();
     }
+    return sjukfalls.stream().reduce(SjukfallExtended::extendSjukfall);
+  }
 
-    static Optional<SjukfallExtended> getFirstSjukfall(Collection<SjukfallExtended> sjukfalls) {
-        if (sjukfalls == null) {
-            return Optional.empty();
-        }
-        return sjukfalls.stream().reduce((se1, se2) -> se1.getStart() < se2.getStart() ? se1 : se2);
+  static Optional<SjukfallExtended> getFirstSjukfall(Collection<SjukfallExtended> sjukfalls) {
+    if (sjukfalls == null) {
+      return Optional.empty();
     }
+    return sjukfalls.stream().reduce((se1, se2) -> se1.getStart() < se2.getStart() ? se1 : se2);
+  }
 
-    static List<SjukfallExtended> filterSjukfallInPeriod(final int start, final int end, Collection<SjukfallExtended> sjukfalls) {
-        if (sjukfalls == null || sjukfalls.isEmpty()) {
-            return Collections.emptyList();
-        }
-        return sjukfalls.stream()
-            .filter(sjukfall -> sjukfall.getEnd() >= start && sjukfall.getStart() <= end)
-            .collect(Collectors.toList());
+  static List<SjukfallExtended> filterSjukfallInPeriod(
+      final int start, final int end, Collection<SjukfallExtended> sjukfalls) {
+    if (sjukfalls == null || sjukfalls.isEmpty()) {
+      return Collections.emptyList();
     }
-
+    return sjukfalls.stream()
+        .filter(sjukfall -> sjukfall.getEnd() >= start && sjukfall.getStart() <= end)
+        .collect(Collectors.toList());
+  }
 }

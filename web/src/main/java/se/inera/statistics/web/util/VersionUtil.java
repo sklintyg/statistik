@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,18 +22,17 @@ import org.springframework.beans.factory.annotation.Value;
 
 public class VersionUtil {
 
-    @Value("${project.version}")
-    private String projectVersion;
+  @Value("${project.version}")
+  private String projectVersion;
 
-    @Value("${buildTime}")
-    private String buildTime;
+  @Value("${buildTime}")
+  private String buildTime;
 
-    public String getProjectVersion() {
-        return projectVersion;
-    }
+  public String getProjectVersion() {
+    return projectVersion;
+  }
 
-    public String getBuildTime() {
-        return buildTime;
-    }
-
+  public String getBuildTime() {
+    return buildTime;
+  }
 }

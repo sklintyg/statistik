@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,39 +23,34 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
-/**
- * Contains all region, i.e. which VGs that have access to regions statistics.
- */
+/** Contains all region, i.e. which VGs that have access to regions statistics. */
 @Entity
 @Table(name = "Landsting")
 public class Region {
 
-    @Id
-    private long id;
+  @Id private long id;
 
-    private String namn;
+  private String namn;
 
-    private String vardgivareId;
+  private String vardgivareId;
 
-    private Region() {
-    }
+  private Region() {}
 
-    Region(long id, String namn, HsaIdVardgivare vardgivareId) {
-        this.id = id;
-        this.namn = namn;
-        this.vardgivareId = vardgivareId.getId();
-    }
+  Region(long id, String namn, HsaIdVardgivare vardgivareId) {
+    this.id = id;
+    this.namn = namn;
+    this.vardgivareId = vardgivareId.getId();
+  }
 
-    public long getId() {
-        return id;
-    }
+  public long getId() {
+    return id;
+  }
 
-    public String getNamn() {
-        return namn;
-    }
+  public String getNamn() {
+    return namn;
+  }
 
-    public HsaIdVardgivare getVardgivareId() {
-        return new HsaIdVardgivare(vardgivareId);
-    }
-
+  public HsaIdVardgivare getVardgivareId() {
+    return new HsaIdVardgivare(vardgivareId);
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -27,47 +27,45 @@ import jakarta.persistence.Table;
 import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 
 /**
- * Contains information about which enhets that are available as regions statistics
- * including number of signed up patients (i.e. the content of the uploaded file).
+ * Contains information about which enhets that are available as regions statistics including number
+ * of signed up patients (i.e. the content of the uploaded file).
  */
 @Entity
 @Table(name = "LandstingEnhet")
 public class RegionEnhet {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
-    @Column(name = "landstingId")
-    private long regionId;
+  @Column(name = "landstingId")
+  private long regionId;
 
-    private String enhetensHsaId;
+  private String enhetensHsaId;
 
-    private Integer listadePatienter;
+  private Integer listadePatienter;
 
-    private RegionEnhet() {
-    }
+  private RegionEnhet() {}
 
-    public RegionEnhet(long regionId, HsaIdEnhet enhetensHsaId, Integer listadePatienter) {
-        this.regionId = regionId;
-        this.enhetensHsaId = enhetensHsaId.getId();
-        this.listadePatienter = listadePatienter;
-    }
+  public RegionEnhet(long regionId, HsaIdEnhet enhetensHsaId, Integer listadePatienter) {
+    this.regionId = regionId;
+    this.enhetensHsaId = enhetensHsaId.getId();
+    this.listadePatienter = listadePatienter;
+  }
 
-    public long getId() {
-        return id;
-    }
+  public long getId() {
+    return id;
+  }
 
-    public long getRegionId() {
-        return regionId;
-    }
+  public long getRegionId() {
+    return regionId;
+  }
 
-    public HsaIdEnhet getEnhetensHsaId() {
-        return new HsaIdEnhet(enhetensHsaId);
-    }
+  public HsaIdEnhet getEnhetensHsaId() {
+    return new HsaIdEnhet(enhetensHsaId);
+  }
 
-    public Integer getListadePatienter() {
-        return listadePatienter;
-    }
-
+  public Integer getListadePatienter() {
+    return listadePatienter;
+  }
 }

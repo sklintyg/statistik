@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -18,12 +18,9 @@
  */
 package se.inera.statistics.config.jpa;
 
-
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
 @Profile("!h2")
-public class JpaConfig extends JpaConfigBase {
-
-}
+public class JpaConfig extends JpaConfigBase {}

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -24,43 +24,43 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public enum SickLeaveDegree {
+  D_25(25, "25 %", "#E11964"),
+  D_50(50, "50 %", "#032C53"),
+  D_75(75, "75 %", "#FFBA3E"),
+  D_100(100, "100 %", "#799745");
 
-    D_25(25, "25 %", "#E11964"),
-    D_50(50, "50 %", "#032C53"),
-    D_75(75, "75 %", "#FFBA3E"),
-    D_100(100, "100 %", "#799745");
+  private final int degree;
+  private final String name;
+  private final String color;
 
-    private final int degree;
-    private final String name;
-    private final String color;
+  SickLeaveDegree(int degree, String name, String color) {
+    this.degree = degree;
+    this.name = name;
+    this.color = color;
+  }
 
-    SickLeaveDegree(int degree, String name, String color) {
-        this.degree = degree;
-        this.name = name;
-        this.color = color;
-    }
+  public int getDegree() {
+    return degree;
+  }
 
-    public int getDegree() {
-        return degree;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getColor() {
+    return color;
+  }
 
-    public String getColor() {
-        return color;
-    }
+  public static List<Integer> getDegrees() {
+    return Arrays.stream(values()).map(SickLeaveDegree::getDegree).collect(Collectors.toList());
+  }
 
-    public static List<Integer> getDegrees() {
-        return Arrays.stream(values()).map(SickLeaveDegree::getDegree).collect(Collectors.toList());
-    }
+  public static List<String> getLabels() {
+    return Arrays.stream(values()).map(SickLeaveDegree::getName).collect(Collectors.toList());
+  }
 
-    public static List<String> getLabels() {
-        return Arrays.stream(values()).map(SickLeaveDegree::getName).collect(Collectors.toList());
-    }
-
-    public static Map<String, String> getColors() {
-        return Arrays.stream(values()).collect(Collectors.toMap(SickLeaveDegree::getName, SickLeaveDegree::getColor));
-    }
+  public static Map<String, String> getColors() {
+    return Arrays.stream(values())
+        .collect(Collectors.toMap(SickLeaveDegree::getName, SickLeaveDegree::getColor));
+  }
 }

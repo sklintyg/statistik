@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -35,53 +35,58 @@ import se.inera.intyg.statistik.logging.PerformanceLogging;
 import se.inera.statistics.web.api.dto.SessionStatusResponse;
 
 /**
- * Reports basic information about the current session status. This controller works in cooperation with SessionTimeoutFilter that makes
- * sure that requests to:
+ * Reports basic information about the current session status. This controller works in cooperation
+ * with SessionTimeoutFilter that makes sure that requests to:
+ *
  * <ul>
- * <li>getSessionStatus does NOT extend the session</li>
+ *   <li>getSessionStatus does NOT extend the session
  * </ul>
  *
  * @see se.inera.intyg.infra.security.filter.SessionTimeoutFilter
  * @see org.springframework.security.web.context.SecurityContextRepository SecurityContextRepository
  * @see HttpSessionSecurityContextRepository HttpSessionSecurityContextRepository
  */
-
 @Service("sessionStatusService")
 @Path(SessionStatusService.SESSION_STATUS_REQUEST_MAPPING)
 public class SessionStatusService {
 
-    public static final String SESSION_STATUS_REQUEST_MAPPING = "/session-auth-check";
-    public static final String SESSION_STATUS_PING = "/ping";
-    protected static final String UTF_8_CHARSET = ";charset=utf-8";
+  public static final String SESSION_STATUS_REQUEST_MAPPING = "/session-auth-check";
+  public static final String SESSION_STATUS_PING = "/ping";
+  protected static final String UTF_8_CHARSET = ";charset=utf-8";
 
+  @GET
+  @Path(SESSION_STATUS_PING)
+  @Produces(MediaType.APPLICATION_JSON + UTF_8_CHARSET)
+  @PerformanceLogging(
+      eventAction = "session-status-ping",
+      eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
+  public Response getSessionStatus(@Context HttpServletRequest request) {
+    return Response.ok().entity(createStatusResponse(request)).build();
+  }
 
-    @GET
-    @Path(SESSION_STATUS_PING)
-    @Produces(MediaType.APPLICATION_JSON + UTF_8_CHARSET)
-    @PerformanceLogging(eventAction = "session-status-ping", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
-    public Response getSessionStatus(@Context HttpServletRequest request) {
-        return Response.ok().entity(createStatusResponse(request)).build();
+  private SessionStatusResponse createStatusResponse(HttpServletRequest request) {
+    HttpSession session = request.getSession(false);
+    // The sessionTimeoutFilter should have put a secondsLeft attribute in the request for us to
+    // use.
+    Long secondsLeft =
+        (Long) request.getAttribute(SessionTimeoutFilter.SECONDS_UNTIL_SESSIONEXPIRE_ATTRIBUTE_KEY);
+
+    return new SessionStatusResponse(
+        session != null,
+        hasAuthenticatedPrincipalSession(session),
+        secondsLeft == null ? 0 : secondsLeft);
+  }
+
+  private boolean hasAuthenticatedPrincipalSession(HttpSession session) {
+    if (session != null) {
+      final Object context =
+          session.getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
+      if (context != null && context instanceof SecurityContext) {
+        SecurityContext securityContext = (SecurityContext) context;
+        return securityContext.getAuthentication() != null
+            && securityContext.getAuthentication().getPrincipal() != null;
+      }
     }
-
-    private SessionStatusResponse createStatusResponse(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        // The sessionTimeoutFilter should have put a secondsLeft attribute in the request for us to use.
-        Long secondsLeft = (Long) request.getAttribute(SessionTimeoutFilter.SECONDS_UNTIL_SESSIONEXPIRE_ATTRIBUTE_KEY);
-
-        return new SessionStatusResponse(session != null, hasAuthenticatedPrincipalSession(session),
-            secondsLeft == null ? 0 : secondsLeft);
-    }
-
-    private boolean hasAuthenticatedPrincipalSession(HttpSession session) {
-        if (session != null) {
-            final Object context = session.getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
-            if (context != null && context instanceof SecurityContext) {
-                SecurityContext securityContext = (SecurityContext) context;
-                return securityContext.getAuthentication() != null && securityContext.getAuthentication().getPrincipal() != null;
-            }
-
-        }
-        return false;
-    }
-
+    return false;
+  }
 }

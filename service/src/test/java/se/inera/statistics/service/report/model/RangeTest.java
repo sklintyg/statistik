@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -26,82 +26,82 @@ import org.junit.Test;
 
 public class RangeTest {
 
-    private Clock clock = Clock.systemDefaultZone();
+  private Clock clock = Clock.systemDefaultZone();
 
-    @Test
-    public void testToStringWithToAndFromOnSameYear() {
-        final Range range = new Range(LocalDate.of(2013, 10, 01), LocalDate.of(2013, 12, 01));
-        assertEquals("oktober\u2013december 2013", range.toString());
-    }
+  @Test
+  public void testToStringWithToAndFromOnSameYear() {
+    final Range range = new Range(LocalDate.of(2013, 10, 01), LocalDate.of(2013, 12, 01));
+    assertEquals("oktober\u2013december 2013", range.toString());
+  }
 
-    @Test
-    public void testToStringWithToAndFromOnDifferentYears() {
-        final Range range = new Range(LocalDate.of(2013, 10, 01), LocalDate.of(2014, 12, 01));
-        assertEquals("oktober 2013\u2013december 2014", range.toString());
-    }
+  @Test
+  public void testToStringWithToAndFromOnDifferentYears() {
+    final Range range = new Range(LocalDate.of(2013, 10, 01), LocalDate.of(2014, 12, 01));
+    assertEquals("oktober 2013\u2013december 2014", range.toString());
+  }
 
-    @Test
-    public void testToStringAbbreviatedWithToAndFromOnSameYear() {
-        final Range range = new Range(LocalDate.of(2013, 10, 01), LocalDate.of(2013, 12, 01));
-        assertEquals("okt\u2013dec 2013", range.toStringAbbreviated());
-    }
+  @Test
+  public void testToStringAbbreviatedWithToAndFromOnSameYear() {
+    final Range range = new Range(LocalDate.of(2013, 10, 01), LocalDate.of(2013, 12, 01));
+    assertEquals("okt\u2013dec 2013", range.toStringAbbreviated());
+  }
 
-    @Test
-    public void testToStringAbbreviatedWithToAndFromOnSameYearMarchMay() {
-        final Range range = new Range(LocalDate.of(2013, 3, 01), LocalDate.of(2013, 5, 01));
-        assertEquals("mar\u2013maj 2013", range.toStringAbbreviated());
-    }
+  @Test
+  public void testToStringAbbreviatedWithToAndFromOnSameYearMarchMay() {
+    final Range range = new Range(LocalDate.of(2013, 3, 01), LocalDate.of(2013, 5, 01));
+    assertEquals("mar\u2013maj 2013", range.toStringAbbreviated());
+  }
 
-    @Test
-    public void testToStringAbbreviatedWithToAndFromOnDifferentYears() {
-        final Range range = new Range(LocalDate.of(2013, 10, 01), LocalDate.of(2014, 12, 01));
-        assertEquals("okt 2013\u2013dec 2014", range.toStringAbbreviated());
-    }
+  @Test
+  public void testToStringAbbreviatedWithToAndFromOnDifferentYears() {
+    final Range range = new Range(LocalDate.of(2013, 10, 01), LocalDate.of(2014, 12, 01));
+    assertEquals("okt 2013\u2013dec 2014", range.toStringAbbreviated());
+  }
 
-    @Test
-    public void testToStringAbbreviatedWithToAndFromOnDifferentYearsMarchMay() {
-        final Range range = new Range(LocalDate.of(2013, 5, 01), LocalDate.of(2014, 3, 01));
-        assertEquals("maj 2013\u2013mar 2014", range.toStringAbbreviated());
-    }
+  @Test
+  public void testToStringAbbreviatedWithToAndFromOnDifferentYearsMarchMay() {
+    final Range range = new Range(LocalDate.of(2013, 5, 01), LocalDate.of(2014, 3, 01));
+    assertEquals("maj 2013\u2013mar 2014", range.toStringAbbreviated());
+  }
 
-    // CHECKSTYLE:OFF MagicNumber
-    @Test
-    public void defaultRangeIs18Months() {
-        Range range = new Range(clock);
-        assertEquals(18, range.getNumberOfMonths());
-    }
+  // CHECKSTYLE:OFF MagicNumber
+  @Test
+  public void defaultRangeIs18Months() {
+    Range range = new Range(clock);
+    assertEquals(18, range.getNumberOfMonths());
+  }
 
-    @Test
-    public void settingRangeMonths() {
-        final Range range = Range.createForLastMonthsExcludingCurrent(3, clock);
-        assertEquals(3, range.getNumberOfMonths());
-    }
-    // CHECKSTYLE:ON MagicNumber
+  @Test
+  public void settingRangeMonths() {
+    final Range range = Range.createForLastMonthsExcludingCurrent(3, clock);
+    assertEquals(3, range.getNumberOfMonths());
+  }
 
-    @Test
-    public void settingRangeMonthsCorrectStartAndEnd() {
-        //When
-        final Range range = Range.createForLastMonthsExcludingCurrent(3, clock);
+  // CHECKSTYLE:ON MagicNumber
 
-        //Then
-        final LocalDate now = LocalDate.now(clock);
-        final int expectedFrom = now.minusMonths(3).withDayOfMonth(1).getDayOfYear();
-        assertEquals(expectedFrom, range.getFrom().getDayOfYear());
-        final int expectedTo = now.withDayOfMonth(1).minusDays(1).getDayOfYear();
-        assertEquals(expectedTo, range.getTo().getDayOfYear());
-    }
+  @Test
+  public void settingRangeMonthsCorrectStartAndEnd() {
+    // When
+    final Range range = Range.createForLastMonthsExcludingCurrent(3, clock);
 
-    @Test
-    public void settingRangeMonthsIncludingCurrentCorrectStartAndEnd() {
-        //When
-        final Range range = Range.createForLastMonthsIncludingCurrent(3, clock);
+    // Then
+    final LocalDate now = LocalDate.now(clock);
+    final int expectedFrom = now.minusMonths(3).withDayOfMonth(1).getDayOfYear();
+    assertEquals(expectedFrom, range.getFrom().getDayOfYear());
+    final int expectedTo = now.withDayOfMonth(1).minusDays(1).getDayOfYear();
+    assertEquals(expectedTo, range.getTo().getDayOfYear());
+  }
 
-        //Then
-        final LocalDate now = LocalDate.now(clock);
-        final int expectedFrom = now.minusMonths(2).withDayOfMonth(1).getDayOfYear();
-        assertEquals(expectedFrom, range.getFrom().getDayOfYear());
-        final int expectedTo = now.plusMonths(1).withDayOfMonth(1).minusDays(1).getDayOfYear();
-        assertEquals(expectedTo, range.getTo().getDayOfYear());
-    }
+  @Test
+  public void settingRangeMonthsIncludingCurrentCorrectStartAndEnd() {
+    // When
+    final Range range = Range.createForLastMonthsIncludingCurrent(3, clock);
 
+    // Then
+    final LocalDate now = LocalDate.now(clock);
+    final int expectedFrom = now.minusMonths(2).withDayOfMonth(1).getDayOfYear();
+    assertEquals(expectedFrom, range.getFrom().getDayOfYear());
+    final int expectedTo = now.plusMonths(1).withDayOfMonth(1).minusDays(1).getDayOfYear();
+    assertEquals(expectedTo, range.getTo().getDayOfYear());
+  }
 }

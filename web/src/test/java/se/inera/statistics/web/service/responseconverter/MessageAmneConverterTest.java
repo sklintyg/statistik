@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -39,46 +39,49 @@ import se.inera.statistics.web.service.dto.FilterSettings;
 
 public class MessageAmneConverterTest {
 
-    @Test
-    public void testConvertEmptySeriesWillRemoveOkantAmne() {
-        //Given
-        final MessageAmneConverter messageAmneConverter = new MessageAmneConverter();
-        final Filter filter = Filter.empty();
-        final List<String> groups = Arrays.stream(MsgAmne.values()).map(Enum::name).collect(Collectors.toList());
-        final List<KonField> data = new ArrayList<>();
-        for (int i = 0; i < groups.size(); i++) {
-            data.add(new KonField(0, 0));
-        }
-        final List<KonDataRow> rows = Collections.singletonList(new KonDataRow("rowname", data));
-        final FilterSettings filterSettings = new FilterSettings(filter, Range.year(Clock.systemUTC()));
-
-        //When
-        final KonDataResponse response = new KonDataResponse(AvailableFilters.getForMeddelanden(), groups, rows);
-        final DualSexStatisticsData convert = messageAmneConverter.convert(response, filterSettings);
-
-        //Then
-        assertEquals(MsgAmne.values().length - 1, convert.getFemaleChart().getSeries().size());
+  @Test
+  public void testConvertEmptySeriesWillRemoveOkantAmne() {
+    // Given
+    final MessageAmneConverter messageAmneConverter = new MessageAmneConverter();
+    final Filter filter = Filter.empty();
+    final List<String> groups =
+        Arrays.stream(MsgAmne.values()).map(Enum::name).collect(Collectors.toList());
+    final List<KonField> data = new ArrayList<>();
+    for (int i = 0; i < groups.size(); i++) {
+      data.add(new KonField(0, 0));
     }
+    final List<KonDataRow> rows = Collections.singletonList(new KonDataRow("rowname", data));
+    final FilterSettings filterSettings = new FilterSettings(filter, Range.year(Clock.systemUTC()));
 
-    @Test
-    public void testConvertNonEmptySeriesWillKeepOkantAmne() {
-        //Given
-        final MessageAmneConverter messageAmneConverter = new MessageAmneConverter();
-        final Filter filter = Filter.empty();
-        final List<String> groups = Arrays.stream(MsgAmne.values()).map(Enum::name).collect(Collectors.toList());
-        final List<KonField> data = new ArrayList<>();
-        for (int i = 0; i < groups.size(); i++) {
-            data.add(new KonField(1, 0));
-        }
-        final List<KonDataRow> rows = Collections.singletonList(new KonDataRow("rowname", data));
-        final FilterSettings filterSettings = new FilterSettings(filter, Range.year(Clock.systemUTC()));
+    // When
+    final KonDataResponse response =
+        new KonDataResponse(AvailableFilters.getForMeddelanden(), groups, rows);
+    final DualSexStatisticsData convert = messageAmneConverter.convert(response, filterSettings);
 
-        //When
-        final KonDataResponse response = new KonDataResponse(AvailableFilters.getForMeddelanden(), groups, rows);
-        final DualSexStatisticsData convert = messageAmneConverter.convert(response, filterSettings);
+    // Then
+    assertEquals(MsgAmne.values().length - 1, convert.getFemaleChart().getSeries().size());
+  }
 
-        //Then
-        assertEquals(MsgAmne.values().length, convert.getFemaleChart().getSeries().size());
+  @Test
+  public void testConvertNonEmptySeriesWillKeepOkantAmne() {
+    // Given
+    final MessageAmneConverter messageAmneConverter = new MessageAmneConverter();
+    final Filter filter = Filter.empty();
+    final List<String> groups =
+        Arrays.stream(MsgAmne.values()).map(Enum::name).collect(Collectors.toList());
+    final List<KonField> data = new ArrayList<>();
+    for (int i = 0; i < groups.size(); i++) {
+      data.add(new KonField(1, 0));
     }
+    final List<KonDataRow> rows = Collections.singletonList(new KonDataRow("rowname", data));
+    final FilterSettings filterSettings = new FilterSettings(filter, Range.year(Clock.systemUTC()));
 
+    // When
+    final KonDataResponse response =
+        new KonDataResponse(AvailableFilters.getForMeddelanden(), groups, rows);
+    final DualSexStatisticsData convert = messageAmneConverter.convert(response, filterSettings);
+
+    // Then
+    assertEquals(MsgAmne.values().length, convert.getFemaleChart().getSeries().size());
+  }
 }

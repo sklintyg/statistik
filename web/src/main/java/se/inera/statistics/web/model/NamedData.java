@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -24,65 +24,64 @@ import java.util.List;
 
 public class NamedData implements Serializable {
 
-    private final String name;
-    private final List<Object> data;
-    private final boolean marked;
+  private final String name;
+  private final List<Object> data;
+  private final boolean marked;
 
-    public NamedData(String name, List<? extends Object> data, boolean marked) {
-        this.name = name;
-        this.data = Collections.unmodifiableList(data);
-        this.marked = marked;
+  public NamedData(String name, List<? extends Object> data, boolean marked) {
+    this.name = name;
+    this.data = Collections.unmodifiableList(data);
+    this.marked = marked;
+  }
+
+  public NamedData(String name, List<? extends Object> data) {
+    this(name, data, false);
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public List<Object> getData() {
+    return data;
+  }
+
+  public boolean isMarked() {
+    return marked;
+  }
+
+  @Override
+  public String toString() {
+    return name + ": " + data.toString();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof NamedData)) {
+      return false;
     }
 
-    public NamedData(String name, List<? extends Object> data) {
-        this(name, data, false);
+    NamedData namedData = (NamedData) o;
+
+    if (marked != namedData.marked) {
+      return false;
     }
-
-    public String getName() {
-        return name;
+    if (name != null ? !name.equals(namedData.name) : namedData.name != null) {
+      return false;
     }
+    return data != null ? data.equals(namedData.data) : namedData.data == null;
+  }
 
-    public List<Object> getData() {
-        return data;
-    }
-
-    public boolean isMarked() {
-        return marked;
-    }
-
-    @Override
-    public String toString() {
-        return name + ": " + data.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof NamedData)) {
-            return false;
-        }
-
-        NamedData namedData = (NamedData) o;
-
-        if (marked != namedData.marked) {
-            return false;
-        }
-        if (name != null ? !name.equals(namedData.name) : namedData.name != null) {
-            return false;
-        }
-        return data != null ? data.equals(namedData.data) : namedData.data == null;
-
-    }
-
-    // CHECKSTYLE:OFF MagicNumber
-    @Override
-    public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (data != null ? data.hashCode() : 0);
-        result = 31 * result + (marked ? 1 : 0);
-        return result;
-    }
-    // CHECKSTYLE:ON MagicNumber
+  // CHECKSTYLE:OFF MagicNumber
+  @Override
+  public int hashCode() {
+    int result = name != null ? name.hashCode() : 0;
+    result = 31 * result + (data != null ? data.hashCode() : 0);
+    result = 31 * result + (marked ? 1 : 0);
+    return result;
+  }
+  // CHECKSTYLE:ON MagicNumber
 }

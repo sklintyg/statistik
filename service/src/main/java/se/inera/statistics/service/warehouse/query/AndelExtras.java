@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,45 +20,47 @@ package se.inera.statistics.service.warehouse.query;
 
 public class AndelExtras {
 
-    private int femaleIntyg;
-    private int femaleKompl;
-    private int maleIntyg;
-    private int maleKompl;
+  private int femaleIntyg;
+  private int femaleKompl;
+  private int maleIntyg;
+  private int maleKompl;
 
-    public AndelExtras(int femaleIntyg, int femaleKompl, int maleIntyg, int maleKompl) {
-        this.femaleIntyg = femaleIntyg;
-        this.femaleKompl = femaleKompl;
-        this.maleIntyg = maleIntyg;
-        this.maleKompl = maleKompl;
-    }
+  public AndelExtras(int femaleIntyg, int femaleKompl, int maleIntyg, int maleKompl) {
+    this.femaleIntyg = femaleIntyg;
+    this.femaleKompl = femaleKompl;
+    this.maleIntyg = maleIntyg;
+    this.maleKompl = maleKompl;
+  }
 
-    public int getPart() {
-        return femaleKompl + maleKompl;
-    }
+  public int getPart() {
+    return femaleKompl + maleKompl;
+  }
 
-    public int getWhole() {
-        return femaleIntyg + maleIntyg;
-    }
+  public int getWhole() {
+    return femaleIntyg + maleIntyg;
+  }
 
-    public int getFemaleIntyg() {
-        return femaleIntyg;
-    }
+  public int getFemaleIntyg() {
+    return femaleIntyg;
+  }
 
-    public int getFemaleKompl() {
-        return femaleKompl;
-    }
+  public int getFemaleKompl() {
+    return femaleKompl;
+  }
 
-    public int getMaleIntyg() {
-        return maleIntyg;
-    }
+  public int getMaleIntyg() {
+    return maleIntyg;
+  }
 
-    public int getMaleKompl() {
-        return maleKompl;
-    }
+  public int getMaleKompl() {
+    return maleKompl;
+  }
 
-    public static AndelExtras combined(AndelExtras a, AndelExtras b) {
-        return new AndelExtras(a.getFemaleIntyg() + b.getFemaleIntyg(), a.getFemaleKompl() + b.getFemaleKompl(),
-            a.getMaleIntyg() + b.getMaleIntyg(), a.getMaleKompl() + b.getMaleKompl());
-    }
-
+  public static AndelExtras combined(AndelExtras a, AndelExtras b) {
+    return new AndelExtras(
+        a.getFemaleIntyg() + b.getFemaleIntyg(),
+        a.getFemaleKompl() + b.getFemaleKompl(),
+        a.getMaleIntyg() + b.getMaleIntyg(),
+        a.getMaleKompl() + b.getMaleKompl());
+  }
 }

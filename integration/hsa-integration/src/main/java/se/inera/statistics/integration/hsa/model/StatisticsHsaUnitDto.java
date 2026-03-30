@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -24,139 +24,139 @@ import java.util.List;
 
 public class StatisticsHsaUnitDto {
 
-    private String hsaIdentity;
-    private String careGiverHsaIdentity;
-    private String location;
-    private String countyCode;
-    private String municipalityCode;
-    private String municipalitySectionCode;
-    private String municipalitySectionName;
-    private GeoCoordDto geographicalCoordinatesRt90;
-    private List<String> businessTypes = Collections.emptyList();
-    private List<String> managements = Collections.emptyList();
-    private List<String> businessClassificationCodes = Collections.emptyList();
-    private List<String> careTypes = Collections.emptyList();
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
-    private Boolean isArchived;
+  private String hsaIdentity;
+  private String careGiverHsaIdentity;
+  private String location;
+  private String countyCode;
+  private String municipalityCode;
+  private String municipalitySectionCode;
+  private String municipalitySectionName;
+  private GeoCoordDto geographicalCoordinatesRt90;
+  private List<String> businessTypes = Collections.emptyList();
+  private List<String> managements = Collections.emptyList();
+  private List<String> businessClassificationCodes = Collections.emptyList();
+  private List<String> careTypes = Collections.emptyList();
+  private LocalDateTime startDate;
+  private LocalDateTime endDate;
+  private Boolean isArchived;
 
-    public String getHsaIdentity() {
-        return hsaIdentity;
-    }
+  public String getHsaIdentity() {
+    return hsaIdentity;
+  }
 
-    public void setHsaIdentity(String hsaIdentity) {
-        this.hsaIdentity = hsaIdentity;
-    }
+  public void setHsaIdentity(String hsaIdentity) {
+    this.hsaIdentity = hsaIdentity;
+  }
 
-    public String getCareGiverHsaIdentity() {
-        return careGiverHsaIdentity;
-    }
+  public String getCareGiverHsaIdentity() {
+    return careGiverHsaIdentity;
+  }
 
-    public void setCareGiverHsaIdentity(String careGiverHsaIdentity) {
-        this.careGiverHsaIdentity = careGiverHsaIdentity;
-    }
+  public void setCareGiverHsaIdentity(String careGiverHsaIdentity) {
+    this.careGiverHsaIdentity = careGiverHsaIdentity;
+  }
 
-    public String getLocation() {
-        return location;
-    }
+  public String getLocation() {
+    return location;
+  }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
+  public void setLocation(String location) {
+    this.location = location;
+  }
 
-    public String getCountyCode() {
-        return countyCode;
-    }
+  public String getCountyCode() {
+    return countyCode;
+  }
 
-    public void setCountyCode(String countyCode) {
-        this.countyCode = countyCode;
-    }
+  public void setCountyCode(String countyCode) {
+    this.countyCode = countyCode;
+  }
 
-    public String getMunicipalityCode() {
-        return municipalityCode;
-    }
+  public String getMunicipalityCode() {
+    return municipalityCode;
+  }
 
-    public void setMunicipalityCode(String municipalityCode) {
-        this.municipalityCode = municipalityCode;
-    }
+  public void setMunicipalityCode(String municipalityCode) {
+    this.municipalityCode = municipalityCode;
+  }
 
-    public String getMunicipalitySectionCode() {
-        return municipalitySectionCode;
-    }
+  public String getMunicipalitySectionCode() {
+    return municipalitySectionCode;
+  }
 
-    public void setMunicipalitySectionCode(String municipalitySectionCode) {
-        this.municipalitySectionCode = municipalitySectionCode;
-    }
+  public void setMunicipalitySectionCode(String municipalitySectionCode) {
+    this.municipalitySectionCode = municipalitySectionCode;
+  }
 
-    public String getMunicipalitySectionName() {
-        return municipalitySectionName;
-    }
+  public String getMunicipalitySectionName() {
+    return municipalitySectionName;
+  }
 
-    public void setMunicipalitySectionName(String municipalitySectionName) {
-        this.municipalitySectionName = municipalitySectionName;
-    }
+  public void setMunicipalitySectionName(String municipalitySectionName) {
+    this.municipalitySectionName = municipalitySectionName;
+  }
 
-    public GeoCoordDto getGeographicalCoordinatesRt90() {
-        return geographicalCoordinatesRt90;
-    }
+  public GeoCoordDto getGeographicalCoordinatesRt90() {
+    return geographicalCoordinatesRt90;
+  }
 
-    public void setGeographicalCoordinatesRt90(GeoCoordDto geographicalCoordinatesRt90) {
-        this.geographicalCoordinatesRt90 = geographicalCoordinatesRt90;
-    }
+  public void setGeographicalCoordinatesRt90(GeoCoordDto geographicalCoordinatesRt90) {
+    this.geographicalCoordinatesRt90 = geographicalCoordinatesRt90;
+  }
 
-    public List<String> getBusinessTypes() {
-        return businessTypes;
-    }
+  public List<String> getBusinessTypes() {
+    return businessTypes;
+  }
 
-    public void setBusinessTypes(List<String> businessTypes) {
-        this.businessTypes = businessTypes;
-    }
+  public void setBusinessTypes(List<String> businessTypes) {
+    this.businessTypes = businessTypes;
+  }
 
-    public List<String> getManagements() {
-        return managements;
-    }
+  public List<String> getManagements() {
+    return managements;
+  }
 
-    public void setManagements(List<String> managements) {
-        this.managements = managements;
-    }
+  public void setManagements(List<String> managements) {
+    this.managements = managements;
+  }
 
-    public List<String> getBusinessClassificationCodes() {
-        return businessClassificationCodes;
-    }
+  public List<String> getBusinessClassificationCodes() {
+    return businessClassificationCodes;
+  }
 
-    public void setBusinessClassificationCodes(List<String> businessClassificationCodes) {
-        this.businessClassificationCodes = businessClassificationCodes;
-    }
+  public void setBusinessClassificationCodes(List<String> businessClassificationCodes) {
+    this.businessClassificationCodes = businessClassificationCodes;
+  }
 
-    public List<String> getCareTypes() {
-        return careTypes;
-    }
+  public List<String> getCareTypes() {
+    return careTypes;
+  }
 
-    public void setCareTypes(List<String> careTypes) {
-        this.careTypes = careTypes;
-    }
+  public void setCareTypes(List<String> careTypes) {
+    this.careTypes = careTypes;
+  }
 
-    public LocalDateTime getStartDate() {
-        return startDate;
-    }
+  public LocalDateTime getStartDate() {
+    return startDate;
+  }
 
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
-    }
+  public void setStartDate(LocalDateTime startDate) {
+    this.startDate = startDate;
+  }
 
-    public LocalDateTime getEndDate() {
-        return endDate;
-    }
+  public LocalDateTime getEndDate() {
+    return endDate;
+  }
 
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
-    }
+  public void setEndDate(LocalDateTime endDate) {
+    this.endDate = endDate;
+  }
 
-    public Boolean isArchived() {
-        return isArchived;
-    }
+  public Boolean isArchived() {
+    return isArchived;
+  }
 
-    public void setArchived(Boolean archived) {
-        isArchived = archived;
-    }
+  public void setArchived(Boolean archived) {
+    isArchived = archived;
+  }
 }

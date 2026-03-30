@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,20 +22,19 @@ import java.io.Serializable;
 
 public class BarChartData implements Serializable {
 
-    private final String name;
-    private final int quantity;
+  private final String name;
+  private final int quantity;
 
-    public BarChartData(String name, int quantity) {
-        this.name = name;
-        this.quantity = quantity;
-    }
+  public BarChartData(String name, int quantity) {
+    this.name = name;
+    this.quantity = quantity;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
+  public int getQuantity() {
+    return quantity;
+  }
 }

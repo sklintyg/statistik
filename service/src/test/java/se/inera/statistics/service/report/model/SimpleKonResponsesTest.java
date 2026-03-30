@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,36 +25,35 @@ import org.junit.Test;
 
 public class SimpleKonResponsesTest {
 
-    @Test
-    public void testAddExtrasToNameDuplicatesEmptyInput() {
-        //Given
-        final ArrayList<SimpleKonDataRow> skdr = new ArrayList<>();
-        final SimpleKonResponse skr = new SimpleKonResponse(AvailableFilters.getForSjukfall(), skdr);
+  @Test
+  public void testAddExtrasToNameDuplicatesEmptyInput() {
+    // Given
+    final ArrayList<SimpleKonDataRow> skdr = new ArrayList<>();
+    final SimpleKonResponse skr = new SimpleKonResponse(AvailableFilters.getForSjukfall(), skdr);
 
-        //When
-        final SimpleKonResponse result = SimpleKonResponses.addExtrasToNameDuplicates(skr);
+    // When
+    final SimpleKonResponse result = SimpleKonResponses.addExtrasToNameDuplicates(skr);
 
-        //Then
-        assertEquals(0, result.getGroups().size());
-    }
+    // Then
+    assertEquals(0, result.getGroups().size());
+  }
 
-    @Test
-    public void testAddExtrasToNameDuplicates() {
-        //Given
-        final ArrayList<SimpleKonDataRow> skdr = new ArrayList<>();
-        skdr.add(new SimpleKonDataRow("ABC", 0, 0, 1));
-        skdr.add(new SimpleKonDataRow("abc", 0, 0, 2));
-        skdr.add(new SimpleKonDataRow("CBA", 0, 0, 3));
-        final SimpleKonResponse skr = new SimpleKonResponse(AvailableFilters.getForSjukfall(), skdr);
+  @Test
+  public void testAddExtrasToNameDuplicates() {
+    // Given
+    final ArrayList<SimpleKonDataRow> skdr = new ArrayList<>();
+    skdr.add(new SimpleKonDataRow("ABC", 0, 0, 1));
+    skdr.add(new SimpleKonDataRow("abc", 0, 0, 2));
+    skdr.add(new SimpleKonDataRow("CBA", 0, 0, 3));
+    final SimpleKonResponse skr = new SimpleKonResponse(AvailableFilters.getForSjukfall(), skdr);
 
-        //When
-        final SimpleKonResponse result = SimpleKonResponses.addExtrasToNameDuplicates(skr);
+    // When
+    final SimpleKonResponse result = SimpleKonResponses.addExtrasToNameDuplicates(skr);
 
-        //Then
-        assertEquals(3, result.getGroups().size());
-        assertEquals("ABC 1", result.getGroups().get(0));
-        assertEquals("abc 2", result.getGroups().get(1));
-        assertEquals("CBA", result.getGroups().get(2));
-    }
-
+    // Then
+    assertEquals(3, result.getGroups().size());
+    assertEquals("ABC 1", result.getGroups().get(0));
+    assertEquals("abc 2", result.getGroups().get(1));
+    assertEquals("CBA", result.getGroups().get(2));
+  }
 }

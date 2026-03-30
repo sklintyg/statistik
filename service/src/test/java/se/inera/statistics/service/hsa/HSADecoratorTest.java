@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -44,170 +44,203 @@ import se.inera.statistics.service.JSONSource;
 @RunWith(MockitoJUnitRunner.class)
 public class HSADecoratorTest {
 
-    private final Clock clock = Clock.systemDefaultZone();
+  private final Clock clock = Clock.systemDefaultZone();
 
-    @Mock
-    private HSAService hsaService;// = Mockito.mock(HSAService.class);
+  @Mock private HSAService hsaService; // = Mockito.mock(HSAService.class);
 
-    @Mock
-    private EntityManager manager;
+  @Mock private EntityManager manager;
 
-    @InjectMocks
-    private HSADecorator hsaDecorator = new HSADecorator();
+  @InjectMocks private HSADecorator hsaDecorator = new HSADecorator();
 
-    @Test
-    public void decorate_document() throws IOException {
-        JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString());
+  @Test
+  public void decorate_document() throws IOException {
+    JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString());
 
-        hsaDecorator.decorate(doc, "aaa");
+    hsaDecorator.decorate(doc, "aaa");
 
-        verify(hsaService).getHSAInfo(any(HSAKey.class), nullable(HsaInfo.class));
-    }
+    verify(hsaService).getHSAInfo(any(HSAKey.class), nullable(HsaInfo.class));
+  }
 
-    @Test
-    public void serviceOnlyCalledWhenCacheIsMissingData() throws IOException {
-        //Given
-        HSADecorator hsaDecoratorSpy = Mockito.spy(this.hsaDecorator);
-        Mockito.doReturn(null).when(hsaDecoratorSpy).getHSAInfo(anyString());
+  @Test
+  public void serviceOnlyCalledWhenCacheIsMissingData() throws IOException {
+    // Given
+    HSADecorator hsaDecoratorSpy = Mockito.spy(this.hsaDecorator);
+    Mockito.doReturn(null).when(hsaDecoratorSpy).getHSAInfo(anyString());
 
-        JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString());
+    JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString());
 
-        //When
-        hsaDecoratorSpy.decorate(doc, "aaa");
+    // When
+    hsaDecoratorSpy.decorate(doc, "aaa");
 
-        //Then
-        verify(hsaService, times(1)).getHSAInfo(any(HSAKey.class), nullable(HsaInfo.class));
-        verify(hsaDecoratorSpy, times(1)).storeHSAInfo(eq("aaa"), nullable(HsaInfo.class));
-    }
+    // Then
+    verify(hsaService, times(1)).getHSAInfo(any(HSAKey.class), nullable(HsaInfo.class));
+    verify(hsaDecoratorSpy, times(1)).storeHSAInfo(eq("aaa"), nullable(HsaInfo.class));
+  }
 
-    private HsaInfo getFullJsonNode() {
-        final HsaInfoEnhet enhet = getHsaEnhet("cachedvgid");
-        final HsaInfoVg vardgivare = new HsaInfoVg("", "", LocalDateTime.now(clock), LocalDateTime.now(clock), false);
-        final HsaInfoPersonal personal = new HsaInfoPersonal("", "", "", Arrays.asList(""), Arrays.asList(""), Arrays.asList(""), false, "",
-            "");
-        return new HsaInfo(enhet, enhet, vardgivare, personal);
-    }
+  private HsaInfo getFullJsonNode() {
+    final HsaInfoEnhet enhet = getHsaEnhet("cachedvgid");
+    final HsaInfoVg vardgivare =
+        new HsaInfoVg("", "", LocalDateTime.now(clock), LocalDateTime.now(clock), false);
+    final HsaInfoPersonal personal =
+        new HsaInfoPersonal(
+            "", "", "", Arrays.asList(""), Arrays.asList(""), Arrays.asList(""), false, "", "");
+    return new HsaInfo(enhet, enhet, vardgivare, personal);
+  }
 
-    private HsaInfoEnhet getHsaEnhet(String vgid) {
-        return new HsaInfoEnhet("", Arrays.asList(""), Arrays.asList(""), LocalDateTime.now(clock), LocalDateTime.now(clock), false,
-            Arrays.asList(""), Arrays.asList(""), new HsaInfoEnhetGeo(new HsaInfoCoordinate("", "", ""), "", "", "", "", ""), vgid);
-    }
+  private HsaInfoEnhet getHsaEnhet(String vgid) {
+    return new HsaInfoEnhet(
+        "",
+        Arrays.asList(""),
+        Arrays.asList(""),
+        LocalDateTime.now(clock),
+        LocalDateTime.now(clock),
+        false,
+        Arrays.asList(""),
+        Arrays.asList(""),
+        new HsaInfoEnhetGeo(new HsaInfoCoordinate("", "", ""), "", "", "", "", ""),
+        vgid);
+  }
 
-    @Test
-    public void serviceOnlyCalledWhenCacheIsMissingEnhetData() throws IOException {
-        //Given
-        HSADecorator hsaDecoratorSpy = Mockito.spy(this.hsaDecorator);
-        HsaInfo fullJsonNode = getFullJsonNode();
-        HsaInfo jsonNode = new HsaInfo(null, fullJsonNode.getHuvudenhet(), fullJsonNode.getVardgivare(), fullJsonNode.getPersonal());
-        Mockito.doReturn(jsonNode).when(hsaDecoratorSpy).getHSAInfo(anyString());
-
-        JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString());
-
-        //When
-        hsaDecoratorSpy.decorate(doc, "aaa");
-
-        //Then
-        verify(hsaService, times(1)).getHSAInfo(any(HSAKey.class), any(HsaInfo.class));
-        verify(hsaDecoratorSpy, times(1)).storeHSAInfo(eq("aaa"), nullable(HsaInfo.class));
-    }
-
-    @Test
-    public void serviceOnlyCalledWhenCacheIsMissingHuvudenhetData() throws IOException {
-        //Given
-        HSADecorator hsaDecoratorSpy = Mockito.spy(this.hsaDecorator);
-        HsaInfo fullJsonNode = getFullJsonNode();
-        HsaInfo jsonNode = new HsaInfo(fullJsonNode.getEnhet(), null, fullJsonNode.getVardgivare(), fullJsonNode.getPersonal());
-        Mockito.doReturn(jsonNode).when(hsaDecoratorSpy).getHSAInfo(anyString());
-
-        JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString());
-
-        //When
-        hsaDecoratorSpy.decorate(doc, "aaa");
-
-        //Then
-        verify(hsaService, times(1)).getHSAInfo(any(HSAKey.class), any(HsaInfo.class));
-        verify(hsaDecoratorSpy, times(1)).storeHSAInfo(eq("aaa"), nullable(HsaInfo.class));
-    }
-
-    @Test
-    public void serviceOnlyCalledWhenCacheIsMissingVardgivareData() throws IOException {
-        //Given
-        HSADecorator hsaDecoratorSpy = Mockito.spy(this.hsaDecorator);
-        HsaInfo fullJsonNode = getFullJsonNode();
-        HsaInfo jsonNode = new HsaInfo(fullJsonNode.getEnhet(), fullJsonNode.getHuvudenhet(), null, fullJsonNode.getPersonal());
-        Mockito.doReturn(jsonNode).when(hsaDecoratorSpy).getHSAInfo(anyString());
-
-        JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString());
-
-        //When
-        hsaDecoratorSpy.decorate(doc, "aaa");
-
-        //Then
-        verify(hsaService, times(1)).getHSAInfo(any(HSAKey.class), any(HsaInfo.class));
-        verify(hsaDecoratorSpy, times(1)).storeHSAInfo(eq("aaa"), nullable(HsaInfo.class));
-    }
-
-    @Test
-    public void serviceOnlyCalledWhenCacheIsMissingPersonalData() throws IOException {
-        //Given
-        HSADecorator hsaDecoratorSpy = Mockito.spy(this.hsaDecorator);
-        HsaInfo fullJsonNode = getFullJsonNode();
-        HsaInfo jsonNode = new HsaInfo(fullJsonNode.getEnhet(), fullJsonNode.getHuvudenhet(), fullJsonNode.getVardgivare(), null);
-        Mockito.doReturn(jsonNode).when(hsaDecoratorSpy).getHSAInfo(anyString());
-
-        JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString());
-
-        //When
-        hsaDecoratorSpy.decorate(doc, "aaa");
-
-        //Then
-        verify(hsaService, times(1)).getHSAInfo(any(HSAKey.class), any(HsaInfo.class));
-        verify(hsaDecoratorSpy, times(1)).storeHSAInfo(eq("aaa"), nullable(HsaInfo.class));
-    }
-
-    @Test
-    public void serviceNotCalledWhenCacheFullyPopulated() throws IOException {
-        //Given
-        HSADecorator hsaDecoratorSpy = Mockito.spy(this.hsaDecorator);
-        HsaInfo fullJsonNode = getFullJsonNode();
-        HsaInfo jsonNode = new HsaInfo(fullJsonNode.getEnhet(), fullJsonNode.getHuvudenhet(), fullJsonNode.getVardgivare(),
+  @Test
+  public void serviceOnlyCalledWhenCacheIsMissingEnhetData() throws IOException {
+    // Given
+    HSADecorator hsaDecoratorSpy = Mockito.spy(this.hsaDecorator);
+    HsaInfo fullJsonNode = getFullJsonNode();
+    HsaInfo jsonNode =
+        new HsaInfo(
+            null,
+            fullJsonNode.getHuvudenhet(),
+            fullJsonNode.getVardgivare(),
             fullJsonNode.getPersonal());
-        Mockito.doReturn(jsonNode).when(hsaDecoratorSpy).getHSAInfo(anyString());
+    Mockito.doReturn(jsonNode).when(hsaDecoratorSpy).getHSAInfo(anyString());
 
-        JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString());
+    JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString());
 
-        //When
-        hsaDecoratorSpy.decorate(doc, "aaa");
+    // When
+    hsaDecoratorSpy.decorate(doc, "aaa");
 
-        //Then
-        verify(hsaService, times(0)).getHSAInfo(any(HSAKey.class), any(HsaInfo.class));
-        verify(hsaDecoratorSpy, times(0)).storeHSAInfo(eq("aaa"), any(HsaInfo.class));
-    }
+    // Then
+    verify(hsaService, times(1)).getHSAInfo(any(HSAKey.class), any(HsaInfo.class));
+    verify(hsaDecoratorSpy, times(1)).storeHSAInfo(eq("aaa"), nullable(HsaInfo.class));
+  }
 
-    @Test
-    public void testHsaInfoToJson() throws Exception {
-        //Given
-        final LocalDateTime startdatum = LocalDateTime.of(2016, 4, 12, 22, 48);
-        final HsaInfoVg hsaInfoVg = new HsaInfoVg(null, null, startdatum, null, false);
-        final HsaInfo hsaInfo = new HsaInfo(null, null, hsaInfoVg, null);
+  @Test
+  public void serviceOnlyCalledWhenCacheIsMissingHuvudenhetData() throws IOException {
+    // Given
+    HSADecorator hsaDecoratorSpy = Mockito.spy(this.hsaDecorator);
+    HsaInfo fullJsonNode = getFullJsonNode();
+    HsaInfo jsonNode =
+        new HsaInfo(
+            fullJsonNode.getEnhet(),
+            null,
+            fullJsonNode.getVardgivare(),
+            fullJsonNode.getPersonal());
+    Mockito.doReturn(jsonNode).when(hsaDecoratorSpy).getHSAInfo(anyString());
 
-        //When
-        final String result = HSADecorator.hsaInfoToJson(hsaInfo);
+    JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString());
 
-        //Then
-        assertTrue(result.contains("2016-04-12"));
-    }
+    // When
+    hsaDecoratorSpy.decorate(doc, "aaa");
 
-    @Test
-    public void testHsaInfoConversion() throws Exception {
-        //Given
-        String hsaDataFronTestDb = "{\"enhet\":{\"agarform\":[\"Privat\"],\"geografi\":{\"kommun\":\"80\",\"koordinat\":{\"typ\":\"RT_90\",\"x\":\"6638800\",\"y\":\"1603250\"},\"lan\":\"03\",\"plats\":\"Uppsala\"},\"id\":\"SE162321000024-0036142\",\"startdatum\":\"2013-01-11\",\"vardform\":[\"01\"],\"verksamhet\":[\"1500\"],\"vgid\":\"SE162321000024-0036141\"},\"personal\":{\"alder\":\"77\",\"befattning\":[\"203010\"],\"efternamn\":\"Hilding\",\"id\":\"SE149165871\",\"kon\":\"1\",\"skyddad\":false,\"specialitet\":[\"20\",\"24\"],\"tilltalsnamn\":\"S?ren\",\"yrkesgrupp\":[\"L?kare\"]},\"vardgivare\":{\"id\":\"SE162321000024-0036141\",\"orgnr\":\"556193-0693\",\"startdatum\":\"2013-01-11\"}}";
+    // Then
+    verify(hsaService, times(1)).getHSAInfo(any(HSAKey.class), any(HsaInfo.class));
+    verify(hsaDecoratorSpy, times(1)).storeHSAInfo(eq("aaa"), nullable(HsaInfo.class));
+  }
 
-        //When
-        final HsaInfo hsaInfo = HSADecorator.jsonToHsaInfo(hsaDataFronTestDb);
-        final String result = HSADecorator.hsaInfoToJson(hsaInfo);
+  @Test
+  public void serviceOnlyCalledWhenCacheIsMissingVardgivareData() throws IOException {
+    // Given
+    HSADecorator hsaDecoratorSpy = Mockito.spy(this.hsaDecorator);
+    HsaInfo fullJsonNode = getFullJsonNode();
+    HsaInfo jsonNode =
+        new HsaInfo(
+            fullJsonNode.getEnhet(),
+            fullJsonNode.getHuvudenhet(),
+            null,
+            fullJsonNode.getPersonal());
+    Mockito.doReturn(jsonNode).when(hsaDecoratorSpy).getHSAInfo(anyString());
 
-        //Then
-        assertTrue(result.contains("\"id\":\"SE162321000024-0036142\""));
-    }
+    JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString());
+
+    // When
+    hsaDecoratorSpy.decorate(doc, "aaa");
+
+    // Then
+    verify(hsaService, times(1)).getHSAInfo(any(HSAKey.class), any(HsaInfo.class));
+    verify(hsaDecoratorSpy, times(1)).storeHSAInfo(eq("aaa"), nullable(HsaInfo.class));
+  }
+
+  @Test
+  public void serviceOnlyCalledWhenCacheIsMissingPersonalData() throws IOException {
+    // Given
+    HSADecorator hsaDecoratorSpy = Mockito.spy(this.hsaDecorator);
+    HsaInfo fullJsonNode = getFullJsonNode();
+    HsaInfo jsonNode =
+        new HsaInfo(
+            fullJsonNode.getEnhet(),
+            fullJsonNode.getHuvudenhet(),
+            fullJsonNode.getVardgivare(),
+            null);
+    Mockito.doReturn(jsonNode).when(hsaDecoratorSpy).getHSAInfo(anyString());
+
+    JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString());
+
+    // When
+    hsaDecoratorSpy.decorate(doc, "aaa");
+
+    // Then
+    verify(hsaService, times(1)).getHSAInfo(any(HSAKey.class), any(HsaInfo.class));
+    verify(hsaDecoratorSpy, times(1)).storeHSAInfo(eq("aaa"), nullable(HsaInfo.class));
+  }
+
+  @Test
+  public void serviceNotCalledWhenCacheFullyPopulated() throws IOException {
+    // Given
+    HSADecorator hsaDecoratorSpy = Mockito.spy(this.hsaDecorator);
+    HsaInfo fullJsonNode = getFullJsonNode();
+    HsaInfo jsonNode =
+        new HsaInfo(
+            fullJsonNode.getEnhet(),
+            fullJsonNode.getHuvudenhet(),
+            fullJsonNode.getVardgivare(),
+            fullJsonNode.getPersonal());
+    Mockito.doReturn(jsonNode).when(hsaDecoratorSpy).getHSAInfo(anyString());
+
+    JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString());
+
+    // When
+    hsaDecoratorSpy.decorate(doc, "aaa");
+
+    // Then
+    verify(hsaService, times(0)).getHSAInfo(any(HSAKey.class), any(HsaInfo.class));
+    verify(hsaDecoratorSpy, times(0)).storeHSAInfo(eq("aaa"), any(HsaInfo.class));
+  }
+
+  @Test
+  public void testHsaInfoToJson() throws Exception {
+    // Given
+    final LocalDateTime startdatum = LocalDateTime.of(2016, 4, 12, 22, 48);
+    final HsaInfoVg hsaInfoVg = new HsaInfoVg(null, null, startdatum, null, false);
+    final HsaInfo hsaInfo = new HsaInfo(null, null, hsaInfoVg, null);
+
+    // When
+    final String result = HSADecorator.hsaInfoToJson(hsaInfo);
+
+    // Then
+    assertTrue(result.contains("2016-04-12"));
+  }
+
+  @Test
+  public void testHsaInfoConversion() throws Exception {
+    // Given
+    String hsaDataFronTestDb =
+        "{\"enhet\":{\"agarform\":[\"Privat\"],\"geografi\":{\"kommun\":\"80\",\"koordinat\":{\"typ\":\"RT_90\",\"x\":\"6638800\",\"y\":\"1603250\"},\"lan\":\"03\",\"plats\":\"Uppsala\"},\"id\":\"SE162321000024-0036142\",\"startdatum\":\"2013-01-11\",\"vardform\":[\"01\"],\"verksamhet\":[\"1500\"],\"vgid\":\"SE162321000024-0036141\"},\"personal\":{\"alder\":\"77\",\"befattning\":[\"203010\"],\"efternamn\":\"Hilding\",\"id\":\"SE149165871\",\"kon\":\"1\",\"skyddad\":false,\"specialitet\":[\"20\",\"24\"],\"tilltalsnamn\":\"S?ren\",\"yrkesgrupp\":[\"L?kare\"]},\"vardgivare\":{\"id\":\"SE162321000024-0036141\",\"orgnr\":\"556193-0693\",\"startdatum\":\"2013-01-11\"}}";
+
+    // When
+    final HsaInfo hsaInfo = HSADecorator.jsonToHsaInfo(hsaDataFronTestDb);
+    final String result = HSADecorator.hsaInfoToJson(hsaInfo);
+
+    // Then
+    assertTrue(result.contains("\"id\":\"SE162321000024-0036142\""));
+  }
 }

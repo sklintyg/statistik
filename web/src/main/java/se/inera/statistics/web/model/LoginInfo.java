@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -28,64 +28,73 @@ import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
 public class LoginInfo {
 
-    private final HsaIdUser hsaId;
-    private final String name;
-    private final List<Verksamhet> businesses;
-    private final List<LoginInfoVg> loginInfoVgs;
-    private final UserSettingsDTO userSettings;
-    private final String authenticationMethod;
+  private final HsaIdUser hsaId;
+  private final String name;
+  private final List<Verksamhet> businesses;
+  private final List<LoginInfoVg> loginInfoVgs;
+  private final UserSettingsDTO userSettings;
+  private final String authenticationMethod;
 
-    public LoginInfo() {
-        hsaId = new HsaIdUser("");
-        name = "";
-        businesses = Collections.emptyList();
-        loginInfoVgs = Collections.emptyList();
-        userSettings = new UserSettingsDTO();
-        authenticationMethod = "";
-    }
+  public LoginInfo() {
+    hsaId = new HsaIdUser("");
+    name = "";
+    businesses = Collections.emptyList();
+    loginInfoVgs = Collections.emptyList();
+    userSettings = new UserSettingsDTO();
+    authenticationMethod = "";
+  }
 
-    public LoginInfo(HsaIdUser userId, String userName, List<Verksamhet> businesses, List<LoginInfoVg> loginInfoVgs,
-        UserSettingsDTO userSettings, String authenticationMethod) {
-        this.hsaId = userId != null ? userId : new HsaIdUser("");
-        this.name = Strings.nullToEmpty(userName);
-        this.businesses = businesses != null ? Collections.unmodifiableList(businesses) : Collections.emptyList();
-        this.loginInfoVgs = loginInfoVgs != null ? Collections.unmodifiableList(loginInfoVgs) : Collections.emptyList();
-        this.userSettings = userSettings;
-        this.authenticationMethod = authenticationMethod;
-    }
+  public LoginInfo(
+      HsaIdUser userId,
+      String userName,
+      List<Verksamhet> businesses,
+      List<LoginInfoVg> loginInfoVgs,
+      UserSettingsDTO userSettings,
+      String authenticationMethod) {
+    this.hsaId = userId != null ? userId : new HsaIdUser("");
+    this.name = Strings.nullToEmpty(userName);
+    this.businesses =
+        businesses != null ? Collections.unmodifiableList(businesses) : Collections.emptyList();
+    this.loginInfoVgs =
+        loginInfoVgs != null ? Collections.unmodifiableList(loginInfoVgs) : Collections.emptyList();
+    this.userSettings = userSettings;
+    this.authenticationMethod = authenticationMethod;
+  }
 
-    public HsaIdUser getHsaId() {
-        return hsaId;
-    }
+  public HsaIdUser getHsaId() {
+    return hsaId;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public boolean isLoggedIn() {
-        return hsaId != null && !hsaId.isEmpty();
-    }
+  public boolean isLoggedIn() {
+    return hsaId != null && !hsaId.isEmpty();
+  }
 
-    public Optional<LoginInfoVg> getLoginInfoForVg(HsaIdVardgivare vgId) {
-        return loginInfoVgs.stream().filter(loginInfoVg -> loginInfoVg.getHsaId().equals(vgId)).findFirst();
-    }
+  public Optional<LoginInfoVg> getLoginInfoForVg(HsaIdVardgivare vgId) {
+    return loginInfoVgs.stream()
+        .filter(loginInfoVg -> loginInfoVg.getHsaId().equals(vgId))
+        .findFirst();
+  }
 
-    public List<LoginInfoVg> getVgs() {
-        return loginInfoVgs;
-    }
+  public List<LoginInfoVg> getVgs() {
+    return loginInfoVgs;
+  }
 
-    public List<Verksamhet> getBusinessesForVg(HsaIdVardgivare vgId) {
-        return businesses.stream()
-            .filter(verksamhet -> verksamhet.getVardgivarId().equals(vgId))
-            .filter(verksamhet -> !verksamhet.getId().isEmpty())
-            .collect(Collectors.toList());
-    }
+  public List<Verksamhet> getBusinessesForVg(HsaIdVardgivare vgId) {
+    return businesses.stream()
+        .filter(verksamhet -> verksamhet.getVardgivarId().equals(vgId))
+        .filter(verksamhet -> !verksamhet.getId().isEmpty())
+        .collect(Collectors.toList());
+  }
 
-    public UserSettingsDTO getUserSettings() {
-        return userSettings;
-    }
+  public UserSettingsDTO getUserSettings() {
+    return userSettings;
+  }
 
-    public String getAuthenticationMethod() {
-        return authenticationMethod;
-    }
+  public String getAuthenticationMethod() {
+    return authenticationMethod;
+  }
 }

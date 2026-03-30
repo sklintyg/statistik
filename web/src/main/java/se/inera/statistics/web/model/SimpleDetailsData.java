@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -26,59 +26,68 @@ import se.inera.statistics.web.service.dto.FilterDataResponse;
 
 public class SimpleDetailsData extends TableDataReport {
 
-    private final TableData tableData;
-    private final ChartData chartData;
-    private final String period;
-    private final FilterDataResponse filter;
-    private final AvailableFilters availableFilters;
-    private final List<Message> messages;
+  private final TableData tableData;
+  private final ChartData chartData;
+  private final String period;
+  private final FilterDataResponse filter;
+  private final AvailableFilters availableFilters;
+  private final List<Message> messages;
 
-    public SimpleDetailsData(TableData tableData, ChartData chartData, String period, AvailableFilters availableFilters,
-        FilterDataResponse filter, List<Message> messages) {
-        this.tableData = tableData;
-        this.chartData = chartData;
-        this.period = period;
-        this.availableFilters = availableFilters;
-        this.filter = filter;
-        this.messages = messages;
-    }
+  public SimpleDetailsData(
+      TableData tableData,
+      ChartData chartData,
+      String period,
+      AvailableFilters availableFilters,
+      FilterDataResponse filter,
+      List<Message> messages) {
+    this.tableData = tableData;
+    this.chartData = chartData;
+    this.period = period;
+    this.availableFilters = availableFilters;
+    this.filter = filter;
+    this.messages = messages;
+  }
 
-    public SimpleDetailsData(TableData tableData, ChartData chartData, String period, AvailableFilters availableFilters,
-        FilterDataResponse filter) {
-        this(tableData, chartData, period, availableFilters, filter, null);
-    }
+  public SimpleDetailsData(
+      TableData tableData,
+      ChartData chartData,
+      String period,
+      AvailableFilters availableFilters,
+      FilterDataResponse filter) {
+    this(tableData, chartData, period, availableFilters, filter, null);
+  }
 
-    @Override
-    public TableData getTableData() {
-        return tableData;
-    }
+  @Override
+  public TableData getTableData() {
+    return tableData;
+  }
 
-    public ChartData getChartData() {
-        return chartData;
-    }
+  public ChartData getChartData() {
+    return chartData;
+  }
 
-    @Override
-    public String getPeriod() {
-        return period;
-    }
+  @Override
+  public String getPeriod() {
+    return period;
+  }
 
-    @Override
-    public FilterDataResponse getFilter() {
-        return filter;
-    }
+  @Override
+  public FilterDataResponse getFilter() {
+    return filter;
+  }
 
-    @Override
-    public List<Message> getMessages() {
-        return messages;
-    }
+  @Override
+  public List<Message> getMessages() {
+    return messages;
+  }
 
-    @Override
-    public List<ChartData> getChartDatas() {
-        return Arrays.asList(chartData);
-    }
+  @Override
+  public List<ChartData> getChartDatas() {
+    return Arrays.asList(chartData);
+  }
 
-    @Override
-    public AvailableFilters getAvailableFilters() {
-        return availableFilters;
-    }
+  @Override
+  public AvailableFilters getAvailableFilters() {
+    return availableFilters;
+  }
 }

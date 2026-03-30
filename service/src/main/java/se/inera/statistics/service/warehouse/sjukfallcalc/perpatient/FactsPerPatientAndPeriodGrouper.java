@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -27,66 +27,70 @@ import se.inera.statistics.service.warehouse.WidelineConverter;
 
 final class FactsPerPatientAndPeriodGrouper {
 
-    private FactsPerPatientAndPeriodGrouper() {
-    }
+  private FactsPerPatientAndPeriodGrouper() {}
 
-    static List<ArrayListMultimap<Long, Fact>> group(Iterable<Fact> facts, List<Range> ranges) {
-        final List<Integer> rangeEnds = toRangeEnds(ranges);
-        return getFactsPerPatientAndPeriod(facts, rangeEnds);
-    }
+  static List<ArrayListMultimap<Long, Fact>> group(Iterable<Fact> facts, List<Range> ranges) {
+    final List<Integer> rangeEnds = toRangeEnds(ranges);
+    return getFactsPerPatientAndPeriod(facts, rangeEnds);
+  }
 
-    private static List<ArrayListMultimap<Long, Fact>> initFactsPerPatientAndPeriod(List<Integer> rangeEnds) {
-        List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = new ArrayList<>(rangeEnds.size());
-        for (int i = 0; i < rangeEnds.size(); i++) {
-            factsPerPatientAndPeriod.add(ArrayListMultimap.create());
+  private static List<ArrayListMultimap<Long, Fact>> initFactsPerPatientAndPeriod(
+      List<Integer> rangeEnds) {
+    List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod =
+        new ArrayList<>(rangeEnds.size());
+    for (int i = 0; i < rangeEnds.size(); i++) {
+      factsPerPatientAndPeriod.add(ArrayListMultimap.create());
+    }
+    return factsPerPatientAndPeriod;
+  }
+
+  private static List<Integer> toRangeEnds(List<Range> ranges) {
+    final List<Integer> rangeEnds = new ArrayList<>(ranges.size() + 1);
+    rangeEnds.add(WidelineConverter.toDay(ranges.get(0).getFrom().minusDays(1)));
+    for (Range range : ranges) {
+      rangeEnds.add(WidelineConverter.toDay(range.getTo()));
+    }
+    rangeEnds.add(Integer.MAX_VALUE);
+    return rangeEnds;
+  }
+
+  private static List<ArrayListMultimap<Long, Fact>> getFactsPerPatientAndPeriod(
+      Iterable<Fact> facts, List<Integer> rangeEnds) {
+    List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod =
+        initFactsPerPatientAndPeriod(rangeEnds);
+    for (Fact fact : facts) {
+      final List<Integer> rangeIndexes =
+          getRangeIndexes(fact.getStartdatum(), fact.getSlutdatum(), rangeEnds);
+      for (Integer rangeIndex : rangeIndexes) {
+        if (rangeIndex >= 0) {
+          factsPerPatientAndPeriod.get(rangeIndex).put(fact.getPatient(), fact);
         }
-        return factsPerPatientAndPeriod;
+      }
     }
+    return factsPerPatientAndPeriod;
+  }
 
-    private static List<Integer> toRangeEnds(List<Range> ranges) {
-        final List<Integer> rangeEnds = new ArrayList<>(ranges.size() + 1);
-        rangeEnds.add(WidelineConverter.toDay(ranges.get(0).getFrom().minusDays(1)));
-        for (Range range : ranges) {
-            rangeEnds.add(WidelineConverter.toDay(range.getTo()));
-        }
-        rangeEnds.add(Integer.MAX_VALUE);
-        return rangeEnds;
+  private static List<Integer> getRangeIndexes(
+      int startdatum, int slutdatum, List<Integer> rangeEnds) {
+    final int startIndex = getRangeIndex(startdatum, rangeEnds);
+    final int slutIndex = getRangeIndex(slutdatum, rangeEnds);
+    final ArrayList<Integer> indexes = new ArrayList<>();
+    if (startIndex >= 0 && slutIndex >= 0) {
+      for (int i = startIndex; i <= slutIndex; i++) {
+        indexes.add(i);
+      }
     }
+    return indexes;
+  }
 
-    private static List<ArrayListMultimap<Long, Fact>> getFactsPerPatientAndPeriod(Iterable<Fact> facts, List<Integer> rangeEnds) {
-        List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = initFactsPerPatientAndPeriod(rangeEnds);
-        for (Fact fact : facts) {
-            final List<Integer> rangeIndexes = getRangeIndexes(fact.getStartdatum(), fact.getSlutdatum(), rangeEnds);
-            for (Integer rangeIndex : rangeIndexes) {
-                if (rangeIndex >= 0) {
-                    factsPerPatientAndPeriod.get(rangeIndex).put(fact.getPatient(), fact);
-                }
-            }
-        }
-        return factsPerPatientAndPeriod;
+  private static int getRangeIndex(int date, List<Integer> rangeEnds) {
+    final int rangesSize = rangeEnds.size();
+    for (int i = 0; i < rangesSize; i++) {
+      final Integer rangeEnd = rangeEnds.get(i);
+      if (date <= rangeEnd) {
+        return i;
+      }
     }
-
-    private static List<Integer> getRangeIndexes(int startdatum, int slutdatum, List<Integer> rangeEnds) {
-        final int startIndex = getRangeIndex(startdatum, rangeEnds);
-        final int slutIndex = getRangeIndex(slutdatum, rangeEnds);
-        final ArrayList<Integer> indexes = new ArrayList<>();
-        if (startIndex >= 0 && slutIndex >= 0) {
-            for (int i = startIndex; i <= slutIndex; i++) {
-                indexes.add(i);
-            }
-        }
-        return indexes;
-    }
-
-    private static int getRangeIndex(int date, List<Integer> rangeEnds) {
-        final int rangesSize = rangeEnds.size();
-        for (int i = 0; i < rangesSize; i++) {
-            final Integer rangeEnd = rangeEnds.get(i);
-            if (date <= rangeEnd) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
+    return -1;
+  }
 }

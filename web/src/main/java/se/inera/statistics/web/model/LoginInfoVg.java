@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -24,76 +24,82 @@ import se.inera.statistics.service.region.RegionsVardgivareStatus;
 
 public class LoginInfoVg {
 
-    private final HsaIdVardgivare hsaId;
-    private final String name;
-    private final RegionsVardgivareStatus regionsVardgivareStatus;
-    private final UserAccessLevel userAccessLevel;
+  private final HsaIdVardgivare hsaId;
+  private final String name;
+  private final RegionsVardgivareStatus regionsVardgivareStatus;
+  private final UserAccessLevel userAccessLevel;
 
-    public LoginInfoVg(HsaIdVardgivare hsaId, String name, RegionsVardgivareStatus regionsVardgivareStatus,
-        UserAccessLevel userAccessLevel) {
-        this.hsaId = hsaId;
-        this.name = name;
-        this.regionsVardgivareStatus = regionsVardgivareStatus;
-        this.userAccessLevel = userAccessLevel;
+  public LoginInfoVg(
+      HsaIdVardgivare hsaId,
+      String name,
+      RegionsVardgivareStatus regionsVardgivareStatus,
+      UserAccessLevel userAccessLevel) {
+    this.hsaId = hsaId;
+    this.name = name;
+    this.regionsVardgivareStatus = regionsVardgivareStatus;
+    this.userAccessLevel = userAccessLevel;
+  }
+
+  public static LoginInfoVg empty() {
+    return new LoginInfoVg(
+        HsaIdVardgivare.empty(),
+        "",
+        RegionsVardgivareStatus.NO_REGIONSVARDGIVARE,
+        new UserAccessLevel(false, 0));
+  }
+
+  public HsaIdVardgivare getHsaId() {
+    return hsaId;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public RegionsVardgivareStatus getRegionsVardgivareStatus() {
+    return regionsVardgivareStatus;
+  }
+
+  public boolean isProcessledare() {
+    return userAccessLevel.isProcessledare();
+  }
+
+  public boolean isVerksamhetschef() {
+    return userAccessLevel.isVerksamhetschef();
+  }
+
+  public boolean isDelprocessledare() {
+    return userAccessLevel.isDelprocessledare();
+  }
+
+  public boolean isRegionsvardgivare() {
+    return !RegionsVardgivareStatus.NO_REGIONSVARDGIVARE.equals(regionsVardgivareStatus);
+  }
+
+  public boolean isRegionsvardgivareWithUpload() {
+    return RegionsVardgivareStatus.REGIONSVARDGIVARE_WITH_UPLOAD.equals(regionsVardgivareStatus);
+  }
+
+  public boolean isRegionAdmin() {
+    return isRegionsvardgivare() && isProcessledare();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof LoginInfoVg)) {
+      return false;
     }
 
-    public static LoginInfoVg empty() {
-        return new LoginInfoVg(HsaIdVardgivare.empty(), "", RegionsVardgivareStatus.NO_REGIONSVARDGIVARE,
-            new UserAccessLevel(false, 0));
-    }
+    LoginInfoVg that = (LoginInfoVg) o;
 
-    public HsaIdVardgivare getHsaId() {
-        return hsaId;
-    }
+    return hsaId.equals(that.hsaId);
+  }
 
-    public String getName() {
-        return name;
-    }
-
-    public RegionsVardgivareStatus getRegionsVardgivareStatus() {
-        return regionsVardgivareStatus;
-    }
-
-    public boolean isProcessledare() {
-        return userAccessLevel.isProcessledare();
-    }
-
-    public boolean isVerksamhetschef() {
-        return userAccessLevel.isVerksamhetschef();
-    }
-
-    public boolean isDelprocessledare() {
-        return userAccessLevel.isDelprocessledare();
-    }
-
-    public boolean isRegionsvardgivare() {
-        return !RegionsVardgivareStatus.NO_REGIONSVARDGIVARE.equals(regionsVardgivareStatus);
-    }
-
-    public boolean isRegionsvardgivareWithUpload() {
-        return RegionsVardgivareStatus.REGIONSVARDGIVARE_WITH_UPLOAD.equals(regionsVardgivareStatus);
-    }
-
-    public boolean isRegionAdmin() {
-        return isRegionsvardgivare() && isProcessledare();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof LoginInfoVg)) {
-            return false;
-        }
-
-        LoginInfoVg that = (LoginInfoVg) o;
-
-        return hsaId.equals(that.hsaId);
-    }
-
-    @Override
-    public int hashCode() {
-        return hsaId.hashCode();
-    }
+  @Override
+  public int hashCode() {
+    return hsaId.hashCode();
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,32 +22,31 @@ import se.inera.statistics.service.report.model.Kon;
 
 public class SosRow {
 
-    private String diagnos;
-    private Kon kon;
-    private String lanId;
-    private int length;
+  private String diagnos;
+  private Kon kon;
+  private String lanId;
+  private int length;
 
-    public SosRow(String diagnos, Kon kon, String lanId, int length) {
-        this.diagnos = diagnos;
-        this.kon = kon;
-        this.lanId = lanId;
-        this.length = length;
-    }
+  public SosRow(String diagnos, Kon kon, String lanId, int length) {
+    this.diagnos = diagnos;
+    this.kon = kon;
+    this.lanId = lanId;
+    this.length = length;
+  }
 
-    public String getDiagnos() {
-        return diagnos;
-    }
+  public String getDiagnos() {
+    return diagnos;
+  }
 
-    public Kon getKon() {
-        return kon;
-    }
+  public Kon getKon() {
+    return kon;
+  }
 
-    public String getLanId() {
-        return lanId;
-    }
+  public String getLanId() {
+    return lanId;
+  }
 
-    public int getLength() {
-        return length;
-    }
-
+  public int getLength() {
+    return length;
+  }
 }

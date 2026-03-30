@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,6 +23,5 @@ import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 
 public interface CounterFunctionIntyg<T> {
 
-    void addCount(IntygCommon intyg, HashMultiset<T> counter);
-
+  void addCount(IntygCommon intyg, HashMultiset<T> counter);
 }

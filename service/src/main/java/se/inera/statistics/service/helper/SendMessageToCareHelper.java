@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -32,47 +32,52 @@ import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMe
 @Component
 public class SendMessageToCareHelper {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SendMessageToCareHelper.class);
+  private static final Logger LOG = LoggerFactory.getLogger(SendMessageToCareHelper.class);
 
-    public SendMessageToCareType unmarshalSendMessageToCareTypeXml(String data) {
-        final String dataV3 = AbstractRegisterCertificateHelper.convertToV3(data);
-        final StringReader reader = new StringReader(dataV3);
-        return JAXB.unmarshal(reader, SendMessageToCareType.class);
+  public SendMessageToCareType unmarshalSendMessageToCareTypeXml(String data) {
+    final String dataV3 = AbstractRegisterCertificateHelper.convertToV3(data);
+    final StringReader reader = new StringReader(dataV3);
+    return JAXB.unmarshal(reader, SendMessageToCareType.class);
+  }
+
+  public String getIntygId(SendMessageToCareType message) {
+    return message.getIntygsId().getExtension();
+  }
+
+  public LocalDateTime getSkickatTidpunkt(SendMessageToCareType message) {
+    return message.getSkickatTidpunkt();
+  }
+
+  public String getPatientId(SendMessageToCareType message) {
+    return message.getPatientPersonId().getExtension();
+  }
+
+  public String getAmneCode(SendMessageToCareType message) {
+    return message.getAmne().getCode();
+  }
+
+  public Patientdata getPatientData(SendMessageToCareType message) {
+    final String patientIdRaw = getPatientId(message);
+    final String personId = ConversionHelper.getUnifiedPersonId(patientIdRaw);
+    int alder;
+    try {
+      alder = ConversionHelper.extractAlder(personId, getSkickatDate(message));
+    } catch (Exception e) {
+      LOG.error(
+          "Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}",
+          personId);
+      LOG.debug(
+          "Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}",
+          personId,
+          e);
+      alder = ConversionHelper.NO_AGE;
     }
+    String kon = ConversionHelper.extractKon(personId);
 
-    public String getIntygId(SendMessageToCareType message) {
-        return message.getIntygsId().getExtension();
-    }
+    return new Patientdata(alder, Kon.parse(kon));
+  }
 
-    public LocalDateTime getSkickatTidpunkt(SendMessageToCareType message) {
-        return message.getSkickatTidpunkt();
-    }
-
-    public String getPatientId(SendMessageToCareType message) {
-        return message.getPatientPersonId().getExtension();
-    }
-
-    public String getAmneCode(SendMessageToCareType message) {
-        return message.getAmne().getCode();
-    }
-
-    public Patientdata getPatientData(SendMessageToCareType message) {
-        final String patientIdRaw = getPatientId(message);
-        final String personId = ConversionHelper.getUnifiedPersonId(patientIdRaw);
-        int alder;
-        try {
-            alder = ConversionHelper.extractAlder(personId, getSkickatDate(message));
-        } catch (Exception e) {
-            LOG.error("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", personId);
-            LOG.debug("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", personId, e);
-            alder = ConversionHelper.NO_AGE;
-        }
-        String kon = ConversionHelper.extractKon(personId);
-
-        return new Patientdata(alder, Kon.parse(kon));
-    }
-
-    private LocalDate getSkickatDate(SendMessageToCareType document) {
-        return getSkickatTidpunkt(document).toLocalDate();
-    }
+  private LocalDate getSkickatDate(SendMessageToCareType document) {
+    return getSkickatTidpunkt(document).toLocalDate();
+  }
 }

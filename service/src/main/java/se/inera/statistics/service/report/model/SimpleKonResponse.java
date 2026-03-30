@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -26,103 +26,105 @@ import java.util.List;
 
 public class SimpleKonResponse extends AvailableFiltersResponse {
 
-    private final List<SimpleKonDataRow> rows;
+  private final List<SimpleKonDataRow> rows;
 
-    public SimpleKonResponse(AvailableFilters availableFilters, List<SimpleKonDataRow> rows) {
-        super(availableFilters);
-        this.rows = rows;
+  public SimpleKonResponse(AvailableFilters availableFilters, List<SimpleKonDataRow> rows) {
+    super(availableFilters);
+    this.rows = rows;
+  }
+
+  public List<SimpleKonDataRow> getRows() {
+    return rows;
+  }
+
+  public List<String> getGroups() {
+    List<String> groups = new ArrayList<>();
+    for (SimpleKonDataRow row : rows) {
+      groups.add(row.getName());
     }
+    return groups;
+  }
 
-    public List<SimpleKonDataRow> getRows() {
-        return rows;
+  public List<Integer> getDataForSex(Kon sex) {
+    List<Integer> data = new ArrayList<>();
+    for (SimpleKonDataRow row : rows) {
+      data.add(row.getDataForSex(sex));
     }
+    return data;
+  }
 
-    public List<String> getGroups() {
-        List<String> groups = new ArrayList<>();
-        for (SimpleKonDataRow row : rows) {
-            groups.add(row.getName());
+  public List<Integer> getSummedData() {
+    List<Integer> data = new ArrayList<>();
+    for (SimpleKonDataRow row : rows) {
+      data.add(row.getFemale() + row.getMale());
+    }
+    return data;
+  }
+
+  @Override
+  public String toString() {
+    return "{\"SimpleKonResponse\":{" + "\"rows\":" + rows + "}}";
+  }
+
+  public static SimpleKonResponse create(KonDataResponse konDataResponse) {
+    final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
+    for (int i = 0; i < konDataResponse.getGroups().size(); i++) {
+      simpleKonDataRows.add(createRowFromDataIndex(konDataResponse, i));
+    }
+    return new SimpleKonResponse(konDataResponse.getAvailableFilters(), simpleKonDataRows);
+  }
+
+  private static SimpleKonDataRow createRowFromDataIndex(
+      KonDataResponse diagnosgruppResponse, int index) {
+    int sumFemale = 0;
+    int sumMale = 0;
+    for (KonDataRow konDataRow : diagnosgruppResponse.getRows()) {
+      final KonField konField = konDataRow.getData().get(index);
+      sumFemale += konField.getFemale();
+      sumMale += konField.getMale();
+    }
+    final String groupName = diagnosgruppResponse.getGroups().get(index);
+    return new SimpleKonDataRow(groupName, sumFemale, sumMale, diagnosgruppResponse);
+  }
+
+  public static SimpleKonResponse merge(
+      Collection<SimpleKonResponse> resps,
+      boolean mergeEqualRows,
+      AvailableFilters availableFilters) {
+    final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
+    if (mergeEqualRows) {
+      Multimap<String, SimpleKonDataRow> mappedResps = LinkedHashMultimap.create();
+      for (SimpleKonResponse resp : resps) {
+        for (SimpleKonDataRow row : resp.getRows()) {
+          mappedResps.put(row.getName(), row);
         }
-        return groups;
+      }
+      for (Collection<SimpleKonDataRow> sameRows : mappedResps.asMap().values()) {
+        rows.add(mergeRows(sameRows));
+      }
+    } else {
+      for (SimpleKonResponse resp : resps) {
+        rows.addAll(resp.getRows());
+      }
     }
 
-    public List<Integer> getDataForSex(Kon sex) {
-        List<Integer> data = new ArrayList<>();
-        for (SimpleKonDataRow row : rows) {
-            data.add(row.getDataForSex(sex));
-        }
-        return data;
+    return new SimpleKonResponse(availableFilters, rows);
+  }
+
+  private static SimpleKonDataRow mergeRows(Collection<SimpleKonDataRow> rows) {
+    if (rows.size() == 1) {
+      return rows.iterator().next();
     }
-
-    public List<Integer> getSummedData() {
-        List<Integer> data = new ArrayList<>();
-        for (SimpleKonDataRow row : rows) {
-            data.add(row.getFemale() + row.getMale());
-        }
-        return data;
+    int male = 0;
+    int female = 0;
+    String name = "";
+    Object extras = null;
+    for (SimpleKonDataRow row : rows) {
+      male += row.getMale();
+      female += row.getFemale();
+      name = row.getName();
+      extras = row.getExtras();
     }
-
-    @Override
-    public String toString() {
-        return "{\"SimpleKonResponse\":{" + "\"rows\":" + rows + "}}";
-    }
-
-    public static SimpleKonResponse create(KonDataResponse konDataResponse) {
-        final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
-        for (int i = 0; i < konDataResponse.getGroups().size(); i++) {
-            simpleKonDataRows.add(createRowFromDataIndex(konDataResponse, i));
-        }
-        return new SimpleKonResponse(konDataResponse.getAvailableFilters(), simpleKonDataRows);
-    }
-
-    private static SimpleKonDataRow createRowFromDataIndex(KonDataResponse diagnosgruppResponse, int index) {
-        int sumFemale = 0;
-        int sumMale = 0;
-        for (KonDataRow konDataRow : diagnosgruppResponse.getRows()) {
-            final KonField konField = konDataRow.getData().get(index);
-            sumFemale += konField.getFemale();
-            sumMale += konField.getMale();
-        }
-        final String groupName = diagnosgruppResponse.getGroups().get(index);
-        return new SimpleKonDataRow(groupName, sumFemale, sumMale, diagnosgruppResponse);
-    }
-
-    public static SimpleKonResponse merge(Collection<SimpleKonResponse> resps, boolean mergeEqualRows,
-        AvailableFilters availableFilters) {
-        final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
-        if (mergeEqualRows) {
-            Multimap<String, SimpleKonDataRow> mappedResps = LinkedHashMultimap.create();
-            for (SimpleKonResponse resp : resps) {
-                for (SimpleKonDataRow row : resp.getRows()) {
-                    mappedResps.put(row.getName(), row);
-                }
-            }
-            for (Collection<SimpleKonDataRow> sameRows : mappedResps.asMap().values()) {
-                rows.add(mergeRows(sameRows));
-            }
-        } else {
-            for (SimpleKonResponse resp : resps) {
-                rows.addAll(resp.getRows());
-            }
-        }
-
-        return new SimpleKonResponse(availableFilters, rows);
-    }
-
-    private static SimpleKonDataRow mergeRows(Collection<SimpleKonDataRow> rows) {
-        if (rows.size() == 1) {
-            return rows.iterator().next();
-        }
-        int male = 0;
-        int female = 0;
-        String name = "";
-        Object extras = null;
-        for (SimpleKonDataRow row : rows) {
-            male += row.getMale();
-            female += row.getFemale();
-            name = row.getName();
-            extras = row.getExtras();
-        }
-        return new SimpleKonDataRow(name, female, male, extras);
-    }
-
+    return new SimpleKonDataRow(name, female, male, extras);
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -30,37 +30,37 @@ import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
 public class RegionEnhetFileDataTest {
 
-    @Test
-    public void testNullInputCreatesEmptyObject() throws Exception {
-        //Given
-        final HsaIdVardgivare vgId = null;
-        final List<RegionEnhetFileDataRow> rows = null;
+  @Test
+  public void testNullInputCreatesEmptyObject() throws Exception {
+    // Given
+    final HsaIdVardgivare vgId = null;
+    final List<RegionEnhetFileDataRow> rows = null;
 
-        //When
-        final RegionEnhetFileData data = new RegionEnhetFileData(vgId, rows, "", new HsaIdUser(""), "");
+    // When
+    final RegionEnhetFileData data = new RegionEnhetFileData(vgId, rows, "", new HsaIdUser(""), "");
 
-        //Then
-        assertEquals("", data.getVgId().getId());
-        assertNotNull(data.getRows());
-    }
+    // Then
+    assertEquals("", data.getVgId().getId());
+    assertNotNull(data.getRows());
+  }
 
-    @Test
-    public void testObjectIsCreatedWithCorrectValues() throws Exception {
-        //Given
-        final HsaIdVardgivare vgId = new HsaIdVardgivare("TestVgId");
-        final HsaIdEnhet testHsaId = new HsaIdEnhet("TestHsaId");
-        final int listadePatienter = 2;
-        final List<RegionEnhetFileDataRow> rows = Arrays.asList(new RegionEnhetFileDataRow(testHsaId, listadePatienter));
+  @Test
+  public void testObjectIsCreatedWithCorrectValues() throws Exception {
+    // Given
+    final HsaIdVardgivare vgId = new HsaIdVardgivare("TestVgId");
+    final HsaIdEnhet testHsaId = new HsaIdEnhet("TestHsaId");
+    final int listadePatienter = 2;
+    final List<RegionEnhetFileDataRow> rows =
+        Arrays.asList(new RegionEnhetFileDataRow(testHsaId, listadePatienter));
 
-        //When
-        final RegionEnhetFileData data = new RegionEnhetFileData(vgId, rows, "", new HsaIdUser(""), "");
+    // When
+    final RegionEnhetFileData data = new RegionEnhetFileData(vgId, rows, "", new HsaIdUser(""), "");
 
-        //Then
-        assertEquals(vgId, data.getVgId());
-        assertEquals(1, data.getRows().size());
-        final RegionEnhetFileDataRow row = data.getRows().get(0);
-        assertEquals(testHsaId, row.getEnhetensHsaId());
-        assertEquals(Integer.valueOf(listadePatienter), row.getListadePatienter());
-    }
-
+    // Then
+    assertEquals(vgId, data.getVgId());
+    assertEquals(1, data.getRows().size());
+    final RegionEnhetFileDataRow row = data.getRows().get(0);
+    assertEquals(testHsaId, row.getEnhetensHsaId());
+    assertEquals(Integer.valueOf(listadePatienter), row.getListadePatienter());
+  }
 }

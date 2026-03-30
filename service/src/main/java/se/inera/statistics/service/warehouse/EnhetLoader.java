@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -36,47 +36,47 @@ import se.inera.statistics.service.processlog.Enhet;
 @Component
 public class EnhetLoader {
 
-    private static final Logger LOG = LoggerFactory.getLogger(EnhetLoader.class);
+  private static final Logger LOG = LoggerFactory.getLogger(EnhetLoader.class);
 
-    @PersistenceContext(unitName = "IneraStatisticsLog")
-    private EntityManager manager;
+  @PersistenceContext(unitName = "IneraStatisticsLog")
+  private EntityManager manager;
 
-    List<Enhet> getAllEnhetsForVg(HsaIdVardgivare vg) {
-        LOG.info("Getting enhets for vg: " + vg);
-        final TypedQuery<Enhet> query = manager.createNamedQuery("Enhet.getByVg", Enhet.class);
-        query.setParameter("vgid", vg.getId());
-        return query.getResultList();
+  List<Enhet> getAllEnhetsForVg(HsaIdVardgivare vg) {
+    LOG.info("Getting enhets for vg: " + vg);
+    final TypedQuery<Enhet> query = manager.createNamedQuery("Enhet.getByVg", Enhet.class);
+    query.setParameter("vgid", vg.getId());
+    return query.getResultList();
+  }
+
+  List<Enhet> getAllEnhetsForVardenhet(HsaIdEnhet vardenhet) {
+    LOG.info("Getting enhets for vardenhet: " + vardenhet);
+    final TypedQuery<Enhet> query = manager.createNamedQuery("Enhet.getByVardenhetid", Enhet.class);
+    query.setParameter("veid", vardenhet.getId());
+    return query.getResultList();
+  }
+
+  List<Enhet> getEnhets(Collection<HsaIdEnhet> enhetIds) {
+    if (enhetIds == null || enhetIds.isEmpty()) {
+      return Collections.emptyList();
     }
 
-    List<Enhet> getAllEnhetsForVardenhet(HsaIdEnhet vardenhet) {
-        LOG.info("Getting enhets for vardenhet: " + vardenhet);
-        final TypedQuery<Enhet> query = manager.createNamedQuery("Enhet.getByVardenhetid", Enhet.class);
-        query.setParameter("veid", vardenhet.getId());
-        return query.getResultList();
+    final TypedQuery<Enhet> query = manager.createNamedQuery("Enhet.getByEnhetids", Enhet.class);
+    final List<String> stringEnhetids =
+        enhetIds.stream().map(HsaIdAny::getId).collect(Collectors.toList());
+    LOG.info("Getting enhets for ids: " + String.join(", ", stringEnhetids));
+    query.setParameter("enhetids", stringEnhetids);
+    return query.getResultList();
+  }
+
+  Enhet getEnhet(HsaIdEnhet enhetId) {
+    if (enhetId == null) {
+      return null;
     }
 
-    List<Enhet> getEnhets(Collection<HsaIdEnhet> enhetIds) {
-        if (enhetIds == null || enhetIds.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        final TypedQuery<Enhet> query = manager.createNamedQuery("Enhet.getByEnhetids", Enhet.class);
-        final List<String> stringEnhetids = enhetIds.stream().map(HsaIdAny::getId).collect(Collectors.toList());
-        LOG.info("Getting enhets for ids: " + String.join(", ", stringEnhetids));
-        query.setParameter("enhetids", stringEnhetids);
-        return query.getResultList();
-    }
-
-    Enhet getEnhet(HsaIdEnhet enhetId) {
-        if (enhetId == null) {
-            return null;
-        }
-
-        final TypedQuery<Enhet> query = manager.createNamedQuery("Enhet.getByEnhetid", Enhet.class);
-        LOG.info("Getting enhet for id: " + enhetId.getId());
-        query.setParameter("enhetid", enhetId.getId());
-        List<Enhet> resultList = query.getResultList();
-        return resultList.isEmpty() ? null : resultList.get(0);
-    }
-
+    final TypedQuery<Enhet> query = manager.createNamedQuery("Enhet.getByEnhetid", Enhet.class);
+    LOG.info("Getting enhet for id: " + enhetId.getId());
+    query.setParameter("enhetid", enhetId.getId());
+    List<Enhet> resultList = query.getResultList();
+    return resultList.isEmpty() ? null : resultList.get(0);
+  }
 }

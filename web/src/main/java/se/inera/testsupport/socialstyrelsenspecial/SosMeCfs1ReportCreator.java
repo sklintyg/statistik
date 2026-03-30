@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -34,45 +34,49 @@ import se.inera.statistics.service.warehouse.Warehouse;
 
 public class SosMeCfs1ReportCreator {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SosMeCfs1ReportCreator.class);
-    private final Warehouse warehouse;
-    private final IntygCommonSosManager intygCommonManager;
+  private static final Logger LOG = LoggerFactory.getLogger(SosMeCfs1ReportCreator.class);
+  private final Warehouse warehouse;
+  private final IntygCommonSosManager intygCommonManager;
 
-    public SosMeCfs1ReportCreator(IntygCommonSosManager intygCommonManager, Warehouse warehouse) {
-        this.intygCommonManager = intygCommonManager;
-        this.warehouse = warehouse;
-    }
+  public SosMeCfs1ReportCreator(IntygCommonSosManager intygCommonManager, Warehouse warehouse) {
+    this.intygCommonManager = intygCommonManager;
+    this.warehouse = warehouse;
+  }
 
-    public List<SosMeCfs1Row> getSosReport(int cutoff) {
-        final List<HsaIdVardgivare> vgids = warehouse.getAllVardgivare().stream().map(VgNumber::getVgid).collect(Collectors.toList());
-        final int vgsSize = vgids.size();
-        final int logInterval = 1 + vgsSize / 100;
-        final ArrayList<SosMeCfs1Row> sosRows = new ArrayList<>();
-        final List<Integer> years = Arrays.asList(2013, 2014, 2015, 2016, 2017, 2018);
-        final List<Kon> genders = Arrays.asList(Kon.FEMALE, Kon.MALE);
-        for (Integer year : years) {
-            LOG.info("Start calculating year: " + year + " with number of vgs: " + vgsSize);
-            KonDataResponse intygPerAgeGroupSos = null;
-            int counter = 0;
-            for (HsaIdVardgivare vgid : vgids) {
-                intygPerAgeGroupSos = intygCommonManager.getIntygPerAgeGroupSocAggregate(intygPerAgeGroupSos, vgid, year, cutoff);
-                if (counter++ % logInterval == 0) {
-                    LOG.info("Number of vgs done: " + counter + " for year: " + year);
-                }
-            }
-            final List<KonDataRow> rows = intygPerAgeGroupSos != null ? intygPerAgeGroupSos.getRows() : Collections.emptyList();
-            final List<String> groups = intygPerAgeGroupSos != null ? intygPerAgeGroupSos.getGroups() : Collections.emptyList();
-            for (KonDataRow row : rows) {
-                for (Kon gender : genders) {
-                    final List<Integer> dataForGender = row.getDataForSex(gender);
-                    for (int i = 0; i < groups.size(); i++) {
-                        final String group = groups.get(i);
-                        sosRows.add(new SosMeCfs1Row(year, gender, group, dataForGender.get(i)));
-                    }
-                }
-            }
+  public List<SosMeCfs1Row> getSosReport(int cutoff) {
+    final List<HsaIdVardgivare> vgids =
+        warehouse.getAllVardgivare().stream().map(VgNumber::getVgid).collect(Collectors.toList());
+    final int vgsSize = vgids.size();
+    final int logInterval = 1 + vgsSize / 100;
+    final ArrayList<SosMeCfs1Row> sosRows = new ArrayList<>();
+    final List<Integer> years = Arrays.asList(2013, 2014, 2015, 2016, 2017, 2018);
+    final List<Kon> genders = Arrays.asList(Kon.FEMALE, Kon.MALE);
+    for (Integer year : years) {
+      LOG.info("Start calculating year: " + year + " with number of vgs: " + vgsSize);
+      KonDataResponse intygPerAgeGroupSos = null;
+      int counter = 0;
+      for (HsaIdVardgivare vgid : vgids) {
+        intygPerAgeGroupSos =
+            intygCommonManager.getIntygPerAgeGroupSocAggregate(
+                intygPerAgeGroupSos, vgid, year, cutoff);
+        if (counter++ % logInterval == 0) {
+          LOG.info("Number of vgs done: " + counter + " for year: " + year);
         }
-        return sosRows;
+      }
+      final List<KonDataRow> rows =
+          intygPerAgeGroupSos != null ? intygPerAgeGroupSos.getRows() : Collections.emptyList();
+      final List<String> groups =
+          intygPerAgeGroupSos != null ? intygPerAgeGroupSos.getGroups() : Collections.emptyList();
+      for (KonDataRow row : rows) {
+        for (Kon gender : genders) {
+          final List<Integer> dataForGender = row.getDataForSex(gender);
+          for (int i = 0; i < groups.size(); i++) {
+            final String group = groups.get(i);
+            sosRows.add(new SosMeCfs1Row(year, gender, group, dataForGender.get(i)));
+          }
+        }
+      }
     }
-
+    return sosRows;
+  }
 }

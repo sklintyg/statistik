@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,13 +23,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import se.inera.intyg.infra.rediscache.core.BasicCacheConfiguration;
 
-/**
- * For external redis cache, but should work with the dev profile activated as well.
- */
+/** For external redis cache, but should work with the dev profile activated as well. */
 @Profile("test")
 @Configuration
 @Import({BasicCacheConfiguration.class})
-public class TestCacheConfiguration {
-
-}
-
+public class TestCacheConfiguration {}

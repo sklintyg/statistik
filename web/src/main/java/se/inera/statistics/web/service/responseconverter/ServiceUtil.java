@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,50 +22,48 @@ import java.util.ArrayList;
 import java.util.List;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
-import se.inera.statistics.web.service.dto.MessagesText;
 import se.inera.statistics.web.model.NamedData;
+import se.inera.statistics.web.service.dto.MessagesText;
 
 public final class ServiceUtil {
 
-    private ServiceUtil() {
-    }
+  private ServiceUtil() {}
 
-    static List<Object> getMergedSexData(KonDataRow row) {
-        List<Object> data = new ArrayList<>();
-        for (KonField konField : row.getData()) {
-            data.add(konField.getFemale() + konField.getMale());
-            data.add(konField.getFemale());
-            data.add(konField.getMale());
+  static List<Object> getMergedSexData(KonDataRow row) {
+    List<Object> data = new ArrayList<>();
+    for (KonField konField : row.getData()) {
+      data.add(konField.getFemale() + konField.getMale());
+      data.add(konField.getFemale());
+      data.add(konField.getMale());
+    }
+    return data;
+  }
+
+  static int getRowSum(KonDataRow row) {
+    return row.getData().stream().mapToInt(r -> r.getMale() + r.getFemale()).sum();
+  }
+
+  static void addSumRow(List<NamedData> rows, boolean includeSumForLastColumn) {
+    rows.add(getSumRow(rows, includeSumForLastColumn));
+  }
+
+  static NamedData getSumRow(List<NamedData> rows, boolean includeSumForLastColumn) {
+    final ArrayList<Integer> sumData = new ArrayList<>();
+    if (!rows.isEmpty()) {
+      for (int i = 0; i < rows.get(0).getData().size(); i++) {
+        sumData.add(0);
+      }
+      for (NamedData namedData : rows) {
+        List<Object> datas = namedData.getData();
+        for (int i = 0; i < datas.size(); i++) {
+          Object data = datas.get(i);
+          sumData.set(i, sumData.get(i) + Integer.parseInt(data.toString()));
         }
-        return data;
+      }
+      if (!includeSumForLastColumn) {
+        sumData.remove(sumData.size() - 1);
+      }
     }
-
-    static int getRowSum(KonDataRow row) {
-        return row.getData().stream().mapToInt(r -> r.getMale() + r.getFemale()).sum();
-    }
-
-    static void addSumRow(List<NamedData> rows, boolean includeSumForLastColumn) {
-        rows.add(getSumRow(rows, includeSumForLastColumn));
-    }
-
-    static NamedData getSumRow(List<NamedData> rows, boolean includeSumForLastColumn) {
-        final ArrayList<Integer> sumData = new ArrayList<>();
-        if (!rows.isEmpty()) {
-            for (int i = 0; i < rows.get(0).getData().size(); i++) {
-                sumData.add(0);
-            }
-            for (NamedData namedData : rows) {
-                List<Object> datas = namedData.getData();
-                for (int i = 0; i < datas.size(); i++) {
-                    Object data = datas.get(i);
-                    sumData.set(i, sumData.get(i) + Integer.parseInt(data.toString()));
-                }
-            }
-            if (!includeSumForLastColumn) {
-                sumData.remove(sumData.size() - 1);
-            }
-        }
-        return new NamedData(MessagesText.REPORT_GROUP_TOTALT, sumData);
-    }
-
+    return new NamedData(MessagesText.REPORT_GROUP_TOTALT, sumData);
+  }
 }

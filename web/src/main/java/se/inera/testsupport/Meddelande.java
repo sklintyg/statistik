@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,35 +22,33 @@ import se.inera.statistics.service.processlog.message.MessageEventType;
 
 public class Meddelande {
 
-    private MessageEventType type;
-    private String data;
-    private String messageId;
-    private long timestamp;
+  private MessageEventType type;
+  private String data;
+  private String messageId;
+  private long timestamp;
 
-    public Meddelande() {
-    }
+  public Meddelande() {}
 
-    public Meddelande(MessageEventType type, String data, String messageId, long timestamp) {
-        this.type = type;
-        this.data = data;
-        this.messageId = messageId;
-        this.timestamp = timestamp;
-    }
+  public Meddelande(MessageEventType type, String data, String messageId, long timestamp) {
+    this.type = type;
+    this.data = data;
+    this.messageId = messageId;
+    this.timestamp = timestamp;
+  }
 
-    public MessageEventType getType() {
-        return type;
-    }
+  public MessageEventType getType() {
+    return type;
+  }
 
-    public String getData() {
-        return data;
-    }
+  public String getData() {
+    return data;
+  }
 
-    public String getMessageId() {
-        return messageId;
-    }
+  public String getMessageId() {
+    return messageId;
+  }
 
-    public long getTimestamp() {
-        return timestamp;
-    }
-
+  public long getTimestamp() {
+    return timestamp;
+  }
 }

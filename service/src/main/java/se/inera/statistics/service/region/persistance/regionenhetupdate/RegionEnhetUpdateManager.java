@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -31,26 +31,36 @@ import se.inera.statistics.integration.hsa.model.HsaIdUser;
 @Component
 public class RegionEnhetUpdateManager {
 
-    @PersistenceContext(unitName = "IneraStatisticsLog")
-    private EntityManager manager;
+  @PersistenceContext(unitName = "IneraStatisticsLog")
+  private EntityManager manager;
 
-    @Autowired
-    private Clock clock;
+  @Autowired private Clock clock;
 
-    @Transactional
-    public Optional<RegionEnhetUpdate> getByRegionId(long regionId) {
-        final RegionEnhetUpdate regionEnhetUpdate = manager.find(RegionEnhetUpdate.class, regionId);
-        return regionEnhetUpdate == null ? Optional.<RegionEnhetUpdate>empty() : Optional.of(regionEnhetUpdate);
-    }
+  @Transactional
+  public Optional<RegionEnhetUpdate> getByRegionId(long regionId) {
+    final RegionEnhetUpdate regionEnhetUpdate = manager.find(RegionEnhetUpdate.class, regionId);
+    return regionEnhetUpdate == null
+        ? Optional.<RegionEnhetUpdate>empty()
+        : Optional.of(regionEnhetUpdate);
+  }
 
-    @Transactional
-    public void update(long regionId, String updatedByName, HsaIdUser updatedByHsaid, String filename,
-        RegionEnhetUpdateOperation operation) {
-        final Optional<RegionEnhetUpdate> existing = getByRegionId(regionId);
-        existing.ifPresent(regionEnhetUpdate -> manager.remove(regionEnhetUpdate));
-        final RegionEnhetUpdate regionEnhetUpdate = new RegionEnhetUpdate(regionId, updatedByName, updatedByHsaid,
-            new Timestamp(clock.millis()), filename, operation);
-        manager.persist(regionEnhetUpdate);
-    }
-
+  @Transactional
+  public void update(
+      long regionId,
+      String updatedByName,
+      HsaIdUser updatedByHsaid,
+      String filename,
+      RegionEnhetUpdateOperation operation) {
+    final Optional<RegionEnhetUpdate> existing = getByRegionId(regionId);
+    existing.ifPresent(regionEnhetUpdate -> manager.remove(regionEnhetUpdate));
+    final RegionEnhetUpdate regionEnhetUpdate =
+        new RegionEnhetUpdate(
+            regionId,
+            updatedByName,
+            updatedByHsaid,
+            new Timestamp(clock.millis()),
+            filename,
+            operation);
+    manager.persist(regionEnhetUpdate);
+  }
 }

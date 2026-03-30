@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,24 +20,23 @@ package se.inera.auth.model;
 
 public class UserAccessLevel {
 
-    private final boolean processledare;
-    private final int numberOfEnhets;
+  private final boolean processledare;
+  private final int numberOfEnhets;
 
-    public UserAccessLevel(boolean processledare, int numberOfEnhets) {
-        this.processledare = processledare;
-        this.numberOfEnhets = numberOfEnhets;
-    }
+  public UserAccessLevel(boolean processledare, int numberOfEnhets) {
+    this.processledare = processledare;
+    this.numberOfEnhets = numberOfEnhets;
+  }
 
-    public boolean isVerksamhetschef() {
-        return !isDelprocessledare() && !isProcessledare();
-    }
+  public boolean isVerksamhetschef() {
+    return !isDelprocessledare() && !isProcessledare();
+  }
 
-    public boolean isDelprocessledare() {
-        return !processledare && numberOfEnhets > 1;
-    }
+  public boolean isDelprocessledare() {
+    return !processledare && numberOfEnhets > 1;
+  }
 
-    public boolean isProcessledare() {
-        return processledare;
-    }
-
+  public boolean isProcessledare() {
+    return processledare;
+  }
 }

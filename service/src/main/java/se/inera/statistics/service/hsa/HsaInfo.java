@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,66 +23,68 @@ import com.google.common.base.MoreObjects;
 
 public class HsaInfo {
 
-    @JsonProperty("enhet")
-    private HsaInfoEnhet enhet;
-    @JsonProperty("huvudenhet")
-    private HsaInfoEnhet huvudenhet;
-    @JsonProperty("vardgivare")
-    private HsaInfoVg vardgivare;
-    @JsonProperty("personal")
-    private HsaInfoPersonal personal;
+  @JsonProperty("enhet")
+  private HsaInfoEnhet enhet;
 
-    //Default constructor required by json mapper
-    HsaInfo() {
-    }
+  @JsonProperty("huvudenhet")
+  private HsaInfoEnhet huvudenhet;
 
-    public HsaInfo(HsaInfoEnhet enhet, HsaInfoEnhet huvudenhet, HsaInfoVg vardgivare, HsaInfoPersonal personal) {
-        this.enhet = enhet;
-        this.huvudenhet = huvudenhet;
-        this.vardgivare = vardgivare;
-        this.personal = personal;
-    }
+  @JsonProperty("vardgivare")
+  private HsaInfoVg vardgivare;
 
-    public HsaInfoEnhet getEnhet() {
-        return enhet;
-    }
+  @JsonProperty("personal")
+  private HsaInfoPersonal personal;
 
-    public HsaInfoEnhet getHuvudenhet() {
-        return huvudenhet;
-    }
+  // Default constructor required by json mapper
+  HsaInfo() {}
 
-    public HsaInfoVg getVardgivare() {
-        return vardgivare;
-    }
+  public HsaInfo(
+      HsaInfoEnhet enhet, HsaInfoEnhet huvudenhet, HsaInfoVg vardgivare, HsaInfoPersonal personal) {
+    this.enhet = enhet;
+    this.huvudenhet = huvudenhet;
+    this.vardgivare = vardgivare;
+    this.personal = personal;
+  }
 
-    public HsaInfoPersonal getPersonal() {
-        return personal;
-    }
+  public HsaInfoEnhet getEnhet() {
+    return enhet;
+  }
 
-    public boolean hasEnhet() {
-        return enhet != null;
-    }
+  public HsaInfoEnhet getHuvudenhet() {
+    return huvudenhet;
+  }
 
-    public boolean hasHuvudenhet() {
-        return huvudenhet != null;
-    }
+  public HsaInfoVg getVardgivare() {
+    return vardgivare;
+  }
 
-    public boolean hasVardgivare() {
-        return vardgivare != null;
-    }
+  public HsaInfoPersonal getPersonal() {
+    return personal;
+  }
 
-    public boolean hasPersonal() {
-        return personal != null;
-    }
+  public boolean hasEnhet() {
+    return enhet != null;
+  }
 
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-            .add("enhet", enhet)
-            .add("huvudenhet", huvudenhet)
-            .add("vardgivare", vardgivare)
-            .add("personal", personal)
-            .toString();
-    }
+  public boolean hasHuvudenhet() {
+    return huvudenhet != null;
+  }
 
+  public boolean hasVardgivare() {
+    return vardgivare != null;
+  }
+
+  public boolean hasPersonal() {
+    return personal != null;
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("enhet", enhet)
+        .add("huvudenhet", huvudenhet)
+        .add("vardgivare", vardgivare)
+        .add("personal", personal)
+        .toString();
+  }
 }

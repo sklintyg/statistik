@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -39,25 +39,21 @@ import se.inera.statistics.service.processlog.Receiver;
 @RunWith(MockitoJUnitRunner.class)
 public class ReceiverTest {
 
-    @Mock
-    private ProcessLog processLog = Mockito.mock(ProcessLog.class);
-    @Mock
-    private Processor processor = Mockito.mock(Processor.class);
-    @Mock
-    private HSADecorator hsaDecorator = Mockito.mock(HSADecorator.class);
+  @Mock private ProcessLog processLog = Mockito.mock(ProcessLog.class);
+  @Mock private Processor processor = Mockito.mock(Processor.class);
+  @Mock private HSADecorator hsaDecorator = Mockito.mock(HSADecorator.class);
 
-    @InjectMocks
-    private Receiver receiver = new Receiver();
+  @InjectMocks private Receiver receiver = new Receiver();
 
-    // CHECKSTYLE:OFF MagicNumber
-    @Test
-    public void acceptedEventdataIsStored() {
-        String data = JSONSource.readTemplateAsString();
+  // CHECKSTYLE:OFF MagicNumber
+  @Test
+  public void acceptedEventdataIsStored() {
+    String data = JSONSource.readTemplateAsString();
 
-        receiver.accept(EventType.CREATED, data, "corr", 123L);
+    receiver.accept(EventType.CREATED, data, "corr", 123L);
 
-        verify(processLog).store(EventType.CREATED, data, "corr", 123L);
-        verify(hsaDecorator).decorate(any(JsonNode.class), anyString());
-    }
-    // CHECKSTYLE:ON MagicNumber
+    verify(processLog).store(EventType.CREATED, data, "corr", 123L);
+    verify(hsaDecorator).decorate(any(JsonNode.class), anyString());
+  }
+  // CHECKSTYLE:ON MagicNumber
 }

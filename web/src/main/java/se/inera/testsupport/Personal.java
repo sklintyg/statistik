@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,56 +22,59 @@ import java.util.List;
 
 public class Personal {
 
-    private String id;
-    private String firstName;
-    private String lastName;
-    private HsaKon kon;
-    private int age;
-    private List<String> befattning;
-    private boolean skyddad;
+  private String id;
+  private String firstName;
+  private String lastName;
+  private HsaKon kon;
+  private int age;
+  private List<String> befattning;
+  private boolean skyddad;
 
-    public Personal(String id, String firstName, String lastName, HsaKon kon, int age, List<String> befattning, boolean skyddad) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.kon = kon;
-        this.age = age;
-        this.befattning = befattning;
-        this.skyddad = skyddad;
-    }
+  public Personal(
+      String id,
+      String firstName,
+      String lastName,
+      HsaKon kon,
+      int age,
+      List<String> befattning,
+      boolean skyddad) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.kon = kon;
+    this.age = age;
+    this.befattning = befattning;
+    this.skyddad = skyddad;
+  }
 
-    /**
-     * For json mapper.
-     */
-    Personal() {
-    }
+  /** For json mapper. */
+  Personal() {}
 
-    public String getId() {
-        return id;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public String getFirstName() {
-        return firstName;
-    }
+  public String getFirstName() {
+    return firstName;
+  }
 
-    public String getLastName() {
-        return lastName;
-    }
+  public String getLastName() {
+    return lastName;
+  }
 
-    public HsaKon getKon() {
-        return kon;
-    }
+  public HsaKon getKon() {
+    return kon;
+  }
 
-    public int getAge() {
-        return age;
-    }
+  public int getAge() {
+    return age;
+  }
 
-    public List<String> getBefattning() {
-        return befattning;
-    }
+  public List<String> getBefattning() {
+    return befattning;
+  }
 
-    public boolean isSkyddad() {
-        return skyddad;
-    }
-
+  public boolean isSkyddad() {
+    return skyddad;
+  }
 }

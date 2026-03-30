@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -40,50 +40,47 @@ import org.slf4j.LoggerFactory;
 @RunWith(MockitoJUnitRunner.class)
 public class MonitoringLogServiceImplTest {
 
-    private static final int NBR_CERTIFICATES = 98;
+  private static final int NBR_CERTIFICATES = 98;
 
-    private static final String CERTIFICATE_ID = "CERTIFICATE_ID";
+  private static final String CERTIFICATE_ID = "CERTIFICATE_ID";
 
-    @Mock
-    private Appender<ILoggingEvent> mockAppender;
+  @Mock private Appender<ILoggingEvent> mockAppender;
 
-    @Captor
-    private ArgumentCaptor<LoggingEvent> captorLoggingEvent;
+  @Captor private ArgumentCaptor<LoggingEvent> captorLoggingEvent;
 
-    MonitoringLogService logService = new MonitoringLogServiceImpl();
+  MonitoringLogService logService = new MonitoringLogServiceImpl();
 
-    @Before
-    public void setup() {
-        final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
-        logger.addAppender(mockAppender);
-    }
+  @Before
+  public void setup() {
+    final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+    logger.addAppender(mockAppender);
+  }
 
-    @After
-    public void teardown() {
-        final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
-        logger.detachAppender(mockAppender);
-    }
+  @After
+  public void teardown() {
+    final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+    logger.detachAppender(mockAppender);
+  }
 
-    @Test
-    public void shouldLogInFromQueue() {
-        logService.logInFromQueue(CERTIFICATE_ID);
-        verifyLog(Level.INFO, "IN_FROM_QUEUE Received certificateId 'CERTIFICATE_ID' from queue");
-    }
+  @Test
+  public void shouldLogInFromQueue() {
+    logService.logInFromQueue(CERTIFICATE_ID);
+    verifyLog(Level.INFO, "IN_FROM_QUEUE Received certificateId 'CERTIFICATE_ID' from queue");
+  }
 
-    @Test
-    public void shouldLogInFromTable() {
-        logService.logInFromTable(NBR_CERTIFICATES);
-        verifyLog(Level.INFO, "IN_FROM_TABLE Processed batch with '98' certificates");
-    }
+  @Test
+  public void shouldLogInFromTable() {
+    logService.logInFromTable(NBR_CERTIFICATES);
+    verifyLog(Level.INFO, "IN_FROM_TABLE Processed batch with '98' certificates");
+  }
 
-    private void verifyLog(Level logLevel, String logMessage) {
-        // Verify and capture logging interaction
-        verify(mockAppender).doAppend(captorLoggingEvent.capture());
-        final LoggingEvent loggingEvent = captorLoggingEvent.getValue();
+  private void verifyLog(Level logLevel, String logMessage) {
+    // Verify and capture logging interaction
+    verify(mockAppender).doAppend(captorLoggingEvent.capture());
+    final LoggingEvent loggingEvent = captorLoggingEvent.getValue();
 
-        // Verify log
-        assertThat(loggingEvent.getLevel(), equalTo(logLevel));
-        assertThat(loggingEvent.getFormattedMessage(),
-            equalTo(logMessage));
-    }
+    // Verify log
+    assertThat(loggingEvent.getLevel(), equalTo(logLevel));
+    assertThat(loggingEvent.getFormattedMessage(), equalTo(logMessage));
+  }
 }

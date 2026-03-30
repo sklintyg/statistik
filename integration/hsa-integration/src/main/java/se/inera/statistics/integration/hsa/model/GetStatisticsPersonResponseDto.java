@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,67 +23,67 @@ import java.util.List;
 
 public class GetStatisticsPersonResponseDto {
 
-    private String hsaIdentity;
-    private String age;
-    private String gender;
-    private List<String> paTitleCodes = Collections.emptyList();
-    private List<String> hsaTitles = Collections.emptyList();
-    private List<String> specialityCodes = Collections.emptyList();
-    private Boolean protectedPerson;
+  private String hsaIdentity;
+  private String age;
+  private String gender;
+  private List<String> paTitleCodes = Collections.emptyList();
+  private List<String> hsaTitles = Collections.emptyList();
+  private List<String> specialityCodes = Collections.emptyList();
+  private Boolean protectedPerson;
 
-    public String getHsaIdentity() {
-        return hsaIdentity;
-    }
+  public String getHsaIdentity() {
+    return hsaIdentity;
+  }
 
-    public void setHsaIdentity(String hsaIdentity) {
-        this.hsaIdentity = hsaIdentity;
-    }
+  public void setHsaIdentity(String hsaIdentity) {
+    this.hsaIdentity = hsaIdentity;
+  }
 
-    public String getAge() {
-        return age;
-    }
+  public String getAge() {
+    return age;
+  }
 
-    public void setAge(String age) {
-        this.age = age;
-    }
+  public void setAge(String age) {
+    this.age = age;
+  }
 
-    public String getGender() {
-        return gender;
-    }
+  public String getGender() {
+    return gender;
+  }
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
+  public void setGender(String gender) {
+    this.gender = gender;
+  }
 
-    public List<String> getPaTitleCodes() {
-        return paTitleCodes;
-    }
+  public List<String> getPaTitleCodes() {
+    return paTitleCodes;
+  }
 
-    public void setPaTitleCodes(List<String> paTitleCodes) {
-        this.paTitleCodes = paTitleCodes;
-    }
+  public void setPaTitleCodes(List<String> paTitleCodes) {
+    this.paTitleCodes = paTitleCodes;
+  }
 
-    public List<String> getHsaTitles() {
-        return hsaTitles;
-    }
+  public List<String> getHsaTitles() {
+    return hsaTitles;
+  }
 
-    public void setHsaTitles(List<String> hsaTitles) {
-        this.hsaTitles = hsaTitles;
-    }
+  public void setHsaTitles(List<String> hsaTitles) {
+    this.hsaTitles = hsaTitles;
+  }
 
-    public List<String> getSpecialityCodes() {
-        return specialityCodes;
-    }
+  public List<String> getSpecialityCodes() {
+    return specialityCodes;
+  }
 
-    public void setSpecialityCodes(List<String> specialityCodes) {
-        this.specialityCodes = specialityCodes;
-    }
+  public void setSpecialityCodes(List<String> specialityCodes) {
+    this.specialityCodes = specialityCodes;
+  }
 
-    public void setProtectedPerson(Boolean protectedPerson) {
-        this.protectedPerson = protectedPerson;
-    }
+  public void setProtectedPerson(Boolean protectedPerson) {
+    this.protectedPerson = protectedPerson;
+  }
 
-    public Boolean isProtectedPerson() {
-        return protectedPerson;
-    }
+  public Boolean isProtectedPerson() {
+    return protectedPerson;
+  }
 }

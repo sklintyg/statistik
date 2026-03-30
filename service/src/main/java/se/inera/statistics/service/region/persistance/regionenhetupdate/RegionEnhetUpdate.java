@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -27,87 +27,88 @@ import jakarta.persistence.Table;
 import java.sql.Timestamp;
 import se.inera.statistics.integration.hsa.model.HsaIdUser;
 
-/**
- * Keeps information about last file upload action for region.
- */
+/** Keeps information about last file upload action for region. */
 @Entity
 @Table(name = "LandstingEnhetUpdate")
 public class RegionEnhetUpdate {
 
-    @Id
-    @Column(name = "landstingId")
-    private long regionId;
+  @Id
+  @Column(name = "landstingId")
+  private long regionId;
 
-    private String updatedByName;
+  private String updatedByName;
 
-    private String updatedByHsaid;
+  private String updatedByHsaid;
 
-    private Timestamp timestamp;
+  private Timestamp timestamp;
 
-    private String filename;
+  private String filename;
 
-    @Enumerated(EnumType.STRING)
-    private RegionEnhetUpdateOperation operation;
+  @Enumerated(EnumType.STRING)
+  private RegionEnhetUpdateOperation operation;
 
-    private RegionEnhetUpdate() {
-    }
+  private RegionEnhetUpdate() {}
 
-    public RegionEnhetUpdate(long regionId, String updatedByName, HsaIdUser updatedByHsaid, Timestamp timestamp, String filename,
-        RegionEnhetUpdateOperation operation) {
-        this.regionId = regionId;
-        this.updatedByName = updatedByName;
-        setUpdatedByHsaid(updatedByHsaid);
-        this.timestamp = timestamp;
-        this.filename = filename;
-        this.operation = operation;
-    }
+  public RegionEnhetUpdate(
+      long regionId,
+      String updatedByName,
+      HsaIdUser updatedByHsaid,
+      Timestamp timestamp,
+      String filename,
+      RegionEnhetUpdateOperation operation) {
+    this.regionId = regionId;
+    this.updatedByName = updatedByName;
+    setUpdatedByHsaid(updatedByHsaid);
+    this.timestamp = timestamp;
+    this.filename = filename;
+    this.operation = operation;
+  }
 
-    public long getRegionId() {
-        return regionId;
-    }
+  public long getRegionId() {
+    return regionId;
+  }
 
-    public void setRegionId(long regionId) {
-        this.regionId = regionId;
-    }
+  public void setRegionId(long regionId) {
+    this.regionId = regionId;
+  }
 
-    public String getUpdatedByName() {
-        return updatedByName;
-    }
+  public String getUpdatedByName() {
+    return updatedByName;
+  }
 
-    public void setUpdatedByName(String updatedByName) {
-        this.updatedByName = updatedByName;
-    }
+  public void setUpdatedByName(String updatedByName) {
+    this.updatedByName = updatedByName;
+  }
 
-    public String getUpdatedByHsaid() {
-        return updatedByHsaid;
-    }
+  public String getUpdatedByHsaid() {
+    return updatedByHsaid;
+  }
 
-    public void setUpdatedByHsaid(HsaIdUser updatedByHsaid) {
-        this.updatedByHsaid = updatedByHsaid == null ? null : updatedByHsaid.getId();
-    }
+  public void setUpdatedByHsaid(HsaIdUser updatedByHsaid) {
+    this.updatedByHsaid = updatedByHsaid == null ? null : updatedByHsaid.getId();
+  }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
+  public Timestamp getTimestamp() {
+    return timestamp;
+  }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
-    }
+  public void setTimestamp(Timestamp timestamp) {
+    this.timestamp = timestamp;
+  }
 
-    public String getFilename() {
-        return filename;
-    }
+  public String getFilename() {
+    return filename;
+  }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
-    }
+  public void setFilename(String filename) {
+    this.filename = filename;
+  }
 
-    public RegionEnhetUpdateOperation getOperation() {
-        return operation;
-    }
+  public RegionEnhetUpdateOperation getOperation() {
+    return operation;
+  }
 
-    public void setOperation(RegionEnhetUpdateOperation operation) {
-        this.operation = operation;
-    }
-
+  public void setOperation(RegionEnhetUpdateOperation operation) {
+    this.operation = operation;
+  }
 }

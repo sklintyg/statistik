@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -31,46 +31,52 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class PerformanceLoggingAdvice {
 
-    @Around("@annotation(performanceLogging)")
-    public Object logPerformance(ProceedingJoinPoint joinPoint, se.inera.intyg.statistik.logging.PerformanceLogging performanceLogging)
-        throws Throwable {
-        if (performanceLogging.isActive()) {
-            final var start = LocalDateTime.now();
-            var success = true;
-            try {
-                return joinPoint.proceed();
-            } catch (final Throwable throwable) {
-                success = false;
-                throw throwable;
-            } finally {
-                final var end = LocalDateTime.now();
-                final var duration = Duration.between(start, end).toMillis();
-                final var className = joinPoint.getSignature().getDeclaringTypeName();
-                final var methodName = joinPoint.getSignature().getName();
-                try (final var mdcLogConstants =
-                    se.inera.intyg.statistik.logging.MdcCloseableMap.builder()
-                        .put(se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_START, start.toString())
-                        .put(se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_END, end.toString())
-                        .put(se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_DURATION, Long.toString(duration))
-                        .put(se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_ACTION, performanceLogging.eventAction())
-                        .put(se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_TYPE, performanceLogging.eventType())
-                        .put(se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_CATEGORY, performanceLogging.eventCategory())
-                        .put(se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_CLASS, className)
-                        .put(se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_METHOD, methodName)
-                        .put(
-                            se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_OUTCOME, success ? se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_OUTCOME_SUCCESS
-                            : se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_OUTCOME_FAILURE
-                        )
-                        .build()
-                ) {
-                    log.info("Class: {} Method: {} Duration: {} ms",
-                        className,
-                        methodName,
-                        duration
-                    );
-                }
-            }
-        }
+  @Around("@annotation(performanceLogging)")
+  public Object logPerformance(
+      ProceedingJoinPoint joinPoint,
+      se.inera.intyg.statistik.logging.PerformanceLogging performanceLogging)
+      throws Throwable {
+    if (performanceLogging.isActive()) {
+      final var start = LocalDateTime.now();
+      var success = true;
+      try {
         return joinPoint.proceed();
+      } catch (final Throwable throwable) {
+        success = false;
+        throw throwable;
+      } finally {
+        final var end = LocalDateTime.now();
+        final var duration = Duration.between(start, end).toMillis();
+        final var className = joinPoint.getSignature().getDeclaringTypeName();
+        final var methodName = joinPoint.getSignature().getName();
+        try (final var mdcLogConstants =
+            se.inera.intyg.statistik.logging.MdcCloseableMap.builder()
+                .put(se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_START, start.toString())
+                .put(se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_END, end.toString())
+                .put(
+                    se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_DURATION,
+                    Long.toString(duration))
+                .put(
+                    se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_ACTION,
+                    performanceLogging.eventAction())
+                .put(
+                    se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_TYPE,
+                    performanceLogging.eventType())
+                .put(
+                    se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_CATEGORY,
+                    performanceLogging.eventCategory())
+                .put(se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_CLASS, className)
+                .put(se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_METHOD, methodName)
+                .put(
+                    se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_OUTCOME,
+                    success
+                        ? se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_OUTCOME_SUCCESS
+                        : se.inera.intyg.statistik.logging.MdcLogConstants.EVENT_OUTCOME_FAILURE)
+                .build()) {
+          log.info("Class: {} Method: {} Duration: {} ms", className, methodName, duration);
+        }
+      }
     }
+    return joinPoint.proceed();
+  }
 }

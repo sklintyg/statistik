@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -24,27 +24,26 @@ import se.inera.statistics.service.report.model.Icd;
 
 public class DiagnosisKapitelAndAvsnittAndKategoriResponse {
 
-    private final List<Icd> kapitels;
-    private final Map<String, List<Icd>> avsnitts;
-    private final Map<String, List<Icd>> kategoris;
+  private final List<Icd> kapitels;
+  private final Map<String, List<Icd>> avsnitts;
+  private final Map<String, List<Icd>> kategoris;
 
-    public DiagnosisKapitelAndAvsnittAndKategoriResponse(Map<String, List<Icd>> kategoris,
-        Map<String, List<Icd>> avsnitts, List<Icd> kapitels) {
-        this.kapitels = kapitels;
-        this.avsnitts = avsnitts;
-        this.kategoris = kategoris;
-    }
+  public DiagnosisKapitelAndAvsnittAndKategoriResponse(
+      Map<String, List<Icd>> kategoris, Map<String, List<Icd>> avsnitts, List<Icd> kapitels) {
+    this.kapitels = kapitels;
+    this.avsnitts = avsnitts;
+    this.kategoris = kategoris;
+  }
 
-    public List<Icd> getKapitels() {
-        return kapitels;
-    }
+  public List<Icd> getKapitels() {
+    return kapitels;
+  }
 
-    public Map<String, List<Icd>> getAvsnitts() {
-        return avsnitts;
-    }
+  public Map<String, List<Icd>> getAvsnitts() {
+    return avsnitts;
+  }
 
-    public Map<String, List<Icd>> getKategoris() {
-        return kategoris;
-    }
-
+  public Map<String, List<Icd>> getKategoris() {
+    return kategoris;
+  }
 }

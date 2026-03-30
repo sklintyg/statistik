@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,19 +25,19 @@ import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 
 public class IntygCommonGroup {
 
-    private final Range dateRange;
-    private final Collection<IntygCommon> intyg;
+  private final Range dateRange;
+  private final Collection<IntygCommon> intyg;
 
-    public IntygCommonGroup(Range range, Collection<IntygCommon> intyg) {
-        this.dateRange = range;
-        this.intyg = new ArrayList<>(intyg);
-    }
+  public IntygCommonGroup(Range range, Collection<IntygCommon> intyg) {
+    this.dateRange = range;
+    this.intyg = new ArrayList<>(intyg);
+  }
 
-    public Range getRange() {
-        return dateRange;
-    }
+  public Range getRange() {
+    return dateRange;
+  }
 
-    public Collection<IntygCommon> getIntyg() {
-        return intyg;
-    }
+  public Collection<IntygCommon> getIntyg() {
+    return intyg;
+  }
 }

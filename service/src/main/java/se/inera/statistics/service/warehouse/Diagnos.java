@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,36 +22,39 @@ import java.io.Serializable;
 
 public final class Diagnos implements Serializable {
 
-    private final int diagnoskapitel;
-    private final int diagnosavsnitt;
-    private final int diagnoskategori;
-    private final int diagnoskod;
+  private final int diagnoskapitel;
+  private final int diagnosavsnitt;
+  private final int diagnoskategori;
+  private final int diagnoskod;
 
-    Diagnos(int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod) {
-        this.diagnoskapitel = diagnoskapitel;
-        this.diagnosavsnitt = diagnosavsnitt;
-        this.diagnoskategori = diagnoskategori;
-        this.diagnoskod = diagnoskod;
-    }
+  Diagnos(int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod) {
+    this.diagnoskapitel = diagnoskapitel;
+    this.diagnosavsnitt = diagnosavsnitt;
+    this.diagnoskategori = diagnoskategori;
+    this.diagnoskod = diagnoskod;
+  }
 
-    Diagnos(Fact fact) {
-        this(fact.getDiagnoskapitel(), fact.getDiagnosavsnitt(), fact.getDiagnoskategori(), fact.getDiagnoskod());
-    }
+  Diagnos(Fact fact) {
+    this(
+        fact.getDiagnoskapitel(),
+        fact.getDiagnosavsnitt(),
+        fact.getDiagnoskategori(),
+        fact.getDiagnoskod());
+  }
 
-    public int getDiagnoskapitel() {
-        return diagnoskapitel;
-    }
+  public int getDiagnoskapitel() {
+    return diagnoskapitel;
+  }
 
-    public int getDiagnosavsnitt() {
-        return diagnosavsnitt;
-    }
+  public int getDiagnosavsnitt() {
+    return diagnosavsnitt;
+  }
 
-    public int getDiagnoskategori() {
-        return diagnoskategori;
-    }
+  public int getDiagnoskategori() {
+    return diagnoskategori;
+  }
 
-    public int getDiagnoskod() {
-        return diagnoskod;
-    }
-
+  public int getDiagnoskod() {
+    return diagnoskod;
+  }
 }

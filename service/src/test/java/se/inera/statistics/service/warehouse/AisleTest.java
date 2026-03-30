@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -28,26 +28,60 @@ import se.inera.statistics.service.report.model.Kon;
 
 public class AisleTest {
 
-    private final MutableAisle aisle = new MutableAisle(new HsaIdVardgivare("vgid"));
+  private final MutableAisle aisle = new MutableAisle(new HsaIdVardgivare("vgid"));
 
-    @Test
-    public void outOfOrderFactsGetsSorted() {
-        Fact fact1 = aFact().withId(1).withLan(3).withKommun(380).withForsamling(38002).
-            withEnhet(1).withLakarintyg(1).
-            withPatient(1).withKon(Kon.FEMALE).withAlder(45).
-            withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
-            withSjukskrivningsgrad(100).withStartdatum(4010).withSlutdatum(4056).
-            withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).build();
-        aisle.addLine(fact1);
-        Fact fact2 = aFact().withId(2).withLan(3).withKommun(380).withForsamling(38002).
-            withEnhet(1).withLakarintyg(2).
-            withPatient(1).withKon(Kon.FEMALE).withAlder(45).
-            withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
-            withSjukskrivningsgrad(100).withStartdatum(4000).withSlutdatum(4046).
-            withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).build();
-        aisle.addLine(fact2);
-        Iterator<Fact> iterator = aisle.createAisle().iterator();
-        assertEquals(2, iterator.next().getLakarintyg());
-        assertEquals(1, iterator.next().getLakarintyg());
-    }
+  @Test
+  public void outOfOrderFactsGetsSorted() {
+    Fact fact1 =
+        aFact()
+            .withId(1)
+            .withLan(3)
+            .withKommun(380)
+            .withForsamling(38002)
+            .withEnhet(1)
+            .withLakarintyg(1)
+            .withPatient(1)
+            .withKon(Kon.FEMALE)
+            .withAlder(45)
+            .withDiagnoskapitel(0)
+            .withDiagnosavsnitt(14)
+            .withDiagnoskategori(16)
+            .withDiagnoskod(18)
+            .withSjukskrivningsgrad(100)
+            .withStartdatum(4010)
+            .withSlutdatum(4056)
+            .withLakarkon(Kon.FEMALE)
+            .withLakaralder(32)
+            .withLakarbefattning(new int[] {201010})
+            .withLakarid(1)
+            .build();
+    aisle.addLine(fact1);
+    Fact fact2 =
+        aFact()
+            .withId(2)
+            .withLan(3)
+            .withKommun(380)
+            .withForsamling(38002)
+            .withEnhet(1)
+            .withLakarintyg(2)
+            .withPatient(1)
+            .withKon(Kon.FEMALE)
+            .withAlder(45)
+            .withDiagnoskapitel(0)
+            .withDiagnosavsnitt(14)
+            .withDiagnoskategori(16)
+            .withDiagnoskod(18)
+            .withSjukskrivningsgrad(100)
+            .withStartdatum(4000)
+            .withSlutdatum(4046)
+            .withLakarkon(Kon.FEMALE)
+            .withLakaralder(32)
+            .withLakarbefattning(new int[] {201010})
+            .withLakarid(1)
+            .build();
+    aisle.addLine(fact2);
+    Iterator<Fact> iterator = aisle.createAisle().iterator();
+    assertEquals(2, iterator.next().getLakarintyg());
+    assertEquals(1, iterator.next().getLakarintyg());
+  }
 }

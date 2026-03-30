@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,20 +20,19 @@ package se.inera.testsupport.specialrapport;
 
 public class SjukfallLengthSpecialComputeRow {
 
-    private int kat;
-    private SjukfallsLangdGroupSpecial length;
+  private int kat;
+  private SjukfallsLangdGroupSpecial length;
 
-    public SjukfallLengthSpecialComputeRow(int kat, SjukfallsLangdGroupSpecial length) {
-        this.kat = kat;
-        this.length = length;
-    }
+  public SjukfallLengthSpecialComputeRow(int kat, SjukfallsLangdGroupSpecial length) {
+    this.kat = kat;
+    this.length = length;
+  }
 
-    public int getKat() {
-        return kat;
-    }
+  public int getKat() {
+    return kat;
+  }
 
-    public SjukfallsLangdGroupSpecial getLength() {
-        return length;
-    }
-
+  public SjukfallsLangdGroupSpecial getLength() {
+    return length;
+  }
 }

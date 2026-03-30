@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -29,55 +29,68 @@ import se.inera.statistics.service.warehouse.IntygType;
 @Component
 public class TsDiabetesHelper extends IntygHelper<RegisterTSDiabetesType> {
 
-    @Override
-    protected Class<RegisterTSDiabetesType> getIntygClass() {
-        return RegisterTSDiabetesType.class;
-    }
+  @Override
+  protected Class<RegisterTSDiabetesType> getIntygClass() {
+    return RegisterTSDiabetesType.class;
+  }
 
-    @Override
-    public String getEnhetId(RegisterTSDiabetesType utlatande) {
-        return utlatande.getIntyg().getGrundData().getSkapadAv().getVardenhet().getEnhetsId().getExtension();
-    }
+  @Override
+  public String getEnhetId(RegisterTSDiabetesType utlatande) {
+    return utlatande
+        .getIntyg()
+        .getGrundData()
+        .getSkapadAv()
+        .getVardenhet()
+        .getEnhetsId()
+        .getExtension();
+  }
 
-    @Override
-    public String getLakareId(RegisterTSDiabetesType document) {
-        return document.getIntyg().getGrundData().getSkapadAv().getPersonId().getExtension();
-    }
+  @Override
+  public String getLakareId(RegisterTSDiabetesType document) {
+    return document.getIntyg().getGrundData().getSkapadAv().getPersonId().getExtension();
+  }
 
-    @Override
-    public String getVardgivareId(RegisterTSDiabetesType document) {
-        return document.getIntyg().getGrundData().getSkapadAv().getVardenhet().getVardgivare().getVardgivarid().getExtension();
-    }
+  @Override
+  public String getVardgivareId(RegisterTSDiabetesType document) {
+    return document
+        .getIntyg()
+        .getGrundData()
+        .getSkapadAv()
+        .getVardenhet()
+        .getVardgivare()
+        .getVardgivarid()
+        .getExtension();
+  }
 
-    @Override
-    public String getPatientId(RegisterTSDiabetesType intyg) {
-        return intyg.getIntyg().getGrundData().getPatient().getPersonId().getExtension();
-    }
+  @Override
+  public String getPatientId(RegisterTSDiabetesType intyg) {
+    return intyg.getIntyg().getGrundData().getPatient().getPersonId().getExtension();
+  }
 
-    @Override
-    public String getIntygId(RegisterTSDiabetesType intyg) {
-        return intyg.getIntyg().getIntygsId();
-    }
+  @Override
+  public String getIntygId(RegisterTSDiabetesType intyg) {
+    return intyg.getIntyg().getIntygsId();
+  }
 
-    @Override
-    public IntygType getIntygtyp(RegisterTSDiabetesType intyg) {
-        return IntygType.getByItIntygType(intyg.getIntyg().getIntygsTyp().trim());
-    }
+  @Override
+  public IntygType getIntygtyp(RegisterTSDiabetesType intyg) {
+    return IntygType.getByItIntygType(intyg.getIntyg().getIntygsTyp().trim());
+  }
 
-    @Override
-    public String getCertificateVersion(RegisterTSDiabetesType certificate) {
-        return certificate.getIntyg().getVersion();
-    }
+  @Override
+  public String getCertificateVersion(RegisterTSDiabetesType certificate) {
+    return certificate.getIntyg().getVersion();
+  }
 
-    @Override
-    public LocalDateTime getSigneringsTidpunkt(RegisterTSDiabetesType intyg) {
-        String tidpunkt = intyg.getIntyg().getGrundData().getSigneringsTidstampel();
+  @Override
+  public LocalDateTime getSigneringsTidpunkt(RegisterTSDiabetesType intyg) {
+    String tidpunkt = intyg.getIntyg().getGrundData().getSigneringsTidstampel();
 
-        return LocalDateTime.parse(tidpunkt, DateTimeFormatter.ISO_DATE_TIME);
-    }
+    return LocalDateTime.parse(tidpunkt, DateTimeFormatter.ISO_DATE_TIME);
+  }
 
-    @Override
-    public LocalDate getDateForPatientAge(RegisterTSDiabetesType intyg) {
-        return getSigneringsTidpunkt(intyg).toLocalDate();
-    }
+  @Override
+  public LocalDate getDateForPatientAge(RegisterTSDiabetesType intyg) {
+    return getSigneringsTidpunkt(intyg).toLocalDate();
+  }
 }

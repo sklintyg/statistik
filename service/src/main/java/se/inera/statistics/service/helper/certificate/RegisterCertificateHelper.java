@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,8 +25,8 @@ import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.Regi
 @Component
 public class RegisterCertificateHelper extends AbstractRegisterCertificateHelper {
 
-    @Override
-    public LocalDate getDateForPatientAge(RegisterCertificateType intyg) {
-        return getSigneringsTidpunkt(intyg).toLocalDate();
-    }
+  @Override
+  public LocalDate getDateForPatientAge(RegisterCertificateType intyg) {
+    return getSigneringsTidpunkt(intyg).toLocalDate();
+  }
 }

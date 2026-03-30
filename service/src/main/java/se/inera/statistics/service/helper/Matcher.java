@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -24,73 +24,72 @@ import java.util.List;
 
 public interface Matcher {
 
-    boolean match(JsonNode node);
+  boolean match(JsonNode node);
 
-    Matcher add(Matcher matcher);
+  Matcher add(Matcher matcher);
 
-    final class Builder {
+  final class Builder {
 
-        private Builder() {
-        }
+    private Builder() {}
 
-        public static Matcher matcher(String name, String value) {
-            return new ValueMatcher(name, value);
-        }
-
-        public static Matcher matcher(String name) {
-            return new NodeMatcher(name);
-        }
+    public static Matcher matcher(String name, String value) {
+      return new ValueMatcher(name, value);
     }
 
-    class NodeMatcher implements Matcher {
+    public static Matcher matcher(String name) {
+      return new NodeMatcher(name);
+    }
+  }
 
-        private final List<Matcher> matchers = new ArrayList<Matcher>();
-        private final String name;
+  class NodeMatcher implements Matcher {
 
-        public NodeMatcher(String name) {
-            this.name = name;
-        }
+    private final List<Matcher> matchers = new ArrayList<Matcher>();
+    private final String name;
 
-        @Override
-        public boolean match(JsonNode node) {
-            JsonNode found = node.get(name);
-            return found != null && subFind(found);
-        }
-
-        private boolean subFind(JsonNode node) {
-            for (Matcher matcher : matchers) {
-                if (!matcher.match(node)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        @Override
-        public Matcher add(Matcher matcher) {
-            matchers.add(matcher);
-            return this;
-        }
+    public NodeMatcher(String name) {
+      this.name = name;
     }
 
-    class ValueMatcher implements Matcher {
-
-        private final String name;
-        private final String value;
-
-        public ValueMatcher(String name, String value) {
-            this.name = name;
-            this.value = value;
-        }
-
-        @Override
-        public boolean match(JsonNode node) {
-            return node.findValue(name).textValue().equals(value);
-        }
-
-        @Override
-        public Matcher add(Matcher matcher) {
-            throw new IllegalArgumentException("Can not add matcher to ValueMatcher");
-        }
+    @Override
+    public boolean match(JsonNode node) {
+      JsonNode found = node.get(name);
+      return found != null && subFind(found);
     }
+
+    private boolean subFind(JsonNode node) {
+      for (Matcher matcher : matchers) {
+        if (!matcher.match(node)) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    @Override
+    public Matcher add(Matcher matcher) {
+      matchers.add(matcher);
+      return this;
+    }
+  }
+
+  class ValueMatcher implements Matcher {
+
+    private final String name;
+    private final String value;
+
+    public ValueMatcher(String name, String value) {
+      this.name = name;
+      this.value = value;
+    }
+
+    @Override
+    public boolean match(JsonNode node) {
+      return node.findValue(name).textValue().equals(value);
+    }
+
+    @Override
+    public Matcher add(Matcher matcher) {
+      throw new IllegalArgumentException("Can not add matcher to ValueMatcher");
+    }
+  }
 }

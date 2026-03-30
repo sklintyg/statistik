@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,32 +23,32 @@ import java.util.List;
 
 public class KonDataRow {
 
-    private final String name;
-    private final List<KonField> data;
+  private final String name;
+  private final List<KonField> data;
 
-    public KonDataRow(String name, List<KonField> data) {
-        this.name = name;
-        this.data = data;
-    }
+  public KonDataRow(String name, List<KonField> data) {
+    this.name = name;
+    this.data = data;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public List<KonField> getData() {
-        return data;
-    }
+  public List<KonField> getData() {
+    return data;
+  }
 
-    public List<Integer> getDataForSex(Kon sex) {
-        ArrayList<Integer> dataForSex = new ArrayList<>();
-        for (KonField field : data) {
-            dataForSex.add(field.getValue(sex));
-        }
-        return dataForSex;
+  public List<Integer> getDataForSex(Kon sex) {
+    ArrayList<Integer> dataForSex = new ArrayList<>();
+    for (KonField field : data) {
+      dataForSex.add(field.getValue(sex));
     }
+    return dataForSex;
+  }
 
-    @Override
-    public String toString() {
-        return "{\"KonDataRow\":{" + "\"name\":\"" + name + '"' + ", \"data\":" + data + "}}";
-    }
+  @Override
+  public String toString() {
+    return "{\"KonDataRow\":{" + "\"name\":\"" + name + '"' + ", \"data\":" + data + "}}";
+  }
 }

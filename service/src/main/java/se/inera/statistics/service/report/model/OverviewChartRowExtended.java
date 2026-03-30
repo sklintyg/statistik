@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,58 +20,62 @@ package se.inera.statistics.service.report.model;
 
 public class OverviewChartRowExtended extends OverviewChartRow {
 
-    private final int alternation;
-    private final String color;
-    private final Boolean hideInTable;
+  private final int alternation;
+  private final String color;
+  private final Boolean hideInTable;
 
-    public OverviewChartRowExtended(String name, int quantity, int alternation, String color) {
-        this(name, quantity, alternation, color, null);
+  public OverviewChartRowExtended(String name, int quantity, int alternation, String color) {
+    this(name, quantity, alternation, color, null);
+  }
+
+  public OverviewChartRowExtended(
+      String name, int quantity, int alternation, String color, Boolean hideInTable) {
+    super(name, quantity);
+    this.color = color;
+    this.alternation = alternation;
+    this.hideInTable = hideInTable;
+  }
+
+  public int getAlternation() {
+    return alternation;
+  }
+
+  public String getColor() {
+    return color;
+  }
+
+  public Boolean isHideInTable() {
+    return hideInTable;
+  }
+
+  @Override
+  public String toString() {
+    return super.toString()
+        + ", {\"OverviewChartRowExtended\":{\"alternation\":"
+        + alternation
+        + "}}";
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof OverviewChartRowExtended)) {
+      return false;
     }
 
-    public OverviewChartRowExtended(String name, int quantity, int alternation, String color, Boolean hideInTable) {
-        super(name, quantity);
-        this.color = color;
-        this.alternation = alternation;
-        this.hideInTable = hideInTable;
+    OverviewChartRowExtended that = (OverviewChartRowExtended) o;
+
+    if (!super.equals(o)) {
+      return false;
     }
 
-    public int getAlternation() {
-        return alternation;
-    }
+    return alternation == that.alternation;
+  }
 
-    public String getColor() {
-        return color;
-    }
-
-    public Boolean isHideInTable() {
-        return hideInTable;
-    }
-
-    @Override
-    public String toString() {
-        return super.toString() + ", {\"OverviewChartRowExtended\":{\"alternation\":" + alternation + "}}";
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof OverviewChartRowExtended)) {
-            return false;
-        }
-
-        OverviewChartRowExtended that = (OverviewChartRowExtended) o;
-
-        if (!super.equals(o)) {
-            return false;
-        }
-
-        return alternation == that.alternation;
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode() + alternation;
-    }
+  @Override
+  public int hashCode() {
+    return super.hashCode() + alternation;
+  }
 }

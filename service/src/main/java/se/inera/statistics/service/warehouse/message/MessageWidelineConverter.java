@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -36,67 +36,71 @@ import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMe
 @Component
 public class MessageWidelineConverter extends AbstractWidlineConverter {
 
-    private static final int MAX_LENGTH_MESSAGE_ID = 50;
-    private static final int MAX_LENGTH_INTYG_ID = 50;
-    private static final int MAX_LENGTH_INTYGSTYPE = 20;
-    private static final int MAX_LENGTH_VGID = 50;
+  private static final int MAX_LENGTH_MESSAGE_ID = 50;
+  private static final int MAX_LENGTH_INTYG_ID = 50;
+  private static final int MAX_LENGTH_INTYGSTYPE = 20;
+  private static final int MAX_LENGTH_VGID = 50;
 
-    @Autowired
-    private SendMessageToCareHelper sendMessageToCareHelper;
-    @Autowired
-    private IntygCommonManager intygCommonManager;
+  @Autowired private SendMessageToCareHelper sendMessageToCareHelper;
+  @Autowired private IntygCommonManager intygCommonManager;
 
-    public List<String> validate(MessageWideLine line) {
-        List<String> errors = new ArrayList<>();
-        checkField(errors, line.getVardgivareid(), "Vårdgivare", MAX_LENGTH_VGID);
-        checkField(errors, line.getEnhet(), "Enhet");
-        checkField(errors, line.getPatientid(), "Patient");
-        checkField(errors, line.getMeddelandeId(), "MeddelandeId", MAX_LENGTH_MESSAGE_ID);
-        checkField(errors, line.getIntygId(), "IntygId", MAX_LENGTH_INTYG_ID);
-        checkField(errors, line.getIntygstyp(), "intygstyp", MAX_LENGTH_INTYGSTYPE);
-        return errors;
+  public List<String> validate(MessageWideLine line) {
+    List<String> errors = new ArrayList<>();
+    checkField(errors, line.getVardgivareid(), "Vårdgivare", MAX_LENGTH_VGID);
+    checkField(errors, line.getEnhet(), "Enhet");
+    checkField(errors, line.getPatientid(), "Patient");
+    checkField(errors, line.getMeddelandeId(), "MeddelandeId", MAX_LENGTH_MESSAGE_ID);
+    checkField(errors, line.getIntygId(), "IntygId", MAX_LENGTH_INTYG_ID);
+    checkField(errors, line.getIntygstyp(), "intygstyp", MAX_LENGTH_INTYGSTYPE);
+    return errors;
+  }
+
+  public MessageWideLine toWideline(
+      SendMessageToCareType meddelande,
+      Patientdata patientdata,
+      long logId,
+      String meddelandeId,
+      MessageEventType type) {
+    MessageWideLine line = new MessageWideLine();
+
+    line.setMeddelandeId(meddelandeId);
+    line.setMeddelandeTyp(type);
+    line.setIntygId(sendMessageToCareHelper.getIntygId(meddelande));
+    line.setPatientid(sendMessageToCareHelper.getPatientId(meddelande));
+    line.setAmneCode(sendMessageToCareHelper.getAmneCode(meddelande));
+    LocalDateTime dateTime = sendMessageToCareHelper.getSkickatTidpunkt(meddelande);
+    line.setSkickatTidpunkt(dateTime.toLocalTime());
+    line.setSkickatDate(dateTime.toLocalDate());
+    line.setLogId(logId);
+    line.setKon(patientdata.getKon().getNumberRepresentation());
+    line.setAlder(patientdata.getAlder());
+    line.setSvarIds(getSvarIds(meddelande));
+
+    IntygCommon intygCommon = intygCommonManager.getOne(line.getIntygId());
+
+    if (intygCommon != null) {
+      line.setEnhet(intygCommon.getEnhet());
+      line.setVardenhet(intygCommon.getVardenhet());
+      line.setVardgivareid(intygCommon.getVardgivareId());
+      line.setIntygstyp(intygCommon.getIntygtyp());
+      line.setIntygSigneringsdatum(intygCommon.getSigneringsdatum());
+      line.setIntygDx(intygCommon.getDx());
+      line.setIntygLakareId(intygCommon.getLakareId());
     }
 
-    public MessageWideLine toWideline(SendMessageToCareType meddelande, Patientdata patientdata, long logId, String meddelandeId,
-        MessageEventType type) {
-        MessageWideLine line = new MessageWideLine();
+    return line;
+  }
 
-        line.setMeddelandeId(meddelandeId);
-        line.setMeddelandeTyp(type);
-        line.setIntygId(sendMessageToCareHelper.getIntygId(meddelande));
-        line.setPatientid(sendMessageToCareHelper.getPatientId(meddelande));
-        line.setAmneCode(sendMessageToCareHelper.getAmneCode(meddelande));
-        LocalDateTime dateTime = sendMessageToCareHelper.getSkickatTidpunkt(meddelande);
-        line.setSkickatTidpunkt(dateTime.toLocalTime());
-        line.setSkickatDate(dateTime.toLocalDate());
-        line.setLogId(logId);
-        line.setKon(patientdata.getKon().getNumberRepresentation());
-        line.setAlder(patientdata.getAlder());
-        line.setSvarIds(getSvarIds(meddelande));
-
-        IntygCommon intygCommon = intygCommonManager.getOne(line.getIntygId());
-
-        if (intygCommon != null) {
-            line.setEnhet(intygCommon.getEnhet());
-            line.setVardenhet(intygCommon.getVardenhet());
-            line.setVardgivareid(intygCommon.getVardgivareId());
-            line.setIntygstyp(intygCommon.getIntygtyp());
-            line.setIntygSigneringsdatum(intygCommon.getSigneringsdatum());
-            line.setIntygDx(intygCommon.getDx());
-            line.setIntygLakareId(intygCommon.getLakareId());
-        }
-
-        return line;
+  private String getSvarIds(SendMessageToCareType meddelande) {
+    if (meddelande == null) {
+      return null;
     }
-
-    private String getSvarIds(SendMessageToCareType meddelande) {
-        if (meddelande == null) {
-            return null;
-        }
-        final List<SendMessageToCareType.Komplettering> komplettering = meddelande.getKomplettering();
-        if (komplettering == null) {
-            return null;
-        }
-        return komplettering.stream().map(SendMessageToCareType.Komplettering::getFrageId).collect(Collectors.joining(","));
+    final List<SendMessageToCareType.Komplettering> komplettering = meddelande.getKomplettering();
+    if (komplettering == null) {
+      return null;
     }
+    return komplettering.stream()
+        .map(SendMessageToCareType.Komplettering::getFrageId)
+        .collect(Collectors.joining(","));
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -42,38 +42,40 @@ import se.inera.statistics.service.warehouse.WidelineManager;
 @RunWith(MockitoJUnitRunner.class)
 public class ProcessorTest {
 
-    private JsonNode utlatande;
+  private JsonNode utlatande;
 
-    @Mock
-    private WidelineManager widelineManager;
-    @Mock
-    private LakareManager lakareManager;
-    @Mock
-    private IntygCommonManager intygCommonManager;
-    @Mock
-    private VardgivareManager vardgivareManager;
+  @Mock private WidelineManager widelineManager;
+  @Mock private LakareManager lakareManager;
+  @Mock private IntygCommonManager intygCommonManager;
+  @Mock private VardgivareManager vardgivareManager;
 
-    @InjectMocks
-    private Processor processor;
+  @InjectMocks private Processor processor;
 
-    @Before
-    public void init() {
-        utlatande = JSONParser.parse(this.getClass().getResourceAsStream("/json/maximalt-fk7263-internal.json"));
-    }
+  @Before
+  public void init() {
+    utlatande =
+        JSONParser.parse(
+            this.getClass().getResourceAsStream("/json/maximalt-fk7263-internal.json"));
+  }
 
-    @Test
-    public void processorCallsListener() {
-        ArgumentCaptor<IntygDTO> intygDTOCaptor = ArgumentCaptor.forClass(IntygDTO.class);
-        ArgumentCaptor<HsaInfo> hsaCaptor = ArgumentCaptor.forClass(HsaInfo.class);
-        Mockito.doNothing().when(widelineManager)
-            .accept(intygDTOCaptor.capture(), hsaCaptor.capture(), anyLong(), anyString(), any(EventType.class));
+  @Test
+  public void processorCallsListener() {
+    ArgumentCaptor<IntygDTO> intygDTOCaptor = ArgumentCaptor.forClass(IntygDTO.class);
+    ArgumentCaptor<HsaInfo> hsaCaptor = ArgumentCaptor.forClass(HsaInfo.class);
+    Mockito.doNothing()
+        .when(widelineManager)
+        .accept(
+            intygDTOCaptor.capture(),
+            hsaCaptor.capture(),
+            anyLong(),
+            anyString(),
+            any(EventType.class));
 
-        IntygDTO dto = JsonDocumentHelper.convertToDTO(utlatande);
+    IntygDTO dto = JsonDocumentHelper.convertToDTO(utlatande);
 
-        processor.accept(dto, null, 1L, "1", EventType.CREATED);
+    processor.accept(dto, null, 1L, "1", EventType.CREATED);
 
-        assertEquals(98, intygDTOCaptor.getValue().getPatientData().getAlder());
-        assertEquals(Kon.MALE, intygDTOCaptor.getValue().getPatientData().getKon());
-    }
-
+    assertEquals(98, intygDTOCaptor.getValue().getPatientData().getAlder());
+    assertEquals(Kon.MALE, intygDTOCaptor.getValue().getPatientData().getKon());
+  }
 }

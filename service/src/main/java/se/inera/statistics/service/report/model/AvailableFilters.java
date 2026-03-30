@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,54 +22,58 @@ import java.io.Serializable;
 
 public final class AvailableFilters implements Serializable {
 
-    private boolean diagnos;
-    private boolean enhets;
-    private boolean sjukskrivningslangds;
-    private boolean ageGroups;
-    private boolean intygTypes;
+  private boolean diagnos;
+  private boolean enhets;
+  private boolean sjukskrivningslangds;
+  private boolean ageGroups;
+  private boolean intygTypes;
 
-    private AvailableFilters(boolean diagnos, boolean enhets, boolean ageGroups, boolean sjukskrivningslangds, boolean intygTypes) {
-        this.diagnos = diagnos;
-        this.enhets = enhets;
-        this.sjukskrivningslangds = sjukskrivningslangds;
-        this.ageGroups = ageGroups;
-        this.intygTypes = intygTypes;
-    }
+  private AvailableFilters(
+      boolean diagnos,
+      boolean enhets,
+      boolean ageGroups,
+      boolean sjukskrivningslangds,
+      boolean intygTypes) {
+    this.diagnos = diagnos;
+    this.enhets = enhets;
+    this.sjukskrivningslangds = sjukskrivningslangds;
+    this.ageGroups = ageGroups;
+    this.intygTypes = intygTypes;
+  }
 
-    public boolean isDiagnos() {
-        return diagnos;
-    }
+  public boolean isDiagnos() {
+    return diagnos;
+  }
 
-    public boolean isEnhets() {
-        return enhets;
-    }
+  public boolean isEnhets() {
+    return enhets;
+  }
 
-    public boolean isSjukskrivningslangds() {
-        return sjukskrivningslangds;
-    }
+  public boolean isSjukskrivningslangds() {
+    return sjukskrivningslangds;
+  }
 
-    public boolean isAgeGroups() {
-        return ageGroups;
-    }
+  public boolean isAgeGroups() {
+    return ageGroups;
+  }
 
-    public boolean isIntygTypes() {
-        return intygTypes;
-    }
+  public boolean isIntygTypes() {
+    return intygTypes;
+  }
 
+  public static AvailableFilters getForIntyg() {
+    return new AvailableFilters(true, true, true, false, false);
+  }
 
-    public static AvailableFilters getForIntyg() {
-        return new AvailableFilters(true, true, true, false, false);
-    }
+  public static AvailableFilters getForSjukfall() {
+    return new AvailableFilters(true, true, true, true, false);
+  }
 
-    public static AvailableFilters getForSjukfall() {
-        return new AvailableFilters(true, true, true, true, false);
-    }
+  public static AvailableFilters getForMeddelanden() {
+    return new AvailableFilters(true, true, true, false, true);
+  }
 
-    public static AvailableFilters getForMeddelanden() {
-        return new AvailableFilters(true, true, true, false, true);
-    }
-
-    public static AvailableFilters getForNationell() {
-        return new AvailableFilters(false, false, false, false, false);
-    }
+  public static AvailableFilters getForNationell() {
+    return new AvailableFilters(false, false, false, false, false);
+  }
 }

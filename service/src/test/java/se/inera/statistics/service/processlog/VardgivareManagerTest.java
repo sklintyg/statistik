@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -39,74 +39,72 @@ import se.inera.statistics.service.hsa.HsaInfo;
 @DirtiesContext
 public class VardgivareManagerTest {
 
-    @Autowired
-    VardgivareManager vardgivareManager;
+  @Autowired VardgivareManager vardgivareManager;
 
-    @Autowired
-    HSAService hsaService;
+  @Autowired HSAService hsaService;
 
-    @Test
-    @Ignore
-    public void saveOneEnhet() {
-        HSAKey key = new HSAKey("vg-verksamhet1", "verksamhet1", "lakare_my");
-        HsaInfo hsaInfo = hsaService.getHSAInfo(key);
+  @Test
+  @Ignore
+  public void saveOneEnhet() {
+    HSAKey key = new HSAKey("vg-verksamhet1", "verksamhet1", "lakare_my");
+    HsaInfo hsaInfo = hsaService.getHSAInfo(key);
 
-        vardgivareManager.saveEnhet(hsaInfo, null);
+    vardgivareManager.saveEnhet(hsaInfo, null);
 
-        List<Enhet> allEnhets = vardgivareManager.getAllEnhets();
-        assertEquals(1, allEnhets.size());
-        assertEquals("VERKSAMHET1", allEnhets.get(0).getEnhetId().getId());
-        //Enhet name is set by external script (tools/fileservice).
-        //Default name until set by script will be the hsa id.
-        assertEquals("VERKSAMHET1", allEnhets.get(0).getNamn());
-    }
+    List<Enhet> allEnhets = vardgivareManager.getAllEnhets();
+    assertEquals(1, allEnhets.size());
+    assertEquals("VERKSAMHET1", allEnhets.get(0).getEnhetId().getId());
+    // Enhet name is set by external script (tools/fileservice).
+    // Default name until set by script will be the hsa id.
+    assertEquals("VERKSAMHET1", allEnhets.get(0).getNamn());
+  }
 
-    @Test
-    @Ignore
-    public void getEnhetsForNonExistingVardgivare() {
-        HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey("vg-verksamhet1", "verksamhet1", "lakare_my"));
-        vardgivareManager.saveEnhet(hsaInfo, null);
+  @Test
+  @Ignore
+  public void getEnhetsForNonExistingVardgivare() {
+    HsaInfo hsaInfo =
+        hsaService.getHSAInfo(new HSAKey("vg-verksamhet1", "verksamhet1", "lakare_my"));
+    vardgivareManager.saveEnhet(hsaInfo, null);
 
-        List<Enhet> enhets = vardgivareManager.getEnhets("jag finns inte");
+    List<Enhet> enhets = vardgivareManager.getEnhets("jag finns inte");
 
-        List<Enhet> allEnhets = vardgivareManager.getAllEnhets();
-        assertEquals(1, allEnhets.size());
-        assertEquals(0, enhets.size());
-    }
+    List<Enhet> allEnhets = vardgivareManager.getAllEnhets();
+    assertEquals(1, allEnhets.size());
+    assertEquals(0, enhets.size());
+  }
 
-    @Test
-    @Ignore
-    public void getEnhetsForExistingVardgivare() {
-        HSAKey key = new HSAKey("vg-verksamhet1", "verksamhet1", "lakare_my");
-        HsaInfo hsaInfo = hsaService.getHSAInfo(key);
-        vardgivareManager.saveEnhet(hsaInfo, null);
-        HSAKey key1 = new HSAKey("vg-verksamhet2", "verksamhet3", "lakare_vieux");
-        hsaInfo = hsaService.getHSAInfo(key1);
-        vardgivareManager.saveEnhet(hsaInfo, null);
+  @Test
+  @Ignore
+  public void getEnhetsForExistingVardgivare() {
+    HSAKey key = new HSAKey("vg-verksamhet1", "verksamhet1", "lakare_my");
+    HsaInfo hsaInfo = hsaService.getHSAInfo(key);
+    vardgivareManager.saveEnhet(hsaInfo, null);
+    HSAKey key1 = new HSAKey("vg-verksamhet2", "verksamhet3", "lakare_vieux");
+    hsaInfo = hsaService.getHSAInfo(key1);
+    vardgivareManager.saveEnhet(hsaInfo, null);
 
-        List<Enhet> enhets = vardgivareManager.getEnhets("VG-VERKSAMHET1");
+    List<Enhet> enhets = vardgivareManager.getEnhets("VG-VERKSAMHET1");
 
-        List<Enhet> allEnhets = vardgivareManager.getAllEnhets();
-        assertEquals(2, allEnhets.size());
-        assertEquals(1, enhets.size());
-        assertEquals("VERKSAMHET1", allEnhets.get(0).getEnhetId().getId());
-        //Enhet name is set by external script (tools/fileservice).
-        //Default name until set by script will be the hsa id.
-        assertEquals("VERKSAMHET1", allEnhets.get(0).getNamn());
-    }
+    List<Enhet> allEnhets = vardgivareManager.getAllEnhets();
+    assertEquals(2, allEnhets.size());
+    assertEquals(1, enhets.size());
+    assertEquals("VERKSAMHET1", allEnhets.get(0).getEnhetId().getId());
+    // Enhet name is set by external script (tools/fileservice).
+    // Default name until set by script will be the hsa id.
+    assertEquals("VERKSAMHET1", allEnhets.get(0).getNamn());
+  }
 
-    @Test
-    @Ignore
-    public void getVardgivareWithOneVardgivareTwoEnhets() {
-        HSAKey key = new HSAKey("vg-verksamhet1", "verksamhet1", "lakare_my");
-        HsaInfo hsaInfo = hsaService.getHSAInfo(key);
-        vardgivareManager.saveEnhet(hsaInfo, null);
-        HSAKey key1 = new HSAKey("vg-verksamhet1", "verksamhet2", "lakare_vieux");
-        hsaInfo = hsaService.getHSAInfo(key1);
-        vardgivareManager.saveEnhet(hsaInfo, null);
+  @Test
+  @Ignore
+  public void getVardgivareWithOneVardgivareTwoEnhets() {
+    HSAKey key = new HSAKey("vg-verksamhet1", "verksamhet1", "lakare_my");
+    HsaInfo hsaInfo = hsaService.getHSAInfo(key);
+    vardgivareManager.saveEnhet(hsaInfo, null);
+    HSAKey key1 = new HSAKey("vg-verksamhet1", "verksamhet2", "lakare_vieux");
+    hsaInfo = hsaService.getHSAInfo(key1);
+    vardgivareManager.saveEnhet(hsaInfo, null);
 
-        List<Enhet> allEnhets = vardgivareManager.getAllEnhets();
-        assertEquals(2, allEnhets.size());
-    }
-
+    List<Enhet> allEnhets = vardgivareManager.getAllEnhets();
+    assertEquals(2, allEnhets.size());
+  }
 }

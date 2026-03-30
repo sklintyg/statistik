@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -42,56 +42,86 @@ import se.inera.statistics.service.warehouse.SjukfallUtil;
 @Component
 public class IntygPerSjukfallQuery {
 
-    @Autowired
-    private RegionCutoff regionCutoff;
+  @Autowired private RegionCutoff regionCutoff;
 
-    public static final Ranges RANGES = IntygPerSjukfallGroupUtil.RANGES;
+  public static final Ranges RANGES = IntygPerSjukfallGroupUtil.RANGES;
 
-    private static Map<Ranges.Range, Counter<Ranges.Range>> count(Collection<Sjukfall> sjukfalls, Ranges ranges) {
-        Map<Ranges.Range, Counter<Ranges.Range>> counters = Counter.mapFor(ranges);
-        for (Sjukfall sjukfall : sjukfalls) {
-            Counter counter = counters.get(ranges.rangeFor(sjukfall.getIntygCountIncludingBeforeCurrentPeriod()));
-            counter.increase(sjukfall);
-        }
-        return counters;
+  private static Map<Ranges.Range, Counter<Ranges.Range>> count(
+      Collection<Sjukfall> sjukfalls, Ranges ranges) {
+    Map<Ranges.Range, Counter<Ranges.Range>> counters = Counter.mapFor(ranges);
+    for (Sjukfall sjukfall : sjukfalls) {
+      Counter counter =
+          counters.get(ranges.rangeFor(sjukfall.getIntygCountIncludingBeforeCurrentPeriod()));
+      counter.increase(sjukfall);
     }
+    return counters;
+  }
 
-    private static SimpleKonResponse getIntygPerSjukfallTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
-        int periodLength, SjukfallUtil sjukfallUtil, int cutoff) {
-        List<SimpleKonDataRow> rows = new ArrayList<>();
-        for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
-            Map<Ranges.Range, Counter<Ranges.Range>> counterMap = count(sjukfallGroup.getSjukfall(), RANGES);
-            for (Ranges.Range i : RANGES) {
-                Counter<Ranges.Range> counter = counterMap.get(i);
-                rows.add(new SimpleKonDataRow(i.getName(), ResponseUtil.filterCutoff(counter.getCountFemale(), cutoff),
-                    ResponseUtil.filterCutoff(counter.getCountMale(), cutoff)));
-            }
-        }
-        return new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
+  private static SimpleKonResponse getIntygPerSjukfallTvarsnitt(
+      Aisle aisle,
+      FilterPredicates filter,
+      LocalDate from,
+      int periods,
+      int periodLength,
+      SjukfallUtil sjukfallUtil,
+      int cutoff) {
+    List<SimpleKonDataRow> rows = new ArrayList<>();
+    for (SjukfallGroup sjukfallGroup :
+        sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
+      Map<Ranges.Range, Counter<Ranges.Range>> counterMap =
+          count(sjukfallGroup.getSjukfall(), RANGES);
+      for (Ranges.Range i : RANGES) {
+        Counter<Ranges.Range> counter = counterMap.get(i);
+        rows.add(
+            new SimpleKonDataRow(
+                i.getName(),
+                ResponseUtil.filterCutoff(counter.getCountFemale(), cutoff),
+                ResponseUtil.filterCutoff(counter.getCountMale(), cutoff)));
+      }
     }
+    return new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
+  }
 
-    public static SimpleKonResponse getIntygPerSjukfallTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
-        int periodLength, SjukfallUtil sjukfallUtil) {
-        return getIntygPerSjukfallTvarsnitt(aisle, filter, from, periods, periodLength, sjukfallUtil, 0);
-    }
+  public static SimpleKonResponse getIntygPerSjukfallTvarsnitt(
+      Aisle aisle,
+      FilterPredicates filter,
+      LocalDate from,
+      int periods,
+      int periodLength,
+      SjukfallUtil sjukfallUtil) {
+    return getIntygPerSjukfallTvarsnitt(
+        aisle, filter, from, periods, periodLength, sjukfallUtil, 0);
+  }
 
-    public SimpleKonResponse getIntygPerSjukfallTvarsnittRegion(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
-        int periodLength, SjukfallUtil sjukfallUtil) {
-        return getIntygPerSjukfallTvarsnitt(aisle, filter, from, periods, periodLength, sjukfallUtil, regionCutoff.getCutoff());
-    }
+  public SimpleKonResponse getIntygPerSjukfallTvarsnittRegion(
+      Aisle aisle,
+      FilterPredicates filter,
+      LocalDate from,
+      int periods,
+      int periodLength,
+      SjukfallUtil sjukfallUtil) {
+    return getIntygPerSjukfallTvarsnitt(
+        aisle, filter, from, periods, periodLength, sjukfallUtil, regionCutoff.getCutoff());
+  }
 
-    public static KonDataResponse getIntygPerSjukfallTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,
-        int periodLength, SjukfallUtil sjukfallUtil) {
-        final Ranges ranges = RANGES;
-        final ArrayList<Ranges.Range> rangesList = Lists.newArrayList(ranges);
-        final List<String> names = Lists.transform(rangesList, Ranges.Range::getName);
-        final List<Integer> ids = Lists.transform(rangesList, Ranges.Range::getCutoff);
-        final CounterFunction<Integer> counterFunction = (sjukfall, counter) -> {
-            final int certificateCount = sjukfall.getIntygCountIncludingBeforeCurrentPeriod();
-            final int rangeId = ranges.getRangeCutoffForValue(certificateCount);
-            counter.add(rangeId);
+  public static KonDataResponse getIntygPerSjukfallTidsserie(
+      Aisle aisle,
+      FilterPredicates filter,
+      LocalDate start,
+      int periods,
+      int periodLength,
+      SjukfallUtil sjukfallUtil) {
+    final Ranges ranges = RANGES;
+    final ArrayList<Ranges.Range> rangesList = Lists.newArrayList(ranges);
+    final List<String> names = Lists.transform(rangesList, Ranges.Range::getName);
+    final List<Integer> ids = Lists.transform(rangesList, Ranges.Range::getCutoff);
+    final CounterFunction<Integer> counterFunction =
+        (sjukfall, counter) -> {
+          final int certificateCount = sjukfall.getIntygCountIncludingBeforeCurrentPeriod();
+          final int rangeId = ranges.getRangeCutoffForValue(certificateCount);
+          counter.add(rangeId);
         };
-        return sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, ids, counterFunction);
-    }
-
+    return sjukfallUtil.calculateKonDataResponse(
+        aisle, filter, start, periods, periodLength, names, ids, counterFunction);
+  }
 }

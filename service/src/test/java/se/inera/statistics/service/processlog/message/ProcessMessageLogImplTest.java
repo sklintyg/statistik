@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -36,81 +36,81 @@ import org.springframework.transaction.annotation.Transactional;
 @DirtiesContext
 public class ProcessMessageLogImplTest extends ProcessMessageLogImpl {
 
-    // CHECKSTYLE:OFF MagicNumber
-    @Test
-    @Ignore
-    public void storedEventCanBeFetched() {
-        long id = store(MessageEventType.SENT, "data", "corr", 123L);
-        MessageEvent event = get(id);
-        assertEquals("data", event.getData());
-    }
+  // CHECKSTYLE:OFF MagicNumber
+  @Test
+  @Ignore
+  public void storedEventCanBeFetched() {
+    long id = store(MessageEventType.SENT, "data", "corr", 123L);
+    MessageEvent event = get(id);
+    assertEquals("data", event.getData());
+  }
 
-    @Test
-    @Ignore
-    public void withNoNewEventsPollReturnsNothing() {
-        List<MessageEvent> pending = getPending(2, 0, 1000);
-        assertTrue(pending.isEmpty());
-    }
+  @Test
+  @Ignore
+  public void withNoNewEventsPollReturnsNothing() {
+    List<MessageEvent> pending = getPending(2, 0, 1000);
+    assertTrue(pending.isEmpty());
+  }
 
-    @Test
-    @Ignore
-    public void withTwoPendingEventPollReturnsFirstEvent() {
-        store(MessageEventType.SENT, "1", "corr1", 123L);
-        store(MessageEventType.SENT, "2", "corr2", 123L);
+  @Test
+  @Ignore
+  public void withTwoPendingEventPollReturnsFirstEvent() {
+    store(MessageEventType.SENT, "1", "corr1", 123L);
+    store(MessageEventType.SENT, "2", "corr2", 123L);
 
-        List<MessageEvent> pending = getPending(2, 0, 1000);
-        assertEquals(2, pending.size());
-        assertEquals("1", pending.get(0).getData());
-    }
+    List<MessageEvent> pending = getPending(2, 0, 1000);
+    assertEquals(2, pending.size());
+    assertEquals("1", pending.get(0).getData());
+  }
 
-    @Test
-    @Ignore
-    public void testSetProcessed() {
-        // Given
-        List<MessageEvent> pending = getPending(100, 0, 100);
+  @Test
+  @Ignore
+  public void testSetProcessed() {
+    // Given
+    List<MessageEvent> pending = getPending(100, 0, 100);
 
-        int pendingCount = pending.size();
+    int pendingCount = pending.size();
 
-        MessageEvent event = new MessageEvent(MessageEventType.SENT, "1", "corr1", 123L);
-        long id = update(event);
+    MessageEvent event = new MessageEvent(MessageEventType.SENT, "1", "corr1", 123L);
+    long id = update(event);
 
-        pending = getPending(100, 0, 100);
+    pending = getPending(100, 0, 100);
 
-        int pendingCountAfterAdd = pending.size();
+    int pendingCountAfterAdd = pending.size();
 
-        assertEquals(pendingCount + 1, pendingCountAfterAdd);
+    assertEquals(pendingCount + 1, pendingCountAfterAdd);
 
-        // When
-        setProcessed(id);
+    // When
+    setProcessed(id);
 
-        // Then
-        pending = getPending(100, 0, 100);
-        int pendingCountProcessed = pending.size();
+    // Then
+    pending = getPending(100, 0, 100);
+    int pendingCountProcessed = pending.size();
 
-        assertEquals(pendingCount, pendingCountProcessed);
-    }
+    assertEquals(pendingCount, pendingCountProcessed);
+  }
 
-    @Test
-    @Ignore
-    public void testMaxNumberOfTries() {
-        MessageEvent event = new MessageEvent(MessageEventType.SENT, "1", "corr1", 123L);
-        event.setTries(4);
-        update(event);
+  @Test
+  @Ignore
+  public void testMaxNumberOfTries() {
+    MessageEvent event = new MessageEvent(MessageEventType.SENT, "1", "corr1", 123L);
+    event.setTries(4);
+    update(event);
 
-        List<MessageEvent> pending = getPending(2, 0, 1000);
-        assertEquals(1, pending.size());
+    List<MessageEvent> pending = getPending(2, 0, 1000);
+    assertEquals(1, pending.size());
 
-        pending = getPending(2, 0, 4);
-        assertEquals(1, pending.size());
+    pending = getPending(2, 0, 4);
+    assertEquals(1, pending.size());
 
-        pending = getPending(2, 0, 3);
-        assertEquals(0, pending.size());
-    }
+    pending = getPending(2, 0, 3);
+    assertEquals(0, pending.size());
+  }
 
-    // CHECKSTYLE:ON MagicNumber
+  // CHECKSTYLE:ON MagicNumber
 
-    @Transactional
-    protected MessageEvent get(long id) {
-        return getManager().find(MessageEvent.class, id);
-    }
+  @Transactional
+  protected MessageEvent get(long id) {
+    return getManager().find(MessageEvent.class, id);
+  }
 }

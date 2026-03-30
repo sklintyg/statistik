@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,26 +23,26 @@ import java.util.List;
 
 public class SickLeaveLengthOverview implements Serializable {
 
-    private final List<BarChartData> chartData;
-    private final int longSickLeavesTotal;
-    private final int longSickLeavesAlternation;
+  private final List<BarChartData> chartData;
+  private final int longSickLeavesTotal;
+  private final int longSickLeavesAlternation;
 
-    public SickLeaveLengthOverview(List<BarChartData> chartData, int longSickLeavesTotal, int longSickLeavesAlternation) {
-        this.chartData = chartData;
-        this.longSickLeavesTotal = longSickLeavesTotal;
-        this.longSickLeavesAlternation = longSickLeavesAlternation;
-    }
+  public SickLeaveLengthOverview(
+      List<BarChartData> chartData, int longSickLeavesTotal, int longSickLeavesAlternation) {
+    this.chartData = chartData;
+    this.longSickLeavesTotal = longSickLeavesTotal;
+    this.longSickLeavesAlternation = longSickLeavesAlternation;
+  }
 
-    public List<BarChartData> getChartData() {
-        return chartData;
-    }
+  public List<BarChartData> getChartData() {
+    return chartData;
+  }
 
-    public int getLongSickLeavesTotal() {
-        return longSickLeavesTotal;
-    }
+  public int getLongSickLeavesTotal() {
+    return longSickLeavesTotal;
+  }
 
-    public int getLongSickLeavesAlternation() {
-        return longSickLeavesAlternation;
-    }
-
+  public int getLongSickLeavesAlternation() {
+    return longSickLeavesAlternation;
+  }
 }

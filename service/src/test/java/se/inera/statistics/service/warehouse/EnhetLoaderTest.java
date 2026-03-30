@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -43,75 +43,93 @@ import se.inera.statistics.service.processlog.Enhet;
 @DirtiesContext
 public class EnhetLoaderTest {
 
-    @Autowired
-    private EnhetLoader enhetLoader;
+  @Autowired private EnhetLoader enhetLoader;
 
-    @PersistenceContext(unitName = "IneraStatisticsLog")
-    private EntityManager manager;
+  @PersistenceContext(unitName = "IneraStatisticsLog")
+  private EntityManager manager;
 
-    @Test
-    @Transactional
-    @Ignore
-    public void testGetEnhets() throws Exception {
-        //Given
-        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e1"), "1", "", "", "", "ve1"));
-        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e2"), "2", "", "", "", "ve2"));
-        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e3"), "3", "", "", "", "ve3"));
-        manager.persist(new Enhet(new HsaIdVardgivare("vg2"), new HsaIdEnhet("e4"), "4", "", "", "", "ve4"));
-        manager.persist(new Enhet(new HsaIdVardgivare("vg2"), new HsaIdEnhet("e5"), "5", "", "", "", "ve5"));
+  @Test
+  @Transactional
+  @Ignore
+  public void testGetEnhets() throws Exception {
+    // Given
+    manager.persist(
+        new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e1"), "1", "", "", "", "ve1"));
+    manager.persist(
+        new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e2"), "2", "", "", "", "ve2"));
+    manager.persist(
+        new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e3"), "3", "", "", "", "ve3"));
+    manager.persist(
+        new Enhet(new HsaIdVardgivare("vg2"), new HsaIdEnhet("e4"), "4", "", "", "", "ve4"));
+    manager.persist(
+        new Enhet(new HsaIdVardgivare("vg2"), new HsaIdEnhet("e5"), "5", "", "", "", "ve5"));
 
-        //When
-        final List<Enhet> enhetsWithHsaId = enhetLoader
-            .getEnhets(Arrays.asList(new HsaIdEnhet("e1"), new HsaIdEnhet("e2"), new HsaIdEnhet("e4")));
+    // When
+    final List<Enhet> enhetsWithHsaId =
+        enhetLoader.getEnhets(
+            Arrays.asList(new HsaIdEnhet("e1"), new HsaIdEnhet("e2"), new HsaIdEnhet("e4")));
 
-        //Then
-        final List<String> enhetNames = enhetsWithHsaId.stream().map(Enhet::getNamn).collect(Collectors.toList());
-        assertEquals(3, enhetNames.size());
-        assertTrue(enhetNames.contains("1"));
-        assertTrue(enhetNames.contains("2"));
-        assertTrue(enhetNames.contains("4"));
-    }
+    // Then
+    final List<String> enhetNames =
+        enhetsWithHsaId.stream().map(Enhet::getNamn).collect(Collectors.toList());
+    assertEquals(3, enhetNames.size());
+    assertTrue(enhetNames.contains("1"));
+    assertTrue(enhetNames.contains("2"));
+    assertTrue(enhetNames.contains("4"));
+  }
 
-    @Test
-    @Transactional
-    @Ignore
-    public void testGetAllEnhetsForVg() throws Exception {
-        //Given
-        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e1"), "1", "", "", "", "ve1"));
-        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e2"), "2", "", "", "", "ve2"));
-        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e3"), "3", "", "", "", "ve3"));
-        manager.persist(new Enhet(new HsaIdVardgivare("vg2"), new HsaIdEnhet("e4"), "4", "", "", "", "ve4"));
-        manager.persist(new Enhet(new HsaIdVardgivare("vg2"), new HsaIdEnhet("e5"), "5", "", "", "", "ve5"));
+  @Test
+  @Transactional
+  @Ignore
+  public void testGetAllEnhetsForVg() throws Exception {
+    // Given
+    manager.persist(
+        new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e1"), "1", "", "", "", "ve1"));
+    manager.persist(
+        new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e2"), "2", "", "", "", "ve2"));
+    manager.persist(
+        new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e3"), "3", "", "", "", "ve3"));
+    manager.persist(
+        new Enhet(new HsaIdVardgivare("vg2"), new HsaIdEnhet("e4"), "4", "", "", "", "ve4"));
+    manager.persist(
+        new Enhet(new HsaIdVardgivare("vg2"), new HsaIdEnhet("e5"), "5", "", "", "", "ve5"));
 
-        //When
-        final List<Enhet> enhetsWithHsaId = enhetLoader.getAllEnhetsForVg(new HsaIdVardgivare("VG2"));
+    // When
+    final List<Enhet> enhetsWithHsaId = enhetLoader.getAllEnhetsForVg(new HsaIdVardgivare("VG2"));
 
-        //Then
-        final List<String> enhetNames = enhetsWithHsaId.stream().map(Enhet::getNamn).collect(Collectors.toList());
-        assertEquals(2, enhetNames.size());
-        assertTrue(enhetNames.contains("4"));
-        assertTrue(enhetNames.contains("5"));
-    }
+    // Then
+    final List<String> enhetNames =
+        enhetsWithHsaId.stream().map(Enhet::getNamn).collect(Collectors.toList());
+    assertEquals(2, enhetNames.size());
+    assertTrue(enhetNames.contains("4"));
+    assertTrue(enhetNames.contains("5"));
+  }
 
-    @Test
-    @Transactional
-    @Ignore
-    public void getAllEnhetsForVardenhet() throws Exception {
-        //Given
-        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e1"), "1", "", "", "", "e1"));
-        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e2"), "2", "", "", "", "e1"));
-        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e3"), "3", "", "", "", "e3"));
-        manager.persist(new Enhet(new HsaIdVardgivare("vg2"), new HsaIdEnhet("e4"), "4", "", "", "", "e4"));
-        manager.persist(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e5"), "5", "", "", "", "e1"));
+  @Test
+  @Transactional
+  @Ignore
+  public void getAllEnhetsForVardenhet() throws Exception {
+    // Given
+    manager.persist(
+        new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e1"), "1", "", "", "", "e1"));
+    manager.persist(
+        new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e2"), "2", "", "", "", "e1"));
+    manager.persist(
+        new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e3"), "3", "", "", "", "e3"));
+    manager.persist(
+        new Enhet(new HsaIdVardgivare("vg2"), new HsaIdEnhet("e4"), "4", "", "", "", "e4"));
+    manager.persist(
+        new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e5"), "5", "", "", "", "e1"));
 
-        //When
-        final List<Enhet> enhetsWithHsaId = enhetLoader.getAllEnhetsForVardenhet(new HsaIdEnhet("e1"));
+    // When
+    final List<Enhet> enhetsWithHsaId = enhetLoader.getAllEnhetsForVardenhet(new HsaIdEnhet("e1"));
 
-        //Then
-        final List<String> enhetNames = enhetsWithHsaId.stream().map(Enhet::getNamn).collect(Collectors.toList());
-        assertEquals(3, enhetNames.size());
-        assertTrue(enhetNames.contains("1"));
-        assertTrue(enhetNames.contains("2"));
-        assertTrue(enhetNames.contains("5"));
-    }
+    // Then
+    final List<String> enhetNames =
+        enhetsWithHsaId.stream().map(Enhet::getNamn).collect(Collectors.toList());
+    assertEquals(3, enhetNames.size());
+    assertTrue(enhetNames.contains("1"));
+    assertTrue(enhetNames.contains("2"));
+    assertTrue(enhetNames.contains("5"));
+  }
 }

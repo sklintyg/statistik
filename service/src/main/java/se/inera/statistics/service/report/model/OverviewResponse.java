@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,88 +20,107 @@ package se.inera.statistics.service.report.model;
 
 import java.util.List;
 
-@java.lang.SuppressWarnings("common-java:DuplicatedBlocks") // Code will not be cleaner if extracting a common class for
+@java.lang.SuppressWarnings(
+    "common-java:DuplicatedBlocks") // Code will not be cleaner if extracting a common class for
 // OverviewResponse and VerksamhetOverviewResponse.
 public class OverviewResponse {
 
-    private final OverviewKonsfordelning casesPerMonthSexProportion;
-    private final int casesPerMonthAlteration;
+  private final OverviewKonsfordelning casesPerMonthSexProportion;
+  private final int casesPerMonthAlteration;
 
-    private final List<OverviewChartRowExtended> diagnosisGroups;
+  private final List<OverviewChartRowExtended> diagnosisGroups;
 
-    private final List<OverviewChartRowExtended> ageGroups;
+  private final List<OverviewChartRowExtended> ageGroups;
 
-    private final List<OverviewChartRowExtended> degreeOfSickLeaveGroups;
+  private final List<OverviewChartRowExtended> degreeOfSickLeaveGroups;
 
-    private final List<OverviewChartRow> sickLeaveLengthGroups;
-    private final int longSickLeavesTotal;
-    private final int longSickLeavesAlternation;
+  private final List<OverviewChartRow> sickLeaveLengthGroups;
+  private final int longSickLeavesTotal;
+  private final int longSickLeavesAlternation;
 
-    private final List<OverviewChartRowExtended> perCounty;
+  private final List<OverviewChartRowExtended> perCounty;
 
-    // CHECKSTYLE:OFF ParameterNumberCheck
-    @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
-    public OverviewResponse(OverviewKonsfordelning casesPerMonthSexProportion,
-        int casesPerMonthAlteration, List<OverviewChartRowExtended> diagnosisGroups,
-        List<OverviewChartRowExtended> ageGroups, List<OverviewChartRowExtended> degreeOfSickLeaveGroups,
-        List<OverviewChartRow> sickLeaveLengthGroups, int longSickLeavesTotal, int longSickLeavesAlternation,
-        List<OverviewChartRowExtended> perCounty) {
-        this.casesPerMonthSexProportion = casesPerMonthSexProportion;
-        this.casesPerMonthAlteration = casesPerMonthAlteration;
-        this.diagnosisGroups = diagnosisGroups;
-        this.ageGroups = ageGroups;
-        this.degreeOfSickLeaveGroups = degreeOfSickLeaveGroups;
-        this.sickLeaveLengthGroups = sickLeaveLengthGroups;
-        this.longSickLeavesTotal = longSickLeavesTotal;
-        this.longSickLeavesAlternation = longSickLeavesAlternation;
-        this.perCounty = perCounty;
-    }
-    // CHECKSTYLE:ON ParameterNumberCheck
+  // CHECKSTYLE:OFF ParameterNumberCheck
+  @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
+  public OverviewResponse(
+      OverviewKonsfordelning casesPerMonthSexProportion,
+      int casesPerMonthAlteration,
+      List<OverviewChartRowExtended> diagnosisGroups,
+      List<OverviewChartRowExtended> ageGroups,
+      List<OverviewChartRowExtended> degreeOfSickLeaveGroups,
+      List<OverviewChartRow> sickLeaveLengthGroups,
+      int longSickLeavesTotal,
+      int longSickLeavesAlternation,
+      List<OverviewChartRowExtended> perCounty) {
+    this.casesPerMonthSexProportion = casesPerMonthSexProportion;
+    this.casesPerMonthAlteration = casesPerMonthAlteration;
+    this.diagnosisGroups = diagnosisGroups;
+    this.ageGroups = ageGroups;
+    this.degreeOfSickLeaveGroups = degreeOfSickLeaveGroups;
+    this.sickLeaveLengthGroups = sickLeaveLengthGroups;
+    this.longSickLeavesTotal = longSickLeavesTotal;
+    this.longSickLeavesAlternation = longSickLeavesAlternation;
+    this.perCounty = perCounty;
+  }
 
-    public OverviewKonsfordelning getCasesPerMonthSexProportion() {
-        return casesPerMonthSexProportion;
-    }
+  // CHECKSTYLE:ON ParameterNumberCheck
 
-    public int getCasesPerMonthAlteration() {
-        return casesPerMonthAlteration;
-    }
+  public OverviewKonsfordelning getCasesPerMonthSexProportion() {
+    return casesPerMonthSexProportion;
+  }
 
-    public List<OverviewChartRowExtended> getDiagnosisGroups() {
-        return diagnosisGroups;
-    }
+  public int getCasesPerMonthAlteration() {
+    return casesPerMonthAlteration;
+  }
 
-    public List<OverviewChartRowExtended> getAgeGroups() {
-        return ageGroups;
-    }
+  public List<OverviewChartRowExtended> getDiagnosisGroups() {
+    return diagnosisGroups;
+  }
 
-    public List<OverviewChartRowExtended> getDegreeOfSickLeaveGroups() {
-        return degreeOfSickLeaveGroups;
-    }
+  public List<OverviewChartRowExtended> getAgeGroups() {
+    return ageGroups;
+  }
 
-    public List<OverviewChartRow> getSickLeaveLengthGroups() {
-        return sickLeaveLengthGroups;
-    }
+  public List<OverviewChartRowExtended> getDegreeOfSickLeaveGroups() {
+    return degreeOfSickLeaveGroups;
+  }
 
-    public int getLongSickLeavesTotal() {
-        return longSickLeavesTotal;
-    }
+  public List<OverviewChartRow> getSickLeaveLengthGroups() {
+    return sickLeaveLengthGroups;
+  }
 
-    public int getLongSickLeavesAlternation() {
-        return longSickLeavesAlternation;
-    }
+  public int getLongSickLeavesTotal() {
+    return longSickLeavesTotal;
+  }
 
-    public List<OverviewChartRowExtended> getPerCounty() {
-        return perCounty;
-    }
+  public int getLongSickLeavesAlternation() {
+    return longSickLeavesAlternation;
+  }
 
-    @Override
-    public String toString() {
-        return "{\"OverviewResponse\":{\"casesPerMonthSexProportion\":" + casesPerMonthSexProportion + ", \"casesPerMonthAlteration\":"
-            + casesPerMonthAlteration
-            + ", \"diagnosisGroups\":" + diagnosisGroups + ", \"ageGroups\":" + ageGroups + ", \"degreeOfSickLeaveGroups\":"
-            + degreeOfSickLeaveGroups
-            + ", \"sickLeaveLengthGroups\":" + sickLeaveLengthGroups + ", \"longSickLeavesTotal\":" + longSickLeavesTotal
-            + ", \"longSickLeavesAlternation\":"
-            + longSickLeavesAlternation + ", \"perCounty\":" + perCounty + "}}";
-    }
+  public List<OverviewChartRowExtended> getPerCounty() {
+    return perCounty;
+  }
+
+  @Override
+  public String toString() {
+    return "{\"OverviewResponse\":{\"casesPerMonthSexProportion\":"
+        + casesPerMonthSexProportion
+        + ", \"casesPerMonthAlteration\":"
+        + casesPerMonthAlteration
+        + ", \"diagnosisGroups\":"
+        + diagnosisGroups
+        + ", \"ageGroups\":"
+        + ageGroups
+        + ", \"degreeOfSickLeaveGroups\":"
+        + degreeOfSickLeaveGroups
+        + ", \"sickLeaveLengthGroups\":"
+        + sickLeaveLengthGroups
+        + ", \"longSickLeavesTotal\":"
+        + longSickLeavesTotal
+        + ", \"longSickLeavesAlternation\":"
+        + longSickLeavesAlternation
+        + ", \"perCounty\":"
+        + perCounty
+        + "}}";
+  }
 }

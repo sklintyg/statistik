@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -38,78 +38,87 @@ import se.inera.statistics.web.service.dto.FilterSettings;
 
 public class SjukskrivningsgradConverterTest {
 
-    private final Clock clock = Clock.systemDefaultZone();
+  private final Clock clock = Clock.systemDefaultZone();
 
-    @Test
-    public void tableConverterTestEmptyInput() {
-        final KonDataResponse resp = new KonDataResponse(AvailableFilters.getForSjukfall(), new ArrayList<>(), new ArrayList<>());
-        TableData tableData = new DegreeOfSickLeaveConverter().convertTable(resp, "");
-        assertEquals("[[;1, ;1], [Period;1, Antal sjukfall totalt;1]]", tableData.getHeaders().toString());
-        assertEquals("[]", tableData.getRows().toString());
-    }
+  @Test
+  public void tableConverterTestEmptyInput() {
+    final KonDataResponse resp =
+        new KonDataResponse(
+            AvailableFilters.getForSjukfall(), new ArrayList<>(), new ArrayList<>());
+    TableData tableData = new DegreeOfSickLeaveConverter().convertTable(resp, "");
+    assertEquals(
+        "[[;1, ;1], [Period;1, Antal sjukfall totalt;1]]", tableData.getHeaders().toString());
+    assertEquals("[]", tableData.getRows().toString());
+  }
 
-    @Test
-    public void tableConverterTest() {
-        //Given
-        List<KonDataRow> rows = new ArrayList<>();
-        List<KonField> diagnosisGroupData = new ArrayList<>();
-        // CHECKSTYLE:OFF MagicNumber
-        diagnosisGroupData.add(new KonField(3, 2));
-        // CHECKSTYLE:ON MagicNumber
-        rows.add(new KonDataRow("period1", diagnosisGroupData));
-        final List<String> degreesOfSickLeave = Arrays.asList("50");
-        final KonDataResponse resp = new KonDataResponse(AvailableFilters.getForSjukfall(), degreesOfSickLeave, rows);
+  @Test
+  public void tableConverterTest() {
+    // Given
+    List<KonDataRow> rows = new ArrayList<>();
+    List<KonField> diagnosisGroupData = new ArrayList<>();
+    // CHECKSTYLE:OFF MagicNumber
+    diagnosisGroupData.add(new KonField(3, 2));
+    // CHECKSTYLE:ON MagicNumber
+    rows.add(new KonDataRow("period1", diagnosisGroupData));
+    final List<String> degreesOfSickLeave = Arrays.asList("50");
+    final KonDataResponse resp =
+        new KonDataResponse(AvailableFilters.getForSjukfall(), degreesOfSickLeave, rows);
 
-        //When
-        TableData tableData = new DegreeOfSickLeaveConverter().convertTable(resp, "Antal sjukfall med %1$s%% sjukskrivningsgrad");
+    // When
+    TableData tableData =
+        new DegreeOfSickLeaveConverter()
+            .convertTable(resp, "Antal sjukfall med %1$s%% sjukskrivningsgrad");
 
-        //Then
-        assertEquals(
-            "[[;1, ;1, Antal sjukfall med 50% sjukskrivningsgrad;3], [Period;1, Antal sjukfall totalt;1, Totalt;1, Kvinnor;1, Män;1]]",
-            tableData.getHeaders().toString());
-        assertEquals("[period1: [5, 5, 3, 2]]", tableData.getRows().toString());
-    }
+    // Then
+    assertEquals(
+        "[[;1, ;1, Antal sjukfall med 50% sjukskrivningsgrad;3], [Period;1, Antal sjukfall totalt;1, Totalt;1, Kvinnor;1, Män;1]]",
+        tableData.getHeaders().toString());
+    assertEquals("[period1: [5, 5, 3, 2]]", tableData.getRows().toString());
+  }
 
-    @Test
-    public void converterTestEmpty() {
-        KonDataResponse resp = new KonDataResponse(AvailableFilters.getForSjukfall(), new ArrayList<>(), new ArrayList<>());
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range(clock));
-        DualSexStatisticsData data = new DegreeOfSickLeaveConverter().convert(resp, filterSettings);
-        assertEquals("[Totalt]", data.getFemaleChart().getCategories().toString());
-        assertEquals("[Totalt sjukskrivningsgrad: [0]]", data.getFemaleChart().getSeries().toString());
-    }
+  @Test
+  public void converterTestEmpty() {
+    KonDataResponse resp =
+        new KonDataResponse(
+            AvailableFilters.getForSjukfall(), new ArrayList<>(), new ArrayList<>());
+    final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range(clock));
+    DualSexStatisticsData data = new DegreeOfSickLeaveConverter().convert(resp, filterSettings);
+    assertEquals("[Totalt]", data.getFemaleChart().getCategories().toString());
+    assertEquals("[Totalt sjukskrivningsgrad: [0]]", data.getFemaleChart().getSeries().toString());
+  }
 
-    @Test
-    public void converterTest() {
-        //Given
-        List<KonDataRow> rows = new ArrayList<>();
-        List<KonField> diagnosisGroupData = new ArrayList<>();
-        // CHECKSTYLE:OFF MagicNumber
-        diagnosisGroupData.add(new KonField(3, 2));
-        // CHECKSTYLE:ON MagicNumber
-        rows.add(new KonDataRow("period1", diagnosisGroupData));
-        final List<String> degreesOfSickLeave = Arrays.asList("50 %");
-        final KonDataResponse resp = new KonDataResponse(AvailableFilters.getForSjukfall(), degreesOfSickLeave, rows);
+  @Test
+  public void converterTest() {
+    // Given
+    List<KonDataRow> rows = new ArrayList<>();
+    List<KonField> diagnosisGroupData = new ArrayList<>();
+    // CHECKSTYLE:OFF MagicNumber
+    diagnosisGroupData.add(new KonField(3, 2));
+    // CHECKSTYLE:ON MagicNumber
+    rows.add(new KonDataRow("period1", diagnosisGroupData));
+    final List<String> degreesOfSickLeave = Arrays.asList("50 %");
+    final KonDataResponse resp =
+        new KonDataResponse(AvailableFilters.getForSjukfall(), degreesOfSickLeave, rows);
 
-        //When
-        DegreeOfSickLeaveConverter converter = new DegreeOfSickLeaveConverter();
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range(clock));
-        DualSexStatisticsData data = converter.convert(resp, filterSettings);
+    // When
+    DegreeOfSickLeaveConverter converter = new DegreeOfSickLeaveConverter();
+    final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range(clock));
+    DualSexStatisticsData data = converter.convert(resp, filterSettings);
 
-        //Then
-        assertEquals("[period1]", data.getFemaleChart().getCategories().toString());
-        assertTrue(
-            data.getFemaleChart().getSeries().toString().contains("50 % sjukskrivningsgrad: [3]"),
-            data.getFemaleChart().getSeries().toString());
+    // Then
+    assertEquals("[period1]", data.getFemaleChart().getCategories().toString());
+    assertTrue(
+        data.getFemaleChart().getSeries().toString().contains("50 % sjukskrivningsgrad: [3]"),
+        data.getFemaleChart().getSeries().toString());
 
-        assertEquals("[period1]", data.getMaleChart().getCategories().toString());
-        assertTrue(
-            data.getMaleChart().getSeries().toString().contains("50 % sjukskrivningsgrad: [2]"),
-            data.getMaleChart().getSeries().toString());
+    assertEquals("[period1]", data.getMaleChart().getCategories().toString());
+    assertTrue(
+        data.getMaleChart().getSeries().toString().contains("50 % sjukskrivningsgrad: [2]"),
+        data.getMaleChart().getSeries().toString());
 
-        assertEquals("[[;1, ;1, 50 % sjukskrivningsgrad;3], [Period;1, Antal sjukfall totalt;1, Totalt;1, Kvinnor;1, Män;1]]",
-            data.getTableData().getHeaders().toString());
-        assertEquals("[period1: [5, 5, 3, 2]]", data.getTableData().getRows().toString());
-    }
-
+    assertEquals(
+        "[[;1, ;1, 50 % sjukskrivningsgrad;3], [Period;1, Antal sjukfall totalt;1, Totalt;1, Kvinnor;1, Män;1]]",
+        data.getTableData().getHeaders().toString());
+    assertEquals("[period1: [5, 5, 3, 2]]", data.getTableData().getRows().toString());
+  }
 }

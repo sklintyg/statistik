@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -28,46 +28,52 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class ProcessLogImpl extends AbstractProcessLog implements ProcessLog {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ProcessLogImpl.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ProcessLogImpl.class);
 
-    public ProcessLogImpl() {
-        super("PROCESSED_HSA");
-    }
+  public ProcessLogImpl() {
+    super("PROCESSED_HSA");
+  }
 
-    @Override
-    @Transactional
-    public long store(EventType type, String data, String correlationId, long timestamp) {
-        TypedQuery<IntygEvent> select = getManager()
-            .createQuery("SELECT e FROM IntygEvent e WHERE e.correlationId = :correlationId AND e.type = :type", IntygEvent.class);
-        select.setParameter("correlationId", correlationId).setParameter("type", type);
-        List<IntygEvent> result = select.getResultList();
-        if (result.isEmpty()) {
-            IntygEvent event = new IntygEvent(type, data, correlationId, timestamp);
-            getManager().persist(event);
-            return event.getId();
-        } else {
-            LOG.info("Intyg already exists, ignoring: " + correlationId);
-            return result.get(0).getId();
-        }
+  @Override
+  @Transactional
+  public long store(EventType type, String data, String correlationId, long timestamp) {
+    TypedQuery<IntygEvent> select =
+        getManager()
+            .createQuery(
+                "SELECT e FROM IntygEvent e WHERE e.correlationId = :correlationId AND e.type = :type",
+                IntygEvent.class);
+    select.setParameter("correlationId", correlationId).setParameter("type", type);
+    List<IntygEvent> result = select.getResultList();
+    if (result.isEmpty()) {
+      IntygEvent event = new IntygEvent(type, data, correlationId, timestamp);
+      getManager().persist(event);
+      return event.getId();
+    } else {
+      LOG.info("Intyg already exists, ignoring: " + correlationId);
+      return result.get(0).getId();
     }
+  }
 
-    @Transactional
-    public IntygEvent get(long id) {
-        return getManager().find(IntygEvent.class, id);
-    }
+  @Transactional
+  public IntygEvent get(long id) {
+    return getManager().find(IntygEvent.class, id);
+  }
 
-    @Override
-    @Transactional
-    public List<IntygEvent> getPending(int max) {
-        TypedQuery<IntygEvent> allQuery = getManager().createQuery("SELECT e from IntygEvent e WHERE e.id > :lastId ORDER BY e.id ASC",
-            IntygEvent.class);
-        allQuery.setParameter("lastId", getLastId());
-        allQuery.setMaxResults(max);
-        return allQuery.getResultList();
-    }
+  @Override
+  @Transactional
+  public List<IntygEvent> getPending(int max) {
+    TypedQuery<IntygEvent> allQuery =
+        getManager()
+            .createQuery(
+                "SELECT e from IntygEvent e WHERE e.id > :lastId ORDER BY e.id ASC",
+                IntygEvent.class);
+    allQuery.setParameter("lastId", getLastId());
+    allQuery.setMaxResults(max);
+    return allQuery.getResultList();
+  }
 
-    @Override
-    public void confirm(long id) {
-        confirmId(id);
-    }
+  @Override
+  public void confirm(long id) {
+    confirmId(id);
+  }
 }

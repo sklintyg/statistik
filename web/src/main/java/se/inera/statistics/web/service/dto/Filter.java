@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,78 +25,85 @@ import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 public class Filter {
 
-    private FilterPredicates predicate;
-    private Collection<HsaIdEnhet> enheter;
-    private Collection<String> diagnoser;
-    private Collection<String> sjukskrivningslangd;
-    private Collection<String> aldersgrupp;
-    private final String hash;
-    private Collection<String> intygstyper;
-    private boolean useDefaultPeriod;
+  private FilterPredicates predicate;
+  private Collection<HsaIdEnhet> enheter;
+  private Collection<String> diagnoser;
+  private Collection<String> sjukskrivningslangd;
+  private Collection<String> aldersgrupp;
+  private final String hash;
+  private Collection<String> intygstyper;
+  private boolean useDefaultPeriod;
 
-    //CHECKSTYLE:OFF ParameterNumber
-    public Filter(FilterPredicates predicate, Collection<HsaIdEnhet> enheter, Collection<String> diagnoser,
-        Collection<String> sjukskrivningslangd, Collection<String> aldersgrupp, String hashValue,
-        Collection<String> intygstyper, boolean useDefaultPeriod) {
-        this.predicate = predicate;
-        this.enheter = enheter;
-        this.diagnoser = diagnoser;
-        this.sjukskrivningslangd = sjukskrivningslangd;
-        this.aldersgrupp = aldersgrupp;
-        this.hash = hashValue;
-        this.intygstyper = intygstyper;
-        this.useDefaultPeriod = useDefaultPeriod;
-    }
-    //CHECKSTYLE:On ParameterNumber
+  // CHECKSTYLE:OFF ParameterNumber
+  public Filter(
+      FilterPredicates predicate,
+      Collection<HsaIdEnhet> enheter,
+      Collection<String> diagnoser,
+      Collection<String> sjukskrivningslangd,
+      Collection<String> aldersgrupp,
+      String hashValue,
+      Collection<String> intygstyper,
+      boolean useDefaultPeriod) {
+    this.predicate = predicate;
+    this.enheter = enheter;
+    this.diagnoser = diagnoser;
+    this.sjukskrivningslangd = sjukskrivningslangd;
+    this.aldersgrupp = aldersgrupp;
+    this.hash = hashValue;
+    this.intygstyper = intygstyper;
+    this.useDefaultPeriod = useDefaultPeriod;
+  }
 
-    public Filter(Filter filter, boolean useDefaultPeriod) {
-        this.predicate = filter.predicate;
-        this.enheter = filter.enheter;
-        this.diagnoser = filter.diagnoser;
-        this.sjukskrivningslangd = filter.sjukskrivningslangd;
-        this.aldersgrupp = filter.aldersgrupp;
-        this.hash = filter.hash;
-        this.intygstyper = filter.intygstyper;
-        this.useDefaultPeriod = useDefaultPeriod;
-    }
+  // CHECKSTYLE:On ParameterNumber
 
-    public static Filter empty() {
-        return new Filter(SjukfallUtil.ALL_ENHETER, null, null, null, null, null, null, true);
-    }
+  public Filter(Filter filter, boolean useDefaultPeriod) {
+    this.predicate = filter.predicate;
+    this.enheter = filter.enheter;
+    this.diagnoser = filter.diagnoser;
+    this.sjukskrivningslangd = filter.sjukskrivningslangd;
+    this.aldersgrupp = filter.aldersgrupp;
+    this.hash = filter.hash;
+    this.intygstyper = filter.intygstyper;
+    this.useDefaultPeriod = useDefaultPeriod;
+  }
 
-    public FilterPredicates getPredicate() {
-        return predicate;
-    }
+  public static Filter empty() {
+    return new Filter(SjukfallUtil.ALL_ENHETER, null, null, null, null, null, null, true);
+  }
 
-    public Collection<HsaIdEnhet> getEnheter() {
-        return enheter;
-    }
+  public FilterPredicates getPredicate() {
+    return predicate;
+  }
 
-    public Collection<String> getDiagnoser() {
-        return diagnoser;
-    }
+  public Collection<HsaIdEnhet> getEnheter() {
+    return enheter;
+  }
 
-    public Collection<String> getSjukskrivningslangd() {
-        return sjukskrivningslangd;
-    }
+  public Collection<String> getDiagnoser() {
+    return diagnoser;
+  }
 
-    public Collection<String> getAldersgrupp() {
-        return aldersgrupp;
-    }
+  public Collection<String> getSjukskrivningslangd() {
+    return sjukskrivningslangd;
+  }
 
-    public String getFilterHash() {
-        return hash;
-    }
+  public Collection<String> getAldersgrupp() {
+    return aldersgrupp;
+  }
 
-    public Collection<String> getIntygstyper() {
-        return intygstyper;
-    }
+  public String getFilterHash() {
+    return hash;
+  }
 
-    public void setIntygstyper(Collection<String> intygstyper) {
-        this.intygstyper = intygstyper;
-    }
+  public Collection<String> getIntygstyper() {
+    return intygstyper;
+  }
 
-    public boolean isUseDefaultPeriod() {
-        return useDefaultPeriod;
-    }
+  public void setIntygstyper(Collection<String> intygstyper) {
+    this.intygstyper = intygstyper;
+  }
+
+  public boolean isUseDefaultPeriod() {
+    return useDefaultPeriod;
+  }
 }

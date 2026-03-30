@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -31,48 +31,54 @@ import se.inera.statistics.service.warehouse.SjukfallExtended;
 
 class ExtendedSjukfallCalculator {
 
-    static final Comparator<Fact> FACT_ORDER_BY_STARTDATE = Comparator.comparingInt(Fact::getStartdatum);
-    private final Map<Long, List<Fact>> factsPerPatientInAisle;
+  static final Comparator<Fact> FACT_ORDER_BY_STARTDATE =
+      Comparator.comparingInt(Fact::getStartdatum);
+  private final Map<Long, List<Fact>> factsPerPatientInAisle;
 
-    ExtendedSjukfallCalculator(List<Fact> aisle) {
-        this.factsPerPatientInAisle = getFactsPerPatient(aisle);
+  ExtendedSjukfallCalculator(List<Fact> aisle) {
+    this.factsPerPatientInAisle = getFactsPerPatient(aisle);
+  }
+
+  /**
+   * Will extend the startdate of the sjukfall as far back as possible using all intyg for the
+   * patient.
+   *
+   * @param patient The patient to look for when searching for more earlier intyg.
+   * @param sjukfall The sjukfall that will be extended if any suitable intygs are found.
+   * @return The final sjukfall, extended with earlier facts if possible.
+   */
+  SjukfallExtended getExtendedSjukfallStart(long patient, @Nonnull SjukfallExtended sjukfall) {
+    final List<Fact> allIntygForPatient = factsPerPatientInAisle.get(patient);
+    if (allIntygForPatient == null) {
+      return sjukfall;
     }
+    return getExtendedSjukfallStart(sjukfall, allIntygForPatient);
+  }
 
-    /**
-     * Will extend the startdate of the sjukfall as far back as possible using all intyg for the patient.
-     *
-     * @param patient The patient to look for when searching for more earlier intyg.
-     * @param sjukfall The sjukfall that will be extended if any suitable intygs are found.
-     * @return The final sjukfall, extended with earlier facts if possible.
-     */
-    SjukfallExtended getExtendedSjukfallStart(long patient, @Nonnull SjukfallExtended sjukfall) {
-        final List<Fact> allIntygForPatient = factsPerPatientInAisle.get(patient);
-        if (allIntygForPatient == null) {
-            return sjukfall;
-        }
-        return getExtendedSjukfallStart(sjukfall, allIntygForPatient);
-    }
+  private Map<Long, List<Fact>> getFactsPerPatient(List<Fact> facts) {
+    return facts.stream().collect(Collectors.groupingBy(Fact::getPatient));
+  }
 
-    private Map<Long, List<Fact>> getFactsPerPatient(List<Fact> facts) {
-        return facts.stream().collect(Collectors.groupingBy(Fact::getPatient));
-    }
-
-    private SjukfallExtended getExtendedSjukfallStart(final SjukfallExtended sjukfall, Collection<Fact> allIntygForPatient) {
-        final List<Fact> allEarlierIntygForPatient = allIntygForPatient.stream()
+  private SjukfallExtended getExtendedSjukfallStart(
+      final SjukfallExtended sjukfall, Collection<Fact> allIntygForPatient) {
+    final List<Fact> allEarlierIntygForPatient =
+        allIntygForPatient.stream()
             .filter(fact -> fact.getStartdatum() < sjukfall.getStart())
             .collect(Collectors.toList());
-        final Optional<Fact> extendableIntyg = allEarlierIntygForPatient.stream()
+    final Optional<Fact> extendableIntyg =
+        allEarlierIntygForPatient.stream()
             .filter(fact -> isConnectable(sjukfall, fact))
             .min(FACT_ORDER_BY_STARTDATE);
-        if (!extendableIntyg.isPresent()) {
-            return sjukfall;
-        }
-        final SjukfallExtended mergedSjukfall = sjukfall.extendSjukfallWithNewStart(extendableIntyg.get());
-        return getExtendedSjukfallStart(mergedSjukfall, allEarlierIntygForPatient);
+    if (!extendableIntyg.isPresent()) {
+      return sjukfall;
     }
+    final SjukfallExtended mergedSjukfall =
+        sjukfall.extendSjukfallWithNewStart(extendableIntyg.get());
+    return getExtendedSjukfallStart(mergedSjukfall, allEarlierIntygForPatient);
+  }
 
-    private boolean isConnectable(SjukfallExtended sjukfall, Fact fact) {
-        return fact.getStartdatum() + fact.getSjukskrivningslangd() + Sjukfall.MAX_GAP >= sjukfall.getStart();
-    }
-
+  private boolean isConnectable(SjukfallExtended sjukfall, Fact fact) {
+    return fact.getStartdatum() + fact.getSjukskrivningslangd() + Sjukfall.MAX_GAP
+        >= sjukfall.getStart();
+  }
 }

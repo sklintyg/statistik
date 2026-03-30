@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.service.processlog.message;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -31,83 +30,85 @@ import jakarta.persistence.Table;
 @Table(name = MessageEvent.TABLE)
 public class MessageEvent {
 
-    public static final String TABLE = "meddelandehandelse";
+  public static final String TABLE = "meddelandehandelse";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @Enumerated(EnumType.STRING)
-    private MessageEventType type;
-    private String data;
-    private String correlationId;
-    private int tries;
-    private boolean processed;
-    private long timestamp;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
-    public MessageEvent() {
-        // Empty constructor (as required by JPA spec).
-    }
+  @Enumerated(EnumType.STRING)
+  private MessageEventType type;
 
-    public MessageEvent(MessageEventType type, String data, String correlationId, long timestamp) {
-        this.type = type;
-        this.data = data;
-        this.correlationId = correlationId;
-        this.timestamp = timestamp;
-    }
+  private String data;
+  private String correlationId;
+  private int tries;
+  private boolean processed;
+  private long timestamp;
 
-    public long getId() {
-        return id;
-    }
+  public MessageEvent() {
+    // Empty constructor (as required by JPA spec).
+  }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+  public MessageEvent(MessageEventType type, String data, String correlationId, long timestamp) {
+    this.type = type;
+    this.data = data;
+    this.correlationId = correlationId;
+    this.timestamp = timestamp;
+  }
 
-    public MessageEventType getType() {
-        return type;
-    }
+  public long getId() {
+    return id;
+  }
 
-    public void setType(MessageEventType type) {
-        this.type = type;
-    }
+  public void setId(long id) {
+    this.id = id;
+  }
 
-    public String getData() {
-        return data;
-    }
+  public MessageEventType getType() {
+    return type;
+  }
 
-    public void setData(String data) {
-        this.data = data;
-    }
+  public void setType(MessageEventType type) {
+    this.type = type;
+  }
 
-    public String getCorrelationId() {
-        return correlationId;
-    }
+  public String getData() {
+    return data;
+  }
 
-    public void setCorrelationId(String correlationId) {
-        this.correlationId = correlationId;
-    }
+  public void setData(String data) {
+    this.data = data;
+  }
 
-    public long getTimestamp() {
-        return timestamp;
-    }
+  public String getCorrelationId() {
+    return correlationId;
+  }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
+  public void setCorrelationId(String correlationId) {
+    this.correlationId = correlationId;
+  }
 
-    public int getTries() {
-        return tries;
-    }
+  public long getTimestamp() {
+    return timestamp;
+  }
 
-    public void setTries(int tries) {
-        this.tries = tries;
-    }
+  public void setTimestamp(long timestamp) {
+    this.timestamp = timestamp;
+  }
 
-    public boolean isProcessed() {
-        return processed;
-    }
+  public int getTries() {
+    return tries;
+  }
 
-    public void setProcessed(boolean processed) {
-        this.processed = processed;
-    }
+  public void setTries(int tries) {
+    this.tries = tries;
+  }
+
+  public boolean isProcessed() {
+    return processed;
+  }
+
+  public void setProcessed(boolean processed) {
+    this.processed = processed;
+  }
 }

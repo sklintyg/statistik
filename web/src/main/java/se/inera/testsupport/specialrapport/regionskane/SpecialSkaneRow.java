@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,25 +20,25 @@ package se.inera.testsupport.specialrapport.regionskane;
 
 public class SpecialSkaneRow {
 
-    private String group;
-    private String enhet;
-    private Number resultat;
+  private String group;
+  private String enhet;
+  private Number resultat;
 
-    public SpecialSkaneRow(String group, String enhet, Number resultat) {
-        this.group = group;
-        this.enhet = enhet;
-        this.resultat = resultat;
-    }
+  public SpecialSkaneRow(String group, String enhet, Number resultat) {
+    this.group = group;
+    this.enhet = enhet;
+    this.resultat = resultat;
+  }
 
-    public String getGroup() {
-        return group;
-    }
+  public String getGroup() {
+    return group;
+  }
 
-    public Number getResultat() {
-        return resultat;
-    }
+  public Number getResultat() {
+    return resultat;
+  }
 
-    public String getEnhet() {
-        return enhet;
-    }
+  public String getEnhet() {
+    return enhet;
+  }
 }

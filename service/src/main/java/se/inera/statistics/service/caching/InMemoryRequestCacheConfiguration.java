@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package se.inera.statistics.service.caching;
 
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -30,16 +29,17 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 
 /**
- * Used for caching things in memory for a specific request. Can reduce trips to external cache or databases.
+ * Used for caching things in memory for a specific request. Can reduce trips to external cache or
+ * databases.
  */
 @Profile("request-caching-enabled")
 @Configuration
 public class InMemoryRequestCacheConfiguration {
 
-    @Bean
-    @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE, proxyMode = ScopedProxyMode.TARGET_CLASS)
-    @Primary
-    public CacheManager scopeRequestCacheManager() {
-        return new ConcurrentMapCacheManager();
-    }
+  @Bean
+  @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE, proxyMode = ScopedProxyMode.TARGET_CLASS)
+  @Primary
+  public CacheManager scopeRequestCacheManager() {
+    return new ConcurrentMapCacheManager();
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -31,135 +31,141 @@ import se.inera.statistics.web.service.dto.FilterDataResponse;
 
 public class TableDataReportTest {
 
-    @Test
-    public void testIsEmptyTrue() {
-        //Given
-        final TableDataReport tableDataReport = new TableDataReport() {
+  @Test
+  public void testIsEmptyTrue() {
+    // Given
+    final TableDataReport tableDataReport =
+        new TableDataReport() {
 
-            @Override
-            public TableData getTableData() {
-                return null;
-            }
+          @Override
+          public TableData getTableData() {
+            return null;
+          }
 
-            @Override
-            public String getPeriod() {
-                return null;
-            }
+          @Override
+          public String getPeriod() {
+            return null;
+          }
 
-            @Override
-            public FilterDataResponse getFilter() {
-                return null;
-            }
+          @Override
+          public FilterDataResponse getFilter() {
+            return null;
+          }
 
-            @Override
-            public List<Message> getMessages() {
-                return null;
-            }
+          @Override
+          public List<Message> getMessages() {
+            return null;
+          }
 
-            @Override
-            public List<ChartData> getChartDatas() {
-                return Collections.emptyList();
-            }
+          @Override
+          public List<ChartData> getChartDatas() {
+            return Collections.emptyList();
+          }
 
-            @Override
-            public AvailableFilters getAvailableFilters() {
-                return null;
-            }
+          @Override
+          public AvailableFilters getAvailableFilters() {
+            return null;
+          }
         };
 
-        //When
-        final boolean empty = tableDataReport.isEmpty();
+    // When
+    final boolean empty = tableDataReport.isEmpty();
 
-        //Then
-        assertTrue(empty);
-    }
+    // Then
+    assertTrue(empty);
+  }
 
-    @Test
-    public void testIsEmptyFalse() {
-        //Given
-        final TableDataReport tableDataReport = new TableDataReport() {
+  @Test
+  public void testIsEmptyFalse() {
+    // Given
+    final TableDataReport tableDataReport =
+        new TableDataReport() {
 
-            @Override
-            public TableData getTableData() {
-                return null;
-            }
+          @Override
+          public TableData getTableData() {
+            return null;
+          }
 
-            @Override
-            public String getPeriod() {
-                return null;
-            }
+          @Override
+          public String getPeriod() {
+            return null;
+          }
 
-            @Override
-            public FilterDataResponse getFilter() {
-                return null;
-            }
+          @Override
+          public FilterDataResponse getFilter() {
+            return null;
+          }
 
-            @Override
-            public List<Message> getMessages() {
-                return null;
-            }
+          @Override
+          public List<Message> getMessages() {
+            return null;
+          }
 
-            @Override
-            public List<ChartData> getChartDatas() {
-                return Arrays.asList(new ChartData(Arrays.asList(new ChartSeries("", Arrays.asList(1, 2))),
+          @Override
+          public List<ChartData> getChartDatas() {
+            return Arrays.asList(
+                new ChartData(
+                    Arrays.asList(new ChartSeries("", Arrays.asList(1, 2))),
                     Arrays.asList(new ChartCategory("cat1"), new ChartCategory("cat2"))));
-            }
+          }
 
-            @Override
-            public AvailableFilters getAvailableFilters() {
-                return null;
-            }
+          @Override
+          public AvailableFilters getAvailableFilters() {
+            return null;
+          }
         };
 
-        //When
-        final boolean empty = tableDataReport.isEmpty();
+    // When
+    final boolean empty = tableDataReport.isEmpty();
 
-        //Then
-        assertFalse(empty);
-    }
+    // Then
+    assertFalse(empty);
+  }
 
-    @Test
-    public void testIsEmptyTrueWithZeroValues() {
-        //Given
-        final TableDataReport tableDataReport = new TableDataReport() {
+  @Test
+  public void testIsEmptyTrueWithZeroValues() {
+    // Given
+    final TableDataReport tableDataReport =
+        new TableDataReport() {
 
-            @Override
-            public TableData getTableData() {
-                return null;
-            }
+          @Override
+          public TableData getTableData() {
+            return null;
+          }
 
-            @Override
-            public String getPeriod() {
-                return null;
-            }
+          @Override
+          public String getPeriod() {
+            return null;
+          }
 
-            @Override
-            public FilterDataResponse getFilter() {
-                return null;
-            }
+          @Override
+          public FilterDataResponse getFilter() {
+            return null;
+          }
 
-            @Override
-            public List<Message> getMessages() {
-                return null;
-            }
+          @Override
+          public List<Message> getMessages() {
+            return null;
+          }
 
-            @Override
-            public List<ChartData> getChartDatas() {
-                return Arrays.asList(new ChartData(Arrays.asList(new ChartSeries("", Arrays.asList(0, 0))),
+          @Override
+          public List<ChartData> getChartDatas() {
+            return Arrays.asList(
+                new ChartData(
+                    Arrays.asList(new ChartSeries("", Arrays.asList(0, 0))),
                     Arrays.asList(new ChartCategory("cat1"), new ChartCategory("cat2"))));
-            }
+          }
 
-            @Override
-            public AvailableFilters getAvailableFilters() {
-                return null;
-            }
+          @Override
+          public AvailableFilters getAvailableFilters() {
+            return null;
+          }
         };
 
-        //When
-        final boolean empty = tableDataReport.isEmpty();
+    // When
+    final boolean empty = tableDataReport.isEmpty();
 
-        //Then
-        assertTrue(empty);
-    }
-
+    // Then
+    assertTrue(empty);
+  }
 }

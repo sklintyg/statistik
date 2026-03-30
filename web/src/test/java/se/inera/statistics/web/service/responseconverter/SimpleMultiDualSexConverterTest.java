@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -36,32 +36,36 @@ import se.inera.statistics.web.service.dto.FilterSettings;
 
 public class SimpleMultiDualSexConverterTest {
 
-    // CHECKSTYLE:OFF MagicNumber
+  // CHECKSTYLE:OFF MagicNumber
 
-    @Test
-    public void convertTest() {
-        SimpleDualSexConverter converter = new PeriodConverter();
-        List<SimpleKonDataRow> dualSexRows = new ArrayList<>();
-        dualSexRows.add(new SimpleKonDataRow("jan 12", 12, 13));
-        dualSexRows.add(new SimpleKonDataRow("feb 12", 20, 30));
-        dualSexRows.add(new SimpleKonDataRow("mar 12", 5, 25));
-        SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForNationell(), dualSexRows);
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(),
+  @Test
+  public void convertTest() {
+    SimpleDualSexConverter converter = new PeriodConverter();
+    List<SimpleKonDataRow> dualSexRows = new ArrayList<>();
+    dualSexRows.add(new SimpleKonDataRow("jan 12", 12, 13));
+    dualSexRows.add(new SimpleKonDataRow("feb 12", 20, 30));
+    dualSexRows.add(new SimpleKonDataRow("mar 12", 5, 25));
+    SimpleKonResponse casesPerMonth =
+        new SimpleKonResponse(AvailableFilters.getForNationell(), dualSexRows);
+    final FilterSettings filterSettings =
+        new FilterSettings(
+            Filter.empty(),
             Range.createForLastMonthsExcludingCurrent(1, Clock.systemDefaultZone()));
-        SimpleDetailsData result = converter.convert(casesPerMonth, filterSettings);
-        TableData tableData = result.getTableData();
-        assertEquals("[[Period;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]",
-            tableData.getHeaders().toString());
-        List<NamedData> rows = tableData.getRows();
-        assertEquals(3, rows.size());
-        assertEquals("jan 12", rows.get(0).getName());
-        assertEquals("feb 12", rows.get(1).getName());
-        assertEquals("mar 12", rows.get(2).getName());
-        assertEquals("[25, 12, 13]", rows.get(0).getData().toString());
-        assertEquals("[50, 20, 30]", rows.get(1).getData().toString());
-        assertEquals("[30, 5, 25]", rows.get(2).getData().toString());
-    }
+    SimpleDetailsData result = converter.convert(casesPerMonth, filterSettings);
+    TableData tableData = result.getTableData();
+    assertEquals(
+        "[[Period;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]",
+        tableData.getHeaders().toString());
+    List<NamedData> rows = tableData.getRows();
+    assertEquals(3, rows.size());
+    assertEquals("jan 12", rows.get(0).getName());
+    assertEquals("feb 12", rows.get(1).getName());
+    assertEquals("mar 12", rows.get(2).getName());
+    assertEquals("[25, 12, 13]", rows.get(0).getData().toString());
+    assertEquals("[50, 20, 30]", rows.get(1).getData().toString());
+    assertEquals("[30, 5, 25]", rows.get(2).getData().toString());
+  }
 
-    // CHECKSTYLE:ON MagicNumber
+  // CHECKSTYLE:ON MagicNumber
 
 }

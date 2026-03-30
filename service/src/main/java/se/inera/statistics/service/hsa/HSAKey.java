@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -24,36 +24,47 @@ import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
 public class HSAKey {
 
-    private final HsaIdVardgivare vardgivareId;
-    private final HsaIdEnhet enhetId;
-    private final HsaIdLakare lakareId;
+  private final HsaIdVardgivare vardgivareId;
+  private final HsaIdEnhet enhetId;
+  private final HsaIdLakare lakareId;
 
-    public HSAKey(HsaIdVardgivare vardgivareId, HsaIdEnhet enhetId, HsaIdLakare lakareId) {
-        this.vardgivareId = vardgivareId;
-        this.enhetId = enhetId;
-        this.lakareId = lakareId;
-    }
+  public HSAKey(HsaIdVardgivare vardgivareId, HsaIdEnhet enhetId, HsaIdLakare lakareId) {
+    this.vardgivareId = vardgivareId;
+    this.enhetId = enhetId;
+    this.lakareId = lakareId;
+  }
 
-    public HSAKey(String vardgivareId, String enhetId, String lakareId) {
-        this(vardgivareId != null ? new HsaIdVardgivare(vardgivareId) : null,
-            enhetId != null ? new HsaIdEnhet(enhetId) : null,
-            lakareId != null ? new HsaIdLakare(lakareId) : null);
-    }
+  public HSAKey(String vardgivareId, String enhetId, String lakareId) {
+    this(
+        vardgivareId != null ? new HsaIdVardgivare(vardgivareId) : null,
+        enhetId != null ? new HsaIdEnhet(enhetId) : null,
+        lakareId != null ? new HsaIdLakare(lakareId) : null);
+  }
 
-    public HsaIdLakare getLakareId() {
-        return lakareId;
-    }
+  public HsaIdLakare getLakareId() {
+    return lakareId;
+  }
 
-    public HsaIdVardgivare getVardgivareId() {
-        return vardgivareId;
-    }
+  public HsaIdVardgivare getVardgivareId() {
+    return vardgivareId;
+  }
 
-    public HsaIdEnhet getEnhetId() {
-        return enhetId;
-    }
+  public HsaIdEnhet getEnhetId() {
+    return enhetId;
+  }
 
-    @Override
-    public String toString() {
-        return "HSAKey{" + "vardgivareId='" + vardgivareId + '\'' + ", enhetId='" + enhetId + '\'' + ", lakareId='" + lakareId + '\'' + '}';
-    }
+  @Override
+  public String toString() {
+    return "HSAKey{"
+        + "vardgivareId='"
+        + vardgivareId
+        + '\''
+        + ", enhetId='"
+        + enhetId
+        + '\''
+        + ", lakareId='"
+        + lakareId
+        + '\''
+        + '}';
+  }
 }

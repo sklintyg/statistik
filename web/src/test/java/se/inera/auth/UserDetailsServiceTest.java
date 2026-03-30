@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -50,107 +50,114 @@ import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 @ExtendWith(MockitoExtension.class)
 public class UserDetailsServiceTest {
 
-    private static final String HSA_ID = "TST5565594230-106J";
-    private static final Vardenhet VE1_VG1 = new Vardenhet(new HsaIdEnhet("IFV1239877878-103F"), "Enhetsnamn",
-        new HsaIdVardgivare("IFV1239877878-0001"));
-    private static final Vardenhet VE2_VG1 = new Vardenhet(new HsaIdEnhet("Vardenhet2"), "Enhetsnamn2",
-        new HsaIdVardgivare("IFV1239877878-0001"));
-    private static final Vardenhet VE3_VG2 = new Vardenhet(new HsaIdEnhet("Vardenhet3"), "Enhetsnamn3", new HsaIdVardgivare("VG2"));
-    private static final Vardenhet VE4_VG2 = new Vardenhet(new HsaIdEnhet("Vardenhet4"), "Enhetsnamn4", new HsaIdVardgivare("VG2"));
-    private static final String EMPLOYEE_HSA_ID = "TST5565594230-106J";
+  private static final String HSA_ID = "TST5565594230-106J";
+  private static final Vardenhet VE1_VG1 =
+      new Vardenhet(
+          new HsaIdEnhet("IFV1239877878-103F"),
+          "Enhetsnamn",
+          new HsaIdVardgivare("IFV1239877878-0001"));
+  private static final Vardenhet VE2_VG1 =
+      new Vardenhet(
+          new HsaIdEnhet("Vardenhet2"), "Enhetsnamn2", new HsaIdVardgivare("IFV1239877878-0001"));
+  private static final Vardenhet VE3_VG2 =
+      new Vardenhet(new HsaIdEnhet("Vardenhet3"), "Enhetsnamn3", new HsaIdVardgivare("VG2"));
+  private static final Vardenhet VE4_VG2 =
+      new Vardenhet(new HsaIdEnhet("Vardenhet4"), "Enhetsnamn4", new HsaIdVardgivare("VG2"));
+  private static final String EMPLOYEE_HSA_ID = "TST5565594230-106J";
 
-    @Mock
-    private HsaOrganizationsService hsaOrganizationsService;
+  @Mock private HsaOrganizationsService hsaOrganizationsService;
 
-    @Mock
-    private HsaPersonService hsaPersonService;
+  @Mock private HsaPersonService hsaPersonService;
 
-    @Mock
-    private MonitoringLogService monitoringLogService;
+  @Mock private MonitoringLogService monitoringLogService;
 
-    @InjectMocks
-    private UserDetailsService service = new UserDetailsService();
+  @InjectMocks private UserDetailsService service = new UserDetailsService();
 
-    @BeforeEach
-    public void setup() {
-        setupHsaPersonService();
-    }
+  @BeforeEach
+  public void setup() {
+    setupHsaPersonService();
+  }
 
-    @Test
-    void vardenhetOnOtherVardgivareAreNotFiltered() {
-        auktoriseradeEnheter(VE1_VG1, VE3_VG2, VE4_VG2);
-        User user = service.buildUserPrincipal(EMPLOYEE_HSA_ID, LoginMethod.SITHS);
-        assertEquals(3, user.getVardenhetList().size());
-        assertEquals(VE1_VG1, user.getVardenhetList().get(0));
-        assertEquals(VE3_VG2, user.getVardenhetList().get(1));
-        assertEquals(VE4_VG2, user.getVardenhetList().get(2));
-    }
+  @Test
+  void vardenhetOnOtherVardgivareAreNotFiltered() {
+    auktoriseradeEnheter(VE1_VG1, VE3_VG2, VE4_VG2);
+    User user = service.buildUserPrincipal(EMPLOYEE_HSA_ID, LoginMethod.SITHS);
+    assertEquals(3, user.getVardenhetList().size());
+    assertEquals(VE1_VG1, user.getVardenhetList().get(0));
+    assertEquals(VE3_VG2, user.getVardenhetList().get(1));
+    assertEquals(VE4_VG2, user.getVardenhetList().get(2));
+  }
 
-    @Test
-    void hasVgAccessByMultipleEnhets() {
-        when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(any(HsaIdUser.class)))
-            .thenReturn(new UserAuthorization(Arrays.asList(VE1_VG1, VE2_VG1), Collections.emptyList()));
-        User user = service.buildUserPrincipal(EMPLOYEE_HSA_ID, LoginMethod.SITHS);
+  @Test
+  void hasVgAccessByMultipleEnhets() {
+    when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(any(HsaIdUser.class)))
+        .thenReturn(
+            new UserAuthorization(Arrays.asList(VE1_VG1, VE2_VG1), Collections.emptyList()));
+    User user = service.buildUserPrincipal(EMPLOYEE_HSA_ID, LoginMethod.SITHS);
 
-        assertTrue(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isDelprocessledare());
-        assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isProcessledare());
-    }
+    assertTrue(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isDelprocessledare());
+    assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isProcessledare());
+  }
 
-    @Test
-    void hasVgAccessBySystemRole() {
-        auktoriseradeEnheter(VE1_VG1, VE3_VG2);
-        User user = service.buildUserPrincipal(EMPLOYEE_HSA_ID, LoginMethod.SITHS);
-        assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isDelprocessledare());
-        assertTrue(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isProcessledare());
-    }
+  @Test
+  void hasVgAccessBySystemRole() {
+    auktoriseradeEnheter(VE1_VG1, VE3_VG2);
+    User user = service.buildUserPrincipal(EMPLOYEE_HSA_ID, LoginMethod.SITHS);
+    assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isDelprocessledare());
+    assertTrue(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isProcessledare());
+  }
 
-    @Test
-    void hasNoVgAccessBySystemRole() {
-        final UserAuthorization userAuthorization = new UserAuthorization(Arrays.asList(VE2_VG1, VE3_VG2), Collections.emptyList());
-        when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(any(HsaIdUser.class))).thenReturn(userAuthorization);
-        User user = service.buildUserPrincipal(EMPLOYEE_HSA_ID, LoginMethod.SITHS);
-        assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isDelprocessledare());
-        assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isProcessledare());
-    }
+  @Test
+  void hasNoVgAccessBySystemRole() {
+    final UserAuthorization userAuthorization =
+        new UserAuthorization(Arrays.asList(VE2_VG1, VE3_VG2), Collections.emptyList());
+    when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(any(HsaIdUser.class)))
+        .thenReturn(userAuthorization);
+    User user = service.buildUserPrincipal(EMPLOYEE_HSA_ID, LoginMethod.SITHS);
+    assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isDelprocessledare());
+    assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isProcessledare());
+  }
 
-    @Test
-    void testLoadUserByHsaId() {
-        auktoriseradeEnheter(VE1_VG1, VE3_VG2);
-        User user = service.buildUserPrincipal(HSA_ID, LoginMethod.SITHS);
-        assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isDelprocessledare());
-        assertTrue(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isProcessledare());
-    }
+  @Test
+  void testLoadUserByHsaId() {
+    auktoriseradeEnheter(VE1_VG1, VE3_VG2);
+    User user = service.buildUserPrincipal(HSA_ID, LoginMethod.SITHS);
+    assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isDelprocessledare());
+    assertTrue(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isProcessledare());
+  }
 
-    @Test
-    void shallSetLoginMethod() {
-        auktoriseradeEnheter(VE1_VG1, VE3_VG2);
-        final var user = service.buildUserPrincipal(HSA_ID, LoginMethod.SITHS);
-        assertEquals(LoginMethod.SITHS, user.getLoginMethod());
-    }
+  @Test
+  void shallSetLoginMethod() {
+    auktoriseradeEnheter(VE1_VG1, VE3_VG2);
+    final var user = service.buildUserPrincipal(HSA_ID, LoginMethod.SITHS);
+    assertEquals(LoginMethod.SITHS, user.getLoginMethod());
+  }
 
-    @Test
-    void shallMonitorLogUserLogin() {
-        auktoriseradeEnheter(VE1_VG1, VE3_VG2);
-        service.buildUserPrincipal(HSA_ID, LoginMethod.SITHS);
-        verify(monitoringLogService).logUserLogin(any(), eq(LoginMethod.SITHS));
-    }
+  @Test
+  void shallMonitorLogUserLogin() {
+    auktoriseradeEnheter(VE1_VG1, VE3_VG2);
+    service.buildUserPrincipal(HSA_ID, LoginMethod.SITHS);
+    verify(monitoringLogService).logUserLogin(any(), eq(LoginMethod.SITHS));
+  }
 
-    private void auktoriseradeEnheter(Vardenhet... enheter) {
-        when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(any(HsaIdUser.class)))
-            .thenReturn(new UserAuthorization(Arrays.asList(enheter), Arrays.asList("INTYG;Statistik-IFV1239877878-0001")));
-        when(hsaOrganizationsService.getVardgivare(any(HsaIdVardgivare.class)))
-            .thenReturn(new Vardgivare("IFV1239877878-0001", "Vårdgivare 1"));
-    }
+  private void auktoriseradeEnheter(Vardenhet... enheter) {
+    when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(any(HsaIdUser.class)))
+        .thenReturn(
+            new UserAuthorization(
+                Arrays.asList(enheter), Arrays.asList("INTYG;Statistik-IFV1239877878-0001")));
+    when(hsaOrganizationsService.getVardgivare(any(HsaIdVardgivare.class)))
+        .thenReturn(new Vardgivare("IFV1239877878-0001", "Vårdgivare 1"));
+  }
 
-    private void setupHsaPersonService() {
-        when(hsaPersonService.getHsaPersonInfo(anyString())).thenReturn(Arrays.asList(buildPersonInformation()));
-    }
+  private void setupHsaPersonService() {
+    when(hsaPersonService.getHsaPersonInfo(anyString()))
+        .thenReturn(Arrays.asList(buildPersonInformation()));
+  }
 
-    private StatisticsPersonInformation buildPersonInformation() {
-        StatisticsPersonInformation pit = new StatisticsPersonInformation();
-        pit.setGivenName("Läkar");
-        pit.setMiddleAndSurName("Läkarsson");
-        return pit;
-    }
-
+  private StatisticsPersonInformation buildPersonInformation() {
+    StatisticsPersonInformation pit = new StatisticsPersonInformation();
+    pit.setGivenName("Läkar");
+    pit.setMiddleAndSurName("Läkarsson");
+    return pit;
+  }
 }

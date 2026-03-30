@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -114,609 +114,658 @@ import se.inera.testsupport.specialrapport.regionskane.SpecialSkaneRow;
 @Service("restSupportService")
 public class RestSupportService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(RestSupportService.class);
-    public static final String SOC_PARAM_FROMYEAR = "fromyear";
-    public static final String SOC_PARAM_TOYEAR = "toyear";
-    public static final String SOC_PARAM_DX = "dx";
-    public static final String SOC_PARAM_STARTDX = "sjukfallstartingwithdx";
+  private static final Logger LOG = LoggerFactory.getLogger(RestSupportService.class);
+  public static final String SOC_PARAM_FROMYEAR = "fromyear";
+  public static final String SOC_PARAM_TOYEAR = "toyear";
+  public static final String SOC_PARAM_DX = "dx";
+  public static final String SOC_PARAM_STARTDX = "sjukfallstartingwithdx";
 
-    @Autowired
-    @Qualifier("restTemplateStat")
-    private RestTemplate restTemplate;
+  @Autowired
+  @Qualifier("restTemplateStat") private RestTemplate restTemplate;
 
-    @Value("${baseUrl}")
-    private String baseUrl;
+  @Value("${baseUrl}")
+  private String baseUrl;
 
-    @Autowired
-    private ChartDataService nationalChartDataService;
+  @Autowired private ChartDataService nationalChartDataService;
 
-    @Autowired
-    private Warehouse warehouse;
+  @Autowired private Warehouse warehouse;
 
-    @Autowired
-    private Receiver receiver;
+  @Autowired private Receiver receiver;
 
-    @Autowired
-    private ProcessMessageLog processMessageLog;
+  @Autowired private ProcessMessageLog processMessageLog;
 
-    @Autowired
-    private MessageLogConsumer messageLogConsumer;
+  @Autowired private MessageLogConsumer messageLogConsumer;
 
-    @Autowired
-    private ProcessIntygsentLog processIntygsentLog;
+  @Autowired private ProcessIntygsentLog processIntygsentLog;
 
-    @Autowired
-    private IntygsentLogConsumer intygsentLogConsumer;
+  @Autowired private IntygsentLogConsumer intygsentLogConsumer;
 
-    @PersistenceContext(unitName = "IneraStatisticsLog")
-    private EntityManager manager;
+  @PersistenceContext(unitName = "IneraStatisticsLog")
+  private EntityManager manager;
 
-    @Autowired
-    private NationellDataInvoker nationellData;
+  @Autowired private NationellDataInvoker nationellData;
 
-    @Autowired
-    private SjukfallUtil sjukfallUtil;
+  @Autowired private SjukfallUtil sjukfallUtil;
 
-    @Autowired
-    private RegionManager regionManager;
+  @Autowired private RegionManager regionManager;
 
-    @Autowired
-    private RegionEnhetManager regionEnhetManager;
+  @Autowired private RegionEnhetManager regionEnhetManager;
 
-    @Autowired
-    private RegionEnhetUpdateManager regionEnhetUpdateManager;
+  @Autowired private RegionEnhetUpdateManager regionEnhetUpdateManager;
 
-    @Autowired
-    private RegionCutoff regionCutoff;
+  @Autowired private RegionCutoff regionCutoff;
 
-    @Autowired
-    private CountyPopulationManagerForTest countyPopulationManager;
+  @Autowired private CountyPopulationManagerForTest countyPopulationManager;
 
-    @Autowired
-    private Icd10 icd10;
+  @Autowired private Icd10 icd10;
 
-    @Autowired
-    private CountyPopulationInjector countyPopulationInjector;
+  @Autowired private CountyPopulationInjector countyPopulationInjector;
 
-    @Autowired
-    private ChangableClock changableClock;
+  @Autowired private ChangableClock changableClock;
 
-    @Autowired(required = false)
-    @Qualifier("intygCommonDxPopulator")
-    private ApplicationListener<ApplicationEvent> intygCommonDxPopulator;
+  @Autowired(required = false)
+  @Qualifier("intygCommonDxPopulator") private ApplicationListener<ApplicationEvent> intygCommonDxPopulator;
 
-    @Autowired
-    private Cache cache;
+  @Autowired private Cache cache;
 
-    @Autowired
-    private CalcCoordinator calcCoordinator;
+  @Autowired private CalcCoordinator calcCoordinator;
 
-    @Autowired
-    private LogJob logJob;
+  @Autowired private LogJob logJob;
 
-//    @Autowired(required = false)
-//    private HsaServiceStub hsaServiceStub;
+  //    @Autowired(required = false)
+  //    private HsaServiceStub hsaServiceStub;
 
-    private IntygCommonSosManager intygCommonSosManager;
+  private IntygCommonSosManager intygCommonSosManager;
 
-    @PostConstruct
-    public void setup() {
-        intygCommonSosManager = new IntygCommonSosManager(icd10, manager, warehouse);
-    }
+  @PostConstruct
+  public void setup() {
+    intygCommonSosManager = new IntygCommonSosManager(icd10, manager, warehouse);
+  }
 
-    /**
-     * Can only be invoked when app is started with spring profile "populate-intygcommon-dx".
-     */
-    @GET
-    @Path("invokeIntygCommonDxPopulator")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response populateIntygCommonDx() {
-        intygCommonDxPopulator.onApplicationEvent(new ApplicationEvent(this) {
-            @Override
-            public Object getSource() {
-                return super.getSource();
-            }
+  /** Can only be invoked when app is started with spring profile "populate-intygcommon-dx". */
+  @GET
+  @Path("invokeIntygCommonDxPopulator")
+  @Produces({MediaType.APPLICATION_JSON})
+  public Response populateIntygCommonDx() {
+    intygCommonDxPopulator.onApplicationEvent(
+        new ApplicationEvent(this) {
+          @Override
+          public Object getSource() {
+            return super.getSource();
+          }
         });
-        return Response.ok().build();
+    return Response.ok().build();
+  }
+
+  @GET
+  @Path("converteddate/{internalDate}")
+  @Produces({MediaType.APPLICATION_JSON})
+  public Response getConvertedDate(@PathParam("internalDate") int internalDate) {
+    return Response.ok(WidelineConverter.toDate(internalDate).toString()).build();
+  }
+
+  @POST
+  @Path("cutoff")
+  @Produces({MediaType.APPLICATION_JSON})
+  public Response setCutoff(int cutoff) {
+    nationellData.setCutoff(cutoff);
+    regionCutoff.setCutoff(cutoff);
+    return Response.ok().build();
+  }
+
+  @GET
+  @Path("now")
+  @Produces({MediaType.APPLICATION_JSON})
+  public Response getCurrentDateTime() {
+    return Response.ok(changableClock.millis()).build();
+  }
+
+  @POST
+  @Path("now")
+  @Produces({MediaType.APPLICATION_JSON})
+  public Response setCurrentDateTime(long timeMillis) {
+    final Clock baseClock = Clock.system(ZoneId.systemDefault());
+    changableClock.setCurrentClock(
+        Clock.offset(baseClock, Duration.ofMillis(timeMillis - System.currentTimeMillis())));
+    return Response.ok().build();
+  }
+
+  @POST
+  @Path("clearDatabase")
+  @Produces({MediaType.APPLICATION_JSON})
+  @Transactional
+  public Response clearDatabase() {
+    manager.createNativeQuery("TRUNCATE TABLE " + IntygEvent.TABLE).executeUpdate();
+    manager.createNativeQuery("TRUNCATE TABLE " + WideLine.TABLE).executeUpdate();
+    manager.createQuery("UPDATE EventPointer SET eventId = 0").executeUpdate();
+    manager.createNativeQuery("TRUNCATE TABLE " + Enhet.TABLE).executeUpdate();
+    manager.createNativeQuery("TRUNCATE TABLE " + Lakare.TABLE).executeUpdate();
+    manager.createNativeQuery("TRUNCATE TABLE " + HSAStore.TABLE).executeUpdate();
+    manager.createNativeQuery("TRUNCATE TABLE " + MessageWideLine.TABLE).executeUpdate();
+    manager.createNativeQuery("TRUNCATE TABLE " + MessageEvent.TABLE).executeUpdate();
+    manager.createNativeQuery("TRUNCATE TABLE " + IntygCommon.TABLE).executeUpdate();
+    manager.createNativeQuery("TRUNCATE TABLE " + IntygSentEvent.TABLE).executeUpdate();
+    return clearCaches();
+  }
+
+  @POST
+  @Path("clearCaches")
+  @Produces({MediaType.APPLICATION_JSON})
+  @Transactional
+  public Response clearCaches() {
+    cache.clearCaches();
+    return Response.ok().build();
+  }
+
+  //    @PUT
+  //    @Path("intyg")
+  //    @Consumes({MediaType.APPLICATION_JSON})
+  //    @Produces({MediaType.APPLICATION_JSON})
+  //    @Transactional
+  //    public Response insertIntyg(Intyg intyg) {
+  //        LOG.info("Insert intyg. id: " + intyg.getDocumentId() + ", data: " + intyg.getData());
+  //        insertIntygWithoutLogging(intyg);
+  //        return Response.ok().build();
+  //    }
+  //
+  //    @Transactional
+  //    public void insertIntygWithoutLogging(Intyg intyg) {
+  //        if (hsaServiceStub != null) {
+  //            hsaServiceStub.deleteCareUnit(intyg.getEnhetId());
+  //            hsaServiceStub.deleteSubUnit(intyg.getEnhetId());
+  //
+  //            AbstractUnitStub unit;
+  //            if (intyg.getHuvudenhetId() == null ||
+  // intyg.getEnhetId().equals(intyg.getHuvudenhetId())) {
+  //                unit = new CareUnitStub();
+  //                ((CareUnitStub) unit).setSubUnits(Collections.emptyList());
+  //            } else {
+  //                unit = new SubUnitStub();
+  //                ((SubUnitStub) unit).setParentHsaId(intyg.getHuvudenhetId());
+  //            }
+  //            unit.setId(cleanString(intyg.getEnhetId()));
+  //            unit.setCareProviderHsaId(cleanString(intyg.getVardgivareId()));
+  //            unit.setName(getEnhetsNamn(cleanString(intyg.getEnhetId()), intyg.getEnhetName()));
+  //            unit.setCountyCode(intyg.getCounty());
+  //            unit.setMunicipalityCode(intyg.getKommun());
+  //
+  //            if (unit instanceof CareUnitStub) {
+  //                hsaServiceStub.addCareUnit((CareUnitStub) unit);
+  //            } else {
+  //                hsaServiceStub.addSubUnit((SubUnitStub) unit);
+  //            }
+  //        }
+  //
+  //        receiver.accept(intyg.getType(), intyg.getData(), intyg.getDocumentId(),
+  // intyg.getTimestamp());
+  //        setEnhetName(intyg);
+  //    }
+
+  private String cleanString(String string) {
+    return string == null ? null : string.replace(" ", "").toLowerCase();
+  }
+
+  private String getEnhetsNamn(String enhetId, String enhetName) {
+    if (enhetName != null) {
+      return enhetName;
     }
-
-    @GET
-    @Path("converteddate/{internalDate}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response getConvertedDate(@PathParam("internalDate") int internalDate) {
-        return Response.ok(WidelineConverter.toDate(internalDate).toString()).build();
+    if (enhetId != null && enhetId.startsWith("vg1-")) {
+      String suffix = enhetId.substring(enhetId.lastIndexOf('-') + 1);
+      return "Verksamhet " + suffix;
     }
+    return "Enhet " + enhetId;
+  }
 
-    @POST
-    @Path("cutoff")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response setCutoff(int cutoff) {
-        nationellData.setCutoff(cutoff);
-        regionCutoff.setCutoff(cutoff);
-        return Response.ok().build();
+  private void setEnhetName(Intyg intyg) {
+    if (intyg.getEnhetId() == null
+        || intyg.getEnhetId().isEmpty()
+        || !shouldExistInHsa(intyg.getEnhetId())) {
+      return;
     }
-
-    @GET
-    @Path("now")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response getCurrentDateTime() {
-        return Response.ok(changableClock.millis()).build();
+    String name =
+        intyg.getEnhetName() != null && !intyg.getEnhetName().isEmpty()
+            ? intyg.getEnhetName()
+            : intyg.getEnhetId();
+    final Query query =
+        manager.createNativeQuery("UPDATE enhet SET namn=:enhetName where enhetId=:enhetId");
+    query.setParameter("enhetName", name);
+    query.setParameter("enhetId", intyg.getEnhetId());
+    int executeUpdate = query.executeUpdate();
+    if (executeUpdate < 1) {
+      Enhet enhet =
+          new Enhet(
+              new HsaIdVardgivare(intyg.getVardgivareId()),
+              new HsaIdEnhet(intyg.getEnhetId()),
+              name,
+              "",
+              "",
+              "",
+              intyg.getHuvudenhetId());
+      manager.persist(enhet);
     }
+  }
 
-    @POST
-    @Path("now")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response setCurrentDateTime(long timeMillis) {
-        final Clock baseClock = Clock.system(ZoneId.systemDefault());
-        changableClock.setCurrentClock(Clock.offset(baseClock, Duration.ofMillis(timeMillis - System.currentTimeMillis())));
-        return Response.ok().build();
+  public static boolean shouldExistInHsa(String hsaId) {
+    return hsaId != null && !hsaId.startsWith("EJHSA") && !"UTANENHETSID".equals(hsaId);
+  }
+
+  @PUT
+  @Path("meddelande")
+  @Consumes({MediaType.APPLICATION_JSON})
+  @Produces({MediaType.APPLICATION_JSON})
+  @Transactional
+  public Response insertIntyg(Meddelande meddelande) {
+    LOG.info(
+        "Insert meddelande. id: " + meddelande.getMessageId() + ", data: " + meddelande.getData());
+    insertMeddelandeWithoutLogging(meddelande);
+    return Response.ok().build();
+  }
+
+  @Transactional
+  public void insertMeddelandeWithoutLogging(Meddelande meddelande) {
+    processMessageLog.store(
+        meddelande.getType(),
+        meddelande.getData(),
+        meddelande.getMessageId(),
+        meddelande.getTimestamp());
+  }
+
+  @POST
+  @Path("processIntyg")
+  @Produces({MediaType.APPLICATION_JSON})
+  public Response processIntyg() {
+    logJob.process();
+
+    clearCaches();
+
+    nationalChartDataService.buildNationalDataCache();
+
+    return Response.ok().build();
+  }
+
+  @POST
+  @Path("processMeddelande")
+  @Produces({MediaType.APPLICATION_JSON})
+  public Response processMeddelande() {
+    LOG.debug("Log Job");
+
+    long firstId;
+    long lastId = 0;
+    do {
+      firstId = lastId;
+      lastId = messageLogConsumer.processBatch(firstId);
+    } while (firstId != lastId);
+    LOG.debug("All messages processed");
+    return clearCaches();
+  }
+
+  @POST
+  @Path("denyCalc")
+  @Produces({MediaType.APPLICATION_JSON})
+  public Response denyCalc() {
+    LOG.info("Deny calc");
+    calcCoordinator.setDenyAll(true);
+    return Response.ok().build();
+  }
+
+  @POST
+  @Path("allowCalc")
+  @Produces({MediaType.APPLICATION_JSON})
+  public Response allowCalc() {
+    LOG.info("Allow calc");
+    calcCoordinator.setDenyAll(false);
+    return Response.ok().build();
+  }
+
+  //    @PUT
+  //    @Path("personal")
+  //    @Consumes({MediaType.APPLICATION_JSON})
+  //    @Produces({MediaType.APPLICATION_JSON})
+  //    public Response insertPersonal(Personal personal) {
+  //        if (hsaServiceStub != null) {
+  //            HsaPerson hsaPerson = hsaServiceStub.getHsaPerson(personal.getId());
+  //            if (hsaPerson == null) {
+  //                hsaPerson = new HsaPerson();
+  //                hsaPerson.setHsaId(personal.getId());
+  //            }
+  //            hsaPerson.setGivenName(personal.getFirstName());
+  //            hsaPerson.setMiddleAndSurname(personal.getLastName());
+  //            hsaPerson.setAge(String.valueOf(personal.getAge()));
+  //            hsaPerson.setGender(String.valueOf(personal.getKon().getHsaRepresantation()));
+  //            hsaPerson.setProtectedPerson(personal.isSkyddad());
+  //            List<PaTitle> paTitles = personal.getBefattning().stream().map(b -> {
+  //                var paTitle = new PaTitle();
+  //                paTitle.setTitleCode(b);
+  //                paTitle.setTitleName(b);
+  //                return paTitle;
+  //            }).collect(Collectors.toList());
+  //            hsaPerson.setPaTitle(paTitles);
+  //
+  //            hsaServiceStub.addHsaPerson(hsaPerson);
+  //        }
+  //
+  //        return Response.ok().build();
+  //    }
+
+  @PUT
+  @Path("region/vgid/{vgid}")
+  @Consumes({MediaType.APPLICATION_JSON})
+  @Produces({MediaType.APPLICATION_JSON})
+  public Response insertRegion(@PathParam("vgid") String vgId) {
+    LOG.info("Insert region with vgid {}", vgId);
+    if (!regionManager.getForVg(new HsaIdVardgivare(vgId)).isPresent()) {
+      regionManager.add(vgId, new HsaIdVardgivare(vgId));
     }
+    return Response.ok().build();
+  }
 
-    @POST
-    @Path("clearDatabase")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Transactional
-    public Response clearDatabase() {
-        manager.createNativeQuery("TRUNCATE TABLE " + IntygEvent.TABLE).executeUpdate();
-        manager.createNativeQuery("TRUNCATE TABLE " + WideLine.TABLE).executeUpdate();
-        manager.createQuery("UPDATE EventPointer SET eventId = 0").executeUpdate();
-        manager.createNativeQuery("TRUNCATE TABLE " + Enhet.TABLE).executeUpdate();
-        manager.createNativeQuery("TRUNCATE TABLE " + Lakare.TABLE).executeUpdate();
-        manager.createNativeQuery("TRUNCATE TABLE " + HSAStore.TABLE).executeUpdate();
-        manager.createNativeQuery("TRUNCATE TABLE " + MessageWideLine.TABLE).executeUpdate();
-        manager.createNativeQuery("TRUNCATE TABLE " + MessageEvent.TABLE).executeUpdate();
-        manager.createNativeQuery("TRUNCATE TABLE " + IntygCommon.TABLE).executeUpdate();
-        manager.createNativeQuery("TRUNCATE TABLE " + IntygSentEvent.TABLE).executeUpdate();
-        return clearCaches();
-    }
-
-    @POST
-    @Path("clearCaches")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Transactional
-    public Response clearCaches() {
-        cache.clearCaches();
-        return Response.ok().build();
-    }
-
-//    @PUT
-//    @Path("intyg")
-//    @Consumes({MediaType.APPLICATION_JSON})
-//    @Produces({MediaType.APPLICATION_JSON})
-//    @Transactional
-//    public Response insertIntyg(Intyg intyg) {
-//        LOG.info("Insert intyg. id: " + intyg.getDocumentId() + ", data: " + intyg.getData());
-//        insertIntygWithoutLogging(intyg);
-//        return Response.ok().build();
-//    }
-//
-//    @Transactional
-//    public void insertIntygWithoutLogging(Intyg intyg) {
-//        if (hsaServiceStub != null) {
-//            hsaServiceStub.deleteCareUnit(intyg.getEnhetId());
-//            hsaServiceStub.deleteSubUnit(intyg.getEnhetId());
-//
-//            AbstractUnitStub unit;
-//            if (intyg.getHuvudenhetId() == null || intyg.getEnhetId().equals(intyg.getHuvudenhetId())) {
-//                unit = new CareUnitStub();
-//                ((CareUnitStub) unit).setSubUnits(Collections.emptyList());
-//            } else {
-//                unit = new SubUnitStub();
-//                ((SubUnitStub) unit).setParentHsaId(intyg.getHuvudenhetId());
-//            }
-//            unit.setId(cleanString(intyg.getEnhetId()));
-//            unit.setCareProviderHsaId(cleanString(intyg.getVardgivareId()));
-//            unit.setName(getEnhetsNamn(cleanString(intyg.getEnhetId()), intyg.getEnhetName()));
-//            unit.setCountyCode(intyg.getCounty());
-//            unit.setMunicipalityCode(intyg.getKommun());
-//
-//            if (unit instanceof CareUnitStub) {
-//                hsaServiceStub.addCareUnit((CareUnitStub) unit);
-//            } else {
-//                hsaServiceStub.addSubUnit((SubUnitStub) unit);
-//            }
-//        }
-//
-//        receiver.accept(intyg.getType(), intyg.getData(), intyg.getDocumentId(), intyg.getTimestamp());
-//        setEnhetName(intyg);
-//    }
-
-    private String cleanString(String string) {
-        return string == null ? null : string.replace(" ", "").toLowerCase();
-    }
-
-    private String getEnhetsNamn(String enhetId, String enhetName) {
-        if (enhetName != null) {
-            return enhetName;
-        }
-        if (enhetId != null && enhetId.startsWith("vg1-")) {
-            String suffix = enhetId.substring(enhetId.lastIndexOf('-') + 1);
-            return "Verksamhet " + suffix;
-        }
-        return "Enhet " + enhetId;
-    }
-
-    private void setEnhetName(Intyg intyg) {
-        if (intyg.getEnhetId() == null || intyg.getEnhetId().isEmpty() || !shouldExistInHsa(intyg.getEnhetId())) {
-            return;
-        }
-        String name = intyg.getEnhetName() != null && !intyg.getEnhetName().isEmpty() ? intyg.getEnhetName() : intyg.getEnhetId();
-        final Query query = manager.createNativeQuery("UPDATE enhet SET namn=:enhetName where enhetId=:enhetId");
-        query.setParameter("enhetName", name);
-        query.setParameter("enhetId", intyg.getEnhetId());
-        int executeUpdate = query.executeUpdate();
-        if (executeUpdate < 1) {
-            Enhet enhet = new Enhet(new HsaIdVardgivare(intyg.getVardgivareId()), new HsaIdEnhet(intyg.getEnhetId()),
-                name, "", "", "", intyg.getHuvudenhetId());
-            manager.persist(enhet);
-        }
-    }
-
-    public static boolean shouldExistInHsa(String hsaId) {
-        return hsaId != null && !hsaId.startsWith("EJHSA") && !"UTANENHETSID".equals(hsaId);
-    }
-
-    @PUT
-    @Path("meddelande")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
-    @Transactional
-    public Response insertIntyg(Meddelande meddelande) {
-        LOG.info("Insert meddelande. id: " + meddelande.getMessageId() + ", data: " + meddelande.getData());
-        insertMeddelandeWithoutLogging(meddelande);
-        return Response.ok().build();
-    }
-
-    @Transactional
-    public void insertMeddelandeWithoutLogging(Meddelande meddelande) {
-        processMessageLog.store(meddelande.getType(), meddelande.getData(), meddelande.getMessageId(), meddelande.getTimestamp());
-    }
-
-    @POST
-    @Path("processIntyg")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response processIntyg() {
-        logJob.process();
-
-        clearCaches();
-
-        nationalChartDataService.buildNationalDataCache();
-
-        return Response.ok().build();
-    }
-
-    @POST
-    @Path("processMeddelande")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response processMeddelande() {
-        LOG.debug("Log Job");
-
-        long firstId;
-        long lastId = 0;
-        do {
-            firstId = lastId;
-            lastId = messageLogConsumer.processBatch(firstId);
-        } while (firstId != lastId);
-        LOG.debug("All messages processed");
-        return clearCaches();
-    }
-
-    @POST
-    @Path("denyCalc")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response denyCalc() {
-        LOG.info("Deny calc");
-        calcCoordinator.setDenyAll(true);
-        return Response.ok().build();
-    }
-
-    @POST
-    @Path("allowCalc")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response allowCalc() {
-        LOG.info("Allow calc");
-        calcCoordinator.setDenyAll(false);
-        return Response.ok().build();
-    }
-
-//    @PUT
-//    @Path("personal")
-//    @Consumes({MediaType.APPLICATION_JSON})
-//    @Produces({MediaType.APPLICATION_JSON})
-//    public Response insertPersonal(Personal personal) {
-//        if (hsaServiceStub != null) {
-//            HsaPerson hsaPerson = hsaServiceStub.getHsaPerson(personal.getId());
-//            if (hsaPerson == null) {
-//                hsaPerson = new HsaPerson();
-//                hsaPerson.setHsaId(personal.getId());
-//            }
-//            hsaPerson.setGivenName(personal.getFirstName());
-//            hsaPerson.setMiddleAndSurname(personal.getLastName());
-//            hsaPerson.setAge(String.valueOf(personal.getAge()));
-//            hsaPerson.setGender(String.valueOf(personal.getKon().getHsaRepresantation()));
-//            hsaPerson.setProtectedPerson(personal.isSkyddad());
-//            List<PaTitle> paTitles = personal.getBefattning().stream().map(b -> {
-//                var paTitle = new PaTitle();
-//                paTitle.setTitleCode(b);
-//                paTitle.setTitleName(b);
-//                return paTitle;
-//            }).collect(Collectors.toList());
-//            hsaPerson.setPaTitle(paTitles);
-//
-//            hsaServiceStub.addHsaPerson(hsaPerson);
-//        }
-//
-//        return Response.ok().build();
-//    }
-
-    @PUT
-    @Path("region/vgid/{vgid}")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response insertRegion(@PathParam("vgid") String vgId) {
-        LOG.info("Insert region with vgid {}", vgId);
-        if (!regionManager.getForVg(new HsaIdVardgivare(vgId)).isPresent()) {
-            regionManager.add(vgId, new HsaIdVardgivare(vgId));
-        }
-        return Response.ok().build();
-    }
-
-    @DELETE
-    @Path("clearRegionFileUploads")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response clearRegionFileUploads() {
-        LOG.info("Clearing all uploaded region files");
-        final List<RegionEnhet> allRegionEnhets = regionEnhetManager.getAll();
-        allRegionEnhets.forEach(regionEnhet -> {
-            final long regionId = regionEnhet.getRegionId();
-            regionEnhetManager.removeByRegionId(regionId);
-            regionEnhetUpdateManager.update(regionId, this.getClass().getSimpleName(), new HsaIdUser(""), "-",
-                RegionEnhetUpdateOperation.REMOVE);
+  @DELETE
+  @Path("clearRegionFileUploads")
+  @Consumes({MediaType.APPLICATION_JSON})
+  @Produces({MediaType.APPLICATION_JSON})
+  public Response clearRegionFileUploads() {
+    LOG.info("Clearing all uploaded region files");
+    final List<RegionEnhet> allRegionEnhets = regionEnhetManager.getAll();
+    allRegionEnhets.forEach(
+        regionEnhet -> {
+          final long regionId = regionEnhet.getRegionId();
+          regionEnhetManager.removeByRegionId(regionId);
+          regionEnhetUpdateManager.update(
+              regionId,
+              this.getClass().getSimpleName(),
+              new HsaIdUser(""),
+              "-",
+              RegionEnhetUpdateOperation.REMOVE);
         });
-        return Response.ok().build();
+    return Response.ok().build();
+  }
+
+  @POST
+  @Path("clearCountyPopulation")
+  @Produces({MediaType.APPLICATION_JSON})
+  @Transactional
+  public Response clearCountyPopulation() {
+    countyPopulationInjector.clearCountyPopulations();
+    countyPopulationManager.clearCountyPopulation();
+    return Response.ok().build();
+  }
+
+  @PUT
+  @Path("countyPopulation/{date}")
+  @Consumes({MediaType.APPLICATION_JSON})
+  @Produces({MediaType.APPLICATION_JSON})
+  @Transactional
+  public Response insertCountyPopulation(
+      Map<String, KonField> countyPopulation, @PathParam("date") String date) {
+    LOG.info("For date: {}, insert county population: {}", date, countyPopulation);
+    countyPopulationInjector.addCountyPopulation(
+        countyPopulation, java.time.LocalDate.parse(date).getYear());
+    final LocalDate nextYear = LocalDate.parse(date).plusYears(1);
+    countyPopulationManager.getCountyPopulation(
+        new Range(nextYear, nextYear)); // Populate the cache in db
+    return Response.ok().build();
+  }
+
+  @POST
+  @Path("sendIntygToMottagare/{intygId}/{mottagare}")
+  @Consumes({MediaType.APPLICATION_JSON})
+  @Produces({MediaType.APPLICATION_JSON})
+  public Response sendIntygToMottagare(
+      @PathParam("intygId") String intygId, @PathParam("mottagare") String mottagare) {
+    processIntygsentLog.store(intygId, mottagare, System.currentTimeMillis());
+    intygsentLogConsumer.processBatch();
+    return Response.ok().build();
+  }
+
+  /** Get sjukfall information requested by socialstyrelsen (INTYG-2449). */
+  @GET
+  @Path("getSocialstyrelsenReport")
+  @Produces({MediaType.APPLICATION_JSON})
+  @Consumes({MediaType.APPLICATION_JSON})
+  public Response getSosStatistics(
+      @QueryParam(SOC_PARAM_DX) List<String> dx,
+      @QueryParam(SOC_PARAM_STARTDX) String startWithSpecifiedDx,
+      @QueryParam(SOC_PARAM_FROMYEAR) String fromYearParam,
+      @QueryParam(SOC_PARAM_TOYEAR) String toYearParam) {
+    final List<SosRow> sosReport = getSosRows(dx, startWithSpecifiedDx, fromYearParam, toYearParam);
+    return Response.ok(sosReport).build();
+  }
+
+  private List<SosRow> getSosRows(
+      List<String> dx, String startWithSpecifiedDx, String fromYearParam, String toYearParam) {
+    final Iterator<Aisle> aisles = warehouse.iterator();
+    int fromYear = getYear(fromYearParam);
+    int toYear = getYear(toYearParam);
+    final SosReportCreator sosReportCreator =
+        new SosReportCreator(
+            aisles,
+            sjukfallUtil,
+            icd10,
+            dx,
+            Boolean.parseBoolean(startWithSpecifiedDx),
+            changableClock,
+            fromYear,
+            toYear);
+    return sosReportCreator.getSosReport();
+  }
+
+  private int getYear(String yearParam) {
+    return yearParam == null
+        ? LocalDate.now(changableClock).minusYears(1).getYear()
+        : Integer.parseInt(yearParam);
+  }
+
+  /** Get sjukfall count information requested by socialstyrelsen (INTYG-6691). */
+  @GET
+  @Path("getSocialstyrelsenAntalReport")
+  @Produces({MediaType.APPLICATION_JSON})
+  @Consumes({MediaType.APPLICATION_JSON})
+  public Response getSosCountStatistics(
+      @QueryParam(SOC_PARAM_DX) List<String> dx,
+      @QueryParam(SOC_PARAM_STARTDX) String startWithSpecifiedDx,
+      @QueryParam(SOC_PARAM_FROMYEAR) String fromYearParam,
+      @QueryParam(SOC_PARAM_TOYEAR) String toYearParam) {
+    final List<SosRow> sosRows = getSosRows(dx, startWithSpecifiedDx, fromYearParam, toYearParam);
+    final List<SosCountRow> sosCountRows = getSosCountRows(sosRows);
+    final List<Map<String, Object>> response = createCountResponse(sosCountRows);
+    return Response.ok(response).build();
+  }
+
+  private List<Map<String, Object>> createCountResponse(List<SosCountRow> sosCountRows) {
+    return sosCountRows.stream()
+        .map(
+            (Function<SosCountRow, Map<String, Object>>)
+                r -> {
+                  final HashMap<String, Object> map = new HashMap<>();
+                  map.put("diagnos", r.getDiagnos());
+                  map.put("totalt", r.getTotalt());
+                  map.put("kvinnor", r.getKvinnor());
+                  map.put("man", r.getMan());
+                  for (SjukfallsLangdGroupSos group : SjukfallsLangdGroupSos.values()) {
+                    map.put(group.getGroupName() + " K", r.getFemaleByLength(group));
+                    map.put(group.getGroupName() + " M", r.getMaleByLength(group));
+                  }
+                  return map;
+                })
+        .collect(Collectors.toList());
+  }
+
+  private List<SosCountRow> getSosCountRows(List<SosRow> sosRows) {
+    final Map<String, List<SosRow>> sosRowsByDx =
+        sosRows.stream().collect(Collectors.groupingBy(SosRow::getDiagnos));
+    return sosRowsByDx.entrySet().stream()
+        .map(
+            stringListEntry -> {
+              final Map<Kon, List<SosRow>> rowsByGender =
+                  stringListEntry.getValue().stream()
+                      .collect(Collectors.groupingBy(SosRow::getKon));
+
+              final List<SosRow> maleRows = getNullSafeList(rowsByGender.get(Kon.MALE));
+              final Map<SjukfallsLangdGroupSos, Integer> malePerLength =
+                  getCountPerSjukfallsLangd(maleRows);
+
+              final List<SosRow> femaleRows = getNullSafeList(rowsByGender.get(Kon.FEMALE));
+              final Map<SjukfallsLangdGroupSos, Integer> femalePerLength =
+                  getCountPerSjukfallsLangd(femaleRows);
+
+              final String diagnos = stringListEntry.getKey();
+              final int femaleCount = femaleRows.size();
+              final int maleCount = maleRows.size();
+              final int total = femaleCount + maleCount;
+              return new SosCountRow(
+                  diagnos, total, femaleCount, maleCount, malePerLength, femalePerLength);
+            })
+        .collect(Collectors.toList());
+  }
+
+  private <T> List<T> getNullSafeList(List<T> list) {
+    return list != null ? list : Collections.emptyList();
+  }
+
+  private Map<SjukfallsLangdGroupSos, Integer> getCountPerSjukfallsLangd(List<SosRow> sosRows) {
+    final Map<SjukfallsLangdGroupSos, List<SosRow>> rowsByLength =
+        sosRows.stream()
+            .collect(
+                Collectors.groupingBy(
+                    sosRow -> SjukfallsLangdGroupSos.getByLength(sosRow.getLength())));
+    return rowsByLength.entrySet().stream()
+        .collect(Collectors.toMap(Map.Entry::getKey, it -> it.getValue().size()));
+  }
+
+  /** Get sjukfall mean value information requested by socialstyrelsen (INTYG-2449). */
+  @GET
+  @Path("getSocialstyrelsenMedianReport")
+  @Produces({MediaType.APPLICATION_JSON})
+  @Consumes({MediaType.APPLICATION_JSON})
+  public Response getSosMedianStatistics(
+      @QueryParam("dx") List<String> dx,
+      @QueryParam(SOC_PARAM_STARTDX) String startWithSpecifiedDx,
+      @QueryParam("fromyear") String fromYearParam,
+      @QueryParam("toyear") String toYearParam) {
+    final Iterator<Aisle> aisles = warehouse.iterator();
+    int fromYear = getYear(fromYearParam);
+    int toYear = getYear(toYearParam);
+    final SosReportCreator sosReportCreator =
+        new SosReportCreator(
+            aisles,
+            sjukfallUtil,
+            icd10,
+            dx,
+            Boolean.parseBoolean(startWithSpecifiedDx),
+            changableClock,
+            fromYear,
+            toYear);
+    final List<SosCalculatedRow> medianValuesSosReport =
+        sosReportCreator.getMedianValuesSosReport();
+    return Response.ok(medianValuesSosReport).build();
+  }
+
+  /** Get sjukfall standard deviation information requested by socialstyrelsen (INTYG-2449). */
+  @GET
+  @Path("getSocialstyrelsenStdDevReport")
+  @Produces({MediaType.APPLICATION_JSON})
+  @Consumes({MediaType.APPLICATION_JSON})
+  public Response getSosStdDevStatistics(
+      @QueryParam("dx") List<String> dx,
+      @QueryParam(SOC_PARAM_STARTDX) String startWithSpecifiedDx,
+      @QueryParam("fromyear") String fromYearParam,
+      @QueryParam("toyear") String toYearParam) {
+    final Iterator<Aisle> aisles = warehouse.iterator();
+    int fromYear = getYear(fromYearParam);
+    int toYear = getYear(toYearParam);
+    final SosReportCreator sosReportCreator =
+        new SosReportCreator(
+            aisles,
+            sjukfallUtil,
+            icd10,
+            dx,
+            Boolean.parseBoolean(startWithSpecifiedDx),
+            changableClock,
+            fromYear,
+            toYear);
+    final List<SosCalculatedRow> medianValuesSosReport =
+        sosReportCreator.getStdDevValuesSosReport();
+    return Response.ok(medianValuesSosReport).build();
+  }
+
+  /** Special report for Socialstyrelsen regarding dx G933 (INTYG-6994). */
+  @GET
+  @Path("getSocialstyrelsenMeCfs1Report")
+  @Produces({MediaType.APPLICATION_JSON})
+  @Consumes({MediaType.APPLICATION_JSON})
+  public Response getSocialstyrelsenMeCfs1Report() {
+    final SosMeCfs1ReportCreator sosMeCfs1ReportCreator =
+        new SosMeCfs1ReportCreator(intygCommonSosManager, warehouse);
+    final List<SosMeCfs1Row> sosReport =
+        sosMeCfs1ReportCreator.getSosReport(nationellData.getCutoff());
+    return Response.ok(sosReport).build();
+  }
+
+  /** Special report for Socialstyrelsen regarding dx G933 (INTYG-6994). */
+  @GET
+  @Path("getSocialstyrelsenMeCfs2Report")
+  @Produces({MediaType.APPLICATION_JSON})
+  @Consumes({MediaType.APPLICATION_JSON})
+  public Response getSocialstyrelsenMeCfs2Report() {
+    final Iterator<Aisle> aisles = warehouse.iterator();
+    final List<SosMeCfs2Row> sosReport =
+        new SosMeCfs2ReportCreator(aisles, sjukfallUtil, nationellData.getCutoff(), icd10)
+            .getSosReport();
+    return Response.ok(sosReport).build();
+  }
+
+  /** Get sjukfall year report requested by FK (INTYG-3165). */
+  @GET
+  @Path("getFkYearReport")
+  @Produces({MediaType.APPLICATION_JSON})
+  @Consumes({MediaType.APPLICATION_JSON})
+  public Response getFkYearReport(@QueryParam("dx") final List<String> customDiagnoses) {
+    List<String> dxList = customDiagnoses;
+    if (dxList == null || dxList.size() == 0) {
+      dxList = Arrays.asList("F32", "F43", "M54", "M17");
     }
+    final Iterator<Aisle> aisles = warehouse.iterator();
 
-    @POST
-    @Path("clearCountyPopulation")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Transactional
-    public Response clearCountyPopulation() {
-        countyPopulationInjector.clearCountyPopulations();
-        countyPopulationManager.clearCountyPopulation();
-        return Response.ok().build();
-    }
+    final FkReportCreator fkReportCreator =
+        new FkReportCreator(aisles, icd10, dxList, changableClock);
+    final List<FkReportDataRow> reportData = fkReportCreator.getReportData();
+    return Response.ok(reportData).build();
+  }
 
-    @PUT
-    @Path("countyPopulation/{date}")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
-    @Transactional
-    public Response insertCountyPopulation(Map<String, KonField> countyPopulation, @PathParam("date") String date) {
-        LOG.info("For date: {}, insert county population: {}", date, countyPopulation);
-        countyPopulationInjector.addCountyPopulation(countyPopulation, java.time.LocalDate.parse(date).getYear());
-        final LocalDate nextYear = LocalDate.parse(date).plusYears(1);
-        countyPopulationManager.getCountyPopulation(new Range(nextYear, nextYear)); // Populate the cache in db
-        return Response.ok().build();
-    }
+  /**
+   * Special report for regarding sjukfall lengths (INTYG-7983). Using the last full year if no
+   * specific year is requested.
+   */
+  @GET
+  @Path("getSpecialLengthReport")
+  @Produces({MediaType.APPLICATION_JSON})
+  @Consumes({MediaType.APPLICATION_JSON})
+  public Response getSpecialLengthReport(@QueryParam("year") String yearParam) {
+    int year = getYear(yearParam);
+    final Iterator<Aisle> aisles = warehouse.iterator();
+    final List<SjukfallLengthSpecialRow> sosReport =
+        new SjukfallLengthSpecialReportCreator(aisles, sjukfallUtil, icd10).getReport(year);
+    return Response.ok(sosReport).build();
+  }
 
-    @POST
-    @Path("sendIntygToMottagare/{intygId}/{mottagare}")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response sendIntygToMottagare(@PathParam("intygId") String intygId, @PathParam("mottagare") String mottagare) {
-        processIntygsentLog.store(intygId, mottagare, System.currentTimeMillis());
-        intygsentLogConsumer.processBatch();
-        return Response.ok().build();
-    }
-
-    /**
-     * Get sjukfall information requested by socialstyrelsen (INTYG-2449).
-     */
-    @GET
-    @Path("getSocialstyrelsenReport")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
-    public Response getSosStatistics(@QueryParam(SOC_PARAM_DX) List<String> dx,
-        @QueryParam(SOC_PARAM_STARTDX) String startWithSpecifiedDx,
-        @QueryParam(SOC_PARAM_FROMYEAR) String fromYearParam,
-        @QueryParam(SOC_PARAM_TOYEAR) String toYearParam) {
-        final List<SosRow> sosReport = getSosRows(dx, startWithSpecifiedDx, fromYearParam, toYearParam);
-        return Response.ok(sosReport).build();
-    }
-
-    private List<SosRow> getSosRows(List<String> dx, String startWithSpecifiedDx, String fromYearParam, String toYearParam) {
-        final Iterator<Aisle> aisles = warehouse.iterator();
-        int fromYear = getYear(fromYearParam);
-        int toYear = getYear(toYearParam);
-        final SosReportCreator sosReportCreator = new SosReportCreator(aisles, sjukfallUtil, icd10, dx,
-            Boolean.parseBoolean(startWithSpecifiedDx), changableClock, fromYear, toYear);
-        return sosReportCreator.getSosReport();
-    }
-
-    private int getYear(String yearParam) {
-        return yearParam == null ? LocalDate.now(changableClock).minusYears(1).getYear() : Integer.parseInt(yearParam);
-    }
-
-    /**
-     * Get sjukfall count information requested by socialstyrelsen (INTYG-6691).
-     */
-    @GET
-    @Path("getSocialstyrelsenAntalReport")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
-    public Response getSosCountStatistics(@QueryParam(SOC_PARAM_DX) List<String> dx,
-        @QueryParam(SOC_PARAM_STARTDX) String startWithSpecifiedDx,
-        @QueryParam(SOC_PARAM_FROMYEAR) String fromYearParam,
-        @QueryParam(SOC_PARAM_TOYEAR) String toYearParam) {
-        final List<SosRow> sosRows = getSosRows(dx, startWithSpecifiedDx, fromYearParam, toYearParam);
-        final List<SosCountRow> sosCountRows = getSosCountRows(sosRows);
-        final List<Map<String, Object>> response = createCountResponse(sosCountRows);
-        return Response.ok(response).build();
-    }
-
-    private List<Map<String, Object>> createCountResponse(List<SosCountRow> sosCountRows) {
-        return sosCountRows.stream().map((Function<SosCountRow, Map<String, Object>>) r -> {
-            final HashMap<String, Object> map = new HashMap<>();
-            map.put("diagnos", r.getDiagnos());
-            map.put("totalt", r.getTotalt());
-            map.put("kvinnor", r.getKvinnor());
-            map.put("man", r.getMan());
-            for (SjukfallsLangdGroupSos group : SjukfallsLangdGroupSos.values()) {
-                map.put(group.getGroupName() + " K", r.getFemaleByLength(group));
-                map.put(group.getGroupName() + " M", r.getMaleByLength(group));
-            }
-            return map;
-        }).collect(Collectors.toList());
-    }
-
-    private List<SosCountRow> getSosCountRows(List<SosRow> sosRows) {
-        final Map<String, List<SosRow>> sosRowsByDx = sosRows.stream().collect(Collectors.groupingBy(SosRow::getDiagnos));
-        return sosRowsByDx.entrySet().stream().map(stringListEntry -> {
-            final Map<Kon, List<SosRow>> rowsByGender = stringListEntry.getValue().stream().collect(Collectors.groupingBy(SosRow::getKon));
-
-            final List<SosRow> maleRows = getNullSafeList(rowsByGender.get(Kon.MALE));
-            final Map<SjukfallsLangdGroupSos, Integer> malePerLength = getCountPerSjukfallsLangd(maleRows);
-
-            final List<SosRow> femaleRows = getNullSafeList(rowsByGender.get(Kon.FEMALE));
-            final Map<SjukfallsLangdGroupSos, Integer> femalePerLength = getCountPerSjukfallsLangd(femaleRows);
-
-            final String diagnos = stringListEntry.getKey();
-            final int femaleCount = femaleRows.size();
-            final int maleCount = maleRows.size();
-            final int total = femaleCount + maleCount;
-            return new SosCountRow(diagnos, total, femaleCount, maleCount, malePerLength, femalePerLength);
-        }).collect(Collectors.toList());
-    }
-
-    private <T> List<T> getNullSafeList(List<T> list) {
-        return list != null ? list : Collections.emptyList();
-    }
-
-    private Map<SjukfallsLangdGroupSos, Integer> getCountPerSjukfallsLangd(List<SosRow> sosRows) {
-        final Map<SjukfallsLangdGroupSos, List<SosRow>> rowsByLength = sosRows.stream().collect(
-            Collectors.groupingBy(sosRow -> SjukfallsLangdGroupSos.getByLength(sosRow.getLength())));
-        return rowsByLength.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, it -> it.getValue().size()));
-    }
-
-    /**
-     * Get sjukfall mean value information requested by socialstyrelsen (INTYG-2449).
-     */
-    @GET
-    @Path("getSocialstyrelsenMedianReport")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
-    public Response getSosMedianStatistics(@QueryParam("dx") List<String> dx,
-        @QueryParam(SOC_PARAM_STARTDX) String startWithSpecifiedDx,
-        @QueryParam("fromyear") String fromYearParam,
-        @QueryParam("toyear") String toYearParam) {
-        final Iterator<Aisle> aisles = warehouse.iterator();
-        int fromYear = getYear(fromYearParam);
-        int toYear = getYear(toYearParam);
-        final SosReportCreator sosReportCreator = new SosReportCreator(aisles, sjukfallUtil, icd10, dx,
-            Boolean.parseBoolean(startWithSpecifiedDx), changableClock, fromYear, toYear);
-        final List<SosCalculatedRow> medianValuesSosReport = sosReportCreator.getMedianValuesSosReport();
-        return Response.ok(medianValuesSosReport).build();
-    }
-
-    /**
-     * Get sjukfall standard deviation information requested by socialstyrelsen (INTYG-2449).
-     */
-    @GET
-    @Path("getSocialstyrelsenStdDevReport")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
-    public Response getSosStdDevStatistics(@QueryParam("dx") List<String> dx,
-        @QueryParam(SOC_PARAM_STARTDX) String startWithSpecifiedDx,
-        @QueryParam("fromyear") String fromYearParam,
-        @QueryParam("toyear") String toYearParam) {
-        final Iterator<Aisle> aisles = warehouse.iterator();
-        int fromYear = getYear(fromYearParam);
-        int toYear = getYear(toYearParam);
-        final SosReportCreator sosReportCreator = new SosReportCreator(aisles, sjukfallUtil, icd10, dx,
-            Boolean.parseBoolean(startWithSpecifiedDx), changableClock, fromYear, toYear);
-        final List<SosCalculatedRow> medianValuesSosReport = sosReportCreator.getStdDevValuesSosReport();
-        return Response.ok(medianValuesSosReport).build();
-    }
-
-    /**
-     * Special report for Socialstyrelsen regarding dx G933 (INTYG-6994).
-     */
-    @GET
-    @Path("getSocialstyrelsenMeCfs1Report")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
-    public Response getSocialstyrelsenMeCfs1Report() {
-        final SosMeCfs1ReportCreator sosMeCfs1ReportCreator = new SosMeCfs1ReportCreator(intygCommonSosManager, warehouse);
-        final List<SosMeCfs1Row> sosReport = sosMeCfs1ReportCreator.getSosReport(nationellData.getCutoff());
-        return Response.ok(sosReport).build();
-    }
-
-    /**
-     * Special report for Socialstyrelsen regarding dx G933 (INTYG-6994).
-     */
-    @GET
-    @Path("getSocialstyrelsenMeCfs2Report")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
-    public Response getSocialstyrelsenMeCfs2Report() {
-        final Iterator<Aisle> aisles = warehouse.iterator();
-        final List<SosMeCfs2Row> sosReport = new SosMeCfs2ReportCreator(aisles, sjukfallUtil,
-            nationellData.getCutoff(), icd10).getSosReport();
-        return Response.ok(sosReport).build();
-    }
-
-    /**
-     * Get sjukfall year report requested by FK (INTYG-3165).
-     */
-    @GET
-    @Path("getFkYearReport")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
-    public Response getFkYearReport(@QueryParam("dx") final List<String> customDiagnoses) {
-        List<String> dxList = customDiagnoses;
-        if (dxList == null || dxList.size() == 0) {
-            dxList = Arrays.asList("F32", "F43", "M54", "M17");
-        }
-        final Iterator<Aisle> aisles = warehouse.iterator();
-
-        final FkReportCreator fkReportCreator = new FkReportCreator(aisles, icd10, dxList, changableClock);
-        final List<FkReportDataRow> reportData = fkReportCreator.getReportData();
-        return Response.ok(reportData).build();
-    }
-
-    /**
-     * Special report for regarding sjukfall lengths (INTYG-7983). Using the last full year if no specific year is requested.
-     */
-    @GET
-    @Path("getSpecialLengthReport")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
-    public Response getSpecialLengthReport(@QueryParam("year") String yearParam) {
-        int year = getYear(yearParam);
-        final Iterator<Aisle> aisles = warehouse.iterator();
-        final List<SjukfallLengthSpecialRow> sosReport = new SjukfallLengthSpecialReportCreator(aisles, sjukfallUtil, icd10)
-            .getReport(year);
-        return Response.ok(sosReport).build();
-    }
-
-    /**
-     * Special report for Region Skane requested in INTYGFV-12015.
-     */
-    @GET
-    @Path("getSpecialReportSkane")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
-    public Response getSpecialReportSkane(@QueryParam("enhet") List<String> enhets) {
-        final List<SpecialSkaneRow> report = new SpecialReportSkaneCreator(warehouse.iterator(), sjukfallUtil, icd10)
+  /** Special report for Region Skane requested in INTYGFV-12015. */
+  @GET
+  @Path("getSpecialReportSkane")
+  @Produces({MediaType.APPLICATION_JSON})
+  @Consumes({MediaType.APPLICATION_JSON})
+  public Response getSpecialReportSkane(@QueryParam("enhet") List<String> enhets) {
+    final List<SpecialSkaneRow> report =
+        new SpecialReportSkaneCreator(warehouse.iterator(), sjukfallUtil, icd10)
             .getReport(false, enhets);
-        report.addAll(new SpecialReportSkaneAgeCreator(warehouse.iterator(), sjukfallUtil)
+    report.addAll(
+        new SpecialReportSkaneAgeCreator(warehouse.iterator(), sjukfallUtil)
             .getReport(false, enhets));
-        report.addAll(new SpecialReportSkaneCreator(warehouse.iterator(), sjukfallUtil, icd10)
+    report.addAll(
+        new SpecialReportSkaneCreator(warehouse.iterator(), sjukfallUtil, icd10)
             .getReport(true, enhets));
-        report.addAll(new SpecialReportSkaneAgeCreator(warehouse.iterator(), sjukfallUtil)
+    report.addAll(
+        new SpecialReportSkaneAgeCreator(warehouse.iterator(), sjukfallUtil)
             .getReport(true, enhets));
-        return Response.ok(report).build();
-    }
-
+    return Response.ok(report).build();
+  }
 }

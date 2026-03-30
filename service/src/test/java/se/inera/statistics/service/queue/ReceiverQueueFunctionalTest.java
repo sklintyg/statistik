@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -40,46 +40,45 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @DirtiesContext
 public class ReceiverQueueFunctionalTest {
 
-    private static final int DELAY = 5000;
-    private JmsTemplate jmsTemplate;
+  private static final int DELAY = 5000;
+  private JmsTemplate jmsTemplate;
 
-    @Autowired
-    private ConnectionFactory connectionFactory;
+  @Autowired private ConnectionFactory connectionFactory;
 
-    @Before
-    public void setup() {
-        setConnectionFactory(connectionFactory);
-    }
+  @Before
+  public void setup() {
+    setConnectionFactory(connectionFactory);
+  }
 
-    public void setConnectionFactory(ConnectionFactory cf) {
-        this.jmsTemplate = new JmsTemplate(cf);
-    }
+  public void setConnectionFactory(ConnectionFactory cf) {
+    this.jmsTemplate = new JmsTemplate(cf);
+  }
 
-    public void simpleSend() {
-        Destination destination = new ActiveMQQueue("intyg.queue");
+  public void simpleSend() {
+    Destination destination = new ActiveMQQueue("intyg.queue");
 
-        this.jmsTemplate.send(destination, new MessageCreator() {
-            public Message createMessage(Session session) throws JMSException {
-                TextMessage message = session.createTextMessage("hello queue world");
-                message.setJMSCorrelationID("C12");
-                return message;
-            }
+    this.jmsTemplate.send(
+        destination,
+        new MessageCreator() {
+          public Message createMessage(Session session) throws JMSException {
+            TextMessage message = session.createTextMessage("hello queue world");
+            message.setJMSCorrelationID("C12");
+            return message;
+          }
         });
-    }
+  }
 
-    /**
-     * Functional test to check if a message is consumed. The proof is in the
-     * pudding. Check output for "Received intyg" and inspect its
-     * representation.
-     */
-    @Test
-    public void send() {
-        simpleSend();
-        try {
-            Thread.sleep(DELAY);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+  /**
+   * Functional test to check if a message is consumed. The proof is in the pudding. Check output
+   * for "Received intyg" and inspect its representation.
+   */
+  @Test
+  public void send() {
+    simpleSend();
+    try {
+      Thread.sleep(DELAY);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
     }
-
+  }
 }

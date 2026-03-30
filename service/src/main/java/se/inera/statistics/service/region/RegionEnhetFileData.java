@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,38 +25,45 @@ import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
 public class RegionEnhetFileData {
 
-    private HsaIdVardgivare vgId;
-    private List<RegionEnhetFileDataRow> rows;
-    private String userName;
-    private HsaIdUser userId;
-    private String fileName;
+  private HsaIdVardgivare vgId;
+  private List<RegionEnhetFileDataRow> rows;
+  private String userName;
+  private HsaIdUser userId;
+  private String fileName;
 
-    public RegionEnhetFileData(HsaIdVardgivare vgId, List<RegionEnhetFileDataRow> rows, String userName, HsaIdUser userId,
-        String fileName) {
-        this.vgId = vgId == null ? new HsaIdVardgivare("") : vgId;
-        this.rows = rows == null ? Collections.<RegionEnhetFileDataRow>emptyList() : Collections.unmodifiableList(rows);
-        this.userName = userName;
-        this.userId = userId;
-        this.fileName = fileName;
-    }
+  public RegionEnhetFileData(
+      HsaIdVardgivare vgId,
+      List<RegionEnhetFileDataRow> rows,
+      String userName,
+      HsaIdUser userId,
+      String fileName) {
+    this.vgId = vgId == null ? new HsaIdVardgivare("") : vgId;
+    this.rows =
+        rows == null
+            ? Collections.<RegionEnhetFileDataRow>emptyList()
+            : Collections.unmodifiableList(rows);
+    this.userName = userName;
+    this.userId = userId;
+    this.fileName = fileName;
+  }
 
-    public HsaIdVardgivare getVgId() {
-        return vgId;
-    }
+  public HsaIdVardgivare getVgId() {
+    return vgId;
+  }
 
-    public List<RegionEnhetFileDataRow> getRows() {
-        return rows;
-    }
+  public List<RegionEnhetFileDataRow> getRows() {
+    return rows;
+  }
 
-    public String getUserName() {
-        return userName;
-    }
+  public String getUserName() {
+    return userName;
+  }
 
-    public HsaIdUser getUserId() {
-        return userId;
-    }
+  public HsaIdUser getUserId() {
+    return userId;
+  }
 
-    public String getFileName() {
-        return fileName;
-    }
+  public String getFileName() {
+    return fileName;
+  }
 }

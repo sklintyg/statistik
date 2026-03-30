@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -26,60 +26,66 @@ import se.inera.statistics.web.service.dto.FilterDataResponse;
 
 public class DualSexStatisticsData extends TableDataReport {
 
-    private final TableData tableData;
-    private final ChartData maleChart;
-    private final ChartData femaleChart;
-    private final String period;
-    private final AvailableFilters availableFilters;
-    private final FilterDataResponse filter;
-    private final List<Message> messages;
+  private final TableData tableData;
+  private final ChartData maleChart;
+  private final ChartData femaleChart;
+  private final String period;
+  private final AvailableFilters availableFilters;
+  private final FilterDataResponse filter;
+  private final List<Message> messages;
 
-    public DualSexStatisticsData(TableData tableData, ChartData maleChart, ChartData femaleChart, String period,
-        AvailableFilters availableFilters, FilterDataResponse filter, List<Message> messages) {
-        this.tableData = tableData;
-        this.maleChart = maleChart;
-        this.femaleChart = femaleChart;
-        this.period = period;
-        this.availableFilters = availableFilters;
-        this.filter = filter;
-        this.messages = messages;
-    }
+  public DualSexStatisticsData(
+      TableData tableData,
+      ChartData maleChart,
+      ChartData femaleChart,
+      String period,
+      AvailableFilters availableFilters,
+      FilterDataResponse filter,
+      List<Message> messages) {
+    this.tableData = tableData;
+    this.maleChart = maleChart;
+    this.femaleChart = femaleChart;
+    this.period = period;
+    this.availableFilters = availableFilters;
+    this.filter = filter;
+    this.messages = messages;
+  }
 
-    @Override
-    public TableData getTableData() {
-        return tableData;
-    }
+  @Override
+  public TableData getTableData() {
+    return tableData;
+  }
 
-    public ChartData getMaleChart() {
-        return maleChart;
-    }
+  public ChartData getMaleChart() {
+    return maleChart;
+  }
 
-    public ChartData getFemaleChart() {
-        return femaleChart;
-    }
+  public ChartData getFemaleChart() {
+    return femaleChart;
+  }
 
-    @Override
-    public String getPeriod() {
-        return period;
-    }
+  @Override
+  public String getPeriod() {
+    return period;
+  }
 
-    @Override
-    public FilterDataResponse getFilter() {
-        return filter;
-    }
+  @Override
+  public FilterDataResponse getFilter() {
+    return filter;
+  }
 
-    @Override
-    public List<Message> getMessages() {
-        return messages;
-    }
+  @Override
+  public List<Message> getMessages() {
+    return messages;
+  }
 
-    @Override
-    public List<ChartData> getChartDatas() {
-        return Arrays.asList(maleChart, femaleChart);
-    }
+  @Override
+  public List<ChartData> getChartDatas() {
+    return Arrays.asList(maleChart, femaleChart);
+  }
 
-    @Override
-    public AvailableFilters getAvailableFilters() {
-        return availableFilters;
-    }
+  @Override
+  public AvailableFilters getAvailableFilters() {
+    return availableFilters;
+  }
 }

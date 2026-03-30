@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -27,13 +27,13 @@ import java.time.format.DateTimeFormatter;
 @Converter(autoApply = true)
 public class LocalTimeConverter implements AttributeConverter<LocalTime, Time> {
 
-    @Override
-    public Time convertToDatabaseColumn(LocalTime time) {
-        return Time.valueOf(time);
-    }
+  @Override
+  public Time convertToDatabaseColumn(LocalTime time) {
+    return Time.valueOf(time);
+  }
 
-    @Override
-    public LocalTime convertToEntityAttribute(Time value) {
-        return LocalTime.parse(value.toString(), DateTimeFormatter.ISO_LOCAL_TIME);
-    }
+  @Override
+  public LocalTime convertToEntityAttribute(Time value) {
+    return LocalTime.parse(value.toString(), DateTimeFormatter.ISO_LOCAL_TIME);
+  }
 }

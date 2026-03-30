@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -24,23 +24,23 @@ import org.junit.jupiter.api.Test;
 
 class HashUtilityTest {
 
-    @Test
-    void shouldReturnHashedValue() {
-        final var payload = "123123123";
-        final var hashedPayload = se.inera.intyg.statistik.logging.HashUtility.hash(payload);
-        assertEquals("932f3c1b56257ce8539ac269d7aab42550dacf8818d075f0bdf1990562aae3ef", hashedPayload);
-    }
+  @Test
+  void shouldReturnHashedValue() {
+    final var payload = "123123123";
+    final var hashedPayload = se.inera.intyg.statistik.logging.HashUtility.hash(payload);
+    assertEquals("932f3c1b56257ce8539ac269d7aab42550dacf8818d075f0bdf1990562aae3ef", hashedPayload);
+  }
 
-    @Test
-    void shouldReturnEmptyHashConstantWhenPayloadIsNull() {
-        final var hashedPayload = se.inera.intyg.statistik.logging.HashUtility.hash(null);
-        assertEquals(se.inera.intyg.statistik.logging.HashUtility.EMPTY, hashedPayload);
-    }
+  @Test
+  void shouldReturnEmptyHashConstantWhenPayloadIsNull() {
+    final var hashedPayload = se.inera.intyg.statistik.logging.HashUtility.hash(null);
+    assertEquals(se.inera.intyg.statistik.logging.HashUtility.EMPTY, hashedPayload);
+  }
 
-    @Test
-    void shouldReturnEmptyHashConstantWhenPayloadIsEmpty() {
-        final var payload = "";
-        final var hashedPayload = se.inera.intyg.statistik.logging.HashUtility.hash(payload);
-        assertEquals(se.inera.intyg.statistik.logging.HashUtility.EMPTY, hashedPayload);
-    }
+  @Test
+  void shouldReturnEmptyHashConstantWhenPayloadIsEmpty() {
+    final var payload = "";
+    final var hashedPayload = se.inera.intyg.statistik.logging.HashUtility.hash(payload);
+    assertEquals(se.inera.intyg.statistik.logging.HashUtility.EMPTY, hashedPayload);
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,44 +22,43 @@ import se.inera.statistics.service.report.model.Kon;
 
 public class SosMeCfs2Row {
 
-    private Kon kon;
-    private String ageGroup;
-    private int amount;
-    private double median;
-    private double q1;
-    private double q3;
+  private Kon kon;
+  private String ageGroup;
+  private int amount;
+  private double median;
+  private double q1;
+  private double q3;
 
-    public SosMeCfs2Row(Kon kon, String ageGroup, int amount, double median, double q1, double q3) {
-        this.kon = kon;
-        this.ageGroup = ageGroup;
-        this.amount = amount;
-        this.median = median;
-        this.q1 = q1;
-        this.q3 = q3;
-    }
+  public SosMeCfs2Row(Kon kon, String ageGroup, int amount, double median, double q1, double q3) {
+    this.kon = kon;
+    this.ageGroup = ageGroup;
+    this.amount = amount;
+    this.median = median;
+    this.q1 = q1;
+    this.q3 = q3;
+  }
 
-    public Kon getKon() {
-        return kon;
-    }
+  public Kon getKon() {
+    return kon;
+  }
 
-    public String getAgeGroup() {
-        return ageGroup;
-    }
+  public String getAgeGroup() {
+    return ageGroup;
+  }
 
-    public int getAmount() {
-        return amount;
-    }
+  public int getAmount() {
+    return amount;
+  }
 
-    public double getMedian() {
-        return median;
-    }
+  public double getMedian() {
+    return median;
+  }
 
-    public double getQ1() {
-        return q1;
-    }
+  public double getQ1() {
+    return q1;
+  }
 
-    public double getQ3() {
-        return q3;
-    }
-
+  public double getQ3() {
+    return q3;
+  }
 }

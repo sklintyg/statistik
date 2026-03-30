@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -28,47 +28,46 @@ import se.inera.statistics.web.error.Message;
 
 public class ConvertersTest {
 
-    @Test
-    public void testCombineMessagesOnlyNullsReturnsEmptyArray() throws Exception {
-        //When
-        final List<Message> result = Converters.combineMessages(null, null);
+  @Test
+  public void testCombineMessagesOnlyNullsReturnsEmptyArray() throws Exception {
+    // When
+    final List<Message> result = Converters.combineMessages(null, null);
 
-        //Then
-        assertEquals(0, result.size());
-    }
+    // Then
+    assertEquals(0, result.size());
+  }
 
-    @Test
-    public void testCombineMessagesEmptyInputReturnsEmptyArray() throws Exception {
-        //When
-        final List<Message> result = Converters.combineMessages();
+  @Test
+  public void testCombineMessagesEmptyInputReturnsEmptyArray() throws Exception {
+    // When
+    final List<Message> result = Converters.combineMessages();
 
-        //Then
-        assertEquals(0, result.size());
-    }
+    // Then
+    assertEquals(0, result.size());
+  }
 
-    @Test
-    public void testCombineMessagesEmptyInputStringIsIgnored() throws Exception {
-        Message m1 = Message.create(ErrorType.FILTER, ErrorSeverity.INFO, "m1");
-        Message m2 = Message.create(ErrorType.FILTER, ErrorSeverity.INFO, "");
-        Message m3 = Message.create(ErrorType.FILTER, ErrorSeverity.INFO, "m3");
+  @Test
+  public void testCombineMessagesEmptyInputStringIsIgnored() throws Exception {
+    Message m1 = Message.create(ErrorType.FILTER, ErrorSeverity.INFO, "m1");
+    Message m2 = Message.create(ErrorType.FILTER, ErrorSeverity.INFO, "");
+    Message m3 = Message.create(ErrorType.FILTER, ErrorSeverity.INFO, "m3");
 
-        //When
-        final List<Message> result = Converters.combineMessages(m1, m2, m3);
+    // When
+    final List<Message> result = Converters.combineMessages(m1, m2, m3);
 
-        //Then
-        assertEquals(2, result.size());
-    }
+    // Then
+    assertEquals(2, result.size());
+  }
 
-    @Test
-    public void testCombineMessagesNullInputIsIgnored() throws Exception {
-        Message m1 = Message.create(ErrorType.FILTER, ErrorSeverity.INFO, "m1");
-        Message m2 = Message.create(ErrorType.FILTER, ErrorSeverity.INFO, "m2");
+  @Test
+  public void testCombineMessagesNullInputIsIgnored() throws Exception {
+    Message m1 = Message.create(ErrorType.FILTER, ErrorSeverity.INFO, "m1");
+    Message m2 = Message.create(ErrorType.FILTER, ErrorSeverity.INFO, "m2");
 
-        //When
-        final List<Message> result = Converters.combineMessages(m1, null, m2);
+    // When
+    final List<Message> result = Converters.combineMessages(m1, null, m2);
 
-        //Then
-        assertEquals(2, result.size());
-    }
-
+    // Then
+    assertEquals(2, result.size());
+  }
 }

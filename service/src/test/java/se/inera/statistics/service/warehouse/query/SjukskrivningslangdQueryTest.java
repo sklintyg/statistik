@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -52,85 +52,105 @@ import se.inera.statistics.service.warehouse.WidelineLoader;
 
 public class SjukskrivningslangdQueryTest {
 
-    private static final HsaIdVardgivare VARDGIVARE = new HsaIdVardgivare("vardgivare");
+  private static final HsaIdVardgivare VARDGIVARE = new HsaIdVardgivare("vardgivare");
 
-    @InjectMocks
-    private Warehouse warehouse = new Warehouse();
+  @InjectMocks private Warehouse warehouse = new Warehouse();
 
-    @Mock
-    private WidelineLoader widelineLoader;
+  @Mock private WidelineLoader widelineLoader;
 
-    @Spy
-    private Cache cache = new Cache(new NoOpRedisTemplate());
+  @Spy private Cache cache = new Cache(new NoOpRedisTemplate());
 
-    private int intyg;
-    private int patient;
-    private ArrayList<Fact> facts = new ArrayList<>();
-    private SjukfallUtil sjukfallUtil = new SjukfallUtil();
+  private int intyg;
+  private int patient;
+  private ArrayList<Fact> facts = new ArrayList<>();
+  private SjukfallUtil sjukfallUtil = new SjukfallUtil();
 
-    @Before
-    public void setUp() throws Exception {
-        ReflectionTestUtils.setField(sjukfallUtil, "cache", cache);
-        MockitoAnnotations.initMocks(this);
-        facts.clear();
-    }
+  @Before
+  public void setUp() throws Exception {
+    ReflectionTestUtils.setField(sjukfallUtil, "cache", cache);
+    MockitoAnnotations.initMocks(this);
+    facts.clear();
+  }
 
-    @Test
-    public void one() {
-        fact(4010, 45);
-        Mockito.when(widelineLoader.getAilesForVgs(any())).thenReturn(Collections.singletonList(new Aisle(VARDGIVARE, facts)));
-        Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
-        Map<Ranges.Range, Counter<Ranges.Range>> count = SjukskrivningslangdQuery.count(sjukfall);
-        assertEquals(1, count.get(SjukfallslangdUtil.RANGES.rangeFor(45)).getCount());
-    }
+  @Test
+  public void one() {
+    fact(4010, 45);
+    Mockito.when(widelineLoader.getAilesForVgs(any()))
+        .thenReturn(Collections.singletonList(new Aisle(VARDGIVARE, facts)));
+    Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
+    Map<Ranges.Range, Counter<Ranges.Range>> count = SjukskrivningslangdQuery.count(sjukfall);
+    assertEquals(1, count.get(SjukfallslangdUtil.RANGES.rangeFor(45)).getCount());
+  }
 
-    private Collection<Sjukfall> calculateSjukfallsHelper(Aisle aisle) {
-        final LocalDate from = LocalDate.of(2000, 1, 1);
-        return sjukfallUtil.sjukfallGrupper(from, 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next().getSjukfall();
-    }
+  private Collection<Sjukfall> calculateSjukfallsHelper(Aisle aisle) {
+    final LocalDate from = LocalDate.of(2000, 1, 1);
+    return sjukfallUtil
+        .sjukfallGrupper(from, 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER)
+        .iterator()
+        .next()
+        .getSjukfall();
+  }
 
-    @Test
-    public void useMax() {
-        fact(4010, 1);
-        fact(4010, 1);
-        fact(4010, 1);
-        fact(4010, 1);
-        fact(4010, 30);
-        fact(4010, 30);
-        fact(4010, 45);
-        fact(4010, 45);
-        fact(4010, 50);
-        fact(4010, 50);
-        fact(4010, 50);
-        fact(4010, 100);
-        fact(4010, 200);
-        fact(4010, 400);
-        Mockito.when(widelineLoader.getAilesForVgs(any())).thenReturn(Collections.singletonList(new Aisle(VARDGIVARE, facts)));
-        Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
-        List<Counter<Ranges.Range>> count = SjukskrivningslangdQuery.count(sjukfall, 6);
+  @Test
+  public void useMax() {
+    fact(4010, 1);
+    fact(4010, 1);
+    fact(4010, 1);
+    fact(4010, 1);
+    fact(4010, 30);
+    fact(4010, 30);
+    fact(4010, 45);
+    fact(4010, 45);
+    fact(4010, 50);
+    fact(4010, 50);
+    fact(4010, 50);
+    fact(4010, 100);
+    fact(4010, 200);
+    fact(4010, 400);
+    Mockito.when(widelineLoader.getAilesForVgs(any()))
+        .thenReturn(Collections.singletonList(new Aisle(VARDGIVARE, facts)));
+    Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
+    List<Counter<Ranges.Range>> count = SjukskrivningslangdQuery.count(sjukfall, 6);
 
-        assertEquals(6, count.size());
-        assertAmountAndName(count.get(0), 4, "Under 15");
-        assertAmountAndName(count.get(1), 2, "15-30");
-        assertAmountAndName(count.get(2), 5, "31-60");
-        assertAmountAndName(count.get(3), 1, "91-180");
-        assertAmountAndName(count.get(4), 1, "181-364");
-        assertAmountAndName(count.get(5), 1, "1-2 år");
-    }
+    assertEquals(6, count.size());
+    assertAmountAndName(count.get(0), 4, "Under 15");
+    assertAmountAndName(count.get(1), 2, "15-30");
+    assertAmountAndName(count.get(2), 5, "31-60");
+    assertAmountAndName(count.get(3), 1, "91-180");
+    assertAmountAndName(count.get(4), 1, "181-364");
+    assertAmountAndName(count.get(5), 1, "1-2 år");
+  }
 
-    private void assertAmountAndName(Counter<Ranges.Range> rangeCounter, int expectedAmount, String nameContains) {
-        assertEquals(expectedAmount, rangeCounter.getCount());
-        assertTrue(rangeCounter.getKey().getName().contains(nameContains));
-    }
+  private void assertAmountAndName(
+      Counter<Ranges.Range> rangeCounter, int expectedAmount, String nameContains) {
+    assertEquals(expectedAmount, rangeCounter.getCount());
+    assertTrue(rangeCounter.getKey().getName().contains(nameContains));
+  }
 
-    private void fact(int startday, int length) {
-        Fact fact = aFact().withId(1).withLan(3).withKommun(380).withForsamling(38002).
-            withEnhet(1).withLakarintyg(intyg++).
-            withPatient(patient++).withKon(Kon.FEMALE).withAlder(45).
-            withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
-            withSjukskrivningsgrad(100).withStartdatum(startday).withSlutdatum(startday + length - 1).
-            withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).build();
-        facts.add(fact);
-    }
-
+  private void fact(int startday, int length) {
+    Fact fact =
+        aFact()
+            .withId(1)
+            .withLan(3)
+            .withKommun(380)
+            .withForsamling(38002)
+            .withEnhet(1)
+            .withLakarintyg(intyg++)
+            .withPatient(patient++)
+            .withKon(Kon.FEMALE)
+            .withAlder(45)
+            .withDiagnoskapitel(0)
+            .withDiagnosavsnitt(14)
+            .withDiagnoskategori(16)
+            .withDiagnoskod(18)
+            .withSjukskrivningsgrad(100)
+            .withStartdatum(startday)
+            .withSlutdatum(startday + length - 1)
+            .withLakarkon(Kon.FEMALE)
+            .withLakaralder(32)
+            .withLakarbefattning(new int[] {201010})
+            .withLakarid(1)
+            .build();
+    facts.add(fact);
+  }
 }

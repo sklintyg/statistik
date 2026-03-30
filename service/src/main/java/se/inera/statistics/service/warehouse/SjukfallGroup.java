@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,19 +25,19 @@ import se.inera.statistics.service.report.model.Range;
 
 public class SjukfallGroup implements Serializable {
 
-    private final Range range;
-    private final Collection<Sjukfall> sjukfall;
+  private final Range range;
+  private final Collection<Sjukfall> sjukfall;
 
-    public SjukfallGroup(Range range, Collection<Sjukfall> sjukfall) {
-        this.range = range;
-        this.sjukfall = new ArrayList<>(sjukfall);
-    }
+  public SjukfallGroup(Range range, Collection<Sjukfall> sjukfall) {
+    this.range = range;
+    this.sjukfall = new ArrayList<>(sjukfall);
+  }
 
-    public Range getRange() {
-        return range;
-    }
+  public Range getRange() {
+    return range;
+  }
 
-    public Collection<Sjukfall> getSjukfall() {
-        return sjukfall;
-    }
+  public Collection<Sjukfall> getSjukfall() {
+    return sjukfall;
+  }
 }

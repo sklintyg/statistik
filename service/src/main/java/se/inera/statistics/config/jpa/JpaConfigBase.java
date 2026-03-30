@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -34,90 +34,96 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 public abstract class JpaConfigBase {
 
+  static final String LIQUIBASE_SCRIPT = "changelog/changelog.xml";
+  static final Logger LOG = LoggerFactory.getLogger(JpaConfigBase.class);
 
-    static final String LIQUIBASE_SCRIPT = "changelog/changelog.xml";
-    static final Logger LOG = LoggerFactory.getLogger(JpaConfigBase.class);
+  @Value("${hibernate.dialect}")
+  private String hibernateDialect;
 
-    @Value("${hibernate.dialect}")
-    private String hibernateDialect;
-    @Value("${hibernate.hbm2ddl.auto}")
-    private String hibernateHbm2ddl;
-    @Value("${hibernate.show_sql}")
-    private String hibernateShowSql;
-    @Value("${hibernate.format_sql}")
-    private String hibernateFormatSql;
+  @Value("${hibernate.hbm2ddl.auto}")
+  private String hibernateHbm2ddl;
 
-    @Value("${db.driver}")
-    private String driver;
-    @Value("${db.url}")
-    private String url;
-    @Value("${db.username}")
-    private String username;
-    @Value("${db.password}")
-    private String password;
-    @Value("${db.pool.maxSize}")
-    private int maxPoolSize;
+  @Value("${hibernate.show_sql}")
+  private String hibernateShowSql;
 
-    static final long IDLE_TIMEOUT = 15000L;
-    static final long CONN_TIMEOUT = 3000L;
-    static final int MIN_IDLE = 3;
+  @Value("${hibernate.format_sql}")
+  private String hibernateFormatSql;
 
-    @Bean(name = "entityManagerFactory")
-    LocalContainerEntityManagerFactoryBean entityManagerFactory(final DataSource dataSource) {
-        final LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-        entityManagerFactoryBean.setDataSource(dataSource);
-        entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        entityManagerFactoryBean.setPersistenceUnitName("IneraStatisticsLog");
-        entityManagerFactoryBean.setPackagesToScan("se.inera.statistics.service");
-        entityManagerFactoryBean.setJpaProperties(additionalProperties());
+  @Value("${db.driver}")
+  private String driver;
 
-        return entityManagerFactoryBean;
-    }
+  @Value("${db.url}")
+  private String url;
 
-    @Bean(name = "transactionManager")
-    JpaTransactionManager transactionManager(final EntityManagerFactory entityManagerFactory) {
-        final JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(entityManagerFactory);
-        return transactionManager;
-    }
+  @Value("${db.username}")
+  private String username;
 
-    @Bean(name = "dataSource", destroyMethod = "close")
-    HikariDataSource dataSource() {
-        LOG.info("Initialize data-source with url: {}", url);
+  @Value("${db.password}")
+  private String password;
 
-        final HikariConfig config = new HikariConfig();
+  @Value("${db.pool.maxSize}")
+  private int maxPoolSize;
 
-        config.setDriverClassName(driver);
-        config.setJdbcUrl(url);
-        config.setUsername(username);
-        config.setPassword(password);
-        config.setAutoCommit(false);
-        config.setMinimumIdle(MIN_IDLE);
-        config.setMaximumPoolSize(maxPoolSize);
-        config.setConnectionTimeout(CONN_TIMEOUT);
-        config.setIdleTimeout(IDLE_TIMEOUT);
+  static final long IDLE_TIMEOUT = 15000L;
+  static final long CONN_TIMEOUT = 3000L;
+  static final int MIN_IDLE = 3;
 
-        return new HikariDataSource(config);
-    }
+  @Bean(name = "entityManagerFactory")
+  LocalContainerEntityManagerFactoryBean entityManagerFactory(final DataSource dataSource) {
+    final LocalContainerEntityManagerFactoryBean entityManagerFactoryBean =
+        new LocalContainerEntityManagerFactoryBean();
+    entityManagerFactoryBean.setDataSource(dataSource);
+    entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+    entityManagerFactoryBean.setPersistenceUnitName("IneraStatisticsLog");
+    entityManagerFactoryBean.setPackagesToScan("se.inera.statistics.service");
+    entityManagerFactoryBean.setJpaProperties(additionalProperties());
 
-    Properties additionalProperties() {
-        final Properties jpaProperties = new Properties();
-        jpaProperties.put("hibernate.dialect", hibernateDialect);
-        jpaProperties.put("hibernate.hbm2ddl.auto", hibernateHbm2ddl);
-        jpaProperties.put("hibernate.show_sql", hibernateShowSql);
-        jpaProperties.put("hibernate.format_sql", hibernateFormatSql);
-        jpaProperties.put("hibernate.id.new_generator_mappings", false);
-        jpaProperties.put("hibernate.enable_lazy_load_no_trans", false);
+    return entityManagerFactoryBean;
+  }
 
-        return jpaProperties;
-    }
+  @Bean(name = "transactionManager")
+  JpaTransactionManager transactionManager(final EntityManagerFactory entityManagerFactory) {
+    final JpaTransactionManager transactionManager = new JpaTransactionManager();
+    transactionManager.setEntityManagerFactory(entityManagerFactory);
+    return transactionManager;
+  }
 
-    @Bean(name = "dbUpdate")
-    SpringLiquibase initDb(final DataSource dataSource) {
-        final SpringLiquibase springLiquibase = new SpringLiquibase();
-        springLiquibase.setDataSource(dataSource);
-        springLiquibase.setChangeLog("classpath:" + LIQUIBASE_SCRIPT);
-        return springLiquibase;
-    }
+  @Bean(name = "dataSource", destroyMethod = "close")
+  HikariDataSource dataSource() {
+    LOG.info("Initialize data-source with url: {}", url);
 
+    final HikariConfig config = new HikariConfig();
+
+    config.setDriverClassName(driver);
+    config.setJdbcUrl(url);
+    config.setUsername(username);
+    config.setPassword(password);
+    config.setAutoCommit(false);
+    config.setMinimumIdle(MIN_IDLE);
+    config.setMaximumPoolSize(maxPoolSize);
+    config.setConnectionTimeout(CONN_TIMEOUT);
+    config.setIdleTimeout(IDLE_TIMEOUT);
+
+    return new HikariDataSource(config);
+  }
+
+  Properties additionalProperties() {
+    final Properties jpaProperties = new Properties();
+    jpaProperties.put("hibernate.dialect", hibernateDialect);
+    jpaProperties.put("hibernate.hbm2ddl.auto", hibernateHbm2ddl);
+    jpaProperties.put("hibernate.show_sql", hibernateShowSql);
+    jpaProperties.put("hibernate.format_sql", hibernateFormatSql);
+    jpaProperties.put("hibernate.id.new_generator_mappings", false);
+    jpaProperties.put("hibernate.enable_lazy_load_no_trans", false);
+
+    return jpaProperties;
+  }
+
+  @Bean(name = "dbUpdate")
+  SpringLiquibase initDb(final DataSource dataSource) {
+    final SpringLiquibase springLiquibase = new SpringLiquibase();
+    springLiquibase.setDataSource(dataSource);
+    springLiquibase.setChangeLog("classpath:" + LIQUIBASE_SCRIPT);
+    return springLiquibase;
+  }
 }

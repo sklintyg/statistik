@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -37,63 +37,68 @@ import se.inera.statistics.service.processlog.message.MessageLogConsumer;
 
 public class LogJob {
 
-    private static final Logger LOG = LoggerFactory.getLogger(LogJob.class);
-    private static final String JOB_NAME = "LogJob.run";
+  private static final Logger LOG = LoggerFactory.getLogger(LogJob.class);
+  private static final String JOB_NAME = "LogJob.run";
 
-    private MonitoringLogService monitoringLogService;
+  private MonitoringLogService monitoringLogService;
 
-    private LogConsumer consumer;
-    private MessageLogConsumer messageLogConsumer;
-    private IntygsentLogConsumer intygsentLogConsumer;
-    private MdcHelper mdcHelper;
+  private LogConsumer consumer;
+  private MessageLogConsumer messageLogConsumer;
+  private IntygsentLogConsumer intygsentLogConsumer;
+  private MdcHelper mdcHelper;
 
-    public LogJob(MonitoringLogService monitoringLogService, LogConsumer consumer, IntygsentLogConsumer intygsentLogConsumer,
-        MessageLogConsumer messageLogConsumer, MdcHelper mdcHelper) {
-        this.monitoringLogService = monitoringLogService;
-        this.consumer = consumer;
-        this.intygsentLogConsumer = intygsentLogConsumer;
-        this.messageLogConsumer = messageLogConsumer;
-        this.mdcHelper = mdcHelper;
+  public LogJob(
+      MonitoringLogService monitoringLogService,
+      LogConsumer consumer,
+      IntygsentLogConsumer intygsentLogConsumer,
+      MessageLogConsumer messageLogConsumer,
+      MdcHelper mdcHelper) {
+    this.monitoringLogService = monitoringLogService;
+    this.consumer = consumer;
+    this.intygsentLogConsumer = intygsentLogConsumer;
+    this.messageLogConsumer = messageLogConsumer;
+    this.mdcHelper = mdcHelper;
+  }
+
+  @Scheduled(cron = "${scheduler.logJob.cron}")
+  @SchedulerLock(name = JOB_NAME)
+  @PrometheusTimeMethod(help = "Jobb för att hantera inkomna intyg och meddelanden från kön")
+  @PerformanceLogging(
+      eventAction = "process-sent-certificates-and-messages-batch-job",
+      eventType = MdcLogConstants.EVENT_TYPE_INFO)
+  public void run() {
+    try (MdcCloseableMap mdc =
+        MdcCloseableMap.builder()
+            .put(TRACE_ID_KEY, mdcHelper.traceId())
+            .put(SPAN_ID_KEY, mdcHelper.spanId())
+            .build()) {
+      process();
     }
+  }
 
-    @Scheduled(cron = "${scheduler.logJob.cron}")
-    @SchedulerLock(name = JOB_NAME)
-    @PrometheusTimeMethod(help = "Jobb för att hantera inkomna intyg och meddelanden från kön")
-    @PerformanceLogging(eventAction = "process-sent-certificates-and-messages-batch-job", eventType = MdcLogConstants.EVENT_TYPE_INFO)
-    public void run() {
-        try (MdcCloseableMap mdc =
-            MdcCloseableMap.builder()
-                .put(TRACE_ID_KEY, mdcHelper.traceId())
-                .put(SPAN_ID_KEY, mdcHelper.spanId())
-                .build()
-        ) {
-            process();
-        }
-    }
+  public void process() {
+    LOG.info(JOB_NAME);
+    int count;
+    do {
+      count = consumer.processBatch();
+      LOG.info("Processed batch with {} entries", count);
+      if (count > 0) {
+        monitoringLogService.logInFromTable(count);
+      }
+    } while (count > 0);
 
-    public void process() {
-        LOG.info(JOB_NAME);
-        int count;
-        do {
-            count = consumer.processBatch();
-            LOG.info("Processed batch with {} entries", count);
-            if (count > 0) {
-                monitoringLogService.logInFromTable(count);
-            }
-        } while (count > 0);
+    do {
+      count = intygsentLogConsumer.processBatch();
+      LOG.info("Processed sent batch with {} entries", count);
+    } while (count > 0);
 
-        do {
-            count = intygsentLogConsumer.processBatch();
-            LOG.info("Processed sent batch with {} entries", count);
-        } while (count > 0);
-
-        // Process messages after intyg
-        long startId;
-        long latestHandledId = 0;
-        do {
-            startId = latestHandledId;
-            latestHandledId = messageLogConsumer.processBatch(startId);
-            LOG.info("Processed message batch from id {} to {}", startId, latestHandledId);
-        } while (startId != latestHandledId);
-    }
+    // Process messages after intyg
+    long startId;
+    long latestHandledId = 0;
+    do {
+      startId = latestHandledId;
+      latestHandledId = messageLogConsumer.processBatch(startId);
+      LOG.info("Processed message batch from id {} to {}", startId, latestHandledId);
+    } while (startId != latestHandledId);
+  }
 }

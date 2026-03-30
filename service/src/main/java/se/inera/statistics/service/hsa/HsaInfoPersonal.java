@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -26,103 +26,118 @@ import java.util.List;
 
 public class HsaInfoPersonal {
 
-    @JsonProperty("id")
-    private String id;
-    @JsonProperty("kon")
-    private String kon;
-    @JsonProperty("alder")
-    private String alder;
-    @JsonProperty("befattning")
-    private List<String> befattning;
-    @JsonProperty("specialitet")
-    private List<String> specialitet;
-    @JsonProperty("yrkesgrupp")
-    private List<String> yrkesgrupp;
-    @JsonProperty("skyddad")
-    private Boolean skyddad;
-    @JsonProperty("tilltalsnamn")
-    private String tilltalsnamn;
-    @JsonProperty("efternamn")
-    private String efternamn;
+  @JsonProperty("id")
+  private String id;
 
-    // Default constructor required by json mapper
-    private HsaInfoPersonal() {
+  @JsonProperty("kon")
+  private String kon;
+
+  @JsonProperty("alder")
+  private String alder;
+
+  @JsonProperty("befattning")
+  private List<String> befattning;
+
+  @JsonProperty("specialitet")
+  private List<String> specialitet;
+
+  @JsonProperty("yrkesgrupp")
+  private List<String> yrkesgrupp;
+
+  @JsonProperty("skyddad")
+  private Boolean skyddad;
+
+  @JsonProperty("tilltalsnamn")
+  private String tilltalsnamn;
+
+  @JsonProperty("efternamn")
+  private String efternamn;
+
+  // Default constructor required by json mapper
+  private HsaInfoPersonal() {}
+
+  // CHECKSTYLE:OFF ParameterNumberCheck
+  @java.lang.SuppressWarnings("squid:S00107") // Parameter number check ignored in Sonar
+  public HsaInfoPersonal(
+      String id,
+      String kon,
+      String alder,
+      List<String> befattning,
+      List<String> specialitet,
+      List<String> yrkesgrupp,
+      Boolean skyddad,
+      String tilltalsnamn,
+      String efternamn) {
+    this.id = id;
+    this.kon = kon;
+    this.alder = alder;
+    this.befattning = befattning;
+    this.specialitet = specialitet;
+    this.yrkesgrupp = yrkesgrupp;
+    this.skyddad = skyddad;
+    this.tilltalsnamn = tilltalsnamn;
+    this.efternamn = efternamn;
+  }
+
+  // CHECKSTYLE:ON ParameterNumberCheck
+
+  public String getId() {
+    return id;
+  }
+
+  public String getKon() {
+    return kon;
+  }
+
+  public String getAlder() {
+    return alder;
+  }
+
+  public List<String> getBefattning() {
+    if (befattning == null) {
+      return Collections.emptyList();
     }
+    return ImmutableList.copyOf(befattning);
+  }
 
-    // CHECKSTYLE:OFF ParameterNumberCheck
-    @java.lang.SuppressWarnings("squid:S00107") // Parameter number check ignored in Sonar
-    public HsaInfoPersonal(String id, String kon, String alder, List<String> befattning, List<String> specialitet, List<String> yrkesgrupp,
-        Boolean skyddad, String tilltalsnamn, String efternamn) {
-        this.id = id;
-        this.kon = kon;
-        this.alder = alder;
-        this.befattning = befattning;
-        this.specialitet = specialitet;
-        this.yrkesgrupp = yrkesgrupp;
-        this.skyddad = skyddad;
-        this.tilltalsnamn = tilltalsnamn;
-        this.efternamn = efternamn;
+  public List<String> getSpecialitet() {
+    if (specialitet == null) {
+      return Collections.emptyList();
     }
-    // CHECKSTYLE:ON ParameterNumberCheck
+    return ImmutableList.copyOf(specialitet);
+  }
 
-    public String getId() {
-        return id;
+  public List<String> getYrkesgrupp() {
+    if (yrkesgrupp == null) {
+      return Collections.emptyList();
     }
+    return ImmutableList.copyOf(yrkesgrupp);
+  }
 
-    public String getKon() {
-        return kon;
-    }
+  public Boolean isSkyddad() {
+    return skyddad;
+  }
 
-    public String getAlder() {
-        return alder;
-    }
+  public String getTilltalsnamn() {
+    return tilltalsnamn;
+  }
 
-    public List<String> getBefattning() {
-        if (befattning == null) {
-            return Collections.emptyList();
-        }
-        return ImmutableList.copyOf(befattning);
-    }
+  public String getEfternamn() {
+    return efternamn;
+  }
 
-    public List<String> getSpecialitet() {
-        if (specialitet == null) {
-            return Collections.emptyList();
-        }
-        return ImmutableList.copyOf(specialitet);
-    }
-
-    public List<String> getYrkesgrupp() {
-        if (yrkesgrupp == null) {
-            return Collections.emptyList();
-        }
-        return ImmutableList.copyOf(yrkesgrupp);
-    }
-
-    public Boolean isSkyddad() {
-        return skyddad;
-    }
-
-    public String getTilltalsnamn() {
-        return tilltalsnamn;
-    }
-
-    public String getEfternamn() {
-        return efternamn;
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-            .add("id", id)
-            .add("kon", kon)
-            .add("alder", alder)
-            .add("befattning", befattning)
-            .add("specialitet", specialitet)
-            .add("yrkesgrupp", yrkesgrupp)
-            .add("skyddad", skyddad)
-            .add("tilltalsnamn", tilltalsnamn)
-            .add("efternamn", efternamn)
-            .toString();
-    }
-
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("id", id)
+        .add("kon", kon)
+        .add("alder", alder)
+        .add("befattning", befattning)
+        .add("specialitet", specialitet)
+        .add("yrkesgrupp", yrkesgrupp)
+        .add("skyddad", skyddad)
+        .add("tilltalsnamn", tilltalsnamn)
+        .add("efternamn", efternamn)
+        .toString();
+  }
 }

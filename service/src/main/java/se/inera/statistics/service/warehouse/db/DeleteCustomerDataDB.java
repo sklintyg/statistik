@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,19 +20,20 @@ package se.inera.statistics.service.warehouse.db;
 
 public interface DeleteCustomerDataDB {
 
-    Integer deleteFromEnhet(String vardgivareId);
+  Integer deleteFromEnhet(String vardgivareId);
 
-    Integer deleteFromHsa(String intygsid);
+  Integer deleteFromHsa(String intygsid);
 
-    Integer deleteFromIntygcommon(String intygsid);
+  Integer deleteFromIntygcommon(String intygsid);
 
-    Integer deleteFromIntyghandelse(String intygsid);
+  Integer deleteFromIntyghandelse(String intygsid);
 
-    Integer deleteFromLakare(String vardgivareId);
+  Integer deleteFromLakare(String vardgivareId);
 
-    MeddelandehandelseMessagewidelineResult deleteFromMeddelandehandelseAndMessagewideline(String intygsid);
+  MeddelandehandelseMessagewidelineResult deleteFromMeddelandehandelseAndMessagewideline(
+      String intygsid);
 
-    Integer deleteFromWideline(String intygsid);
+  Integer deleteFromWideline(String intygsid);
 
-    Integer deleteFromIntygsenthandelse(String intygsid);
+  Integer deleteFromIntygsenthandelse(String intygsid);
 }

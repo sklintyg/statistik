@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -29,31 +29,35 @@ import se.inera.statistics.web.model.TableData;
 
 public class GroupedSjukfallWithRegionSortingConverter extends SimpleDualSexConverter {
 
-    private final List<HsaIdEnhet> connectedEnhetIds;
+  private final List<HsaIdEnhet> connectedEnhetIds;
 
-    public GroupedSjukfallWithRegionSortingConverter(String tableGroupTitle, List<HsaIdEnhet> connectedEnhetIds) {
-        super(tableGroupTitle, "%1$s");
-        this.connectedEnhetIds = connectedEnhetIds;
-    }
+  public GroupedSjukfallWithRegionSortingConverter(
+      String tableGroupTitle, List<HsaIdEnhet> connectedEnhetIds) {
+    super(tableGroupTitle, "%1$s");
+    this.connectedEnhetIds = connectedEnhetIds;
+  }
 
-    @Override
-    protected TableData convertToTableData(List<SimpleKonDataRow> list) {
-        Collections.sort(list, (SimpleKonDataRow o1, SimpleKonDataRow o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
-        return super.convertToTableData(list);
-    }
+  @Override
+  protected TableData convertToTableData(List<SimpleKonDataRow> list) {
+    Collections.sort(
+        list,
+        (SimpleKonDataRow o1, SimpleKonDataRow o2) ->
+            o1.getName().compareToIgnoreCase(o2.getName()));
+    return super.convertToTableData(list);
+  }
 
-    @Override
-    protected ChartData convertToChartData(SimpleKonResponse casesPerMonth) {
-        Collections.sort(casesPerMonth.getRows(),
-            (SimpleKonDataRow o1, SimpleKonDataRow o2) ->
-                Math.max(o2.getMale(), o2.getFemale()) - Math.max(o1.getMale(), o1.getFemale()));
-        return super.convertToChartData(casesPerMonth);
-    }
+  @Override
+  protected ChartData convertToChartData(SimpleKonResponse casesPerMonth) {
+    Collections.sort(
+        casesPerMonth.getRows(),
+        (SimpleKonDataRow o1, SimpleKonDataRow o2) ->
+            Math.max(o2.getMale(), o2.getFemale()) - Math.max(o1.getMale(), o1.getFemale()));
+    return super.convertToChartData(casesPerMonth);
+  }
 
-    @Override
-    protected boolean isMarked(SimpleKonDataRow row) {
-        final Object extras = row.getExtras();
-        return extras instanceof HsaIdAny && connectedEnhetIds.contains(extras);
-    }
-
+  @Override
+  protected boolean isMarked(SimpleKonDataRow row) {
+    final Object extras = row.getExtras();
+    return extras instanceof HsaIdAny && connectedEnhetIds.contains(extras);
+  }
 }

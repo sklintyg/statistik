@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -40,74 +40,78 @@ import se.inera.statistics.service.region.persistance.regionenhetupdate.RegionEn
 @Component
 public class RegionEnhetHandler {
 
-    private static final Logger LOG = LoggerFactory.getLogger(RegionEnhetHandler.class);
+  private static final Logger LOG = LoggerFactory.getLogger(RegionEnhetHandler.class);
 
-    @Autowired
-    private RegionManager regionManager;
+  @Autowired private RegionManager regionManager;
 
-    @Autowired
-    private RegionEnhetManager regionEnhetManager;
+  @Autowired private RegionEnhetManager regionEnhetManager;
 
-    @Autowired
-    private RegionEnhetUpdateManager regionEnhetUpdateManager;
+  @Autowired private RegionEnhetUpdateManager regionEnhetUpdateManager;
 
-    public void update(RegionEnhetFileData data) throws NoRegionSetForVgException {
-        final Optional<Region> regionOptional = regionManager.getForVg(data.getVgId());
-        if (!regionOptional.isPresent()) {
-            LOG.warn("There is no region connected to vg: " + data.getVgId());
-            throw new NoRegionSetForVgException();
-        }
-        final long regionId = regionOptional.get().getId();
-        regionEnhetManager.update(regionId, data.getRows());
-        regionEnhetUpdateManager.update(regionId, data.getUserName(), data.getUserId(), removeInvalidChars(data.getFileName()),
-            RegionEnhetUpdateOperation.UPDATE);
+  public void update(RegionEnhetFileData data) throws NoRegionSetForVgException {
+    final Optional<Region> regionOptional = regionManager.getForVg(data.getVgId());
+    if (!regionOptional.isPresent()) {
+      LOG.warn("There is no region connected to vg: " + data.getVgId());
+      throw new NoRegionSetForVgException();
     }
+    final long regionId = regionOptional.get().getId();
+    regionEnhetManager.update(regionId, data.getRows());
+    regionEnhetUpdateManager.update(
+        regionId,
+        data.getUserName(),
+        data.getUserId(),
+        removeInvalidChars(data.getFileName()),
+        RegionEnhetUpdateOperation.UPDATE);
+  }
 
-    public void clear(HsaIdVardgivare vgId, String username, HsaIdUser userId) throws NoRegionSetForVgException {
-        final Optional<Region> regionOptional = regionManager.getForVg(vgId);
-        if (!regionOptional.isPresent()) {
-            LOG.warn("There is no region connected to vg: " + vgId);
-            throw new NoRegionSetForVgException();
-        }
-        final long regionId = regionOptional.get().getId();
-        regionEnhetManager.update(regionId, Collections.emptyList());
-        regionEnhetUpdateManager.update(regionId, username, userId, "-", RegionEnhetUpdateOperation.REMOVE);
+  public void clear(HsaIdVardgivare vgId, String username, HsaIdUser userId)
+      throws NoRegionSetForVgException {
+    final Optional<Region> regionOptional = regionManager.getForVg(vgId);
+    if (!regionOptional.isPresent()) {
+      LOG.warn("There is no region connected to vg: " + vgId);
+      throw new NoRegionSetForVgException();
     }
+    final long regionId = regionOptional.get().getId();
+    regionEnhetManager.update(regionId, Collections.emptyList());
+    regionEnhetUpdateManager.update(
+        regionId, username, userId, "-", RegionEnhetUpdateOperation.REMOVE);
+  }
 
-    private String removeInvalidChars(String fileName) {
-        return fileName.replaceAll("[^a-zA-Z0-9åäöÅÄÖ.]", "_");
+  private String removeInvalidChars(String fileName) {
+    return fileName.replaceAll("[^a-zA-Z0-9åäöÅÄÖ.]", "_");
+  }
+
+  public Optional<RegionEnhetUpdate> getLastUpdateInfo(HsaIdVardgivare vardgivarId) {
+    final Optional<Region> regionOptional = regionManager.getForVg(vardgivarId);
+    return regionOptional.flatMap(region -> regionEnhetUpdateManager.getByRegionId(region.getId()));
+  }
+
+  public RegionsVardgivareStatus getRegionsVardgivareStatus(HsaIdVardgivare vardgivarId) {
+    final Optional<Region> regionOptional = regionManager.getForVg(vardgivarId);
+    if (regionOptional.isPresent()) {
+      if (regionEnhetManager.getByRegionId(regionOptional.get().getId()).isEmpty()) {
+        return RegionsVardgivareStatus.REGIONSVARDGIVARE_WITHOUT_UPLOAD;
+      } else {
+        return RegionsVardgivareStatus.REGIONSVARDGIVARE_WITH_UPLOAD;
+      }
+    } else {
+      return RegionsVardgivareStatus.NO_REGIONSVARDGIVARE;
     }
+  }
 
-    public Optional<RegionEnhetUpdate> getLastUpdateInfo(HsaIdVardgivare vardgivarId) {
-        final Optional<Region> regionOptional = regionManager.getForVg(vardgivarId);
-        return regionOptional.flatMap(region -> regionEnhetUpdateManager.getByRegionId(region.getId()));
+  public List<HsaIdEnhet> getAllEnhetsForVardgivare(HsaIdVardgivare vgid) {
+    final List<RegionEnhet> allRegionEnhetsForVardgivare = getAllRegionEnhetsForVardgivare(vgid);
+    return allRegionEnhetsForVardgivare.stream()
+        .map(RegionEnhet::getEnhetensHsaId)
+        .collect(Collectors.toList());
+  }
+
+  public List<RegionEnhet> getAllRegionEnhetsForVardgivare(HsaIdVardgivare vgid) {
+    final Optional<Region> region = regionManager.getForVg(vgid);
+    if (region.isPresent()) {
+      final long regionId = region.get().getId();
+      return regionEnhetManager.getByRegionId(regionId);
     }
-
-    public RegionsVardgivareStatus getRegionsVardgivareStatus(HsaIdVardgivare vardgivarId) {
-        final Optional<Region> regionOptional = regionManager.getForVg(vardgivarId);
-        if (regionOptional.isPresent()) {
-            if (regionEnhetManager.getByRegionId(regionOptional.get().getId()).isEmpty()) {
-                return RegionsVardgivareStatus.REGIONSVARDGIVARE_WITHOUT_UPLOAD;
-            } else {
-                return RegionsVardgivareStatus.REGIONSVARDGIVARE_WITH_UPLOAD;
-            }
-        } else {
-            return RegionsVardgivareStatus.NO_REGIONSVARDGIVARE;
-        }
-    }
-
-    public List<HsaIdEnhet> getAllEnhetsForVardgivare(HsaIdVardgivare vgid) {
-        final List<RegionEnhet> allRegionEnhetsForVardgivare = getAllRegionEnhetsForVardgivare(vgid);
-        return allRegionEnhetsForVardgivare.stream().map(RegionEnhet::getEnhetensHsaId).collect(Collectors.toList());
-    }
-
-    public List<RegionEnhet> getAllRegionEnhetsForVardgivare(HsaIdVardgivare vgid) {
-        final Optional<Region> region = regionManager.getForVg(vgid);
-        if (region.isPresent()) {
-            final long regionId = region.get().getId();
-            return regionEnhetManager.getByRegionId(regionId);
-        }
-        return Collections.emptyList();
-    }
-
+    return Collections.emptyList();
+  }
 }

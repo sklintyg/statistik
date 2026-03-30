@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -24,45 +24,44 @@ import se.inera.statistics.service.report.model.Kon;
 
 public class ChartSeries implements Serializable {
 
-    private final String name;
-    private final List<? extends Number> data;
-    private final Kon sex;
-    private final String color;
+  private final String name;
+  private final List<? extends Number> data;
+  private final Kon sex;
+  private final String color;
 
-    public ChartSeries(String name, List<? extends Number> data, Kon sex, String color) {
-        this.name = name;
-        this.data = data;
-        this.sex = sex;
-        this.color = color;
-    }
+  public ChartSeries(String name, List<? extends Number> data, Kon sex, String color) {
+    this.name = name;
+    this.data = data;
+    this.sex = sex;
+    this.color = color;
+  }
 
-    public ChartSeries(String name, List<? extends Number> data, Kon sex) {
-        this(name, data, sex, null);
-    }
+  public ChartSeries(String name, List<? extends Number> data, Kon sex) {
+    this(name, data, sex, null);
+  }
 
-    public ChartSeries(String name, List<? extends Number> data) {
-        this(name, data, null);
-    }
+  public ChartSeries(String name, List<? extends Number> data) {
+    this(name, data, null);
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public List<? extends Number> getData() {
-        return data;
-    }
+  public List<? extends Number> getData() {
+    return data;
+  }
 
-    public Kon getSex() {
-        return sex;
-    }
+  public Kon getSex() {
+    return sex;
+  }
 
-    public String getColor() {
-        return color;
-    }
+  public String getColor() {
+    return color;
+  }
 
-    @Override
-    public String toString() {
-        return name + ": " + data.toString();
-    }
-
+  @Override
+  public String toString() {
+    return name + ": " + data.toString();
+  }
 }

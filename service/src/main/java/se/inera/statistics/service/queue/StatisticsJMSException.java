@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,7 +20,7 @@ package se.inera.statistics.service.queue;
 
 public class StatisticsJMSException extends RuntimeException {
 
-    public StatisticsJMSException(String s, Exception e) {
-        super(s, e);
-    }
+  public StatisticsJMSException(String s, Exception e) {
+    super(s, e);
+  }
 }

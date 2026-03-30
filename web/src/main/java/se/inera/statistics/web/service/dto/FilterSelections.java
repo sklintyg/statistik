@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,60 +25,61 @@ import java.util.List;
 
 public class FilterSelections {
 
-    @JsonProperty(ResponseKeys.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER)
-    private boolean allAvailableDxsSelectedInFilter;
+  @JsonProperty(ResponseKeys.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER)
+  private boolean allAvailableDxsSelectedInFilter;
 
-    @JsonProperty(ResponseKeys.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER)
-    private boolean allAvailableEnhetsSelectedInFilter;
+  @JsonProperty(ResponseKeys.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER)
+  private boolean allAvailableEnhetsSelectedInFilter;
 
-    @JsonProperty(ResponseKeys.ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER)
-    private boolean allAvailableSjukskrivningslangdsSelectedInFilter;
+  @JsonProperty(ResponseKeys.ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER)
+  private boolean allAvailableSjukskrivningslangdsSelectedInFilter;
 
-    @JsonProperty(ResponseKeys.ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER)
-    private boolean allAvailableAgeGroupsSelectedInFilter;
+  @JsonProperty(ResponseKeys.ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER)
+  private boolean allAvailableAgeGroupsSelectedInFilter;
 
-    @JsonProperty(ResponseKeys.ALL_AVAILABLE_INTYGTYPES_SELECTED_IN_FILTER)
-    private boolean allAvailableIntygTypesSelectedInFilter;
+  @JsonProperty(ResponseKeys.ALL_AVAILABLE_INTYGTYPES_SELECTED_IN_FILTER)
+  private boolean allAvailableIntygTypesSelectedInFilter;
 
-    @JsonProperty(ResponseKeys.FILTERED_ENHETS)
-    private List<String> enhetNames;
+  @JsonProperty(ResponseKeys.FILTERED_ENHETS)
+  private List<String> enhetNames;
 
-    public FilterSelections(boolean allAvailableDxsSelectedInFilter,
-        boolean allAvailableEnhetsSelectedInFilter,
-        boolean allAvailableSjukskrivningslangdsSelectedInFilter,
-        boolean allAvailableAgeGroupsSelectedInFilter,
-        boolean allAvailableIntygTypesSelectedInFilter,
-        List<String> enhetNames) {
-        this.allAvailableDxsSelectedInFilter = allAvailableDxsSelectedInFilter;
-        this.allAvailableEnhetsSelectedInFilter = allAvailableEnhetsSelectedInFilter;
-        this.allAvailableSjukskrivningslangdsSelectedInFilter = allAvailableSjukskrivningslangdsSelectedInFilter;
-        this.allAvailableAgeGroupsSelectedInFilter = allAvailableAgeGroupsSelectedInFilter;
-        this.allAvailableIntygTypesSelectedInFilter = allAvailableIntygTypesSelectedInFilter;
-        this.enhetNames = enhetNames == null ? Collections.emptyList() : new ArrayList<>(enhetNames);
-    }
+  public FilterSelections(
+      boolean allAvailableDxsSelectedInFilter,
+      boolean allAvailableEnhetsSelectedInFilter,
+      boolean allAvailableSjukskrivningslangdsSelectedInFilter,
+      boolean allAvailableAgeGroupsSelectedInFilter,
+      boolean allAvailableIntygTypesSelectedInFilter,
+      List<String> enhetNames) {
+    this.allAvailableDxsSelectedInFilter = allAvailableDxsSelectedInFilter;
+    this.allAvailableEnhetsSelectedInFilter = allAvailableEnhetsSelectedInFilter;
+    this.allAvailableSjukskrivningslangdsSelectedInFilter =
+        allAvailableSjukskrivningslangdsSelectedInFilter;
+    this.allAvailableAgeGroupsSelectedInFilter = allAvailableAgeGroupsSelectedInFilter;
+    this.allAvailableIntygTypesSelectedInFilter = allAvailableIntygTypesSelectedInFilter;
+    this.enhetNames = enhetNames == null ? Collections.emptyList() : new ArrayList<>(enhetNames);
+  }
 
-    public boolean isAllAvailableDxsSelectedInFilter() {
-        return allAvailableDxsSelectedInFilter;
-    }
+  public boolean isAllAvailableDxsSelectedInFilter() {
+    return allAvailableDxsSelectedInFilter;
+  }
 
-    public boolean isAllAvailableEnhetsSelectedInFilter() {
-        return allAvailableEnhetsSelectedInFilter;
-    }
+  public boolean isAllAvailableEnhetsSelectedInFilter() {
+    return allAvailableEnhetsSelectedInFilter;
+  }
 
-    public boolean isAllAvailableSjukskrivningslangdsSelectedInFilter() {
-        return allAvailableSjukskrivningslangdsSelectedInFilter;
-    }
+  public boolean isAllAvailableSjukskrivningslangdsSelectedInFilter() {
+    return allAvailableSjukskrivningslangdsSelectedInFilter;
+  }
 
-    public boolean isAllAvailableAgeGroupsSelectedInFilter() {
-        return allAvailableAgeGroupsSelectedInFilter;
-    }
+  public boolean isAllAvailableAgeGroupsSelectedInFilter() {
+    return allAvailableAgeGroupsSelectedInFilter;
+  }
 
-    public boolean isAllAvailableIntygTypesSelectedInFilter() {
-        return allAvailableIntygTypesSelectedInFilter;
-    }
+  public boolean isAllAvailableIntygTypesSelectedInFilter() {
+    return allAvailableIntygTypesSelectedInFilter;
+  }
 
-    public List<String> getEnhetNames() {
-        return Collections.unmodifiableList(enhetNames);
-    }
-
+  public List<String> getEnhetNames() {
+    return Collections.unmodifiableList(enhetNames);
+  }
 }

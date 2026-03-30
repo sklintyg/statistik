@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -42,59 +42,63 @@ import se.inera.statistics.web.service.LoginServiceUtil;
 @Path("/login")
 public class LoginInfoService {
 
-    @Autowired
-    private LoginServiceUtil loginServiceUtil;
+  @Autowired private LoginServiceUtil loginServiceUtil;
 
-    public LoginInfoService() {
-    }
+  public LoginInfoService() {}
 
-    @GET
-    @Path("getLoginInfo")
-    @Produces({MediaType.APPLICATION_JSON})
-    @PrometheusTimeMethod(
-        help = "API-tjänst för åtkomst till login info")
-    @PerformanceLogging(eventAction = "get-login-info", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
-    public LoginInfo getLoginInfo() {
-        return loginServiceUtil.getLoginInfo();
-    }
+  @GET
+  @Path("getLoginInfo")
+  @Produces({MediaType.APPLICATION_JSON})
+  @PrometheusTimeMethod(help = "API-tjänst för åtkomst till login info")
+  @PerformanceLogging(
+      eventAction = "get-login-info",
+      eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
+  public LoginInfo getLoginInfo() {
+    return loginServiceUtil.getLoginInfo();
+  }
 
-    @GET
-    @Path("getAppSettings")
-    @Produces({MediaType.APPLICATION_JSON})
-    @PrometheusTimeMethod(
-        help = "API-tjänst för åtkomst till app-inställningar")
-    @PerformanceLogging(eventAction = "get-app-settings", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
-    public AppSettings getAppSettings() {
-        return loginServiceUtil.getSettings();
-    }
+  @GET
+  @Path("getAppSettings")
+  @Produces({MediaType.APPLICATION_JSON})
+  @PrometheusTimeMethod(help = "API-tjänst för åtkomst till app-inställningar")
+  @PerformanceLogging(
+      eventAction = "get-app-settings",
+      eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
+  public AppSettings getAppSettings() {
+    return loginServiceUtil.getSettings();
+  }
 
-    @GET
-    @Path("getUserAccessInfo/{vgId}")
-    @Produces({MediaType.APPLICATION_JSON})
-    @PrometheusTimeMethod(
-        help = "API-tjänst för åtkomst till användarens rättigheter till information från vårdgivare")
-    @PerformanceLogging(eventAction = "get-user-access-info", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
-    public UserAccessInfo getUserAccessInfo(@PathParam("vgId") String vgId) {
-        return loginServiceUtil.getUserAccessInfoForVg(new HsaIdVardgivare(vgId));
-    }
+  @GET
+  @Path("getUserAccessInfo/{vgId}")
+  @Produces({MediaType.APPLICATION_JSON})
+  @PrometheusTimeMethod(
+      help = "API-tjänst för åtkomst till användarens rättigheter till information från vårdgivare")
+  @PerformanceLogging(
+      eventAction = "get-user-access-info",
+      eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
+  public UserAccessInfo getUserAccessInfo(@PathParam("vgId") String vgId) {
+    return loginServiceUtil.getUserAccessInfoForVg(new HsaIdVardgivare(vgId));
+  }
 
-    @GET
-    @Path("getStaticData")
-    @Produces({MediaType.APPLICATION_JSON})
-    @PrometheusTimeMethod(
-        help = "API-tjänst för åtkomst till statisk referensdata")
-    @PerformanceLogging(eventAction = "get-static-data", eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
-    public StaticData getStaticData() {
-        return loginServiceUtil.getStaticData();
-    }
+  @GET
+  @Path("getStaticData")
+  @Produces({MediaType.APPLICATION_JSON})
+  @PrometheusTimeMethod(help = "API-tjänst för åtkomst till statisk referensdata")
+  @PerformanceLogging(
+      eventAction = "get-static-data",
+      eventType = MdcLogConstants.EVENT_TYPE_ACCESSED)
+  public StaticData getStaticData() {
+    return loginServiceUtil.getStaticData();
+  }
 
-    @POST
-    @Path("saveUserSettings")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
-    @PerformanceLogging(eventAction = "save-user-settings", eventType = MdcLogConstants.EVENT_TYPE_CHANGE)
-    public UserSettingsDTO saveUserSettings(UserSettingsDTO userSettingsDTO) {
-        return loginServiceUtil.saveUserSettings(userSettingsDTO);
-    }
-
+  @POST
+  @Path("saveUserSettings")
+  @Consumes({MediaType.APPLICATION_JSON})
+  @Produces({MediaType.APPLICATION_JSON})
+  @PerformanceLogging(
+      eventAction = "save-user-settings",
+      eventType = MdcLogConstants.EVENT_TYPE_CHANGE)
+  public UserSettingsDTO saveUserSettings(UserSettingsDTO userSettingsDTO) {
+    return loginServiceUtil.saveUserSettings(userSettingsDTO);
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,36 +20,32 @@ package se.inera.statistics.service.processlog;
 
 public enum IntygFormat {
 
-    /**
-     * Legacy format using JSON.
-     */
-    REGISTER_MEDICAL_CERTIFICATE(0),
+  /** Legacy format using JSON. */
+  REGISTER_MEDICAL_CERTIFICATE(0),
 
-    /**
-     * New format using XML.
-     */
-    REGISTER_CERTIFICATE(1),
+  /** New format using XML. */
+  REGISTER_CERTIFICATE(1),
 
-    REGISTER_TS_BAS(2),
+  REGISTER_TS_BAS(2),
 
-    REGISTER_TS_DIABETES(3);
+  REGISTER_TS_DIABETES(3);
 
-    private final int intValue;
+  private final int intValue;
 
-    IntygFormat(int intValue) {
-        this.intValue = intValue;
+  IntygFormat(int intValue) {
+    this.intValue = intValue;
+  }
+
+  public int getIntValue() {
+    return intValue;
+  }
+
+  public static IntygFormat parseIntValue(int format) {
+    for (IntygFormat intygFormat : values()) {
+      if (intygFormat.intValue == format) {
+        return intygFormat;
+      }
     }
-
-    public int getIntValue() {
-        return intValue;
-    }
-
-    public static IntygFormat parseIntValue(int format) {
-        for (IntygFormat intygFormat : values()) {
-            if (intygFormat.intValue == format) {
-                return intygFormat;
-            }
-        }
-        throw new IllegalArgumentException("Format with value could not be found: " + format);
-    }
+    throw new IllegalArgumentException("Format with value could not be found: " + format);
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -19,35 +19,35 @@
 package se.inera.statistics.service.report.model;
 
 public enum Kon {
+  MALE(1),
+  FEMALE(2),
+  UNKNOWN(0);
 
-    MALE(1), FEMALE(2), UNKNOWN(0);
+  private final int numberRepresentation;
 
-    private final int numberRepresentation;
+  Kon(int numberRepresentation) {
+    this.numberRepresentation = numberRepresentation;
+  }
 
-    Kon(int numberRepresentation) {
-        this.numberRepresentation = numberRepresentation;
+  public int getNumberRepresentation() {
+    return numberRepresentation;
+  }
+
+  public static Kon byNumberRepresentation(int number) {
+    for (Kon kon : values()) {
+      if (kon.numberRepresentation == number) {
+        return kon;
+      }
     }
+    throw new IllegalArgumentException("Unknown number for Kon: " + number);
+  }
 
-    public int getNumberRepresentation() {
-        return numberRepresentation;
+  public static Kon parse(String konString) {
+    for (Kon kon : values()) {
+      if (kon.name().equalsIgnoreCase(konString)) {
+        return kon;
+      }
     }
-
-    public static Kon byNumberRepresentation(int number) {
-        for (Kon kon : values()) {
-            if (kon.numberRepresentation == number) {
-                return kon;
-            }
-        }
-        throw new IllegalArgumentException("Unknown number for Kon: " + number);
-    }
-
-    public static Kon parse(String konString) {
-        for (Kon kon : values()) {
-            if (kon.name().equalsIgnoreCase(konString)) {
-                return kon;
-            }
-        }
-        throw new IllegalArgumentException("Unknown name for Kon: " + konString);
-    }
-
+    throw new IllegalArgumentException("Unknown name for Kon: " + konString);
+  }
 }

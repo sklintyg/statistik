@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -18,7 +18,6 @@
  */
 package se.inera.testsupport.socialstyrelsenspecial;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
@@ -27,13 +26,14 @@ import org.junit.jupiter.api.Test;
 
 public class MathStatisticsTest {
 
-    @Test
-    public void testGetStdDevAndMedianCalculatesCorrect() throws Exception {
-        final List<Double> numbers = Arrays
-            .asList(22D, 18D, 25D, 10D, 11D, 15D, 15D, 21D, 22D, 15D, 21D, 19D, 28D, 29D, 30D, 27D, 29D, 28D, 30D, 28D, 25D);
-        final MathStatistics mathStatistics = new MathStatistics(numbers);
-        assertEquals(6.226998491, mathStatistics.getStdDev(), 0.000001);
-        assertEquals(22, mathStatistics.median(), 0.000001);
-    }
-
+  @Test
+  public void testGetStdDevAndMedianCalculatesCorrect() throws Exception {
+    final List<Double> numbers =
+        Arrays.asList(
+            22D, 18D, 25D, 10D, 11D, 15D, 15D, 21D, 22D, 15D, 21D, 19D, 28D, 29D, 30D, 27D, 29D,
+            28D, 30D, 28D, 25D);
+    final MathStatistics mathStatistics = new MathStatistics(numbers);
+    assertEquals(6.226998491, mathStatistics.getStdDev(), 0.000001);
+    assertEquals(22, mathStatistics.median(), 0.000001);
+  }
 }

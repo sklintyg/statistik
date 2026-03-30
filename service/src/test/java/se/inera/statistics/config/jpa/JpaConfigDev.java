@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -31,17 +31,17 @@ import org.springframework.context.annotation.Profile;
 @Profile("h2")
 public class JpaConfigDev extends JpaConfigBase {
 
-    @Value("${db.httpPort}")
-    private String databaseHttpPort;
+  @Value("${db.httpPort}")
+  private String databaseHttpPort;
 
-    private static final Logger LOG = LoggerFactory.getLogger(JpaConfigDev.class);
+  private static final Logger LOG = LoggerFactory.getLogger(JpaConfigDev.class);
 
-
-    @Bean(destroyMethod = "stop")
-    Server h2WebServer() throws SQLException {
-        LOG.info("Starting H2 Web Server Console on http://127.0.0.1:{}", databaseHttpPort);
-        final Server server = Server.createWebServer("-web", "-webAllowOthers", "-webPort", databaseHttpPort);
-        server.start();
-        return server;
-    }
+  @Bean(destroyMethod = "stop")
+  Server h2WebServer() throws SQLException {
+    LOG.info("Starting H2 Web Server Console on http://127.0.0.1:{}", databaseHttpPort);
+    final Server server =
+        Server.createWebServer("-web", "-webAllowOthers", "-webPort", databaseHttpPort);
+    server.start();
+    return server;
+  }
 }

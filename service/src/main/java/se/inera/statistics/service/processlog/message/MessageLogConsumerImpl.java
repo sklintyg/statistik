@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -32,81 +32,79 @@ import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMe
 @Component
 public class MessageLogConsumerImpl implements MessageLogConsumer {
 
-    private static final Logger LOG = LoggerFactory.getLogger(MessageLogConsumerImpl.class);
-    public static final int BATCH_SIZE = 100;
+  private static final Logger LOG = LoggerFactory.getLogger(MessageLogConsumerImpl.class);
+  public static final int BATCH_SIZE = 100;
 
-    @Value("#{'${process.messages.intervals:0,3,9,18,50,100,250,550,1500}'.split(',')}")
-    private List<Integer> tryIntervals;
+  @Value("#{'${process.messages.intervals:0,3,9,18,50,100,250,550,1500}'.split(',')}")
+  private List<Integer> tryIntervals;
 
-    @Autowired
-    private ProcessMessageLog processLog;
-    @Autowired
-    private Processor processor;
-    @Autowired
-    private SendMessageToCareHelper sendMessageToCareHelper;
+  @Autowired private ProcessMessageLog processLog;
+  @Autowired private Processor processor;
+  @Autowired private SendMessageToCareHelper sendMessageToCareHelper;
 
-    private volatile boolean isRunning = false;
+  private volatile boolean isRunning = false;
 
-    @Transactional(noRollbackFor = Exception.class)
-    @Override
-    public synchronized long processBatch(long startId) {
-        try {
-            setRunning(true);
-            int maxNumberOfTries = tryIntervals.get(tryIntervals.size() - 1);
+  @Transactional(noRollbackFor = Exception.class)
+  @Override
+  public synchronized long processBatch(long startId) {
+    try {
+      setRunning(true);
+      int maxNumberOfTries = tryIntervals.get(tryIntervals.size() - 1);
 
-            List<MessageEvent> result = processLog.getPending(BATCH_SIZE, startId, maxNumberOfTries);
-            if (result.isEmpty()) {
-                return startId;
-            }
-            int processed = 0;
-            long latestId = startId;
+      List<MessageEvent> result = processLog.getPending(BATCH_SIZE, startId, maxNumberOfTries);
+      if (result.isEmpty()) {
+        return startId;
+      }
+      int processed = 0;
+      long latestId = startId;
 
-            for (MessageEvent event : result) {
-                if (!tryIntervals.contains(event.getTries())) {
-                    increaseTries(event);
-                } else {
-                    final boolean eventSuccessfullyHandled = handleEvent(event);
-                    if (!eventSuccessfullyHandled) {
-                        LOG.error("Failed to process meddelande {} ({})", event.getId(), event.getCorrelationId());
-                        increaseTries(event);
-                    }
+      for (MessageEvent event : result) {
+        if (!tryIntervals.contains(event.getTries())) {
+          increaseTries(event);
+        } else {
+          final boolean eventSuccessfullyHandled = handleEvent(event);
+          if (!eventSuccessfullyHandled) {
+            LOG.error(
+                "Failed to process meddelande {} ({})", event.getId(), event.getCorrelationId());
+            increaseTries(event);
+          }
 
-                    LOG.info("Processed message log id {}", event.getId());
-                }
-                processed++;
-                latestId = event.getId();
-            }
-            LOG.info("Processed message batch with {} entries", processed);
-
-            return latestId;
-        } finally {
-            setRunning(false);
+          LOG.info("Processed message log id {}", event.getId());
         }
+        processed++;
+        latestId = event.getId();
+      }
+      LOG.info("Processed message batch with {} entries", processed);
+
+      return latestId;
+    } finally {
+      setRunning(false);
     }
+  }
 
-    private void increaseTries(MessageEvent event) {
-        processLog.increaseNumberOfTries(event.getId());
+  private void increaseTries(MessageEvent event) {
+    processLog.increaseNumberOfTries(event.getId());
+  }
+
+  private boolean handleEvent(MessageEvent event) {
+    try {
+      final SendMessageToCareType rc =
+          sendMessageToCareHelper.unmarshalSendMessageToCareTypeXml(event.getData());
+
+      processor.accept(rc, event.getId(), event.getCorrelationId(), event.getType());
+    } catch (Exception e) {
+      LOG.warn("Failed to unmarshal meddelande xml");
+      LOG.debug("Failed to unmarshal meddelande xml", e);
+      return false;
     }
+    return true;
+  }
 
-    private boolean handleEvent(MessageEvent event) {
-        try {
-            final SendMessageToCareType rc = sendMessageToCareHelper.unmarshalSendMessageToCareTypeXml(event.getData());
+  public synchronized boolean isRunning() {
+    return isRunning;
+  }
 
-            processor.accept(rc, event.getId(), event.getCorrelationId(), event.getType());
-        } catch (Exception e) {
-            LOG.warn("Failed to unmarshal meddelande xml");
-            LOG.debug("Failed to unmarshal meddelande xml", e);
-            return false;
-        }
-        return true;
-    }
-
-    public synchronized boolean isRunning() {
-        return isRunning;
-    }
-
-    private synchronized void setRunning(boolean b) {
-        isRunning = b;
-    }
-
+  private synchronized void setRunning(boolean b) {
+    isRunning = b;
+  }
 }

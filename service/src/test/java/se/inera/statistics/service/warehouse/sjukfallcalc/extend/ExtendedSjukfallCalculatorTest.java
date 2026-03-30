@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -29,131 +29,168 @@ import se.inera.statistics.service.warehouse.SjukfallExtended;
 
 public class ExtendedSjukfallCalculatorTest {
 
-    @Test
-    public void testFactOrderByStartdateComparator() throws Exception {
-        //Given
-        final ArrayList<Fact> aisle = new ArrayList<>();
-        aisle.add(createFact(70, 150, 1));
-        aisle.add(createFact(50, 180, 1));
-        aisle.add(createFact(60, 120, 1));
+  @Test
+  public void testFactOrderByStartdateComparator() throws Exception {
+    // Given
+    final ArrayList<Fact> aisle = new ArrayList<>();
+    aisle.add(createFact(70, 150, 1));
+    aisle.add(createFact(50, 180, 1));
+    aisle.add(createFact(60, 120, 1));
 
-        //When
-        aisle.sort(ExtendedSjukfallCalculator.FACT_ORDER_BY_STARTDATE);
+    // When
+    aisle.sort(ExtendedSjukfallCalculator.FACT_ORDER_BY_STARTDATE);
 
-        //Then
-        assertEquals(50, aisle.get(0).getStartdatum());
-        assertEquals(60, aisle.get(1).getStartdatum());
-        assertEquals(70, aisle.get(2).getStartdatum());
-    }
+    // Then
+    assertEquals(50, aisle.get(0).getStartdatum());
+    assertEquals(60, aisle.get(1).getStartdatum());
+    assertEquals(70, aisle.get(2).getStartdatum());
+  }
 
-    @Test
-    public void testGetExtendedSjukfallStartEmptyAisleWillReturnUnextendedSjukfall() throws Exception {
-        //Given
-        final ArrayList<Fact> aisle = new ArrayList<>();
-        final long patient = 1L;
-        final SjukfallExtended sjukfall = new SjukfallExtended(createFact(1, 2, 1));
+  @Test
+  public void testGetExtendedSjukfallStartEmptyAisleWillReturnUnextendedSjukfall()
+      throws Exception {
+    // Given
+    final ArrayList<Fact> aisle = new ArrayList<>();
+    final long patient = 1L;
+    final SjukfallExtended sjukfall = new SjukfallExtended(createFact(1, 2, 1));
 
-        //When
-        final ExtendedSjukfallCalculator extendedSjukfallCalculator = new ExtendedSjukfallCalculator(aisle);
-        final SjukfallExtended result = extendedSjukfallCalculator.getExtendedSjukfallStart(patient, sjukfall);
+    // When
+    final ExtendedSjukfallCalculator extendedSjukfallCalculator =
+        new ExtendedSjukfallCalculator(aisle);
+    final SjukfallExtended result =
+        extendedSjukfallCalculator.getExtendedSjukfallStart(patient, sjukfall);
 
-        //Then
-        assertSame(sjukfall, result);
-    }
+    // Then
+    assertSame(sjukfall, result);
+  }
 
-    @Test
-    public void testGetExtendedSjukfallStartOneIntygInAisleCanAndWillExtendStartDate() throws Exception {
-        //Given
-        final ArrayList<Fact> aisle = new ArrayList<>();
-        aisle.add(createFact(50, 150, 1));
-        final long patient = 1L;
-        final SjukfallExtended sjukfall = new SjukfallExtended(createFact(100, 200, 1));
+  @Test
+  public void testGetExtendedSjukfallStartOneIntygInAisleCanAndWillExtendStartDate()
+      throws Exception {
+    // Given
+    final ArrayList<Fact> aisle = new ArrayList<>();
+    aisle.add(createFact(50, 150, 1));
+    final long patient = 1L;
+    final SjukfallExtended sjukfall = new SjukfallExtended(createFact(100, 200, 1));
 
-        //When
-        final ExtendedSjukfallCalculator extendedSjukfallCalculator = new ExtendedSjukfallCalculator(aisle);
-        final SjukfallExtended result = extendedSjukfallCalculator.getExtendedSjukfallStart(patient, sjukfall);
+    // When
+    final ExtendedSjukfallCalculator extendedSjukfallCalculator =
+        new ExtendedSjukfallCalculator(aisle);
+    final SjukfallExtended result =
+        extendedSjukfallCalculator.getExtendedSjukfallStart(patient, sjukfall);
 
-        //Then
-        assertEquals(50, result.getStart());
-        assertEquals(200, result.getEnd());
-    }
+    // Then
+    assertEquals(50, result.getStart());
+    assertEquals(200, result.getEnd());
+  }
 
-    @Test
-    public void testGetExtendedSjukfallStartOneIntygInAisleWillNotExtendEndDate() throws Exception {
-        //Given
-        final ArrayList<Fact> aisle = new ArrayList<>();
-        aisle.add(createFact(150, 250, 1));
-        final long patient = 1L;
-        final SjukfallExtended sjukfall = new SjukfallExtended(createFact(100, 200, 1));
+  @Test
+  public void testGetExtendedSjukfallStartOneIntygInAisleWillNotExtendEndDate() throws Exception {
+    // Given
+    final ArrayList<Fact> aisle = new ArrayList<>();
+    aisle.add(createFact(150, 250, 1));
+    final long patient = 1L;
+    final SjukfallExtended sjukfall = new SjukfallExtended(createFact(100, 200, 1));
 
-        //When
-        final ExtendedSjukfallCalculator extendedSjukfallCalculator = new ExtendedSjukfallCalculator(aisle);
-        final SjukfallExtended result = extendedSjukfallCalculator.getExtendedSjukfallStart(patient, sjukfall);
+    // When
+    final ExtendedSjukfallCalculator extendedSjukfallCalculator =
+        new ExtendedSjukfallCalculator(aisle);
+    final SjukfallExtended result =
+        extendedSjukfallCalculator.getExtendedSjukfallStart(patient, sjukfall);
 
-        //Then
-        assertEquals(100, result.getStart());
-        assertEquals(200, result.getEnd());
-    }
+    // Then
+    assertEquals(100, result.getStart());
+    assertEquals(200, result.getEnd());
+  }
 
-    @Test
-    public void testGetExtendedSjukfallStartSeveralOverlappingIntygWillExtendToEarliestStartDate() throws Exception {
-        //Given
-        final ArrayList<Fact> aisle = new ArrayList<>();
-        aisle.add(createFact(40, 85, 1));
-        aisle.add(createFact(80, 150, 1));
-        aisle.add(createFact(10, 55, 1));
-        final long patient = 1L;
-        final SjukfallExtended sjukfall = new SjukfallExtended(createFact(100, 200, 1));
+  @Test
+  public void testGetExtendedSjukfallStartSeveralOverlappingIntygWillExtendToEarliestStartDate()
+      throws Exception {
+    // Given
+    final ArrayList<Fact> aisle = new ArrayList<>();
+    aisle.add(createFact(40, 85, 1));
+    aisle.add(createFact(80, 150, 1));
+    aisle.add(createFact(10, 55, 1));
+    final long patient = 1L;
+    final SjukfallExtended sjukfall = new SjukfallExtended(createFact(100, 200, 1));
 
-        //When
-        final ExtendedSjukfallCalculator extendedSjukfallCalculator = new ExtendedSjukfallCalculator(aisle);
-        final SjukfallExtended result = extendedSjukfallCalculator.getExtendedSjukfallStart(patient, sjukfall);
+    // When
+    final ExtendedSjukfallCalculator extendedSjukfallCalculator =
+        new ExtendedSjukfallCalculator(aisle);
+    final SjukfallExtended result =
+        extendedSjukfallCalculator.getExtendedSjukfallStart(patient, sjukfall);
 
-        //Then
-        assertEquals(10, result.getStart());
-        assertEquals(200, result.getEnd());
-    }
+    // Then
+    assertEquals(10, result.getStart());
+    assertEquals(200, result.getEnd());
+  }
 
-    @Test
-    public void testGetExtendedSjukfallStartSeveralExtendableIntygWillExtendToEarliestStartDate() throws Exception {
-        //Given
-        final ArrayList<Fact> aisle = new ArrayList<>();
-        aisle.add(createFact(40, 185, 1));
-        aisle.add(createFact(80, 150, 1));
-        aisle.add(createFact(10, 155, 1));
-        final long patient = 1L;
-        final SjukfallExtended sjukfall = new SjukfallExtended(createFact(100, 200, 1));
+  @Test
+  public void testGetExtendedSjukfallStartSeveralExtendableIntygWillExtendToEarliestStartDate()
+      throws Exception {
+    // Given
+    final ArrayList<Fact> aisle = new ArrayList<>();
+    aisle.add(createFact(40, 185, 1));
+    aisle.add(createFact(80, 150, 1));
+    aisle.add(createFact(10, 155, 1));
+    final long patient = 1L;
+    final SjukfallExtended sjukfall = new SjukfallExtended(createFact(100, 200, 1));
 
-        //When
-        final ExtendedSjukfallCalculator extendedSjukfallCalculator = new ExtendedSjukfallCalculator(aisle);
-        final SjukfallExtended result = extendedSjukfallCalculator.getExtendedSjukfallStart(patient, sjukfall);
+    // When
+    final ExtendedSjukfallCalculator extendedSjukfallCalculator =
+        new ExtendedSjukfallCalculator(aisle);
+    final SjukfallExtended result =
+        extendedSjukfallCalculator.getExtendedSjukfallStart(patient, sjukfall);
 
-        //Then
-        assertEquals(10, result.getStart());
-        assertEquals(200, result.getEnd());
-    }
+    // Then
+    assertEquals(10, result.getStart());
+    assertEquals(200, result.getEnd());
+  }
 
-    @Test
-    public void testGetExtendedSjukfallStartIntygOnOtherPatientWillNotExtendStartDate() throws Exception {
-        //Given
-        final ArrayList<Fact> aisle = new ArrayList<>();
-        aisle.add(createFact(40, 85, 2));
-        aisle.add(createFact(80, 150, 1));
-        aisle.add(createFact(10, 55, 1));
-        final long patient = 1L;
-        final SjukfallExtended sjukfall = new SjukfallExtended(createFact(100, 200, 1));
+  @Test
+  public void testGetExtendedSjukfallStartIntygOnOtherPatientWillNotExtendStartDate()
+      throws Exception {
+    // Given
+    final ArrayList<Fact> aisle = new ArrayList<>();
+    aisle.add(createFact(40, 85, 2));
+    aisle.add(createFact(80, 150, 1));
+    aisle.add(createFact(10, 55, 1));
+    final long patient = 1L;
+    final SjukfallExtended sjukfall = new SjukfallExtended(createFact(100, 200, 1));
 
-        //When
-        final ExtendedSjukfallCalculator extendedSjukfallCalculator = new ExtendedSjukfallCalculator(aisle);
-        final SjukfallExtended result = extendedSjukfallCalculator.getExtendedSjukfallStart(patient, sjukfall);
+    // When
+    final ExtendedSjukfallCalculator extendedSjukfallCalculator =
+        new ExtendedSjukfallCalculator(aisle);
+    final SjukfallExtended result =
+        extendedSjukfallCalculator.getExtendedSjukfallStart(patient, sjukfall);
 
-        //Then
-        assertEquals(80, result.getStart());
-        assertEquals(200, result.getEnd());
-    }
+    // Then
+    assertEquals(80, result.getStart());
+    assertEquals(200, result.getEnd());
+  }
 
-    private Fact createFact(int startdatum, int slutdatum, int patient) {
-        return FactBuilder.newFact(1L, 1, 1, 1, 1, 1, 1, patient, startdatum, slutdatum, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
-    }
-
+  private Fact createFact(int startdatum, int slutdatum, int patient) {
+    return FactBuilder.newFact(
+        1L,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        patient,
+        startdatum,
+        slutdatum,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        new int[0],
+        1);
+  }
 }

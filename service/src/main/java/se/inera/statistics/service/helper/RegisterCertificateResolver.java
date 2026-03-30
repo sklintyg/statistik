@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -34,55 +34,51 @@ import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.Regi
 @Component
 public class RegisterCertificateResolver {
 
-    @Autowired
-    private RegisterCertificateHelper registerCertificateHelper;
+  @Autowired private RegisterCertificateHelper registerCertificateHelper;
 
-    @Autowired
-    private FkRegisterCertificateHelper fkRegisterCertificateHelper;
+  @Autowired private FkRegisterCertificateHelper fkRegisterCertificateHelper;
 
-    @Autowired
-    private Ag7804RegisterCertificateHelper ag7804RegisterCertificateHelper;
+  @Autowired private Ag7804RegisterCertificateHelper ag7804RegisterCertificateHelper;
 
-    @Autowired
-    private Ag114RegisterCertificateHelper ag114RegisterCertificateHelper;
+  @Autowired private Ag114RegisterCertificateHelper ag114RegisterCertificateHelper;
 
-    public AbstractRegisterCertificateHelper resolveIntygHelper(IntygType intygType) {
+  public AbstractRegisterCertificateHelper resolveIntygHelper(IntygType intygType) {
 
-        switch (intygType) {
-            case LISJP:
-            case LUSE:
-            case FK7263:
-            case LUAE_NA:
-            case LUAE_FS:
-                return fkRegisterCertificateHelper;
-            case AG114:
-                return ag114RegisterCertificateHelper;
-            case AG7804:
-                return ag7804RegisterCertificateHelper;
-            default:
-                return registerCertificateHelper;
-        }
+    switch (intygType) {
+      case LISJP:
+      case LUSE:
+      case FK7263:
+      case LUAE_NA:
+      case LUAE_FS:
+        return fkRegisterCertificateHelper;
+      case AG114:
+        return ag114RegisterCertificateHelper;
+      case AG7804:
+        return ag7804RegisterCertificateHelper;
+      default:
+        return registerCertificateHelper;
     }
+  }
 
-    public IntygType getIntygtyp(RegisterCertificateType intyg) {
-        return registerCertificateHelper.getIntygtyp(intyg);
-    }
+  public IntygType getIntygtyp(RegisterCertificateType intyg) {
+    return registerCertificateHelper.getIntygtyp(intyg);
+  }
 
-    public String getCertificateVersion(RegisterCertificateType certificate) {
-        return registerCertificateHelper.getCertificateVersion(certificate);
-    }
+  public String getCertificateVersion(RegisterCertificateType certificate) {
+    return registerCertificateHelper.getCertificateVersion(certificate);
+  }
 
-    public RegisterCertificateType unmarshalXml(String data) throws JAXBException {
-        return registerCertificateHelper.unmarshalXml(data);
-    }
+  public RegisterCertificateType unmarshalXml(String data) throws JAXBException {
+    return registerCertificateHelper.unmarshalXml(data);
+  }
 
-    public HSAKey extractHSAKey(RegisterCertificateType intyg) {
-        return registerCertificateHelper.extractHSAKey(intyg);
-    }
+  public HSAKey extractHSAKey(RegisterCertificateType intyg) {
+    return registerCertificateHelper.extractHSAKey(intyg);
+  }
 
-    public IntygDTO convertToDTO(RegisterCertificateType intyg) {
-        IntygType intygType = getIntygtyp(intyg);
+  public IntygDTO convertToDTO(RegisterCertificateType intyg) {
+    IntygType intygType = getIntygtyp(intyg);
 
-        return resolveIntygHelper(intygType).convertToDTO(intyg);
-    }
+    return resolveIntygHelper(intygType).convertToDTO(intyg);
+  }
 }

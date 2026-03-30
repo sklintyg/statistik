@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -55,219 +55,278 @@ import se.inera.statistics.service.warehouse.SjukfallUtil;
 @Component
 public class SjukfallQuery {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SjukfallQuery.class);
+  private static final Logger LOG = LoggerFactory.getLogger(SjukfallQuery.class);
 
-    @Autowired
-    private LakareManager lakareManager;
+  @Autowired private LakareManager lakareManager;
 
-    @Autowired
-    private SjukfallUtil sjukfallUtil;
+  @Autowired private SjukfallUtil sjukfallUtil;
 
-    @Autowired
-    private RegionCutoff regionCutoff;
+  @Autowired private RegionCutoff regionCutoff;
 
-    public int getCutoff() {
-        return regionCutoff.getCutoff();
+  public int getCutoff() {
+    return regionCutoff.getCutoff();
+  }
+
+  public SimpleKonResponse getSjukfall(
+      Aisle aisle,
+      FilterPredicates filter,
+      LocalDate start,
+      int perioder,
+      int periodlangd,
+      boolean applyCutoff) {
+    final Function<SjukfallGroup, String> rowNameFunction =
+        sjukfallGroup -> ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom());
+    return getSjukfall(aisle, filter, start, perioder, periodlangd, rowNameFunction, applyCutoff);
+  }
+
+  public SimpleKonResponse getSjukfallTvarsnitt(
+      Aisle aisle,
+      FilterPredicates filter,
+      LocalDate start,
+      int perioder,
+      int periodlangd,
+      boolean applyCutoff) {
+    final Function<SjukfallGroup, String> rowNameFunction = sjukfallGroup -> "Totalt";
+    return getSjukfall(aisle, filter, start, perioder, periodlangd, rowNameFunction, applyCutoff);
+  }
+
+  private SimpleKonResponse getSjukfall(
+      Aisle aisle,
+      FilterPredicates filter,
+      LocalDate start,
+      int perioder,
+      int periodlangd,
+      Function<SjukfallGroup, String> rowName,
+      boolean applyCutoff) {
+    ArrayList<SimpleKonDataRow> result = new ArrayList<>();
+    for (SjukfallGroup sjukfallGroup :
+        sjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, filter)) {
+      int male = countMale(sjukfallGroup.getSjukfall());
+      int female = sjukfallGroup.getSjukfall().size() - male;
+      if (applyCutoff) {
+        male = male >= regionCutoff.getCutoff() ? male : 0;
+        female = female >= regionCutoff.getCutoff() ? female : 0;
+      }
+      result.add(new SimpleKonDataRow(rowName.apply(sjukfallGroup), female, male));
     }
 
-    public SimpleKonResponse getSjukfall(Aisle aisle, FilterPredicates filter, LocalDate start, int perioder,
-        int periodlangd, boolean applyCutoff) {
-        final Function<SjukfallGroup, String> rowNameFunction = sjukfallGroup -> ReportUtil
-            .toDiagramPeriod(sjukfallGroup.getRange().getFrom());
-        return getSjukfall(aisle, filter, start, perioder, periodlangd, rowNameFunction, applyCutoff);
+    return new SimpleKonResponse(AvailableFilters.getForSjukfall(), result);
+  }
+
+  // CHECKSTYLE:OFF ParameterNumberCheck
+  public SimpleKonResponse getSjukfallPerEnhet(
+      Aisle aisle,
+      FilterPredicates filter,
+      LocalDate from,
+      int periods,
+      int periodLength,
+      Map<HsaIdEnhet, String> idsToNames,
+      CutoffUsage cutoffUsage,
+      boolean vardenhetdepth) {
+    List<SimpleKonDataRow> rows = new ArrayList<>();
+    for (SjukfallGroup sjukfallGroup :
+        sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
+      rows.addAll(getSjukfallForGroup(idsToNames, cutoffUsage, sjukfallGroup, vardenhetdepth));
     }
+    return new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
+  }
 
-    public SimpleKonResponse getSjukfallTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate start, int perioder,
-        int periodlangd, boolean applyCutoff) {
-        final Function<SjukfallGroup, String> rowNameFunction = sjukfallGroup -> "Totalt";
-        return getSjukfall(aisle, filter, start, perioder, periodlangd, rowNameFunction, applyCutoff);
+  // CHECKSTYLE:ON ParameterNumberCheck
+
+  private List<SimpleKonDataRow> getSjukfallForGroup(
+      Map<HsaIdEnhet, String> idsToNames,
+      CutoffUsage cutoffUsage,
+      SjukfallGroup sjukfallGroup,
+      boolean vardenhetdepth) {
+    List<SimpleKonDataRow> rows = new ArrayList<>();
+    SjukfallPerGender sjukfallPerGenderPerEnhet =
+        getSjukfallPerGenderPerEnhet(sjukfallGroup, vardenhetdepth);
+    for (Map.Entry<HsaIdEnhet, String> enhetIdAndName : idsToNames.entrySet()) {
+      final Optional<SimpleKonDataRow> dataForEnhet =
+          getDataForEnhet(cutoffUsage, sjukfallPerGenderPerEnhet, enhetIdAndName);
+      dataForEnhet.ifPresent(rows::add);
     }
+    return rows;
+  }
 
-    private SimpleKonResponse getSjukfall(Aisle aisle, FilterPredicates filter, LocalDate start, int perioder,
-        int periodlangd, Function<SjukfallGroup, String> rowName, boolean applyCutoff) {
-        ArrayList<SimpleKonDataRow> result = new ArrayList<>();
-        for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, filter)) {
-            int male = countMale(sjukfallGroup.getSjukfall());
-            int female = sjukfallGroup.getSjukfall().size() - male;
-            if (applyCutoff) {
-                male = male >= regionCutoff.getCutoff() ? male : 0;
-                female = female >= regionCutoff.getCutoff() ? female : 0;
-            }
-            result.add(new SimpleKonDataRow(rowName.apply(sjukfallGroup), female, male));
-        }
-
-        return new SimpleKonResponse(AvailableFilters.getForSjukfall(), result);
+  private Optional<SimpleKonDataRow> getDataForEnhet(
+      CutoffUsage cutoffUsage,
+      SjukfallPerGender sjukfallPerGenderPerEnhet,
+      Map.Entry<HsaIdEnhet, String> enhetIdAndName) {
+    final HsaIdEnhet enhetId = enhetIdAndName.getKey();
+    if (enhetId.isEmpty()) {
+      return Optional.empty();
     }
-
-    // CHECKSTYLE:OFF ParameterNumberCheck
-    public SimpleKonResponse getSjukfallPerEnhet(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
-        int periodLength, Map<HsaIdEnhet, String> idsToNames, CutoffUsage cutoffUsage, boolean vardenhetdepth) {
-        List<SimpleKonDataRow> rows = new ArrayList<>();
-        for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
-            rows.addAll(getSjukfallForGroup(idsToNames, cutoffUsage, sjukfallGroup, vardenhetdepth));
-        }
-        return new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
+    final String enhetName = enhetIdAndName.getValue();
+    int female = sjukfallPerGenderPerEnhet.femalePerEnhet.count(enhetId);
+    int male = sjukfallPerGenderPerEnhet.malePerEnhet.count(enhetId);
+    if (CutoffUsage.APPLY_CUTOFF_PER_SEX.equals(cutoffUsage)) {
+      male = male >= regionCutoff.getCutoff() ? male : 0;
+      female = female >= regionCutoff.getCutoff() ? female : 0;
+    } else if (CutoffUsage.APPLY_CUTOFF_ON_TOTAL.equals(cutoffUsage)) {
+      final int totalSum = male + female;
+      male = totalSum >= regionCutoff.getCutoff() ? male : 0;
+      female = totalSum >= regionCutoff.getCutoff() ? female : 0;
     }
-    // CHECKSTYLE:ON ParameterNumberCheck
-
-    private List<SimpleKonDataRow> getSjukfallForGroup(Map<HsaIdEnhet, String> idsToNames, CutoffUsage cutoffUsage,
-        SjukfallGroup sjukfallGroup, boolean vardenhetdepth) {
-        List<SimpleKonDataRow> rows = new ArrayList<>();
-        SjukfallPerGender sjukfallPerGenderPerEnhet = getSjukfallPerGenderPerEnhet(sjukfallGroup, vardenhetdepth);
-        for (Map.Entry<HsaIdEnhet, String> enhetIdAndName : idsToNames.entrySet()) {
-            final Optional<SimpleKonDataRow> dataForEnhet = getDataForEnhet(cutoffUsage, sjukfallPerGenderPerEnhet, enhetIdAndName);
-            dataForEnhet.ifPresent(rows::add);
-        }
-        return rows;
+    if (male + female > 0) {
+      return Optional.of(new SimpleKonDataRow(enhetName, female, male, enhetId));
     }
+    return Optional.empty();
+  }
 
-    private Optional<SimpleKonDataRow> getDataForEnhet(CutoffUsage cutoffUsage, SjukfallPerGender sjukfallPerGenderPerEnhet,
-        Map.Entry<HsaIdEnhet, String> enhetIdAndName) {
-        final HsaIdEnhet enhetId = enhetIdAndName.getKey();
-        if (enhetId.isEmpty()) {
-            return Optional.empty();
-        }
-        final String enhetName = enhetIdAndName.getValue();
-        int female = sjukfallPerGenderPerEnhet.femalePerEnhet.count(enhetId);
-        int male = sjukfallPerGenderPerEnhet.malePerEnhet.count(enhetId);
-        if (CutoffUsage.APPLY_CUTOFF_PER_SEX.equals(cutoffUsage)) {
-            male = male >= regionCutoff.getCutoff() ? male : 0;
-            female = female >= regionCutoff.getCutoff() ? female : 0;
-        } else if (CutoffUsage.APPLY_CUTOFF_ON_TOTAL.equals(cutoffUsage)) {
-            final int totalSum = male + female;
-            male = totalSum >= regionCutoff.getCutoff() ? male : 0;
-            female = totalSum >= regionCutoff.getCutoff() ? female : 0;
-        }
-        if (male + female > 0) {
-            return Optional.of(new SimpleKonDataRow(enhetName, female, male, enhetId));
-        }
-        return Optional.empty();
+  private SjukfallPerGender getSjukfallPerGenderPerEnhet(
+      SjukfallGroup sjukfallGroup, boolean vardenhetdepth) {
+    final SjukfallPerGender sjukfallPerGenderPerEnhet = new SjukfallPerGender(vardenhetdepth);
+    for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
+      sjukfallPerGenderPerEnhet.add(sjukfall);
     }
+    return sjukfallPerGenderPerEnhet;
+  }
 
-    private SjukfallPerGender getSjukfallPerGenderPerEnhet(SjukfallGroup sjukfallGroup, boolean vardenhetdepth) {
-        final SjukfallPerGender sjukfallPerGenderPerEnhet = new SjukfallPerGender(vardenhetdepth);
-        for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
-            sjukfallPerGenderPerEnhet.add(sjukfall);
-        }
-        return sjukfallPerGenderPerEnhet;
+  public static int countMale(Collection<Sjukfall> sjukfalls) {
+    int count = 0;
+    for (Sjukfall sjukfall : sjukfalls) {
+      if (sjukfall.getKon() == Kon.MALE) {
+        count++;
+      }
     }
+    return count;
+  }
 
-    public static int countMale(Collection<Sjukfall> sjukfalls) {
-        int count = 0;
-        for (Sjukfall sjukfall : sjukfalls) {
-            if (sjukfall.getKon() == Kon.MALE) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    public SimpleKonResponse getSjukfallPerLakare(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,
-        int periodLength) {
-        final CounterFunction<HsaIdLakare> counterFunction = (sjukfall, counter) -> {
-            for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
-                counter.add(lakare.getId());
-            }
+  public SimpleKonResponse getSjukfallPerLakare(
+      Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength) {
+    final CounterFunction<HsaIdLakare> counterFunction =
+        (sjukfall, counter) -> {
+          for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
+            counter.add(lakare.getId());
+          }
         };
-        final KonDataResponse konDataResponse = getSjukfallPerLakareCommon(aisle, filter, start, periods, periodLength, counterFunction);
-        return SimpleKonResponse.create(konDataResponse);
+    final KonDataResponse konDataResponse =
+        getSjukfallPerLakareCommon(aisle, filter, start, periods, periodLength, counterFunction);
+    return SimpleKonResponse.create(konDataResponse);
+  }
+
+  // Collect a list of all "läkar-namn" that exist more than once in the set of lakare
+  private Set<String> findDuplicates(Collection<Lakare> lakares) {
+    Set<String> duplicates = new HashSet<>();
+    Set<String> seenLakarNames = new HashSet<>();
+    for (Lakare lakare : lakares) {
+      String lakarNamn = lakarNamn(lakare);
+      if (seenLakarNames.contains(lakarNamn)) {
+        duplicates.add(lakarNamn);
+      }
+      seenLakarNames.add(lakarNamn);
+    }
+    return duplicates;
+  }
+
+  private String lakarNamn(Lakare lakare) {
+    String name = lakare.getTilltalsNamn() + " " + lakare.getEfterNamn();
+
+    if (name.trim().isEmpty()) {
+      name = lakare.getLakareId().toString();
     }
 
-    // Collect a list of all "läkar-namn" that exist more than once in the set of lakare
-    private Set<String> findDuplicates(Collection<Lakare> lakares) {
-        Set<String> duplicates = new HashSet<>();
-        Set<String> seenLakarNames = new HashSet<>();
-        for (Lakare lakare : lakares) {
-            String lakarNamn = lakarNamn(lakare);
-            if (seenLakarNames.contains(lakarNamn)) {
-                duplicates.add(lakarNamn);
-            }
-            seenLakarNames.add(lakarNamn);
-        }
-        return duplicates;
-    }
+    return name;
+  }
 
-    private String lakarNamn(Lakare lakare) {
-        String name = lakare.getTilltalsNamn() + " " + lakare.getEfterNamn();
+  @VisibleForTesting
+  void setLakareManager(LakareManager lakareManager) {
+    this.lakareManager = lakareManager;
+  }
 
-        if (name.trim().isEmpty()) {
-            name = lakare.getLakareId().toString();
-        }
+  public KonDataResponse getSjukfallPerEnhetSeries(
+      Aisle aisle,
+      FilterPredicates filter,
+      LocalDate start,
+      int periods,
+      int periodSize,
+      Map<HsaIdEnhet, String> idsToNames,
+      boolean vardenhetdepth) {
+    final ArrayList<Map.Entry<HsaIdEnhet, String>> groupEntries =
+        new ArrayList<>(idsToNames.entrySet());
+    final List<String> names =
+        groupEntries.stream().map(entry -> entry.getKey().getId()).collect(Collectors.toList());
+    final List<HsaIdEnhet> ids =
+        groupEntries.stream().map(Map.Entry::getKey).collect(Collectors.toList());
+    final CounterFunction<HsaIdEnhet> counterFunction =
+        (sjukfall, counter) ->
+            counter.add(vardenhetdepth ? sjukfall.getLastVardEnhet() : sjukfall.getLastEnhet());
+    final KonDataResponse response =
+        sjukfallUtil.calculateKonDataResponse(
+            aisle, filter, start, periods, periodSize, names, ids, counterFunction);
+    return KonDataResponses.changeIdGroupsToNamesAndAddIdsToDuplicates(response, idsToNames);
+  }
 
-        return name;
-    }
+  public KonDataResponse getSjukfallPerLakareSomTidsserie(
+      Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength) {
+    final CounterFunction<HsaIdLakare> counterFunction =
+        (sjukfall, counter) -> counter.add(sjukfall.getLastLakare().getId());
+    return getSjukfallPerLakareCommon(aisle, filter, start, periods, periodLength, counterFunction);
+  }
 
-    @VisibleForTesting
-    void setLakareManager(LakareManager lakareManager) {
-        this.lakareManager = lakareManager;
-    }
-
-    public KonDataResponse getSjukfallPerEnhetSeries(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize,
-        Map<HsaIdEnhet, String> idsToNames, boolean vardenhetdepth) {
-        final ArrayList<Map.Entry<HsaIdEnhet, String>> groupEntries = new ArrayList<>(idsToNames.entrySet());
-        final List<String> names = groupEntries.stream().map(entry -> entry.getKey().getId()).collect(Collectors.toList());
-        final List<HsaIdEnhet> ids = groupEntries.stream().map(Map.Entry::getKey).collect(Collectors.toList());
-        final CounterFunction<HsaIdEnhet> counterFunction =
-            (sjukfall, counter) -> counter.add(vardenhetdepth ? sjukfall.getLastVardEnhet() : sjukfall.getLastEnhet());
-        final KonDataResponse response = sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodSize, names, ids,
-            counterFunction);
-        return KonDataResponses.changeIdGroupsToNamesAndAddIdsToDuplicates(response, idsToNames);
-    }
-
-    public KonDataResponse getSjukfallPerLakareSomTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,
-        int periodLength) {
-        final CounterFunction<HsaIdLakare> counterFunction = (sjukfall, counter) -> counter.add(sjukfall.getLastLakare().getId());
-        return getSjukfallPerLakareCommon(aisle, filter, start, periods, periodLength, counterFunction);
-    }
-
-    private KonDataResponse getSjukfallPerLakareCommon(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength,
-        CounterFunction<HsaIdLakare> counterFunction) {
-        final Function<Sjukfall, Collection<HsaIdLakare>> groupsFunction = sjukfall -> {
-            final ArrayList<HsaIdLakare> integers = new ArrayList<>();
-            for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
-                integers.add(lakare.getId());
-            }
-            return integers;
+  private KonDataResponse getSjukfallPerLakareCommon(
+      Aisle aisle,
+      FilterPredicates filter,
+      LocalDate start,
+      int periods,
+      int periodLength,
+      CounterFunction<HsaIdLakare> counterFunction) {
+    final Function<Sjukfall, Collection<HsaIdLakare>> groupsFunction =
+        sjukfall -> {
+          final ArrayList<HsaIdLakare> integers = new ArrayList<>();
+          for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
+            integers.add(lakare.getId());
+          }
+          return integers;
         };
 
-        final KonDataResponse response = sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, groupsFunction,
-            counterFunction);
-        final KonDataResponse filteredResponse = KonDataResponse.createNewWithoutEmptyGroups(response);
-        return changeLakareIdToLakarName(filteredResponse);
+    final KonDataResponse response =
+        sjukfallUtil.calculateKonDataResponse(
+            aisle, filter, start, periods, periodLength, groupsFunction, counterFunction);
+    final KonDataResponse filteredResponse = KonDataResponse.createNewWithoutEmptyGroups(response);
+    return changeLakareIdToLakarName(filteredResponse);
+  }
+
+  private KonDataResponse changeLakareIdToLakarName(final KonDataResponse response) {
+    final List<HsaIdLakare> lakares =
+        response.getGroups().stream().map(HsaIdLakare::new).collect(Collectors.toList());
+    final List<Lakare> allLakareInResponse = lakareManager.getAllSpecifiedLakares(lakares);
+    final Set<String> nameDuplicates = findDuplicates(allLakareInResponse);
+    final List<String> updatedLakareNames =
+        response.getGroups().stream()
+            .map(
+                lakareIdNum -> {
+                  final HsaIdLakare hsaIdLakare = new HsaIdLakare(lakareIdNum);
+                  for (Lakare lakare : allLakareInResponse) {
+                    if (hsaIdLakare.equals(lakare.getLakareId())) {
+                      final String namn = lakarNamn(lakare);
+                      return namn
+                          + (nameDuplicates.contains(namn) ? " " + lakare.getLakareId() : "");
+                    }
+                  }
+                  LOG.warn("Could not find name for lakare: " + lakareIdNum);
+                  return hsaIdLakare.getId();
+                })
+            .collect(Collectors.toList());
+    return new KonDataResponse(
+        response.getAvailableFilters(), updatedLakareNames, response.getRows());
+  }
+
+  private static class SjukfallPerGender {
+
+    private Multiset<HsaIdEnhet> femalePerEnhet = HashMultiset.create();
+    private Multiset<HsaIdEnhet> malePerEnhet = HashMultiset.create();
+    private boolean vardenhetdepth;
+
+    SjukfallPerGender(boolean vardenhetdepth) {
+      this.vardenhetdepth = vardenhetdepth;
     }
 
-    private KonDataResponse changeLakareIdToLakarName(final KonDataResponse response) {
-        final List<HsaIdLakare> lakares = response.getGroups().stream().map(HsaIdLakare::new).collect(Collectors.toList());
-        final List<Lakare> allLakareInResponse = lakareManager.getAllSpecifiedLakares(lakares);
-        final Set<String> nameDuplicates = findDuplicates(allLakareInResponse);
-        final List<String> updatedLakareNames = response.getGroups().stream().map(lakareIdNum -> {
-            final HsaIdLakare hsaIdLakare = new HsaIdLakare(lakareIdNum);
-            for (Lakare lakare : allLakareInResponse) {
-                if (hsaIdLakare.equals(lakare.getLakareId())) {
-                    final String namn = lakarNamn(lakare);
-                    return namn + (nameDuplicates.contains(namn) ? " " + lakare.getLakareId() : "");
-                }
-            }
-            LOG.warn("Could not find name for lakare: " + lakareIdNum);
-            return hsaIdLakare.getId();
-        }).collect(Collectors.toList());
-        return new KonDataResponse(response.getAvailableFilters(), updatedLakareNames, response.getRows());
+    void add(Sjukfall sjukfall) {
+      final Multiset<HsaIdEnhet> sjukfallPerEnhet =
+          sjukfall.getKon() == Kon.FEMALE ? femalePerEnhet : malePerEnhet;
+      sjukfallPerEnhet.addAll(vardenhetdepth ? sjukfall.getVardenhets() : sjukfall.getEnhets());
     }
-
-    private static class SjukfallPerGender {
-
-        private Multiset<HsaIdEnhet> femalePerEnhet = HashMultiset.create();
-        private Multiset<HsaIdEnhet> malePerEnhet = HashMultiset.create();
-        private boolean vardenhetdepth;
-
-        SjukfallPerGender(boolean vardenhetdepth) {
-            this.vardenhetdepth = vardenhetdepth;
-        }
-
-        void add(Sjukfall sjukfall) {
-            final Multiset<HsaIdEnhet> sjukfallPerEnhet = sjukfall.getKon() == Kon.FEMALE ? femalePerEnhet : malePerEnhet;
-            sjukfallPerEnhet.addAll(vardenhetdepth ? sjukfall.getVardenhets() : sjukfall.getEnhets());
-        }
-    }
-
+  }
 }

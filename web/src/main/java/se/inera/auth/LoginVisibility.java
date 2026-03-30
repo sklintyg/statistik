@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -18,37 +18,36 @@
  */
 package se.inera.auth;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 import java.util.regex.Pattern;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 public class LoginVisibility {
 
-    @Value("${hide.login.request.param.name}")
-    private String hideParamName;
+  @Value("${hide.login.request.param.name}")
+  private String hideParamName;
 
-    @Value("${hide.login.request.param.value}")
-    private Pattern hideParamValue;
+  @Value("${hide.login.request.param.value}")
+  private Pattern hideParamValue;
 
-    @Autowired(required = true)
-    private HttpServletRequest httpServletRequest;
+  @Autowired(required = true)
+  private HttpServletRequest httpServletRequest;
 
-    public boolean isLoginVisible() {
-        @SuppressWarnings("unchecked")
-        Enumeration<String> headers = httpServletRequest.getHeaders(hideParamName);
-        if (headers == null) {
-            return true;
-        } else {
-            while (headers.hasMoreElements()) {
-                String header = headers.nextElement();
-                if (hideParamValue.matcher(header).matches()) {
-                    return false;
-                }
-            }
+  public boolean isLoginVisible() {
+    @SuppressWarnings("unchecked")
+    Enumeration<String> headers = httpServletRequest.getHeaders(hideParamName);
+    if (headers == null) {
+      return true;
+    } else {
+      while (headers.hasMoreElements()) {
+        String header = headers.nextElement();
+        if (hideParamValue.matcher(header).matches()) {
+          return false;
         }
-        return true;
+      }
     }
-
+    return true;
+  }
 }

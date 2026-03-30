@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -27,51 +27,51 @@ import se.inera.statistics.web.error.Message;
 
 public final class Converters {
 
-    private Converters() {
+  private Converters() {}
+
+  public static List<Message> combineMessages(Message... messages) {
+    return Stream.of(messages)
+        .filter(m -> m != null && m.getMessage() != null && !m.getMessage().isEmpty())
+        .collect(Collectors.toList());
+  }
+
+  public static List<OverviewChartRowExtended> convert(
+      List<OverviewChartRowExtended> rows, int maxRows, String extraText, String extraColor) {
+    List<OverviewChartRowExtended> result = new ArrayList<>();
+    int i = 0;
+    int numberOfRows = rows.size();
+    int displayedGroups = numberOfRows > maxRows ? maxRows - 1 : maxRows;
+
+    for (; i < displayedGroups && i < numberOfRows; i++) {
+      OverviewChartRowExtended row = rows.get(i);
+      final int alternation = row.getAlternation();
+      int previous = row.getQuantity() - alternation;
+      int percentChange = calculatePercentage(alternation, previous);
+      result.add(
+          new OverviewChartRowExtended(
+              row.getName(), row.getQuantity(), percentChange, row.getColor()));
     }
 
-    public static List<Message> combineMessages(Message... messages) {
-        return Stream.of(messages)
-            .filter(m -> m != null && m.getMessage() != null && !m.getMessage().isEmpty())
-            .collect(Collectors.toList());
+    if (numberOfRows > maxRows) {
+      int restQuantity = 0;
+      int restAlternation = 0;
+      for (; i < rows.size(); i++) {
+        OverviewChartRowExtended row = rows.get(i);
+        restQuantity += row.getQuantity();
+        restAlternation += row.getAlternation();
+      }
+      int percentChange = calculatePercentage(restAlternation, restQuantity - restAlternation);
+      result.add(new OverviewChartRowExtended(extraText, restQuantity, percentChange, extraColor));
     }
 
-    public static List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> rows, int maxRows,
-        String extraText, String extraColor) {
-        List<OverviewChartRowExtended> result = new ArrayList<>();
-        int i = 0;
-        int numberOfRows = rows.size();
-        int displayedGroups = numberOfRows > maxRows ? maxRows - 1 : maxRows;
+    return result;
+  }
 
-        for (; i < displayedGroups && i < numberOfRows; i++) {
-            OverviewChartRowExtended row = rows.get(i);
-            final int alternation = row.getAlternation();
-            int previous = row.getQuantity() - alternation;
-            int percentChange = calculatePercentage(alternation, previous);
-            result.add(new OverviewChartRowExtended(row.getName(), row.getQuantity(), percentChange, row.getColor()));
-        }
-
-        if (numberOfRows > maxRows) {
-            int restQuantity = 0;
-            int restAlternation = 0;
-            for (; i < rows.size(); i++) {
-                OverviewChartRowExtended row = rows.get(i);
-                restQuantity += row.getQuantity();
-                restAlternation += row.getAlternation();
-            }
-            int percentChange = calculatePercentage(restAlternation, restQuantity - restAlternation);
-            result.add(new OverviewChartRowExtended(extraText, restQuantity, percentChange, extraColor));
-        }
-
-        return result;
+  private static int calculatePercentage(int part, int whole) {
+    if (whole == 0) {
+      return 0;
     }
-
-    private static int calculatePercentage(int part, int whole) {
-        if (whole == 0) {
-            return 0;
-        }
-        final double percentage = 100.0;
-        return (int) Math.round(part * percentage / whole);
-    }
-
+    final double percentage = 100.0;
+    return (int) Math.round(part * percentage / whole);
+  }
 }

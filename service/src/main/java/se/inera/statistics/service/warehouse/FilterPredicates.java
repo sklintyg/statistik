@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -26,49 +26,51 @@ import se.inera.statistics.integration.hsa.model.HsaIdEnhet;
 
 public class FilterPredicates {
 
-    public static final String HASH_EMPTY_FILTER = "EMPTY_FILTER";
+  public static final String HASH_EMPTY_FILTER = "EMPTY_FILTER";
 
-    private Predicate<Fact> intygFilter;
-    private Predicate<Sjukfall> sjukfallFilter;
-    private boolean sjukfallangdfilterActive;
-    private String hash;
+  private Predicate<Fact> intygFilter;
+  private Predicate<Sjukfall> sjukfallFilter;
+  private boolean sjukfallangdfilterActive;
+  private String hash;
 
-    public FilterPredicates(Predicate<Fact> intygFilter, Predicate<Sjukfall> sjukfallFilter, String hash,
-        boolean sjukfallangdfilterActive) {
-        if (intygFilter == null) {
-            throw new IllegalArgumentException("Intygfilter must not be null");
-        }
-        if (sjukfallFilter == null) {
-            throw new IllegalArgumentException("Sjukfallfilter must not be null");
-        }
-        if (hash == null || hash.isEmpty()) {
-            throw new IllegalArgumentException("Hash must not be empty");
-        }
-
-        this.intygFilter = intygFilter;
-        this.sjukfallFilter = sjukfallFilter;
-        this.hash = hash;
-        this.sjukfallangdfilterActive = sjukfallangdfilterActive;
+  public FilterPredicates(
+      Predicate<Fact> intygFilter,
+      Predicate<Sjukfall> sjukfallFilter,
+      String hash,
+      boolean sjukfallangdfilterActive) {
+    if (intygFilter == null) {
+      throw new IllegalArgumentException("Intygfilter must not be null");
+    }
+    if (sjukfallFilter == null) {
+      throw new IllegalArgumentException("Sjukfallfilter must not be null");
+    }
+    if (hash == null || hash.isEmpty()) {
+      throw new IllegalArgumentException("Hash must not be empty");
     }
 
-    public Predicate<Fact> getIntygFilter() {
-        return intygFilter;
-    }
+    this.intygFilter = intygFilter;
+    this.sjukfallFilter = sjukfallFilter;
+    this.hash = hash;
+    this.sjukfallangdfilterActive = sjukfallangdfilterActive;
+  }
 
-    public Predicate<Sjukfall> getSjukfallFilter() {
-        return sjukfallFilter;
-    }
+  public Predicate<Fact> getIntygFilter() {
+    return intygFilter;
+  }
 
-    public String getHash() {
-        return hash;
-    }
+  public Predicate<Sjukfall> getSjukfallFilter() {
+    return sjukfallFilter;
+  }
 
-    public boolean isSjukfallangdfilterActive() {
-        return sjukfallangdfilterActive;
-    }
+  public String getHash() {
+    return hash;
+  }
 
-    public static String getHashValueForEnhets(Collection<HsaIdEnhet> enhetIds) {
-        return "_" + enhetIds.stream().map(HsaIdAny::getId).sorted().collect(Collectors.joining("_"));
-    }
+  public boolean isSjukfallangdfilterActive() {
+    return sjukfallangdfilterActive;
+  }
 
+  public static String getHashValueForEnhets(Collection<HsaIdEnhet> enhetIds) {
+    return "_" + enhetIds.stream().map(HsaIdAny::getId).sorted().collect(Collectors.joining("_"));
+  }
 }

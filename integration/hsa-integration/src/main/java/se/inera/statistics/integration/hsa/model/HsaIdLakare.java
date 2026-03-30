@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,12 +20,11 @@ package se.inera.statistics.integration.hsa.model;
 
 public class HsaIdLakare extends HsaIdAny {
 
-    public HsaIdLakare(String id) {
-        super(id);
-    }
+  public HsaIdLakare(String id) {
+    super(id);
+  }
 
-    public static HsaIdLakare empty() {
-        return new HsaIdLakare("");
-    }
-
+  public static HsaIdLakare empty() {
+    return new HsaIdLakare("");
+  }
 }

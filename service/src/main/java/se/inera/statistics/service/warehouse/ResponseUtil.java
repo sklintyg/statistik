@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -29,78 +29,84 @@ import se.inera.statistics.service.warehouse.query.AndelExtras;
 
 public final class ResponseUtil {
 
-    private ResponseUtil() {
+  private ResponseUtil() {}
+
+  public static KonDataResponse createEmptyKonDataResponse(KonDataResponse kdr) {
+    final ArrayList<KonDataRow> rows = getKonDataRows(kdr);
+    return new KonDataResponse(kdr.getAvailableFilters(), kdr.getGroups(), rows);
+  }
+
+  static DiagnosgruppResponse createEmptyDiagnosgruppResponse(DiagnosgruppResponse kdr) {
+    final ArrayList<KonDataRow> rows = getKonDataRows(kdr);
+    return new DiagnosgruppResponse(kdr.getAvailableFilters(), kdr.getIcdTyps(), rows);
+  }
+
+  private static <T extends KonDataResponse> ArrayList<KonDataRow> getKonDataRows(T kdr) {
+    final ArrayList<KonDataRow> rows = new ArrayList<>();
+    for (KonDataRow row : kdr.getRows()) {
+      final ArrayList<KonField> data = new ArrayList<>();
+      for (int i = 0; i < row.getData().size(); i++) {
+        Object extras =
+            row.getData().get(i).getExtras() instanceof AndelExtras
+                ? new AndelExtras(0, 0, 0, 0)
+                : null;
+        data.add(new KonField(0, 0, extras));
+      }
+      rows.add(new KonDataRow(row.getName(), data));
     }
+    return rows;
+  }
 
-    public static KonDataResponse createEmptyKonDataResponse(KonDataResponse kdr) {
-        final ArrayList<KonDataRow> rows = getKonDataRows(kdr);
-        return new KonDataResponse(kdr.getAvailableFilters(), kdr.getGroups(), rows);
+  public static List<KonDataRow> getKonDataRows(
+      int perioder, Iterator<KonDataRow> rowsNew, Iterator<KonDataRow> rowsOld, int cutoff) {
+    List<KonDataRow> list = new ArrayList<>(perioder);
+    while (rowsNew.hasNext() && rowsOld.hasNext()) {
+      KonDataRow a = rowsNew.next();
+      KonDataRow b = rowsOld.next();
+
+      List<KonField> c = new ArrayList<>();
+      for (int i = 0; i < a.getData().size(); i++) {
+        final KonField aKonField = a.getData().get(i);
+        final KonField bKonField = b.getData().get(i);
+        final int female = filterCutoff(aKonField.getFemale(), cutoff) + bKonField.getFemale();
+        final int male = filterCutoff(aKonField.getMale(), cutoff) + bKonField.getMale();
+        final Object extras = getMergedExtras(aKonField, bKonField, cutoff);
+        c.add(new KonField(female, male, extras));
+      }
+      list.add(new KonDataRow(a.getName(), c));
     }
+    return list;
+  }
 
-    static DiagnosgruppResponse createEmptyDiagnosgruppResponse(DiagnosgruppResponse kdr) {
-        final ArrayList<KonDataRow> rows = getKonDataRows(kdr);
-        return new DiagnosgruppResponse(kdr.getAvailableFilters(), kdr.getIcdTyps(), rows);
+  private static Object getMergedExtras(KonField aKonField, KonField bKonField, int cutoff) {
+    Object aExtras = aKonField.getExtras();
+    Object bExtras = bKonField.getExtras();
+    if (aExtras instanceof AndelExtras && bExtras instanceof AndelExtras) {
+      AndelExtras aAndelExtra = (AndelExtras) aExtras;
+      AndelExtras bAndelExtra = (AndelExtras) bExtras;
+
+      final int femaleKomplA = filterCutoff(aAndelExtra.getFemaleKompl(), cutoff);
+      final int femaleKompl = femaleKomplA + bAndelExtra.getFemaleKompl();
+      final int femaleIntyg =
+          (isApplyCutoff(femaleKomplA, cutoff) ? 0 : aAndelExtra.getFemaleIntyg())
+              + bAndelExtra.getFemaleIntyg();
+
+      final int maleKomplA = filterCutoff(aAndelExtra.getMaleKompl(), cutoff);
+      final int maleKompl = maleKomplA + bAndelExtra.getMaleKompl();
+      final int maleIntyg =
+          (isApplyCutoff(maleKomplA, cutoff) ? 0 : aAndelExtra.getMaleIntyg())
+              + bAndelExtra.getMaleIntyg();
+
+      return new AndelExtras(femaleIntyg, femaleKompl, maleIntyg, maleKompl);
     }
+    return null;
+  }
 
-    private static <T extends KonDataResponse> ArrayList<KonDataRow> getKonDataRows(T kdr) {
-        final ArrayList<KonDataRow> rows = new ArrayList<>();
-        for (KonDataRow row : kdr.getRows()) {
-            final ArrayList<KonField> data = new ArrayList<>();
-            for (int i = 0; i < row.getData().size(); i++) {
-                Object extras = row.getData().get(i).getExtras() instanceof AndelExtras ? new AndelExtras(0, 0, 0, 0) : null;
-                data.add(new KonField(0, 0, extras));
-            }
-            rows.add(new KonDataRow(row.getName(), data));
-        }
-        return rows;
-    }
+  public static int filterCutoff(int actual, int cutoff) {
+    return isApplyCutoff(actual, cutoff) ? 0 : actual;
+  }
 
-    public static List<KonDataRow> getKonDataRows(int perioder, Iterator<KonDataRow> rowsNew, Iterator<KonDataRow> rowsOld, int cutoff) {
-        List<KonDataRow> list = new ArrayList<>(perioder);
-        while (rowsNew.hasNext() && rowsOld.hasNext()) {
-            KonDataRow a = rowsNew.next();
-            KonDataRow b = rowsOld.next();
-
-            List<KonField> c = new ArrayList<>();
-            for (int i = 0; i < a.getData().size(); i++) {
-                final KonField aKonField = a.getData().get(i);
-                final KonField bKonField = b.getData().get(i);
-                final int female = filterCutoff(aKonField.getFemale(), cutoff) + bKonField.getFemale();
-                final int male = filterCutoff(aKonField.getMale(), cutoff) + bKonField.getMale();
-                final Object extras = getMergedExtras(aKonField, bKonField, cutoff);
-                c.add(new KonField(female, male, extras));
-            }
-            list.add(new KonDataRow(a.getName(), c));
-        }
-        return list;
-    }
-
-    private static Object getMergedExtras(KonField aKonField, KonField bKonField, int cutoff) {
-        Object aExtras = aKonField.getExtras();
-        Object bExtras = bKonField.getExtras();
-        if (aExtras instanceof AndelExtras && bExtras instanceof AndelExtras) {
-            AndelExtras aAndelExtra = (AndelExtras) aExtras;
-            AndelExtras bAndelExtra = (AndelExtras) bExtras;
-
-            final int femaleKomplA = filterCutoff(aAndelExtra.getFemaleKompl(), cutoff);
-            final int femaleKompl = femaleKomplA + bAndelExtra.getFemaleKompl();
-            final int femaleIntyg = (isApplyCutoff(femaleKomplA, cutoff) ? 0 : aAndelExtra.getFemaleIntyg()) + bAndelExtra.getFemaleIntyg();
-
-            final int maleKomplA = filterCutoff(aAndelExtra.getMaleKompl(), cutoff);
-            final int maleKompl = maleKomplA + bAndelExtra.getMaleKompl();
-            final int maleIntyg = (isApplyCutoff(maleKomplA, cutoff) ? 0 : aAndelExtra.getMaleIntyg()) + bAndelExtra.getMaleIntyg();
-
-            return new AndelExtras(femaleIntyg, femaleKompl, maleIntyg, maleKompl);
-        }
-        return null;
-    }
-
-    public static int filterCutoff(int actual, int cutoff) {
-        return isApplyCutoff(actual, cutoff) ? 0 : actual;
-    }
-
-    private static boolean isApplyCutoff(int actual, int cutoff) {
-        return actual < cutoff;
-    }
-
+  private static boolean isApplyCutoff(int actual, int cutoff) {
+    return actual < cutoff;
+  }
 }

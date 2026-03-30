@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,53 +22,53 @@ import java.time.LocalDateTime;
 
 public class GetStatisticsCareGiverResponseDto {
 
-    private String hsaIdentity;
-    private String careGiverOrgNo;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
-    private Boolean isArchived;
+  private String hsaIdentity;
+  private String careGiverOrgNo;
+  private LocalDateTime startDate;
+  private LocalDateTime endDate;
+  private Boolean isArchived;
 
-    public String getHsaIdentity() {
-        return hsaIdentity;
-    }
+  public String getHsaIdentity() {
+    return hsaIdentity;
+  }
 
-    public void setHsaIdentity(String hsaIdentity) {
-        this.hsaIdentity = hsaIdentity;
-    }
+  public void setHsaIdentity(String hsaIdentity) {
+    this.hsaIdentity = hsaIdentity;
+  }
 
-    public String getCareGiverOrgNo() {
-        return careGiverOrgNo;
-    }
+  public String getCareGiverOrgNo() {
+    return careGiverOrgNo;
+  }
 
-    public void setCareGiverOrgNo(String careGiverOrgNo) {
-        this.careGiverOrgNo = careGiverOrgNo;
-    }
+  public void setCareGiverOrgNo(String careGiverOrgNo) {
+    this.careGiverOrgNo = careGiverOrgNo;
+  }
 
-    public LocalDateTime getStartDate() {
-        return startDate;
-    }
+  public LocalDateTime getStartDate() {
+    return startDate;
+  }
 
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
-    }
+  public void setStartDate(LocalDateTime startDate) {
+    this.startDate = startDate;
+  }
 
-    public LocalDateTime getEndDate() {
-        return endDate;
-    }
+  public LocalDateTime getEndDate() {
+    return endDate;
+  }
 
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
-    }
+  public void setEndDate(LocalDateTime endDate) {
+    this.endDate = endDate;
+  }
 
-    public Boolean getArchived() {
-        return isArchived;
-    }
+  public Boolean getArchived() {
+    return isArchived;
+  }
 
-    public void setArchived(Boolean archived) {
-        isArchived = archived;
-    }
+  public void setArchived(Boolean archived) {
+    isArchived = archived;
+  }
 
-    public Boolean isArchived() {
-        return isArchived;
-    }
+  public Boolean isArchived() {
+    return isArchived;
+  }
 }

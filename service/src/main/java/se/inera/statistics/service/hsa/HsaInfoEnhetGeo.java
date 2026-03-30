@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -24,73 +24,86 @@ import com.google.common.base.MoreObjects;
 
 public class HsaInfoEnhetGeo {
 
-    @JsonProperty("koordinat")
-    private HsaInfoCoordinate koordinat;
-    @JsonProperty("plats")
-    private String plats;
-    @JsonProperty("kommundelskod")
-    private String kommundelskod;
-    @JsonProperty("kommundelsnamn")
-    private String kommundelsnamn;
-    @JsonProperty("kommun")
-    private String kommun;
-    @JsonProperty("lan")
-    private String lan;
+  @JsonProperty("koordinat")
+  private HsaInfoCoordinate koordinat;
 
-    // Default constructor required by json mapper
-    private HsaInfoEnhetGeo() {
-    }
+  @JsonProperty("plats")
+  private String plats;
 
-    public HsaInfoEnhetGeo(HsaInfoCoordinate koordinat, String plats, String kommundelskod, String kommundelsnamn, String kommun,
-        String lan) {
-        this.koordinat = koordinat;
-        this.plats = plats;
-        this.kommundelskod = kommundelskod;
-        this.kommundelsnamn = kommundelsnamn;
-        this.kommun = kommun;
-        this.lan = lan;
-    }
+  @JsonProperty("kommundelskod")
+  private String kommundelskod;
 
-    public HsaInfoCoordinate getKoordinat() {
-        return koordinat;
-    }
+  @JsonProperty("kommundelsnamn")
+  private String kommundelsnamn;
 
-    public String getPlats() {
-        return plats;
-    }
+  @JsonProperty("kommun")
+  private String kommun;
 
-    public String getKommundelskod() {
-        return kommundelskod;
-    }
+  @JsonProperty("lan")
+  private String lan;
 
-    public String getKommundelsnamn() {
-        return kommundelsnamn;
-    }
+  // Default constructor required by json mapper
+  private HsaInfoEnhetGeo() {}
 
-    public String getKommun() {
-        return kommun;
-    }
+  public HsaInfoEnhetGeo(
+      HsaInfoCoordinate koordinat,
+      String plats,
+      String kommundelskod,
+      String kommundelsnamn,
+      String kommun,
+      String lan) {
+    this.koordinat = koordinat;
+    this.plats = plats;
+    this.kommundelskod = kommundelskod;
+    this.kommundelsnamn = kommundelsnamn;
+    this.kommun = kommun;
+    this.lan = lan;
+  }
 
-    public String getLan() {
-        return lan;
-    }
+  public HsaInfoCoordinate getKoordinat() {
+    return koordinat;
+  }
 
-    @JsonIgnore
-    @java.lang.SuppressWarnings("squid:S1067") // Expression complexity check ignored in Sonar
-    public boolean isEmpty() {
-        return koordinat == null && plats == null && kommundelskod == null && kommundelsnamn == null && kommun == null && lan == null;
-    }
+  public String getPlats() {
+    return plats;
+  }
 
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-            .add("koordinat", koordinat)
-            .add("plats", plats)
-            .add("kommundelskod", kommundelskod)
-            .add("kommundelsnamn", kommundelsnamn)
-            .add("kommun", kommun)
-            .add("lan", lan)
-            .toString();
-    }
+  public String getKommundelskod() {
+    return kommundelskod;
+  }
 
+  public String getKommundelsnamn() {
+    return kommundelsnamn;
+  }
+
+  public String getKommun() {
+    return kommun;
+  }
+
+  public String getLan() {
+    return lan;
+  }
+
+  @JsonIgnore
+  @java.lang.SuppressWarnings("squid:S1067") // Expression complexity check ignored in Sonar
+  public boolean isEmpty() {
+    return koordinat == null
+        && plats == null
+        && kommundelskod == null
+        && kommundelsnamn == null
+        && kommun == null
+        && lan == null;
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("koordinat", koordinat)
+        .add("plats", plats)
+        .add("kommundelskod", kommundelskod)
+        .add("kommundelsnamn", kommundelsnamn)
+        .add("kommun", kommun)
+        .add("lan", lan)
+        .toString();
+  }
 }

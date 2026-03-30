@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,12 +22,11 @@ import java.io.IOException;
 
 public class RegionEnhetFileParseException extends Exception {
 
-    public RegionEnhetFileParseException(String msg) {
-        super(msg);
-    }
+  public RegionEnhetFileParseException(String msg) {
+    super(msg);
+  }
 
-    public RegionEnhetFileParseException(String msg, IOException e) {
-        super(msg, e);
-    }
-
+  public RegionEnhetFileParseException(String msg, IOException e) {
+    super(msg, e);
+  }
 }

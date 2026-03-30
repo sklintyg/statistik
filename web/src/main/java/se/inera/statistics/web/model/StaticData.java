@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -26,38 +26,42 @@ import se.inera.statistics.service.report.model.Icd;
 
 public class StaticData {
 
-    private final Map<String, String> sjukskrivningLengths;
-    private final Map<String, String> ageGroups;
-    private final Map<String, String> intygTypes;
-    private final Map<String, String> intygTooltip;
-    private final List<Icd> dxs;
+  private final Map<String, String> sjukskrivningLengths;
+  private final Map<String, String> ageGroups;
+  private final Map<String, String> intygTypes;
+  private final Map<String, String> intygTooltip;
+  private final List<Icd> dxs;
 
-    public StaticData(Map<String, String> sjukskrivningLengths, Map<String, String> ageGroups,
-        Map<String, String> intygTypes, Map<String, String> intygTooltip, List<Icd> dxs) {
-        this.sjukskrivningLengths = new HashMap<>(sjukskrivningLengths);
-        this.ageGroups = new HashMap<>(ageGroups);
-        this.intygTypes = new HashMap<>(intygTypes);
-        this.intygTooltip = new HashMap<>(intygTooltip);
-        this.dxs = new ArrayList<>(dxs);
-    }
+  public StaticData(
+      Map<String, String> sjukskrivningLengths,
+      Map<String, String> ageGroups,
+      Map<String, String> intygTypes,
+      Map<String, String> intygTooltip,
+      List<Icd> dxs) {
+    this.sjukskrivningLengths = new HashMap<>(sjukskrivningLengths);
+    this.ageGroups = new HashMap<>(ageGroups);
+    this.intygTypes = new HashMap<>(intygTypes);
+    this.intygTooltip = new HashMap<>(intygTooltip);
+    this.dxs = new ArrayList<>(dxs);
+  }
 
-    public Map<String, String> getSjukskrivningLengths() {
-        return sjukskrivningLengths;
-    }
+  public Map<String, String> getSjukskrivningLengths() {
+    return sjukskrivningLengths;
+  }
 
-    public Map<String, String> getAgeGroups() {
-        return ageGroups;
-    }
+  public Map<String, String> getAgeGroups() {
+    return ageGroups;
+  }
 
-    public List<Icd> getDxs() {
-        return dxs;
-    }
+  public List<Icd> getDxs() {
+    return dxs;
+  }
 
-    public Map<String, String> getIntygTypes() {
-        return intygTypes;
-    }
+  public Map<String, String> getIntygTypes() {
+    return intygTypes;
+  }
 
-    public Map<String, String> getIntygTooltip() {
-        return intygTooltip;
-    }
+  public Map<String, String> getIntygTooltip() {
+    return intygTooltip;
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -49,59 +49,60 @@ import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 @Path("/logging")
 public class LoggingService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(LoggingService.class);
+  private static final Logger LOG = LoggerFactory.getLogger(LoggingService.class);
 
-    @Autowired
-    private LoginServiceUtil loginServiceUtil;
+  @Autowired private LoginServiceUtil loginServiceUtil;
 
-    @Autowired
-    private MonitoringLogService monitoringService;
+  @Autowired private MonitoringLogService monitoringService;
 
-    @Autowired
-    private UserAgentParser userAgentParser;
+  @Autowired private UserAgentParser userAgentParser;
 
-    public LoggingService() {
+  public LoggingService() {}
+
+  @POST
+  @Path("log")
+  @Consumes({MediaType.APPLICATION_JSON})
+  @Produces({MediaType.APPLICATION_JSON})
+  @PrometheusTimeMethod(help = "API-tjänst för att logga från frontend app")
+  @PerformanceLogging(
+      eventAction = "frontend-logging",
+      eventType = MdcLogConstants.EVENT_TYPE_CREATION)
+  public Response frontendLogging(LogData logData) {
+    String user = loginServiceUtil.isLoggedIn() ? getHsaIdForLoggedInUser().getId() : "Anonymous";
+    LOG.info(user + " : " + logData.getMessage() + " [" + logData.getUrl() + "]");
+    return Response.ok().build();
+  }
+
+  private HsaIdUser getHsaIdForLoggedInUser() {
+    return loginServiceUtil.getLoginInfo().getHsaId();
+  }
+
+  @POST
+  @Path("monitorlog")
+  @Consumes({MediaType.APPLICATION_JSON})
+  @Produces({MediaType.APPLICATION_JSON})
+  @PrometheusTimeMethod(help = "API-tjänst för att monitoreringslogga från frontend app")
+  @PerformanceLogging(
+      eventAction = "frontend-monitor-logging",
+      eventType = MdcLogConstants.EVENT_TYPE_CREATION)
+  public Response monitoring(
+      MonitoringRequest request, @HeaderParam(HttpHeaders.USER_AGENT) String userAgent) {
+    if (request == null || !request.isValid()) {
+      return status(BAD_REQUEST).build();
     }
 
-    @POST
-    @Path("log")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
-    @PrometheusTimeMethod(help = "API-tjänst för att logga från frontend app")
-    @PerformanceLogging(eventAction = "frontend-logging", eventType = MdcLogConstants.EVENT_TYPE_CREATION)
-    public Response frontendLogging(LogData logData) {
-        String user = loginServiceUtil.isLoggedIn() ? getHsaIdForLoggedInUser().getId() : "Anonymous";
-        LOG.info(user + " : " + logData.getMessage() + " [" + logData.getUrl() + "]");
-        return Response.ok().build();
+    switch (request.getEvent()) {
+      case SCREEN_RESOLUTION:
+        final UserAgentInfo userAgentInfo = userAgentParser.parse(userAgent);
+        monitoringService.logBrowserInfo(
+            userAgentInfo.getBrowserName(),
+            userAgentInfo.getBrowserVersion(),
+            userAgentInfo.getOsFamily(),
+            userAgentInfo.getOsVersion(),
+            request.getInfo().get(MonitoringRequest.WIDTH),
+            request.getInfo().get(MonitoringRequest.HEIGHT));
+        break;
     }
-
-    private HsaIdUser getHsaIdForLoggedInUser() {
-        return loginServiceUtil.getLoginInfo().getHsaId();
-    }
-
-    @POST
-    @Path("monitorlog")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
-    @PrometheusTimeMethod(help = "API-tjänst för att monitoreringslogga från frontend app")
-    @PerformanceLogging(eventAction = "frontend-monitor-logging", eventType = MdcLogConstants.EVENT_TYPE_CREATION)
-    public Response monitoring(MonitoringRequest request, @HeaderParam(HttpHeaders.USER_AGENT) String userAgent) {
-        if (request == null || !request.isValid()) {
-            return status(BAD_REQUEST).build();
-        }
-
-        switch (request.getEvent()) {
-            case SCREEN_RESOLUTION:
-                final UserAgentInfo userAgentInfo = userAgentParser.parse(userAgent);
-                monitoringService
-                    .logBrowserInfo(userAgentInfo.getBrowserName(),
-                        userAgentInfo.getBrowserVersion(),
-                        userAgentInfo.getOsFamily(),
-                        userAgentInfo.getOsVersion(),
-                        request.getInfo().get(MonitoringRequest.WIDTH),
-                        request.getInfo().get(MonitoringRequest.HEIGHT));
-                break;
-        }
-        return ok().build();
-    }
+    return ok().build();
+  }
 }

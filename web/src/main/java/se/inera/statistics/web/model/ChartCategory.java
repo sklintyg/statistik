@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -18,34 +18,32 @@
  */
 package se.inera.statistics.web.model;
 
-
 import java.io.Serializable;
 
 public class ChartCategory implements Serializable {
 
-    private final String name;
-    private final boolean marked;
+  private final String name;
+  private final boolean marked;
 
-    public ChartCategory(String name, boolean marked) {
-        this.name = name;
-        this.marked = marked;
-    }
+  public ChartCategory(String name, boolean marked) {
+    this.name = name;
+    this.marked = marked;
+  }
 
-    public ChartCategory(String name) {
-        this(name, false);
-    }
+  public ChartCategory(String name) {
+    this(name, false);
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public boolean isMarked() {
-        return marked;
-    }
+  public boolean isMarked() {
+    return marked;
+  }
 
-    @Override
-    public String toString() {
-        return name;
-    }
-
+  @Override
+  public String toString() {
+    return name;
+  }
 }

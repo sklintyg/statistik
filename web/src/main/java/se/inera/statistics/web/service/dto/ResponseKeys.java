@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,14 +20,18 @@ package se.inera.statistics.web.service.dto;
 
 public final class ResponseKeys {
 
-    public static final String ALL_AVAILABLE_DXS_SELECTED_IN_FILTER = "allAvailableDxsSelectedInFilter";
-    public static final String ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER = "allAvailableEnhetsSelectedInFilter";
-    public static final String ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER = "allAvailableSjukskrivningslangdsSelectedInFilter";
-    public static final String ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER = "allAvailableAgeGroupsSelectedInFilter";
-    public static final String ALL_AVAILABLE_INTYGTYPES_SELECTED_IN_FILTER = "allAvailableIntygTypesSelectedInFilter";
+  public static final String ALL_AVAILABLE_DXS_SELECTED_IN_FILTER =
+      "allAvailableDxsSelectedInFilter";
+  public static final String ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER =
+      "allAvailableEnhetsSelectedInFilter";
+  public static final String ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER =
+      "allAvailableSjukskrivningslangdsSelectedInFilter";
+  public static final String ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER =
+      "allAvailableAgeGroupsSelectedInFilter";
+  public static final String ALL_AVAILABLE_INTYGTYPES_SELECTED_IN_FILTER =
+      "allAvailableIntygTypesSelectedInFilter";
 
-    public static final String FILTERED_ENHETS = "filteredEnhets";
+  public static final String FILTERED_ENHETS = "filteredEnhets";
 
-    private ResponseKeys() {
-    }
+  private ResponseKeys() {}
 }

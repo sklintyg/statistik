@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -24,31 +24,36 @@ import java.util.stream.Collectors;
 
 public class DiagnosgruppResponse extends KonDataResponse {
 
-    private final List<? extends Icd> icdTyps;
+  private final List<? extends Icd> icdTyps;
 
-    public DiagnosgruppResponse(AvailableFilters availableFilters, List<? extends Icd> icdTyps, List<KonDataRow> rows) {
-        super(availableFilters, getStringGroups(icdTyps), rows);
-        this.icdTyps = icdTyps;
+  public DiagnosgruppResponse(
+      AvailableFilters availableFilters, List<? extends Icd> icdTyps, List<KonDataRow> rows) {
+    super(availableFilters, getStringGroups(icdTyps), rows);
+    this.icdTyps = icdTyps;
+  }
+
+  public List<Icd> getIcdTyps() {
+    return icdTyps.stream().map(t -> (Icd) t).collect(Collectors.toList());
+  }
+
+  private static List<String> getStringGroups(List<? extends Icd> icdTyps) {
+    if (icdTyps == null) {
+      return new ArrayList<>();
     }
+    return icdTyps.stream().map(Icd::asString).collect(Collectors.toList());
+  }
 
-    public List<Icd> getIcdTyps() {
-        return icdTyps.stream().map(t -> (Icd) t).collect(Collectors.toList());
-    }
+  public List<String> getDiagnosisGroupsAsStrings() {
+    return getStringGroups(icdTyps);
+  }
 
-    private static List<String> getStringGroups(List<? extends Icd> icdTyps) {
-        if (icdTyps == null) {
-            return new ArrayList<>();
-        }
-        return icdTyps.stream().map(Icd::asString).collect(Collectors.toList());
-    }
-
-    public List<String> getDiagnosisGroupsAsStrings() {
-        return getStringGroups(icdTyps);
-    }
-
-    @Override
-    public String toString() {
-        return "{\"DiagnosgruppResponse\":{" + "\"icdTyps\":" + icdTyps + ", \"rows\":" + getRows() + "}}";
-    }
-
+  @Override
+  public String toString() {
+    return "{\"DiagnosgruppResponse\":{"
+        + "\"icdTyps\":"
+        + icdTyps
+        + ", \"rows\":"
+        + getRows()
+        + "}}";
+  }
 }

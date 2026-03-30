@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -27,203 +27,263 @@ import se.inera.statistics.integration.hsa.model.HsaIdLakare;
 
 public class Fact implements Serializable {
 
-    public static final String HEADING = "lan;kommun;forsamling;enhet;lakarintyg;patient;startdatum;kon;alder;diagnoskapitel;"
-        + "diagnosavsnitt;diagnoskategori;sjukskrivningsgrad;sjukskrivningslangd;lakarkon;lakaralder;lakarbefattning";
+  public static final String HEADING =
+      "lan;kommun;forsamling;enhet;lakarintyg;patient;startdatum;kon;alder;diagnoskapitel;"
+          + "diagnosavsnitt;diagnoskategori;sjukskrivningsgrad;sjukskrivningslangd;lakarkon;lakaralder;lakarbefattning";
 
-    static final Comparator<Fact> TIME_ORDER = Comparator.comparingInt(Fact::getStartdatum);
+  static final Comparator<Fact> TIME_ORDER = Comparator.comparingInt(Fact::getStartdatum);
 
-    private long id;
-    private int lan;
-    private int kommun;
-    private int forsamling;
-    private HsaIdEnhet vardenhet;
-    private HsaIdEnhet enhet;
-    private long lakarintyg;
-    private long patient;
-    private int startdatum;
-    private int slutdatum;
-    private int kon;
-    private int alder;
-    private int diagnoskapitel;
-    private int diagnosavsnitt;
-    private int diagnoskategori;
-    private int diagnoskod;
-    private int sjukskrivningsgrad;
-    private int lakarkon;
-    private int lakaralder;
-    private int[] lakarbefattnings;
-    private HsaIdLakare lakarid;
+  private long id;
+  private int lan;
+  private int kommun;
+  private int forsamling;
+  private HsaIdEnhet vardenhet;
+  private HsaIdEnhet enhet;
+  private long lakarintyg;
+  private long patient;
+  private int startdatum;
+  private int slutdatum;
+  private int kon;
+  private int alder;
+  private int diagnoskapitel;
+  private int diagnosavsnitt;
+  private int diagnoskategori;
+  private int diagnoskod;
+  private int sjukskrivningsgrad;
+  private int lakarkon;
+  private int lakaralder;
+  private int[] lakarbefattnings;
+  private HsaIdLakare lakarid;
 
-    // CHECKSTYLE:OFF ParameterNumber
-    @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
-    public Fact(long id, int lan, int kommun, int forsamling, HsaIdEnhet vardenhet, HsaIdEnhet enhet, long lakarintyg, long patient,
-        int startdatum, int slutdatum, int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori,
-        int diagnoskod, int sjukskrivningsgrad, int lakarkon, int lakaralder, int[] lakarbefattnings, HsaIdLakare lakarid) {
-        this.id = id;
-        this.lan = lan;
-        this.kommun = kommun;
-        this.forsamling = forsamling;
-        this.vardenhet = vardenhet;
-        this.enhet = enhet;
-        this.lakarintyg = lakarintyg;
-        this.patient = patient;
-        this.startdatum = startdatum;
-        this.kon = kon;
-        this.alder = alder;
-        this.diagnoskapitel = diagnoskapitel;
-        this.diagnosavsnitt = diagnosavsnitt;
-        this.diagnoskategori = diagnoskategori;
-        this.diagnoskod = diagnoskod;
-        this.sjukskrivningsgrad = sjukskrivningsgrad;
-        this.slutdatum = slutdatum;
-        this.lakarkon = lakarkon;
-        this.lakaralder = lakaralder;
-        this.lakarbefattnings = lakarbefattnings;
-        this.lakarid = lakarid;
-    }
-    // CHECKSTYLE:ON ParameterNumber
+  // CHECKSTYLE:OFF ParameterNumber
+  @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
+  public Fact(
+      long id,
+      int lan,
+      int kommun,
+      int forsamling,
+      HsaIdEnhet vardenhet,
+      HsaIdEnhet enhet,
+      long lakarintyg,
+      long patient,
+      int startdatum,
+      int slutdatum,
+      int kon,
+      int alder,
+      int diagnoskapitel,
+      int diagnosavsnitt,
+      int diagnoskategori,
+      int diagnoskod,
+      int sjukskrivningsgrad,
+      int lakarkon,
+      int lakaralder,
+      int[] lakarbefattnings,
+      HsaIdLakare lakarid) {
+    this.id = id;
+    this.lan = lan;
+    this.kommun = kommun;
+    this.forsamling = forsamling;
+    this.vardenhet = vardenhet;
+    this.enhet = enhet;
+    this.lakarintyg = lakarintyg;
+    this.patient = patient;
+    this.startdatum = startdatum;
+    this.kon = kon;
+    this.alder = alder;
+    this.diagnoskapitel = diagnoskapitel;
+    this.diagnosavsnitt = diagnosavsnitt;
+    this.diagnoskategori = diagnoskategori;
+    this.diagnoskod = diagnoskod;
+    this.sjukskrivningsgrad = sjukskrivningsgrad;
+    this.slutdatum = slutdatum;
+    this.lakarkon = lakarkon;
+    this.lakaralder = lakaralder;
+    this.lakarbefattnings = lakarbefattnings;
+    this.lakarid = lakarid;
+  }
 
-    public Fact(JsonNode node) {
-    }
+  // CHECKSTYLE:ON ParameterNumber
 
-    public long getId() {
-        return id;
-    }
+  public Fact(JsonNode node) {}
 
-    public long getLakarintyg() {
-        return lakarintyg;
-    }
+  public long getId() {
+    return id;
+  }
 
-    public long getPatient() {
-        return patient;
-    }
+  public long getLakarintyg() {
+    return lakarintyg;
+  }
 
-    public int getStartdatum() {
-        return startdatum;
-    }
+  public long getPatient() {
+    return patient;
+  }
 
-    public int getSlutdatum() {
-        return slutdatum;
-    }
+  public int getStartdatum() {
+    return startdatum;
+  }
 
-    public int getSjukskrivningsgrad() {
-        return sjukskrivningsgrad;
-    }
+  public int getSlutdatum() {
+    return slutdatum;
+  }
 
-    public HsaIdEnhet getVardenhet() {
-        return vardenhet;
-    }
+  public int getSjukskrivningsgrad() {
+    return sjukskrivningsgrad;
+  }
 
-    public HsaIdEnhet getUnderenhet() {
-        return enhet;
-    }
+  public HsaIdEnhet getVardenhet() {
+    return vardenhet;
+  }
 
-    public int getForsamling() {
-        return forsamling;
-    }
+  public HsaIdEnhet getUnderenhet() {
+    return enhet;
+  }
 
-    public int getKommun() {
-        return kommun;
-    }
+  public int getForsamling() {
+    return forsamling;
+  }
 
-    public int getLan() {
-        return lan;
-    }
+  public int getKommun() {
+    return kommun;
+  }
 
-    public int getDiagnoskategori() {
-        return diagnoskategori;
-    }
+  public int getLan() {
+    return lan;
+  }
 
-    public int getDiagnosavsnitt() {
-        return diagnosavsnitt;
-    }
+  public int getDiagnoskategori() {
+    return diagnoskategori;
+  }
 
-    public int getDiagnoskapitel() {
-        return diagnoskapitel;
-    }
+  public int getDiagnosavsnitt() {
+    return diagnosavsnitt;
+  }
 
-    public int getDiagnoskod() {
-        return diagnoskod;
-    }
+  public int getDiagnoskapitel() {
+    return diagnoskapitel;
+  }
 
-    public int[] getLakarbefattnings() {
-        return lakarbefattnings;
-    }
+  public int getDiagnoskod() {
+    return diagnoskod;
+  }
 
-    public int getAlder() {
-        return alder;
-    }
+  public int[] getLakarbefattnings() {
+    return lakarbefattnings;
+  }
 
-    public int getLakaralder() {
-        return lakaralder;
-    }
+  public int getAlder() {
+    return alder;
+  }
 
-    public int getLakarkon() {
-        return lakarkon;
-    }
+  public int getLakaralder() {
+    return lakaralder;
+  }
 
-    public int getKon() {
-        return kon;
-    }
+  public int getLakarkon() {
+    return lakarkon;
+  }
 
-    public HsaIdLakare getLakarid() {
-        return lakarid;
-    }
+  public int getKon() {
+    return kon;
+  }
 
-    @Override
-    public String toString() {
-        return "Fact{"
-            + "lan=" + lan
-            + ", kommun=" + kommun
-            + ", forsamling=" + forsamling
-            + ", enhet=" + vardenhet
-            + ", lakarintyg=" + lakarintyg
-            + ", patient=" + patient
-            + ", startdatum=" + WidelineConverter.toDate(startdatum) + " (" + startdatum + ")"
-            + ", slutdatum=" + WidelineConverter.toDate(slutdatum) + " (" + slutdatum + ")"
-            + ", kon=" + kon
-            + ", alder=" + alder
-            + ", diagnoskapitel=" + diagnoskapitel
-            + ", diagnosavsnitt=" + diagnosavsnitt
-            + ", diagnoskategori=" + diagnoskategori
-            + ", sjukskrivningsgrad=" + sjukskrivningsgrad
-            + ", lakarkon=" + lakarkon
-            + ", lakaralder=" + lakaralder
-            + ", lakarbefattnings=" + Arrays.toString(lakarbefattnings)
-            + ", lakarid=" + lakarid
-            + '}';
-    }
+  public HsaIdLakare getLakarid() {
+    return lakarid;
+  }
 
-    /**
-     * @param c delimiter
-     * @return CSV line including a terminating newline character
-     */
-    public String toCSVString(char c) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(lan).append(c)
-            .append(kommun).append(c)
-            .append(forsamling).append(c)
-            .append(vardenhet).append(c)
-            .append(lakarintyg).append(c)
-            .append(patient).append(c)
-            .append(startdatum).append(c)
-            .append(slutdatum).append(c)
-            .append(alder).append(c)
-            .append(diagnoskapitel).append(c)
-            .append(diagnosavsnitt).append(c)
-            .append(diagnoskategori).append(c)
-            .append(diagnoskod).append(c)
-            .append(sjukskrivningsgrad).append(c)
-            .append(lakarkon).append(c)
-            .append(lakaralder).append(c)
-            .append(Arrays.toString(lakarbefattnings)).append(c)
-            .append(lakarid).append('\n');
-        return sb.toString();
-    }
+  @Override
+  public String toString() {
+    return "Fact{"
+        + "lan="
+        + lan
+        + ", kommun="
+        + kommun
+        + ", forsamling="
+        + forsamling
+        + ", enhet="
+        + vardenhet
+        + ", lakarintyg="
+        + lakarintyg
+        + ", patient="
+        + patient
+        + ", startdatum="
+        + WidelineConverter.toDate(startdatum)
+        + " ("
+        + startdatum
+        + ")"
+        + ", slutdatum="
+        + WidelineConverter.toDate(slutdatum)
+        + " ("
+        + slutdatum
+        + ")"
+        + ", kon="
+        + kon
+        + ", alder="
+        + alder
+        + ", diagnoskapitel="
+        + diagnoskapitel
+        + ", diagnosavsnitt="
+        + diagnosavsnitt
+        + ", diagnoskategori="
+        + diagnoskategori
+        + ", sjukskrivningsgrad="
+        + sjukskrivningsgrad
+        + ", lakarkon="
+        + lakarkon
+        + ", lakaralder="
+        + lakaralder
+        + ", lakarbefattnings="
+        + Arrays.toString(lakarbefattnings)
+        + ", lakarid="
+        + lakarid
+        + '}';
+  }
 
-    public int getSjukskrivningslangd() {
-        return slutdatum - startdatum + 1;
-    }
+  /**
+   * @param c delimiter
+   * @return CSV line including a terminating newline character
+   */
+  public String toCSVString(char c) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(lan)
+        .append(c)
+        .append(kommun)
+        .append(c)
+        .append(forsamling)
+        .append(c)
+        .append(vardenhet)
+        .append(c)
+        .append(lakarintyg)
+        .append(c)
+        .append(patient)
+        .append(c)
+        .append(startdatum)
+        .append(c)
+        .append(slutdatum)
+        .append(c)
+        .append(alder)
+        .append(c)
+        .append(diagnoskapitel)
+        .append(c)
+        .append(diagnosavsnitt)
+        .append(c)
+        .append(diagnoskategori)
+        .append(c)
+        .append(diagnoskod)
+        .append(c)
+        .append(sjukskrivningsgrad)
+        .append(c)
+        .append(lakarkon)
+        .append(c)
+        .append(lakaralder)
+        .append(c)
+        .append(Arrays.toString(lakarbefattnings))
+        .append(c)
+        .append(lakarid)
+        .append('\n');
+    return sb.toString();
+  }
 
-
+  public int getSjukskrivningslangd() {
+    return slutdatum - startdatum + 1;
+  }
 }

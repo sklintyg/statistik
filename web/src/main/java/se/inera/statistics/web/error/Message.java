@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -28,75 +28,79 @@ import se.inera.statistics.web.service.dto.Messages;
  */
 public final class Message implements Serializable {
 
-    private ErrorType type;
-    private ErrorSeverity severity;
-    private int priority;
-    private String message;
+  private ErrorType type;
+  private ErrorSeverity severity;
+  private int priority;
+  private String message;
 
-    private Message(ErrorType type, ErrorSeverity severity, String message, int prio) {
-        this.type = type;
-        this.severity = severity;
-        this.message = message;
-        this.priority = prio;
+  private Message(ErrorType type, ErrorSeverity severity, String message, int prio) {
+    this.type = type;
+    this.severity = severity;
+    this.message = message;
+    this.priority = prio;
+  }
+
+  /**
+   * Method creates a Message object. If argument text is null or empty, a null obejct will be
+   * returned.
+   *
+   * @param type the type of error
+   * @param severity the severity of the error
+   * @param text the error message, cannot be null or empty string
+   * @return Returns a Message object if all arguments are set, otherwise null
+   */
+  public static Message create(ErrorType type, ErrorSeverity severity, String text) {
+    if (type == null || severity == null || text == null || text.isEmpty()) {
+      return null;
     }
+    return new Message(type, severity, text, Messages.ALWAYS_SHOW);
+  }
 
-    /**
-     * Method creates a Message object. If argument text is null or
-     * empty, a null obejct will be returned.
-     *
-     * @param type the type of error
-     * @param severity the severity of the error
-     * @param text the error message, cannot be null or empty string
-     * @return Returns a Message object if all arguments are set, otherwise null
-     */
-    public static Message create(ErrorType type, ErrorSeverity severity, String text) {
-        if (type == null || severity == null || text == null || text.isEmpty()) {
-            return null;
-        }
-        return new Message(type, severity, text, Messages.ALWAYS_SHOW);
+  public static Message create(ErrorType type, ErrorSeverity severity, Messages message) {
+    if (type == null || severity == null || message == null) {
+      return null;
     }
+    return new Message(type, severity, message.getText(), message.getPrio());
+  }
 
-    public static Message create(ErrorType type, ErrorSeverity severity, Messages message) {
-        if (type == null || severity == null || message == null) {
-            return null;
-        }
-        return new Message(type, severity, message.getText(), message.getPrio());
+  public ErrorType getType() {
+    return type;
+  }
+
+  public ErrorSeverity getSeverity() {
+    return severity;
+  }
+
+  public String getMessage() {
+    return message;
+  }
+
+  public static List<Message> filterByPrio(List<Message> msgs) {
+    final int highestPrio = getHighestPrioInList(msgs);
+    return msgs.stream()
+        .filter(
+            message -> message.priority == Messages.ALWAYS_SHOW || message.priority >= highestPrio)
+        .collect(Collectors.toList());
+  }
+
+  private static int getHighestPrioInList(List<Message> msgs) {
+    int highestPrio = -1;
+    for (Message msg : msgs) {
+      highestPrio = msg.priority > highestPrio ? msg.priority : highestPrio;
     }
+    return highestPrio;
+  }
 
-    public ErrorType getType() {
-        return type;
-    }
-
-    public ErrorSeverity getSeverity() {
-        return severity;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public static List<Message> filterByPrio(List<Message> msgs) {
-        final int highestPrio = getHighestPrioInList(msgs);
-        return msgs.stream()
-            .filter(message -> message.priority == Messages.ALWAYS_SHOW || message.priority >= highestPrio)
-            .collect(Collectors.toList());
-    }
-
-    private static int getHighestPrioInList(List<Message> msgs) {
-        int highestPrio = -1;
-        for (Message msg : msgs) {
-            highestPrio = msg.priority > highestPrio ? msg.priority : highestPrio;
-        }
-        return highestPrio;
-    }
-
-    @Override
-    public String toString() {
-        return "Message{"
-            + "type=" + type
-            + ", severity=" + severity
-            + ", message='" + message + '\''
-            + "}";
-    }
-
+  @Override
+  public String toString() {
+    return "Message{"
+        + "type="
+        + type
+        + ", severity="
+        + severity
+        + ", message='"
+        + message
+        + '\''
+        + "}";
+  }
 }

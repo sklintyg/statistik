@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,8 +25,8 @@ import se.inera.statistics.web.service.dto.FilterSettings;
 
 public class CompareDiagnosisTimeSeriesConverter extends MultiDualSexConverter {
 
-    public DualSexStatisticsData convert(KonDataResponse data, FilterSettings filterSettings, Message message) {
-        return super.convert(data, filterSettings, message, "%1$s");
-    }
-
+  public DualSexStatisticsData convert(
+      KonDataResponse data, FilterSettings filterSettings, Message message) {
+    return super.convert(data, filterSettings, message, "%1$s");
+  }
 }

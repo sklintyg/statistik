@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,24 +25,23 @@ import se.inera.statistics.service.report.model.KonField;
 
 public class CountyPopulation {
 
-    private Map<String, KonField> populationPerCountyCode;
-    private LocalDate date;
+  private Map<String, KonField> populationPerCountyCode;
+  private LocalDate date;
 
-    public CountyPopulation(Map<String, KonField> populationPerCountyCode, LocalDate date) {
-        this.populationPerCountyCode = populationPerCountyCode;
-        this.date = date;
-    }
+  public CountyPopulation(Map<String, KonField> populationPerCountyCode, LocalDate date) {
+    this.populationPerCountyCode = populationPerCountyCode;
+    this.date = date;
+  }
 
-    public Map<String, KonField> getPopulationPerCountyCode() {
-        return populationPerCountyCode;
-    }
+  public Map<String, KonField> getPopulationPerCountyCode() {
+    return populationPerCountyCode;
+  }
 
-    public LocalDate getDate() {
-        return date;
-    }
+  public LocalDate getDate() {
+    return date;
+  }
 
-    public static CountyPopulation empty() {
-        return new CountyPopulation(Collections.emptyMap(), LocalDate.ofEpochDay(0));
-    }
-
+  public static CountyPopulation empty() {
+    return new CountyPopulation(Collections.emptyMap(), LocalDate.ofEpochDay(0));
+  }
 }

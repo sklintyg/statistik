@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -17,7 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package se.inera.statistics.web.service;
-
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -39,55 +38,54 @@ import se.inera.statistics.web.service.dto.FilterData;
 @ExtendWith(MockitoExtension.class)
 public class FilterHashHandlerTest {
 
-    @Mock
-    private UserSelectionManager userSelectionManager;
+  @Mock private UserSelectionManager userSelectionManager;
 
-    @InjectMocks
-    private FilterHashHandler handler = new FilterHashHandler();
+  @InjectMocks private FilterHashHandler handler = new FilterHashHandler();
 
-    @Test
-    public void willSkipSaveOnNonJsonData() {
-        try {
-            handler.getHash("not json");
-            fail();
-        } catch (Exception e) {
-            //Do nothing
-        }
-        Mockito.verify(userSelectionManager, never()).register(anyString(), anyString());
+  @Test
+  public void willSkipSaveOnNonJsonData() {
+    try {
+      handler.getHash("not json");
+      fail();
+    } catch (Exception e) {
+      // Do nothing
     }
+    Mockito.verify(userSelectionManager, never()).register(anyString(), anyString());
+  }
 
-    @Test
-    public void willSaveOnJsonData() throws Exception {
-        String hash = handler.getHash("{}");
+  @Test
+  public void willSaveOnJsonData() throws Exception {
+    String hash = handler.getHash("{}");
 
-        Mockito.verify(userSelectionManager, atLeastOnce()).register(anyString(), anyString());
+    Mockito.verify(userSelectionManager, atLeastOnce()).register(anyString(), anyString());
 
-        assertEquals("99914b932bd37a50b983c5e7c90ae93b", hash);
-    }
+    assertEquals("99914b932bd37a50b983c5e7c90ae93b", hash);
+  }
 
-    @Test
-    public void testGetFilterFromHash() throws Exception {
-        //Given
-        Mockito.when(userSelectionManager.find(anyString())).thenReturn(new UserSelection("mykey", "{\"fromDate\": 1234}"));
+  @Test
+  public void testGetFilterFromHash() throws Exception {
+    // Given
+    Mockito.when(userSelectionManager.find(anyString()))
+        .thenReturn(new UserSelection("mykey", "{\"fromDate\": 1234}"));
 
-        //When
-        final FilterData filterFromHash = handler.getFilterFromHash("");
+    // When
+    final FilterData filterFromHash = handler.getFilterFromHash("");
 
-        //Then
-        assertEquals("1234", filterFromHash.getFromDate());
-        assertEquals(null, filterFromHash.getToDate());
-    }
+    // Then
+    assertEquals("1234", filterFromHash.getFromDate());
+    assertEquals(null, filterFromHash.getToDate());
+  }
 
-    @Test
-    public void testGetFilterFromHashUnparsableData() throws Exception {
-        Mockito.when(userSelectionManager.find(anyString())).thenReturn(new UserSelection("mykey", "UnparsableData"));
-        assertThrows(RuntimeException.class, () -> handler.getFilterFromHash(""));
-    }
+  @Test
+  public void testGetFilterFromHashUnparsableData() throws Exception {
+    Mockito.when(userSelectionManager.find(anyString()))
+        .thenReturn(new UserSelection("mykey", "UnparsableData"));
+    assertThrows(RuntimeException.class, () -> handler.getFilterFromHash(""));
+  }
 
-    @Test
-    public void testGetFilterFromHashDataNotFound() throws Exception {
-        Mockito.when(userSelectionManager.find(anyString())).thenReturn(null);
-        assertThrows(RuntimeException.class, () -> handler.getFilterFromHash(""));
-    }
-
+  @Test
+  public void testGetFilterFromHashDataNotFound() throws Exception {
+    Mockito.when(userSelectionManager.find(anyString())).thenReturn(null);
+    assertThrows(RuntimeException.class, () -> handler.getFilterFromHash(""));
+  }
 }

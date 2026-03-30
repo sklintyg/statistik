@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,37 +20,36 @@ package se.inera.statistics.web.service.dto;
 
 // CHECKSTYLE:OFF LineLength
 public enum Messages {
+  ST_F_FI_001(MessagesText.FILTER_WRONG_FROM_DATE, -1),
+  ST_F_FI_002(MessagesText.FILTER_WRONG_END_DATE, -1),
+  ST_F_FI_003(MessagesText.FILTER_WRONG_FROM_AND_END_DATE, -1),
+  ST_F_FI_004(MessagesText.FILTER_TOO_EARLY_FROM_AND_END_DATE, -1),
+  // ST_F_FI_005 //defined in frontend
+  // ST_F_FI_006 //defined in frontend
+  // ST_F_FI_007 //defined in frontend
+  ST_F_FI_008(MessagesText.MESSAGE_OVERVIEW_WITH_FILTER, -1),
+  ST_F_FI_009(MessagesText.FILTER_TOO_LATE_FROM_AND_END_DATE, -1),
+  ST_F_FI_010(MessagesText.FILTER_NO_DATA, 5),
+  ST_F_FI_011(MessagesText.MESSAGE_DIAGNOS_MISS_MATCH, 10),
+  // ST_F_FI_012 //defined in frontend
+  ST_F_FI_013(MessagesText.FILTER_COULD_NOT_APPLY, -1);
 
-    ST_F_FI_001(MessagesText.FILTER_WRONG_FROM_DATE, -1),
-    ST_F_FI_002(MessagesText.FILTER_WRONG_END_DATE, -1),
-    ST_F_FI_003(MessagesText.FILTER_WRONG_FROM_AND_END_DATE, -1),
-    ST_F_FI_004(MessagesText.FILTER_TOO_EARLY_FROM_AND_END_DATE, -1),
-    //ST_F_FI_005 //defined in frontend
-    //ST_F_FI_006 //defined in frontend
-    //ST_F_FI_007 //defined in frontend
-    ST_F_FI_008(MessagesText.MESSAGE_OVERVIEW_WITH_FILTER, -1),
-    ST_F_FI_009(MessagesText.FILTER_TOO_LATE_FROM_AND_END_DATE, -1),
-    ST_F_FI_010(MessagesText.FILTER_NO_DATA, 5),
-    ST_F_FI_011(MessagesText.MESSAGE_DIAGNOS_MISS_MATCH, 10),
-    //ST_F_FI_012 //defined in frontend
-    ST_F_FI_013(MessagesText.FILTER_COULD_NOT_APPLY, -1);
+  public static final int ALWAYS_SHOW = -1;
+  private final String text;
+  private final int prio;
 
-    public static final int ALWAYS_SHOW = -1;
-    private final String text;
-    private final int prio;
+  Messages(String text, int prio) {
+    this.text = text;
+    this.prio = prio;
+  }
 
-    Messages(String text, int prio) {
-        this.text = text;
-        this.prio = prio;
-    }
+  public String getText() {
+    return text;
+  }
 
-    public String getText() {
-        return text;
-    }
-
-    public int getPrio() {
-        return prio;
-    }
+  public int getPrio() {
+    return prio;
+  }
 }
 
 // CHECKSTYLE:ON LineLength

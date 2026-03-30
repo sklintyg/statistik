@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -33,90 +33,114 @@ import se.inera.statistics.service.warehouse.SjukfallExtended;
 
 public class FactsToSjukfallConverterForAisleTest {
 
-    @Test
-    public void testGetSjukfallsPerPatientEmpytAile() throws Exception {
-        //Given
-        final ArrayList<Fact> aisle = new ArrayList<>();
+  @Test
+  public void testGetSjukfallsPerPatientEmpytAile() throws Exception {
+    // Given
+    final ArrayList<Fact> aisle = new ArrayList<>();
 
-        //When
-        final FactsToSjukfallConverterForAisle factsToSjukfallConverter = new FactsToSjukfallConverterForAisle(aisle,
-            new FactsToSjukfallConverter());
-        final ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient = factsToSjukfallConverter
-            .getSjukfallsPerPatient(new HashSet<Long>(Arrays.asList(1L, 2L, 3L)));
+    // When
+    final FactsToSjukfallConverterForAisle factsToSjukfallConverter =
+        new FactsToSjukfallConverterForAisle(aisle, new FactsToSjukfallConverter());
+    final ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient =
+        factsToSjukfallConverter.getSjukfallsPerPatient(
+            new HashSet<Long>(Arrays.asList(1L, 2L, 3L)));
 
-        //Then
-        assertEquals(0, sjukfallsPerPatient.size());
-    }
+    // Then
+    assertEquals(0, sjukfallsPerPatient.size());
+  }
 
-    @Test
-    public void testGetSjukfallsPerPatientEmptyPatiensList() throws Exception {
-        //Given
-        final ArrayList<Fact> aisle = new ArrayList<>();
-        aisle.add(createFact(1, 2, 1));
-        aisle.add(createFact(1, 2, 2));
-        aisle.add(createFact(1, 2, 3));
-        aisle.add(createFact(1, 2, 4));
-        final HashSet<Long> patients = new HashSet<>();
+  @Test
+  public void testGetSjukfallsPerPatientEmptyPatiensList() throws Exception {
+    // Given
+    final ArrayList<Fact> aisle = new ArrayList<>();
+    aisle.add(createFact(1, 2, 1));
+    aisle.add(createFact(1, 2, 2));
+    aisle.add(createFact(1, 2, 3));
+    aisle.add(createFact(1, 2, 4));
+    final HashSet<Long> patients = new HashSet<>();
 
-        //When
-        final FactsToSjukfallConverterForAisle factsToSjukfallConverter = new FactsToSjukfallConverterForAisle(aisle,
-            new FactsToSjukfallConverter());
-        final ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient = factsToSjukfallConverter.getSjukfallsPerPatient(patients);
+    // When
+    final FactsToSjukfallConverterForAisle factsToSjukfallConverter =
+        new FactsToSjukfallConverterForAisle(aisle, new FactsToSjukfallConverter());
+    final ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient =
+        factsToSjukfallConverter.getSjukfallsPerPatient(patients);
 
-        //Then
-        assertEquals(0, sjukfallsPerPatient.size());
-    }
+    // Then
+    assertEquals(0, sjukfallsPerPatient.size());
+  }
 
-    @Test
-    public void testGetSjukfallsPerPatient() throws Exception {
-        //Given
-        final ArrayList<Fact> aisle = new ArrayList<>();
-        aisle.add(createFact(1, 2, 1));
-        aisle.add(createFact(1, 2, 2));
-        aisle.add(createFact(1, 2, 3));
-        aisle.add(createFact(1, 2, 4));
-        final HashSet<Long> patients = new HashSet<>(Arrays.asList(1L, 2L, 3L));
+  @Test
+  public void testGetSjukfallsPerPatient() throws Exception {
+    // Given
+    final ArrayList<Fact> aisle = new ArrayList<>();
+    aisle.add(createFact(1, 2, 1));
+    aisle.add(createFact(1, 2, 2));
+    aisle.add(createFact(1, 2, 3));
+    aisle.add(createFact(1, 2, 4));
+    final HashSet<Long> patients = new HashSet<>(Arrays.asList(1L, 2L, 3L));
 
-        //When
-        final FactsToSjukfallConverterForAisle factsToSjukfallConverter = new FactsToSjukfallConverterForAisle(aisle,
-            new FactsToSjukfallConverter());
-        final ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient = factsToSjukfallConverter.getSjukfallsPerPatient(patients);
+    // When
+    final FactsToSjukfallConverterForAisle factsToSjukfallConverter =
+        new FactsToSjukfallConverterForAisle(aisle, new FactsToSjukfallConverter());
+    final ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient =
+        factsToSjukfallConverter.getSjukfallsPerPatient(patients);
 
-        //Then
-        assertEquals(3, sjukfallsPerPatient.size());
-        assertTrue(sjukfallsPerPatient.containsKey(1L));
-        assertTrue(sjukfallsPerPatient.containsKey(2L));
-        assertTrue(sjukfallsPerPatient.containsKey(3L));
-        assertFalse(sjukfallsPerPatient.containsKey(4L));
-    }
+    // Then
+    assertEquals(3, sjukfallsPerPatient.size());
+    assertTrue(sjukfallsPerPatient.containsKey(1L));
+    assertTrue(sjukfallsPerPatient.containsKey(2L));
+    assertTrue(sjukfallsPerPatient.containsKey(3L));
+    assertFalse(sjukfallsPerPatient.containsKey(4L));
+  }
 
-    @Test
-    public void testGetSjukfallsPerPatientSecondInvokationAlsoReturnCachedResult() throws Exception {
-        //Given
-        final ArrayList<Fact> aisle = new ArrayList<>();
-        aisle.add(createFact(1, 2, 1));
-        aisle.add(createFact(1, 2, 2));
-        aisle.add(createFact(1, 2, 3));
-        aisle.add(createFact(1, 2, 4));
-        final HashSet<Long> patients1 = new HashSet<>(Arrays.asList(1L, 2L));
-        final HashSet<Long> patients2 = new HashSet<>(Arrays.asList(2L, 4L));
+  @Test
+  public void testGetSjukfallsPerPatientSecondInvokationAlsoReturnCachedResult() throws Exception {
+    // Given
+    final ArrayList<Fact> aisle = new ArrayList<>();
+    aisle.add(createFact(1, 2, 1));
+    aisle.add(createFact(1, 2, 2));
+    aisle.add(createFact(1, 2, 3));
+    aisle.add(createFact(1, 2, 4));
+    final HashSet<Long> patients1 = new HashSet<>(Arrays.asList(1L, 2L));
+    final HashSet<Long> patients2 = new HashSet<>(Arrays.asList(2L, 4L));
 
-        //When
-        final FactsToSjukfallConverterForAisle factsToSjukfallConverter = new FactsToSjukfallConverterForAisle(aisle,
-            new FactsToSjukfallConverter());
-        factsToSjukfallConverter.getSjukfallsPerPatient(patients1);
-        final ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient = factsToSjukfallConverter.getSjukfallsPerPatient(patients2);
+    // When
+    final FactsToSjukfallConverterForAisle factsToSjukfallConverter =
+        new FactsToSjukfallConverterForAisle(aisle, new FactsToSjukfallConverter());
+    factsToSjukfallConverter.getSjukfallsPerPatient(patients1);
+    final ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient =
+        factsToSjukfallConverter.getSjukfallsPerPatient(patients2);
 
-        //Then
-        assertEquals(3, sjukfallsPerPatient.size());
-        assertTrue(sjukfallsPerPatient.containsKey(1L));
-        assertTrue(sjukfallsPerPatient.containsKey(2L));
-        assertFalse(sjukfallsPerPatient.containsKey(3L));
-        assertTrue(sjukfallsPerPatient.containsKey(4L));
-    }
+    // Then
+    assertEquals(3, sjukfallsPerPatient.size());
+    assertTrue(sjukfallsPerPatient.containsKey(1L));
+    assertTrue(sjukfallsPerPatient.containsKey(2L));
+    assertFalse(sjukfallsPerPatient.containsKey(3L));
+    assertTrue(sjukfallsPerPatient.containsKey(4L));
+  }
 
-    private Fact createFact(int startdatum, int slutdatum, int patient) {
-        return FactBuilder.newFact(1L, 1, 1, 1, 1, 1, 1, patient, startdatum, slutdatum, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
-    }
-
+  private Fact createFact(int startdatum, int slutdatum, int patient) {
+    return FactBuilder.newFact(
+        1L,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        patient,
+        startdatum,
+        slutdatum,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        new int[0],
+        1);
+  }
 }

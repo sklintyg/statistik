@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,12 +20,11 @@ package se.inera.statistics.web.service.exception;
 
 public class FilterException extends Exception {
 
-    public FilterException(String msg) {
-        super(msg);
-    }
+  public FilterException(String msg) {
+    super(msg);
+  }
 
-    public FilterException(String msg, Exception e) {
-        super(msg, e);
-    }
-
+  public FilterException(String msg, Exception e) {
+    super(msg, e);
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -32,84 +32,85 @@ import org.springframework.stereotype.Component;
 @Component
 public final class CalcCoordinator {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CalcCoordinator.class);
-    private static final int POLL_TIME = 100;
+  private static final Logger LOG = LoggerFactory.getLogger(CalcCoordinator.class);
+  private static final int POLL_TIME = 100;
 
-    @Value("${calcCoordinator.maxConcurrentTasks:4}")
-    private int maxConcurrentTasks;
-    @Value("${calcCoordinator.maxWaitingTasks:4}")
-    private int maxWaitingTasks;
-    @Value("${calcCoordinator.waitTimeoutMillis:15000}")
-    private int maxWait;
+  @Value("${calcCoordinator.maxConcurrentTasks:4}")
+  private int maxConcurrentTasks;
 
-    private AtomicInteger tasks = new AtomicInteger();
-    private AtomicInteger waits = new AtomicInteger();
-    private volatile boolean denyAll;
+  @Value("${calcCoordinator.maxWaitingTasks:4}")
+  private int maxWaitingTasks;
 
-    /**
-     * Allows maxConcurrentTasks (concurrent tasks), and maxWaitingTasks (waiting tasks).
-     *
-     * @param task the task to run
-     * @param <T> return type
-     * @return the task return value
-     * @throws CalcException when no ticket is available.
-     * @throws Exception on task errors.
-     */
+  @Value("${calcCoordinator.waitTimeoutMillis:15000}")
+  private int maxWait;
 
-    public <T> T submit(Callable<T> task, String userHsaId, String requestEndpoint) throws Exception {
-        if (denyAll) {
-            LOG.info("No available executors, denyAll active");
-            throw new CalcException("No available executors, denyAll active");
+  private AtomicInteger tasks = new AtomicInteger();
+  private AtomicInteger waits = new AtomicInteger();
+  private volatile boolean denyAll;
+
+  /**
+   * Allows maxConcurrentTasks (concurrent tasks), and maxWaitingTasks (waiting tasks).
+   *
+   * @param task the task to run
+   * @param <T> return type
+   * @return the task return value
+   * @throws CalcException when no ticket is available.
+   * @throws Exception on task errors.
+   */
+  public <T> T submit(Callable<T> task, String userHsaId, String requestEndpoint) throws Exception {
+    if (denyAll) {
+      LOG.info("No available executors, denyAll active");
+      throw new CalcException("No available executors, denyAll active");
+    }
+
+    for (int n = 0; n < maxWait; ) {
+      try {
+        if (tasks.incrementAndGet() < maxConcurrentTasks) {
+          LOG.info(
+              "Executor starting task for userHsaId: {}. Wait time for executor was: {} seconds. Request endpoint: {}",
+              userHsaId,
+              TimeUnit.MILLISECONDS.toSeconds(n),
+              requestEndpoint);
+
+          return task.call();
         }
-
-        for (int n = 0; n < maxWait; ) {
-            try {
-                if (tasks.incrementAndGet() < maxConcurrentTasks) {
-                    LOG.info(
-                        "Executor starting task for userHsaId: {}. Wait time for executor was: {} seconds. Request endpoint: {}",
-                        userHsaId,
-                        TimeUnit.MILLISECONDS.toSeconds(n),
-                        requestEndpoint);
-
-                    return task.call();
-                }
-            } finally {
-                tasks.decrementAndGet();
-            }
-            n += await();
-        }
-
-        LOG.warn(
-            "No available executors, max wait time exceeded for userHsaId: {}. Max wait time currently set to: {} seconds."
-                + " Request endpoint: {}",
-            userHsaId,
-            TimeUnit.MILLISECONDS.toSeconds(maxWait),
-            requestEndpoint);
-        throw new CalcException("Max wait time exceeded");
+      } finally {
+        tasks.decrementAndGet();
+      }
+      n += await();
     }
 
-    @Profile("testapi")
-    public void setDenyAll(boolean denyAll) {
-        LOG.info("Deny all = " + denyAll);
-        this.denyAll = denyAll;
-    }
+    LOG.warn(
+        "No available executors, max wait time exceeded for userHsaId: {}. Max wait time currently set to: {} seconds."
+            + " Request endpoint: {}",
+        userHsaId,
+        TimeUnit.MILLISECONDS.toSeconds(maxWait),
+        requestEndpoint);
+    throw new CalcException("Max wait time exceeded");
+  }
 
-    public int getWorkloadPercentage() {
-        return PERCENT * tasks.get() / maxConcurrentTasks;
-    }
+  @Profile("testapi")
+  public void setDenyAll(boolean denyAll) {
+    LOG.info("Deny all = " + denyAll);
+    this.denyAll = denyAll;
+  }
 
-    private int await() {
-        try {
-            if (waits.incrementAndGet() >= maxWaitingTasks) {
-                LOG.warn("No available executors, max queue size exceeded");
-                throw new CalcException("No available executors, max queue size exceeded");
-            }
-            TimeUnit.MILLISECONDS.sleep(POLL_TIME);
-        } catch (InterruptedException e) {
-            LOG.trace("Ignoring wake-up");
-        } finally {
-            waits.decrementAndGet();
-        }
-        return POLL_TIME;
+  public int getWorkloadPercentage() {
+    return PERCENT * tasks.get() / maxConcurrentTasks;
+  }
+
+  private int await() {
+    try {
+      if (waits.incrementAndGet() >= maxWaitingTasks) {
+        LOG.warn("No available executors, max queue size exceeded");
+        throw new CalcException("No available executors, max queue size exceeded");
+      }
+      TimeUnit.MILLISECONDS.sleep(POLL_TIME);
+    } catch (InterruptedException e) {
+      LOG.trace("Ignoring wake-up");
+    } finally {
+      waits.decrementAndGet();
     }
+    return POLL_TIME;
+  }
 }

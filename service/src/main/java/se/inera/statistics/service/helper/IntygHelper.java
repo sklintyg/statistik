@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -32,92 +32,91 @@ import se.inera.statistics.service.warehouse.IntygType;
 
 public abstract class IntygHelper<T> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(IntygHelper.class);
+  private static final Logger LOG = LoggerFactory.getLogger(IntygHelper.class);
 
-    public synchronized T unmarshalXml(String data) throws JAXBException {
-        final StringReader reader = new StringReader(data);
-        return JAXB.unmarshal(reader, getIntygClass());
+  public synchronized T unmarshalXml(String data) throws JAXBException {
+    final StringReader reader = new StringReader(data);
+    return JAXB.unmarshal(reader, getIntygClass());
+  }
+
+  protected abstract Class<T> getIntygClass();
+
+  public abstract String getEnhetId(T intyg);
+
+  public abstract String getLakareId(T intyg);
+
+  public abstract String getVardgivareId(T intyg);
+
+  public abstract String getPatientId(T intyg);
+
+  public abstract String getIntygId(T intyg);
+
+  public abstract IntygType getIntygtyp(T intyg);
+
+  public abstract String getCertificateVersion(T certificate);
+
+  public abstract LocalDate getDateForPatientAge(T intyg);
+
+  public Patientdata getPatientData(T intyg) {
+    String patientIdRaw;
+    try {
+      patientIdRaw = getPatientId(intyg);
+    } catch (Exception ignore) {
+      patientIdRaw = "?Unknown?";
     }
 
-    protected abstract Class<T> getIntygClass();
-
-    public abstract String getEnhetId(T intyg);
-
-    public abstract String getLakareId(T intyg);
-
-    public abstract String getVardgivareId(T intyg);
-
-    public abstract String getPatientId(T intyg);
-
-    public abstract String getIntygId(T intyg);
-
-    public abstract IntygType getIntygtyp(T intyg);
-
-    public abstract String getCertificateVersion(T certificate);
-
-    public abstract LocalDate getDateForPatientAge(T intyg);
-
-    public Patientdata getPatientData(T intyg) {
-        String patientIdRaw;
-        try {
-            patientIdRaw = getPatientId(intyg);
-        } catch (Exception ignore) {
-            patientIdRaw = "?Unknown?";
+    int alder = ConversionHelper.NO_AGE;
+    Kon kon = Kon.UNKNOWN;
+    try {
+      final String personId = ConversionHelper.getUnifiedPersonId(patientIdRaw);
+      try {
+        final LocalDate dateForPatientAge = getDateForPatientAge(intyg);
+        if (dateForPatientAge != null) {
+          alder = ConversionHelper.extractAlder(personId, dateForPatientAge);
         }
+      } finally {
+        kon = Kon.parse(ConversionHelper.extractKon(personId));
+      }
+    } catch (Exception e) {
+      LOG.error("Could not extract age and/or gender: '{}'", patientIdRaw);
+      LOG.debug("Could not extract age and/or gender: '{}'", patientIdRaw, e);
+    }
+    return new Patientdata(alder, kon);
+  }
 
-        int alder = ConversionHelper.NO_AGE;
-        Kon kon = Kon.UNKNOWN;
-        try {
-            final String personId = ConversionHelper.getUnifiedPersonId(patientIdRaw);
-            try {
-                final LocalDate dateForPatientAge = getDateForPatientAge(intyg);
-                if (dateForPatientAge != null) {
-                    alder = ConversionHelper.extractAlder(personId, dateForPatientAge);
-                }
-            } finally {
-                kon = Kon.parse(ConversionHelper.extractKon(personId));
-            }
-        } catch (Exception e) {
-            LOG.error("Could not extract age and/or gender: '{}'", patientIdRaw);
-            LOG.debug("Could not extract age and/or gender: '{}'", patientIdRaw, e);
-        }
-        return new Patientdata(alder, kon);
+  public abstract LocalDateTime getSigneringsTidpunkt(T intyg);
+
+  public HSAKey extractHSAKey(T intyg) {
+    String vardgivareId = getVardgivareId(intyg);
+    String enhetId = getEnhetId(intyg);
+    String lakareId = getLakareId(intyg);
+    return new HSAKey(vardgivareId, enhetId, lakareId);
+  }
+
+  public IntygDTO convertToDTO(T intyg) {
+    if (intyg == null) {
+      return null;
     }
 
-    public abstract LocalDateTime getSigneringsTidpunkt(T intyg);
+    IntygDTO dto = new IntygDTO();
 
-    public HSAKey extractHSAKey(T intyg) {
-        String vardgivareId = getVardgivareId(intyg);
-        String enhetId = getEnhetId(intyg);
-        String lakareId = getLakareId(intyg);
-        return new HSAKey(vardgivareId, enhetId, lakareId);
-    }
+    String enhet = getEnhetId(intyg);
+    String patient = getPatientId(intyg);
+    Patientdata patientData = getPatientData(intyg);
 
-    public IntygDTO convertToDTO(T intyg) {
-        if (intyg == null) {
-            return null;
-        }
+    String lakareid = getLakareId(intyg);
+    String intygsId = getIntygId(intyg);
+    IntygType intygTyp = getIntygtyp(intyg);
+    LocalDate signeringsDatum = getSigneringsTidpunkt(intyg).toLocalDate();
 
-        IntygDTO dto = new IntygDTO();
+    dto.setEnhet(enhet);
+    dto.setIntygid(intygsId);
+    dto.setIntygtyp(intygTyp);
+    dto.setLakareId(lakareid);
+    dto.setPatientid(patient);
+    dto.setPatientData(patientData);
+    dto.setSigneringsdatum(signeringsDatum);
 
-        String enhet = getEnhetId(intyg);
-        String patient = getPatientId(intyg);
-        Patientdata patientData = getPatientData(intyg);
-
-        String lakareid = getLakareId(intyg);
-        String intygsId = getIntygId(intyg);
-        IntygType intygTyp = getIntygtyp(intyg);
-        LocalDate signeringsDatum = getSigneringsTidpunkt(intyg).toLocalDate();
-
-        dto.setEnhet(enhet);
-        dto.setIntygid(intygsId);
-        dto.setIntygtyp(intygTyp);
-        dto.setLakareId(lakareid);
-        dto.setPatientid(patient);
-        dto.setPatientData(patientData);
-        dto.setSigneringsdatum(signeringsDatum);
-
-        return dto;
-    }
-
+    return dto;
+  }
 }

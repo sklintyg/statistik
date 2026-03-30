@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -37,42 +37,40 @@ import se.inera.statistics.integration.hsa.model.HsaIdVardgivare;
 
 public class EnhetManagerTest {
 
-    @InjectMocks
-    private EnhetManager enhetManager;
+  @InjectMocks private EnhetManager enhetManager;
 
-    @Mock
-    private EntityManager manager;
+  @Mock private EntityManager manager;
 
-    @Before
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-    }
+  @Before
+  public void setUp() throws Exception {
+    MockitoAnnotations.initMocks(this);
+  }
 
-    @Test
-    public void getAllVardenhetsForVardgivareId() {
-        //Given
-        final Query query = Mockito.mock(Query.class);
-        Mockito.when(manager.createQuery(anyString())).thenReturn(query);
-        final Enhet enhet1 = createEnhet("e1", "ve1");
-        final Enhet enhet2 = createEnhet("e3", null);
-        final Enhet enhet3 = createEnhet("e4", "e4");
-        Mockito.when(query.getResultList()).thenReturn(Arrays.asList(enhet1, enhet2, enhet3));
-        final String vgId = "VG1";
+  @Test
+  public void getAllVardenhetsForVardgivareId() {
+    // Given
+    final Query query = Mockito.mock(Query.class);
+    Mockito.when(manager.createQuery(anyString())).thenReturn(query);
+    final Enhet enhet1 = createEnhet("e1", "ve1");
+    final Enhet enhet2 = createEnhet("e3", null);
+    final Enhet enhet3 = createEnhet("e4", "e4");
+    Mockito.when(query.getResultList()).thenReturn(Arrays.asList(enhet1, enhet2, enhet3));
+    final String vgId = "VG1";
 
-        //When
-        final List<Enhet> enhets = enhetManager.getAllVardenhetsForVardgivareId(new HsaIdVardgivare(vgId));
+    // When
+    final List<Enhet> enhets =
+        enhetManager.getAllVardenhetsForVardgivareId(new HsaIdVardgivare(vgId));
 
-        //Then
-        Mockito.verify(query).setParameter("vgId", vgId);
-        assertEquals(2, enhets.size());
-        assertTrue(enhets.containsAll(Arrays.asList(enhet2, enhet3)));
-    }
+    // Then
+    Mockito.verify(query).setParameter("vgId", vgId);
+    assertEquals(2, enhets.size());
+    assertTrue(enhets.containsAll(Arrays.asList(enhet2, enhet3)));
+  }
 
-    private Enhet createEnhet(String enhetId, String vardenhetId) {
-        final Enhet enhet = new Enhet();
-        enhet.setEnhetId(new HsaIdEnhet(enhetId));
-        enhet.setVardenhetId(vardenhetId);
-        return enhet;
-    }
-
+  private Enhet createEnhet(String enhetId, String vardenhetId) {
+    final Enhet enhet = new Enhet();
+    enhet.setEnhetId(new HsaIdEnhet(enhetId));
+    enhet.setVardenhetId(vardenhetId);
+    return enhet;
+  }
 }

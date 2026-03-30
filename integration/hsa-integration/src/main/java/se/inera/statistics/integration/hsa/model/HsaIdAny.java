@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,72 +25,73 @@ import java.io.Serializable;
 
 public class HsaIdAny implements Serializable {
 
-    private String id;
+  private String id;
 
-    HsaIdAny(String id) {
-        this.id = id == null ? "" : toUpperCaseAndRemoveBlanks(id);
+  HsaIdAny(String id) {
+    this.id = id == null ? "" : toUpperCaseAndRemoveBlanks(id);
+  }
+
+  private static String toUpperCaseAndRemoveBlanks(String s) {
+    final char[] chars = new char[s.length()];
+    int j = 0;
+    for (int i = 0; i < s.length(); i++) {
+      final char ch = s.charAt(i);
+      if (!Character.isWhitespace(ch)) {
+        chars[j++] = Character.toUpperCase(ch);
+      }
     }
+    return new String(chars, 0, j);
+  }
 
-    private static String toUpperCaseAndRemoveBlanks(String s) {
-        final char[] chars = new char[s.length()];
-        int j = 0;
-        for (int i = 0; i < s.length(); i++) {
-            final char ch = s.charAt(i);
-            if (!Character.isWhitespace(ch)) {
-                chars[j++] = Character.toUpperCase(ch);
-            }
-        }
-        return new String(chars, 0, j);
+  /**
+   * Instances of this class should only be created in the rare cases when one of the subclasses can
+   * not be used.
+   */
+  public static HsaIdAny createEvenThoughSubclassesArePreferred(String id) {
+    return new HsaIdAny(id);
+  }
+
+  public static HsaIdAny empty() {
+    return new HsaIdAny("");
+  }
+
+  @JsonValue
+  public String getId() {
+    return id;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
-
-    /**
-     * Instances of this class should only be created in the rare cases when one of the subclasses can not be used.
-     */
-    public static HsaIdAny createEvenThoughSubclassesArePreferred(String id) {
-        return new HsaIdAny(id);
+    if (o == null || getClass() != o.getClass()) {
+      return false;
     }
+    HsaIdAny hsaId = (HsaIdAny) o;
+    return Objects.equal(id, hsaId.id);
+  }
 
-    public static HsaIdAny empty() {
-        return new HsaIdAny("");
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(id);
+  }
 
-    @JsonValue
-    public String getId() {
-        return id;
-    }
+  @Override
+  public String toString() {
+    return id;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        HsaIdAny hsaId = (HsaIdAny) o;
-        return Objects.equal(id, hsaId.id);
-    }
+  private void writeObject(java.io.ObjectOutputStream stream) throws IOException {
+    stream.writeObject(id);
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
+  private void readObject(java.io.ObjectInputStream stream)
+      throws IOException, ClassNotFoundException {
+    id = (String) stream.readObject();
+  }
 
-    @Override
-    public String toString() {
-        return id;
-    }
-
-    private void writeObject(java.io.ObjectOutputStream stream) throws IOException {
-        stream.writeObject(id);
-    }
-
-    private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
-        id = (String) stream.readObject();
-    }
-
-    public boolean isEmpty() {
-        return id.isEmpty();
-    }
-
+  public boolean isEmpty() {
+    return id.isEmpty();
+  }
 }

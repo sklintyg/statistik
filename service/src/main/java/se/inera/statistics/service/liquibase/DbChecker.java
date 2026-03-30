@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -35,43 +35,49 @@ import org.slf4j.LoggerFactory;
 
 public class DbChecker {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DbChecker.class);
+  private static final Logger LOG = LoggerFactory.getLogger(DbChecker.class);
 
-    @java.lang.SuppressWarnings("squid:S1118") // Suppress Sonar warning for "Utility classes should not have public
-    // constructors" since this contructor is actually invoked by Spring
-    public DbChecker(DataSource dataSource, String script) {
-        try {
-            DatabaseConnection connection = new JdbcConnection(dataSource.getConnection());
-            Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(connection);
-            Liquibase liquibase = new Liquibase(script, new ClassLoaderResourceAccessor(), database);
-            LOG.info(database.getConnection().getURL());
-            List<ChangeSet> changeSets = liquibase.listUnrunChangeSets(new Contexts(), new LabelExpression());
-            if (!changeSets.isEmpty()) {
-                StringBuilder errors = new StringBuilder();
-                for (ChangeSet changeSet : changeSets) {
-                    errors.append('>').append(changeSet.toString()).append('\n');
-                }
-                throw new DbCheckError("Database version mismatch. Check liquibase status. Errors:\n" + errors.toString()
-                    + database.getDatabaseProductName() + ", " + database);
-            }
-        } catch (liquibase.exception.LiquibaseException | SQLException e) {
-            throw new DbCheckError("Database not ok, aborting startup.", e);
+  @java.lang.SuppressWarnings(
+      "squid:S1118") // Suppress Sonar warning for "Utility classes should not have public
+  // constructors" since this contructor is actually invoked by Spring
+  public DbChecker(DataSource dataSource, String script) {
+    try {
+      DatabaseConnection connection = new JdbcConnection(dataSource.getConnection());
+      Database database =
+          DatabaseFactory.getInstance().findCorrectDatabaseImplementation(connection);
+      Liquibase liquibase = new Liquibase(script, new ClassLoaderResourceAccessor(), database);
+      LOG.info(database.getConnection().getURL());
+      List<ChangeSet> changeSets =
+          liquibase.listUnrunChangeSets(new Contexts(), new LabelExpression());
+      if (!changeSets.isEmpty()) {
+        StringBuilder errors = new StringBuilder();
+        for (ChangeSet changeSet : changeSets) {
+          errors.append('>').append(changeSet.toString()).append('\n');
         }
-        LOG.info("Liquibase ok");
+        throw new DbCheckError(
+            "Database version mismatch. Check liquibase status. Errors:\n"
+                + errors.toString()
+                + database.getDatabaseProductName()
+                + ", "
+                + database);
+      }
+    } catch (liquibase.exception.LiquibaseException | SQLException e) {
+      throw new DbCheckError("Database not ok, aborting startup.", e);
+    }
+    LOG.info("Liquibase ok");
+  }
+
+  @java.lang.SuppressWarnings(
+      "squid:S1194") // I assume there is a reason for throwing and Error and do not dare to
+  // change it
+  private static class DbCheckError extends Error {
+
+    DbCheckError(String s) {
+      super(s);
     }
 
-    @java.lang.SuppressWarnings("squid:S1194") // I assume there is a reason for throwing and Error and do not dare to
-    // change it
-    private static class DbCheckError extends Error {
-
-        DbCheckError(String s) {
-            super(s);
-        }
-
-        DbCheckError(String s, Exception e) {
-            super(s, e);
-        }
-
+    DbCheckError(String s, Exception e) {
+      super(s, e);
     }
-
+  }
 }

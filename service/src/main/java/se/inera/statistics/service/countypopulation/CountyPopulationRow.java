@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -30,44 +30,42 @@ import java.time.LocalDate;
 @Table(name = "CountyPopulation")
 class CountyPopulationRow {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
-    private String data;
+  private String data;
 
-    private Date date;
+  private Date date;
 
-    CountyPopulationRow() {
-    }
+  CountyPopulationRow() {}
 
-    CountyPopulationRow(String data, LocalDate date) {
-        this.data = data;
-        this.date = Date.valueOf(date);
-    }
+  CountyPopulationRow(String data, LocalDate date) {
+    this.data = data;
+    this.date = Date.valueOf(date);
+  }
 
-    long getId() {
-        return id;
-    }
+  long getId() {
+    return id;
+  }
 
-    void setId(long id) {
-        this.id = id;
-    }
+  void setId(long id) {
+    this.id = id;
+  }
 
-    String getData() {
-        return data;
-    }
+  String getData() {
+    return data;
+  }
 
-    void setData(String data) {
-        this.data = data;
-    }
+  void setData(String data) {
+    this.data = data;
+  }
 
-    LocalDate getDate() {
-        return date.toLocalDate();
-    }
+  LocalDate getDate() {
+    return date.toLocalDate();
+  }
 
-    void setDate(LocalDate date) {
-        this.date = Date.valueOf(date);
-    }
-
+  void setDate(LocalDate date) {
+    this.date = Date.valueOf(date);
+  }
 }

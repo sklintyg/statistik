@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -26,16 +26,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class UserSettingsManager {
 
-    @PersistenceContext(unitName = "IneraStatisticsLog")
-    private EntityManager manager;
+  @PersistenceContext(unitName = "IneraStatisticsLog")
+  private EntityManager manager;
 
-    @Transactional
-    public void save(UserSettings userSettings) {
-        manager.merge(userSettings);
-    }
+  @Transactional
+  public void save(UserSettings userSettings) {
+    manager.merge(userSettings);
+  }
 
-    @Transactional
-    public UserSettings find(String hsaid) {
-        return manager.find(UserSettings.class, hsaid);
-    }
+  @Transactional
+  public UserSettings find(String hsaid) {
+    return manager.find(UserSettings.class, hsaid);
+  }
 }

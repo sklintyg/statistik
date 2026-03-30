@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -23,58 +23,58 @@ import se.inera.statistics.web.error.Message;
 
 public class AppSettings {
 
-    private String loginUrl;
-    private boolean loginVisible;
-    private boolean isLoggedIn;
-    private String projectVersion;
-    private List<Message> driftbanners;
-    private int simultaneousCallsAllowed;
+  private String loginUrl;
+  private boolean loginVisible;
+  private boolean isLoggedIn;
+  private String projectVersion;
+  private List<Message> driftbanners;
+  private int simultaneousCallsAllowed;
 
-    public String getLoginUrl() {
-        return loginUrl;
-    }
+  public String getLoginUrl() {
+    return loginUrl;
+  }
 
-    public void setLoginUrl(String loginUrl) {
-        this.loginUrl = loginUrl;
-    }
+  public void setLoginUrl(String loginUrl) {
+    this.loginUrl = loginUrl;
+  }
 
-    public boolean isLoginVisible() {
-        return loginVisible;
-    }
+  public boolean isLoginVisible() {
+    return loginVisible;
+  }
 
-    public void setLoginVisible(boolean loginVisible) {
-        this.loginVisible = loginVisible;
-    }
+  public void setLoginVisible(boolean loginVisible) {
+    this.loginVisible = loginVisible;
+  }
 
-    public boolean isLoggedIn() {
-        return isLoggedIn;
-    }
+  public boolean isLoggedIn() {
+    return isLoggedIn;
+  }
 
-    public void setLoggedIn(boolean loggedIn) {
-        isLoggedIn = loggedIn;
-    }
+  public void setLoggedIn(boolean loggedIn) {
+    isLoggedIn = loggedIn;
+  }
 
-    public String getProjectVersion() {
-        return projectVersion;
-    }
+  public String getProjectVersion() {
+    return projectVersion;
+  }
 
-    public void setProjectVersion(String projectVersion) {
-        this.projectVersion = projectVersion;
-    }
+  public void setProjectVersion(String projectVersion) {
+    this.projectVersion = projectVersion;
+  }
 
-    public void setDriftbanners(List<Message> driftbanners) {
-        this.driftbanners = driftbanners;
-    }
+  public void setDriftbanners(List<Message> driftbanners) {
+    this.driftbanners = driftbanners;
+  }
 
-    public List<Message> getDriftbanners() {
-        return driftbanners;
-    }
+  public List<Message> getDriftbanners() {
+    return driftbanners;
+  }
 
-    public void setSimultaneousCallsAllowed(int simultaneousCallsAllowed) {
-        this.simultaneousCallsAllowed = simultaneousCallsAllowed;
-    }
+  public void setSimultaneousCallsAllowed(int simultaneousCallsAllowed) {
+    this.simultaneousCallsAllowed = simultaneousCallsAllowed;
+  }
 
-    public int getSimultaneousCallsAllowed() {
-        return simultaneousCallsAllowed;
-    }
+  public int getSimultaneousCallsAllowed() {
+    return simultaneousCallsAllowed;
+  }
 }

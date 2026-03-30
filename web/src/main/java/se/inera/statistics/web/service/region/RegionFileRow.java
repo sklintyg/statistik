@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,26 +20,25 @@ package se.inera.statistics.web.service.region;
 
 public class RegionFileRow {
 
-    private String name;
-    private String hsaId;
-    private Integer patients;
+  private String name;
+  private String hsaId;
+  private Integer patients;
 
-    public RegionFileRow(String name, String hsaId, Integer patients) {
-        this.name = name;
-        this.hsaId = hsaId;
-        this.patients = patients;
-    }
+  public RegionFileRow(String name, String hsaId, Integer patients) {
+    this.name = name;
+    this.hsaId = hsaId;
+    this.patients = patients;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public String getHsaId() {
-        return hsaId;
-    }
+  public String getHsaId() {
+    return hsaId;
+  }
 
-    public Integer getPatients() {
-        return patients;
-    }
-
+  public Integer getPatients() {
+    return patients;
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -55,114 +55,182 @@ import se.inera.statistics.time.ChangableClock;
 
 // CHECKSTYLE:OFF MagicNumber
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:application-context-test.xml", "classpath:process-log-qm-test.xml", "classpath:icd10.xml"})
+@ContextConfiguration(
+    locations = {
+      "classpath:application-context-test.xml",
+      "classpath:process-log-qm-test.xml",
+      "classpath:icd10.xml"
+    })
 @DirtiesContext
 public class ReceiverIntegrationAcceptsOnlyKnownIT {
 
-    @Value("${activemq.receiver.queue.name}")
-    private String queueName;
+  @Value("${activemq.receiver.queue.name}")
+  private String queueName;
 
-    @Autowired
-    private JmsTemplate jmsTemplate;
+  @Autowired private JmsTemplate jmsTemplate;
 
-    @Autowired
-    private QueueAspect queueAspect;
+  @Autowired private QueueAspect queueAspect;
 
-    @Autowired
-    private LogConsumer consumer;
+  @Autowired private LogConsumer consumer;
 
-    @Autowired
-    private WidelineManager wideLine;
+  @Autowired private WidelineManager wideLine;
 
-    @Autowired
-    private Warehouse warehouse;
+  @Autowired private Warehouse warehouse;
 
-    private SjukfallUtil sjukfallUtil = new SjukfallUtil();
+  private SjukfallUtil sjukfallUtil = new SjukfallUtil();
 
-    @Autowired
-    private SjukfallQuery sjukfallQuery;
+  @Autowired private SjukfallQuery sjukfallQuery;
 
-    @Autowired
-    private ChangableClock changableClock;
+  @Autowired private ChangableClock changableClock;
 
-    @Before
-    public void setup() {
-        changableClock.setCurrentClock(Clock.fixed(Instant.parse("2014-03-30T10:15:30.00Z"), ZoneId.systemDefault()));
+  @Before
+  public void setup() {
+    changableClock.setCurrentClock(
+        Clock.fixed(Instant.parse("2014-03-30T10:15:30.00Z"), ZoneId.systemDefault()));
+  }
+
+  @Test
+  public void onlyKnownAndUnsetIntygTypesAreAcceptedINTYG2734() {
+    populate();
+    SimpleKonResponse webData =
+        sjukfallQuery.getSjukfall(
+            warehouse.get(new HsaIdVardgivare("vg-verksamhet1")),
+            sjukfallUtil.createEnhetFilter(new HsaIdEnhet("verksamhet1")),
+            LocalDate.parse("2011-01-01"),
+            12,
+            1,
+            false);
+
+    assertEquals(12, webData.getRows().size());
+
+    for (int i = 0; i < 3; i++) {
+      assertEquals(0, webData.getRows().get(i).getFemale());
+      assertEquals(6, webData.getRows().get(i).getMale());
+    }
+    for (int i = 3; i < 12; i++) {
+      assertEquals(0, webData.getRows().get(i).getFemale());
+      assertEquals(0, webData.getRows().get(i).getMale());
     }
 
-    @Test
-    public void onlyKnownAndUnsetIntygTypesAreAcceptedINTYG2734() {
-        populate();
-        SimpleKonResponse webData = sjukfallQuery
-            .getSjukfall(warehouse.get(new HsaIdVardgivare("vg-verksamhet1")),
-                sjukfallUtil.createEnhetFilter(new HsaIdEnhet("verksamhet1")),
-                LocalDate.parse("2011-01-01"), 12, 1, false);
+    assertEquals(6, wideLine.count());
+  }
 
-        assertEquals(12, webData.getRows().size());
+  @Transactional
+  public void populate() {
+    final int count = 7;
+    CountDownLatch countDownLatch = new CountDownLatch(count);
+    queueAspect.setCountDownLatch(countDownLatch);
 
-        for (int i = 0; i < 3; i++) {
-            assertEquals(0, webData.getRows().get(i).getFemale());
-            assertEquals(6, webData.getRows().get(i).getMale());
-        }
-        for (int i = 3; i < 12; i++) {
-            assertEquals(0, webData.getRows().get(i).getFemale());
-            assertEquals(0, webData.getRows().get(i).getMale());
-        }
+    UtlatandeBuilder builder = new UtlatandeBuilder();
+    simpleSend(
+        builder
+            .build(
+                "19121212-0010",
+                LocalDate.parse("2011-01-20"),
+                LocalDate.parse("2011-03-11"),
+                new HsaIdEnhet("verksamhet1"),
+                "A00",
+                0)
+            .toString(),
+        "001",
+        IntygType.FK7263.getItIntygType());
+    simpleSend(
+        builder
+            .build(
+                "19121212-0110",
+                LocalDate.parse("2011-01-20"),
+                LocalDate.parse("2011-03-11"),
+                new HsaIdEnhet("verksamhet1"),
+                "A00",
+                0)
+            .toString(),
+        "002",
+        IntygType.LUAE_FS.getItIntygType());
+    simpleSend(
+        builder
+            .build(
+                "19121212-0210",
+                LocalDate.parse("2011-01-20"),
+                LocalDate.parse("2011-03-11"),
+                new HsaIdEnhet("verksamhet1"),
+                "A00",
+                0)
+            .toString(),
+        "003",
+        "OkandTyp");
+    simpleSend(
+        builder
+            .build(
+                "19121212-0310",
+                LocalDate.parse("2011-01-20"),
+                LocalDate.parse("2011-03-11"),
+                new HsaIdEnhet("verksamhet1"),
+                "A00",
+                0)
+            .toString(),
+        "004",
+        IntygType.LISJP.getItIntygType());
+    simpleSend(
+        builder
+            .build(
+                "19121212-0410",
+                LocalDate.parse("2011-01-20"),
+                LocalDate.parse("2011-03-11"),
+                new HsaIdEnhet("verksamhet1"),
+                "A00",
+                0)
+            .toString(),
+        "005",
+        IntygType.LUAE_NA.getItIntygType());
+    simpleSend(
+        builder
+            .build(
+                "19121212-0510",
+                LocalDate.parse("2011-01-20"),
+                LocalDate.parse("2011-03-11"),
+                new HsaIdEnhet("verksamhet1"),
+                "A00",
+                0)
+            .toString(),
+        "006",
+        null);
+    simpleSend(
+        builder
+            .build(
+                "19121212-0710",
+                LocalDate.parse("2011-01-20"),
+                LocalDate.parse("2011-03-11"),
+                new HsaIdEnhet("verksamhet1"),
+                "A00",
+                0)
+            .toString(),
+        "007",
+        IntygType.LUSE.getItIntygType());
 
-        assertEquals(6, wideLine.count());
+    try {
+      countDownLatch.await(20, TimeUnit.SECONDS);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
     }
 
-    @Transactional
-    public void populate() {
-        final int count = 7;
-        CountDownLatch countDownLatch = new CountDownLatch(count);
-        queueAspect.setCountDownLatch(countDownLatch);
+    consumer.processBatch();
+  }
 
-        UtlatandeBuilder builder = new UtlatandeBuilder();
-        simpleSend(builder
-            .build("19121212-0010", LocalDate.parse("2011-01-20"), LocalDate.parse("2011-03-11"), new HsaIdEnhet("verksamhet1"), "A00", 0)
-            .toString(), "001", IntygType.FK7263.getItIntygType());
-        simpleSend(builder
-            .build("19121212-0110", LocalDate.parse("2011-01-20"), LocalDate.parse("2011-03-11"), new HsaIdEnhet("verksamhet1"), "A00", 0)
-            .toString(), "002", IntygType.LUAE_FS.getItIntygType());
-        simpleSend(builder
-            .build("19121212-0210", LocalDate.parse("2011-01-20"), LocalDate.parse("2011-03-11"), new HsaIdEnhet("verksamhet1"), "A00", 0)
-            .toString(), "003", "OkandTyp");
-        simpleSend(builder
-            .build("19121212-0310", LocalDate.parse("2011-01-20"), LocalDate.parse("2011-03-11"), new HsaIdEnhet("verksamhet1"), "A00", 0)
-            .toString(), "004", IntygType.LISJP.getItIntygType());
-        simpleSend(builder
-            .build("19121212-0410", LocalDate.parse("2011-01-20"), LocalDate.parse("2011-03-11"), new HsaIdEnhet("verksamhet1"), "A00", 0)
-            .toString(), "005", IntygType.LUAE_NA.getItIntygType());
-        simpleSend(builder
-            .build("19121212-0510", LocalDate.parse("2011-01-20"), LocalDate.parse("2011-03-11"), new HsaIdEnhet("verksamhet1"), "A00", 0)
-            .toString(), "006", null);
-        simpleSend(builder
-            .build("19121212-0710", LocalDate.parse("2011-01-20"), LocalDate.parse("2011-03-11"), new HsaIdEnhet("verksamhet1"), "A00", 0)
-            .toString(), "007", IntygType.LUSE.getItIntygType());
+  private void simpleSend(final String intyg, final String correlationId, String certificateType) {
 
-        try {
-            countDownLatch.await(20, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        consumer.processBatch();
-    }
-
-    private void simpleSend(final String intyg, final String correlationId, String certificateType) {
-
-        this.jmsTemplate.send(queueName, new MessageCreator() {
-            public Message createMessage(Session session) throws JMSException {
-                TextMessage message = session.createTextMessage(intyg);
-                message.setStringProperty(JmsReceiver.ACTION, JmsReceiver.CREATED);
-                if (certificateType != null) {
-                    message.setStringProperty(JmsReceiver.CERTIFICATE_TYPE, certificateType);
-                }
-                message.setStringProperty(JmsReceiver.CERTIFICATE_ID, correlationId);
-                return message;
+    this.jmsTemplate.send(
+        queueName,
+        new MessageCreator() {
+          public Message createMessage(Session session) throws JMSException {
+            TextMessage message = session.createTextMessage(intyg);
+            message.setStringProperty(JmsReceiver.ACTION, JmsReceiver.CREATED);
+            if (certificateType != null) {
+              message.setStringProperty(JmsReceiver.CERTIFICATE_TYPE, certificateType);
             }
+            message.setStringProperty(JmsReceiver.CERTIFICATE_ID, correlationId);
+            return message;
+          }
         });
-    }
+  }
 }
-//CHECKSTYLE:ON MagicNumber
+// CHECKSTYLE:ON MagicNumber

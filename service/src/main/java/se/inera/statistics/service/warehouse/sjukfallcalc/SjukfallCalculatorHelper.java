@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -27,22 +27,20 @@ import se.inera.statistics.service.warehouse.WidelineConverter;
 
 final class SjukfallCalculatorHelper {
 
-    private SjukfallCalculatorHelper() {
-    }
+  private SjukfallCalculatorHelper() {}
 
-    static Multimap<Long, SjukfallExtended> filterPersonifiedSjukfallsFromDate(LocalDate from,
-        Multimap<Long, SjukfallExtended> sjukfallsPerPatient) {
-        final int firstday = WidelineConverter.toDay(from);
-        Multimap<Long, SjukfallExtended> result = ArrayListMultimap.create();
-        for (Long patient : sjukfallsPerPatient.keySet()) {
-            final Collection<SjukfallExtended> sjukfalls = sjukfallsPerPatient.get(patient);
-            for (SjukfallExtended sjukfall : sjukfalls) {
-                if (sjukfall.getEnd() >= firstday) {
-                    result.put(patient, sjukfall);
-                }
-            }
+  static Multimap<Long, SjukfallExtended> filterPersonifiedSjukfallsFromDate(
+      LocalDate from, Multimap<Long, SjukfallExtended> sjukfallsPerPatient) {
+    final int firstday = WidelineConverter.toDay(from);
+    Multimap<Long, SjukfallExtended> result = ArrayListMultimap.create();
+    for (Long patient : sjukfallsPerPatient.keySet()) {
+      final Collection<SjukfallExtended> sjukfalls = sjukfallsPerPatient.get(patient);
+      for (SjukfallExtended sjukfall : sjukfalls) {
+        if (sjukfall.getEnd() >= firstday) {
+          result.put(patient, sjukfall);
         }
-        return result;
+      }
     }
-
+    return result;
+  }
 }

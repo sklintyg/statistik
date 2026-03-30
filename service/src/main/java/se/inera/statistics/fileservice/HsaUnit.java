@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -24,37 +24,30 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(
-    name = "HsaUnit",
-    namespace = "urn:riv:hsa:HsaWsResponder:3"
-)
+@XmlType(name = "HsaUnit", namespace = "urn:riv:hsa:HsaWsResponder:3")
 public final class HsaUnit {
 
-    @XmlElement(
-        namespace = "urn:riv:hsa:HsaWsResponder:3"
-    )
-    private String hsaIdentity;
-    @XmlElement(
-        namespace = "urn:riv:hsa:HsaWsResponder:3"
-    )
-    private String name;
+  @XmlElement(namespace = "urn:riv:hsa:HsaWsResponder:3")
+  private String hsaIdentity;
 
-    public HsaUnit() {
-    }
+  @XmlElement(namespace = "urn:riv:hsa:HsaWsResponder:3")
+  private String name;
 
-    public String getHsaIdentity() {
-        return hsaIdentity;
-    }
+  public HsaUnit() {}
 
-    public void setHsaIdentity(String hsaIdentity) {
-        this.hsaIdentity = hsaIdentity;
-    }
+  public String getHsaIdentity() {
+    return hsaIdentity;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public void setHsaIdentity(String hsaIdentity) {
+    this.hsaIdentity = hsaIdentity;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -26,64 +26,62 @@ import se.inera.statistics.service.warehouse.Sjukfall;
 
 public class Counter<T> {
 
-    private final T key;
-    private int countFemale;
-    private int countMale;
+  private final T key;
+  private int countFemale;
+  private int countMale;
 
-    public Counter(T key) {
-        this.key = key;
+  public Counter(T key) {
+    this.key = key;
+  }
+
+  public void increase(Sjukfall sjukfall) {
+    if (sjukfall.getKon() == Kon.FEMALE) {
+      countFemale++;
+    } else {
+      countMale++;
     }
+  }
 
-    public void increase(Sjukfall sjukfall) {
-        if (sjukfall.getKon() == Kon.FEMALE) {
-            countFemale++;
-        } else {
-            countMale++;
-        }
+  public int getCount() {
+    return countFemale + countMale;
+  }
+
+  public int getCountFemale() {
+    return countFemale;
+  }
+
+  public int getCountMale() {
+    return countMale;
+  }
+
+  @Override
+  public String toString() {
+    return key + ":" + countFemale + ":" + countMale;
+  }
+
+  public T getKey() {
+    return key;
+  }
+
+  public static <K> Map<K, Counter<K>> mapFor(Iterable<K> i) {
+    Map<K, Counter<K>> counters = new HashMap<>();
+    for (K next : i) {
+      counters.put(next, new Counter<>(next));
     }
+    return counters;
+  }
 
-    public int getCount() {
-        return countFemale + countMale;
-    }
-
-    public int getCountFemale() {
-        return countFemale;
-    }
-
-    public int getCountMale() {
-        return countMale;
-    }
-
-    @Override
-    public String toString() {
-        return key + ":" + countFemale + ":" + countMale;
-    }
-
-    public T getKey() {
-        return key;
-    }
-
-    public static <K> Map<K, Counter<K>> mapFor(Iterable<K> i) {
-        Map<K, Counter<K>> counters = new HashMap<>();
-        for (K next : i) {
-            counters.put(next, new Counter<>(next));
-        }
-        return counters;
-    }
-
-    public static Comparator<Counter> byTotalCount() {
-        return (o1, o2) -> {
-            int count = o1.countFemale + o1.countMale;
-            int otherCount = o2.countFemale + o2.countMale;
-            if (count > otherCount) {
-                return -1;
-            } else if (count == otherCount) {
-                return 0;
-            } else {
-                return 1;
-            }
-        };
-    }
-
-
+  public static Comparator<Counter> byTotalCount() {
+    return (o1, o2) -> {
+      int count = o1.countFemale + o1.countMale;
+      int otherCount = o2.countFemale + o2.countMale;
+      if (count > otherCount) {
+        return -1;
+      } else if (count == otherCount) {
+        return 0;
+      } else {
+        return 1;
+      }
+    };
+  }
 }

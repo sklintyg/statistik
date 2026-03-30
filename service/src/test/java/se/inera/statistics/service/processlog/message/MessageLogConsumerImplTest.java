@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -42,62 +42,63 @@ import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMe
 @RunWith(MockitoJUnitRunner.class)
 public class MessageLogConsumerImplTest {
 
-    @Mock
-    private ProcessMessageLog processLog;
-    @Mock
-    private SendMessageToCareHelper sendMessageToCareHelper;
-    @Mock
-    private Processor processor;
-    @InjectMocks
-    private MessageLogConsumerImpl consumer;
+  @Mock private ProcessMessageLog processLog;
+  @Mock private SendMessageToCareHelper sendMessageToCareHelper;
+  @Mock private Processor processor;
+  @InjectMocks private MessageLogConsumerImpl consumer;
 
-    @Before
-    public void setup() {
-        ReflectionTestUtils.setField(consumer, "tryIntervals", Arrays.asList(0, 3));
-    }
+  @Before
+  public void setup() {
+    ReflectionTestUtils.setField(consumer, "tryIntervals", Arrays.asList(0, 3));
+  }
 
-    // CHECKSTYLE:OFF MagicNumber
-    @Test
-    public void batchSizeIsUsed() {
-        consumer.processBatch(0);
-        verify(processLog).getPending(100, 0, 3);
-    }
+  // CHECKSTYLE:OFF MagicNumber
+  @Test
+  public void batchSizeIsUsed() {
+    consumer.processBatch(0);
+    verify(processLog).getPending(100, 0, 3);
+  }
 
-    @Test
-    public void forNoPendingNoJobIsDoneAnd0IsReturned() {
-        long count = consumer.processBatch(0);
-        assertEquals(0, count);
-    }
+  @Test
+  public void forNoPendingNoJobIsDoneAnd0IsReturned() {
+    long count = consumer.processBatch(0);
+    assertEquals(0, count);
+  }
 
-    @Test
-    public void processingSucceedsForOneEvent() {
-        // Given
-        MessageEvent event = new MessageEvent(MessageEventType.SENT, "<xml>", "correlationId", 1);
-        event.setId(1);
-        when(processLog.getPending(100, 0, 3)).thenReturn(Collections.singletonList(event));
+  @Test
+  public void processingSucceedsForOneEvent() {
+    // Given
+    MessageEvent event = new MessageEvent(MessageEventType.SENT, "<xml>", "correlationId", 1);
+    event.setId(1);
+    when(processLog.getPending(100, 0, 3)).thenReturn(Collections.singletonList(event));
 
-        // When
-        long count = consumer.processBatch(0);
+    // When
+    long count = consumer.processBatch(0);
 
-        // Then
-        assertEquals(1, count);
-        verify(processLog).getPending(100, 0, 3);
-        verify(processor).accept(nullable(SendMessageToCareType.class), Mockito.anyLong(), anyString(), any(MessageEventType.class));
-    }
+    // Then
+    assertEquals(1, count);
+    verify(processLog).getPending(100, 0, 3);
+    verify(processor)
+        .accept(
+            nullable(SendMessageToCareType.class),
+            Mockito.anyLong(),
+            anyString(),
+            any(MessageEventType.class));
+  }
 
-    @Test
-    public void failingAcceptContinuesProcessing() {
-        // Given
-        MessageEvent event = new MessageEvent(MessageEventType.SENT, "{}", "correlationId", 1);
-        event.setId(1);
-        when(processLog.getPending(100, 0, 3)).thenReturn(Collections.singletonList(event));
+  @Test
+  public void failingAcceptContinuesProcessing() {
+    // Given
+    MessageEvent event = new MessageEvent(MessageEventType.SENT, "{}", "correlationId", 1);
+    event.setId(1);
+    when(processLog.getPending(100, 0, 3)).thenReturn(Collections.singletonList(event));
 
-        // When
-        long count = consumer.processBatch(0);
+    // When
+    long count = consumer.processBatch(0);
 
-        // Then
-        assertEquals(1, count);
-        verify(processLog).getPending(100, 0, 3);
-    }
-    // CHECKSTYLE:ON MagicNumber
+    // Then
+    assertEquals(1, count);
+    verify(processLog).getPending(100, 0, 3);
+  }
+  // CHECKSTYLE:ON MagicNumber
 }

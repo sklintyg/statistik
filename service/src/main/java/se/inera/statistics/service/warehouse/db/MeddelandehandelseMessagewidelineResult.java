@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,20 +20,21 @@ package se.inera.statistics.service.warehouse.db;
 
 public class MeddelandehandelseMessagewidelineResult {
 
-    private final Integer meddelandehandelseResult;
+  private final Integer meddelandehandelseResult;
 
-    private final Integer messagewidelineResult;
+  private final Integer messagewidelineResult;
 
-    public MeddelandehandelseMessagewidelineResult(Integer meddelandehandelseResult, Integer messagewidelineResult) {
-        this.meddelandehandelseResult = meddelandehandelseResult;
-        this.messagewidelineResult = messagewidelineResult;
-    }
+  public MeddelandehandelseMessagewidelineResult(
+      Integer meddelandehandelseResult, Integer messagewidelineResult) {
+    this.meddelandehandelseResult = meddelandehandelseResult;
+    this.messagewidelineResult = messagewidelineResult;
+  }
 
-    public Integer getMeddelandehandelseResult() {
-        return meddelandehandelseResult;
-    }
+  public Integer getMeddelandehandelseResult() {
+    return meddelandehandelseResult;
+  }
 
-    public Integer getMessagewidelineResult() {
-        return messagewidelineResult;
-    }
+  public Integer getMessagewidelineResult() {
+    return messagewidelineResult;
+  }
 }

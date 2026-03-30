@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,13 +22,13 @@ import java.util.List;
 
 public interface ProcessMessageLog {
 
-    long store(MessageEventType type, String string, String messageId, long timestamp);
+  long store(MessageEventType type, String string, String messageId, long timestamp);
 
-    long update(MessageEvent event);
+  long update(MessageEvent event);
 
-    long increaseNumberOfTries(long logId);
+  long increaseNumberOfTries(long logId);
 
-    long setProcessed(long logId);
+  long setProcessed(long logId);
 
-    List<MessageEvent> getPending(int max, long firstId, int maxNumberOfTries);
+  List<MessageEvent> getPending(int max, long firstId, int maxNumberOfTries);
 }

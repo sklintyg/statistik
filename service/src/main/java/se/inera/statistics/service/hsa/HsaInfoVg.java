@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -24,58 +24,65 @@ import java.time.LocalDateTime;
 
 public class HsaInfoVg {
 
-    @JsonProperty("id")
-    private String id;
-    @JsonProperty("orgnr")
-    private String orgnr;
-    @JsonProperty("startdatum")
-    private LocalDateTime startdatum;
-    @JsonProperty("slutdatum")
-    private LocalDateTime slutdatum;
-    @JsonProperty("arkiverad")
-    private Boolean arkiverad;
+  @JsonProperty("id")
+  private String id;
 
-    //Default constructor required by json mapper
-    private HsaInfoVg() {
-    }
+  @JsonProperty("orgnr")
+  private String orgnr;
 
-    public HsaInfoVg(String id, String orgnr, LocalDateTime startdatum, LocalDateTime slutdatum, Boolean arkiverad) {
-        this.id = id;
-        this.orgnr = orgnr;
-        this.startdatum = startdatum;
-        this.slutdatum = slutdatum;
-        this.arkiverad = arkiverad;
-    }
+  @JsonProperty("startdatum")
+  private LocalDateTime startdatum;
 
-    public String getId() {
-        return id;
-    }
+  @JsonProperty("slutdatum")
+  private LocalDateTime slutdatum;
 
-    public String getOrgnr() {
-        return orgnr;
-    }
+  @JsonProperty("arkiverad")
+  private Boolean arkiverad;
 
-    public LocalDateTime getStartdatum() {
-        return startdatum;
-    }
+  // Default constructor required by json mapper
+  private HsaInfoVg() {}
 
-    public LocalDateTime getSlutdatum() {
-        return slutdatum;
-    }
+  public HsaInfoVg(
+      String id,
+      String orgnr,
+      LocalDateTime startdatum,
+      LocalDateTime slutdatum,
+      Boolean arkiverad) {
+    this.id = id;
+    this.orgnr = orgnr;
+    this.startdatum = startdatum;
+    this.slutdatum = slutdatum;
+    this.arkiverad = arkiverad;
+  }
 
-    public Boolean isArkiverad() {
-        return arkiverad;
-    }
+  public String getId() {
+    return id;
+  }
 
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-            .add("id", id)
-            .add("orgnr", orgnr)
-            .add("startdatum", startdatum)
-            .add("slutdatum", slutdatum)
-            .add("arkiverad", arkiverad)
-            .toString();
-    }
+  public String getOrgnr() {
+    return orgnr;
+  }
 
+  public LocalDateTime getStartdatum() {
+    return startdatum;
+  }
+
+  public LocalDateTime getSlutdatum() {
+    return slutdatum;
+  }
+
+  public Boolean isArkiverad() {
+    return arkiverad;
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("id", id)
+        .add("orgnr", orgnr)
+        .add("startdatum", startdatum)
+        .add("slutdatum", slutdatum)
+        .add("arkiverad", arkiverad)
+        .toString();
+  }
 }

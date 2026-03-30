@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,14 +20,9 @@ package se.inera.statistics.service.hsa;
 
 public interface HSAService {
 
-    /**
-     * Get HSA info using fields from baseHsaInfo when available.
-     */
-    HsaInfo getHSAInfo(HSAKey key, HsaInfo baseHsaInfo);
+  /** Get HSA info using fields from baseHsaInfo when available. */
+  HsaInfo getHSAInfo(HSAKey key, HsaInfo baseHsaInfo);
 
-    /**
-     * Get full HSA info.
-     */
-    HsaInfo getHSAInfo(HSAKey key);
-
+  /** Get full HSA info. */
+  HsaInfo getHSAInfo(HSAKey key);
 }

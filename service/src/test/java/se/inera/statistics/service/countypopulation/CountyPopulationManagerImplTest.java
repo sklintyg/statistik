@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -44,100 +44,100 @@ import se.inera.statistics.service.report.model.Range;
 
 public class CountyPopulationManagerImplTest {
 
-    @Spy
-    private final Clock clock = new SpyableClock(Clock.systemDefaultZone());
+  @Spy private final Clock clock = new SpyableClock(Clock.systemDefaultZone());
 
-    @Mock
-    private EntityManager manager;
+  @Mock private EntityManager manager;
 
-    @Mock
-    private CountyPopulationFetcher countyPopulationFetcher;
+  @Mock private CountyPopulationFetcher countyPopulationFetcher;
 
-    @InjectMocks
-    private CountyPopulationManagerImpl countyPopulationManager;
+  @InjectMocks private CountyPopulationManagerImpl countyPopulationManager;
 
-    @Before
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-    }
+  @Before
+  public void setUp() throws Exception {
+    MockitoAnnotations.initMocks(this);
+  }
 
-    @Test
-    public void testGetCountyPopulation() throws Exception {
-        //Given
-        final Query query = Mockito.mock(Query.class);
-        final CountyPopulationRow populationRow = new CountyPopulationRow("{\"01\": {\"male\": \"202\", \"female\": \"101\"}}",
-            LocalDate.parse("2016-04-24"));
-        Mockito.when(query.getResultList()).thenReturn(Collections.singletonList(populationRow));
-        Mockito.when(manager.createQuery(Mockito.anyString())).thenReturn(query);
-        final Range range = Range.year(clock);
+  @Test
+  public void testGetCountyPopulation() throws Exception {
+    // Given
+    final Query query = Mockito.mock(Query.class);
+    final CountyPopulationRow populationRow =
+        new CountyPopulationRow(
+            "{\"01\": {\"male\": \"202\", \"female\": \"101\"}}", LocalDate.parse("2016-04-24"));
+    Mockito.when(query.getResultList()).thenReturn(Collections.singletonList(populationRow));
+    Mockito.when(manager.createQuery(Mockito.anyString())).thenReturn(query);
+    final Range range = Range.year(clock);
 
-        //When
-        final CountyPopulation countyPopulation = countyPopulationManager.getCountyPopulation(range);
+    // When
+    final CountyPopulation countyPopulation = countyPopulationManager.getCountyPopulation(range);
 
-        //Then
-        assertEquals(2016, countyPopulation.getDate().getYear());
-        assertEquals(4, countyPopulation.getDate().getMonthValue());
-        assertEquals(24, countyPopulation.getDate().getDayOfMonth());
+    // Then
+    assertEquals(2016, countyPopulation.getDate().getYear());
+    assertEquals(4, countyPopulation.getDate().getMonthValue());
+    assertEquals(24, countyPopulation.getDate().getDayOfMonth());
 
-        assertEquals(1, countyPopulation.getPopulationPerCountyCode().size());
-        assertEquals(101, countyPopulation.getPopulationPerCountyCode().get("01").getFemale());
-        assertEquals(202, countyPopulation.getPopulationPerCountyCode().get("01").getMale());
-    }
+    assertEquals(1, countyPopulation.getPopulationPerCountyCode().size());
+    assertEquals(101, countyPopulation.getPopulationPerCountyCode().get("01").getFemale());
+    assertEquals(202, countyPopulation.getPopulationPerCountyCode().get("01").getMale());
+  }
 
-    @Test
-    public void testGetCountyPopulationFetcherIsNotInvokedWhenPopulationIsFoundInDb() throws Exception {
-        //Given
-        final Query query = Mockito.mock(Query.class);
-        final CountyPopulationRow populationRow = new CountyPopulationRow("{\"01\": {\"male\": \"202\", \"female\": \"101\"}}",
-            LocalDate.parse("2016-04-24"));
-        Mockito.when(query.getResultList()).thenReturn(Collections.singletonList(populationRow));
-        Mockito.when(manager.createQuery(Mockito.anyString())).thenReturn(query);
-        final Range range = Range.year(clock);
+  @Test
+  public void testGetCountyPopulationFetcherIsNotInvokedWhenPopulationIsFoundInDb()
+      throws Exception {
+    // Given
+    final Query query = Mockito.mock(Query.class);
+    final CountyPopulationRow populationRow =
+        new CountyPopulationRow(
+            "{\"01\": {\"male\": \"202\", \"female\": \"101\"}}", LocalDate.parse("2016-04-24"));
+    Mockito.when(query.getResultList()).thenReturn(Collections.singletonList(populationRow));
+    Mockito.when(manager.createQuery(Mockito.anyString())).thenReturn(query);
+    final Range range = Range.year(clock);
 
-        //When
-        countyPopulationManager.getCountyPopulation(range);
+    // When
+    countyPopulationManager.getCountyPopulation(range);
 
-        //Then
-        Mockito.verify(countyPopulationFetcher, times(0)).getPopulationFor(range.getTo().getYear() - 1);
-        Mockito.verify(query, times(1)).getResultList();
-    }
+    // Then
+    Mockito.verify(countyPopulationFetcher, times(0)).getPopulationFor(range.getTo().getYear() - 1);
+    Mockito.verify(query, times(1)).getResultList();
+  }
 
-    @Test
-    public void testGetCountyPopulationUseLastKnowPopulationIfNotPossibleToGetCorrectYear() throws Exception {
-        //Given
-        final Query query = Mockito.mock(Query.class);
-        Mockito.when(query.getResultList()).thenReturn(Collections.emptyList());
-        Mockito.when(manager.createQuery(Mockito.anyString())).thenReturn(query);
-        Mockito.when(countyPopulationFetcher.getPopulationFor(anyInt())).thenReturn(Optional.empty());
-        final Range range = Range.year(clock);
+  @Test
+  public void testGetCountyPopulationUseLastKnowPopulationIfNotPossibleToGetCorrectYear()
+      throws Exception {
+    // Given
+    final Query query = Mockito.mock(Query.class);
+    Mockito.when(query.getResultList()).thenReturn(Collections.emptyList());
+    Mockito.when(manager.createQuery(Mockito.anyString())).thenReturn(query);
+    Mockito.when(countyPopulationFetcher.getPopulationFor(anyInt())).thenReturn(Optional.empty());
+    final Range range = Range.year(clock);
 
-        //When
-        final CountyPopulation countyPopulation = countyPopulationManager.getCountyPopulation(range);
+    // When
+    final CountyPopulation countyPopulation = countyPopulationManager.getCountyPopulation(range);
 
-        //Then
-        Mockito.verify(countyPopulationFetcher, times(1)).getPopulationFor(range.getTo().getYear() - 1);
-        Mockito.verify(query, times(2)).getResultList();
-    }
+    // Then
+    Mockito.verify(countyPopulationFetcher, times(1)).getPopulationFor(range.getTo().getYear() - 1);
+    Mockito.verify(query, times(2)).getResultList();
+  }
 
-    @Test
-    public void testGetCountyPopulationUseTheCorrectDateWhenLookingForPrefetchedData() throws Exception {
-        //Given
-        final Query query = Mockito.mock(Query.class);
-        Mockito.when(query.getResultList()).thenReturn(Collections.emptyList());
-        Mockito.when(countyPopulationFetcher.getPopulationFor(anyInt())).thenReturn(Optional.empty());
-        final Range range = Range.year(clock);
+  @Test
+  public void testGetCountyPopulationUseTheCorrectDateWhenLookingForPrefetchedData()
+      throws Exception {
+    // Given
+    final Query query = Mockito.mock(Query.class);
+    Mockito.when(query.getResultList()).thenReturn(Collections.emptyList());
+    Mockito.when(countyPopulationFetcher.getPopulationFor(anyInt())).thenReturn(Optional.empty());
+    final Range range = Range.year(clock);
 
-        final ArgumentCaptor<Date> argumentCaptor = ArgumentCaptor.forClass(Date.class);
-        Mockito.when(manager.createQuery(anyString())).thenReturn(query);
-        Mockito.when(query.setParameter(eq("fromDate"), argumentCaptor.capture())).thenReturn(query);
+    final ArgumentCaptor<Date> argumentCaptor = ArgumentCaptor.forClass(Date.class);
+    Mockito.when(manager.createQuery(anyString())).thenReturn(query);
+    Mockito.when(query.setParameter(eq("fromDate"), argumentCaptor.capture())).thenReturn(query);
 
-        //When
-        countyPopulationManager.getCountyPopulation(range);
+    // When
+    countyPopulationManager.getCountyPopulation(range);
 
-        //Then
-        final Date actualDate = argumentCaptor.getValue();
-        final Date expectedDate = Date.valueOf(countyPopulationManager.getPopulationFromDate(range));
-        assertEquals(expectedDate, actualDate);
-    }
-
+    // Then
+    final Date actualDate = argumentCaptor.getValue();
+    final Date expectedDate = Date.valueOf(countyPopulationManager.getPopulationFromDate(range));
+    assertEquals(expectedDate, actualDate);
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -38,51 +38,50 @@ import se.inera.statistics.service.warehouse.model.db.WideLine;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class WidelineManagerTest {
 
-    @Autowired
-    WidelineManager widelineManager;
+  @Autowired WidelineManager widelineManager;
 
-    @Test
-    @Ignore
-    public void countLinesWhenEmpty() {
-        int result = widelineManager.count();
+  @Test
+  @Ignore
+  public void countLinesWhenEmpty() {
+    int result = widelineManager.count();
 
-        assertEquals(0, result);
-    }
+    assertEquals(0, result);
+  }
 
-    @Test
-    @Ignore
-    public void count3Lines() {
-        insertLine(EventType.CREATED, ":1");
-        insertLine(EventType.CREATED, ":2");
-        insertLine(EventType.CREATED, ":3");
+  @Test
+  @Ignore
+  public void count3Lines() {
+    insertLine(EventType.CREATED, ":1");
+    insertLine(EventType.CREATED, ":2");
+    insertLine(EventType.CREATED, ":3");
 
-        int result = widelineManager.count();
+    int result = widelineManager.count();
 
-        assertEquals(3, result);
-    }
+    assertEquals(3, result);
+  }
 
-    private void insertLine(EventType event, String correlationId) {
-        WideLine line1 = new WideLine();
-        String patientId = "19121212-1212";
-        line1.setAlder(23);
-        line1.setDiagnoskapitel("A00-B99");
-        line1.setDiagnosavsnitt("A15-A19");
-        line1.setDiagnoskategori("A16");
-        line1.setEnhet(new HsaIdEnhet("e1"));
-        line1.setKon(1);
-        line1.setLkf("078002");
-        line1.setLakaralder(33);
-        line1.setLakarbefattning("201010");
-        line1.setLakarintyg(1L);
-        line1.setIntygTyp(event);
-        line1.setLakarkon(2);
-        line1.setPatientid(patientId);
-        line1.setSjukskrivningsgrad(100);
-        line1.setSlutdatum(4999);
-        line1.setStartdatum(4997);
-        line1.setVardgivareId(new HsaIdVardgivare("vg1"));
-        line1.setLakareId(new HsaIdLakare("lakare"));
-        line1.setCorrelationId(correlationId);
-        widelineManager.saveWideline(line1);
-    }
+  private void insertLine(EventType event, String correlationId) {
+    WideLine line1 = new WideLine();
+    String patientId = "19121212-1212";
+    line1.setAlder(23);
+    line1.setDiagnoskapitel("A00-B99");
+    line1.setDiagnosavsnitt("A15-A19");
+    line1.setDiagnoskategori("A16");
+    line1.setEnhet(new HsaIdEnhet("e1"));
+    line1.setKon(1);
+    line1.setLkf("078002");
+    line1.setLakaralder(33);
+    line1.setLakarbefattning("201010");
+    line1.setLakarintyg(1L);
+    line1.setIntygTyp(event);
+    line1.setLakarkon(2);
+    line1.setPatientid(patientId);
+    line1.setSjukskrivningsgrad(100);
+    line1.setSlutdatum(4999);
+    line1.setStartdatum(4997);
+    line1.setVardgivareId(new HsaIdVardgivare("vg1"));
+    line1.setLakareId(new HsaIdLakare("lakare"));
+    line1.setCorrelationId(correlationId);
+    widelineManager.saveWideline(line1);
+  }
 }

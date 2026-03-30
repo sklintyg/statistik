@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,49 +22,41 @@ import java.util.stream.Stream;
 
 public enum SjukskrivningsGrad {
 
-    /**
-     * Helt nedsatt (id 1).
-     */
-    HELT_NEDSATT(1, "Helt nedsatt", 100),
-    /**
-     * Nedsatt till 3/4 (id 2).
-     */
-    TRE_FJARDEDEL(2, "Nedsatt med 3/4", 75),
-    /**
-     * Nedsatt till hälften (id 3).
-     */
-    HALFTEN(3, "Nedsatt med hälften", 50),
-    /**
-     * Nedsatt till 1/4 (id 4).
-     */
-    EN_FJARDEDEL(4, "Nedsatt med 1/4", 25);
+  /** Helt nedsatt (id 1). */
+  HELT_NEDSATT(1, "Helt nedsatt", 100),
+  /** Nedsatt till 3/4 (id 2). */
+  TRE_FJARDEDEL(2, "Nedsatt med 3/4", 75),
+  /** Nedsatt till hälften (id 3). */
+  HALFTEN(3, "Nedsatt med hälften", 50),
+  /** Nedsatt till 1/4 (id 4). */
+  EN_FJARDEDEL(4, "Nedsatt med 1/4", 25);
 
-    private final int id;
-    private final String label;
-    private final int nedsattning;
+  private final int id;
+  private final String label;
+  private final int nedsattning;
 
-    SjukskrivningsGrad(int id, String label, int nedsattning) {
-        this.id = id;
-        this.label = label;
-        this.nedsattning = nedsattning;
-    }
+  SjukskrivningsGrad(int id, String label, int nedsattning) {
+    this.id = id;
+    this.label = label;
+    this.nedsattning = nedsattning;
+  }
 
-    public int getId() {
-        return id;
-    }
+  public int getId() {
+    return id;
+  }
 
-    public String getLabel() {
-        return label;
-    }
+  public String getLabel() {
+    return label;
+  }
 
-    public int getNedsattning() {
-        return nedsattning;
-    }
+  public int getNedsattning() {
+    return nedsattning;
+  }
 
-    public static SjukskrivningsGrad fromId(int id) {
-        return Stream.of(values())
-            .filter(typ -> typ.id == id).findFirst()
-            .orElseThrow(IllegalArgumentException::new);
-    }
-
+  public static SjukskrivningsGrad fromId(int id) {
+    return Stream.of(values())
+        .filter(typ -> typ.id == id)
+        .findFirst()
+        .orElseThrow(IllegalArgumentException::new);
+  }
 }

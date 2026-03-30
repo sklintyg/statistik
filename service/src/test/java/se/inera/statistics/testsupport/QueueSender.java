@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -29,36 +29,40 @@ import se.inera.statistics.service.queue.JmsReceiver;
 
 public class QueueSender {
 
-    private JmsTemplate jmsTemplate;
+  private JmsTemplate jmsTemplate;
 
-    @Autowired
-    private ConnectionFactory connectionFactory;
+  @Autowired private ConnectionFactory connectionFactory;
 
-    @Value("${activemq.receiver.queue.name}")
-    private String queueName;
+  @Value("${activemq.receiver.queue.name}")
+  private String queueName;
 
-    @PostConstruct
-    public void init() {
-        this.jmsTemplate = new JmsTemplate(connectionFactory);
-    }
+  @PostConstruct
+  public void init() {
+    this.jmsTemplate = new JmsTemplate(connectionFactory);
+  }
 
-    public void simpleSend(final String intyg, final String correlationId, String certificateType) {
-        simpleSend(intyg, correlationId, JmsReceiver.CREATED, certificateType);
-    }
+  public void simpleSend(final String intyg, final String correlationId, String certificateType) {
+    simpleSend(intyg, correlationId, JmsReceiver.CREATED, certificateType);
+  }
 
-    public void simpleSend(final String intyg, final String correlationId, final EventType type, String certificateType) {
-        simpleSend(intyg, correlationId, type.name(), certificateType);
-    }
+  public void simpleSend(
+      final String intyg,
+      final String correlationId,
+      final EventType type,
+      String certificateType) {
+    simpleSend(intyg, correlationId, type.name(), certificateType);
+  }
 
-    private void simpleSend(String intyg, String correlationId, String action, String certificateType) {
-        jmsTemplate.send(queueName, session -> {
-            TextMessage message = session.createTextMessage(intyg);
-            message.setStringProperty(JmsReceiver.ACTION, action);
-            message.setStringProperty(JmsReceiver.CERTIFICATE_TYPE, certificateType);
-            message.setStringProperty(JmsReceiver.CERTIFICATE_ID, correlationId);
-            return message;
+  private void simpleSend(
+      String intyg, String correlationId, String action, String certificateType) {
+    jmsTemplate.send(
+        queueName,
+        session -> {
+          TextMessage message = session.createTextMessage(intyg);
+          message.setStringProperty(JmsReceiver.ACTION, action);
+          message.setStringProperty(JmsReceiver.CERTIFICATE_TYPE, certificateType);
+          message.setStringProperty(JmsReceiver.CERTIFICATE_ID, correlationId);
+          return message;
         });
-
-    }
-
+  }
 }

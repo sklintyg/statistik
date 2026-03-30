@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,15 +25,21 @@ import org.junit.Test;
 
 public class MessagesFilterTest {
 
-    @Test
-    public void getNumberOfMonths() {
-        assertEquals(2, createMessagesFilter("2018-03-05", "2018-05-06").getNumberOfMonths()); //Simple case
-        assertEquals(14, createMessagesFilter("2017-03-05", "2018-05-06").getNumberOfMonths()); //More than one year
-        assertEquals(1, createMessagesFilter("2018-03-05", "2018-05-01").getNumberOfMonths()); //Not two full months
-    }
+  @Test
+  public void getNumberOfMonths() {
+    assertEquals(
+        2, createMessagesFilter("2018-03-05", "2018-05-06").getNumberOfMonths()); // Simple case
+    assertEquals(
+        14,
+        createMessagesFilter("2017-03-05", "2018-05-06").getNumberOfMonths()); // More than one year
+    assertEquals(
+        1,
+        createMessagesFilter("2018-03-05", "2018-05-01")
+            .getNumberOfMonths()); // Not two full months
+  }
 
-    private MessagesFilter createMessagesFilter(String from, String to) {
-        return new MessagesFilter(null, LocalDate.parse(from), LocalDate.parse(to), null, null, null, null);
-    }
-
+  private MessagesFilter createMessagesFilter(String from, String to) {
+    return new MessagesFilter(
+        null, LocalDate.parse(from), LocalDate.parse(to), null, null, null, null);
+  }
 }

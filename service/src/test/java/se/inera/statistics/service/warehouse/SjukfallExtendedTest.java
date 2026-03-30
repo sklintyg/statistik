@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,56 +25,76 @@ import org.junit.Test;
 
 public class SjukfallExtendedTest {
 
-    private int lakarintyg = 0;
+  private int lakarintyg = 0;
 
-    @Test
-    public void testGetAllDxs() throws Exception {
-        //Given
-        final SjukfallExtended se1 = new SjukfallExtended(createDxFact(1, 1, 1, 1));
-        final SjukfallExtended se2 = se1.extendSjukfall(createDxFact(2, 2, 2, 2));
-        final SjukfallExtended se3 = se2.extendSjukfall(createDxFact(3, 3, 3, 3));
+  @Test
+  public void testGetAllDxs() throws Exception {
+    // Given
+    final SjukfallExtended se1 = new SjukfallExtended(createDxFact(1, 1, 1, 1));
+    final SjukfallExtended se2 = se1.extendSjukfall(createDxFact(2, 2, 2, 2));
+    final SjukfallExtended se3 = se2.extendSjukfall(createDxFact(3, 3, 3, 3));
 
-        //When
-        final List<Diagnos> allDxs = se3.getAllDxs();
+    // When
+    final List<Diagnos> allDxs = se3.getAllDxs();
 
-        //Then
-        assertEquals(3, allDxs.size());
-        assertEquals(1, allDxs.get(0).getDiagnosavsnitt());
-        assertEquals(1, allDxs.get(0).getDiagnoskapitel());
-        assertEquals(1, allDxs.get(0).getDiagnoskategori());
-        assertEquals(1, allDxs.get(0).getDiagnoskod());
-        assertEquals(2, allDxs.get(1).getDiagnosavsnitt());
-        assertEquals(2, allDxs.get(1).getDiagnoskapitel());
-        assertEquals(2, allDxs.get(1).getDiagnoskategori());
-        assertEquals(2, allDxs.get(1).getDiagnoskod());
-        assertEquals(3, allDxs.get(2).getDiagnosavsnitt());
-        assertEquals(3, allDxs.get(2).getDiagnoskapitel());
-        assertEquals(3, allDxs.get(2).getDiagnoskategori());
-        assertEquals(3, allDxs.get(2).getDiagnoskod());
-    }
+    // Then
+    assertEquals(3, allDxs.size());
+    assertEquals(1, allDxs.get(0).getDiagnosavsnitt());
+    assertEquals(1, allDxs.get(0).getDiagnoskapitel());
+    assertEquals(1, allDxs.get(0).getDiagnoskategori());
+    assertEquals(1, allDxs.get(0).getDiagnoskod());
+    assertEquals(2, allDxs.get(1).getDiagnosavsnitt());
+    assertEquals(2, allDxs.get(1).getDiagnoskapitel());
+    assertEquals(2, allDxs.get(1).getDiagnoskategori());
+    assertEquals(2, allDxs.get(1).getDiagnoskod());
+    assertEquals(3, allDxs.get(2).getDiagnosavsnitt());
+    assertEquals(3, allDxs.get(2).getDiagnoskapitel());
+    assertEquals(3, allDxs.get(2).getDiagnoskategori());
+    assertEquals(3, allDxs.get(2).getDiagnoskod());
+  }
 
-    private Fact createDxFact(int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod) {
-        return FactBuilder
-            .newFact(1, 1, 1, 1, 1, 1, lakarintyg++, 1, 1, 1, 1, 1, diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod, 1, 1, 1,
-                null,
-                1);
-    }
+  private Fact createDxFact(
+      int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod) {
+    return FactBuilder.newFact(
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        lakarintyg++,
+        1,
+        1,
+        1,
+        1,
+        1,
+        diagnoskapitel,
+        diagnosavsnitt,
+        diagnoskategori,
+        diagnoskod,
+        1,
+        1,
+        1,
+        null,
+        1);
+  }
 
-    @Test
-    public void testGetRealDays() throws Exception {
-        //Given
-        final SjukfallExtended se1 = new SjukfallExtended(createDaysFact(6210, 6239)); //30 days
-        final SjukfallExtended se2 = se1.extendSjukfall(createDaysFact(6241, 6253)); //1 day gap from previous and then 13 days
+  @Test
+  public void testGetRealDays() throws Exception {
+    // Given
+    final SjukfallExtended se1 = new SjukfallExtended(createDaysFact(6210, 6239)); // 30 days
+    final SjukfallExtended se2 =
+        se1.extendSjukfall(createDaysFact(6241, 6253)); // 1 day gap from previous and then 13 days
 
-        //When
-        final int realDays = se2.getRealDays();
+    // When
+    final int realDays = se2.getRealDays();
 
-        //Then
-        assertEquals(43, realDays);
-    }
+    // Then
+    assertEquals(43, realDays);
+  }
 
-    private Fact createDaysFact(int startDate, int endDate) {
-        return FactBuilder.newFact(1, 1, 1, 1, 1, 1, lakarintyg++, 1, startDate, endDate, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1);
-    }
-
+  private Fact createDaysFact(int startDate, int endDate) {
+    return FactBuilder.newFact(
+        1, 1, 1, 1, 1, 1, lakarintyg++, 1, startDate, endDate, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1);
+  }
 }

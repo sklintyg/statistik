@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -21,35 +21,35 @@ package se.inera.statistics.integration.hsa.model;
 import java.util.List;
 
 /**
- * Encapsulates data fetched from GetCredentialsForPersonIncludingProtectedPerson, e.g. a list of Vardenhet the
- * user has MiU "Statistik" for and any systemRoles on such a MiU.
+ * Encapsulates data fetched from GetCredentialsForPersonIncludingProtectedPerson, e.g. a list of
+ * Vardenhet the user has MiU "Statistik" for and any systemRoles on such a MiU.
  *
- * Created by eriklupander on 2016-06-29.
+ * <p>Created by eriklupander on 2016-06-29.
  */
 public class UserAuthorization {
 
-    private List<Vardenhet> vardenhetList;
+  private List<Vardenhet> vardenhetList;
 
-    private List<String> systemRoles;
+  private List<String> systemRoles;
 
-    public UserAuthorization(List<Vardenhet> vardenhetList, List<String> systemRoles) {
-        this.vardenhetList = vardenhetList;
-        this.systemRoles = systemRoles;
-    }
+  public UserAuthorization(List<Vardenhet> vardenhetList, List<String> systemRoles) {
+    this.vardenhetList = vardenhetList;
+    this.systemRoles = systemRoles;
+  }
 
-    public List<Vardenhet> getVardenhetList() {
-        return vardenhetList;
-    }
+  public List<Vardenhet> getVardenhetList() {
+    return vardenhetList;
+  }
 
-    public void setVardenhetList(List<Vardenhet> vardenhetList) {
-        this.vardenhetList = vardenhetList;
-    }
+  public void setVardenhetList(List<Vardenhet> vardenhetList) {
+    this.vardenhetList = vardenhetList;
+  }
 
-    public List<String> getSystemRoles() {
-        return systemRoles;
-    }
+  public List<String> getSystemRoles() {
+    return systemRoles;
+  }
 
-    public void setSystemRoles(List<String> systemRoles) {
-        this.systemRoles = systemRoles;
-    }
+  public void setSystemRoles(List<String> systemRoles) {
+    this.systemRoles = systemRoles;
+  }
 }

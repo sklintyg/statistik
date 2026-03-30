@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -24,10 +24,9 @@ import org.springframework.stereotype.Component;
 @Component
 public interface ProcessLog {
 
-    long store(EventType type, String string, String correlationId, long timestamp);
+  long store(EventType type, String string, String correlationId, long timestamp);
 
-    void confirm(long id);
+  void confirm(long id);
 
-    List<IntygEvent> getPending(int max);
-
+  List<IntygEvent> getPending(int max);
 }

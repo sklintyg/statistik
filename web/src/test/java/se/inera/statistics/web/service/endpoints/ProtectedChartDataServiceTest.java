@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -55,90 +55,123 @@ import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 @ExtendWith(MockitoExtension.class)
 public class ProtectedChartDataServiceTest {
 
-    @Mock
-    private WarehouseService warehouse;
+  @Mock private WarehouseService warehouse;
 
-    @Mock
-    private HttpServletRequest request;
+  @Mock private HttpServletRequest request;
 
-    @Mock
-    private LoginServiceUtil loginServiceUtil;
+  @Mock private LoginServiceUtil loginServiceUtil;
 
-    @Mock
-    private MonitoringLogService monitoringLogService;
+  @Mock private MonitoringLogService monitoringLogService;
 
-    @Mock
-    private FilterHandler filterHandler;
+  @Mock private FilterHandler filterHandler;
 
-    @Mock
-    private FilterHashHandler filterHashHandler;
+  @Mock private FilterHashHandler filterHashHandler;
 
-    @InjectMocks
-    private ProtectedChartDataService chartDataService = new ProtectedChartDataService();
+  @InjectMocks private ProtectedChartDataService chartDataService = new ProtectedChartDataService();
 
-    @BeforeEach
-    public void init() {
-        final Vardenhet vardenhet1 = new Vardenhet(new HsaIdEnhet("verksamhet1"), "Närhälsan i Småmåla", new HsaIdVardgivare("VG1"));
-        final Vardenhet vardenhet2 = new Vardenhet(new HsaIdEnhet("verksamhet2"), "Småmålas akutmottagning", new HsaIdVardgivare("VG2"));
-        List<Vardenhet> vardenhets = Arrays.asList(vardenhet1, vardenhet2);
+  @BeforeEach
+  public void init() {
+    final Vardenhet vardenhet1 =
+        new Vardenhet(
+            new HsaIdEnhet("verksamhet1"), "Närhälsan i Småmåla", new HsaIdVardgivare("VG1"));
+    final Vardenhet vardenhet2 =
+        new Vardenhet(
+            new HsaIdEnhet("verksamhet2"), "Småmålas akutmottagning", new HsaIdVardgivare("VG2"));
+    List<Vardenhet> vardenhets = Arrays.asList(vardenhet1, vardenhet2);
 
-        User user = new User(new HsaIdUser("hsaId"), "name", Collections.emptyList(), vardenhets, LoginMethod.SITHS);
-        UsernamePasswordAuthenticationToken principal = Mockito.mock(UsernamePasswordAuthenticationToken.class);
-    }
+    User user =
+        new User(
+            new HsaIdUser("hsaId"), "name", Collections.emptyList(), vardenhets, LoginMethod.SITHS);
+    UsernamePasswordAuthenticationToken principal =
+        Mockito.mock(UsernamePasswordAuthenticationToken.class);
+  }
 
-    @Test
-    public void checkDeniedAccessToVerksamhetTest() {
-        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(new LoginInfo());
-        boolean result = chartDataService.hasAccessTo(request);
-        assertFalse(result);
-    }
+  @Test
+  public void checkDeniedAccessToVerksamhetTest() {
+    Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(new LoginInfo());
+    boolean result = chartDataService.hasAccessTo(request);
+    assertFalse(result);
+  }
 
-    @Test
-    public void checkAllowedAccessToVerksamhetTest() {
-        // Given
-        final HsaIdVardgivare testvg = new HsaIdVardgivare("testvg");
-        final List<LoginInfoVg> loginInfoVgs = Collections.singletonList(
-            new LoginInfoVg(testvg, "", RegionsVardgivareStatus.REGIONSVARDGIVARE_WITHOUT_UPLOAD, new UserAccessLevel(false, 2)));
-        Mockito.when(loginServiceUtil.getLoginInfo())
-            .thenReturn(new LoginInfo(new HsaIdUser("testid"), "", Lists.newArrayList(), loginInfoVgs, new UserSettingsDTO(), "FAKE"));
-        Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(request)).thenReturn(testvg);
+  @Test
+  public void checkAllowedAccessToVerksamhetTest() {
+    // Given
+    final HsaIdVardgivare testvg = new HsaIdVardgivare("testvg");
+    final List<LoginInfoVg> loginInfoVgs =
+        Collections.singletonList(
+            new LoginInfoVg(
+                testvg,
+                "",
+                RegionsVardgivareStatus.REGIONSVARDGIVARE_WITHOUT_UPLOAD,
+                new UserAccessLevel(false, 2)));
+    Mockito.when(loginServiceUtil.getLoginInfo())
+        .thenReturn(
+            new LoginInfo(
+                new HsaIdUser("testid"),
+                "",
+                Lists.newArrayList(),
+                loginInfoVgs,
+                new UserSettingsDTO(),
+                "FAKE"));
+    Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(request)).thenReturn(testvg);
 
-        // When
-        boolean result = chartDataService.hasAccessTo(request);
+    // When
+    boolean result = chartDataService.hasAccessTo(request);
 
-        // Then
-        assertTrue(result);
-    }
+    // Then
+    assertTrue(result);
+  }
 
-    @Test
-    public void userAccessShouldLog() {
-        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(
-            new LoginInfo(new HsaIdUser(""), "", Lists.newArrayList(), Lists.newArrayList(), new UserSettingsDTO(), "FAKE"));
-        chartDataService.userAccess(request);
-    }
+  @Test
+  public void userAccessShouldLog() {
+    Mockito.when(loginServiceUtil.getLoginInfo())
+        .thenReturn(
+            new LoginInfo(
+                new HsaIdUser(""),
+                "",
+                Lists.newArrayList(),
+                Lists.newArrayList(),
+                new UserSettingsDTO(),
+                "FAKE"));
+    chartDataService.userAccess(request);
+  }
 
-    /**
-     * For INTYG-3446: This test case asserts that if the user has Medarbetaruppdrag on one VG1, and _only_ a proper
-     * systemRole on VG2, then the user should be allowed access to both.
-     */
-    @Test
-    public void checkUserWithSystemRoleOnlyHasAccessToEntireVg() {
-        final HsaIdVardgivare testvg = new HsaIdVardgivare("testvg");
-        final HsaIdVardgivare testvg2 = new HsaIdVardgivare("testvg-2");
-        final List<LoginInfoVg> loginInfoVgs = Arrays.asList(
-            new LoginInfoVg(testvg, "", RegionsVardgivareStatus.REGIONSVARDGIVARE_WITHOUT_UPLOAD, new UserAccessLevel(false, 2)),
-            new LoginInfoVg(testvg2, "", RegionsVardgivareStatus.REGIONSVARDGIVARE_WITH_UPLOAD, new UserAccessLevel(true, 0))
-        );
+  /**
+   * For INTYG-3446: This test case asserts that if the user has Medarbetaruppdrag on one VG1, and
+   * _only_ a proper systemRole on VG2, then the user should be allowed access to both.
+   */
+  @Test
+  public void checkUserWithSystemRoleOnlyHasAccessToEntireVg() {
+    final HsaIdVardgivare testvg = new HsaIdVardgivare("testvg");
+    final HsaIdVardgivare testvg2 = new HsaIdVardgivare("testvg-2");
+    final List<LoginInfoVg> loginInfoVgs =
+        Arrays.asList(
+            new LoginInfoVg(
+                testvg,
+                "",
+                RegionsVardgivareStatus.REGIONSVARDGIVARE_WITHOUT_UPLOAD,
+                new UserAccessLevel(false, 2)),
+            new LoginInfoVg(
+                testvg2,
+                "",
+                RegionsVardgivareStatus.REGIONSVARDGIVARE_WITH_UPLOAD,
+                new UserAccessLevel(true, 0)));
 
-        Mockito.when(loginServiceUtil.getLoginInfo())
-            .thenReturn(new LoginInfo(new HsaIdUser("testid"), "", Lists.newArrayList(), loginInfoVgs, new UserSettingsDTO(), "FAKE"));
-        Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(request)).thenReturn(testvg2);
+    Mockito.when(loginServiceUtil.getLoginInfo())
+        .thenReturn(
+            new LoginInfo(
+                new HsaIdUser("testid"),
+                "",
+                Lists.newArrayList(),
+                loginInfoVgs,
+                new UserSettingsDTO(),
+                "FAKE"));
+    Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(request)).thenReturn(testvg2);
 
-        // When
-        boolean result = chartDataService.hasAccessTo(request);
+    // When
+    boolean result = chartDataService.hasAccessTo(request);
 
-        // Then
-        assertTrue(result);
-    }
-
+    // Then
+    assertTrue(result);
+  }
 }

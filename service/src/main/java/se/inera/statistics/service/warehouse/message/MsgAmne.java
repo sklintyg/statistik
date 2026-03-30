@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -21,43 +21,42 @@ package se.inera.statistics.service.warehouse.message;
 import se.inera.statistics.service.report.common.ReportColor;
 
 public enum MsgAmne {
+  AVSTMN("Avstämningsmöte", ReportColor.ST_COLOR_01, true),
+  KOMPLT("Komplettering", ReportColor.ST_COLOR_02, true),
+  KONTKT("Kontakt", ReportColor.ST_COLOR_03, true),
+  OKANT("Okänt", ReportColor.ST_COLOR_13, false),
+  PAMINN("Påminnelse", ReportColor.ST_COLOR_04, true),
+  OVRIGT("Övrigt", ReportColor.ST_COLOR_05, true);
 
-    AVSTMN("Avstämningsmöte", ReportColor.ST_COLOR_01, true),
-    KOMPLT("Komplettering", ReportColor.ST_COLOR_02, true),
-    KONTKT("Kontakt", ReportColor.ST_COLOR_03, true),
-    OKANT("Okänt", ReportColor.ST_COLOR_13, false),
-    PAMINN("Påminnelse", ReportColor.ST_COLOR_04, true),
-    OVRIGT("Övrigt", ReportColor.ST_COLOR_05, true);
+  private final String text;
+  private final ReportColor color;
+  private final boolean
+      showEmpty; // Should the data series be shown in the result if the result is empty
 
-    private final String text;
-    private final ReportColor color;
-    private final boolean showEmpty; //Should the data series be shown in the result if the result is empty
+  MsgAmne(String text, ReportColor color, boolean showEmpty) {
+    this.text = text;
+    this.color = color;
+    this.showEmpty = showEmpty;
+  }
 
-    MsgAmne(String text, ReportColor color, boolean showEmpty) {
-        this.text = text;
-        this.color = color;
-        this.showEmpty = showEmpty;
+  public String getText() {
+    return text;
+  }
+
+  public ReportColor getColor() {
+    return color;
+  }
+
+  public boolean isShowEmpty() {
+    return showEmpty;
+  }
+
+  public static MsgAmne parse(String amneCode) {
+    for (MsgAmne value : values()) {
+      if (value.name().equalsIgnoreCase(amneCode)) {
+        return value;
+      }
     }
-
-    public String getText() {
-        return text;
-    }
-
-    public ReportColor getColor() {
-        return color;
-    }
-
-    public boolean isShowEmpty() {
-        return showEmpty;
-    }
-
-    public static MsgAmne parse(String amneCode) {
-        for (MsgAmne value : values()) {
-            if (value.name().equalsIgnoreCase(amneCode)) {
-                return value;
-            }
-        }
-        return OKANT;
-    }
-
+    return OKANT;
+  }
 }

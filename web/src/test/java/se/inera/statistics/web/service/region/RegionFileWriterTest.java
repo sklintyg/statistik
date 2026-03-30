@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -35,49 +35,64 @@ import se.inera.statistics.service.processlog.Enhet;
 
 public class RegionFileWriterTest {
 
-    @Test
-    public void testGenerateExcelFileEmptyInputAddsNothing() throws Exception {
-        //Given
-        final ArrayList<Enhet> enhets = new ArrayList<>();
+  @Test
+  public void testGenerateExcelFileEmptyInputAddsNothing() throws Exception {
+    // Given
+    final ArrayList<Enhet> enhets = new ArrayList<>();
 
-        //When
-        final ByteArrayOutputStream outputStream = new RegionFileWriter().generateExcelFile(enhets);
+    // When
+    final ByteArrayOutputStream outputStream = new RegionFileWriter().generateExcelFile(enhets);
 
-        //Then
-        final byte[] bytes = outputStream.toByteArray();
-        final ByteArrayInputStream is = new ByteArrayInputStream(bytes);
-        Workbook workbook = new XSSFWorkbook(is);
-        final Sheet sheet = workbook.getSheetAt(0);
-        final Row row = sheet.getRow(1);
-        assertNull(row.getCell(0, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL));
-        assertNull(row.getCell(1, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL));
-        assertNull(row.getCell(2, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL));
+    // Then
+    final byte[] bytes = outputStream.toByteArray();
+    final ByteArrayInputStream is = new ByteArrayInputStream(bytes);
+    Workbook workbook = new XSSFWorkbook(is);
+    final Sheet sheet = workbook.getSheetAt(0);
+    final Row row = sheet.getRow(1);
+    assertNull(row.getCell(0, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL));
+    assertNull(row.getCell(1, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL));
+    assertNull(row.getCell(2, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL));
+  }
+
+  @Test
+  public void testGenerateExcelFileRowsAreCorrectlyAdded() throws Exception {
+    // Given
+    final ArrayList<Enhet> enhets = new ArrayList<>();
+    enhets.add(
+        new Enhet(new HsaIdVardgivare(""), new HsaIdEnhet("id1"), "name1", "", "", "", "veid1"));
+    enhets.add(
+        new Enhet(
+            new HsaIdVardgivare(""),
+            new HsaIdEnhet("id43"),
+            "name fdsa wqer5",
+            "",
+            "",
+            "",
+            "veid2"));
+    enhets.add(
+        new Enhet(new HsaIdVardgivare(""), new HsaIdEnhet("id6"), "farsrG", "", "", "", "veid3"));
+    enhets.add(
+        new Enhet(
+            new HsaIdVardgivare(""), new HsaIdEnhet("id123445"), "VrVRwr", "", "", "", "veid4"));
+
+    // When
+    final ByteArrayOutputStream outputStream = new RegionFileWriter().generateExcelFile(enhets);
+
+    // Then
+    final byte[] bytes = outputStream.toByteArray();
+    final ByteArrayInputStream is = new ByteArrayInputStream(bytes);
+    Workbook workbook = new XSSFWorkbook(is);
+    final Sheet sheet = workbook.getSheetAt(0);
+    for (int i = 0; i < enhets.size(); i++) {
+      final Enhet enhet = enhets.get(i);
+      final Row row = sheet.getRow(i + 1);
+      assertEquals(
+          enhet.getNamn(),
+          row.getCell(0, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue());
+      assertEquals(
+          enhet.getEnhetId().getId(),
+          row.getCell(1, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue());
+      assertNull(row.getCell(2, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL));
     }
-
-    @Test
-    public void testGenerateExcelFileRowsAreCorrectlyAdded() throws Exception {
-        //Given
-        final ArrayList<Enhet> enhets = new ArrayList<>();
-        enhets.add(new Enhet(new HsaIdVardgivare(""), new HsaIdEnhet("id1"), "name1", "", "", "", "veid1"));
-        enhets.add(new Enhet(new HsaIdVardgivare(""), new HsaIdEnhet("id43"), "name fdsa wqer5", "", "", "", "veid2"));
-        enhets.add(new Enhet(new HsaIdVardgivare(""), new HsaIdEnhet("id6"), "farsrG", "", "", "", "veid3"));
-        enhets.add(new Enhet(new HsaIdVardgivare(""), new HsaIdEnhet("id123445"), "VrVRwr", "", "", "", "veid4"));
-
-        //When
-        final ByteArrayOutputStream outputStream = new RegionFileWriter().generateExcelFile(enhets);
-
-        //Then
-        final byte[] bytes = outputStream.toByteArray();
-        final ByteArrayInputStream is = new ByteArrayInputStream(bytes);
-        Workbook workbook = new XSSFWorkbook(is);
-        final Sheet sheet = workbook.getSheetAt(0);
-        for (int i = 0; i < enhets.size(); i++) {
-            final Enhet enhet = enhets.get(i);
-            final Row row = sheet.getRow(i + 1);
-            assertEquals(enhet.getNamn(), row.getCell(0, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue());
-            assertEquals(enhet.getEnhetId().getId(), row.getCell(1, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue());
-            assertNull(row.getCell(2, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL));
-        }
-    }
-
+  }
 }

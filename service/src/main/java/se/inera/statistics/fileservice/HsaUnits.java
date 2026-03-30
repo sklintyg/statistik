@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,30 +25,23 @@ import jakarta.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(
-    name = "HsaUnits",
-    namespace = "urn:riv:hsa:HsaWsResponder:3"
-)
+@XmlType(name = "HsaUnits", namespace = "urn:riv:hsa:HsaWsResponder:3")
 public class HsaUnits {
 
-    @XmlElement(
-        namespace = "urn:riv:hsa:HsaWsResponder:3"
-    )
-    private ArrayList<HsaUnit> hsaUnit = new ArrayList<>();
+  @XmlElement(namespace = "urn:riv:hsa:HsaWsResponder:3")
+  private ArrayList<HsaUnit> hsaUnit = new ArrayList<>();
 
-    public HsaUnits() {
-    }
+  public HsaUnits() {}
 
-    public HsaUnits(ArrayList<HsaUnit> hsaUnit) {
-        this.hsaUnit = hsaUnit;
-    }
+  public HsaUnits(ArrayList<HsaUnit> hsaUnit) {
+    this.hsaUnit = hsaUnit;
+  }
 
-    public ArrayList<HsaUnit> getHsaUnit() {
-        return hsaUnit;
-    }
+  public ArrayList<HsaUnit> getHsaUnit() {
+    return hsaUnit;
+  }
 
-    public void setHsaUnit(ArrayList<HsaUnit> hsaUnit) {
-        this.hsaUnit = hsaUnit;
-    }
-
+  public void setHsaUnit(ArrayList<HsaUnit> hsaUnit) {
+    this.hsaUnit = hsaUnit;
+  }
 }

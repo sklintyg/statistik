@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,50 +25,49 @@ import se.inera.statistics.service.report.model.Kon;
 
 public class Lakare implements Serializable {
 
-    private static final long serialVersionUID = -3030152743446943570L;
-    private HsaIdLakare id;
-    private Kon kon;
-    private int age;
-    private int[] befattnings;
+  private static final long serialVersionUID = -3030152743446943570L;
+  private HsaIdLakare id;
+  private Kon kon;
+  private int age;
+  private int[] befattnings;
 
-    public Lakare(HsaIdLakare lakareId, Kon kon, int age, int[] befattnings) {
-        this.id = lakareId;
-        this.kon = kon;
-        this.age = age;
-        this.befattnings = befattnings;
+  public Lakare(HsaIdLakare lakareId, Kon kon, int age, int[] befattnings) {
+    this.id = lakareId;
+    this.kon = kon;
+    this.age = age;
+    this.befattnings = befattnings;
+  }
+
+  public HsaIdLakare getId() {
+    return id;
+  }
+
+  public Kon getKon() {
+    return kon;
+  }
+
+  public int getAge() {
+    return age;
+  }
+
+  public int[] getBefattnings() {
+    return befattnings;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
-
-    public HsaIdLakare getId() {
-        return id;
+    if (o == null || !(o instanceof Lakare)) {
+      return false;
     }
+    Lakare lakare = (Lakare) o;
+    return Objects.equals(id, lakare.id);
+  }
 
-    public Kon getKon() {
-        return kon;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public int[] getBefattnings() {
-        return befattnings;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || !(o instanceof Lakare)) {
-            return false;
-        }
-        Lakare lakare = (Lakare) o;
-        return Objects.equals(id, lakare.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
 }

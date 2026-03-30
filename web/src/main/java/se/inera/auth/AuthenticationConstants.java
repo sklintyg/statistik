@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -19,11 +19,11 @@
 package se.inera.auth;
 
 public final class AuthenticationConstants {
-    
-    public static final String EMPLOYEE_HSA_ID = "http://sambi.se/attributes/1/employeeHsaId";
-    public static final String RELYING_PARTY_REGISTRATION_ID = "siths";
 
-    private AuthenticationConstants() {
-        throw new IllegalStateException("Utility class!");
-    }
+  public static final String EMPLOYEE_HSA_ID = "http://sambi.se/attributes/1/employeeHsaId";
+  public static final String RELYING_PARTY_REGISTRATION_ID = "siths";
+
+  private AuthenticationConstants() {
+    throw new IllegalStateException("Utility class!");
+  }
 }

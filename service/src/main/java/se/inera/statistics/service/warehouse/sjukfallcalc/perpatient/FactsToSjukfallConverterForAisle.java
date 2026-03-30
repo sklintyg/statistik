@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -27,27 +27,29 @@ import se.inera.statistics.service.warehouse.SjukfallExtended;
 
 public class FactsToSjukfallConverterForAisle {
 
-    private final List<Fact> aisle;
-    private final FactsToSjukfallConverter factsToSjukfallConverter;
-    private ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatientInAisle;
+  private final List<Fact> aisle;
+  private final FactsToSjukfallConverter factsToSjukfallConverter;
+  private ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatientInAisle;
 
-    public FactsToSjukfallConverterForAisle(List<Fact> aisle, FactsToSjukfallConverter factsToSjukfallConverter) {
-        this.aisle = aisle;
-        this.factsToSjukfallConverter = factsToSjukfallConverter;
+  public FactsToSjukfallConverterForAisle(
+      List<Fact> aisle, FactsToSjukfallConverter factsToSjukfallConverter) {
+    this.aisle = aisle;
+    this.factsToSjukfallConverter = factsToSjukfallConverter;
+  }
+
+  public ArrayListMultimap<Long, SjukfallExtended> getSjukfallsPerPatient(Set<Long> patients) {
+    if (sjukfallsPerPatientInAisle == null) {
+      sjukfallsPerPatientInAisle = factsToSjukfallConverter.getSjukfallsPerPatient(aisle, patients);
+      return sjukfallsPerPatientInAisle;
     }
-
-    public ArrayListMultimap<Long, SjukfallExtended> getSjukfallsPerPatient(Set<Long> patients) {
-        if (sjukfallsPerPatientInAisle == null) {
-            sjukfallsPerPatientInAisle = factsToSjukfallConverter.getSjukfallsPerPatient(aisle, patients);
-            return sjukfallsPerPatientInAisle;
-        }
-        final List<Long> nonCachedPatients = patients.stream()
+    final List<Long> nonCachedPatients =
+        patients.stream()
             .filter(aLong -> !sjukfallsPerPatientInAisle.containsKey(aLong))
             .collect(Collectors.toList());
-        if (!nonCachedPatients.isEmpty()) {
-            sjukfallsPerPatientInAisle.putAll(factsToSjukfallConverter.getSjukfallsPerPatient(aisle, nonCachedPatients));
-        }
-        return sjukfallsPerPatientInAisle;
+    if (!nonCachedPatients.isEmpty()) {
+      sjukfallsPerPatientInAisle.putAll(
+          factsToSjukfallConverter.getSjukfallsPerPatient(aisle, nonCachedPatients));
     }
-
+    return sjukfallsPerPatientInAisle;
+  }
 }

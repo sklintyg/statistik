@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,30 +22,30 @@ import java.time.LocalDate;
 
 public class Arbetsnedsattning {
 
-    private static final int MAX_NEDSATTNING = 100;
-    private final int nedsattning;
-    private final LocalDate start;
-    private final LocalDate slut;
+  private static final int MAX_NEDSATTNING = 100;
+  private final int nedsattning;
+  private final LocalDate start;
+  private final LocalDate slut;
 
-    public Arbetsnedsattning(int nedsattning, LocalDate start, LocalDate slut) {
-        this.nedsattning = nedsattning;
-        this.start = start;
-        this.slut = slut;
-    }
+  public Arbetsnedsattning(int nedsattning, LocalDate start, LocalDate slut) {
+    this.nedsattning = nedsattning;
+    this.start = start;
+    this.slut = slut;
+  }
 
-    public int getNedsattning() {
-        return nedsattning;
-    }
+  public int getNedsattning() {
+    return nedsattning;
+  }
 
-    public int getSysselsattningsgrad() {
-        return MAX_NEDSATTNING - nedsattning;
-    }
+  public int getSysselsattningsgrad() {
+    return MAX_NEDSATTNING - nedsattning;
+  }
 
-    public LocalDate getStart() {
-        return start;
-    }
+  public LocalDate getStart() {
+    return start;
+  }
 
-    public LocalDate getSlut() {
-        return slut;
-    }
+  public LocalDate getSlut() {
+    return slut;
+  }
 }

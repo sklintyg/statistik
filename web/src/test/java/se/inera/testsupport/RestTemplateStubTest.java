@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,8 +20,8 @@ package se.inera.testsupport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
@@ -29,21 +29,18 @@ import se.inera.statistics.web.util.SpyableClock;
 
 public class RestTemplateStubTest {
 
-    @Spy
-    private SpyableClock clock = new SpyableClock();
+  @Spy private SpyableClock clock = new SpyableClock();
 
-    @InjectMocks
-    private RestTemplateStub restTemplateStub;
+  @InjectMocks private RestTemplateStub restTemplateStub;
 
-    @BeforeEach
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        restTemplateStub.restTemplateStubPostConstruct();
-    }
+  @BeforeEach
+  public void setUp() throws Exception {
+    MockitoAnnotations.initMocks(this);
+    restTemplateStub.restTemplateStubPostConstruct();
+  }
 
-    @Test
-    public void testCountyPopulationIsPopulatedCorrectlyAtCreation() throws Exception {
-        assertEquals(11, restTemplateStub.getCountyPopulationPerYear().size());
-    }
-
+  @Test
+  public void testCountyPopulationIsPopulatedCorrectlyAtCreation() throws Exception {
+    assertEquals(11, restTemplateStub.getCountyPopulationPerYear().size());
+  }
 }

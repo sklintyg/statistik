@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -32,42 +32,47 @@ import se.inera.statistics.service.warehouse.sjukfallcalc.perpatient.FactsToSjuk
 
 class SjukfallCalculatorExtender {
 
-    private final SjukfallMerger sjukfallMerger;
-    private final FactsToSjukfallConverterForAisle factsToSjukfallConverterForAisle;
+  private final SjukfallMerger sjukfallMerger;
+  private final FactsToSjukfallConverterForAisle factsToSjukfallConverterForAisle;
 
-    SjukfallCalculatorExtender(List<Fact> aisle) {
-        factsToSjukfallConverterForAisle = new FactsToSjukfallConverterForAisle(aisle, new FactsToSjukfallConverter());
-        sjukfallMerger = new SjukfallMerger(aisle);
+  SjukfallCalculatorExtender(List<Fact> aisle) {
+    factsToSjukfallConverterForAisle =
+        new FactsToSjukfallConverterForAisle(aisle, new FactsToSjukfallConverter());
+    sjukfallMerger = new SjukfallMerger(aisle);
+  }
+
+  void extendSjukfallConnectedByIntygOnOtherEnhets(
+      Multimap<Long, SjukfallExtended> sjukfallForAvailableEnhets) {
+    final Set<Long> patients = new HashSet<>(sjukfallForAvailableEnhets.keySet());
+    final ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient =
+        factsToSjukfallConverterForAisle.getSjukfallsPerPatient(patients);
+    for (long patient : patients) {
+      extendSjukfallConnectedByIntygOnOtherEnhetsForPatientIfNeeded(
+          sjukfallForAvailableEnhets, sjukfallsPerPatient, patient);
     }
+  }
 
-    void extendSjukfallConnectedByIntygOnOtherEnhets(Multimap<Long, SjukfallExtended> sjukfallForAvailableEnhets) {
-        final Set<Long> patients = new HashSet<>(sjukfallForAvailableEnhets.keySet());
-        final ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient = factsToSjukfallConverterForAisle
-            .getSjukfallsPerPatient(patients);
-        for (long patient : patients) {
-            extendSjukfallConnectedByIntygOnOtherEnhetsForPatientIfNeeded(sjukfallForAvailableEnhets, sjukfallsPerPatient, patient);
-        }
+  private void extendSjukfallConnectedByIntygOnOtherEnhetsForPatientIfNeeded(
+      Multimap<Long, SjukfallExtended> sjukfallForAvailableEnhets,
+      ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient,
+      long patient) {
+    final Collection<SjukfallExtended> sjukfalls = sjukfallForAvailableEnhets.get(patient);
+    Collection<SjukfallExtended> sjukfallFromAllIntygForPatient = sjukfallsPerPatient.get(patient);
+    final boolean noExtraSjukfallExistsOnOtherEnhet =
+        countFacts(sjukfalls) == countFacts(sjukfallFromAllIntygForPatient);
+    if (noExtraSjukfallExistsOnOtherEnhet) {
+      return; // All intygs for patient are already included
     }
-
-    private void extendSjukfallConnectedByIntygOnOtherEnhetsForPatientIfNeeded(Multimap<Long, SjukfallExtended> sjukfallForAvailableEnhets,
-        ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient, long patient) {
-        final Collection<SjukfallExtended> sjukfalls = sjukfallForAvailableEnhets.get(patient);
-        Collection<SjukfallExtended> sjukfallFromAllIntygForPatient = sjukfallsPerPatient.get(patient);
-        final boolean noExtraSjukfallExistsOnOtherEnhet = countFacts(sjukfalls) == countFacts(sjukfallFromAllIntygForPatient);
-        if (noExtraSjukfallExistsOnOtherEnhet) {
-            return; // All intygs for patient are already included
-        }
-        for (SjukfallExtended sjukfallFromAllVgForPatient : sjukfallFromAllIntygForPatient) {
-            sjukfallMerger.mergeAndUpdateSjukfall(patient, sjukfalls, sjukfallFromAllVgForPatient);
-        }
+    for (SjukfallExtended sjukfallFromAllVgForPatient : sjukfallFromAllIntygForPatient) {
+      sjukfallMerger.mergeAndUpdateSjukfall(patient, sjukfalls, sjukfallFromAllVgForPatient);
     }
+  }
 
-    private int countFacts(Collection<SjukfallExtended> sjukfalls) {
-        int counter = 0;
-        for (SjukfallExtended sjukfall : sjukfalls) {
-            counter += sjukfall.getFactCount();
-        }
-        return counter;
+  private int countFacts(Collection<SjukfallExtended> sjukfalls) {
+    int counter = 0;
+    for (SjukfallExtended sjukfall : sjukfalls) {
+      counter += sjukfall.getFactCount();
     }
-
+    return counter;
+  }
 }

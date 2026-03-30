@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -28,27 +28,37 @@ import se.inera.statistics.service.processlog.message.MessageLogConsumer;
 
 public class LogJobTest {
 
-    @Test
-    public void testCheckLogContinueProcessingUntilDone() {
-        //Given
-        MonitoringLogService monitoringLogService = Mockito.mock(MonitoringLogService.class);
-        LogConsumer logConsumer = Mockito.mock(LogConsumer.class);
-        IntygsentLogConsumer intygsentLogConsumer = Mockito.mock(IntygsentLogConsumer.class);
-        MessageLogConsumer messageLogConsumer = Mockito.mock(MessageLogConsumer.class);
-        final var mdcHelper = new MdcHelper();
+  @Test
+  public void testCheckLogContinueProcessingUntilDone() {
+    // Given
+    MonitoringLogService monitoringLogService = Mockito.mock(MonitoringLogService.class);
+    LogConsumer logConsumer = Mockito.mock(LogConsumer.class);
+    IntygsentLogConsumer intygsentLogConsumer = Mockito.mock(IntygsentLogConsumer.class);
+    MessageLogConsumer messageLogConsumer = Mockito.mock(MessageLogConsumer.class);
+    final var mdcHelper = new MdcHelper();
 
-        Mockito.when(logConsumer.processBatch()).thenReturn(100).thenReturn(0);
-        Mockito.when(intygsentLogConsumer.processBatch()).thenReturn(100).thenReturn(100).thenReturn(100).thenReturn(100).thenReturn(0);
-        Mockito.when(messageLogConsumer.processBatch(Mockito.anyLong())).thenReturn(100L).thenReturn(101L).thenReturn(101L);
+    Mockito.when(logConsumer.processBatch()).thenReturn(100).thenReturn(0);
+    Mockito.when(intygsentLogConsumer.processBatch())
+        .thenReturn(100)
+        .thenReturn(100)
+        .thenReturn(100)
+        .thenReturn(100)
+        .thenReturn(0);
+    Mockito.when(messageLogConsumer.processBatch(Mockito.anyLong()))
+        .thenReturn(100L)
+        .thenReturn(101L)
+        .thenReturn(101L);
 
-        final LogJob logJob = new LogJob(monitoringLogService, logConsumer, intygsentLogConsumer, messageLogConsumer, mdcHelper);
+    final LogJob logJob =
+        new LogJob(
+            monitoringLogService, logConsumer, intygsentLogConsumer, messageLogConsumer, mdcHelper);
 
-        //When
-        logJob.run();
+    // When
+    logJob.run();
 
-        //Then
-        Mockito.verify(logConsumer, Mockito.times(2)).processBatch();
-        Mockito.verify(intygsentLogConsumer, Mockito.times(5)).processBatch();
-        Mockito.verify(messageLogConsumer, Mockito.times(3)).processBatch(Mockito.anyLong());
-    }
+    // Then
+    Mockito.verify(logConsumer, Mockito.times(2)).processBatch();
+    Mockito.verify(intygsentLogConsumer, Mockito.times(5)).processBatch();
+    Mockito.verify(messageLogConsumer, Mockito.times(3)).processBatch(Mockito.anyLong());
+  }
 }

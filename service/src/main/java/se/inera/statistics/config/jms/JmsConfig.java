@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -17,7 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package se.inera.statistics.config.jms;
-
 
 import jakarta.jms.ConnectionFactory;
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -37,47 +36,48 @@ import org.springframework.jms.support.destination.DynamicDestinationResolver;
 @EnableJms
 public class JmsConfig {
 
-    @Value("${activemq.broker.url}")
-    private String brokerUrl;
+  @Value("${activemq.broker.url}")
+  private String brokerUrl;
 
-    @Value("${activemq.broker.username}")
-    private String brokerUsername;
+  @Value("${activemq.broker.username}")
+  private String brokerUsername;
 
-    @Value("${activemq.broker.password}")
-    private String brokerPassword;
+  @Value("${activemq.broker.password}")
+  private String brokerPassword;
 
-    @Value("${activemq.receiver.queue.name}")
-    private String queueName;
+  @Value("${activemq.receiver.queue.name}")
+  private String queueName;
 
-    @Bean
-    public JmsListenerContainerFactory jmsListenerContainerFactory() {
-        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-        factory.setConnectionFactory(connectionFactory());
-        factory.setDestinationResolver(destinationResolver());
-        factory.setSessionTransacted(true);
-        factory.setTransactionManager(jmsTransactionManager());
-        factory.setCacheLevelName("CACHE_CONNECTION");
-        factory.setConcurrency("1-10");
-        return factory;
-    }
+  @Bean
+  public JmsListenerContainerFactory jmsListenerContainerFactory() {
+    DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+    factory.setConnectionFactory(connectionFactory());
+    factory.setDestinationResolver(destinationResolver());
+    factory.setSessionTransacted(true);
+    factory.setTransactionManager(jmsTransactionManager());
+    factory.setCacheLevelName("CACHE_CONNECTION");
+    factory.setConcurrency("1-10");
+    return factory;
+  }
 
-    @Bean
-    public DestinationResolver destinationResolver() {
-        return new DynamicDestinationResolver();
-    }
+  @Bean
+  public DestinationResolver destinationResolver() {
+    return new DynamicDestinationResolver();
+  }
 
-    @Bean
-    public JmsTransactionManager jmsTransactionManager() {
-        return new JmsTransactionManager(connectionFactory());
-    }
+  @Bean
+  public JmsTransactionManager jmsTransactionManager() {
+    return new JmsTransactionManager(connectionFactory());
+  }
 
-    @Bean
-    public ConnectionFactory connectionFactory() {
-        return new PooledConnectionFactory(new ActiveMQConnectionFactory(brokerUsername, brokerPassword, brokerUrl));
-    }
+  @Bean
+  public ConnectionFactory connectionFactory() {
+    return new PooledConnectionFactory(
+        new ActiveMQConnectionFactory(brokerUsername, brokerPassword, brokerUrl));
+  }
 
-    @Bean
-    public JmsTemplate jmsTemplate(ConnectionFactory connectionFactory) {
-        return new JmsTemplate(connectionFactory);
-    }
+  @Bean
+  public JmsTemplate jmsTemplate(ConnectionFactory connectionFactory) {
+    return new JmsTemplate(connectionFactory);
+  }
 }

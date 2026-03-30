@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,80 +25,77 @@ import java.time.ZoneId;
 import java.util.Objects;
 
 /**
- * This clock is used as a substitute to JodaTime's DateTimeUtils.setCurrent*** which is used
- * in testing to get the system to a known date.
- * It should therefore be injected and included in all calls to JavaTime.now() methods.
+ * This clock is used as a substitute to JodaTime's DateTimeUtils.setCurrent*** which is used in
+ * testing to get the system to a known date. It should therefore be injected and included in all
+ * calls to JavaTime.now() methods.
  */
 public final class ChangableClock extends Clock implements Serializable {
 
-    private static final long serialVersionUID = 1;
+  private static final long serialVersionUID = 1;
 
-    private Clock currentClock;
-    private final boolean changable;
+  private Clock currentClock;
+  private final boolean changable;
 
-    private ChangableClock(Clock currentClock, boolean changable) {
-        Objects.requireNonNull(currentClock, "currentClock");
-        this.currentClock = currentClock;
-        this.changable = changable;
+  private ChangableClock(Clock currentClock, boolean changable) {
+    Objects.requireNonNull(currentClock, "currentClock");
+    this.currentClock = currentClock;
+    this.changable = changable;
+  }
+
+  /** To be used when creating a clock instance that should be possible to change. */
+  public static ChangableClock newChangable() {
+    return new ChangableClock(Clock.system(ZoneId.systemDefault()), true);
+  }
+
+  /**
+   * Change the underlying clock.
+   *
+   * @param currentClock The new underlying clock
+   */
+  public void setCurrentClock(Clock currentClock) {
+    if (!changable) {
+      throw new IllegalStateException("ChangableClock is not changable");
     }
+    this.currentClock = currentClock;
+  }
 
-    /**
-     * To be used when creating a clock instance that should be possible to change.
-     */
-    public static ChangableClock newChangable() {
-        return new ChangableClock(Clock.system(ZoneId.systemDefault()), true);
+  @Override
+  public ZoneId getZone() {
+    return currentClock.getZone();
+  }
+
+  @Override
+  public Clock withZone(ZoneId zone) {
+    return currentClock.withZone(zone);
+  }
+
+  @Override
+  public Instant instant() {
+    return currentClock.instant();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
-
-    /**
-     * Change the underlying clock.
-     *
-     * @param currentClock The new underlying clock
-     */
-    public void setCurrentClock(Clock currentClock) {
-        if (!changable) {
-            throw new IllegalStateException("ChangableClock is not changable");
-        }
-        this.currentClock = currentClock;
+    if (o == null || getClass() != o.getClass()) {
+      return false;
     }
-
-    @Override
-    public ZoneId getZone() {
-        return currentClock.getZone();
+    if (!super.equals(o)) {
+      return false;
     }
+    ChangableClock that = (ChangableClock) o;
+    return com.google.common.base.Objects.equal(currentClock, that.currentClock);
+  }
 
-    @Override
-    public Clock withZone(ZoneId zone) {
-        return currentClock.withZone(zone);
-    }
+  @Override
+  public int hashCode() {
+    return com.google.common.base.Objects.hashCode(super.hashCode(), currentClock);
+  }
 
-    @Override
-    public Instant instant() {
-        return currentClock.instant();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
-        ChangableClock that = (ChangableClock) o;
-        return com.google.common.base.Objects.equal(currentClock, that.currentClock);
-    }
-
-    @Override
-    public int hashCode() {
-        return com.google.common.base.Objects.hashCode(super.hashCode(), currentClock);
-    }
-
-    @Override
-    public String toString() {
-        return "ChangableClock:" + currentClock.toString();
-    }
-
+  @Override
+  public String toString() {
+    return "ChangableClock:" + currentClock.toString();
+  }
 }

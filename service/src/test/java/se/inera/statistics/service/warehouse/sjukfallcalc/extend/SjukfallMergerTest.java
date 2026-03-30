@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -28,48 +28,50 @@ import se.inera.statistics.service.warehouse.SjukfallExtended;
 
 public class SjukfallMergerTest {
 
-    @Test
-    public void testMergeAndUpdateSjukfallEmptyInput() throws Exception {
-        //Given
-        final ArrayList<Fact> aisle = new ArrayList<>();
-        final long patient = 1L;
-        final ArrayList<SjukfallExtended> sjukfallsFromAvailableEnhetsForPatient = new ArrayList<>();
-        final SjukfallExtended sjukfallFromAllVgForPatient = new SjukfallExtended(createFact(1, 2));
+  @Test
+  public void testMergeAndUpdateSjukfallEmptyInput() throws Exception {
+    // Given
+    final ArrayList<Fact> aisle = new ArrayList<>();
+    final long patient = 1L;
+    final ArrayList<SjukfallExtended> sjukfallsFromAvailableEnhetsForPatient = new ArrayList<>();
+    final SjukfallExtended sjukfallFromAllVgForPatient = new SjukfallExtended(createFact(1, 2));
 
-        //When
-        final SjukfallMerger sjukfallMerger = new SjukfallMerger(aisle);
-        sjukfallMerger.mergeAndUpdateSjukfall(patient, sjukfallsFromAvailableEnhetsForPatient, sjukfallFromAllVgForPatient);
+    // When
+    final SjukfallMerger sjukfallMerger = new SjukfallMerger(aisle);
+    sjukfallMerger.mergeAndUpdateSjukfall(
+        patient, sjukfallsFromAvailableEnhetsForPatient, sjukfallFromAllVgForPatient);
 
-        //Then
-        assertEquals(0, sjukfallsFromAvailableEnhetsForPatient.size());
-    }
+    // Then
+    assertEquals(0, sjukfallsFromAvailableEnhetsForPatient.size());
+  }
 
-    @Test
-    public void testMergeAndUpdateSjukfall() throws Exception {
-        //Given
-        final ArrayList<Fact> aisle = new ArrayList<>();
-        aisle.add(createFact(1, 9));
-        final long patient = 1L;
-        final ArrayList<SjukfallExtended> sjukfallsFromAvailableEnhetsForPatient = new ArrayList<>();
-        sjukfallsFromAvailableEnhetsForPatient.add(new SjukfallExtended(createFact(10, 20)));
-        sjukfallsFromAvailableEnhetsForPatient.add(new SjukfallExtended(createFact(50, 60)));
-        final SjukfallExtended unchangedSjukfall = new SjukfallExtended(createFact(61, 70));
-        sjukfallsFromAvailableEnhetsForPatient.add(unchangedSjukfall);
-        final SjukfallExtended sjukfallFromAllVgForPatient = new SjukfallExtended(createFact(10, 60));
+  @Test
+  public void testMergeAndUpdateSjukfall() throws Exception {
+    // Given
+    final ArrayList<Fact> aisle = new ArrayList<>();
+    aisle.add(createFact(1, 9));
+    final long patient = 1L;
+    final ArrayList<SjukfallExtended> sjukfallsFromAvailableEnhetsForPatient = new ArrayList<>();
+    sjukfallsFromAvailableEnhetsForPatient.add(new SjukfallExtended(createFact(10, 20)));
+    sjukfallsFromAvailableEnhetsForPatient.add(new SjukfallExtended(createFact(50, 60)));
+    final SjukfallExtended unchangedSjukfall = new SjukfallExtended(createFact(61, 70));
+    sjukfallsFromAvailableEnhetsForPatient.add(unchangedSjukfall);
+    final SjukfallExtended sjukfallFromAllVgForPatient = new SjukfallExtended(createFact(10, 60));
 
-        //When
-        final SjukfallMerger sjukfallMerger = new SjukfallMerger(aisle);
-        sjukfallMerger.mergeAndUpdateSjukfall(patient, sjukfallsFromAvailableEnhetsForPatient, sjukfallFromAllVgForPatient);
+    // When
+    final SjukfallMerger sjukfallMerger = new SjukfallMerger(aisle);
+    sjukfallMerger.mergeAndUpdateSjukfall(
+        patient, sjukfallsFromAvailableEnhetsForPatient, sjukfallFromAllVgForPatient);
 
-        //Then
-        assertEquals(2, sjukfallsFromAvailableEnhetsForPatient.size());
-        assertEquals(unchangedSjukfall, sjukfallsFromAvailableEnhetsForPatient.get(0));
-        assertEquals(1, sjukfallsFromAvailableEnhetsForPatient.get(1).getStart());
-        assertEquals(60, sjukfallsFromAvailableEnhetsForPatient.get(1).getEnd());
-    }
+    // Then
+    assertEquals(2, sjukfallsFromAvailableEnhetsForPatient.size());
+    assertEquals(unchangedSjukfall, sjukfallsFromAvailableEnhetsForPatient.get(0));
+    assertEquals(1, sjukfallsFromAvailableEnhetsForPatient.get(1).getStart());
+    assertEquals(60, sjukfallsFromAvailableEnhetsForPatient.get(1).getEnd());
+  }
 
-    private Fact createFact(int startdatum, int slutdatum) {
-        return FactBuilder.newFact(1L, 1, 1, 1, 1, 1, 1, 1, startdatum, slutdatum, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
-    }
-
+  private Fact createFact(int startdatum, int slutdatum) {
+    return FactBuilder.newFact(
+        1L, 1, 1, 1, 1, 1, 1, 1, startdatum, slutdatum, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1);
+  }
 }

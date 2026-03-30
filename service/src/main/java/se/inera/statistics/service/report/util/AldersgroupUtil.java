@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,17 +25,19 @@ import java.util.stream.Collectors;
 
 public final class AldersgroupUtil {
 
-    public static final Ranges RANGES = new Ranges(Arrays.stream(AgeGroup.values())
-        .map(group -> range(group.getGroupName(), group.getTo() + 1, group.getColor()))
-        .collect(Collectors.toList())
-        .toArray(new Ranges.Range[0]));
+  public static final Ranges RANGES =
+      new Ranges(
+          Arrays.stream(AgeGroup.values())
+              .map(group -> range(group.getGroupName(), group.getTo() + 1, group.getColor()))
+              .collect(Collectors.toList())
+              .toArray(new Ranges.Range[0]));
 
-    public static final Ranges OVERVIEW_RANGES = new Ranges(Arrays.stream(OverviewAgeGroup.values())
-        .map(group -> range(group.getGroupName(), group.getTo() + 1, group.getColor()))
-        .collect(Collectors.toList())
-        .toArray(new Ranges.Range[0]));
+  public static final Ranges OVERVIEW_RANGES =
+      new Ranges(
+          Arrays.stream(OverviewAgeGroup.values())
+              .map(group -> range(group.getGroupName(), group.getTo() + 1, group.getColor()))
+              .collect(Collectors.toList())
+              .toArray(new Ranges.Range[0]));
 
-    private AldersgroupUtil() {
-    }
-
+  private AldersgroupUtil() {}
 }

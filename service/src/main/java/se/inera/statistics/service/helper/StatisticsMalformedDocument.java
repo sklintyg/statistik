@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -20,9 +20,9 @@ package se.inera.statistics.service.helper;
 
 public class StatisticsMalformedDocument extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    public StatisticsMalformedDocument(String message, Throwable e) {
-        super(message, e);
-    }
+  public StatisticsMalformedDocument(String message, Throwable e) {
+    super(message, e);
+  }
 }

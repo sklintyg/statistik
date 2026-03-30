@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -25,56 +25,54 @@ import org.junit.Test;
 
 public class UpdateEnhetNamnFromHsaFileServiceSimpleTest {
 
-    @Test
-    public void testUnmarshalXml() {
-        final String in = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
-            "<FileGetHsaUnitsResponse xmlns=\"urn:riv:hsa:HsaWsResponder:3\">\n" +
-            "    <startDate>2017-12-12T01:04:02.873+01:00</startDate>\n" +
-            "    <endDate>2017-12-12T01:28:36.546+01:00</endDate>\n" +
-            "    <hsaUnits>\n" +
-            "        <hsaUnit>\n" +
-            "            <hsaIdentity>SE2120001231-01F8KO</hsaIdentity>\n" +
-            "            <DN>ou=Hjortsberg,ou=Aleris Omsorg AB,ou=Entreprenader,o=Falkenbergs kommun,l=Hallands län,c=SE</DN>\n" +
-            "            <orgNo>556334-1659</orgNo>\n" +
-            "            <name>Hjortsberg</name>\n" +
-            "            <publicName>Hjortsberg</publicName>\n" +
-            "        </hsaUnit>\n" +
-            "        <hsaUnit>\n" +
-            "            <hsaIdentity>SE2120001231-01BEKO</hsaIdentity>\n" +
-            "            <DN>ou=Hjortsberg - Havsviken,ou=Hjortsberg,ou=Aleris Omsorg AB,ou=Entreprenader,o=Falkenbergs kommun,l=Hallands län,c=SE</DN>\n"
-            +
-            "            <orgNo>556334-1659</orgNo>\n" +
-            "            <name>Hjortsberg - Havsviken</name>\n" +
-            "            <publicName>Hjortsberg - Havsviken</publicName>\n" +
-            "        </hsaUnit>\n" +
-            "        <hsaUnit>\n" +
-            "            <hsaIdentity>SE2120001231-00FBKO</hsaIdentity>\n" +
-            "            <DN>ou=Hjortsberg - Lerbäcken,ou=Hjortsberg,ou=Aleris Omsorg AB,ou=Entreprenader,o=Falkenbergs kommun,l=Hallands län,c=SE</DN>\n"
-            +
-            "            <orgNo>556334-1659</orgNo>\n" +
-            "            <name>Hjortsberg - Lerbäcken</name>\n" +
-            "            <publicName>Hjortsberg - Lerbäcken</publicName>\n" +
-            "        </hsaUnit>\n" +
-            "        <hsaUnit>\n" +
-            "            <hsaIdentity>SE2120001231-0090KO</hsaIdentity>\n" +
-            "            <DN>ou=Hjortsberg - Ljungheden,ou=Hjortsberg,ou=Aleris Omsorg AB,ou=Entreprenader,o=Falkenbergs kommun,l=Hallands län,c=SE</DN>\n"
-            +
-            "            <name>Hjortsberg - Ljungheden</name>\n" +
-            "            <publicName>Hjortsberg - Ljungheden</publicName>\n" +
-            "        </hsaUnit>\n" +
-            "        <hsaUnit>\n" +
-            "            <hsaIdentity>SE2120001231-00F1KO</hsaIdentity>\n" +
-            "            <DN>ou=Furugården,ou=Aleris Omsorg AB,ou=Entreprenader,o=Falkenbergs kommun,l=Hallands län,c=SE</DN>\n" +
-            "            <orgNo>556334-1659</orgNo>\n" +
-            "            <name>Furugården</name>\n" +
-            "            <publicName>Furugården</publicName>\n" +
-            "        </hsaUnit>\n" +
-            "    </hsaUnits>\n" +
-            "</FileGetHsaUnitsResponse>\n";
-        final FileGetHsaUnitsResponse resp = UpdateEnhetNamnFromHsaFileService.unmarshalXml(new ByteArrayInputStream(in.getBytes()));
-        assertEquals(5, resp.getHsaUnits().getHsaUnit().size());
-        assertEquals("Furugården", resp.getHsaUnits().getHsaUnit().get(4).getName());
-        assertEquals("SE2120001231-00F1KO", resp.getHsaUnits().getHsaUnit().get(4).getHsaIdentity());
-    }
-
+  @Test
+  public void testUnmarshalXml() {
+    final String in =
+        "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n"
+            + "<FileGetHsaUnitsResponse xmlns=\"urn:riv:hsa:HsaWsResponder:3\">\n"
+            + "    <startDate>2017-12-12T01:04:02.873+01:00</startDate>\n"
+            + "    <endDate>2017-12-12T01:28:36.546+01:00</endDate>\n"
+            + "    <hsaUnits>\n"
+            + "        <hsaUnit>\n"
+            + "            <hsaIdentity>SE2120001231-01F8KO</hsaIdentity>\n"
+            + "            <DN>ou=Hjortsberg,ou=Aleris Omsorg AB,ou=Entreprenader,o=Falkenbergs kommun,l=Hallands län,c=SE</DN>\n"
+            + "            <orgNo>556334-1659</orgNo>\n"
+            + "            <name>Hjortsberg</name>\n"
+            + "            <publicName>Hjortsberg</publicName>\n"
+            + "        </hsaUnit>\n"
+            + "        <hsaUnit>\n"
+            + "            <hsaIdentity>SE2120001231-01BEKO</hsaIdentity>\n"
+            + "            <DN>ou=Hjortsberg - Havsviken,ou=Hjortsberg,ou=Aleris Omsorg AB,ou=Entreprenader,o=Falkenbergs kommun,l=Hallands län,c=SE</DN>\n"
+            + "            <orgNo>556334-1659</orgNo>\n"
+            + "            <name>Hjortsberg - Havsviken</name>\n"
+            + "            <publicName>Hjortsberg - Havsviken</publicName>\n"
+            + "        </hsaUnit>\n"
+            + "        <hsaUnit>\n"
+            + "            <hsaIdentity>SE2120001231-00FBKO</hsaIdentity>\n"
+            + "            <DN>ou=Hjortsberg - Lerbäcken,ou=Hjortsberg,ou=Aleris Omsorg AB,ou=Entreprenader,o=Falkenbergs kommun,l=Hallands län,c=SE</DN>\n"
+            + "            <orgNo>556334-1659</orgNo>\n"
+            + "            <name>Hjortsberg - Lerbäcken</name>\n"
+            + "            <publicName>Hjortsberg - Lerbäcken</publicName>\n"
+            + "        </hsaUnit>\n"
+            + "        <hsaUnit>\n"
+            + "            <hsaIdentity>SE2120001231-0090KO</hsaIdentity>\n"
+            + "            <DN>ou=Hjortsberg - Ljungheden,ou=Hjortsberg,ou=Aleris Omsorg AB,ou=Entreprenader,o=Falkenbergs kommun,l=Hallands län,c=SE</DN>\n"
+            + "            <name>Hjortsberg - Ljungheden</name>\n"
+            + "            <publicName>Hjortsberg - Ljungheden</publicName>\n"
+            + "        </hsaUnit>\n"
+            + "        <hsaUnit>\n"
+            + "            <hsaIdentity>SE2120001231-00F1KO</hsaIdentity>\n"
+            + "            <DN>ou=Furugården,ou=Aleris Omsorg AB,ou=Entreprenader,o=Falkenbergs kommun,l=Hallands län,c=SE</DN>\n"
+            + "            <orgNo>556334-1659</orgNo>\n"
+            + "            <name>Furugården</name>\n"
+            + "            <publicName>Furugården</publicName>\n"
+            + "        </hsaUnit>\n"
+            + "    </hsaUnits>\n"
+            + "</FileGetHsaUnitsResponse>\n";
+    final FileGetHsaUnitsResponse resp =
+        UpdateEnhetNamnFromHsaFileService.unmarshalXml(new ByteArrayInputStream(in.getBytes()));
+    assertEquals(5, resp.getHsaUnits().getHsaUnit().size());
+    assertEquals("Furugården", resp.getHsaUnits().getHsaUnit().get(4).getName());
+    assertEquals("SE2120001231-00F1KO", resp.getHsaUnits().getHsaUnit().get(4).getHsaIdentity());
+  }
 }

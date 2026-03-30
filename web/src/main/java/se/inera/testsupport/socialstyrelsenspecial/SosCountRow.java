@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -22,47 +22,51 @@ import java.util.Map;
 
 public class SosCountRow {
 
-    private String diagnos;
-    private Number totalt;
-    private Number kvinnor;
-    private Number man;
-    private Map<SjukfallsLangdGroupSos, Integer> malePerLength;
-    private Map<SjukfallsLangdGroupSos, Integer> femalePerLength;
+  private String diagnos;
+  private Number totalt;
+  private Number kvinnor;
+  private Number man;
+  private Map<SjukfallsLangdGroupSos, Integer> malePerLength;
+  private Map<SjukfallsLangdGroupSos, Integer> femalePerLength;
 
-    public SosCountRow(String diagnos, Number totalt, Number kvinnor, Number man,
-        Map<SjukfallsLangdGroupSos, Integer> malePerLength, Map<SjukfallsLangdGroupSos, Integer> femalePerLength) {
-        this.diagnos = diagnos;
-        this.totalt = totalt;
-        this.kvinnor = kvinnor;
-        this.man = man;
-        this.malePerLength = malePerLength;
-        this.femalePerLength = femalePerLength;
-    }
+  public SosCountRow(
+      String diagnos,
+      Number totalt,
+      Number kvinnor,
+      Number man,
+      Map<SjukfallsLangdGroupSos, Integer> malePerLength,
+      Map<SjukfallsLangdGroupSos, Integer> femalePerLength) {
+    this.diagnos = diagnos;
+    this.totalt = totalt;
+    this.kvinnor = kvinnor;
+    this.man = man;
+    this.malePerLength = malePerLength;
+    this.femalePerLength = femalePerLength;
+  }
 
-    public String getDiagnos() {
-        return diagnos;
-    }
+  public String getDiagnos() {
+    return diagnos;
+  }
 
-    public Number getTotalt() {
-        return totalt;
-    }
+  public Number getTotalt() {
+    return totalt;
+  }
 
-    public Number getKvinnor() {
-        return kvinnor;
-    }
+  public Number getKvinnor() {
+    return kvinnor;
+  }
 
-    public Number getMan() {
-        return man;
-    }
+  public Number getMan() {
+    return man;
+  }
 
-    public Integer getMaleByLength(SjukfallsLangdGroupSos length) {
-        final Integer count = malePerLength.get(length);
-        return count != null ? count : 0;
-    }
+  public Integer getMaleByLength(SjukfallsLangdGroupSos length) {
+    final Integer count = malePerLength.get(length);
+    return count != null ? count : 0;
+  }
 
-    public int getFemaleByLength(SjukfallsLangdGroupSos length) {
-        final Integer count = femalePerLength.get(length);
-        return count != null ? count : 0;
-    }
-
+  public int getFemaleByLength(SjukfallsLangdGroupSos length) {
+    final Integer count = femalePerLength.get(length);
+    return count != null ? count : 0;
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -35,54 +35,66 @@ import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMe
 @Component
 public class MessageWidelineManager {
 
-    private static final Logger LOG = LoggerFactory.getLogger(MessageWidelineManager.class);
+  private static final Logger LOG = LoggerFactory.getLogger(MessageWidelineManager.class);
 
-    private static int errCount;
+  private static int errCount;
 
-    @PersistenceContext(unitName = "IneraStatisticsLog")
-    private EntityManager manager;
+  @PersistenceContext(unitName = "IneraStatisticsLog")
+  private EntityManager manager;
 
-    @Autowired
-    private MessageWidelineConverter widelineConverter;
+  @Autowired private MessageWidelineConverter widelineConverter;
 
-    @Autowired
-    private ProcessMessageLog processMessageLog;
+  @Autowired private ProcessMessageLog processMessageLog;
 
-    private void persistIfValid(long logId, String meddelandeId, MessageWideLine line) {
-        List<String> errors = widelineConverter.validate(line);
+  private void persistIfValid(long logId, String meddelandeId, MessageWideLine line) {
+    List<String> errors = widelineConverter.validate(line);
 
-        if (errors.isEmpty()) {
-            saveWideline(line);
-            processMessageLog.setProcessed(logId);
-        } else {
-            processMessageLog.increaseNumberOfTries(logId);
+    if (errors.isEmpty()) {
+      saveWideline(line);
+      processMessageLog.setProcessed(logId);
+    } else {
+      processMessageLog.increaseNumberOfTries(logId);
 
-            StringBuilder errorString = new StringBuilder(
-                "Faulty meddelande logid " + logId + " id " + meddelandeId + " error count " + errCount);
+      StringBuilder errorString =
+          new StringBuilder(
+              "Faulty meddelande logid "
+                  + logId
+                  + " id "
+                  + meddelandeId
+                  + " error count "
+                  + errCount);
 
-            for (String error : errors) {
-                errorString.append("\n").append(error);
-            }
-            LOG.error(errorString.toString());
+      for (String error : errors) {
+        errorString.append("\n").append(error);
+      }
+      LOG.error(errorString.toString());
 
-            errCount++;
-        }
+      errCount++;
     }
+  }
 
-    @Transactional(noRollbackFor = Exception.class)
-    public void accept(SendMessageToCareType message, Patientdata patientdata, long logId, String messageId, MessageEventType type) {
-        MessageWideLine line = widelineConverter.toWideline(message, patientdata, logId, messageId, type);
+  @Transactional(noRollbackFor = Exception.class)
+  public void accept(
+      SendMessageToCareType message,
+      Patientdata patientdata,
+      long logId,
+      String messageId,
+      MessageEventType type) {
+    MessageWideLine line =
+        widelineConverter.toWideline(message, patientdata, logId, messageId, type);
 
-        persistIfValid(logId, messageId, line);
-    }
+    persistIfValid(logId, messageId, line);
+  }
 
-    @Transactional
-    public int count() {
-        return ((Long) manager.createQuery("SELECT COUNT (wl) FROM MessageWideLine wl").getSingleResult()).intValue();
-    }
+  @Transactional
+  public int count() {
+    return ((Long)
+            manager.createQuery("SELECT COUNT (wl) FROM MessageWideLine wl").getSingleResult())
+        .intValue();
+  }
 
-    @Transactional
-    public void saveWideline(MessageWideLine line) {
-        manager.persist(line);
-    }
+  @Transactional
+  public void saveWideline(MessageWideLine line) {
+    manager.persist(line);
+  }
 }

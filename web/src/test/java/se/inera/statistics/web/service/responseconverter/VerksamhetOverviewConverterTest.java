@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -38,103 +38,125 @@ import se.inera.statistics.web.service.dto.Filter;
 
 public class VerksamhetOverviewConverterTest {
 
-    private final Clock clock = Clock.systemDefaultZone();
+  private final Clock clock = Clock.systemDefaultZone();
 
-    // CHECKSTYLE:OFF MagicNumber
+  // CHECKSTYLE:OFF MagicNumber
 
-    @Test
-    public void converterTestEmpty() {
-        //Given
-        int casesPerMonthProportionMale = 0;
-        int casesPerMonthProportionFemale = 1;
-        OverviewKonsfordelning overviewKonsfordelning = new OverviewKonsfordelning(casesPerMonthProportionMale,
-            casesPerMonthProportionFemale, new Range(clock));
-        List<OverviewChartRowExtended> diagnosisGroups = new ArrayList<>();
-        List<OverviewChartRowExtended> ageGroups = new ArrayList<>();
-        List<OverviewChartRowExtended> degreeOfSickLeaveGroups = new ArrayList<>();
-        List<OverviewChartRow> sickLeaveLengthGroups = new ArrayList<>();
-        List<OverviewChartRowExtended> kompletteringar = new ArrayList<>();
-        int longSickLeavesTotal = 3;
-        int longSickLeavesAlternation = 4;
-        final int totalCases = 5;
+  @Test
+  public void converterTestEmpty() {
+    // Given
+    int casesPerMonthProportionMale = 0;
+    int casesPerMonthProportionFemale = 1;
+    OverviewKonsfordelning overviewKonsfordelning =
+        new OverviewKonsfordelning(
+            casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range(clock));
+    List<OverviewChartRowExtended> diagnosisGroups = new ArrayList<>();
+    List<OverviewChartRowExtended> ageGroups = new ArrayList<>();
+    List<OverviewChartRowExtended> degreeOfSickLeaveGroups = new ArrayList<>();
+    List<OverviewChartRow> sickLeaveLengthGroups = new ArrayList<>();
+    List<OverviewChartRowExtended> kompletteringar = new ArrayList<>();
+    int longSickLeavesTotal = 3;
+    int longSickLeavesAlternation = 4;
+    final int totalCases = 5;
 
-        //When
-        VerksamhetOverviewResponse resp = new VerksamhetOverviewResponse(AvailableFilters.getForSjukfall(), totalCases,
-            overviewKonsfordelning, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
-            sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation, kompletteringar);
-        VerksamhetOverviewData data = new VerksamhetOverviewConverter().convert(resp, new Range(clock), Filter.empty(), null);
+    // When
+    VerksamhetOverviewResponse resp =
+        new VerksamhetOverviewResponse(
+            AvailableFilters.getForSjukfall(),
+            totalCases,
+            overviewKonsfordelning,
+            diagnosisGroups,
+            ageGroups,
+            degreeOfSickLeaveGroups,
+            sickLeaveLengthGroups,
+            longSickLeavesTotal,
+            longSickLeavesAlternation,
+            kompletteringar);
+    VerksamhetOverviewData data =
+        new VerksamhetOverviewConverter().convert(resp, new Range(clock), Filter.empty(), null);
 
-        //Then
-        assertEquals("[]", data.getAgeGroups().toString());
-    }
+    // Then
+    assertEquals("[]", data.getAgeGroups().toString());
+  }
 
-    @Test
-    public void converterTestCasesPerMonth() {
-        //Given
-        int casesPerMonthProportionMaleNew = 0;
-        int casesPerMonthProportionFemaleNew = 1;
-        OverviewKonsfordelning overviewKonsfordelning = new OverviewKonsfordelning(casesPerMonthProportionMaleNew,
-            casesPerMonthProportionFemaleNew, new Range(clock));
-        List<OverviewChartRowExtended> diagnosisGroups = new ArrayList<>();
-        diagnosisGroups.add(new OverviewChartRowExtended("diagName", 1, 2, null));
-        List<OverviewChartRowExtended> ageGroups = new ArrayList<>();
-        ageGroups.add(new OverviewChartRowExtended("ageName", 3, 4, null));
-        List<OverviewChartRowExtended> degreeOfSickLeaveGroups = new ArrayList<>();
-        degreeOfSickLeaveGroups.add(new OverviewChartRowExtended("degName", 5, 6, null));
-        List<OverviewChartRow> sickLeaveLengthGroups = new ArrayList<>();
-        sickLeaveLengthGroups.add(new OverviewChartRow("sickName", 7));
-        List<OverviewChartRowExtended> kompletteringar = new ArrayList<>();
-        kompletteringar.add(new OverviewChartRowExtended("kompletteringname", 9, 3, null));
-        int longSickLeavesTotal = 5;
-        int longSickLeavesAlternation = 6;
-        List<OverviewChartRowExtended> perCounty = new ArrayList<>();
-        perCounty.add(new OverviewChartRowExtended("countyName", 8, 9, null));
+  @Test
+  public void converterTestCasesPerMonth() {
+    // Given
+    int casesPerMonthProportionMaleNew = 0;
+    int casesPerMonthProportionFemaleNew = 1;
+    OverviewKonsfordelning overviewKonsfordelning =
+        new OverviewKonsfordelning(
+            casesPerMonthProportionMaleNew, casesPerMonthProportionFemaleNew, new Range(clock));
+    List<OverviewChartRowExtended> diagnosisGroups = new ArrayList<>();
+    diagnosisGroups.add(new OverviewChartRowExtended("diagName", 1, 2, null));
+    List<OverviewChartRowExtended> ageGroups = new ArrayList<>();
+    ageGroups.add(new OverviewChartRowExtended("ageName", 3, 4, null));
+    List<OverviewChartRowExtended> degreeOfSickLeaveGroups = new ArrayList<>();
+    degreeOfSickLeaveGroups.add(new OverviewChartRowExtended("degName", 5, 6, null));
+    List<OverviewChartRow> sickLeaveLengthGroups = new ArrayList<>();
+    sickLeaveLengthGroups.add(new OverviewChartRow("sickName", 7));
+    List<OverviewChartRowExtended> kompletteringar = new ArrayList<>();
+    kompletteringar.add(new OverviewChartRowExtended("kompletteringname", 9, 3, null));
+    int longSickLeavesTotal = 5;
+    int longSickLeavesAlternation = 6;
+    List<OverviewChartRowExtended> perCounty = new ArrayList<>();
+    perCounty.add(new OverviewChartRowExtended("countyName", 8, 9, null));
 
-        int totalCases = 7;
-        //When
-        VerksamhetOverviewResponse resp = new VerksamhetOverviewResponse(AvailableFilters.getForSjukfall(), totalCases,
-            overviewKonsfordelning, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
-            sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation, kompletteringar);
-        VerksamhetOverviewData data = new VerksamhetOverviewConverter().convert(resp, new Range(clock), Filter.empty(), null);
+    int totalCases = 7;
+    // When
+    VerksamhetOverviewResponse resp =
+        new VerksamhetOverviewResponse(
+            AvailableFilters.getForSjukfall(),
+            totalCases,
+            overviewKonsfordelning,
+            diagnosisGroups,
+            ageGroups,
+            degreeOfSickLeaveGroups,
+            sickLeaveLengthGroups,
+            longSickLeavesTotal,
+            longSickLeavesAlternation,
+            kompletteringar);
+    VerksamhetOverviewData data =
+        new VerksamhetOverviewConverter().convert(resp, new Range(clock), Filter.empty(), null);
 
-        //Then
-        assertEquals(totalCases, data.getCasesPerMonth().getTotalCases());
+    // Then
+    assertEquals(totalCases, data.getCasesPerMonth().getTotalCases());
 
-        VerksamhetNumberOfCasesPerMonthOverview casesPerMonth = data.getCasesPerMonth();
-        assertEquals(100, casesPerMonth.getProportionFemale());
-        assertEquals(0, casesPerMonth.getProportionMale());
+    VerksamhetNumberOfCasesPerMonthOverview casesPerMonth = data.getCasesPerMonth();
+    assertEquals(100, casesPerMonth.getProportionFemale());
+    assertEquals(0, casesPerMonth.getProportionMale());
 
-        List<DonutChartData> diagnosisGroupsResult = data.getDiagnosisGroups();
-        assertEquals(1, diagnosisGroupsResult.size());
-        assertEquals("diagName", diagnosisGroupsResult.get(0).getName());
-        assertEquals(1, diagnosisGroupsResult.get(0).getQuantity());
-        assertEquals(2, diagnosisGroupsResult.get(0).getAlternation());
+    List<DonutChartData> diagnosisGroupsResult = data.getDiagnosisGroups();
+    assertEquals(1, diagnosisGroupsResult.size());
+    assertEquals("diagName", diagnosisGroupsResult.get(0).getName());
+    assertEquals(1, diagnosisGroupsResult.get(0).getQuantity());
+    assertEquals(2, diagnosisGroupsResult.get(0).getAlternation());
 
-        List<DonutChartData> ageGroupsResult = data.getAgeGroups();
-        assertEquals(1, ageGroupsResult.size());
-        assertEquals("ageName", ageGroupsResult.get(0).getName());
-        assertEquals(3, ageGroupsResult.get(0).getQuantity());
-        assertEquals(4, ageGroupsResult.get(0).getAlternation());
+    List<DonutChartData> ageGroupsResult = data.getAgeGroups();
+    assertEquals(1, ageGroupsResult.size());
+    assertEquals("ageName", ageGroupsResult.get(0).getName());
+    assertEquals(3, ageGroupsResult.get(0).getQuantity());
+    assertEquals(4, ageGroupsResult.get(0).getAlternation());
 
-        List<DonutChartData> degreeGroupsResult = data.getDegreeOfSickLeaveGroups();
-        assertEquals(1, degreeGroupsResult.size());
-        assertEquals("degName", degreeGroupsResult.get(0).getName());
-        assertEquals(5, degreeGroupsResult.get(0).getQuantity());
-        assertEquals(6, degreeGroupsResult.get(0).getAlternation());
+    List<DonutChartData> degreeGroupsResult = data.getDegreeOfSickLeaveGroups();
+    assertEquals(1, degreeGroupsResult.size());
+    assertEquals("degName", degreeGroupsResult.get(0).getName());
+    assertEquals(5, degreeGroupsResult.get(0).getQuantity());
+    assertEquals(6, degreeGroupsResult.get(0).getAlternation());
 
-        SickLeaveLengthOverview sickGroupsResult = data.getSickLeaveLength();
-        assertEquals(1, sickGroupsResult.getChartData().size());
-        assertEquals("sickName", sickGroupsResult.getChartData().get(0).getName());
-        assertEquals(7, sickGroupsResult.getChartData().get(0).getQuantity());
-        assertEquals(longSickLeavesAlternation, sickGroupsResult.getLongSickLeavesAlternation());
-        assertEquals(longSickLeavesTotal, sickGroupsResult.getLongSickLeavesTotal());
+    SickLeaveLengthOverview sickGroupsResult = data.getSickLeaveLength();
+    assertEquals(1, sickGroupsResult.getChartData().size());
+    assertEquals("sickName", sickGroupsResult.getChartData().get(0).getName());
+    assertEquals(7, sickGroupsResult.getChartData().get(0).getQuantity());
+    assertEquals(longSickLeavesAlternation, sickGroupsResult.getLongSickLeavesAlternation());
+    assertEquals(longSickLeavesTotal, sickGroupsResult.getLongSickLeavesTotal());
 
-        List<DonutChartData> kompletteringResult = data.getKompletteringar();
-        assertEquals(1, kompletteringResult.size());
-        assertEquals("kompletteringname", kompletteringResult.get(0).getName());
-        assertEquals(9, kompletteringResult.get(0).getQuantity());
-        assertEquals(3, kompletteringResult.get(0).getAlternation());
-    }
+    List<DonutChartData> kompletteringResult = data.getKompletteringar();
+    assertEquals(1, kompletteringResult.size());
+    assertEquals("kompletteringname", kompletteringResult.get(0).getName());
+    assertEquals(9, kompletteringResult.get(0).getQuantity());
+    assertEquals(3, kompletteringResult.get(0).getAlternation());
+  }
 
-    // CHECKSTYLE:ON MagicNumber
+  // CHECKSTYLE:ON MagicNumber
 }

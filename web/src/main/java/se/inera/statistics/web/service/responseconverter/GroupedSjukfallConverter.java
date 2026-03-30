@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Inera AB (http://www.inera.se)
+ * Copyright (C) 2026 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
  *
@@ -27,14 +27,16 @@ import se.inera.statistics.web.service.dto.FilterSettings;
 
 public class GroupedSjukfallConverter extends SimpleDualSexConverter {
 
-    public GroupedSjukfallConverter(String tableGroupTitle) {
-        super(tableGroupTitle, "%1$s");
-    }
+  public GroupedSjukfallConverter(String tableGroupTitle) {
+    super(tableGroupTitle, "%1$s");
+  }
 
-    @Override
-    public SimpleDetailsData convert(SimpleKonResponse casesPerMonth, FilterSettings filterSettings, Message message) {
-        Collections.sort(casesPerMonth.getRows(), (SimpleKonDataRow o1, SimpleKonDataRow o2) -> o1.getName().compareTo(o2.getName()));
-        return super.convert(casesPerMonth, filterSettings, message);
-    }
-
+  @Override
+  public SimpleDetailsData convert(
+      SimpleKonResponse casesPerMonth, FilterSettings filterSettings, Message message) {
+    Collections.sort(
+        casesPerMonth.getRows(),
+        (SimpleKonDataRow o1, SimpleKonDataRow o2) -> o1.getName().compareTo(o2.getName()));
+    return super.convert(casesPerMonth, filterSettings, message);
+  }
 }
