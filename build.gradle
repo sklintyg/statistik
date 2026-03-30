@@ -1,8 +1,8 @@
 plugins {
+    alias(libs.plugins.com.diffplug.spotless)
     alias(libs.plugins.com.github.ben.manes.versions)
     alias(libs.plugins.org.cyclonedx.bom)
     alias(libs.plugins.org.sonarqube)
-    alias(libs.plugins.com.diffplug.spotless)
     id "com.netflix.nebula.node" version "3.0.0" apply false
     id "org.gretty" version "4.1.10" apply false
 }
@@ -35,8 +35,8 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: 'jacoco'
     apply plugin: 'com.diffplug.spotless'
+    apply plugin: 'jacoco'
 
     java {
         toolchain {
