@@ -20,7 +20,6 @@ package se.inera.statistics.service.helper;
 
 import jakarta.xml.bind.DataBindingException;
 import jakarta.xml.bind.JAXB;
-import jakarta.xml.bind.JAXBException;
 import java.io.StringReader;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
