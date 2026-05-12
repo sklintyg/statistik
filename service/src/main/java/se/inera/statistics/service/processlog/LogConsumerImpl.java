@@ -76,19 +76,21 @@ public class LogConsumerImpl implements LogConsumer {
           if (!eventSuccessfullyHandled) {
             LOG.error("Failed to process intyg {} ({})", event.getId(), event.getCorrelationId());
           }
-        } catch (HsaCommunicationException e ) {
+        } catch (HsaCommunicationException e) {
           LOG.error(
               "Could not process intyg {} ({}). {}",
               event.getId(),
               event.getCorrelationId(),
-              e.getMessage(), e);
+              e.getMessage(),
+              e);
           return processed;
         } catch (Exception e) {
           LOG.error(
               "Could not process intyg {} ({}). {}",
               event.getId(),
               event.getCorrelationId(),
-              e.getMessage(), e);
+              e.getMessage(),
+              e);
         } finally {
           processLog.confirm(event.getId());
           processed++;
