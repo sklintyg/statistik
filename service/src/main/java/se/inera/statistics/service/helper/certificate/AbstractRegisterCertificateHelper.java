@@ -18,8 +18,8 @@
  */
 package se.inera.statistics.service.helper.certificate;
 
+import jakarta.xml.bind.DataBindingException;
 import jakarta.xml.bind.JAXBElement;
-import jakarta.xml.bind.JAXBException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.apache.neethi.builders.converters.ConverterException;
@@ -46,7 +46,7 @@ public abstract class AbstractRegisterCertificateHelper
   }
 
   @Override
-  public synchronized RegisterCertificateType unmarshalXml(String data) throws JAXBException {
+  public synchronized RegisterCertificateType unmarshalXml(String data) throws DataBindingException {
     String convertedData = convertToV3(data);
 
     return super.unmarshalXml(convertedData);

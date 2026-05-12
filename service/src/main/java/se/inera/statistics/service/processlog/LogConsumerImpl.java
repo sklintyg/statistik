@@ -43,6 +43,7 @@ public class LogConsumerImpl implements LogConsumer {
 
   private static final Logger LOG = LoggerFactory.getLogger(LogConsumerImpl.class);
   public static final int BATCH_SIZE = 100;
+  public static final String FAILED_TO_PROCESS_INTYG = "Failed to process intyg";
 
   @Autowired private ProcessLog processLog;
 
@@ -75,19 +76,19 @@ public class LogConsumerImpl implements LogConsumer {
           if (!eventSuccessfullyHandled) {
             LOG.error("Failed to process intyg {} ({})", event.getId(), event.getCorrelationId());
           }
-        } catch (HsaCommunicationException e) {
+        } catch (HsaCommunicationException e ) {
           LOG.error(
               "Could not process intyg {} ({}). {}",
               event.getId(),
               event.getCorrelationId(),
-              e.getMessage());
+              e.getMessage(), e);
           return processed;
         } catch (Exception e) {
           LOG.error(
               "Could not process intyg {} ({}). {}",
               event.getId(),
               event.getCorrelationId(),
-              e.getMessage());
+              e.getMessage(), e);
         } finally {
           processLog.confirm(event.getId());
           processed++;
@@ -126,8 +127,7 @@ public class LogConsumerImpl implements LogConsumer {
         return false;
       }
     } catch (Exception e) {
-      LOG.warn("Failed to unmarshal intyg xml");
-      LOG.debug("Failed to unmarshal intyg xml", e);
+      LOG.error(FAILED_TO_PROCESS_INTYG, e);
       return false;
     }
     return true;
@@ -148,8 +148,7 @@ public class LogConsumerImpl implements LogConsumer {
 
       return true;
     } catch (Exception e) {
-      LOG.warn("Failed to unmarshal intyg xml");
-      LOG.debug("Failed to unmarshal intyg xml", e);
+      LOG.error(FAILED_TO_PROCESS_INTYG, e);
       return false;
     }
   }
@@ -169,8 +168,7 @@ public class LogConsumerImpl implements LogConsumer {
 
       return true;
     } catch (Exception e) {
-      LOG.warn("Failed to unmarshal intyg xml");
-      LOG.debug("Failed to unmarshal intyg xml", e);
+      LOG.error(FAILED_TO_PROCESS_INTYG, e);
       return false;
     }
   }
