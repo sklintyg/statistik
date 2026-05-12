@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.helper;
 
+import jakarta.xml.bind.DataBindingException;
 import jakarta.xml.bind.JAXBException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -68,7 +69,7 @@ public class RegisterCertificateResolver {
     return registerCertificateHelper.getCertificateVersion(certificate);
   }
 
-  public RegisterCertificateType unmarshalXml(String data) throws JAXBException {
+  public RegisterCertificateType unmarshalXml(String data) throws DataBindingException {
     return registerCertificateHelper.unmarshalXml(data);
   }
 

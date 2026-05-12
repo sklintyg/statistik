@@ -19,6 +19,8 @@
 package se.inera.statistics.service.processlog;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.xml.bind.DataBindingException;
+import jakarta.xml.bind.JAXBException;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +45,7 @@ public class LogConsumerImpl implements LogConsumer {
 
   private static final Logger LOG = LoggerFactory.getLogger(LogConsumerImpl.class);
   public static final int BATCH_SIZE = 100;
+  public static final String FAILED_TO_UNMARSHAL_INTYG_XML = "Failed to unmarshal intyg xml";
 
   @Autowired private ProcessLog processLog;
 
@@ -75,7 +78,7 @@ public class LogConsumerImpl implements LogConsumer {
           if (!eventSuccessfullyHandled) {
             LOG.error("Failed to process intyg {} ({})", event.getId(), event.getCorrelationId());
           }
-        } catch (HsaCommunicationException e) {
+        } catch (HsaCommunicationException e ) {
           LOG.error(
               "Could not process intyg {} ({}). {}",
               event.getId(),
@@ -125,9 +128,8 @@ public class LogConsumerImpl implements LogConsumer {
       if (!successfullyProcessedXml) {
         return false;
       }
-    } catch (Exception e) {
-      LOG.warn("Failed to unmarshal intyg xml");
-      LOG.debug("Failed to unmarshal intyg xml", e);
+    } catch (DataBindingException e) {
+      LOG.error(FAILED_TO_UNMARSHAL_INTYG_XML, e);
       return false;
     }
     return true;
@@ -147,9 +149,8 @@ public class LogConsumerImpl implements LogConsumer {
       processIntyg(event, dto, hsaInfo);
 
       return true;
-    } catch (Exception e) {
-      LOG.warn("Failed to unmarshal intyg xml");
-      LOG.debug("Failed to unmarshal intyg xml", e);
+    } catch (DataBindingException e) {
+      LOG.error(FAILED_TO_UNMARSHAL_INTYG_XML, e);
       return false;
     }
   }
@@ -168,9 +169,8 @@ public class LogConsumerImpl implements LogConsumer {
       processIntyg(event, dto, hsaInfo);
 
       return true;
-    } catch (Exception e) {
-      LOG.warn("Failed to unmarshal intyg xml");
-      LOG.debug("Failed to unmarshal intyg xml", e);
+    } catch (DataBindingException e) {
+      LOG.error(FAILED_TO_UNMARSHAL_INTYG_XML);
       return false;
     }
   }

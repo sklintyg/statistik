@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.helper;
 
+import jakarta.xml.bind.DataBindingException;
 import jakarta.xml.bind.JAXB;
 import jakarta.xml.bind.JAXBException;
 import java.io.StringReader;
@@ -34,7 +35,7 @@ public abstract class IntygHelper<T> {
 
   private static final Logger LOG = LoggerFactory.getLogger(IntygHelper.class);
 
-  public synchronized T unmarshalXml(String data) throws JAXBException {
+  public synchronized T unmarshalXml(String data) throws DataBindingException {
     final StringReader reader = new StringReader(data);
     return JAXB.unmarshal(reader, getIntygClass());
   }
