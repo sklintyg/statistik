@@ -43,7 +43,7 @@ public class LogConsumerImpl implements LogConsumer {
 
   private static final Logger LOG = LoggerFactory.getLogger(LogConsumerImpl.class);
   public static final int BATCH_SIZE = 100;
-  public static final String FAILED_TO_PROCESS_INTYG_XML = "Failed to process intyg xml";
+  public static final String FAILED_TO_PROCESS_INTYG = "Failed to process intyg";
 
   @Autowired private ProcessLog processLog;
 
@@ -126,8 +126,8 @@ public class LogConsumerImpl implements LogConsumer {
       if (!successfullyProcessedXml) {
         return false;
       }
-    } catch (RuntimeException e) {
-      LOG.error(FAILED_TO_PROCESS_INTYG_XML, e);
+    } catch (Exception e) {
+      LOG.error(FAILED_TO_PROCESS_INTYG, e);
       return false;
     }
     return true;
@@ -147,8 +147,8 @@ public class LogConsumerImpl implements LogConsumer {
       processIntyg(event, dto, hsaInfo);
 
       return true;
-    } catch (RuntimeException e) {
-      LOG.error(FAILED_TO_PROCESS_INTYG_XML, e);
+    } catch (Exception e) {
+      LOG.error(FAILED_TO_PROCESS_INTYG, e);
       return false;
     }
   }
@@ -167,8 +167,8 @@ public class LogConsumerImpl implements LogConsumer {
       processIntyg(event, dto, hsaInfo);
 
       return true;
-    } catch (RuntimeException e) {
-      LOG.error(FAILED_TO_PROCESS_INTYG_XML, e);
+    } catch (Exception e) {
+      LOG.error(FAILED_TO_PROCESS_INTYG, e);
       return false;
     }
   }
