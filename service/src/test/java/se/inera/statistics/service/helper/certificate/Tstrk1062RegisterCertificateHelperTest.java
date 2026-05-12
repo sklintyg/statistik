@@ -22,6 +22,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
+import jakarta.xml.bind.DataBindingException;
 import jakarta.xml.bind.JAXBException;
 import java.time.LocalDate;
 import java.util.stream.IntStream;
@@ -298,7 +299,7 @@ public class Tstrk1062RegisterCertificateHelperTest {
             value -> {
               try {
                 registerCertificateHelper.unmarshalXml(xmlIntyg);
-              } catch (JAXBException e) {
+              } catch (DataBindingException e) {
                 // ok in this test
               } catch (Exception e) {
                 fail("Unexpected exception: " + e.toString());
