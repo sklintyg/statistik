@@ -19,8 +19,6 @@
 package se.inera.statistics.service.processlog;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import jakarta.xml.bind.DataBindingException;
-import jakarta.xml.bind.JAXBException;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +43,7 @@ public class LogConsumerImpl implements LogConsumer {
 
   private static final Logger LOG = LoggerFactory.getLogger(LogConsumerImpl.class);
   public static final int BATCH_SIZE = 100;
-  public static final String FAILED_TO_UNMARSHAL_INTYG_XML = "Failed to unmarshal intyg xml";
+  public static final String FAILED_TO_PROCESS_INTYG_XML = "Failed to process intyg xml";
 
   @Autowired private ProcessLog processLog;
 
@@ -83,14 +81,14 @@ public class LogConsumerImpl implements LogConsumer {
               "Could not process intyg {} ({}). {}",
               event.getId(),
               event.getCorrelationId(),
-              e.getMessage());
+              e.getMessage(), e);
           return processed;
         } catch (Exception e) {
           LOG.error(
               "Could not process intyg {} ({}). {}",
               event.getId(),
               event.getCorrelationId(),
-              e.getMessage());
+              e.getMessage(), e);
         } finally {
           processLog.confirm(event.getId());
           processed++;
@@ -128,8 +126,8 @@ public class LogConsumerImpl implements LogConsumer {
       if (!successfullyProcessedXml) {
         return false;
       }
-    } catch (DataBindingException e) {
-      LOG.error(FAILED_TO_UNMARSHAL_INTYG_XML, e);
+    } catch (RuntimeException e) {
+      LOG.error(FAILED_TO_PROCESS_INTYG_XML, e);
       return false;
     }
     return true;
@@ -149,8 +147,8 @@ public class LogConsumerImpl implements LogConsumer {
       processIntyg(event, dto, hsaInfo);
 
       return true;
-    } catch (DataBindingException e) {
-      LOG.error(FAILED_TO_UNMARSHAL_INTYG_XML, e);
+    } catch (RuntimeException e) {
+      LOG.error(FAILED_TO_PROCESS_INTYG_XML, e);
       return false;
     }
   }
@@ -169,8 +167,8 @@ public class LogConsumerImpl implements LogConsumer {
       processIntyg(event, dto, hsaInfo);
 
       return true;
-    } catch (DataBindingException e) {
-      LOG.error(FAILED_TO_UNMARSHAL_INTYG_XML);
+    } catch (RuntimeException e) {
+      LOG.error(FAILED_TO_PROCESS_INTYG_XML, e);
       return false;
     }
   }

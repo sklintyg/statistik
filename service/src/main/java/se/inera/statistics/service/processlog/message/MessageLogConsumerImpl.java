@@ -93,8 +93,7 @@ public class MessageLogConsumerImpl implements MessageLogConsumer {
 
       processor.accept(rc, event.getId(), event.getCorrelationId(), event.getType());
     } catch (Exception e) {
-      LOG.warn("Failed to unmarshal meddelande xml");
-      LOG.debug("Failed to unmarshal meddelande xml", e);
+      LOG.warn("Failed to unmarshal meddelande xml", e);
       return false;
     }
     return true;
