@@ -46,7 +46,8 @@ public abstract class AbstractRegisterCertificateHelper
   }
 
   @Override
-  public synchronized RegisterCertificateType unmarshalXml(String data) throws DataBindingException {
+  public synchronized RegisterCertificateType unmarshalXml(String data)
+      throws DataBindingException {
     String convertedData = convertToV3(data);
 
     return super.unmarshalXml(convertedData);

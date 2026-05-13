@@ -19,7 +19,6 @@
 package se.inera.statistics.service.helper;
 
 import jakarta.xml.bind.DataBindingException;
-import jakarta.xml.bind.JAXBException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.helper.certificate.AbstractRegisterCertificateHelper;
