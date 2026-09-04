@@ -102,7 +102,7 @@ class JmsReceiverTest {
   @ValueSource(
       strings = {
         "luae_na", "fk7210", "fk7472", "fk3226", "fk7809", "ts8071", "fk7427", "fk7426", "fk3221",
-        "fk7810"
+        "fk7810", "fk7272"
       })
   void testOnMessageIntygKnowType(String certificateType)
       throws MessageNotWriteableException, IOException {
@@ -126,7 +126,7 @@ class JmsReceiverTest {
   @ValueSource(
       strings = {
         "luae_na", "fk7210", "fk7472", "fk3226", "fk7809", "ts8071", "fk7427", "fk7426", "fk3221",
-        "fk7810"
+        "fk7810", "fk7272"
       })
   void testOnMessageRevokedIntygKnowType(String certificateType)
       throws MessageNotWriteableException, IOException {
