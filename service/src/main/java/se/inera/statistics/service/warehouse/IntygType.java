@@ -111,7 +111,18 @@ public enum IntygType {
           FK3221, FK7810, FK7272);
 
   private static final List<IntygType> INCLUDED_IN_INTYG_FILTER =
-      List.of(SJUKPENNING, LUSE, LUAE_NA, LUAE_FS, FK3226, FK7809, FK7427, FK7426, FK3221, FK7810, FK7272);
+      List.of(
+          SJUKPENNING,
+          LUSE,
+          LUAE_NA,
+          LUAE_FS,
+          FK3226,
+          FK7809,
+          FK7427,
+          FK7426,
+          FK3221,
+          FK7810,
+          FK7272);
 
   private final String kodverksKod; // From
   // https://riv-ta.atlassian.net/wiki/download/attachments/270532953/Kv%20intygstyp.xlsx
