@@ -95,7 +95,8 @@ public enum IntygType {
       "FK 3221",
       "FK 3221 Läkarutlåtande för omvårdnadsbidrag eller merkostnadsersättning",
       true),
-  FK7810("LUAS", "fk7810", "FK 7810", "FK 7810 Läkarutlåtande för assistansersättning", true);
+  FK7810("LUAS", "fk7810", "FK 7810", "FK 7810 Läkarutlåtande för assistansersättning", true),
+  FK7272("LUSHS", "fk7272", "FK 7272", "FK 7272 Läkarutlåtande för särskilt högriskskydd", true);
 
   private static final ImmutableSet<IntygType> INCLUDED_IN_KOMPLETTERING_REPORT =
       ImmutableSet.of(
