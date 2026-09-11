@@ -96,11 +96,18 @@ public enum IntygType {
       "FK 3221 Läkarutlåtande för omvårdnadsbidrag eller merkostnadsersättning",
       true),
   FK7810("LUAS", "fk7810", "FK 7810", "FK 7810 Läkarutlåtande för assistansersättning", true),
-  FK7272("LUSHS", "fk7272", "FK 7272", "FK 7272 Läkarutlåtande för särskilt högriskskydd", true);
+  FK7272("LUSHS", "fk7272", "FK 7272", "FK 7272 Läkarutlåtande för särskilt högriskskydd", true),
+  FK7259(
+      "LUSJP_FS",
+      "fk7259",
+      "FK 7259",
+      "FK 7259 Läkarutlåtande sjukpenning i förebyggande syfte",
+      true);
 
   private static final ImmutableSet<IntygType> INCLUDED_IN_KOMPLETTERING_REPORT =
       ImmutableSet.of(
-          LISJP, LUSE, LUAE_NA, LUAE_FS, FK7472, FK3226, FK7809, FK7427, FK7426, FK3221, FK7272);
+          LISJP, LUSE, LUAE_NA, LUAE_FS, FK7472, FK3226, FK7809, FK7427, FK7426, FK3221, FK7272,
+          FK7259);
 
   private static final ImmutableSet<IntygType> IS_SJUKPENNING = ImmutableSet.of(LISJP, FK7263);
 
@@ -108,7 +115,7 @@ public enum IntygType {
       List.of(
           AF00213, AF00251, AG114, AG7804, DB, DOI, LISJP, LUSE, LUAE_NA, LUAE_FS, TSTRK1009,
           TSTRK1007, TSTRK1031, TSTRK1062, FK7210, FK7472, FK3226, FK7809, TS8071, FK7427, FK7426,
-          FK3221, FK7810, FK7272);
+          FK3221, FK7810, FK7272, FK7259);
 
   private static final List<IntygType> INCLUDED_IN_INTYG_FILTER =
       List.of(
@@ -122,7 +129,8 @@ public enum IntygType {
           FK7426,
           FK3221,
           FK7810,
-          FK7272);
+          FK7272,
+          FK7259);
 
   private final String kodverksKod; // From
   // https://riv-ta.atlassian.net/wiki/download/attachments/270532953/Kv%20intygstyp.xlsx
