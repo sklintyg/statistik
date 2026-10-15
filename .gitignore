@@ -37,3 +37,12 @@ out
 devops/openshift/*.jks
 devops/openshift/*.p12
 secret-vars.yaml
+
+### Generated AI resources ###
+# Published by .ai-resources/sync.sh (team) and .github/scripts/sync-local-skills.sh (local).
+# Every file in these paths is a copy - edit the source, never the copy. See AGENTS.md.
+/.github/copilot-instructions.md
+/.github/agents/
+/.github/skills/
+/.claude/agents/
+/.claude/skills/
